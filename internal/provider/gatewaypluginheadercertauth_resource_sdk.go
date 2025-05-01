@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginHeaderCertAuthResourceModel) ToSharedHeaderCertAuthPlugin() *shared.HeaderCertAuthPlugin {
+func (r *GatewayPluginHeaderCertAuthResourceModel) ToSharedHeaderCertAuthPlugin(ctx context.Context) (*shared.HeaderCertAuthPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToSharedHeaderCertAuthPlugin(
 	if r.Ordering != nil {
 		var after *shared.HeaderCertAuthPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToSharedHeaderCertAuthPlugin(
 		}
 		var before *shared.HeaderCertAuthPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToSharedHeaderCertAuthPlugin(
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -92,7 +95,7 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToSharedHeaderCertAuthPlugin(
 		} else {
 			authenticatedGroupBy = nil
 		}
-		var caCertificates []string = []string{}
+		caCertificates := make([]string, 0, len(r.Config.CaCertificates))
 		for _, caCertificatesItem := range r.Config.CaCertificates {
 			caCertificates = append(caCertificates, caCertificatesItem.ValueString())
 		}
@@ -120,7 +123,7 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToSharedHeaderCertAuthPlugin(
 		} else {
 			certificateHeaderName = nil
 		}
-		var consumerBy []shared.ConsumerBy = []shared.ConsumerBy{}
+		consumerBy := make([]shared.ConsumerBy, 0, len(r.Config.ConsumerBy))
 		for _, consumerByItem := range r.Config.ConsumerBy {
 			consumerBy = append(consumerBy, shared.ConsumerBy(consumerByItem.ValueString()))
 		}
@@ -199,7 +202,7 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToSharedHeaderCertAuthPlugin(
 			SkipConsumerLookup:      skipConsumerLookup,
 		}
 	}
-	var protocols []shared.HeaderCertAuthPluginProtocols = []shared.HeaderCertAuthPluginProtocols{}
+	protocols := make([]shared.HeaderCertAuthPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.HeaderCertAuthPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -240,7 +243,88 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToSharedHeaderCertAuthPlugin(
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsCreateHeadercertauthPluginRequest(ctx context.Context) (*operations.CreateHeadercertauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	headerCertAuthPlugin, headerCertAuthPluginDiags := r.ToSharedHeaderCertAuthPlugin(ctx)
+	diags.Append(headerCertAuthPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateHeadercertauthPluginRequest{
+		ControlPlaneID:       controlPlaneID,
+		HeaderCertAuthPlugin: *headerCertAuthPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsUpdateHeadercertauthPluginRequest(ctx context.Context) (*operations.UpdateHeadercertauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	headerCertAuthPlugin, headerCertAuthPluginDiags := r.ToSharedHeaderCertAuthPlugin(ctx)
+	diags.Append(headerCertAuthPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateHeadercertauthPluginRequest{
+		PluginID:             pluginID,
+		ControlPlaneID:       controlPlaneID,
+		HeaderCertAuthPlugin: *headerCertAuthPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsGetHeadercertauthPluginRequest(ctx context.Context) (*operations.GetHeadercertauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetHeadercertauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsDeleteHeadercertauthPluginRequest(ctx context.Context) (*operations.DeleteHeadercertauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteHeadercertauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginHeaderCertAuthResourceModel) RefreshFromSharedHeaderCertAuthPlugin(ctx context.Context, resp *shared.HeaderCertAuthPlugin) diag.Diagnostics {

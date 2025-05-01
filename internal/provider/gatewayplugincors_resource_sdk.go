@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginCorsResourceModel) ToSharedCorsPlugin() *shared.CorsPlugin {
+func (r *GatewayPluginCorsResourceModel) ToSharedCorsPlugin(ctx context.Context) (*shared.CorsPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginCorsResourceModel) ToSharedCorsPlugin() *shared.CorsPlugin
 	if r.Ordering != nil {
 		var after *shared.CorsPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginCorsResourceModel) ToSharedCorsPlugin() *shared.CorsPlugin
 		}
 		var before *shared.CorsPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginCorsResourceModel) ToSharedCorsPlugin() *shared.CorsPlugin
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -86,11 +89,11 @@ func (r *GatewayPluginCorsResourceModel) ToSharedCorsPlugin() *shared.CorsPlugin
 		} else {
 			credentials = nil
 		}
-		var exposedHeaders []string = []string{}
+		exposedHeaders := make([]string, 0, len(r.Config.ExposedHeaders))
 		for _, exposedHeadersItem := range r.Config.ExposedHeaders {
 			exposedHeaders = append(exposedHeaders, exposedHeadersItem.ValueString())
 		}
-		var headers []string = []string{}
+		headers := make([]string, 0, len(r.Config.Headers))
 		for _, headersItem := range r.Config.Headers {
 			headers = append(headers, headersItem.ValueString())
 		}
@@ -100,11 +103,11 @@ func (r *GatewayPluginCorsResourceModel) ToSharedCorsPlugin() *shared.CorsPlugin
 		} else {
 			maxAge = nil
 		}
-		var methods []shared.Methods = []shared.Methods{}
+		methods := make([]shared.Methods, 0, len(r.Config.Methods))
 		for _, methodsItem := range r.Config.Methods {
 			methods = append(methods, shared.Methods(methodsItem.ValueString()))
 		}
-		var origins []string = []string{}
+		origins := make([]string, 0, len(r.Config.Origins))
 		for _, originsItem := range r.Config.Origins {
 			origins = append(origins, originsItem.ValueString())
 		}
@@ -132,7 +135,7 @@ func (r *GatewayPluginCorsResourceModel) ToSharedCorsPlugin() *shared.CorsPlugin
 			PrivateNetwork:    privateNetwork,
 		}
 	}
-	var protocols []shared.CorsPluginProtocols = []shared.CorsPluginProtocols{}
+	protocols := make([]shared.CorsPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.CorsPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -173,7 +176,88 @@ func (r *GatewayPluginCorsResourceModel) ToSharedCorsPlugin() *shared.CorsPlugin
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginCorsResourceModel) ToOperationsCreateCorsPluginRequest(ctx context.Context) (*operations.CreateCorsPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	corsPlugin, corsPluginDiags := r.ToSharedCorsPlugin(ctx)
+	diags.Append(corsPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateCorsPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		CorsPlugin:     *corsPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginCorsResourceModel) ToOperationsUpdateCorsPluginRequest(ctx context.Context) (*operations.UpdateCorsPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	corsPlugin, corsPluginDiags := r.ToSharedCorsPlugin(ctx)
+	diags.Append(corsPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateCorsPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		CorsPlugin:     *corsPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginCorsResourceModel) ToOperationsGetCorsPluginRequest(ctx context.Context) (*operations.GetCorsPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetCorsPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginCorsResourceModel) ToOperationsDeleteCorsPluginRequest(ctx context.Context) (*operations.DeleteCorsPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteCorsPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginCorsResourceModel) RefreshFromSharedCorsPlugin(ctx context.Context, resp *shared.CorsPlugin) diag.Diagnostics {

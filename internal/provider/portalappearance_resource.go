@@ -14,7 +14,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 	"regexp"
@@ -806,15 +805,13 @@ func (r *PortalAppearanceResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsUpdatePortalAppearanceRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	portalAppearance := *data.ToSharedPortalAppearance()
-	request := operations.UpdatePortalAppearanceRequest{
-		PortalID:         portalID,
-		PortalAppearance: portalAppearance,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalAppearance.UpdatePortalAppearance(ctx, request)
+	res, err := r.client.PortalAppearance.UpdatePortalAppearance(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -868,13 +865,13 @@ func (r *PortalAppearanceResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsGetPortalAppearanceRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.GetPortalAppearanceRequest{
-		PortalID: portalID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalAppearance.GetPortalAppearance(ctx, request)
+	res, err := r.client.PortalAppearance.GetPortalAppearance(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -922,15 +919,13 @@ func (r *PortalAppearanceResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsUpdatePortalAppearanceRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	portalAppearance := *data.ToSharedPortalAppearance()
-	request := operations.UpdatePortalAppearanceRequest{
-		PortalID:         portalID,
-		PortalAppearance: portalAppearance,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalAppearance.UpdatePortalAppearance(ctx, request)
+	res, err := r.client.PortalAppearance.UpdatePortalAppearance(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

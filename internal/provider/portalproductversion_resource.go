@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
@@ -238,19 +237,13 @@ func (r *PortalProductVersionResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	var productVersionID string
-	productVersionID = data.ProductVersionID.ValueString()
+	request, requestDiags := data.ToOperationsReplacePortalProductVersionRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
-
-	replacePortalProductVersionPayload := *data.ToSharedReplacePortalProductVersionPayload()
-	request := operations.ReplacePortalProductVersionRequest{
-		ProductVersionID:                   productVersionID,
-		PortalID:                           portalID,
-		ReplacePortalProductVersionPayload: replacePortalProductVersionPayload,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalProductVersions.ReplacePortalProductVersion(ctx, request)
+	res, err := r.client.PortalProductVersions.ReplacePortalProductVersion(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -281,17 +274,13 @@ func (r *PortalProductVersionResource) Create(ctx context.Context, req resource.
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	var productVersionId1 string
-	productVersionId1 = data.ProductVersionID.ValueString()
+	request1, request1Diags := data.ToOperationsGetPortalProductVersionRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
 
-	var portalId1 string
-	portalId1 = data.PortalID.ValueString()
-
-	request1 := operations.GetPortalProductVersionRequest{
-		ProductVersionID: productVersionId1,
-		PortalID:         portalId1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.PortalProductVersions.GetPortalProductVersion(ctx, request1)
+	res1, err := r.client.PortalProductVersions.GetPortalProductVersion(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -345,17 +334,13 @@ func (r *PortalProductVersionResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	var productVersionID string
-	productVersionID = data.ProductVersionID.ValueString()
+	request, requestDiags := data.ToOperationsGetPortalProductVersionRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
-
-	request := operations.GetPortalProductVersionRequest{
-		ProductVersionID: productVersionID,
-		PortalID:         portalID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalProductVersions.GetPortalProductVersion(ctx, request)
+	res, err := r.client.PortalProductVersions.GetPortalProductVersion(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -403,19 +388,13 @@ func (r *PortalProductVersionResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	var productVersionID string
-	productVersionID = data.ProductVersionID.ValueString()
+	request, requestDiags := data.ToOperationsReplacePortalProductVersionRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
-
-	replacePortalProductVersionPayload := *data.ToSharedReplacePortalProductVersionPayload()
-	request := operations.ReplacePortalProductVersionRequest{
-		ProductVersionID:                   productVersionID,
-		PortalID:                           portalID,
-		ReplacePortalProductVersionPayload: replacePortalProductVersionPayload,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalProductVersions.ReplacePortalProductVersion(ctx, request)
+	res, err := r.client.PortalProductVersions.ReplacePortalProductVersion(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -446,17 +425,13 @@ func (r *PortalProductVersionResource) Update(ctx context.Context, req resource.
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	var productVersionId1 string
-	productVersionId1 = data.ProductVersionID.ValueString()
+	request1, request1Diags := data.ToOperationsGetPortalProductVersionRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
 
-	var portalId1 string
-	portalId1 = data.PortalID.ValueString()
-
-	request1 := operations.GetPortalProductVersionRequest{
-		ProductVersionID: productVersionId1,
-		PortalID:         portalId1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.PortalProductVersions.GetPortalProductVersion(ctx, request1)
+	res1, err := r.client.PortalProductVersions.GetPortalProductVersion(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -510,17 +485,13 @@ func (r *PortalProductVersionResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	var productVersionID string
-	productVersionID = data.ProductVersionID.ValueString()
+	request, requestDiags := data.ToOperationsDeletePortalProductVersionRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
-
-	request := operations.DeletePortalProductVersionRequest{
-		ProductVersionID: productVersionID,
-		PortalID:         portalID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalProductVersions.DeletePortalProductVersion(ctx, request)
+	res, err := r.client.PortalProductVersions.DeletePortalProductVersion(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

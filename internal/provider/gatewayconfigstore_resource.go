@@ -17,7 +17,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
@@ -125,15 +124,13 @@ func (r *GatewayConfigStoreResource) Create(ctx context.Context, req resource.Cr
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateConfigStoreRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	createConfigStore := *data.ToSharedCreateConfigStore()
-	request := operations.CreateConfigStoreRequest{
-		ControlPlaneID:    controlPlaneID,
-		CreateConfigStore: createConfigStore,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.ConfigStores.CreateConfigStore(ctx, request)
+	res, err := r.client.ConfigStores.CreateConfigStore(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -187,17 +184,13 @@ func (r *GatewayConfigStoreResource) Read(ctx context.Context, req resource.Read
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsGetConfigStoreRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var configStoreID string
-	configStoreID = data.ID.ValueString()
-
-	request := operations.GetConfigStoreRequest{
-		ControlPlaneID: controlPlaneID,
-		ConfigStoreID:  configStoreID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.ConfigStores.GetConfigStore(ctx, request)
+	res, err := r.client.ConfigStores.GetConfigStore(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -245,19 +238,13 @@ func (r *GatewayConfigStoreResource) Update(ctx context.Context, req resource.Up
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateConfigStoreRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var configStoreID string
-	configStoreID = data.ID.ValueString()
-
-	updateConfigStore := *data.ToSharedUpdateConfigStore()
-	request := operations.UpdateConfigStoreRequest{
-		ControlPlaneID:    controlPlaneID,
-		ConfigStoreID:     configStoreID,
-		UpdateConfigStore: updateConfigStore,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.ConfigStores.UpdateConfigStore(ctx, request)
+	res, err := r.client.ConfigStores.UpdateConfigStore(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -311,17 +298,13 @@ func (r *GatewayConfigStoreResource) Delete(ctx context.Context, req resource.De
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteConfigStoreRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var configStoreID string
-	configStoreID = data.ID.ValueString()
-
-	request := operations.DeleteConfigStoreRequest{
-		ControlPlaneID: controlPlaneID,
-		ConfigStoreID:  configStoreID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.ConfigStores.DeleteConfigStore(ctx, request)
+	res, err := r.client.ConfigStores.DeleteConfigStore(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

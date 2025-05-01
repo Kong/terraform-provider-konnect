@@ -20,7 +20,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -418,15 +417,13 @@ func (r *GatewayUpstreamResource) Create(ctx context.Context, req resource.Creat
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateUpstreamRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	upstream := *data.ToSharedUpstream()
-	request := operations.CreateUpstreamRequest{
-		ControlPlaneID: controlPlaneID,
-		Upstream:       upstream,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Upstreams.CreateUpstream(ctx, request)
+	res, err := r.client.Upstreams.CreateUpstream(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -480,17 +477,13 @@ func (r *GatewayUpstreamResource) Read(ctx context.Context, req resource.ReadReq
 		return
 	}
 
-	var upstreamID string
-	upstreamID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetUpstreamRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetUpstreamRequest{
-		UpstreamID:     upstreamID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Upstreams.GetUpstream(ctx, request)
+	res, err := r.client.Upstreams.GetUpstream(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -538,19 +531,13 @@ func (r *GatewayUpstreamResource) Update(ctx context.Context, req resource.Updat
 		return
 	}
 
-	var upstreamID string
-	upstreamID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpsertUpstreamRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	upstream := *data.ToSharedUpstream()
-	request := operations.UpsertUpstreamRequest{
-		UpstreamID:     upstreamID,
-		ControlPlaneID: controlPlaneID,
-		Upstream:       upstream,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Upstreams.UpsertUpstream(ctx, request)
+	res, err := r.client.Upstreams.UpsertUpstream(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -604,17 +591,13 @@ func (r *GatewayUpstreamResource) Delete(ctx context.Context, req resource.Delet
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteUpstreamRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var upstreamID string
-	upstreamID = data.ID.ValueString()
-
-	request := operations.DeleteUpstreamRequest{
-		ControlPlaneID: controlPlaneID,
-		UpstreamID:     upstreamID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Upstreams.DeleteUpstream(ctx, request)
+	res, err := r.client.Upstreams.DeleteUpstream(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

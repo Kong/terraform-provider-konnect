@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayKeyResourceModel) ToSharedKey() *shared.Key {
+func (r *GatewayKeyResourceModel) ToSharedKey(ctx context.Context) (*shared.Key, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -69,7 +72,7 @@ func (r *GatewayKeyResourceModel) ToSharedKey() *shared.Key {
 			ID: id1,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -97,7 +100,88 @@ func (r *GatewayKeyResourceModel) ToSharedKey() *shared.Key {
 		UpdatedAt: updatedAt,
 		X5t:       x5t,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayKeyResourceModel) ToOperationsCreateKeyRequest(ctx context.Context) (*operations.CreateKeyRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	key, keyDiags := r.ToSharedKey(ctx)
+	diags.Append(keyDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateKeyRequest{
+		ControlPlaneID: controlPlaneID,
+		Key:            *key,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayKeyResourceModel) ToOperationsUpsertKeyRequest(ctx context.Context) (*operations.UpsertKeyRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var keyID string
+	keyID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	key, keyDiags := r.ToSharedKey(ctx)
+	diags.Append(keyDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpsertKeyRequest{
+		KeyID:          keyID,
+		ControlPlaneID: controlPlaneID,
+		Key:            *key,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayKeyResourceModel) ToOperationsGetKeyRequest(ctx context.Context) (*operations.GetKeyRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var keyID string
+	keyID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetKeyRequest{
+		KeyID:          keyID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayKeyResourceModel) ToOperationsDeleteKeyRequest(ctx context.Context) (*operations.DeleteKeyRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var keyID string
+	keyID = r.ID.ValueString()
+
+	out := operations.DeleteKeyRequest{
+		ControlPlaneID: controlPlaneID,
+		KeyID:          keyID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayKeyResourceModel) RefreshFromSharedKey(ctx context.Context, resp *shared.Key) diag.Diagnostics {

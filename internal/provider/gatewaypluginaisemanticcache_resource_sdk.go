@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginAiSemanticCacheResourceModel) ToSharedAiSemanticCachePlugin() *shared.AiSemanticCachePlugin {
+func (r *GatewayPluginAiSemanticCacheResourceModel) ToSharedAiSemanticCachePlugin(ctx context.Context) (*shared.AiSemanticCachePlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToSharedAiSemanticCachePlugi
 	if r.Ordering != nil {
 		var after *shared.AiSemanticCachePluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToSharedAiSemanticCachePlugi
 		}
 		var before *shared.AiSemanticCachePluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToSharedAiSemanticCachePlugi
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -486,7 +489,7 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToSharedAiSemanticCachePlugi
 				} else {
 					clusterMaxRedirections = nil
 				}
-				var clusterNodes []shared.AiSemanticCachePluginClusterNodes = []shared.AiSemanticCachePluginClusterNodes{}
+				clusterNodes := make([]shared.AiSemanticCachePluginClusterNodes, 0, len(r.Config.Vectordb.Redis.ClusterNodes))
 				for _, clusterNodesItem := range r.Config.Vectordb.Redis.ClusterNodes {
 					ip := new(string)
 					if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
@@ -571,7 +574,7 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToSharedAiSemanticCachePlugi
 				} else {
 					sentinelMaster = nil
 				}
-				var sentinelNodes []shared.AiSemanticCachePluginSentinelNodes = []shared.AiSemanticCachePluginSentinelNodes{}
+				sentinelNodes := make([]shared.AiSemanticCachePluginSentinelNodes, 0, len(r.Config.Vectordb.Redis.SentinelNodes))
 				for _, sentinelNodesItem := range r.Config.Vectordb.Redis.SentinelNodes {
 					host2 := new(string)
 					if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
@@ -715,7 +718,7 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToSharedAiSemanticCachePlugi
 			ID: id2,
 		}
 	}
-	var protocols []shared.AiSemanticCachePluginProtocols = []shared.AiSemanticCachePluginProtocols{}
+	protocols := make([]shared.AiSemanticCachePluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.AiSemanticCachePluginProtocols(protocolsItem.ValueString()))
 	}
@@ -758,7 +761,88 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToSharedAiSemanticCachePlugi
 		Route:         route,
 		Service:       service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsCreateAisemanticcachePluginRequest(ctx context.Context) (*operations.CreateAisemanticcachePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiSemanticCachePlugin, aiSemanticCachePluginDiags := r.ToSharedAiSemanticCachePlugin(ctx)
+	diags.Append(aiSemanticCachePluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateAisemanticcachePluginRequest{
+		ControlPlaneID:        controlPlaneID,
+		AiSemanticCachePlugin: *aiSemanticCachePlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsUpdateAisemanticcachePluginRequest(ctx context.Context) (*operations.UpdateAisemanticcachePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiSemanticCachePlugin, aiSemanticCachePluginDiags := r.ToSharedAiSemanticCachePlugin(ctx)
+	diags.Append(aiSemanticCachePluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAisemanticcachePluginRequest{
+		PluginID:              pluginID,
+		ControlPlaneID:        controlPlaneID,
+		AiSemanticCachePlugin: *aiSemanticCachePlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsGetAisemanticcachePluginRequest(ctx context.Context) (*operations.GetAisemanticcachePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetAisemanticcachePluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsDeleteAisemanticcachePluginRequest(ctx context.Context) (*operations.DeleteAisemanticcachePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteAisemanticcachePluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginAiSemanticCacheResourceModel) RefreshFromSharedAiSemanticCachePlugin(ctx context.Context, resp *shared.AiSemanticCachePlugin) diag.Diagnostics {

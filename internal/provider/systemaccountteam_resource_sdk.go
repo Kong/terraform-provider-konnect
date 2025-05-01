@@ -3,10 +3,15 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *SystemAccountTeamResourceModel) ToSharedAddSystemAccountToTeam() *shared.AddSystemAccountToTeam {
+func (r *SystemAccountTeamResourceModel) ToSharedAddSystemAccountToTeam(ctx context.Context) (*shared.AddSystemAccountToTeam, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	accountID := new(string)
 	if !r.AccountID.IsUnknown() && !r.AccountID.IsNull() {
 		*accountID = r.AccountID.ValueString()
@@ -16,5 +21,44 @@ func (r *SystemAccountTeamResourceModel) ToSharedAddSystemAccountToTeam() *share
 	out := shared.AddSystemAccountToTeam{
 		AccountID: accountID,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *SystemAccountTeamResourceModel) ToOperationsPostTeamsTeamIDSystemAccountsRequest(ctx context.Context) (*operations.PostTeamsTeamIDSystemAccountsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var teamID string
+	teamID = r.TeamID.ValueString()
+
+	addSystemAccountToTeam, addSystemAccountToTeamDiags := r.ToSharedAddSystemAccountToTeam(ctx)
+	diags.Append(addSystemAccountToTeamDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PostTeamsTeamIDSystemAccountsRequest{
+		TeamID:                 teamID,
+		AddSystemAccountToTeam: addSystemAccountToTeam,
+	}
+
+	return &out, diags
+}
+
+func (r *SystemAccountTeamResourceModel) ToOperationsDeleteTeamsTeamIDSystemAccountsAccountIDRequest(ctx context.Context) (*operations.DeleteTeamsTeamIDSystemAccountsAccountIDRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var teamID string
+	teamID = r.TeamID.ValueString()
+
+	var accountID string
+	accountID = r.AccountID.ValueString()
+
+	out := operations.DeleteTeamsTeamIDSystemAccountsAccountIDRequest{
+		TeamID:    teamID,
+		AccountID: accountID,
+	}
+
+	return &out, diags
 }

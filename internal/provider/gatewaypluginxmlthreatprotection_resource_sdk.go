@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginXMLThreatProtectionResourceModel) ToSharedXMLThreatProtectionPlugin() *shared.XMLThreatProtectionPlugin {
+func (r *GatewayPluginXMLThreatProtectionResourceModel) ToSharedXMLThreatProtectionPlugin(ctx context.Context) (*shared.XMLThreatProtectionPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) ToSharedXMLThreatProtect
 	if r.Ordering != nil {
 		var after *shared.XMLThreatProtectionPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) ToSharedXMLThreatProtect
 		}
 		var before *shared.XMLThreatProtectionPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) ToSharedXMLThreatProtect
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -80,7 +83,7 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) ToSharedXMLThreatProtect
 		} else {
 			allowDtd = nil
 		}
-		var allowedContentTypes []string = []string{}
+		allowedContentTypes := make([]string, 0, len(r.Config.AllowedContentTypes))
 		for _, allowedContentTypesItem := range r.Config.AllowedContentTypes {
 			allowedContentTypes = append(allowedContentTypes, allowedContentTypesItem.ValueString())
 		}
@@ -108,7 +111,7 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) ToSharedXMLThreatProtect
 		} else {
 			buffer = nil
 		}
-		var checkedContentTypes []string = []string{}
+		checkedContentTypes := make([]string, 0, len(r.Config.CheckedContentTypes))
 		for _, checkedContentTypesItem := range r.Config.CheckedContentTypes {
 			checkedContentTypes = append(checkedContentTypes, checkedContentTypesItem.ValueString())
 		}
@@ -246,7 +249,7 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) ToSharedXMLThreatProtect
 			ID: id1,
 		}
 	}
-	var protocols []shared.XMLThreatProtectionPluginProtocols = []shared.XMLThreatProtectionPluginProtocols{}
+	protocols := make([]shared.XMLThreatProtectionPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.XMLThreatProtectionPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -288,7 +291,88 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) ToSharedXMLThreatProtect
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginXMLThreatProtectionResourceModel) ToOperationsCreateXmlthreatprotectionPluginRequest(ctx context.Context) (*operations.CreateXmlthreatprotectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	xmlThreatProtectionPlugin, xmlThreatProtectionPluginDiags := r.ToSharedXMLThreatProtectionPlugin(ctx)
+	diags.Append(xmlThreatProtectionPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateXmlthreatprotectionPluginRequest{
+		ControlPlaneID:            controlPlaneID,
+		XMLThreatProtectionPlugin: *xmlThreatProtectionPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginXMLThreatProtectionResourceModel) ToOperationsUpdateXmlthreatprotectionPluginRequest(ctx context.Context) (*operations.UpdateXmlthreatprotectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	xmlThreatProtectionPlugin, xmlThreatProtectionPluginDiags := r.ToSharedXMLThreatProtectionPlugin(ctx)
+	diags.Append(xmlThreatProtectionPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateXmlthreatprotectionPluginRequest{
+		PluginID:                  pluginID,
+		ControlPlaneID:            controlPlaneID,
+		XMLThreatProtectionPlugin: *xmlThreatProtectionPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginXMLThreatProtectionResourceModel) ToOperationsGetXmlthreatprotectionPluginRequest(ctx context.Context) (*operations.GetXmlthreatprotectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetXmlthreatprotectionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginXMLThreatProtectionResourceModel) ToOperationsDeleteXmlthreatprotectionPluginRequest(ctx context.Context) (*operations.DeleteXmlthreatprotectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteXmlthreatprotectionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginXMLThreatProtectionResourceModel) RefreshFromSharedXMLThreatProtectionPlugin(ctx context.Context, resp *shared.XMLThreatProtectionPlugin) diag.Diagnostics {

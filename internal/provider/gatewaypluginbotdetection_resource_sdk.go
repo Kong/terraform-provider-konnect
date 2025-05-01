@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginBotDetectionResourceModel) ToSharedBotDetectionPlugin() *shared.BotDetectionPlugin {
+func (r *GatewayPluginBotDetectionResourceModel) ToSharedBotDetectionPlugin(ctx context.Context) (*shared.BotDetectionPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginBotDetectionResourceModel) ToSharedBotDetectionPlugin() *s
 	if r.Ordering != nil {
 		var after *shared.BotDetectionPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginBotDetectionResourceModel) ToSharedBotDetectionPlugin() *s
 		}
 		var before *shared.BotDetectionPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginBotDetectionResourceModel) ToSharedBotDetectionPlugin() *s
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -74,11 +77,11 @@ func (r *GatewayPluginBotDetectionResourceModel) ToSharedBotDetectionPlugin() *s
 	}
 	var config *shared.BotDetectionPluginConfig
 	if r.Config != nil {
-		var allow []string = []string{}
+		allow := make([]string, 0, len(r.Config.Allow))
 		for _, allowItem := range r.Config.Allow {
 			allow = append(allow, allowItem.ValueString())
 		}
-		var deny []string = []string{}
+		deny := make([]string, 0, len(r.Config.Deny))
 		for _, denyItem := range r.Config.Deny {
 			deny = append(deny, denyItem.ValueString())
 		}
@@ -87,7 +90,7 @@ func (r *GatewayPluginBotDetectionResourceModel) ToSharedBotDetectionPlugin() *s
 			Deny:  deny,
 		}
 	}
-	var protocols []shared.BotDetectionPluginProtocols = []shared.BotDetectionPluginProtocols{}
+	protocols := make([]shared.BotDetectionPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.BotDetectionPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -128,7 +131,88 @@ func (r *GatewayPluginBotDetectionResourceModel) ToSharedBotDetectionPlugin() *s
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginBotDetectionResourceModel) ToOperationsCreateBotdetectionPluginRequest(ctx context.Context) (*operations.CreateBotdetectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	botDetectionPlugin, botDetectionPluginDiags := r.ToSharedBotDetectionPlugin(ctx)
+	diags.Append(botDetectionPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateBotdetectionPluginRequest{
+		ControlPlaneID:     controlPlaneID,
+		BotDetectionPlugin: *botDetectionPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginBotDetectionResourceModel) ToOperationsUpdateBotdetectionPluginRequest(ctx context.Context) (*operations.UpdateBotdetectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	botDetectionPlugin, botDetectionPluginDiags := r.ToSharedBotDetectionPlugin(ctx)
+	diags.Append(botDetectionPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateBotdetectionPluginRequest{
+		PluginID:           pluginID,
+		ControlPlaneID:     controlPlaneID,
+		BotDetectionPlugin: *botDetectionPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginBotDetectionResourceModel) ToOperationsGetBotdetectionPluginRequest(ctx context.Context) (*operations.GetBotdetectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetBotdetectionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginBotDetectionResourceModel) ToOperationsDeleteBotdetectionPluginRequest(ctx context.Context) (*operations.DeleteBotdetectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteBotdetectionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginBotDetectionResourceModel) RefreshFromSharedBotDetectionPlugin(ctx context.Context, resp *shared.BotDetectionPlugin) diag.Diagnostics {

@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayConfigStoreResourceModel) ToSharedCreateConfigStore() *shared.CreateConfigStore {
+func (r *GatewayConfigStoreResourceModel) ToSharedCreateConfigStore(ctx context.Context) (*shared.CreateConfigStore, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	name := new(string)
 	if !r.Name.IsUnknown() && !r.Name.IsNull() {
 		*name = r.Name.ValueString()
@@ -20,7 +23,104 @@ func (r *GatewayConfigStoreResourceModel) ToSharedCreateConfigStore() *shared.Cr
 	out := shared.CreateConfigStore{
 		Name: name,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayConfigStoreResourceModel) ToOperationsCreateConfigStoreRequest(ctx context.Context) (*operations.CreateConfigStoreRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	createConfigStore, createConfigStoreDiags := r.ToSharedCreateConfigStore(ctx)
+	diags.Append(createConfigStoreDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateConfigStoreRequest{
+		ControlPlaneID:    controlPlaneID,
+		CreateConfigStore: *createConfigStore,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayConfigStoreResourceModel) ToSharedUpdateConfigStore(ctx context.Context) (*shared.UpdateConfigStore, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
+	out := shared.UpdateConfigStore{
+		Name: name,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayConfigStoreResourceModel) ToOperationsUpdateConfigStoreRequest(ctx context.Context) (*operations.UpdateConfigStoreRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var configStoreID string
+	configStoreID = r.ID.ValueString()
+
+	updateConfigStore, updateConfigStoreDiags := r.ToSharedUpdateConfigStore(ctx)
+	diags.Append(updateConfigStoreDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateConfigStoreRequest{
+		ControlPlaneID:    controlPlaneID,
+		ConfigStoreID:     configStoreID,
+		UpdateConfigStore: *updateConfigStore,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayConfigStoreResourceModel) ToOperationsGetConfigStoreRequest(ctx context.Context) (*operations.GetConfigStoreRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var configStoreID string
+	configStoreID = r.ID.ValueString()
+
+	out := operations.GetConfigStoreRequest{
+		ControlPlaneID: controlPlaneID,
+		ConfigStoreID:  configStoreID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayConfigStoreResourceModel) ToOperationsDeleteConfigStoreRequest(ctx context.Context) (*operations.DeleteConfigStoreRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var configStoreID string
+	configStoreID = r.ID.ValueString()
+
+	out := operations.DeleteConfigStoreRequest{
+		ControlPlaneID: controlPlaneID,
+		ConfigStoreID:  configStoreID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayConfigStoreResourceModel) RefreshFromSharedConfigStore(ctx context.Context, resp *shared.ConfigStore) diag.Diagnostics {
@@ -34,17 +134,4 @@ func (r *GatewayConfigStoreResourceModel) RefreshFromSharedConfigStore(ctx conte
 	}
 
 	return diags
-}
-
-func (r *GatewayConfigStoreResourceModel) ToSharedUpdateConfigStore() *shared.UpdateConfigStore {
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
-	}
-	out := shared.UpdateConfigStore{
-		Name: name,
-	}
-	return &out
 }

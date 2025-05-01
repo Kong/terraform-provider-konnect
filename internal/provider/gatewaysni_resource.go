@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -140,15 +139,13 @@ func (r *GatewaySNIResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateSniRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	sni := *data.ToSharedSni()
-	request := operations.CreateSniRequest{
-		ControlPlaneID: controlPlaneID,
-		Sni:            sni,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.SNIs.CreateSni(ctx, request)
+	res, err := r.client.SNIs.CreateSni(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -202,17 +199,13 @@ func (r *GatewaySNIResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	var sniID string
-	sniID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetSniRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetSniRequest{
-		SNIID:          sniID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.SNIs.GetSni(ctx, request)
+	res, err := r.client.SNIs.GetSni(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -260,19 +253,13 @@ func (r *GatewaySNIResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
-	var sniID string
-	sniID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpsertSniRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	sni := *data.ToSharedSni()
-	request := operations.UpsertSniRequest{
-		SNIID:          sniID,
-		ControlPlaneID: controlPlaneID,
-		Sni:            sni,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.SNIs.UpsertSni(ctx, request)
+	res, err := r.client.SNIs.UpsertSni(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -326,17 +313,13 @@ func (r *GatewaySNIResource) Delete(ctx context.Context, req resource.DeleteRequ
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteSniRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var sniID string
-	sniID = data.ID.ValueString()
-
-	request := operations.DeleteSniRequest{
-		ControlPlaneID: controlPlaneID,
-		SNIID:          sniID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.SNIs.DeleteSni(ctx, request)
+	res, err := r.client.SNIs.DeleteSni(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

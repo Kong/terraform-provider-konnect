@@ -15,7 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -115,15 +114,13 @@ func (r *GatewayControlPlaneMembershipResource) Create(ctx context.Context, req 
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsPostControlPlanesIDGroupMembershipsAddRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	groupMembership := data.ToSharedGroupMembership()
-	request := operations.PostControlPlanesIDGroupMembershipsAddRequest{
-		ID:              id,
-		GroupMembership: groupMembership,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.ControlPlaneGroups.PostControlPlanesIDGroupMembershipsAdd(ctx, request)
+	res, err := r.client.ControlPlaneGroups.PostControlPlanesIDGroupMembershipsAdd(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -212,15 +209,13 @@ func (r *GatewayControlPlaneMembershipResource) Delete(ctx context.Context, req 
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsPostControlPlanesIDGroupMembershipsRemoveRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	groupMembership := data.ToSharedGroupMembership()
-	request := operations.PostControlPlanesIDGroupMembershipsRemoveRequest{
-		ID:              id,
-		GroupMembership: groupMembership,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.ControlPlaneGroups.PostControlPlanesIDGroupMembershipsRemove(ctx, request)
+	res, err := r.client.ControlPlaneGroups.PostControlPlanesIDGroupMembershipsRemove(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

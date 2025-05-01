@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *AuditLogDestinationResourceModel) ToSharedCreateAuditLogDestination() *shared.CreateAuditLogDestination {
+func (r *AuditLogDestinationResourceModel) ToSharedCreateAuditLogDestination(ctx context.Context) (*shared.CreateAuditLogDestination, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var name string
 	name = r.Name.ValueString()
 
@@ -37,30 +40,13 @@ func (r *AuditLogDestinationResourceModel) ToSharedCreateAuditLogDestination() *
 		LogFormat:           logFormat,
 		SkipSslVerification: skipSslVerification,
 	}
-	return &out
+
+	return &out, diags
 }
 
-func (r *AuditLogDestinationResourceModel) RefreshFromSharedAuditLogDestination(ctx context.Context, resp *shared.AuditLogDestination) diag.Diagnostics {
+func (r *AuditLogDestinationResourceModel) ToSharedUpdateAuditLogDestination(ctx context.Context) (*shared.UpdateAuditLogDestination, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	if resp != nil {
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.Endpoint = types.StringPointerValue(resp.Endpoint)
-		r.ID = types.StringPointerValue(resp.ID)
-		if resp.LogFormat != nil {
-			r.LogFormat = types.StringValue(string(*resp.LogFormat))
-		} else {
-			r.LogFormat = types.StringNull()
-		}
-		r.Name = types.StringPointerValue(resp.Name)
-		r.SkipSslVerification = types.BoolPointerValue(resp.SkipSslVerification)
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
-	}
-
-	return diags
-}
-
-func (r *AuditLogDestinationResourceModel) ToSharedUpdateAuditLogDestination() *shared.UpdateAuditLogDestination {
 	name := new(string)
 	if !r.Name.IsUnknown() && !r.Name.IsNull() {
 		*name = r.Name.ValueString()
@@ -98,5 +84,73 @@ func (r *AuditLogDestinationResourceModel) ToSharedUpdateAuditLogDestination() *
 		LogFormat:           logFormat,
 		SkipSslVerification: skipSslVerification,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *AuditLogDestinationResourceModel) ToOperationsUpdateAuditLogDestinationRequest(ctx context.Context) (*operations.UpdateAuditLogDestinationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var auditLogDestinationID string
+	auditLogDestinationID = r.ID.ValueString()
+
+	updateAuditLogDestination, updateAuditLogDestinationDiags := r.ToSharedUpdateAuditLogDestination(ctx)
+	diags.Append(updateAuditLogDestinationDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAuditLogDestinationRequest{
+		AuditLogDestinationID:     auditLogDestinationID,
+		UpdateAuditLogDestination: updateAuditLogDestination,
+	}
+
+	return &out, diags
+}
+
+func (r *AuditLogDestinationResourceModel) ToOperationsGetAuditLogDestinationRequest(ctx context.Context) (*operations.GetAuditLogDestinationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var auditLogDestinationID string
+	auditLogDestinationID = r.ID.ValueString()
+
+	out := operations.GetAuditLogDestinationRequest{
+		AuditLogDestinationID: auditLogDestinationID,
+	}
+
+	return &out, diags
+}
+
+func (r *AuditLogDestinationResourceModel) ToOperationsDeleteAuditLogDestinationRequest(ctx context.Context) (*operations.DeleteAuditLogDestinationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var auditLogDestinationID string
+	auditLogDestinationID = r.ID.ValueString()
+
+	out := operations.DeleteAuditLogDestinationRequest{
+		AuditLogDestinationID: auditLogDestinationID,
+	}
+
+	return &out, diags
+}
+
+func (r *AuditLogDestinationResourceModel) RefreshFromSharedAuditLogDestination(ctx context.Context, resp *shared.AuditLogDestination) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.Endpoint = types.StringPointerValue(resp.Endpoint)
+		r.ID = types.StringPointerValue(resp.ID)
+		if resp.LogFormat != nil {
+			r.LogFormat = types.StringValue(string(*resp.LogFormat))
+		} else {
+			r.LogFormat = types.StringNull()
+		}
+		r.Name = types.StringPointerValue(resp.Name)
+		r.SkipSslVerification = types.BoolPointerValue(resp.SkipSslVerification)
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+	}
+
+	return diags
 }

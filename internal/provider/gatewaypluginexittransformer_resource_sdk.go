@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginExitTransformerResourceModel) ToSharedExitTransformerPlugin() *shared.ExitTransformerPlugin {
+func (r *GatewayPluginExitTransformerResourceModel) ToSharedExitTransformerPlugin(ctx context.Context) (*shared.ExitTransformerPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginExitTransformerResourceModel) ToSharedExitTransformerPlugi
 	if r.Ordering != nil {
 		var after *shared.ExitTransformerPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginExitTransformerResourceModel) ToSharedExitTransformerPlugi
 		}
 		var before *shared.ExitTransformerPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginExitTransformerResourceModel) ToSharedExitTransformerPlugi
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -74,7 +77,7 @@ func (r *GatewayPluginExitTransformerResourceModel) ToSharedExitTransformerPlugi
 	}
 	var config *shared.ExitTransformerPluginConfig
 	if r.Config != nil {
-		var functions []string = []string{}
+		functions := make([]string, 0, len(r.Config.Functions))
 		for _, functionsItem := range r.Config.Functions {
 			functions = append(functions, functionsItem.ValueString())
 		}
@@ -108,7 +111,7 @@ func (r *GatewayPluginExitTransformerResourceModel) ToSharedExitTransformerPlugi
 			ID: id1,
 		}
 	}
-	var protocols []shared.ExitTransformerPluginProtocols = []shared.ExitTransformerPluginProtocols{}
+	protocols := make([]shared.ExitTransformerPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.ExitTransformerPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -150,7 +153,88 @@ func (r *GatewayPluginExitTransformerResourceModel) ToSharedExitTransformerPlugi
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginExitTransformerResourceModel) ToOperationsCreateExittransformerPluginRequest(ctx context.Context) (*operations.CreateExittransformerPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	exitTransformerPlugin, exitTransformerPluginDiags := r.ToSharedExitTransformerPlugin(ctx)
+	diags.Append(exitTransformerPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateExittransformerPluginRequest{
+		ControlPlaneID:        controlPlaneID,
+		ExitTransformerPlugin: *exitTransformerPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginExitTransformerResourceModel) ToOperationsUpdateExittransformerPluginRequest(ctx context.Context) (*operations.UpdateExittransformerPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	exitTransformerPlugin, exitTransformerPluginDiags := r.ToSharedExitTransformerPlugin(ctx)
+	diags.Append(exitTransformerPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateExittransformerPluginRequest{
+		PluginID:              pluginID,
+		ControlPlaneID:        controlPlaneID,
+		ExitTransformerPlugin: *exitTransformerPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginExitTransformerResourceModel) ToOperationsGetExittransformerPluginRequest(ctx context.Context) (*operations.GetExittransformerPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetExittransformerPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginExitTransformerResourceModel) ToOperationsDeleteExittransformerPluginRequest(ctx context.Context) (*operations.DeleteExittransformerPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteExittransformerPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginExitTransformerResourceModel) RefreshFromSharedExitTransformerPlugin(ctx context.Context, resp *shared.ExitTransformerPlugin) diag.Diagnostics {

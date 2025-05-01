@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToSharedLdapAuthAdvancedPlugin() *shared.LdapAuthAdvancedPlugin {
+func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToSharedLdapAuthAdvancedPlugin(ctx context.Context) (*shared.LdapAuthAdvancedPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToSharedLdapAuthAdvancedPlu
 	if r.Ordering != nil {
 		var after *shared.LdapAuthAdvancedPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToSharedLdapAuthAdvancedPlu
 		}
 		var before *shared.LdapAuthAdvancedPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToSharedLdapAuthAdvancedPlu
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -104,7 +107,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToSharedLdapAuthAdvancedPlu
 		} else {
 			cacheTTL = nil
 		}
-		var consumerBy []shared.LdapAuthAdvancedPluginConsumerBy = []shared.LdapAuthAdvancedPluginConsumerBy{}
+		consumerBy := make([]shared.LdapAuthAdvancedPluginConsumerBy, 0, len(r.Config.ConsumerBy))
 		for _, consumerByItem := range r.Config.ConsumerBy {
 			consumerBy = append(consumerBy, shared.LdapAuthAdvancedPluginConsumerBy(consumerByItem.ValueString()))
 		}
@@ -132,7 +135,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToSharedLdapAuthAdvancedPlu
 		} else {
 			groupNameAttribute = nil
 		}
-		var groupsRequired []string = []string{}
+		groupsRequired := make([]string, 0, len(r.Config.GroupsRequired))
 		for _, groupsRequiredItem := range r.Config.GroupsRequired {
 			groupsRequired = append(groupsRequired, groupsRequiredItem.ValueString())
 		}
@@ -234,7 +237,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToSharedLdapAuthAdvancedPlu
 			VerifyLdapHost:       verifyLdapHost,
 		}
 	}
-	var protocols []shared.LdapAuthAdvancedPluginProtocols = []shared.LdapAuthAdvancedPluginProtocols{}
+	protocols := make([]shared.LdapAuthAdvancedPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.LdapAuthAdvancedPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -275,7 +278,88 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToSharedLdapAuthAdvancedPlu
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsCreateLdapauthadvancedPluginRequest(ctx context.Context) (*operations.CreateLdapauthadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	ldapAuthAdvancedPlugin, ldapAuthAdvancedPluginDiags := r.ToSharedLdapAuthAdvancedPlugin(ctx)
+	diags.Append(ldapAuthAdvancedPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateLdapauthadvancedPluginRequest{
+		ControlPlaneID:         controlPlaneID,
+		LdapAuthAdvancedPlugin: *ldapAuthAdvancedPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsUpdateLdapauthadvancedPluginRequest(ctx context.Context) (*operations.UpdateLdapauthadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	ldapAuthAdvancedPlugin, ldapAuthAdvancedPluginDiags := r.ToSharedLdapAuthAdvancedPlugin(ctx)
+	diags.Append(ldapAuthAdvancedPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateLdapauthadvancedPluginRequest{
+		PluginID:               pluginID,
+		ControlPlaneID:         controlPlaneID,
+		LdapAuthAdvancedPlugin: *ldapAuthAdvancedPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsGetLdapauthadvancedPluginRequest(ctx context.Context) (*operations.GetLdapauthadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetLdapauthadvancedPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsDeleteLdapauthadvancedPluginRequest(ctx context.Context) (*operations.DeleteLdapauthadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteLdapauthadvancedPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginLdapAuthAdvancedResourceModel) RefreshFromSharedLdapAuthAdvancedPlugin(ctx context.Context, resp *shared.LdapAuthAdvancedPlugin) diag.Diagnostics {

@@ -11,7 +11,9 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *AuditLogResourceModel) ToSharedUpdateAuditLogWebhook() *shared.UpdateAuditLogWebhook {
+func (r *AuditLogResourceModel) ToSharedUpdateAuditLogWebhook(ctx context.Context) (*shared.UpdateAuditLogWebhook, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	endpoint := new(string)
 	if !r.Endpoint.IsUnknown() && !r.Endpoint.IsNull() {
 		*endpoint = r.Endpoint.ValueString()
@@ -49,7 +51,16 @@ func (r *AuditLogResourceModel) ToSharedUpdateAuditLogWebhook() *shared.UpdateAu
 		LogFormat:           logFormat,
 		SkipSslVerification: skipSslVerification,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *AuditLogResourceModel) ToOperationsDeleteAuditLogWebhookRequestBody(ctx context.Context) (*operations.DeleteAuditLogWebhookRequestBody, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	out := operations.DeleteAuditLogWebhookRequestBody{}
+
+	return &out, diags
 }
 
 func (r *AuditLogResourceModel) RefreshFromSharedAuditLogWebhook(ctx context.Context, resp *shared.AuditLogWebhook) diag.Diagnostics {
@@ -68,9 +79,4 @@ func (r *AuditLogResourceModel) RefreshFromSharedAuditLogWebhook(ctx context.Con
 	}
 
 	return diags
-}
-
-func (r *AuditLogResourceModel) ToOperationsDeleteAuditLogWebhookRequestBody() *operations.DeleteAuditLogWebhookRequestBody {
-	out := operations.DeleteAuditLogWebhookRequestBody{}
-	return &out
 }

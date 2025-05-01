@@ -8,10 +8,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginFileLogResourceModel) ToSharedFileLogPlugin() *shared.FileLogPlugin {
+func (r *GatewayPluginFileLogResourceModel) ToSharedFileLogPlugin(ctx context.Context) (*shared.FileLogPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -40,7 +43,7 @@ func (r *GatewayPluginFileLogResourceModel) ToSharedFileLogPlugin() *shared.File
 	if r.Ordering != nil {
 		var after *shared.FileLogPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -50,7 +53,7 @@ func (r *GatewayPluginFileLogResourceModel) ToSharedFileLogPlugin() *shared.File
 		}
 		var before *shared.FileLogPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -63,7 +66,7 @@ func (r *GatewayPluginFileLogResourceModel) ToSharedFileLogPlugin() *shared.File
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -111,7 +114,7 @@ func (r *GatewayPluginFileLogResourceModel) ToSharedFileLogPlugin() *shared.File
 			ID: id1,
 		}
 	}
-	var protocols []shared.FileLogPluginProtocols = []shared.FileLogPluginProtocols{}
+	protocols := make([]shared.FileLogPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.FileLogPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -153,7 +156,88 @@ func (r *GatewayPluginFileLogResourceModel) ToSharedFileLogPlugin() *shared.File
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginFileLogResourceModel) ToOperationsCreateFilelogPluginRequest(ctx context.Context) (*operations.CreateFilelogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	fileLogPlugin, fileLogPluginDiags := r.ToSharedFileLogPlugin(ctx)
+	diags.Append(fileLogPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateFilelogPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		FileLogPlugin:  *fileLogPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginFileLogResourceModel) ToOperationsUpdateFilelogPluginRequest(ctx context.Context) (*operations.UpdateFilelogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	fileLogPlugin, fileLogPluginDiags := r.ToSharedFileLogPlugin(ctx)
+	diags.Append(fileLogPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateFilelogPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		FileLogPlugin:  *fileLogPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginFileLogResourceModel) ToOperationsGetFilelogPluginRequest(ctx context.Context) (*operations.GetFilelogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetFilelogPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginFileLogResourceModel) ToOperationsDeleteFilelogPluginRequest(ctx context.Context) (*operations.DeleteFilelogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteFilelogPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginFileLogResourceModel) RefreshFromSharedFileLogPlugin(ctx context.Context, resp *shared.FileLogPlugin) diag.Diagnostics {

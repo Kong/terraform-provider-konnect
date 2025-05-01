@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginForwardProxyResourceModel) ToSharedForwardProxyPlugin() *shared.ForwardProxyPlugin {
+func (r *GatewayPluginForwardProxyResourceModel) ToSharedForwardProxyPlugin(ctx context.Context) (*shared.ForwardProxyPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginForwardProxyResourceModel) ToSharedForwardProxyPlugin() *s
 	if r.Ordering != nil {
 		var after *shared.ForwardProxyPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginForwardProxyResourceModel) ToSharedForwardProxyPlugin() *s
 		}
 		var before *shared.ForwardProxyPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginForwardProxyResourceModel) ToSharedForwardProxyPlugin() *s
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -152,7 +155,7 @@ func (r *GatewayPluginForwardProxyResourceModel) ToSharedForwardProxyPlugin() *s
 			ID: id1,
 		}
 	}
-	var protocols []shared.ForwardProxyPluginProtocols = []shared.ForwardProxyPluginProtocols{}
+	protocols := make([]shared.ForwardProxyPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.ForwardProxyPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -194,7 +197,88 @@ func (r *GatewayPluginForwardProxyResourceModel) ToSharedForwardProxyPlugin() *s
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginForwardProxyResourceModel) ToOperationsCreateForwardproxyPluginRequest(ctx context.Context) (*operations.CreateForwardproxyPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	forwardProxyPlugin, forwardProxyPluginDiags := r.ToSharedForwardProxyPlugin(ctx)
+	diags.Append(forwardProxyPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateForwardproxyPluginRequest{
+		ControlPlaneID:     controlPlaneID,
+		ForwardProxyPlugin: *forwardProxyPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginForwardProxyResourceModel) ToOperationsUpdateForwardproxyPluginRequest(ctx context.Context) (*operations.UpdateForwardproxyPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	forwardProxyPlugin, forwardProxyPluginDiags := r.ToSharedForwardProxyPlugin(ctx)
+	diags.Append(forwardProxyPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateForwardproxyPluginRequest{
+		PluginID:           pluginID,
+		ControlPlaneID:     controlPlaneID,
+		ForwardProxyPlugin: *forwardProxyPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginForwardProxyResourceModel) ToOperationsGetForwardproxyPluginRequest(ctx context.Context) (*operations.GetForwardproxyPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetForwardproxyPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginForwardProxyResourceModel) ToOperationsDeleteForwardproxyPluginRequest(ctx context.Context) (*operations.DeleteForwardproxyPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteForwardproxyPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginForwardProxyResourceModel) RefreshFromSharedForwardProxyPlugin(ctx context.Context, resp *shared.ForwardProxyPlugin) diag.Diagnostics {

@@ -26,7 +26,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/listvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
@@ -594,8 +593,13 @@ func (r *ApplicationAuthStrategyResource) Create(ctx context.Context, req resour
 		return
 	}
 
-	request := *data.ToSharedCreateAppAuthStrategyRequest()
-	res, err := r.client.AppAuthStrategies.CreateAppAuthStrategy(ctx, request)
+	request, requestDiags := data.ToSharedCreateAppAuthStrategyRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res, err := r.client.AppAuthStrategies.CreateAppAuthStrategy(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -626,13 +630,13 @@ func (r *ApplicationAuthStrategyResource) Create(ctx context.Context, req resour
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	var authStrategyID string
-	authStrategyID = data.ID.ValueString()
+	request1, request1Diags := data.ToOperationsGetAppAuthStrategyRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
 
-	request1 := operations.GetAppAuthStrategyRequest{
-		AuthStrategyID: authStrategyID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.AppAuthStrategies.GetAppAuthStrategy(ctx, request1)
+	res1, err := r.client.AppAuthStrategies.GetAppAuthStrategy(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -686,13 +690,13 @@ func (r *ApplicationAuthStrategyResource) Read(ctx context.Context, req resource
 		return
 	}
 
-	var authStrategyID string
-	authStrategyID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetAppAuthStrategyRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.GetAppAuthStrategyRequest{
-		AuthStrategyID: authStrategyID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AppAuthStrategies.GetAppAuthStrategy(ctx, request)
+	res, err := r.client.AppAuthStrategies.GetAppAuthStrategy(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -740,15 +744,13 @@ func (r *ApplicationAuthStrategyResource) Update(ctx context.Context, req resour
 		return
 	}
 
-	var authStrategyID string
-	authStrategyID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateAppAuthStrategyRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	updateAppAuthStrategyRequest := *data.ToSharedUpdateAppAuthStrategyRequest()
-	request := operations.UpdateAppAuthStrategyRequest{
-		AuthStrategyID:               authStrategyID,
-		UpdateAppAuthStrategyRequest: updateAppAuthStrategyRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AppAuthStrategies.UpdateAppAuthStrategy(ctx, request)
+	res, err := r.client.AppAuthStrategies.UpdateAppAuthStrategy(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -779,13 +781,13 @@ func (r *ApplicationAuthStrategyResource) Update(ctx context.Context, req resour
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	var authStrategyId1 string
-	authStrategyId1 = data.ID.ValueString()
+	request1, request1Diags := data.ToOperationsGetAppAuthStrategyRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
 
-	request1 := operations.GetAppAuthStrategyRequest{
-		AuthStrategyID: authStrategyId1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.AppAuthStrategies.GetAppAuthStrategy(ctx, request1)
+	res1, err := r.client.AppAuthStrategies.GetAppAuthStrategy(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -839,13 +841,13 @@ func (r *ApplicationAuthStrategyResource) Delete(ctx context.Context, req resour
 		return
 	}
 
-	var authStrategyID string
-	authStrategyID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteAppAuthStrategyRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.DeleteAppAuthStrategyRequest{
-		AuthStrategyID: authStrategyID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AppAuthStrategies.DeleteAppAuthStrategy(ctx, request)
+	res, err := r.client.AppAuthStrategies.DeleteAppAuthStrategy(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

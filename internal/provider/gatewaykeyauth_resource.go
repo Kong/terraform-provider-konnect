@@ -24,7 +24,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -183,19 +182,13 @@ func (r *GatewayKeyAuthResource) Create(ctx context.Context, req resource.Create
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateKeyAuthWithConsumerRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var consumerID string
-	consumerID = data.ConsumerID.ValueString()
-
-	keyAuthWithoutParents := *data.ToSharedKeyAuthWithoutParents()
-	request := operations.CreateKeyAuthWithConsumerRequest{
-		ControlPlaneID:        controlPlaneID,
-		ConsumerID:            consumerID,
-		KeyAuthWithoutParents: keyAuthWithoutParents,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIKeys.CreateKeyAuthWithConsumer(ctx, request)
+	res, err := r.client.APIKeys.CreateKeyAuthWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -249,21 +242,13 @@ func (r *GatewayKeyAuthResource) Read(ctx context.Context, req resource.ReadRequ
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsGetKeyAuthWithConsumerRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var consumerID string
-	consumerID = data.ConsumerID.ValueString()
-
-	var keyAuthID string
-	keyAuthID = data.ID.ValueString()
-
-	request := operations.GetKeyAuthWithConsumerRequest{
-		ControlPlaneID: controlPlaneID,
-		ConsumerID:     consumerID,
-		KeyAuthID:      keyAuthID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIKeys.GetKeyAuthWithConsumer(ctx, request)
+	res, err := r.client.APIKeys.GetKeyAuthWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -335,21 +320,13 @@ func (r *GatewayKeyAuthResource) Delete(ctx context.Context, req resource.Delete
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteKeyAuthWithConsumerRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var consumerID string
-	consumerID = data.ConsumerID.ValueString()
-
-	var keyAuthID string
-	keyAuthID = data.ID.ValueString()
-
-	request := operations.DeleteKeyAuthWithConsumerRequest{
-		ControlPlaneID: controlPlaneID,
-		ConsumerID:     consumerID,
-		KeyAuthID:      keyAuthID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIKeys.DeleteKeyAuthWithConsumer(ctx, request)
+	res, err := r.client.APIKeys.DeleteKeyAuthWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

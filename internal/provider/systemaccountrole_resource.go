@@ -15,7 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -199,15 +198,13 @@ func (r *SystemAccountRoleResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	var accountID string
-	accountID = data.AccountID.ValueString()
+	request, requestDiags := data.ToOperationsPostSystemAccountsAccountIDAssignedRolesRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	assignRole := data.ToSharedAssignRole()
-	request := operations.PostSystemAccountsAccountIDAssignedRolesRequest{
-		AccountID:  accountID,
-		AssignRole: assignRole,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.SystemAccountsRoles.PostSystemAccountsAccountIDAssignedRoles(ctx, request)
+	res, err := r.client.SystemAccountsRoles.PostSystemAccountsAccountIDAssignedRoles(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -305,17 +302,13 @@ func (r *SystemAccountRoleResource) Delete(ctx context.Context, req resource.Del
 		return
 	}
 
-	var accountID string
-	accountID = data.AccountID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteSystemAccountsAccountIDAssignedRolesRoleIDRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var roleID string
-	roleID = data.ID.ValueString()
-
-	request := operations.DeleteSystemAccountsAccountIDAssignedRolesRoleIDRequest{
-		AccountID: accountID,
-		RoleID:    roleID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.SystemAccountsRoles.DeleteSystemAccountsAccountIDAssignedRolesRoleID(ctx, request)
+	res, err := r.client.SystemAccountsRoles.DeleteSystemAccountsAccountIDAssignedRolesRoleID(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

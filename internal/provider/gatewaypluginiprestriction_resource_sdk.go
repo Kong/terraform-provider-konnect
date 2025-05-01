@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPlugin() *shared.IPRestrictionPlugin {
+func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPlugin(ctx context.Context) (*shared.IPRestrictionPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPlugin() 
 	if r.Ordering != nil {
 		var after *shared.IPRestrictionPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPlugin() 
 		}
 		var before *shared.IPRestrictionPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPlugin() 
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -74,11 +77,11 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPlugin() 
 	}
 	var config *shared.IPRestrictionPluginConfig
 	if r.Config != nil {
-		var allow []string = []string{}
+		allow := make([]string, 0, len(r.Config.Allow))
 		for _, allowItem := range r.Config.Allow {
 			allow = append(allow, allowItem.ValueString())
 		}
-		var deny []string = []string{}
+		deny := make([]string, 0, len(r.Config.Deny))
 		for _, denyItem := range r.Config.Deny {
 			deny = append(deny, denyItem.ValueString())
 		}
@@ -125,7 +128,7 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPlugin() 
 			ID: id2,
 		}
 	}
-	var protocols []shared.IPRestrictionPluginProtocols = []shared.IPRestrictionPluginProtocols{}
+	protocols := make([]shared.IPRestrictionPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.IPRestrictionPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -168,7 +171,88 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPlugin() 
 		Route:         route,
 		Service:       service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsCreateIprestrictionPluginRequest(ctx context.Context) (*operations.CreateIprestrictionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	ipRestrictionPlugin, ipRestrictionPluginDiags := r.ToSharedIPRestrictionPlugin(ctx)
+	diags.Append(ipRestrictionPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateIprestrictionPluginRequest{
+		ControlPlaneID:      controlPlaneID,
+		IPRestrictionPlugin: *ipRestrictionPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsUpdateIprestrictionPluginRequest(ctx context.Context) (*operations.UpdateIprestrictionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	ipRestrictionPlugin, ipRestrictionPluginDiags := r.ToSharedIPRestrictionPlugin(ctx)
+	diags.Append(ipRestrictionPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateIprestrictionPluginRequest{
+		PluginID:            pluginID,
+		ControlPlaneID:      controlPlaneID,
+		IPRestrictionPlugin: *ipRestrictionPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsGetIprestrictionPluginRequest(ctx context.Context) (*operations.GetIprestrictionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetIprestrictionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginIPRestrictionResourceModel) ToOperationsDeleteIprestrictionPluginRequest(ctx context.Context) (*operations.DeleteIprestrictionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteIprestrictionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginIPRestrictionResourceModel) RefreshFromSharedIPRestrictionPlugin(ctx context.Context, resp *shared.IPRestrictionPlugin) diag.Diagnostics {

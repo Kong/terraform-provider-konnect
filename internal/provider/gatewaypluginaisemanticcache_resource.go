@@ -22,7 +22,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 )
 
@@ -795,15 +794,13 @@ func (r *GatewayPluginAiSemanticCacheResource) Create(ctx context.Context, req r
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateAisemanticcachePluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	aiSemanticCachePlugin := *data.ToSharedAiSemanticCachePlugin()
-	request := operations.CreateAisemanticcachePluginRequest{
-		ControlPlaneID:        controlPlaneID,
-		AiSemanticCachePlugin: aiSemanticCachePlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateAisemanticcachePlugin(ctx, request)
+	res, err := r.client.Plugins.CreateAisemanticcachePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -857,17 +854,13 @@ func (r *GatewayPluginAiSemanticCacheResource) Read(ctx context.Context, req res
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetAisemanticcachePluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetAisemanticcachePluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetAisemanticcachePlugin(ctx, request)
+	res, err := r.client.Plugins.GetAisemanticcachePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -915,19 +908,13 @@ func (r *GatewayPluginAiSemanticCacheResource) Update(ctx context.Context, req r
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateAisemanticcachePluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	aiSemanticCachePlugin := *data.ToSharedAiSemanticCachePlugin()
-	request := operations.UpdateAisemanticcachePluginRequest{
-		PluginID:              pluginID,
-		ControlPlaneID:        controlPlaneID,
-		AiSemanticCachePlugin: aiSemanticCachePlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateAisemanticcachePlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateAisemanticcachePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -981,17 +968,13 @@ func (r *GatewayPluginAiSemanticCacheResource) Delete(ctx context.Context, req r
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteAisemanticcachePluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteAisemanticcachePluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteAisemanticcachePlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteAisemanticcachePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

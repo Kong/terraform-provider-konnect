@@ -6,8 +6,26 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *GatewayCustomPluginSchemaDataSourceModel) ToOperationsGetPluginSchemaRequest(ctx context.Context) (*operations.GetPluginSchemaRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.GetPluginSchemaRequest{
+		ControlPlaneID: controlPlaneID,
+		Name:           name,
+	}
+
+	return &out, diags
+}
 
 func (r *GatewayCustomPluginSchemaDataSourceModel) RefreshFromSharedItem(ctx context.Context, resp *shared.Item) diag.Diagnostics {
 	var diags diag.Diagnostics

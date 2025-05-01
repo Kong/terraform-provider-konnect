@@ -9,8 +9,22 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *ApplicationAuthStrategyDataSourceModel) ToOperationsGetAppAuthStrategyRequest(ctx context.Context) (*operations.GetAppAuthStrategyRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var authStrategyID string
+	authStrategyID = r.ID.ValueString()
+
+	out := operations.GetAppAuthStrategyRequest{
+		AuthStrategyID: authStrategyID,
+	}
+
+	return &out, diags
+}
 
 func (r *ApplicationAuthStrategyDataSourceModel) RefreshFromSharedCreateAppAuthStrategyResponse(ctx context.Context, resp *shared.CreateAppAuthStrategyResponse) diag.Diagnostics {
 	var diags diag.Diagnostics

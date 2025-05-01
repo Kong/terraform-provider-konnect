@@ -20,7 +20,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -214,15 +213,13 @@ func (r *GatewayPluginTLSHandshakeModifierResource) Create(ctx context.Context, 
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateTlshandshakemodifierPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	tlsHandshakeModifierPlugin := *data.ToSharedTLSHandshakeModifierPlugin()
-	request := operations.CreateTlshandshakemodifierPluginRequest{
-		ControlPlaneID:             controlPlaneID,
-		TLSHandshakeModifierPlugin: tlsHandshakeModifierPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateTlshandshakemodifierPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateTlshandshakemodifierPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -276,17 +273,13 @@ func (r *GatewayPluginTLSHandshakeModifierResource) Read(ctx context.Context, re
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetTlshandshakemodifierPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetTlshandshakemodifierPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetTlshandshakemodifierPlugin(ctx, request)
+	res, err := r.client.Plugins.GetTlshandshakemodifierPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -334,19 +327,13 @@ func (r *GatewayPluginTLSHandshakeModifierResource) Update(ctx context.Context, 
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateTlshandshakemodifierPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	tlsHandshakeModifierPlugin := *data.ToSharedTLSHandshakeModifierPlugin()
-	request := operations.UpdateTlshandshakemodifierPluginRequest{
-		PluginID:                   pluginID,
-		ControlPlaneID:             controlPlaneID,
-		TLSHandshakeModifierPlugin: tlsHandshakeModifierPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateTlshandshakemodifierPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateTlshandshakemodifierPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -400,17 +387,13 @@ func (r *GatewayPluginTLSHandshakeModifierResource) Delete(ctx context.Context, 
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteTlshandshakemodifierPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteTlshandshakemodifierPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteTlshandshakemodifierPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteTlshandshakemodifierPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

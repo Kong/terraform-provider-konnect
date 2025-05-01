@@ -6,8 +6,26 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *GatewayDataPlaneClientCertificateDataSourceModel) ToOperationsGetDataplaneCertificateRequest(ctx context.Context) (*operations.GetDataplaneCertificateRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var certificateID string
+	certificateID = r.ID.ValueString()
+
+	out := operations.GetDataplaneCertificateRequest{
+		ControlPlaneID: controlPlaneID,
+		CertificateID:  certificateID,
+	}
+
+	return &out, diags
+}
 
 func (r *GatewayDataPlaneClientCertificateDataSourceModel) RefreshFromSharedDataPlaneClientCertificate(ctx context.Context, resp *shared.DataPlaneClientCertificate) diag.Diagnostics {
 	var diags diag.Diagnostics

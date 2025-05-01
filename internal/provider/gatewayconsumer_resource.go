@@ -15,7 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -129,15 +128,13 @@ func (r *GatewayConsumerResource) Create(ctx context.Context, req resource.Creat
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateConsumerRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	consumer := *data.ToSharedConsumer()
-	request := operations.CreateConsumerRequest{
-		ControlPlaneID: controlPlaneID,
-		Consumer:       consumer,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Consumers.CreateConsumer(ctx, request)
+	res, err := r.client.Consumers.CreateConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -191,17 +188,13 @@ func (r *GatewayConsumerResource) Read(ctx context.Context, req resource.ReadReq
 		return
 	}
 
-	var consumerID string
-	consumerID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetConsumerRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetConsumerRequest{
-		ConsumerID:     consumerID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Consumers.GetConsumer(ctx, request)
+	res, err := r.client.Consumers.GetConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -249,19 +242,13 @@ func (r *GatewayConsumerResource) Update(ctx context.Context, req resource.Updat
 		return
 	}
 
-	var consumerID string
-	consumerID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpsertConsumerRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	consumer := *data.ToSharedConsumer()
-	request := operations.UpsertConsumerRequest{
-		ConsumerID:     consumerID,
-		ControlPlaneID: controlPlaneID,
-		Consumer:       consumer,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Consumers.UpsertConsumer(ctx, request)
+	res, err := r.client.Consumers.UpsertConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -315,17 +302,13 @@ func (r *GatewayConsumerResource) Delete(ctx context.Context, req resource.Delet
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteConsumerRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var consumerID string
-	consumerID = data.ID.ValueString()
-
-	request := operations.DeleteConsumerRequest{
-		ControlPlaneID: controlPlaneID,
-		ConsumerID:     consumerID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Consumers.DeleteConsumer(ctx, request)
+	res, err := r.client.Consumers.DeleteConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

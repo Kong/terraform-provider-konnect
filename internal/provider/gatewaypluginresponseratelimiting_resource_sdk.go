@@ -8,10 +8,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelimitingPlugin() *shared.ResponseRatelimitingPlugin {
+func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelimitingPlugin(ctx context.Context) (*shared.ResponseRatelimitingPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -40,7 +43,7 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelim
 	if r.Ordering != nil {
 		var after *shared.ResponseRatelimitingPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -50,7 +53,7 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelim
 		}
 		var before *shared.ResponseRatelimitingPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -63,7 +66,7 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelim
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -208,7 +211,7 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelim
 			ID: id1,
 		}
 	}
-	var protocols []shared.ResponseRatelimitingPluginProtocols = []shared.ResponseRatelimitingPluginProtocols{}
+	protocols := make([]shared.ResponseRatelimitingPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.ResponseRatelimitingPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -250,7 +253,88 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelim
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsCreateResponseratelimitingPluginRequest(ctx context.Context) (*operations.CreateResponseratelimitingPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	responseRatelimitingPlugin, responseRatelimitingPluginDiags := r.ToSharedResponseRatelimitingPlugin(ctx)
+	diags.Append(responseRatelimitingPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateResponseratelimitingPluginRequest{
+		ControlPlaneID:             controlPlaneID,
+		ResponseRatelimitingPlugin: *responseRatelimitingPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsUpdateResponseratelimitingPluginRequest(ctx context.Context) (*operations.UpdateResponseratelimitingPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	responseRatelimitingPlugin, responseRatelimitingPluginDiags := r.ToSharedResponseRatelimitingPlugin(ctx)
+	diags.Append(responseRatelimitingPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateResponseratelimitingPluginRequest{
+		PluginID:                   pluginID,
+		ControlPlaneID:             controlPlaneID,
+		ResponseRatelimitingPlugin: *responseRatelimitingPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsGetResponseratelimitingPluginRequest(ctx context.Context) (*operations.GetResponseratelimitingPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetResponseratelimitingPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginResponseRatelimitingResourceModel) ToOperationsDeleteResponseratelimitingPluginRequest(ctx context.Context) (*operations.DeleteResponseratelimitingPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteResponseratelimitingPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginResponseRatelimitingResourceModel) RefreshFromSharedResponseRatelimitingPlugin(ctx context.Context, resp *shared.ResponseRatelimitingPlugin) diag.Diagnostics {

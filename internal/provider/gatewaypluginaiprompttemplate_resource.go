@@ -19,7 +19,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 )
@@ -280,15 +279,13 @@ func (r *GatewayPluginAiPromptTemplateResource) Create(ctx context.Context, req 
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateAiprompttemplatePluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	aiPromptTemplatePlugin := *data.ToSharedAiPromptTemplatePlugin()
-	request := operations.CreateAiprompttemplatePluginRequest{
-		ControlPlaneID:         controlPlaneID,
-		AiPromptTemplatePlugin: aiPromptTemplatePlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateAiprompttemplatePlugin(ctx, request)
+	res, err := r.client.Plugins.CreateAiprompttemplatePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -342,17 +339,13 @@ func (r *GatewayPluginAiPromptTemplateResource) Read(ctx context.Context, req re
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetAiprompttemplatePluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetAiprompttemplatePluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetAiprompttemplatePlugin(ctx, request)
+	res, err := r.client.Plugins.GetAiprompttemplatePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -400,19 +393,13 @@ func (r *GatewayPluginAiPromptTemplateResource) Update(ctx context.Context, req 
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateAiprompttemplatePluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	aiPromptTemplatePlugin := *data.ToSharedAiPromptTemplatePlugin()
-	request := operations.UpdateAiprompttemplatePluginRequest{
-		PluginID:               pluginID,
-		ControlPlaneID:         controlPlaneID,
-		AiPromptTemplatePlugin: aiPromptTemplatePlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateAiprompttemplatePlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateAiprompttemplatePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -466,17 +453,13 @@ func (r *GatewayPluginAiPromptTemplateResource) Delete(ctx context.Context, req 
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteAiprompttemplatePluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteAiprompttemplatePluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteAiprompttemplatePlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteAiprompttemplatePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

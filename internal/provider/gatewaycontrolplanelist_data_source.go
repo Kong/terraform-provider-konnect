@@ -11,8 +11,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -251,117 +249,13 @@ func (r *GatewayControlPlaneListDataSource) Read(ctx context.Context, req dataso
 		return
 	}
 
-	pageSize := new(int64)
-	if !data.PageSize.IsUnknown() && !data.PageSize.IsNull() {
-		*pageSize = data.PageSize.ValueInt64()
-	} else {
-		pageSize = nil
+	request, requestDiags := data.ToOperationsListControlPlanesRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	pageNumber := new(int64)
-	if !data.PageNumber.IsUnknown() && !data.PageNumber.IsNull() {
-		*pageNumber = data.PageNumber.ValueInt64()
-	} else {
-		pageNumber = nil
-	}
-	var filter *shared.ControlPlaneFilterParameters
-	if data.Filter != nil {
-		var id *shared.ID
-		if data.Filter.ID != nil {
-			eq := new(string)
-			if !data.Filter.ID.Eq.IsUnknown() && !data.Filter.ID.Eq.IsNull() {
-				*eq = data.Filter.ID.Eq.ValueString()
-			} else {
-				eq = nil
-			}
-			oeq := new(string)
-			if !data.Filter.ID.Oeq.IsUnknown() && !data.Filter.ID.Oeq.IsNull() {
-				*oeq = data.Filter.ID.Oeq.ValueString()
-			} else {
-				oeq = nil
-			}
-			id = &shared.ID{
-				Eq:  eq,
-				Oeq: oeq,
-			}
-		}
-		var name *shared.Name
-		if data.Filter.Name != nil {
-			eq1 := new(string)
-			if !data.Filter.Name.Eq.IsUnknown() && !data.Filter.Name.Eq.IsNull() {
-				*eq1 = data.Filter.Name.Eq.ValueString()
-			} else {
-				eq1 = nil
-			}
-			contains := new(string)
-			if !data.Filter.Name.Contains.IsUnknown() && !data.Filter.Name.Contains.IsNull() {
-				*contains = data.Filter.Name.Contains.ValueString()
-			} else {
-				contains = nil
-			}
-			neq := new(string)
-			if !data.Filter.Name.Neq.IsUnknown() && !data.Filter.Name.Neq.IsNull() {
-				*neq = data.Filter.Name.Neq.ValueString()
-			} else {
-				neq = nil
-			}
-			name = &shared.Name{
-				Eq:       eq1,
-				Contains: contains,
-				Neq:      neq,
-			}
-		}
-		var clusterType *shared.ClusterType
-		if data.Filter.ClusterType != nil {
-			eq2 := new(string)
-			if !data.Filter.ClusterType.Eq.IsUnknown() && !data.Filter.ClusterType.Eq.IsNull() {
-				*eq2 = data.Filter.ClusterType.Eq.ValueString()
-			} else {
-				eq2 = nil
-			}
-			neq1 := new(string)
-			if !data.Filter.ClusterType.Neq.IsUnknown() && !data.Filter.ClusterType.Neq.IsNull() {
-				*neq1 = data.Filter.ClusterType.Neq.ValueString()
-			} else {
-				neq1 = nil
-			}
-			clusterType = &shared.ClusterType{
-				Eq:  eq2,
-				Neq: neq1,
-			}
-		}
-		cloudGateway := new(bool)
-		if !data.Filter.CloudGateway.IsUnknown() && !data.Filter.CloudGateway.IsNull() {
-			*cloudGateway = data.Filter.CloudGateway.ValueBool()
-		} else {
-			cloudGateway = nil
-		}
-		filter = &shared.ControlPlaneFilterParameters{
-			ID:           id,
-			Name:         name,
-			ClusterType:  clusterType,
-			CloudGateway: cloudGateway,
-		}
-	}
-	labels := new(string)
-	if !data.Labels.IsUnknown() && !data.Labels.IsNull() {
-		*labels = data.Labels.ValueString()
-	} else {
-		labels = nil
-	}
-	sort := new(string)
-	if !data.Sort.IsUnknown() && !data.Sort.IsNull() {
-		*sort = data.Sort.ValueString()
-	} else {
-		sort = nil
-	}
-	request := operations.ListControlPlanesRequest{
-		PageSize:   pageSize,
-		PageNumber: pageNumber,
-		Filter:     filter,
-		Labels:     labels,
-		Sort:       sort,
-	}
-	res, err := r.client.ControlPlanes.ListControlPlanes(ctx, request)
+	res, err := r.client.ControlPlanes.ListControlPlanes(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -371,10 +265,6 @@ func (r *GatewayControlPlaneListDataSource) Read(ctx context.Context, req dataso
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
 		return
 	}
 	if res.StatusCode != 200 {

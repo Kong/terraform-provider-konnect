@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginBasicAuthResourceModel) ToSharedBasicAuthPlugin() *shared.BasicAuthPlugin {
+func (r *GatewayPluginBasicAuthResourceModel) ToSharedBasicAuthPlugin(ctx context.Context) (*shared.BasicAuthPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginBasicAuthResourceModel) ToSharedBasicAuthPlugin() *shared.
 	if r.Ordering != nil {
 		var after *shared.BasicAuthPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginBasicAuthResourceModel) ToSharedBasicAuthPlugin() *shared.
 		}
 		var before *shared.BasicAuthPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginBasicAuthResourceModel) ToSharedBasicAuthPlugin() *shared.
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -98,7 +101,7 @@ func (r *GatewayPluginBasicAuthResourceModel) ToSharedBasicAuthPlugin() *shared.
 			Realm:           realm,
 		}
 	}
-	var protocols []shared.BasicAuthPluginProtocols = []shared.BasicAuthPluginProtocols{}
+	protocols := make([]shared.BasicAuthPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.BasicAuthPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -139,7 +142,88 @@ func (r *GatewayPluginBasicAuthResourceModel) ToSharedBasicAuthPlugin() *shared.
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginBasicAuthResourceModel) ToOperationsCreateBasicauthPluginRequest(ctx context.Context) (*operations.CreateBasicauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	basicAuthPlugin, basicAuthPluginDiags := r.ToSharedBasicAuthPlugin(ctx)
+	diags.Append(basicAuthPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateBasicauthPluginRequest{
+		ControlPlaneID:  controlPlaneID,
+		BasicAuthPlugin: *basicAuthPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginBasicAuthResourceModel) ToOperationsUpdateBasicauthPluginRequest(ctx context.Context) (*operations.UpdateBasicauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	basicAuthPlugin, basicAuthPluginDiags := r.ToSharedBasicAuthPlugin(ctx)
+	diags.Append(basicAuthPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateBasicauthPluginRequest{
+		PluginID:        pluginID,
+		ControlPlaneID:  controlPlaneID,
+		BasicAuthPlugin: *basicAuthPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginBasicAuthResourceModel) ToOperationsGetBasicauthPluginRequest(ctx context.Context) (*operations.GetBasicauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetBasicauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginBasicAuthResourceModel) ToOperationsDeleteBasicauthPluginRequest(ctx context.Context) (*operations.DeleteBasicauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteBasicauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginBasicAuthResourceModel) RefreshFromSharedBasicAuthPlugin(ctx context.Context, resp *shared.BasicAuthPlugin) diag.Diagnostics {

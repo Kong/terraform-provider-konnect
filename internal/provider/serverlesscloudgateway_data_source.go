@@ -11,7 +11,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -121,13 +120,13 @@ func (r *ServerlessCloudGatewayDataSource) Read(ctx context.Context, req datasou
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlane.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetServerlessCloudGatewayRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.GetServerlessCloudGatewayRequest{
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.ServerlessCloudGateways.GetServerlessCloudGateway(ctx, request)
+	res, err := r.client.ServerlessCloudGateways.GetServerlessCloudGateway(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -137,10 +136,6 @@ func (r *ServerlessCloudGatewayDataSource) Read(ctx context.Context, req datasou
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
 		return
 	}
 	if res.StatusCode != 200 {

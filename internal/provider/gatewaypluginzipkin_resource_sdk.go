@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginZipkinResourceModel) ToSharedZipkinPlugin() *shared.ZipkinPlugin {
+func (r *GatewayPluginZipkinResourceModel) ToSharedZipkinPlugin(ctx context.Context) (*shared.ZipkinPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginZipkinResourceModel) ToSharedZipkinPlugin() *shared.Zipkin
 	if r.Ordering != nil {
 		var after *shared.ZipkinPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginZipkinResourceModel) ToSharedZipkinPlugin() *shared.Zipkin
 		}
 		var before *shared.ZipkinPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginZipkinResourceModel) ToSharedZipkinPlugin() *shared.Zipkin
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -136,16 +139,16 @@ func (r *GatewayPluginZipkinResourceModel) ToSharedZipkinPlugin() *shared.Zipkin
 		}
 		var propagation *shared.ZipkinPluginPropagation
 		if r.Config.Propagation != nil {
-			var clear []string = []string{}
+			clear := make([]string, 0, len(r.Config.Propagation.Clear))
 			for _, clearItem := range r.Config.Propagation.Clear {
 				clear = append(clear, clearItem.ValueString())
 			}
 			defaultFormat := shared.ZipkinPluginDefaultFormat(r.Config.Propagation.DefaultFormat.ValueString())
-			var extract []shared.ZipkinPluginExtract = []shared.ZipkinPluginExtract{}
+			extract := make([]shared.ZipkinPluginExtract, 0, len(r.Config.Propagation.Extract))
 			for _, extractItem := range r.Config.Propagation.Extract {
 				extract = append(extract, shared.ZipkinPluginExtract(extractItem.ValueString()))
 			}
-			var inject []shared.ZipkinPluginInject = []shared.ZipkinPluginInject{}
+			inject := make([]shared.ZipkinPluginInject, 0, len(r.Config.Propagation.Inject))
 			for _, injectItem := range r.Config.Propagation.Inject {
 				inject = append(inject, shared.ZipkinPluginInject(injectItem.ValueString()))
 			}
@@ -235,7 +238,7 @@ func (r *GatewayPluginZipkinResourceModel) ToSharedZipkinPlugin() *shared.Zipkin
 		} else {
 			sendTimeout = nil
 		}
-		var staticTags []shared.StaticTags = []shared.StaticTags{}
+		staticTags := make([]shared.StaticTags, 0, len(r.Config.StaticTags))
 		for _, staticTagsItem := range r.Config.StaticTags {
 			var name string
 			name = staticTagsItem.Name.ValueString()
@@ -293,7 +296,7 @@ func (r *GatewayPluginZipkinResourceModel) ToSharedZipkinPlugin() *shared.Zipkin
 			ID: id1,
 		}
 	}
-	var protocols []shared.ZipkinPluginProtocols = []shared.ZipkinPluginProtocols{}
+	protocols := make([]shared.ZipkinPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.ZipkinPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -335,7 +338,88 @@ func (r *GatewayPluginZipkinResourceModel) ToSharedZipkinPlugin() *shared.Zipkin
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginZipkinResourceModel) ToOperationsCreateZipkinPluginRequest(ctx context.Context) (*operations.CreateZipkinPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	zipkinPlugin, zipkinPluginDiags := r.ToSharedZipkinPlugin(ctx)
+	diags.Append(zipkinPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateZipkinPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		ZipkinPlugin:   *zipkinPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginZipkinResourceModel) ToOperationsUpdateZipkinPluginRequest(ctx context.Context) (*operations.UpdateZipkinPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	zipkinPlugin, zipkinPluginDiags := r.ToSharedZipkinPlugin(ctx)
+	diags.Append(zipkinPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateZipkinPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		ZipkinPlugin:   *zipkinPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginZipkinResourceModel) ToOperationsGetZipkinPluginRequest(ctx context.Context) (*operations.GetZipkinPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetZipkinPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginZipkinResourceModel) ToOperationsDeleteZipkinPluginRequest(ctx context.Context) (*operations.DeleteZipkinPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteZipkinPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginZipkinResourceModel) RefreshFromSharedZipkinPlugin(ctx context.Context, resp *shared.ZipkinPlugin) diag.Diagnostics {

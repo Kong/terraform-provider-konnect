@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *TeamResourceModel) ToSharedCreateTeam() *shared.CreateTeam {
+func (r *TeamResourceModel) ToSharedCreateTeam(ctx context.Context) (*shared.CreateTeam, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var name string
 	name = r.Name.ValueString()
 
@@ -35,31 +38,13 @@ func (r *TeamResourceModel) ToSharedCreateTeam() *shared.CreateTeam {
 		Description: description,
 		Labels:      labels,
 	}
-	return &out
+
+	return &out, diags
 }
 
-func (r *TeamResourceModel) RefreshFromSharedTeam(ctx context.Context, resp *shared.Team) diag.Diagnostics {
+func (r *TeamResourceModel) ToSharedUpdateTeam(ctx context.Context) (*shared.UpdateTeam, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	if resp != nil {
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.Description = types.StringPointerValue(resp.Description)
-		r.ID = types.StringPointerValue(resp.ID)
-		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String, len(resp.Labels))
-			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringPointerValue(value)
-			}
-		}
-		r.Name = types.StringPointerValue(resp.Name)
-		r.SystemTeam = types.BoolPointerValue(resp.SystemTeam)
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
-	}
-
-	return diags
-}
-
-func (r *TeamResourceModel) ToSharedUpdateTeam() *shared.UpdateTeam {
 	name := new(string)
 	if !r.Name.IsUnknown() && !r.Name.IsNull() {
 		*name = r.Name.ValueString()
@@ -87,5 +72,74 @@ func (r *TeamResourceModel) ToSharedUpdateTeam() *shared.UpdateTeam {
 		Description: description,
 		Labels:      labels,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *TeamResourceModel) ToOperationsUpdateTeamRequest(ctx context.Context) (*operations.UpdateTeamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var teamID string
+	teamID = r.ID.ValueString()
+
+	updateTeam, updateTeamDiags := r.ToSharedUpdateTeam(ctx)
+	diags.Append(updateTeamDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateTeamRequest{
+		TeamID:     teamID,
+		UpdateTeam: updateTeam,
+	}
+
+	return &out, diags
+}
+
+func (r *TeamResourceModel) ToOperationsGetTeamRequest(ctx context.Context) (*operations.GetTeamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var teamID string
+	teamID = r.ID.ValueString()
+
+	out := operations.GetTeamRequest{
+		TeamID: teamID,
+	}
+
+	return &out, diags
+}
+
+func (r *TeamResourceModel) ToOperationsDeleteTeamRequest(ctx context.Context) (*operations.DeleteTeamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var teamID string
+	teamID = r.ID.ValueString()
+
+	out := operations.DeleteTeamRequest{
+		TeamID: teamID,
+	}
+
+	return &out, diags
+}
+
+func (r *TeamResourceModel) RefreshFromSharedTeam(ctx context.Context, resp *shared.Team) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.Description = types.StringPointerValue(resp.Description)
+		r.ID = types.StringPointerValue(resp.ID)
+		if len(resp.Labels) > 0 {
+			r.Labels = make(map[string]types.String, len(resp.Labels))
+			for key, value := range resp.Labels {
+				r.Labels[key] = types.StringPointerValue(value)
+			}
+		}
+		r.Name = types.StringPointerValue(resp.Name)
+		r.SystemTeam = types.BoolPointerValue(resp.SystemTeam)
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+	}
+
+	return diags
 }

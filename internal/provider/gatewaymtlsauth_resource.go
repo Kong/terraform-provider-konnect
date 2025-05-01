@@ -24,7 +24,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -196,19 +195,13 @@ func (r *GatewayMTLSAuthResource) Create(ctx context.Context, req resource.Creat
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateMtlsAuthWithConsumerRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var consumerID string
-	consumerID = data.ConsumerID.ValueString()
-
-	mtlsAuthWithoutParents := *data.ToSharedMTLSAuthWithoutParents()
-	request := operations.CreateMtlsAuthWithConsumerRequest{
-		ControlPlaneID:         controlPlaneID,
-		ConsumerID:             consumerID,
-		MTLSAuthWithoutParents: mtlsAuthWithoutParents,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.MTLSAuthCredentials.CreateMtlsAuthWithConsumer(ctx, request)
+	res, err := r.client.MTLSAuthCredentials.CreateMtlsAuthWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -262,21 +255,13 @@ func (r *GatewayMTLSAuthResource) Read(ctx context.Context, req resource.ReadReq
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsGetMtlsAuthWithConsumerRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var consumerID string
-	consumerID = data.ConsumerID.ValueString()
-
-	var mtlsAuthID string
-	mtlsAuthID = data.ID.ValueString()
-
-	request := operations.GetMtlsAuthWithConsumerRequest{
-		ControlPlaneID: controlPlaneID,
-		ConsumerID:     consumerID,
-		MTLSAuthID:     mtlsAuthID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.MTLSAuthCredentials.GetMtlsAuthWithConsumer(ctx, request)
+	res, err := r.client.MTLSAuthCredentials.GetMtlsAuthWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -348,21 +333,13 @@ func (r *GatewayMTLSAuthResource) Delete(ctx context.Context, req resource.Delet
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteMtlsAuthWithConsumerRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var consumerID string
-	consumerID = data.ConsumerID.ValueString()
-
-	var mtlsAuthID string
-	mtlsAuthID = data.ID.ValueString()
-
-	request := operations.DeleteMtlsAuthWithConsumerRequest{
-		ControlPlaneID: controlPlaneID,
-		ConsumerID:     consumerID,
-		MTLSAuthID:     mtlsAuthID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.MTLSAuthCredentials.DeleteMtlsAuthWithConsumer(ctx, request)
+	res, err := r.client.MTLSAuthCredentials.DeleteMtlsAuthWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

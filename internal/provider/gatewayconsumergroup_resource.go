@@ -15,7 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -120,15 +119,13 @@ func (r *GatewayConsumerGroupResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateConsumerGroupRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	consumerGroup := *data.ToSharedConsumerGroup()
-	request := operations.CreateConsumerGroupRequest{
-		ControlPlaneID: controlPlaneID,
-		ConsumerGroup:  consumerGroup,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.ConsumerGroups.CreateConsumerGroup(ctx, request)
+	res, err := r.client.ConsumerGroups.CreateConsumerGroup(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -182,17 +179,13 @@ func (r *GatewayConsumerGroupResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	var consumerGroupID string
-	consumerGroupID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetConsumerGroupRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetConsumerGroupRequest{
-		ConsumerGroupID: consumerGroupID,
-		ControlPlaneID:  controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.ConsumerGroups.GetConsumerGroup(ctx, request)
+	res, err := r.client.ConsumerGroups.GetConsumerGroup(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -240,19 +233,13 @@ func (r *GatewayConsumerGroupResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	var consumerGroupID string
-	consumerGroupID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpsertConsumerGroupRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	consumerGroup := *data.ToSharedConsumerGroup()
-	request := operations.UpsertConsumerGroupRequest{
-		ConsumerGroupID: consumerGroupID,
-		ControlPlaneID:  controlPlaneID,
-		ConsumerGroup:   consumerGroup,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.ConsumerGroups.UpsertConsumerGroup(ctx, request)
+	res, err := r.client.ConsumerGroups.UpsertConsumerGroup(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -306,17 +293,13 @@ func (r *GatewayConsumerGroupResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteConsumerGroupRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var consumerGroupID string
-	consumerGroupID = data.ID.ValueString()
-
-	request := operations.DeleteConsumerGroupRequest{
-		ControlPlaneID:  controlPlaneID,
-		ConsumerGroupID: consumerGroupID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.ConsumerGroups.DeleteConsumerGroup(ctx, request)
+	res, err := r.client.ConsumerGroups.DeleteConsumerGroup(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

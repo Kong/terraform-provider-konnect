@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginGrpcGatewayResourceModel) ToSharedGrpcGatewayPlugin() *shared.GrpcGatewayPlugin {
+func (r *GatewayPluginGrpcGatewayResourceModel) ToSharedGrpcGatewayPlugin(ctx context.Context) (*shared.GrpcGatewayPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginGrpcGatewayResourceModel) ToSharedGrpcGatewayPlugin() *sha
 	if r.Ordering != nil {
 		var after *shared.GrpcGatewayPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginGrpcGatewayResourceModel) ToSharedGrpcGatewayPlugin() *sha
 		}
 		var before *shared.GrpcGatewayPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginGrpcGatewayResourceModel) ToSharedGrpcGatewayPlugin() *sha
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -96,7 +99,7 @@ func (r *GatewayPluginGrpcGatewayResourceModel) ToSharedGrpcGatewayPlugin() *sha
 			ID: id1,
 		}
 	}
-	var protocols []shared.GrpcGatewayPluginProtocols = []shared.GrpcGatewayPluginProtocols{}
+	protocols := make([]shared.GrpcGatewayPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.GrpcGatewayPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -138,7 +141,88 @@ func (r *GatewayPluginGrpcGatewayResourceModel) ToSharedGrpcGatewayPlugin() *sha
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsCreateGrpcgatewayPluginRequest(ctx context.Context) (*operations.CreateGrpcgatewayPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	grpcGatewayPlugin, grpcGatewayPluginDiags := r.ToSharedGrpcGatewayPlugin(ctx)
+	diags.Append(grpcGatewayPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateGrpcgatewayPluginRequest{
+		ControlPlaneID:    controlPlaneID,
+		GrpcGatewayPlugin: *grpcGatewayPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsUpdateGrpcgatewayPluginRequest(ctx context.Context) (*operations.UpdateGrpcgatewayPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	grpcGatewayPlugin, grpcGatewayPluginDiags := r.ToSharedGrpcGatewayPlugin(ctx)
+	diags.Append(grpcGatewayPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateGrpcgatewayPluginRequest{
+		PluginID:          pluginID,
+		ControlPlaneID:    controlPlaneID,
+		GrpcGatewayPlugin: *grpcGatewayPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsGetGrpcgatewayPluginRequest(ctx context.Context) (*operations.GetGrpcgatewayPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetGrpcgatewayPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginGrpcGatewayResourceModel) ToOperationsDeleteGrpcgatewayPluginRequest(ctx context.Context) (*operations.DeleteGrpcgatewayPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteGrpcgatewayPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginGrpcGatewayResourceModel) RefreshFromSharedGrpcGatewayPlugin(ctx context.Context, resp *shared.GrpcGatewayPlugin) diag.Diagnostics {

@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponseTransformerAdvancedPlugin() *shared.ResponseTransformerAdvancedPlugin {
+func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponseTransformerAdvancedPlugin(ctx context.Context) (*shared.ResponseTransformerAdvancedPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 	if r.Ordering != nil {
 		var after *shared.ResponseTransformerAdvancedPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 		}
 		var before *shared.ResponseTransformerAdvancedPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -76,19 +79,19 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 	if r.Config != nil {
 		var add *shared.ResponseTransformerAdvancedPluginAdd
 		if r.Config.Add != nil {
-			var headers []string = []string{}
+			headers := make([]string, 0, len(r.Config.Add.Headers))
 			for _, headersItem := range r.Config.Add.Headers {
 				headers = append(headers, headersItem.ValueString())
 			}
-			var ifStatus []string = []string{}
+			ifStatus := make([]string, 0, len(r.Config.Add.IfStatus))
 			for _, ifStatusItem := range r.Config.Add.IfStatus {
 				ifStatus = append(ifStatus, ifStatusItem.ValueString())
 			}
-			var jsonVar []string = []string{}
+			jsonVar := make([]string, 0, len(r.Config.Add.JSON))
 			for _, jsonItem := range r.Config.Add.JSON {
 				jsonVar = append(jsonVar, jsonItem.ValueString())
 			}
-			var jsonTypes []shared.ResponseTransformerAdvancedPluginJSONTypes = []shared.ResponseTransformerAdvancedPluginJSONTypes{}
+			jsonTypes := make([]shared.ResponseTransformerAdvancedPluginJSONTypes, 0, len(r.Config.Add.JSONTypes))
 			for _, jsonTypesItem := range r.Config.Add.JSONTypes {
 				jsonTypes = append(jsonTypes, shared.ResponseTransformerAdvancedPluginJSONTypes(jsonTypesItem.ValueString()))
 			}
@@ -101,7 +104,7 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 		}
 		var allow *shared.ResponseTransformerAdvancedPluginAllow
 		if r.Config.Allow != nil {
-			var jsonVar1 []string = []string{}
+			jsonVar1 := make([]string, 0, len(r.Config.Allow.JSON))
 			for _, jsonItem1 := range r.Config.Allow.JSON {
 				jsonVar1 = append(jsonVar1, jsonItem1.ValueString())
 			}
@@ -111,19 +114,19 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 		}
 		var append1 *shared.ResponseTransformerAdvancedPluginAppend
 		if r.Config.Append != nil {
-			var headers1 []string = []string{}
+			headers1 := make([]string, 0, len(r.Config.Append.Headers))
 			for _, headersItem1 := range r.Config.Append.Headers {
 				headers1 = append(headers1, headersItem1.ValueString())
 			}
-			var ifStatus1 []string = []string{}
+			ifStatus1 := make([]string, 0, len(r.Config.Append.IfStatus))
 			for _, ifStatusItem1 := range r.Config.Append.IfStatus {
 				ifStatus1 = append(ifStatus1, ifStatusItem1.ValueString())
 			}
-			var jsonVar2 []string = []string{}
+			jsonVar2 := make([]string, 0, len(r.Config.Append.JSON))
 			for _, jsonItem2 := range r.Config.Append.JSON {
 				jsonVar2 = append(jsonVar2, jsonItem2.ValueString())
 			}
-			var jsonTypes1 []shared.ResponseTransformerAdvancedPluginConfigJSONTypes = []shared.ResponseTransformerAdvancedPluginConfigJSONTypes{}
+			jsonTypes1 := make([]shared.ResponseTransformerAdvancedPluginConfigJSONTypes, 0, len(r.Config.Append.JSONTypes))
 			for _, jsonTypesItem1 := range r.Config.Append.JSONTypes {
 				jsonTypes1 = append(jsonTypes1, shared.ResponseTransformerAdvancedPluginConfigJSONTypes(jsonTypesItem1.ValueString()))
 			}
@@ -142,15 +145,15 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 		}
 		var remove *shared.ResponseTransformerAdvancedPluginRemove
 		if r.Config.Remove != nil {
-			var headers2 []string = []string{}
+			headers2 := make([]string, 0, len(r.Config.Remove.Headers))
 			for _, headersItem2 := range r.Config.Remove.Headers {
 				headers2 = append(headers2, headersItem2.ValueString())
 			}
-			var ifStatus2 []string = []string{}
+			ifStatus2 := make([]string, 0, len(r.Config.Remove.IfStatus))
 			for _, ifStatusItem2 := range r.Config.Remove.IfStatus {
 				ifStatus2 = append(ifStatus2, ifStatusItem2.ValueString())
 			}
-			var jsonVar3 []string = []string{}
+			jsonVar3 := make([]string, 0, len(r.Config.Remove.JSON))
 			for _, jsonItem3 := range r.Config.Remove.JSON {
 				jsonVar3 = append(jsonVar3, jsonItem3.ValueString())
 			}
@@ -162,11 +165,11 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 		}
 		var rename *shared.ResponseTransformerAdvancedPluginRename
 		if r.Config.Rename != nil {
-			var headers3 []string = []string{}
+			headers3 := make([]string, 0, len(r.Config.Rename.Headers))
 			for _, headersItem3 := range r.Config.Rename.Headers {
 				headers3 = append(headers3, headersItem3.ValueString())
 			}
-			var ifStatus3 []string = []string{}
+			ifStatus3 := make([]string, 0, len(r.Config.Rename.IfStatus))
 			for _, ifStatusItem3 := range r.Config.Rename.IfStatus {
 				ifStatus3 = append(ifStatus3, ifStatusItem3.ValueString())
 			}
@@ -183,19 +186,19 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 			} else {
 				body = nil
 			}
-			var headers4 []string = []string{}
+			headers4 := make([]string, 0, len(r.Config.Replace.Headers))
 			for _, headersItem4 := range r.Config.Replace.Headers {
 				headers4 = append(headers4, headersItem4.ValueString())
 			}
-			var ifStatus4 []string = []string{}
+			ifStatus4 := make([]string, 0, len(r.Config.Replace.IfStatus))
 			for _, ifStatusItem4 := range r.Config.Replace.IfStatus {
 				ifStatus4 = append(ifStatus4, ifStatusItem4.ValueString())
 			}
-			var jsonVar4 []string = []string{}
+			jsonVar4 := make([]string, 0, len(r.Config.Replace.JSON))
 			for _, jsonItem4 := range r.Config.Replace.JSON {
 				jsonVar4 = append(jsonVar4, jsonItem4.ValueString())
 			}
-			var jsonTypes2 []shared.ResponseTransformerAdvancedPluginConfigReplaceJSONTypes = []shared.ResponseTransformerAdvancedPluginConfigReplaceJSONTypes{}
+			jsonTypes2 := make([]shared.ResponseTransformerAdvancedPluginConfigReplaceJSONTypes, 0, len(r.Config.Replace.JSONTypes))
 			for _, jsonTypesItem2 := range r.Config.Replace.JSONTypes {
 				jsonTypes2 = append(jsonTypes2, shared.ResponseTransformerAdvancedPluginConfigReplaceJSONTypes(jsonTypesItem2.ValueString()))
 			}
@@ -209,15 +212,15 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 		}
 		var transform *shared.Transform
 		if r.Config.Transform != nil {
-			var functions []string = []string{}
+			functions := make([]string, 0, len(r.Config.Transform.Functions))
 			for _, functionsItem := range r.Config.Transform.Functions {
 				functions = append(functions, functionsItem.ValueString())
 			}
-			var ifStatus5 []string = []string{}
+			ifStatus5 := make([]string, 0, len(r.Config.Transform.IfStatus))
 			for _, ifStatusItem5 := range r.Config.Transform.IfStatus {
 				ifStatus5 = append(ifStatus5, ifStatusItem5.ValueString())
 			}
-			var jsonVar5 []string = []string{}
+			jsonVar5 := make([]string, 0, len(r.Config.Transform.JSON))
 			for _, jsonItem5 := range r.Config.Transform.JSON {
 				jsonVar5 = append(jsonVar5, jsonItem5.ValueString())
 			}
@@ -262,7 +265,7 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 			ID: id2,
 		}
 	}
-	var protocols []shared.ResponseTransformerAdvancedPluginProtocols = []shared.ResponseTransformerAdvancedPluginProtocols{}
+	protocols := make([]shared.ResponseTransformerAdvancedPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.ResponseTransformerAdvancedPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -305,7 +308,88 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 		Route:         route,
 		Service:       service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToOperationsCreateResponsetransformeradvancedPluginRequest(ctx context.Context) (*operations.CreateResponsetransformeradvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	responseTransformerAdvancedPlugin, responseTransformerAdvancedPluginDiags := r.ToSharedResponseTransformerAdvancedPlugin(ctx)
+	diags.Append(responseTransformerAdvancedPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateResponsetransformeradvancedPluginRequest{
+		ControlPlaneID:                    controlPlaneID,
+		ResponseTransformerAdvancedPlugin: *responseTransformerAdvancedPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToOperationsUpdateResponsetransformeradvancedPluginRequest(ctx context.Context) (*operations.UpdateResponsetransformeradvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	responseTransformerAdvancedPlugin, responseTransformerAdvancedPluginDiags := r.ToSharedResponseTransformerAdvancedPlugin(ctx)
+	diags.Append(responseTransformerAdvancedPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateResponsetransformeradvancedPluginRequest{
+		PluginID:                          pluginID,
+		ControlPlaneID:                    controlPlaneID,
+		ResponseTransformerAdvancedPlugin: *responseTransformerAdvancedPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToOperationsGetResponsetransformeradvancedPluginRequest(ctx context.Context) (*operations.GetResponsetransformeradvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetResponsetransformeradvancedPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToOperationsDeleteResponsetransformeradvancedPluginRequest(ctx context.Context) (*operations.DeleteResponsetransformeradvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteResponsetransformeradvancedPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginResponseTransformerAdvancedResourceModel) RefreshFromSharedResponseTransformerAdvancedPlugin(ctx context.Context, resp *shared.ResponseTransformerAdvancedPlugin) diag.Diagnostics {

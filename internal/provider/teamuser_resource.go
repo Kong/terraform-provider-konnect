@@ -12,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -98,15 +97,13 @@ func (r *TeamUserResource) Create(ctx context.Context, req resource.CreateReques
 		return
 	}
 
-	var teamID string
-	teamID = data.TeamID.ValueString()
+	request, requestDiags := data.ToOperationsAddUserToTeamRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	addUserToTeam := data.ToSharedAddUserToTeam()
-	request := operations.AddUserToTeamRequest{
-		TeamID:        teamID,
-		AddUserToTeam: addUserToTeam,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.TeamMembership.AddUserToTeam(ctx, request)
+	res, err := r.client.TeamMembership.AddUserToTeam(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -195,17 +192,13 @@ func (r *TeamUserResource) Delete(ctx context.Context, req resource.DeleteReques
 		return
 	}
 
-	var userID string
-	userID = data.UserID.ValueString()
+	request, requestDiags := data.ToOperationsRemoveUserFromTeamRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var teamID string
-	teamID = data.TeamID.ValueString()
-
-	request := operations.RemoveUserFromTeamRequest{
-		UserID: userID,
-		TeamID: teamID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.TeamMembership.RemoveUserFromTeam(ctx, request)
+	res, err := r.client.TeamMembership.RemoveUserFromTeam(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

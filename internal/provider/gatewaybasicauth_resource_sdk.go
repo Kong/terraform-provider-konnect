@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayBasicAuthResourceModel) ToSharedBasicAuthWithoutParents() *shared.BasicAuthWithoutParents {
+func (r *GatewayBasicAuthResourceModel) ToSharedBasicAuthWithoutParents(ctx context.Context) (*shared.BasicAuthWithoutParents, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var consumer *shared.BasicAuthWithoutParentsConsumer
 	if r.Consumer != nil {
 		id := new(string)
@@ -38,7 +41,7 @@ func (r *GatewayBasicAuthResourceModel) ToSharedBasicAuthWithoutParents() *share
 	var password string
 	password = r.Password.ValueString()
 
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -53,7 +56,75 @@ func (r *GatewayBasicAuthResourceModel) ToSharedBasicAuthWithoutParents() *share
 		Tags:      tags,
 		Username:  username,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayBasicAuthResourceModel) ToOperationsCreateBasicAuthWithConsumerRequest(ctx context.Context) (*operations.CreateBasicAuthWithConsumerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	basicAuthWithoutParents, basicAuthWithoutParentsDiags := r.ToSharedBasicAuthWithoutParents(ctx)
+	diags.Append(basicAuthWithoutParentsDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateBasicAuthWithConsumerRequest{
+		ControlPlaneID:          controlPlaneID,
+		ConsumerID:              consumerID,
+		BasicAuthWithoutParents: *basicAuthWithoutParents,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayBasicAuthResourceModel) ToOperationsGetBasicAuthWithConsumerRequest(ctx context.Context) (*operations.GetBasicAuthWithConsumerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	var basicAuthID string
+	basicAuthID = r.ID.ValueString()
+
+	out := operations.GetBasicAuthWithConsumerRequest{
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		BasicAuthID:    basicAuthID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayBasicAuthResourceModel) ToOperationsDeleteBasicAuthWithConsumerRequest(ctx context.Context) (*operations.DeleteBasicAuthWithConsumerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	var basicAuthID string
+	basicAuthID = r.ID.ValueString()
+
+	out := operations.DeleteBasicAuthWithConsumerRequest{
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		BasicAuthID:    basicAuthID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayBasicAuthResourceModel) RefreshFromSharedBasicAuth(ctx context.Context, resp *shared.BasicAuth) diag.Diagnostics {

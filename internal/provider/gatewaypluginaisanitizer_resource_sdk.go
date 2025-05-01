@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginAiSanitizerResourceModel) ToSharedAiSanitizerPlugin() *shared.AiSanitizerPlugin {
+func (r *GatewayPluginAiSanitizerResourceModel) ToSharedAiSanitizerPlugin(ctx context.Context) (*shared.AiSanitizerPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToSharedAiSanitizerPlugin() *sha
 	if r.Ordering != nil {
 		var after *shared.AiSanitizerPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToSharedAiSanitizerPlugin() *sha
 		}
 		var before *shared.AiSanitizerPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToSharedAiSanitizerPlugin() *sha
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -74,11 +77,11 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToSharedAiSanitizerPlugin() *sha
 	}
 	var config *shared.AiSanitizerPluginConfig
 	if r.Config != nil {
-		var anonymize []shared.Anonymize = []shared.Anonymize{}
+		anonymize := make([]shared.Anonymize, 0, len(r.Config.Anonymize))
 		for _, anonymizeItem := range r.Config.Anonymize {
 			anonymize = append(anonymize, shared.Anonymize(anonymizeItem.ValueString()))
 		}
-		var customPatterns []shared.CustomPatterns = []shared.CustomPatterns{}
+		customPatterns := make([]shared.CustomPatterns, 0, len(r.Config.CustomPatterns))
 		for _, customPatternsItem := range r.Config.CustomPatterns {
 			var name string
 			name = customPatternsItem.Name.ValueString()
@@ -183,7 +186,7 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToSharedAiSanitizerPlugin() *sha
 			ID: id2,
 		}
 	}
-	var protocols []shared.AiSanitizerPluginProtocols = []shared.AiSanitizerPluginProtocols{}
+	protocols := make([]shared.AiSanitizerPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.AiSanitizerPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -226,7 +229,88 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToSharedAiSanitizerPlugin() *sha
 		Route:         route,
 		Service:       service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsCreateAisanitizerPluginRequest(ctx context.Context) (*operations.CreateAisanitizerPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiSanitizerPlugin, aiSanitizerPluginDiags := r.ToSharedAiSanitizerPlugin(ctx)
+	diags.Append(aiSanitizerPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateAisanitizerPluginRequest{
+		ControlPlaneID:    controlPlaneID,
+		AiSanitizerPlugin: *aiSanitizerPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsUpdateAisanitizerPluginRequest(ctx context.Context) (*operations.UpdateAisanitizerPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiSanitizerPlugin, aiSanitizerPluginDiags := r.ToSharedAiSanitizerPlugin(ctx)
+	diags.Append(aiSanitizerPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAisanitizerPluginRequest{
+		PluginID:          pluginID,
+		ControlPlaneID:    controlPlaneID,
+		AiSanitizerPlugin: *aiSanitizerPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsGetAisanitizerPluginRequest(ctx context.Context) (*operations.GetAisanitizerPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetAisanitizerPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiSanitizerResourceModel) ToOperationsDeleteAisanitizerPluginRequest(ctx context.Context) (*operations.DeleteAisanitizerPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteAisanitizerPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginAiSanitizerResourceModel) RefreshFromSharedAiSanitizerPlugin(ctx context.Context, resp *shared.AiSanitizerPlugin) diag.Diagnostics {

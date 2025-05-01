@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginProxyCacheResourceModel) ToSharedProxyCachePlugin() *shared.ProxyCachePlugin {
+func (r *GatewayPluginProxyCacheResourceModel) ToSharedProxyCachePlugin(ctx context.Context) (*shared.ProxyCachePlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedProxyCachePlugin() *share
 	if r.Ordering != nil {
 		var after *shared.ProxyCachePluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedProxyCachePlugin() *share
 		}
 		var before *shared.ProxyCachePluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedProxyCachePlugin() *share
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -86,7 +89,7 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedProxyCachePlugin() *share
 		} else {
 			cacheTTL = nil
 		}
-		var contentType []string = []string{}
+		contentType := make([]string, 0, len(r.Config.ContentType))
 		for _, contentTypeItem := range r.Config.ContentType {
 			contentType = append(contentType, contentTypeItem.ValueString())
 		}
@@ -108,11 +111,11 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedProxyCachePlugin() *share
 				DictionaryName: dictionaryName,
 			}
 		}
-		var requestMethod []shared.RequestMethod = []shared.RequestMethod{}
+		requestMethod := make([]shared.RequestMethod, 0, len(r.Config.RequestMethod))
 		for _, requestMethodItem := range r.Config.RequestMethod {
 			requestMethod = append(requestMethod, shared.RequestMethod(requestMethodItem.ValueString()))
 		}
-		var responseCode []int64 = []int64{}
+		responseCode := make([]int64, 0, len(r.Config.ResponseCode))
 		for _, responseCodeItem := range r.Config.ResponseCode {
 			responseCode = append(responseCode, responseCodeItem.ValueInt64())
 		}
@@ -154,11 +157,11 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedProxyCachePlugin() *share
 		} else {
 			strategy = nil
 		}
-		var varyHeaders []string = []string{}
+		varyHeaders := make([]string, 0, len(r.Config.VaryHeaders))
 		for _, varyHeadersItem := range r.Config.VaryHeaders {
 			varyHeaders = append(varyHeaders, varyHeadersItem.ValueString())
 		}
-		var varyQueryParams []string = []string{}
+		varyQueryParams := make([]string, 0, len(r.Config.VaryQueryParams))
 		for _, varyQueryParamsItem := range r.Config.VaryQueryParams {
 			varyQueryParams = append(varyQueryParams, varyQueryParamsItem.ValueString())
 		}
@@ -201,7 +204,7 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedProxyCachePlugin() *share
 			ID: id2,
 		}
 	}
-	var protocols []shared.ProxyCachePluginProtocols = []shared.ProxyCachePluginProtocols{}
+	protocols := make([]shared.ProxyCachePluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.ProxyCachePluginProtocols(protocolsItem.ValueString()))
 	}
@@ -244,7 +247,88 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedProxyCachePlugin() *share
 		Route:         route,
 		Service:       service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginProxyCacheResourceModel) ToOperationsCreateProxycachePluginRequest(ctx context.Context) (*operations.CreateProxycachePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	proxyCachePlugin, proxyCachePluginDiags := r.ToSharedProxyCachePlugin(ctx)
+	diags.Append(proxyCachePluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateProxycachePluginRequest{
+		ControlPlaneID:   controlPlaneID,
+		ProxyCachePlugin: *proxyCachePlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginProxyCacheResourceModel) ToOperationsUpdateProxycachePluginRequest(ctx context.Context) (*operations.UpdateProxycachePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	proxyCachePlugin, proxyCachePluginDiags := r.ToSharedProxyCachePlugin(ctx)
+	diags.Append(proxyCachePluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateProxycachePluginRequest{
+		PluginID:         pluginID,
+		ControlPlaneID:   controlPlaneID,
+		ProxyCachePlugin: *proxyCachePlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginProxyCacheResourceModel) ToOperationsGetProxycachePluginRequest(ctx context.Context) (*operations.GetProxycachePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetProxycachePluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginProxyCacheResourceModel) ToOperationsDeleteProxycachePluginRequest(ctx context.Context) (*operations.DeleteProxycachePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteProxycachePluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginProxyCacheResourceModel) RefreshFromSharedProxyCachePlugin(ctx context.Context, resp *shared.ProxyCachePlugin) diag.Diagnostics {

@@ -21,7 +21,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
@@ -181,8 +180,13 @@ func (r *ServerlessCloudGatewayResource) Create(ctx context.Context, req resourc
 		return
 	}
 
-	request := *data.ToSharedCreateServerlessCloudGatewayRequest()
-	res, err := r.client.ServerlessCloudGateways.CreateServerlessCloudGateway(ctx, request)
+	request, requestDiags := data.ToSharedCreateServerlessCloudGatewayRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res, err := r.client.ServerlessCloudGateways.CreateServerlessCloudGateway(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -213,13 +217,13 @@ func (r *ServerlessCloudGatewayResource) Create(ctx context.Context, req resourc
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlane.ID.ValueString()
+	request1, request1Diags := data.ToOperationsGetServerlessCloudGatewayRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
 
-	request1 := operations.GetServerlessCloudGatewayRequest{
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.ServerlessCloudGateways.GetServerlessCloudGateway(ctx, request1)
+	res1, err := r.client.ServerlessCloudGateways.GetServerlessCloudGateway(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -273,13 +277,13 @@ func (r *ServerlessCloudGatewayResource) Read(ctx context.Context, req resource.
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlane.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetServerlessCloudGatewayRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.GetServerlessCloudGatewayRequest{
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.ServerlessCloudGateways.GetServerlessCloudGateway(ctx, request)
+	res, err := r.client.ServerlessCloudGateways.GetServerlessCloudGateway(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -351,13 +355,13 @@ func (r *ServerlessCloudGatewayResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlane.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteServerlessCloudGatewayRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.DeleteServerlessCloudGatewayRequest{
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.ServerlessCloudGateways.DeleteServerlessCloudGateway(ctx, request)
+	res, err := r.client.ServerlessCloudGateways.DeleteServerlessCloudGateway(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginRateLimitingResourceModel) ToSharedRateLimitingPlugin() *shared.RateLimitingPlugin {
+func (r *GatewayPluginRateLimitingResourceModel) ToSharedRateLimitingPlugin(ctx context.Context) (*shared.RateLimitingPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginRateLimitingResourceModel) ToSharedRateLimitingPlugin() *s
 	if r.Ordering != nil {
 		var after *shared.RateLimitingPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginRateLimitingResourceModel) ToSharedRateLimitingPlugin() *s
 		}
 		var before *shared.RateLimitingPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginRateLimitingResourceModel) ToSharedRateLimitingPlugin() *s
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -275,7 +278,7 @@ func (r *GatewayPluginRateLimitingResourceModel) ToSharedRateLimitingPlugin() *s
 			ID: id2,
 		}
 	}
-	var protocols []shared.RateLimitingPluginProtocols = []shared.RateLimitingPluginProtocols{}
+	protocols := make([]shared.RateLimitingPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.RateLimitingPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -318,7 +321,88 @@ func (r *GatewayPluginRateLimitingResourceModel) ToSharedRateLimitingPlugin() *s
 		Route:         route,
 		Service:       service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRateLimitingResourceModel) ToOperationsCreateRatelimitingPluginRequest(ctx context.Context) (*operations.CreateRatelimitingPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	rateLimitingPlugin, rateLimitingPluginDiags := r.ToSharedRateLimitingPlugin(ctx)
+	diags.Append(rateLimitingPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateRatelimitingPluginRequest{
+		ControlPlaneID:     controlPlaneID,
+		RateLimitingPlugin: *rateLimitingPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRateLimitingResourceModel) ToOperationsUpdateRatelimitingPluginRequest(ctx context.Context) (*operations.UpdateRatelimitingPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	rateLimitingPlugin, rateLimitingPluginDiags := r.ToSharedRateLimitingPlugin(ctx)
+	diags.Append(rateLimitingPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateRatelimitingPluginRequest{
+		PluginID:           pluginID,
+		ControlPlaneID:     controlPlaneID,
+		RateLimitingPlugin: *rateLimitingPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRateLimitingResourceModel) ToOperationsGetRatelimitingPluginRequest(ctx context.Context) (*operations.GetRatelimitingPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetRatelimitingPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRateLimitingResourceModel) ToOperationsDeleteRatelimitingPluginRequest(ctx context.Context) (*operations.DeleteRatelimitingPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteRatelimitingPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginRateLimitingResourceModel) RefreshFromSharedRateLimitingPlugin(ctx context.Context, resp *shared.RateLimitingPlugin) diag.Diagnostics {

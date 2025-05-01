@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin() *shared.DatadogPlugin {
+func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin(ctx context.Context) (*shared.DatadogPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin() *shared.Data
 	if r.Ordering != nil {
 		var after *shared.DatadogPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin() *shared.Data
 		}
 		var before *shared.DatadogPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin() *shared.Data
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -92,7 +95,7 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin() *shared.Data
 		} else {
 			host = nil
 		}
-		var metrics []shared.Metrics = []shared.Metrics{}
+		metrics := make([]shared.Metrics, 0, len(r.Config.Metrics))
 		for _, metricsItem := range r.Config.Metrics {
 			consumerIdentifier := new(shared.ConsumerIdentifier)
 			if !metricsItem.ConsumerIdentifier.IsUnknown() && !metricsItem.ConsumerIdentifier.IsNull() {
@@ -108,7 +111,7 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin() *shared.Data
 				sampleRate = nil
 			}
 			statType := shared.StatType(metricsItem.StatType.ValueString())
-			var tags1 []string = []string{}
+			tags1 := make([]string, 0, len(metricsItem.Tags))
 			for _, tagsItem1 := range metricsItem.Tags {
 				tags1 = append(tags1, tagsItem1.ValueString())
 			}
@@ -243,7 +246,7 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin() *shared.Data
 			ID: id1,
 		}
 	}
-	var protocols []shared.DatadogPluginProtocols = []shared.DatadogPluginProtocols{}
+	protocols := make([]shared.DatadogPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.DatadogPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -285,7 +288,88 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin() *shared.Data
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginDatadogResourceModel) ToOperationsCreateDatadogPluginRequest(ctx context.Context) (*operations.CreateDatadogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	datadogPlugin, datadogPluginDiags := r.ToSharedDatadogPlugin(ctx)
+	diags.Append(datadogPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateDatadogPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		DatadogPlugin:  *datadogPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginDatadogResourceModel) ToOperationsUpdateDatadogPluginRequest(ctx context.Context) (*operations.UpdateDatadogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	datadogPlugin, datadogPluginDiags := r.ToSharedDatadogPlugin(ctx)
+	diags.Append(datadogPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateDatadogPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		DatadogPlugin:  *datadogPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginDatadogResourceModel) ToOperationsGetDatadogPluginRequest(ctx context.Context) (*operations.GetDatadogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetDatadogPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginDatadogResourceModel) ToOperationsDeleteDatadogPluginRequest(ctx context.Context) (*operations.DeleteDatadogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteDatadogPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginDatadogResourceModel) RefreshFromSharedDatadogPlugin(ctx context.Context, resp *shared.DatadogPlugin) diag.Diagnostics {

@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToSharedGraphqlRateLimitingAdvancedPlugin() *shared.GraphqlRateLimitingAdvancedPlugin {
+func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToSharedGraphqlRateLimitingAdvancedPlugin(ctx context.Context) (*shared.GraphqlRateLimitingAdvancedPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToSharedGraphqlR
 	if r.Ordering != nil {
 		var after *shared.GraphqlRateLimitingAdvancedPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToSharedGraphqlR
 		}
 		var before *shared.GraphqlRateLimitingAdvancedPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToSharedGraphqlR
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -98,7 +101,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToSharedGraphqlR
 		} else {
 			identifier = nil
 		}
-		var limit []float64 = []float64{}
+		limit := make([]float64, 0, len(r.Config.Limit))
 		for _, limitItem := range r.Config.Limit {
 			limit = append(limit, limitItem.ValueFloat64())
 		}
@@ -122,7 +125,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToSharedGraphqlR
 			} else {
 				clusterMaxRedirections = nil
 			}
-			var clusterNodes []shared.GraphqlRateLimitingAdvancedPluginClusterNodes = []shared.GraphqlRateLimitingAdvancedPluginClusterNodes{}
+			clusterNodes := make([]shared.GraphqlRateLimitingAdvancedPluginClusterNodes, 0, len(r.Config.Redis.ClusterNodes))
 			for _, clusterNodesItem := range r.Config.Redis.ClusterNodes {
 				ip := new(string)
 				if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
@@ -207,7 +210,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToSharedGraphqlR
 			} else {
 				sentinelMaster = nil
 			}
-			var sentinelNodes []shared.GraphqlRateLimitingAdvancedPluginSentinelNodes = []shared.GraphqlRateLimitingAdvancedPluginSentinelNodes{}
+			sentinelNodes := make([]shared.GraphqlRateLimitingAdvancedPluginSentinelNodes, 0, len(r.Config.Redis.SentinelNodes))
 			for _, sentinelNodesItem := range r.Config.Redis.SentinelNodes {
 				host1 := new(string)
 				if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
@@ -310,7 +313,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToSharedGraphqlR
 		} else {
 			syncRate = nil
 		}
-		var windowSize []float64 = []float64{}
+		windowSize := make([]float64, 0, len(r.Config.WindowSize))
 		for _, windowSizeItem := range r.Config.WindowSize {
 			windowSize = append(windowSize, windowSizeItem.ValueFloat64())
 		}
@@ -348,7 +351,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToSharedGraphqlR
 			ID: id1,
 		}
 	}
-	var protocols []shared.GraphqlRateLimitingAdvancedPluginProtocols = []shared.GraphqlRateLimitingAdvancedPluginProtocols{}
+	protocols := make([]shared.GraphqlRateLimitingAdvancedPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.GraphqlRateLimitingAdvancedPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -390,7 +393,88 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToSharedGraphqlR
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsCreateGraphqlratelimitingadvancedPluginRequest(ctx context.Context) (*operations.CreateGraphqlratelimitingadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	graphqlRateLimitingAdvancedPlugin, graphqlRateLimitingAdvancedPluginDiags := r.ToSharedGraphqlRateLimitingAdvancedPlugin(ctx)
+	diags.Append(graphqlRateLimitingAdvancedPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateGraphqlratelimitingadvancedPluginRequest{
+		ControlPlaneID:                    controlPlaneID,
+		GraphqlRateLimitingAdvancedPlugin: *graphqlRateLimitingAdvancedPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsUpdateGraphqlratelimitingadvancedPluginRequest(ctx context.Context) (*operations.UpdateGraphqlratelimitingadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	graphqlRateLimitingAdvancedPlugin, graphqlRateLimitingAdvancedPluginDiags := r.ToSharedGraphqlRateLimitingAdvancedPlugin(ctx)
+	diags.Append(graphqlRateLimitingAdvancedPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateGraphqlratelimitingadvancedPluginRequest{
+		PluginID:                          pluginID,
+		ControlPlaneID:                    controlPlaneID,
+		GraphqlRateLimitingAdvancedPlugin: *graphqlRateLimitingAdvancedPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsGetGraphqlratelimitingadvancedPluginRequest(ctx context.Context) (*operations.GetGraphqlratelimitingadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetGraphqlratelimitingadvancedPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsDeleteGraphqlratelimitingadvancedPluginRequest(ctx context.Context) (*operations.DeleteGraphqlratelimitingadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteGraphqlratelimitingadvancedPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) RefreshFromSharedGraphqlRateLimitingAdvancedPlugin(ctx context.Context, resp *shared.GraphqlRateLimitingAdvancedPlugin) diag.Diagnostics {

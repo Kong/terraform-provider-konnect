@@ -8,8 +8,26 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *CloudGatewayTransitGatewayDataSourceModel) ToOperationsGetTransitGatewayRequest(ctx context.Context) (*operations.GetTransitGatewayRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var networkID string
+	networkID = r.NetworkID.ValueString()
+
+	var transitGatewayID string
+	transitGatewayID = r.ID.ValueString()
+
+	out := operations.GetTransitGatewayRequest{
+		NetworkID:        networkID,
+		TransitGatewayID: transitGatewayID,
+	}
+
+	return &out, diags
+}
 
 func (r *CloudGatewayTransitGatewayDataSourceModel) RefreshFromSharedTransitGatewayResponse(ctx context.Context, resp *shared.TransitGatewayResponse) diag.Diagnostics {
 	var diags diag.Diagnostics

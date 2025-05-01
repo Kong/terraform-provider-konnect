@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginGrpcWebResourceModel) ToSharedGrpcWebPlugin() *shared.GrpcWebPlugin {
+func (r *GatewayPluginGrpcWebResourceModel) ToSharedGrpcWebPlugin(ctx context.Context) (*shared.GrpcWebPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginGrpcWebResourceModel) ToSharedGrpcWebPlugin() *shared.Grpc
 	if r.Ordering != nil {
 		var after *shared.GrpcWebPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginGrpcWebResourceModel) ToSharedGrpcWebPlugin() *shared.Grpc
 		}
 		var before *shared.GrpcWebPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginGrpcWebResourceModel) ToSharedGrpcWebPlugin() *shared.Grpc
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -110,7 +113,7 @@ func (r *GatewayPluginGrpcWebResourceModel) ToSharedGrpcWebPlugin() *shared.Grpc
 			ID: id1,
 		}
 	}
-	var protocols []shared.GrpcWebPluginProtocols = []shared.GrpcWebPluginProtocols{}
+	protocols := make([]shared.GrpcWebPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.GrpcWebPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -152,7 +155,88 @@ func (r *GatewayPluginGrpcWebResourceModel) ToSharedGrpcWebPlugin() *shared.Grpc
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginGrpcWebResourceModel) ToOperationsCreateGrpcwebPluginRequest(ctx context.Context) (*operations.CreateGrpcwebPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	grpcWebPlugin, grpcWebPluginDiags := r.ToSharedGrpcWebPlugin(ctx)
+	diags.Append(grpcWebPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateGrpcwebPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		GrpcWebPlugin:  *grpcWebPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginGrpcWebResourceModel) ToOperationsUpdateGrpcwebPluginRequest(ctx context.Context) (*operations.UpdateGrpcwebPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	grpcWebPlugin, grpcWebPluginDiags := r.ToSharedGrpcWebPlugin(ctx)
+	diags.Append(grpcWebPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateGrpcwebPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		GrpcWebPlugin:  *grpcWebPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginGrpcWebResourceModel) ToOperationsGetGrpcwebPluginRequest(ctx context.Context) (*operations.GetGrpcwebPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetGrpcwebPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginGrpcWebResourceModel) ToOperationsDeleteGrpcwebPluginRequest(ctx context.Context) (*operations.DeleteGrpcwebPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteGrpcwebPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginGrpcWebResourceModel) RefreshFromSharedGrpcWebPlugin(ctx context.Context, resp *shared.GrpcWebPlugin) diag.Diagnostics {

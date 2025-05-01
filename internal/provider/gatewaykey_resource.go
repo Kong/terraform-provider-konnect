@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -173,15 +172,13 @@ func (r *GatewayKeyResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateKeyRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	key := *data.ToSharedKey()
-	request := operations.CreateKeyRequest{
-		ControlPlaneID: controlPlaneID,
-		Key:            key,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Keys.CreateKey(ctx, request)
+	res, err := r.client.Keys.CreateKey(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -235,17 +232,13 @@ func (r *GatewayKeyResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	var keyID string
-	keyID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetKeyRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetKeyRequest{
-		KeyID:          keyID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Keys.GetKey(ctx, request)
+	res, err := r.client.Keys.GetKey(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -293,19 +286,13 @@ func (r *GatewayKeyResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
-	var keyID string
-	keyID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpsertKeyRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	key := *data.ToSharedKey()
-	request := operations.UpsertKeyRequest{
-		KeyID:          keyID,
-		ControlPlaneID: controlPlaneID,
-		Key:            key,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Keys.UpsertKey(ctx, request)
+	res, err := r.client.Keys.UpsertKey(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -359,17 +346,13 @@ func (r *GatewayKeyResource) Delete(ctx context.Context, req resource.DeleteRequ
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteKeyRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var keyID string
-	keyID = data.ID.ValueString()
-
-	request := operations.DeleteKeyRequest{
-		ControlPlaneID: controlPlaneID,
-		KeyID:          keyID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Keys.DeleteKey(ctx, request)
+	res, err := r.client.Keys.DeleteKey(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

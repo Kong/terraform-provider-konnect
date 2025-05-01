@@ -21,7 +21,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 )
 
@@ -765,15 +764,13 @@ func (r *GatewayPluginAiRagInjectorResource) Create(ctx context.Context, req res
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateAiraginjectorPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	aiRagInjectorPlugin := *data.ToSharedAiRagInjectorPlugin()
-	request := operations.CreateAiraginjectorPluginRequest{
-		ControlPlaneID:      controlPlaneID,
-		AiRagInjectorPlugin: aiRagInjectorPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateAiraginjectorPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateAiraginjectorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -827,17 +824,13 @@ func (r *GatewayPluginAiRagInjectorResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetAiraginjectorPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetAiraginjectorPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetAiraginjectorPlugin(ctx, request)
+	res, err := r.client.Plugins.GetAiraginjectorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -885,19 +878,13 @@ func (r *GatewayPluginAiRagInjectorResource) Update(ctx context.Context, req res
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateAiraginjectorPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	aiRagInjectorPlugin := *data.ToSharedAiRagInjectorPlugin()
-	request := operations.UpdateAiraginjectorPluginRequest{
-		PluginID:            pluginID,
-		ControlPlaneID:      controlPlaneID,
-		AiRagInjectorPlugin: aiRagInjectorPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateAiraginjectorPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateAiraginjectorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -951,17 +938,13 @@ func (r *GatewayPluginAiRagInjectorResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteAiraginjectorPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteAiraginjectorPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteAiraginjectorPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteAiraginjectorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -3,10 +3,14 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
-func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroupRequestBody() *operations.AddConsumerToGroupRequestBody {
+func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroupRequestBody(ctx context.Context) (*operations.AddConsumerToGroupRequestBody, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	consumerID := new(string)
 	if !r.ConsumerID.IsUnknown() && !r.ConsumerID.IsNull() {
 		*consumerID = r.ConsumerID.ValueString()
@@ -16,5 +20,52 @@ func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroup
 	out := operations.AddConsumerToGroupRequestBody{
 		ConsumerID: consumerID,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroupRequest(ctx context.Context) (*operations.AddConsumerToGroupRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var consumerGroupID string
+	consumerGroupID = r.ConsumerGroupID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	requestBody, requestBodyDiags := r.ToOperationsAddConsumerToGroupRequestBody(ctx)
+	diags.Append(requestBodyDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.AddConsumerToGroupRequest{
+		ConsumerGroupID: consumerGroupID,
+		ControlPlaneID:  controlPlaneID,
+		RequestBody:     requestBody,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsRemoveConsumerFromGroupRequest(ctx context.Context) (*operations.RemoveConsumerFromGroupRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var consumerGroupID string
+	consumerGroupID = r.ConsumerGroupID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.RemoveConsumerFromGroupRequest{
+		ConsumerGroupID: consumerGroupID,
+		ConsumerID:      consumerID,
+		ControlPlaneID:  controlPlaneID,
+	}
+
+	return &out, diags
 }

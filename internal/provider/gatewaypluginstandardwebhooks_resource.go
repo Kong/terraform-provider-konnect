@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -229,15 +228,13 @@ func (r *GatewayPluginStandardWebhooksResource) Create(ctx context.Context, req 
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateStandardwebhooksPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	standardWebhooksPlugin := *data.ToSharedStandardWebhooksPlugin()
-	request := operations.CreateStandardwebhooksPluginRequest{
-		ControlPlaneID:         controlPlaneID,
-		StandardWebhooksPlugin: standardWebhooksPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateStandardwebhooksPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateStandardwebhooksPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -291,17 +288,13 @@ func (r *GatewayPluginStandardWebhooksResource) Read(ctx context.Context, req re
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetStandardwebhooksPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetStandardwebhooksPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetStandardwebhooksPlugin(ctx, request)
+	res, err := r.client.Plugins.GetStandardwebhooksPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -349,19 +342,13 @@ func (r *GatewayPluginStandardWebhooksResource) Update(ctx context.Context, req 
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateStandardwebhooksPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	standardWebhooksPlugin := *data.ToSharedStandardWebhooksPlugin()
-	request := operations.UpdateStandardwebhooksPluginRequest{
-		PluginID:               pluginID,
-		ControlPlaneID:         controlPlaneID,
-		StandardWebhooksPlugin: standardWebhooksPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateStandardwebhooksPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateStandardwebhooksPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -415,17 +402,13 @@ func (r *GatewayPluginStandardWebhooksResource) Delete(ctx context.Context, req 
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteStandardwebhooksPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteStandardwebhooksPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteStandardwebhooksPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteStandardwebhooksPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

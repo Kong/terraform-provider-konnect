@@ -8,10 +8,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *APIProductDocumentResourceModel) ToSharedCreateAPIProductDocumentDTO() *shared.CreateAPIProductDocumentDTO {
+func (r *APIProductDocumentResourceModel) ToSharedCreateAPIProductDocumentDTO(ctx context.Context) (*shared.CreateAPIProductDocumentDTO, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	parentDocumentID := new(string)
 	if !r.ParentDocumentID.IsUnknown() && !r.ParentDocumentID.IsNull() {
 		*parentDocumentID = r.ParentDocumentID.ValueString()
@@ -43,30 +46,34 @@ func (r *APIProductDocumentResourceModel) ToSharedCreateAPIProductDocumentDTO() 
 		Content:          content,
 		Metadata:         metadata,
 	}
-	return &out
+
+	return &out, diags
 }
 
-func (r *APIProductDocumentResourceModel) RefreshFromSharedAPIProductDocument(ctx context.Context, resp *shared.APIProductDocument) diag.Diagnostics {
+func (r *APIProductDocumentResourceModel) ToOperationsCreateAPIProductDocumentRequest(ctx context.Context) (*operations.CreateAPIProductDocumentRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	if resp != nil {
-		r.Content = types.StringValue(resp.Content)
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.ID = types.StringValue(resp.ID)
-		if r.Metadata == nil {
-			r.Metadata = &tfTypes.Metadata{}
-		}
-		r.ParentDocumentID = types.StringPointerValue(resp.ParentDocumentID)
-		r.Slug = types.StringValue(resp.Slug)
-		r.Status = types.StringValue(string(resp.Status))
-		r.Title = types.StringValue(resp.Title)
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+	var apiProductID string
+	apiProductID = r.APIProductID.ValueString()
+
+	createAPIProductDocumentDTO, createAPIProductDocumentDTODiags := r.ToSharedCreateAPIProductDocumentDTO(ctx)
+	diags.Append(createAPIProductDocumentDTODiags...)
+
+	if diags.HasError() {
+		return nil, diags
 	}
 
-	return diags
+	out := operations.CreateAPIProductDocumentRequest{
+		APIProductID:                apiProductID,
+		CreateAPIProductDocumentDTO: *createAPIProductDocumentDTO,
+	}
+
+	return &out, diags
 }
 
-func (r *APIProductDocumentResourceModel) ToSharedUpdateAPIProductDocumentDTO() *shared.UpdateAPIProductDocumentDTO {
+func (r *APIProductDocumentResourceModel) ToSharedUpdateAPIProductDocumentDTO(ctx context.Context) (*shared.UpdateAPIProductDocumentDTO, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	parentDocumentID := new(string)
 	if !r.ParentDocumentID.IsUnknown() && !r.ParentDocumentID.IsNull() {
 		*parentDocumentID = r.ParentDocumentID.ValueString()
@@ -109,5 +116,85 @@ func (r *APIProductDocumentResourceModel) ToSharedUpdateAPIProductDocumentDTO() 
 		Content:          content,
 		Metadata:         metadata,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *APIProductDocumentResourceModel) ToOperationsUpdateAPIProductDocumentRequest(ctx context.Context) (*operations.UpdateAPIProductDocumentRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiProductID string
+	apiProductID = r.APIProductID.ValueString()
+
+	var id string
+	id = r.ID.ValueString()
+
+	updateAPIProductDocumentDTO, updateAPIProductDocumentDTODiags := r.ToSharedUpdateAPIProductDocumentDTO(ctx)
+	diags.Append(updateAPIProductDocumentDTODiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAPIProductDocumentRequest{
+		APIProductID:                apiProductID,
+		ID:                          id,
+		UpdateAPIProductDocumentDTO: *updateAPIProductDocumentDTO,
+	}
+
+	return &out, diags
+}
+
+func (r *APIProductDocumentResourceModel) ToOperationsGetAPIProductDocumentRequest(ctx context.Context) (*operations.GetAPIProductDocumentRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiProductID string
+	apiProductID = r.APIProductID.ValueString()
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.GetAPIProductDocumentRequest{
+		APIProductID: apiProductID,
+		ID:           id,
+	}
+
+	return &out, diags
+}
+
+func (r *APIProductDocumentResourceModel) ToOperationsDeleteAPIProductDocumentRequest(ctx context.Context) (*operations.DeleteAPIProductDocumentRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiProductID string
+	apiProductID = r.APIProductID.ValueString()
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.DeleteAPIProductDocumentRequest{
+		APIProductID: apiProductID,
+		ID:           id,
+	}
+
+	return &out, diags
+}
+
+func (r *APIProductDocumentResourceModel) RefreshFromSharedAPIProductDocument(ctx context.Context, resp *shared.APIProductDocument) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.Content = types.StringValue(resp.Content)
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.ID = types.StringValue(resp.ID)
+		if r.Metadata == nil {
+			r.Metadata = &tfTypes.Metadata{}
+		}
+		r.ParentDocumentID = types.StringPointerValue(resp.ParentDocumentID)
+		r.Slug = types.StringValue(resp.Slug)
+		r.Status = types.StringValue(string(resp.Status))
+		r.Title = types.StringValue(resp.Title)
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+	}
+
+	return diags
 }

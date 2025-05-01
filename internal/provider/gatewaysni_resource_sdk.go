@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewaySNIResourceModel) ToSharedSni() *shared.Sni {
+func (r *GatewaySNIResourceModel) ToSharedSni(ctx context.Context) (*shared.Sni, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var certificate *shared.SNICertificate
 	if r.Certificate != nil {
 		id := new(string)
@@ -38,7 +41,7 @@ func (r *GatewaySNIResourceModel) ToSharedSni() *shared.Sni {
 	var name string
 	name = r.Name.ValueString()
 
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -56,7 +59,88 @@ func (r *GatewaySNIResourceModel) ToSharedSni() *shared.Sni {
 		Tags:        tags,
 		UpdatedAt:   updatedAt,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewaySNIResourceModel) ToOperationsCreateSniRequest(ctx context.Context) (*operations.CreateSniRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	sni, sniDiags := r.ToSharedSni(ctx)
+	diags.Append(sniDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateSniRequest{
+		ControlPlaneID: controlPlaneID,
+		Sni:            *sni,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewaySNIResourceModel) ToOperationsUpsertSniRequest(ctx context.Context) (*operations.UpsertSniRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var sniID string
+	sniID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	sni, sniDiags := r.ToSharedSni(ctx)
+	diags.Append(sniDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpsertSniRequest{
+		SNIID:          sniID,
+		ControlPlaneID: controlPlaneID,
+		Sni:            *sni,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewaySNIResourceModel) ToOperationsGetSniRequest(ctx context.Context) (*operations.GetSniRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var sniID string
+	sniID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetSniRequest{
+		SNIID:          sniID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewaySNIResourceModel) ToOperationsDeleteSniRequest(ctx context.Context) (*operations.DeleteSniRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var sniID string
+	sniID = r.ID.ValueString()
+
+	out := operations.DeleteSniRequest{
+		ControlPlaneID: controlPlaneID,
+		SNIID:          sniID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewaySNIResourceModel) RefreshFromSharedSni(ctx context.Context, resp *shared.Sni) diag.Diagnostics {

@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginJweDecryptResourceModel) ToSharedJweDecryptPlugin() *shared.JweDecryptPlugin {
+func (r *GatewayPluginJweDecryptResourceModel) ToSharedJweDecryptPlugin(ctx context.Context) (*shared.JweDecryptPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginJweDecryptResourceModel) ToSharedJweDecryptPlugin() *share
 	if r.Ordering != nil {
 		var after *shared.JweDecryptPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginJweDecryptResourceModel) ToSharedJweDecryptPlugin() *share
 		}
 		var before *shared.JweDecryptPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginJweDecryptResourceModel) ToSharedJweDecryptPlugin() *share
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -80,7 +83,7 @@ func (r *GatewayPluginJweDecryptResourceModel) ToSharedJweDecryptPlugin() *share
 		} else {
 			forwardHeaderName = nil
 		}
-		var keySets []string = []string{}
+		keySets := make([]string, 0, len(r.Config.KeySets))
 		for _, keySetsItem := range r.Config.KeySets {
 			keySets = append(keySets, keySetsItem.ValueString())
 		}
@@ -103,7 +106,7 @@ func (r *GatewayPluginJweDecryptResourceModel) ToSharedJweDecryptPlugin() *share
 			Strict:            strict,
 		}
 	}
-	var protocols []shared.JweDecryptPluginProtocols = []shared.JweDecryptPluginProtocols{}
+	protocols := make([]shared.JweDecryptPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.JweDecryptPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -144,7 +147,88 @@ func (r *GatewayPluginJweDecryptResourceModel) ToSharedJweDecryptPlugin() *share
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginJweDecryptResourceModel) ToOperationsCreateJwedecryptPluginRequest(ctx context.Context) (*operations.CreateJwedecryptPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	jweDecryptPlugin, jweDecryptPluginDiags := r.ToSharedJweDecryptPlugin(ctx)
+	diags.Append(jweDecryptPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateJwedecryptPluginRequest{
+		ControlPlaneID:   controlPlaneID,
+		JweDecryptPlugin: *jweDecryptPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginJweDecryptResourceModel) ToOperationsUpdateJwedecryptPluginRequest(ctx context.Context) (*operations.UpdateJwedecryptPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	jweDecryptPlugin, jweDecryptPluginDiags := r.ToSharedJweDecryptPlugin(ctx)
+	diags.Append(jweDecryptPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateJwedecryptPluginRequest{
+		PluginID:         pluginID,
+		ControlPlaneID:   controlPlaneID,
+		JweDecryptPlugin: *jweDecryptPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginJweDecryptResourceModel) ToOperationsGetJwedecryptPluginRequest(ctx context.Context) (*operations.GetJwedecryptPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetJwedecryptPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginJweDecryptResourceModel) ToOperationsDeleteJwedecryptPluginRequest(ctx context.Context) (*operations.DeleteJwedecryptPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteJwedecryptPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginJweDecryptResourceModel) RefreshFromSharedJweDecryptPlugin(ctx context.Context, resp *shared.JweDecryptPlugin) diag.Diagnostics {

@@ -13,7 +13,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
@@ -221,8 +220,13 @@ func (r *PortalResource) Create(ctx context.Context, req resource.CreateRequest,
 		return
 	}
 
-	request := *data.ToSharedCreatePortalRequest()
-	res, err := r.client.Portals.CreatePortal(ctx, request)
+	request, requestDiags := data.ToSharedCreatePortalRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res, err := r.client.Portals.CreatePortal(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -296,15 +300,13 @@ func (r *PortalResource) Update(ctx context.Context, req resource.UpdateRequest,
 		return
 	}
 
-	var portalID string
-	portalID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdatePortalRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	updatePortalRequest := *data.ToSharedUpdatePortalRequest()
-	request := operations.UpdatePortalRequest{
-		PortalID:            portalID,
-		UpdatePortalRequest: updatePortalRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Portals.UpdatePortal(ctx, request)
+	res, err := r.client.Portals.UpdatePortal(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -358,20 +360,13 @@ func (r *PortalResource) Delete(ctx context.Context, req resource.DeleteRequest,
 		return
 	}
 
-	var portalID string
-	portalID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeletePortalRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	force := new(operations.Force)
-	if !data.Force.IsUnknown() && !data.Force.IsNull() {
-		*force = operations.Force(data.Force.ValueString())
-	} else {
-		force = nil
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	request := operations.DeletePortalRequest{
-		PortalID: portalID,
-		Force:    force,
-	}
-	res, err := r.client.Portals.DeletePortal(ctx, request)
+	res, err := r.client.Portals.DeletePortal(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

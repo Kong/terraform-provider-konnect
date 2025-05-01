@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginRequestSizeLimitingResourceModel) ToSharedRequestSizeLimitingPlugin() *shared.RequestSizeLimitingPlugin {
+func (r *GatewayPluginRequestSizeLimitingResourceModel) ToSharedRequestSizeLimitingPlugin(ctx context.Context) (*shared.RequestSizeLimitingPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginRequestSizeLimitingResourceModel) ToSharedRequestSizeLimit
 	if r.Ordering != nil {
 		var after *shared.RequestSizeLimitingPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginRequestSizeLimitingResourceModel) ToSharedRequestSizeLimit
 		}
 		var before *shared.RequestSizeLimitingPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginRequestSizeLimitingResourceModel) ToSharedRequestSizeLimit
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -110,7 +113,7 @@ func (r *GatewayPluginRequestSizeLimitingResourceModel) ToSharedRequestSizeLimit
 			ID: id1,
 		}
 	}
-	var protocols []shared.RequestSizeLimitingPluginProtocols = []shared.RequestSizeLimitingPluginProtocols{}
+	protocols := make([]shared.RequestSizeLimitingPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.RequestSizeLimitingPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -152,7 +155,88 @@ func (r *GatewayPluginRequestSizeLimitingResourceModel) ToSharedRequestSizeLimit
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRequestSizeLimitingResourceModel) ToOperationsCreateRequestsizelimitingPluginRequest(ctx context.Context) (*operations.CreateRequestsizelimitingPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	requestSizeLimitingPlugin, requestSizeLimitingPluginDiags := r.ToSharedRequestSizeLimitingPlugin(ctx)
+	diags.Append(requestSizeLimitingPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateRequestsizelimitingPluginRequest{
+		ControlPlaneID:            controlPlaneID,
+		RequestSizeLimitingPlugin: *requestSizeLimitingPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRequestSizeLimitingResourceModel) ToOperationsUpdateRequestsizelimitingPluginRequest(ctx context.Context) (*operations.UpdateRequestsizelimitingPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	requestSizeLimitingPlugin, requestSizeLimitingPluginDiags := r.ToSharedRequestSizeLimitingPlugin(ctx)
+	diags.Append(requestSizeLimitingPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateRequestsizelimitingPluginRequest{
+		PluginID:                  pluginID,
+		ControlPlaneID:            controlPlaneID,
+		RequestSizeLimitingPlugin: *requestSizeLimitingPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRequestSizeLimitingResourceModel) ToOperationsGetRequestsizelimitingPluginRequest(ctx context.Context) (*operations.GetRequestsizelimitingPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetRequestsizelimitingPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRequestSizeLimitingResourceModel) ToOperationsDeleteRequestsizelimitingPluginRequest(ctx context.Context) (*operations.DeleteRequestsizelimitingPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteRequestsizelimitingPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginRequestSizeLimitingResourceModel) RefreshFromSharedRequestSizeLimitingPlugin(ctx context.Context, resp *shared.RequestSizeLimitingPlugin) diag.Diagnostics {

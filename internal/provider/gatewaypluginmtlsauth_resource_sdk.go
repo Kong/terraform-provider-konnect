@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginMtlsAuthResourceModel) ToSharedMtlsAuthPlugin() *shared.MtlsAuthPlugin {
+func (r *GatewayPluginMtlsAuthResourceModel) ToSharedMtlsAuthPlugin(ctx context.Context) (*shared.MtlsAuthPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToSharedMtlsAuthPlugin() *shared.Mt
 	if r.Ordering != nil {
 		var after *shared.MtlsAuthPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToSharedMtlsAuthPlugin() *shared.Mt
 		}
 		var before *shared.MtlsAuthPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToSharedMtlsAuthPlugin() *shared.Mt
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -92,7 +95,7 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToSharedMtlsAuthPlugin() *shared.Mt
 		} else {
 			authenticatedGroupBy = nil
 		}
-		var caCertificates []string = []string{}
+		caCertificates := make([]string, 0, len(r.Config.CaCertificates))
 		for _, caCertificatesItem := range r.Config.CaCertificates {
 			caCertificates = append(caCertificates, caCertificatesItem.ValueString())
 		}
@@ -108,7 +111,7 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToSharedMtlsAuthPlugin() *shared.Mt
 		} else {
 			certCacheTTL = nil
 		}
-		var consumerBy []shared.MtlsAuthPluginConsumerBy = []shared.MtlsAuthPluginConsumerBy{}
+		consumerBy := make([]shared.MtlsAuthPluginConsumerBy, 0, len(r.Config.ConsumerBy))
 		for _, consumerByItem := range r.Config.ConsumerBy {
 			consumerBy = append(consumerBy, shared.MtlsAuthPluginConsumerBy(consumerByItem.ValueString()))
 		}
@@ -185,7 +188,7 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToSharedMtlsAuthPlugin() *shared.Mt
 			SkipConsumerLookup:   skipConsumerLookup,
 		}
 	}
-	var protocols []shared.MtlsAuthPluginProtocols = []shared.MtlsAuthPluginProtocols{}
+	protocols := make([]shared.MtlsAuthPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.MtlsAuthPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -226,7 +229,88 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToSharedMtlsAuthPlugin() *shared.Mt
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsCreateMtlsauthPluginRequest(ctx context.Context) (*operations.CreateMtlsauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	mtlsAuthPlugin, mtlsAuthPluginDiags := r.ToSharedMtlsAuthPlugin(ctx)
+	diags.Append(mtlsAuthPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateMtlsauthPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		MtlsAuthPlugin: *mtlsAuthPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsUpdateMtlsauthPluginRequest(ctx context.Context) (*operations.UpdateMtlsauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	mtlsAuthPlugin, mtlsAuthPluginDiags := r.ToSharedMtlsAuthPlugin(ctx)
+	diags.Append(mtlsAuthPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateMtlsauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		MtlsAuthPlugin: *mtlsAuthPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsGetMtlsauthPluginRequest(ctx context.Context) (*operations.GetMtlsauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetMtlsauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsDeleteMtlsauthPluginRequest(ctx context.Context) (*operations.DeleteMtlsauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteMtlsauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginMtlsAuthResourceModel) RefreshFromSharedMtlsAuthPlugin(ctx context.Context, resp *shared.MtlsAuthPlugin) diag.Diagnostics {

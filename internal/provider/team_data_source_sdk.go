@@ -7,8 +7,22 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *TeamDataSourceModel) ToOperationsGetTeamRequest(ctx context.Context) (*operations.GetTeamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var teamID string
+	teamID = r.ID.ValueString()
+
+	out := operations.GetTeamRequest{
+		TeamID: teamID,
+	}
+
+	return &out, diags
+}
 
 func (r *TeamDataSourceModel) RefreshFromSharedTeam(ctx context.Context, resp *shared.Team) diag.Diagnostics {
 	var diags diag.Diagnostics

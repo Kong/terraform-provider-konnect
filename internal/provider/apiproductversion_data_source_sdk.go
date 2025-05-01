@@ -8,8 +8,26 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *APIProductVersionDataSourceModel) ToOperationsGetAPIProductVersionRequest(ctx context.Context) (*operations.GetAPIProductVersionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiProductID string
+	apiProductID = r.APIProductID.ValueString()
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.GetAPIProductVersionRequest{
+		APIProductID: apiProductID,
+		ID:           id,
+	}
+
+	return &out, diags
+}
 
 func (r *APIProductVersionDataSourceModel) RefreshFromSharedAPIProductVersion(ctx context.Context, resp *shared.APIProductVersion) diag.Diagnostics {
 	var diags diag.Diagnostics

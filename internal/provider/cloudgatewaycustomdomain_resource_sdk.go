@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *CloudGatewayCustomDomainResourceModel) ToSharedCreateCustomDomainRequest() *shared.CreateCustomDomainRequest {
+func (r *CloudGatewayCustomDomainResourceModel) ToSharedCreateCustomDomainRequest(ctx context.Context) (*shared.CreateCustomDomainRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
@@ -23,7 +26,34 @@ func (r *CloudGatewayCustomDomainResourceModel) ToSharedCreateCustomDomainReques
 		ControlPlaneGeo: controlPlaneGeo,
 		Domain:          domain,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *CloudGatewayCustomDomainResourceModel) ToOperationsGetCustomDomainRequest(ctx context.Context) (*operations.GetCustomDomainRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var customDomainID string
+	customDomainID = r.ID.ValueString()
+
+	out := operations.GetCustomDomainRequest{
+		CustomDomainID: customDomainID,
+	}
+
+	return &out, diags
+}
+
+func (r *CloudGatewayCustomDomainResourceModel) ToOperationsDeleteCustomDomainRequest(ctx context.Context) (*operations.DeleteCustomDomainRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var customDomainID string
+	customDomainID = r.ID.ValueString()
+
+	out := operations.DeleteCustomDomainRequest{
+		CustomDomainID: customDomainID,
+	}
+
+	return &out, diags
 }
 
 func (r *CloudGatewayCustomDomainResourceModel) RefreshFromSharedCustomDomain(ctx context.Context, resp *shared.CustomDomain) diag.Diagnostics {

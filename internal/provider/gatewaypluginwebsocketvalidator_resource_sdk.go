@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginWebsocketValidatorResourceModel) ToSharedWebsocketValidatorPlugin() *shared.WebsocketValidatorPlugin {
+func (r *GatewayPluginWebsocketValidatorResourceModel) ToSharedWebsocketValidatorPlugin(ctx context.Context) (*shared.WebsocketValidatorPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToSharedWebsocketValidato
 	if r.Ordering != nil {
 		var after *shared.WebsocketValidatorPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToSharedWebsocketValidato
 		}
 		var before *shared.WebsocketValidatorPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToSharedWebsocketValidato
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -149,7 +152,7 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToSharedWebsocketValidato
 			ID: id1,
 		}
 	}
-	var protocols []shared.WebsocketValidatorPluginProtocols = []shared.WebsocketValidatorPluginProtocols{}
+	protocols := make([]shared.WebsocketValidatorPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.WebsocketValidatorPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -191,7 +194,88 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToSharedWebsocketValidato
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsCreateWebsocketvalidatorPluginRequest(ctx context.Context) (*operations.CreateWebsocketvalidatorPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	websocketValidatorPlugin, websocketValidatorPluginDiags := r.ToSharedWebsocketValidatorPlugin(ctx)
+	diags.Append(websocketValidatorPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateWebsocketvalidatorPluginRequest{
+		ControlPlaneID:           controlPlaneID,
+		WebsocketValidatorPlugin: *websocketValidatorPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsUpdateWebsocketvalidatorPluginRequest(ctx context.Context) (*operations.UpdateWebsocketvalidatorPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	websocketValidatorPlugin, websocketValidatorPluginDiags := r.ToSharedWebsocketValidatorPlugin(ctx)
+	diags.Append(websocketValidatorPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateWebsocketvalidatorPluginRequest{
+		PluginID:                 pluginID,
+		ControlPlaneID:           controlPlaneID,
+		WebsocketValidatorPlugin: *websocketValidatorPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsGetWebsocketvalidatorPluginRequest(ctx context.Context) (*operations.GetWebsocketvalidatorPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetWebsocketvalidatorPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginWebsocketValidatorResourceModel) ToOperationsDeleteWebsocketvalidatorPluginRequest(ctx context.Context) (*operations.DeleteWebsocketvalidatorPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteWebsocketvalidatorPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginWebsocketValidatorResourceModel) RefreshFromSharedWebsocketValidatorPlugin(ctx context.Context, resp *shared.WebsocketValidatorPlugin) diag.Diagnostics {

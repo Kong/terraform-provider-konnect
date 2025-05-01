@@ -21,7 +21,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
@@ -284,15 +283,13 @@ func (r *GatewayPluginOauth2IntrospectionResource) Create(ctx context.Context, r
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateOauth2introspectionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	oauth2IntrospectionPlugin := *data.ToSharedOauth2IntrospectionPlugin()
-	request := operations.CreateOauth2introspectionPluginRequest{
-		ControlPlaneID:            controlPlaneID,
-		Oauth2IntrospectionPlugin: oauth2IntrospectionPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateOauth2introspectionPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateOauth2introspectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -346,17 +343,13 @@ func (r *GatewayPluginOauth2IntrospectionResource) Read(ctx context.Context, req
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetOauth2introspectionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetOauth2introspectionPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetOauth2introspectionPlugin(ctx, request)
+	res, err := r.client.Plugins.GetOauth2introspectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -404,19 +397,13 @@ func (r *GatewayPluginOauth2IntrospectionResource) Update(ctx context.Context, r
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateOauth2introspectionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	oauth2IntrospectionPlugin := *data.ToSharedOauth2IntrospectionPlugin()
-	request := operations.UpdateOauth2introspectionPluginRequest{
-		PluginID:                  pluginID,
-		ControlPlaneID:            controlPlaneID,
-		Oauth2IntrospectionPlugin: oauth2IntrospectionPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateOauth2introspectionPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateOauth2introspectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -470,17 +457,13 @@ func (r *GatewayPluginOauth2IntrospectionResource) Delete(ctx context.Context, r
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteOauth2introspectionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteOauth2introspectionPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteOauth2introspectionPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteOauth2introspectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

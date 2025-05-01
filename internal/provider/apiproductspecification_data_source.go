@@ -10,7 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -118,21 +117,13 @@ func (r *APIProductSpecificationDataSource) Read(ctx context.Context, req dataso
 		return
 	}
 
-	var apiProductID string
-	apiProductID = data.APIProductID.ValueString()
+	request, requestDiags := data.ToOperationsGetAPIProductVersionSpecRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var apiProductVersionID string
-	apiProductVersionID = data.APIProductVersionID.ValueString()
-
-	var specificationID string
-	specificationID = data.ID.ValueString()
-
-	request := operations.GetAPIProductVersionSpecRequest{
-		APIProductID:        apiProductID,
-		APIProductVersionID: apiProductVersionID,
-		SpecificationID:     specificationID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIProductVersionSpecification.GetAPIProductVersionSpec(ctx, request)
+	res, err := r.client.APIProductVersionSpecification.GetAPIProductVersionSpec(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -142,10 +133,6 @@ func (r *APIProductSpecificationDataSource) Read(ctx context.Context, req dataso
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
 		return
 	}
 	if res.StatusCode != 200 {

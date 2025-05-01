@@ -21,7 +21,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 )
 
@@ -449,15 +448,13 @@ func (r *GatewayPluginServiceProtectionResource) Create(ctx context.Context, req
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateServiceprotectionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	serviceProtectionPlugin := *data.ToSharedServiceProtectionPlugin()
-	request := operations.CreateServiceprotectionPluginRequest{
-		ControlPlaneID:          controlPlaneID,
-		ServiceProtectionPlugin: serviceProtectionPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateServiceprotectionPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateServiceprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -511,17 +508,13 @@ func (r *GatewayPluginServiceProtectionResource) Read(ctx context.Context, req r
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetServiceprotectionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetServiceprotectionPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetServiceprotectionPlugin(ctx, request)
+	res, err := r.client.Plugins.GetServiceprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -569,19 +562,13 @@ func (r *GatewayPluginServiceProtectionResource) Update(ctx context.Context, req
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateServiceprotectionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	serviceProtectionPlugin := *data.ToSharedServiceProtectionPlugin()
-	request := operations.UpdateServiceprotectionPluginRequest{
-		PluginID:                pluginID,
-		ControlPlaneID:          controlPlaneID,
-		ServiceProtectionPlugin: serviceProtectionPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateServiceprotectionPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateServiceprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -635,17 +622,13 @@ func (r *GatewayPluginServiceProtectionResource) Delete(ctx context.Context, req
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteServiceprotectionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteServiceprotectionPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteServiceprotectionPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteServiceprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

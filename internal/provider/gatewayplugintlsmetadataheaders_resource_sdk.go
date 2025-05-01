@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToSharedTLSMetadataHeadersPlugin() *shared.TLSMetadataHeadersPlugin {
+func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToSharedTLSMetadataHeadersPlugin(ctx context.Context) (*shared.TLSMetadataHeadersPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToSharedTLSMetadataHeader
 	if r.Ordering != nil {
 		var after *shared.TLSMetadataHeadersPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToSharedTLSMetadataHeader
 		}
 		var before *shared.TLSMetadataHeadersPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToSharedTLSMetadataHeader
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -119,7 +122,7 @@ func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToSharedTLSMetadataHeader
 			InjectClientCertDetails:         injectClientCertDetails,
 		}
 	}
-	var protocols []shared.TLSMetadataHeadersPluginProtocols = []shared.TLSMetadataHeadersPluginProtocols{}
+	protocols := make([]shared.TLSMetadataHeadersPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.TLSMetadataHeadersPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -160,7 +163,88 @@ func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToSharedTLSMetadataHeader
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToOperationsCreateTlsmetadataheadersPluginRequest(ctx context.Context) (*operations.CreateTlsmetadataheadersPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	tlsMetadataHeadersPlugin, tlsMetadataHeadersPluginDiags := r.ToSharedTLSMetadataHeadersPlugin(ctx)
+	diags.Append(tlsMetadataHeadersPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateTlsmetadataheadersPluginRequest{
+		ControlPlaneID:           controlPlaneID,
+		TLSMetadataHeadersPlugin: *tlsMetadataHeadersPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToOperationsUpdateTlsmetadataheadersPluginRequest(ctx context.Context) (*operations.UpdateTlsmetadataheadersPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	tlsMetadataHeadersPlugin, tlsMetadataHeadersPluginDiags := r.ToSharedTLSMetadataHeadersPlugin(ctx)
+	diags.Append(tlsMetadataHeadersPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateTlsmetadataheadersPluginRequest{
+		PluginID:                 pluginID,
+		ControlPlaneID:           controlPlaneID,
+		TLSMetadataHeadersPlugin: *tlsMetadataHeadersPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToOperationsGetTlsmetadataheadersPluginRequest(ctx context.Context) (*operations.GetTlsmetadataheadersPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetTlsmetadataheadersPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToOperationsDeleteTlsmetadataheadersPluginRequest(ctx context.Context) (*operations.DeleteTlsmetadataheadersPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteTlsmetadataheadersPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginTLSMetadataHeadersResourceModel) RefreshFromSharedTLSMetadataHeadersPlugin(ctx context.Context, resp *shared.TLSMetadataHeadersPlugin) diag.Diagnostics {

@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginStatsdAdvancedResourceModel) ToSharedStatsdAdvancedPlugin() *shared.StatsdAdvancedPlugin {
+func (r *GatewayPluginStatsdAdvancedResourceModel) ToSharedStatsdAdvancedPlugin(ctx context.Context) (*shared.StatsdAdvancedPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToSharedStatsdAdvancedPlugin(
 	if r.Ordering != nil {
 		var after *shared.StatsdAdvancedPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToSharedStatsdAdvancedPlugin(
 		}
 		var before *shared.StatsdAdvancedPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToSharedStatsdAdvancedPlugin(
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -74,7 +77,7 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToSharedStatsdAdvancedPlugin(
 	}
 	var config *shared.StatsdAdvancedPluginConfig
 	if r.Config != nil {
-		var allowStatusCodes []string = []string{}
+		allowStatusCodes := make([]string, 0, len(r.Config.AllowStatusCodes))
 		for _, allowStatusCodesItem := range r.Config.AllowStatusCodes {
 			allowStatusCodes = append(allowStatusCodes, allowStatusCodesItem.ValueString())
 		}
@@ -96,7 +99,7 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToSharedStatsdAdvancedPlugin(
 		} else {
 			hostnameInPrefix = nil
 		}
-		var metrics []shared.StatsdAdvancedPluginMetrics = []shared.StatsdAdvancedPluginMetrics{}
+		metrics := make([]shared.StatsdAdvancedPluginMetrics, 0, len(r.Config.Metrics))
 		for _, metricsItem := range r.Config.Metrics {
 			consumerIdentifier := new(shared.StatsdAdvancedPluginConsumerIdentifier)
 			if !metricsItem.ConsumerIdentifier.IsUnknown() && !metricsItem.ConsumerIdentifier.IsNull() {
@@ -257,7 +260,7 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToSharedStatsdAdvancedPlugin(
 			ID: id1,
 		}
 	}
-	var protocols []shared.StatsdAdvancedPluginProtocols = []shared.StatsdAdvancedPluginProtocols{}
+	protocols := make([]shared.StatsdAdvancedPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.StatsdAdvancedPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -299,7 +302,88 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToSharedStatsdAdvancedPlugin(
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsCreateStatsdadvancedPluginRequest(ctx context.Context) (*operations.CreateStatsdadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	statsdAdvancedPlugin, statsdAdvancedPluginDiags := r.ToSharedStatsdAdvancedPlugin(ctx)
+	diags.Append(statsdAdvancedPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateStatsdadvancedPluginRequest{
+		ControlPlaneID:       controlPlaneID,
+		StatsdAdvancedPlugin: *statsdAdvancedPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsUpdateStatsdadvancedPluginRequest(ctx context.Context) (*operations.UpdateStatsdadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	statsdAdvancedPlugin, statsdAdvancedPluginDiags := r.ToSharedStatsdAdvancedPlugin(ctx)
+	diags.Append(statsdAdvancedPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateStatsdadvancedPluginRequest{
+		PluginID:             pluginID,
+		ControlPlaneID:       controlPlaneID,
+		StatsdAdvancedPlugin: *statsdAdvancedPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsGetStatsdadvancedPluginRequest(ctx context.Context) (*operations.GetStatsdadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetStatsdadvancedPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginStatsdAdvancedResourceModel) ToOperationsDeleteStatsdadvancedPluginRequest(ctx context.Context) (*operations.DeleteStatsdadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteStatsdadvancedPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginStatsdAdvancedResourceModel) RefreshFromSharedStatsdAdvancedPlugin(ctx context.Context, resp *shared.StatsdAdvancedPlugin) diag.Diagnostics {

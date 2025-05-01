@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin() *shared.SessionPlugin {
+func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin(ctx context.Context) (*shared.SessionPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin() *shared.Sess
 	if r.Ordering != nil {
 		var after *shared.SessionPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin() *shared.Sess
 		}
 		var before *shared.SessionPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin() *shared.Sess
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -134,7 +137,7 @@ func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin() *shared.Sess
 		} else {
 			idlingTimeout = nil
 		}
-		var logoutMethods []shared.SessionPluginLogoutMethods = []shared.SessionPluginLogoutMethods{}
+		logoutMethods := make([]shared.SessionPluginLogoutMethods, 0, len(r.Config.LogoutMethods))
 		for _, logoutMethodsItem := range r.Config.LogoutMethods {
 			logoutMethods = append(logoutMethods, shared.SessionPluginLogoutMethods(logoutMethodsItem.ValueString()))
 		}
@@ -180,11 +183,11 @@ func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin() *shared.Sess
 		} else {
 			rememberRollingTimeout = nil
 		}
-		var requestHeaders []shared.RequestHeaders = []shared.RequestHeaders{}
+		requestHeaders := make([]shared.RequestHeaders, 0, len(r.Config.RequestHeaders))
 		for _, requestHeadersItem := range r.Config.RequestHeaders {
 			requestHeaders = append(requestHeaders, shared.RequestHeaders(requestHeadersItem.ValueString()))
 		}
-		var responseHeaders []shared.SessionPluginResponseHeaders = []shared.SessionPluginResponseHeaders{}
+		responseHeaders := make([]shared.SessionPluginResponseHeaders, 0, len(r.Config.ResponseHeaders))
 		for _, responseHeadersItem := range r.Config.ResponseHeaders {
 			responseHeaders = append(responseHeaders, shared.SessionPluginResponseHeaders(responseHeadersItem.ValueString()))
 		}
@@ -246,7 +249,7 @@ func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin() *shared.Sess
 			StoreMetadata:           storeMetadata,
 		}
 	}
-	var protocols []shared.SessionPluginProtocols = []shared.SessionPluginProtocols{}
+	protocols := make([]shared.SessionPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.SessionPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -287,7 +290,88 @@ func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin() *shared.Sess
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginSessionResourceModel) ToOperationsCreateSessionPluginRequest(ctx context.Context) (*operations.CreateSessionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	sessionPlugin, sessionPluginDiags := r.ToSharedSessionPlugin(ctx)
+	diags.Append(sessionPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateSessionPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		SessionPlugin:  *sessionPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginSessionResourceModel) ToOperationsUpdateSessionPluginRequest(ctx context.Context) (*operations.UpdateSessionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	sessionPlugin, sessionPluginDiags := r.ToSharedSessionPlugin(ctx)
+	diags.Append(sessionPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateSessionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		SessionPlugin:  *sessionPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginSessionResourceModel) ToOperationsGetSessionPluginRequest(ctx context.Context) (*operations.GetSessionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetSessionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginSessionResourceModel) ToOperationsDeleteSessionPluginRequest(ctx context.Context) (*operations.DeleteSessionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteSessionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(ctx context.Context, resp *shared.SessionPlugin) diag.Diagnostics {
