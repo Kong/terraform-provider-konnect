@@ -1,7 +1,14 @@
 # Changelog
 
+## 2.7.1
+> Released on 2025/05/01
+
+### Bug fixes
+
+* Fixed a bug in the `file_log` plugin `path` validation that disallowed `/dev/stdout` as a path
+
 ## 2.7.0  
-> Released on 2025/04/30
+> Released on 2025/05/01
 
 ### Features
 
