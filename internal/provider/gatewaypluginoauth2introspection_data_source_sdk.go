@@ -8,8 +8,26 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *GatewayPluginOauth2IntrospectionDataSourceModel) ToOperationsGetOauth2introspectionPluginRequest(ctx context.Context) (*operations.GetOauth2introspectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetOauth2introspectionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
 
 func (r *GatewayPluginOauth2IntrospectionDataSourceModel) RefreshFromSharedOauth2IntrospectionPlugin(ctx context.Context, resp *shared.Oauth2IntrospectionPlugin) diag.Diagnostics {
 	var diags diag.Diagnostics

@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitingAdvancedPlugin() *shared.AiRateLimitingAdvancedPlugin {
+func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitingAdvancedPlugin(ctx context.Context) (*shared.AiRateLimitingAdvancedPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 	if r.Ordering != nil {
 		var after *shared.AiRateLimitingAdvancedPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 		}
 		var before *shared.AiRateLimitingAdvancedPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -128,14 +131,14 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 		} else {
 			llmFormat = nil
 		}
-		var llmProviders []shared.LlmProviders = []shared.LlmProviders{}
+		llmProviders := make([]shared.LlmProviders, 0, len(r.Config.LlmProviders))
 		for _, llmProvidersItem := range r.Config.LlmProviders {
-			var limit []float64 = []float64{}
+			limit := make([]float64, 0, len(llmProvidersItem.Limit))
 			for _, limitItem := range llmProvidersItem.Limit {
 				limit = append(limit, limitItem.ValueFloat64())
 			}
 			name := shared.AiRateLimitingAdvancedPluginName(llmProvidersItem.Name.ValueString())
-			var windowSize []float64 = []float64{}
+			windowSize := make([]float64, 0, len(llmProvidersItem.WindowSize))
 			for _, windowSizeItem := range llmProvidersItem.WindowSize {
 				windowSize = append(windowSize, windowSizeItem.ValueFloat64())
 			}
@@ -159,7 +162,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 			} else {
 				clusterMaxRedirections = nil
 			}
-			var clusterNodes []shared.ClusterNodes = []shared.ClusterNodes{}
+			clusterNodes := make([]shared.ClusterNodes, 0, len(r.Config.Redis.ClusterNodes))
 			for _, clusterNodesItem := range r.Config.Redis.ClusterNodes {
 				ip := new(string)
 				if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
@@ -244,7 +247,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 			} else {
 				sentinelMaster = nil
 			}
-			var sentinelNodes []shared.SentinelNodes = []shared.SentinelNodes{}
+			sentinelNodes := make([]shared.SentinelNodes, 0, len(r.Config.Redis.SentinelNodes))
 			for _, sentinelNodesItem := range r.Config.Redis.SentinelNodes {
 				host1 := new(string)
 				if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
@@ -410,7 +413,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 			ID: id2,
 		}
 	}
-	var protocols []shared.AiRateLimitingAdvancedPluginProtocols = []shared.AiRateLimitingAdvancedPluginProtocols{}
+	protocols := make([]shared.AiRateLimitingAdvancedPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.AiRateLimitingAdvancedPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -453,7 +456,88 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 		Route:         route,
 		Service:       service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsCreateAiratelimitingadvancedPluginRequest(ctx context.Context) (*operations.CreateAiratelimitingadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiRateLimitingAdvancedPlugin, aiRateLimitingAdvancedPluginDiags := r.ToSharedAiRateLimitingAdvancedPlugin(ctx)
+	diags.Append(aiRateLimitingAdvancedPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateAiratelimitingadvancedPluginRequest{
+		ControlPlaneID:               controlPlaneID,
+		AiRateLimitingAdvancedPlugin: *aiRateLimitingAdvancedPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsUpdateAiratelimitingadvancedPluginRequest(ctx context.Context) (*operations.UpdateAiratelimitingadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiRateLimitingAdvancedPlugin, aiRateLimitingAdvancedPluginDiags := r.ToSharedAiRateLimitingAdvancedPlugin(ctx)
+	diags.Append(aiRateLimitingAdvancedPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAiratelimitingadvancedPluginRequest{
+		PluginID:                     pluginID,
+		ControlPlaneID:               controlPlaneID,
+		AiRateLimitingAdvancedPlugin: *aiRateLimitingAdvancedPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsGetAiratelimitingadvancedPluginRequest(ctx context.Context) (*operations.GetAiratelimitingadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetAiratelimitingadvancedPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToOperationsDeleteAiratelimitingadvancedPluginRequest(ctx context.Context) (*operations.DeleteAiratelimitingadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteAiratelimitingadvancedPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) RefreshFromSharedAiRateLimitingAdvancedPlugin(ctx context.Context, resp *shared.AiRateLimitingAdvancedPlugin) diag.Diagnostics {

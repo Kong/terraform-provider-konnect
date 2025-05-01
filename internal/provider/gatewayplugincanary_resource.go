@@ -22,7 +22,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -299,15 +298,13 @@ func (r *GatewayPluginCanaryResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateCanaryPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	canaryPlugin := *data.ToSharedCanaryPlugin()
-	request := operations.CreateCanaryPluginRequest{
-		ControlPlaneID: controlPlaneID,
-		CanaryPlugin:   canaryPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateCanaryPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateCanaryPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -361,17 +358,13 @@ func (r *GatewayPluginCanaryResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetCanaryPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetCanaryPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetCanaryPlugin(ctx, request)
+	res, err := r.client.Plugins.GetCanaryPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -419,19 +412,13 @@ func (r *GatewayPluginCanaryResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateCanaryPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	canaryPlugin := *data.ToSharedCanaryPlugin()
-	request := operations.UpdateCanaryPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-		CanaryPlugin:   canaryPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateCanaryPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateCanaryPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -485,17 +472,13 @@ func (r *GatewayPluginCanaryResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteCanaryPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteCanaryPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteCanaryPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteCanaryPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

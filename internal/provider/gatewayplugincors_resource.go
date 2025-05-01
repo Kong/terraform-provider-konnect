@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -253,15 +252,13 @@ func (r *GatewayPluginCorsResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateCorsPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	corsPlugin := *data.ToSharedCorsPlugin()
-	request := operations.CreateCorsPluginRequest{
-		ControlPlaneID: controlPlaneID,
-		CorsPlugin:     corsPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateCorsPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateCorsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -315,17 +312,13 @@ func (r *GatewayPluginCorsResource) Read(ctx context.Context, req resource.ReadR
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetCorsPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetCorsPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetCorsPlugin(ctx, request)
+	res, err := r.client.Plugins.GetCorsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -373,19 +366,13 @@ func (r *GatewayPluginCorsResource) Update(ctx context.Context, req resource.Upd
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateCorsPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	corsPlugin := *data.ToSharedCorsPlugin()
-	request := operations.UpdateCorsPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-		CorsPlugin:     corsPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateCorsPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateCorsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -439,17 +426,13 @@ func (r *GatewayPluginCorsResource) Delete(ctx context.Context, req resource.Del
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteCorsPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteCorsPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteCorsPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteCorsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

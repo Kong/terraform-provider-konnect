@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginInjectionProtectionResourceModel) ToSharedInjectionProtectionPlugin() *shared.InjectionProtectionPlugin {
+func (r *GatewayPluginInjectionProtectionResourceModel) ToSharedInjectionProtectionPlugin(ctx context.Context) (*shared.InjectionProtectionPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToSharedInjectionProtect
 	if r.Ordering != nil {
 		var after *shared.InjectionProtectionPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToSharedInjectionProtect
 		}
 		var before *shared.InjectionProtectionPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToSharedInjectionProtect
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -74,7 +77,7 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToSharedInjectionProtect
 	}
 	var config *shared.InjectionProtectionPluginConfig
 	if r.Config != nil {
-		var customInjections []shared.CustomInjections = []shared.CustomInjections{}
+		customInjections := make([]shared.CustomInjections, 0, len(r.Config.CustomInjections))
 		for _, customInjectionsItem := range r.Config.CustomInjections {
 			var name string
 			name = customInjectionsItem.Name.ValueString()
@@ -105,11 +108,11 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToSharedInjectionProtect
 		} else {
 			errorStatusCode = nil
 		}
-		var injectionTypes []shared.InjectionTypes = []shared.InjectionTypes{}
+		injectionTypes := make([]shared.InjectionTypes, 0, len(r.Config.InjectionTypes))
 		for _, injectionTypesItem := range r.Config.InjectionTypes {
 			injectionTypes = append(injectionTypes, shared.InjectionTypes(injectionTypesItem.ValueString()))
 		}
-		var locations []shared.Locations = []shared.Locations{}
+		locations := make([]shared.Locations, 0, len(r.Config.Locations))
 		for _, locationsItem := range r.Config.Locations {
 			locations = append(locations, shared.Locations(locationsItem.ValueString()))
 		}
@@ -122,7 +125,7 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToSharedInjectionProtect
 			Locations:        locations,
 		}
 	}
-	var protocols []shared.InjectionProtectionPluginProtocols = []shared.InjectionProtectionPluginProtocols{}
+	protocols := make([]shared.InjectionProtectionPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.InjectionProtectionPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -163,7 +166,88 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToSharedInjectionProtect
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsCreateInjectionprotectionPluginRequest(ctx context.Context) (*operations.CreateInjectionprotectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	injectionProtectionPlugin, injectionProtectionPluginDiags := r.ToSharedInjectionProtectionPlugin(ctx)
+	diags.Append(injectionProtectionPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateInjectionprotectionPluginRequest{
+		ControlPlaneID:            controlPlaneID,
+		InjectionProtectionPlugin: *injectionProtectionPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsUpdateInjectionprotectionPluginRequest(ctx context.Context) (*operations.UpdateInjectionprotectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	injectionProtectionPlugin, injectionProtectionPluginDiags := r.ToSharedInjectionProtectionPlugin(ctx)
+	diags.Append(injectionProtectionPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateInjectionprotectionPluginRequest{
+		PluginID:                  pluginID,
+		ControlPlaneID:            controlPlaneID,
+		InjectionProtectionPlugin: *injectionProtectionPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsGetInjectionprotectionPluginRequest(ctx context.Context) (*operations.GetInjectionprotectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetInjectionprotectionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsDeleteInjectionprotectionPluginRequest(ctx context.Context) (*operations.DeleteInjectionprotectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteInjectionprotectionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginInjectionProtectionResourceModel) RefreshFromSharedInjectionProtectionPlugin(ctx context.Context, resp *shared.InjectionProtectionPlugin) diag.Diagnostics {

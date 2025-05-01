@@ -21,7 +21,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
@@ -265,15 +264,13 @@ func (r *GatewayPluginTCPLogResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateTcplogPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	tcpLogPlugin := *data.ToSharedTCPLogPlugin()
-	request := operations.CreateTcplogPluginRequest{
-		ControlPlaneID: controlPlaneID,
-		TCPLogPlugin:   tcpLogPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateTcplogPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateTcplogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -327,17 +324,13 @@ func (r *GatewayPluginTCPLogResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetTcplogPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetTcplogPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetTcplogPlugin(ctx, request)
+	res, err := r.client.Plugins.GetTcplogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -385,19 +378,13 @@ func (r *GatewayPluginTCPLogResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateTcplogPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	tcpLogPlugin := *data.ToSharedTCPLogPlugin()
-	request := operations.UpdateTcplogPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-		TCPLogPlugin:   tcpLogPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateTcplogPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateTcplogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -451,17 +438,13 @@ func (r *GatewayPluginTCPLogResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteTcplogPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteTcplogPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteTcplogPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteTcplogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

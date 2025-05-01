@@ -24,7 +24,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -173,19 +172,13 @@ func (r *GatewayACLResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateACLWithConsumerRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var consumerID string
-	consumerID = data.ConsumerID.ValueString()
-
-	aclWithoutParents := *data.ToSharedACLWithoutParents()
-	request := operations.CreateACLWithConsumerRequest{
-		ControlPlaneID:    controlPlaneID,
-		ConsumerID:        consumerID,
-		ACLWithoutParents: aclWithoutParents,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.ACLs.CreateACLWithConsumer(ctx, request)
+	res, err := r.client.ACLs.CreateACLWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -239,21 +232,13 @@ func (r *GatewayACLResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsGetACLWithConsumerRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var consumerID string
-	consumerID = data.ConsumerID.ValueString()
-
-	var aclID string
-	aclID = data.ID.ValueString()
-
-	request := operations.GetACLWithConsumerRequest{
-		ControlPlaneID: controlPlaneID,
-		ConsumerID:     consumerID,
-		ACLID:          aclID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.ACLs.GetACLWithConsumer(ctx, request)
+	res, err := r.client.ACLs.GetACLWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -325,21 +310,13 @@ func (r *GatewayACLResource) Delete(ctx context.Context, req resource.DeleteRequ
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteACLWithConsumerRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var consumerID string
-	consumerID = data.ConsumerID.ValueString()
-
-	var aclID string
-	aclID = data.ID.ValueString()
-
-	request := operations.DeleteACLWithConsumerRequest{
-		ControlPlaneID: controlPlaneID,
-		ConsumerID:     consumerID,
-		ACLID:          aclID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.ACLs.DeleteACLWithConsumer(ctx, request)
+	res, err := r.client.ACLs.DeleteACLWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

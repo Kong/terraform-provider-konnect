@@ -22,7 +22,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
@@ -853,15 +852,13 @@ func (r *GatewayPluginRequestCalloutResource) Create(ctx context.Context, req re
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateRequestcalloutPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	requestCalloutPlugin := *data.ToSharedRequestCalloutPlugin()
-	request := operations.CreateRequestcalloutPluginRequest{
-		ControlPlaneID:       controlPlaneID,
-		RequestCalloutPlugin: requestCalloutPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateRequestcalloutPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateRequestcalloutPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -915,17 +912,13 @@ func (r *GatewayPluginRequestCalloutResource) Read(ctx context.Context, req reso
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetRequestcalloutPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetRequestcalloutPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetRequestcalloutPlugin(ctx, request)
+	res, err := r.client.Plugins.GetRequestcalloutPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -973,19 +966,13 @@ func (r *GatewayPluginRequestCalloutResource) Update(ctx context.Context, req re
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateRequestcalloutPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	requestCalloutPlugin := *data.ToSharedRequestCalloutPlugin()
-	request := operations.UpdateRequestcalloutPluginRequest{
-		PluginID:             pluginID,
-		ControlPlaneID:       controlPlaneID,
-		RequestCalloutPlugin: requestCalloutPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateRequestcalloutPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateRequestcalloutPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1039,17 +1026,13 @@ func (r *GatewayPluginRequestCalloutResource) Delete(ctx context.Context, req re
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteRequestcalloutPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteRequestcalloutPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteRequestcalloutPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteRequestcalloutPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

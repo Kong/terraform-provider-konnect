@@ -8,10 +8,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *APIProductResourceModel) ToSharedCreateAPIProductDTO() *shared.CreateAPIProductDTO {
+func (r *APIProductResourceModel) ToSharedCreateAPIProductDTO(ctx context.Context) (*shared.CreateAPIProductDTO, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var name string
 	name = r.Name.ValueString()
 
@@ -38,7 +41,7 @@ func (r *APIProductResourceModel) ToSharedCreateAPIProductDTO() *shared.CreateAP
 
 		publicLabels[publicLabelsKey] = publicLabelsInst
 	}
-	var portalIds []string = []string{}
+	portalIds := make([]string, 0, len(r.PortalIds))
 	for _, portalIdsItem := range r.PortalIds {
 		portalIds = append(portalIds, portalIdsItem.ValueString())
 	}
@@ -49,7 +52,105 @@ func (r *APIProductResourceModel) ToSharedCreateAPIProductDTO() *shared.CreateAP
 		PublicLabels: publicLabels,
 		PortalIds:    portalIds,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *APIProductResourceModel) ToSharedUpdateAPIProductDTO(ctx context.Context) (*shared.UpdateAPIProductDTO, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
+	labels := make(map[string]*string)
+	for labelsKey, labelsValue := range r.Labels {
+		labelsInst := new(string)
+		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
+			*labelsInst = labelsValue.ValueString()
+		} else {
+			labelsInst = nil
+		}
+		labels[labelsKey] = labelsInst
+	}
+	publicLabels := make(map[string]*string)
+	for publicLabelsKey, publicLabelsValue := range r.PublicLabels {
+		publicLabelsInst := new(string)
+		if !publicLabelsValue.IsUnknown() && !publicLabelsValue.IsNull() {
+			*publicLabelsInst = publicLabelsValue.ValueString()
+		} else {
+			publicLabelsInst = nil
+		}
+		publicLabels[publicLabelsKey] = publicLabelsInst
+	}
+	portalIds := make([]string, 0, len(r.PortalIds))
+	for _, portalIdsItem := range r.PortalIds {
+		portalIds = append(portalIds, portalIdsItem.ValueString())
+	}
+	out := shared.UpdateAPIProductDTO{
+		Name:         name,
+		Description:  description,
+		Labels:       labels,
+		PublicLabels: publicLabels,
+		PortalIds:    portalIds,
+	}
+
+	return &out, diags
+}
+
+func (r *APIProductResourceModel) ToOperationsUpdateAPIProductRequest(ctx context.Context) (*operations.UpdateAPIProductRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	updateAPIProductDTO, updateAPIProductDTODiags := r.ToSharedUpdateAPIProductDTO(ctx)
+	diags.Append(updateAPIProductDTODiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAPIProductRequest{
+		ID:                  id,
+		UpdateAPIProductDTO: *updateAPIProductDTO,
+	}
+
+	return &out, diags
+}
+
+func (r *APIProductResourceModel) ToOperationsGetAPIProductRequest(ctx context.Context) (*operations.GetAPIProductRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.GetAPIProductRequest{
+		ID: id,
+	}
+
+	return &out, diags
+}
+
+func (r *APIProductResourceModel) ToOperationsDeleteAPIProductRequest(ctx context.Context) (*operations.DeleteAPIProductRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.DeleteAPIProductRequest{
+		ID: id,
+	}
+
+	return &out, diags
 }
 
 func (r *APIProductResourceModel) RefreshFromSharedAPIProduct(ctx context.Context, resp *shared.APIProduct) diag.Diagnostics {
@@ -96,51 +197,4 @@ func (r *APIProductResourceModel) RefreshFromSharedAPIProduct(ctx context.Contex
 	}
 
 	return diags
-}
-
-func (r *APIProductResourceModel) ToSharedUpdateAPIProductDTO() *shared.UpdateAPIProductDTO {
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
-	}
-	description := new(string)
-	if !r.Description.IsUnknown() && !r.Description.IsNull() {
-		*description = r.Description.ValueString()
-	} else {
-		description = nil
-	}
-	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
-		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
-		} else {
-			labelsInst = nil
-		}
-		labels[labelsKey] = labelsInst
-	}
-	publicLabels := make(map[string]*string)
-	for publicLabelsKey, publicLabelsValue := range r.PublicLabels {
-		publicLabelsInst := new(string)
-		if !publicLabelsValue.IsUnknown() && !publicLabelsValue.IsNull() {
-			*publicLabelsInst = publicLabelsValue.ValueString()
-		} else {
-			publicLabelsInst = nil
-		}
-		publicLabels[publicLabelsKey] = publicLabelsInst
-	}
-	var portalIds []string = []string{}
-	for _, portalIdsItem := range r.PortalIds {
-		portalIds = append(portalIds, portalIdsItem.ValueString())
-	}
-	out := shared.UpdateAPIProductDTO{
-		Name:         name,
-		Description:  description,
-		Labels:       labels,
-		PublicLabels: publicLabels,
-		PortalIds:    portalIds,
-	}
-	return &out
 }

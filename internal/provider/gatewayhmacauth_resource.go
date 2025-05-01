@@ -24,7 +24,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -183,19 +182,13 @@ func (r *GatewayHMACAuthResource) Create(ctx context.Context, req resource.Creat
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateHmacAuthWithConsumerRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var consumerID string
-	consumerID = data.ConsumerID.ValueString()
-
-	hmacAuthWithoutParents := *data.ToSharedHMACAuthWithoutParents()
-	request := operations.CreateHmacAuthWithConsumerRequest{
-		ControlPlaneID:         controlPlaneID,
-		ConsumerID:             consumerID,
-		HMACAuthWithoutParents: hmacAuthWithoutParents,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.HMACAuthCredentials.CreateHmacAuthWithConsumer(ctx, request)
+	res, err := r.client.HMACAuthCredentials.CreateHmacAuthWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -249,21 +242,13 @@ func (r *GatewayHMACAuthResource) Read(ctx context.Context, req resource.ReadReq
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsGetHmacAuthWithConsumerRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var consumerID string
-	consumerID = data.ConsumerID.ValueString()
-
-	var hmacAuthID string
-	hmacAuthID = data.ID.ValueString()
-
-	request := operations.GetHmacAuthWithConsumerRequest{
-		ControlPlaneID: controlPlaneID,
-		ConsumerID:     consumerID,
-		HMACAuthID:     hmacAuthID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.HMACAuthCredentials.GetHmacAuthWithConsumer(ctx, request)
+	res, err := r.client.HMACAuthCredentials.GetHmacAuthWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -335,21 +320,13 @@ func (r *GatewayHMACAuthResource) Delete(ctx context.Context, req resource.Delet
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteHmacAuthWithConsumerRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var consumerID string
-	consumerID = data.ConsumerID.ValueString()
-
-	var hmacAuthID string
-	hmacAuthID = data.ID.ValueString()
-
-	request := operations.DeleteHmacAuthWithConsumerRequest{
-		ControlPlaneID: controlPlaneID,
-		ConsumerID:     consumerID,
-		HMACAuthID:     hmacAuthID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.HMACAuthCredentials.DeleteHmacAuthWithConsumer(ctx, request)
+	res, err := r.client.HMACAuthCredentials.DeleteHmacAuthWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

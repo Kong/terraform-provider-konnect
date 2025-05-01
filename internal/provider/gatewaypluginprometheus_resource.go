@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -254,15 +253,13 @@ func (r *GatewayPluginPrometheusResource) Create(ctx context.Context, req resour
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreatePrometheusPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	prometheusPlugin := *data.ToSharedPrometheusPlugin()
-	request := operations.CreatePrometheusPluginRequest{
-		ControlPlaneID:   controlPlaneID,
-		PrometheusPlugin: prometheusPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreatePrometheusPlugin(ctx, request)
+	res, err := r.client.Plugins.CreatePrometheusPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -316,17 +313,13 @@ func (r *GatewayPluginPrometheusResource) Read(ctx context.Context, req resource
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetPrometheusPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetPrometheusPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetPrometheusPlugin(ctx, request)
+	res, err := r.client.Plugins.GetPrometheusPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -374,19 +367,13 @@ func (r *GatewayPluginPrometheusResource) Update(ctx context.Context, req resour
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdatePrometheusPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	prometheusPlugin := *data.ToSharedPrometheusPlugin()
-	request := operations.UpdatePrometheusPluginRequest{
-		PluginID:         pluginID,
-		ControlPlaneID:   controlPlaneID,
-		PrometheusPlugin: prometheusPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdatePrometheusPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdatePrometheusPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -440,17 +427,13 @@ func (r *GatewayPluginPrometheusResource) Delete(ctx context.Context, req resour
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeletePrometheusPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeletePrometheusPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeletePrometheusPlugin(ctx, request)
+	res, err := r.client.Plugins.DeletePrometheusPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

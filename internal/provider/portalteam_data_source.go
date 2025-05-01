@@ -10,7 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -108,17 +107,13 @@ func (r *PortalTeamDataSource) Read(ctx context.Context, req datasource.ReadRequ
 		return
 	}
 
-	var teamID string
-	teamID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetPortalTeamRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
-
-	request := operations.GetPortalTeamRequest{
-		TeamID:   teamID,
-		PortalID: portalID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalTeams.GetPortalTeam(ctx, request)
+	res, err := r.client.PortalTeams.GetPortalTeam(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -128,10 +123,6 @@ func (r *PortalTeamDataSource) Read(ctx context.Context, req datasource.ReadRequ
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
 		return
 	}
 	if res.StatusCode != 200 {

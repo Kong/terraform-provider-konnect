@@ -7,8 +7,22 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *CloudGatewayCustomDomainDataSourceModel) ToOperationsGetCustomDomainRequest(ctx context.Context) (*operations.GetCustomDomainRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var customDomainID string
+	customDomainID = r.ID.ValueString()
+
+	out := operations.GetCustomDomainRequest{
+		CustomDomainID: customDomainID,
+	}
+
+	return &out, diags
+}
 
 func (r *CloudGatewayCustomDomainDataSourceModel) RefreshFromSharedCustomDomain(ctx context.Context, resp *shared.CustomDomain) diag.Diagnostics {
 	var diags diag.Diagnostics

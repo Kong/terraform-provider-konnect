@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginStandardWebhooksResourceModel) ToSharedStandardWebhooksPlugin() *shared.StandardWebhooksPlugin {
+func (r *GatewayPluginStandardWebhooksResourceModel) ToSharedStandardWebhooksPlugin(ctx context.Context) (*shared.StandardWebhooksPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToSharedStandardWebhooksPlu
 	if r.Ordering != nil {
 		var after *shared.StandardWebhooksPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToSharedStandardWebhooksPlu
 		}
 		var before *shared.StandardWebhooksPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToSharedStandardWebhooksPlu
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -103,7 +106,7 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToSharedStandardWebhooksPlu
 			ID: id1,
 		}
 	}
-	var protocols []shared.StandardWebhooksPluginProtocols = []shared.StandardWebhooksPluginProtocols{}
+	protocols := make([]shared.StandardWebhooksPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.StandardWebhooksPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -145,7 +148,88 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToSharedStandardWebhooksPlu
 		Route:         route,
 		Service:       service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsCreateStandardwebhooksPluginRequest(ctx context.Context) (*operations.CreateStandardwebhooksPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	standardWebhooksPlugin, standardWebhooksPluginDiags := r.ToSharedStandardWebhooksPlugin(ctx)
+	diags.Append(standardWebhooksPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateStandardwebhooksPluginRequest{
+		ControlPlaneID:         controlPlaneID,
+		StandardWebhooksPlugin: *standardWebhooksPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsUpdateStandardwebhooksPluginRequest(ctx context.Context) (*operations.UpdateStandardwebhooksPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	standardWebhooksPlugin, standardWebhooksPluginDiags := r.ToSharedStandardWebhooksPlugin(ctx)
+	diags.Append(standardWebhooksPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateStandardwebhooksPluginRequest{
+		PluginID:               pluginID,
+		ControlPlaneID:         controlPlaneID,
+		StandardWebhooksPlugin: *standardWebhooksPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsGetStandardwebhooksPluginRequest(ctx context.Context) (*operations.GetStandardwebhooksPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetStandardwebhooksPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsDeleteStandardwebhooksPluginRequest(ctx context.Context) (*operations.DeleteStandardwebhooksPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteStandardwebhooksPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginStandardWebhooksResourceModel) RefreshFromSharedStandardWebhooksPlugin(ctx context.Context, resp *shared.StandardWebhooksPlugin) diag.Diagnostics {

@@ -7,8 +7,26 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *GatewayUpstreamDataSourceModel) ToOperationsGetUpstreamRequest(ctx context.Context) (*operations.GetUpstreamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var upstreamID string
+	upstreamID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetUpstreamRequest{
+		UpstreamID:     upstreamID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
 
 func (r *GatewayUpstreamDataSourceModel) RefreshFromSharedUpstream(ctx context.Context, resp *shared.Upstream) diag.Diagnostics {
 	var diags diag.Diagnostics

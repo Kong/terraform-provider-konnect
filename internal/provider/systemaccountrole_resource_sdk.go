@@ -6,10 +6,13 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *SystemAccountRoleResourceModel) ToSharedAssignRole() *shared.AssignRole {
+func (r *SystemAccountRoleResourceModel) ToSharedAssignRole(ctx context.Context) (*shared.AssignRole, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	roleName := new(shared.RoleName)
 	if !r.RoleName.IsUnknown() && !r.RoleName.IsNull() {
 		*roleName = shared.RoleName(r.RoleName.ValueString())
@@ -40,7 +43,46 @@ func (r *SystemAccountRoleResourceModel) ToSharedAssignRole() *shared.AssignRole
 		EntityTypeName: entityTypeName,
 		EntityRegion:   entityRegion,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *SystemAccountRoleResourceModel) ToOperationsPostSystemAccountsAccountIDAssignedRolesRequest(ctx context.Context) (*operations.PostSystemAccountsAccountIDAssignedRolesRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var accountID string
+	accountID = r.AccountID.ValueString()
+
+	assignRole, assignRoleDiags := r.ToSharedAssignRole(ctx)
+	diags.Append(assignRoleDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PostSystemAccountsAccountIDAssignedRolesRequest{
+		AccountID:  accountID,
+		AssignRole: assignRole,
+	}
+
+	return &out, diags
+}
+
+func (r *SystemAccountRoleResourceModel) ToOperationsDeleteSystemAccountsAccountIDAssignedRolesRoleIDRequest(ctx context.Context) (*operations.DeleteSystemAccountsAccountIDAssignedRolesRoleIDRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var accountID string
+	accountID = r.AccountID.ValueString()
+
+	var roleID string
+	roleID = r.ID.ValueString()
+
+	out := operations.DeleteSystemAccountsAccountIDAssignedRolesRoleIDRequest{
+		AccountID: accountID,
+		RoleID:    roleID,
+	}
+
+	return &out, diags
 }
 
 func (r *SystemAccountRoleResourceModel) RefreshFromSharedAssignedRole(ctx context.Context, resp *shared.AssignedRole) diag.Diagnostics {

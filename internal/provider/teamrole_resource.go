@@ -15,7 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -199,15 +198,13 @@ func (r *TeamRoleResource) Create(ctx context.Context, req resource.CreateReques
 		return
 	}
 
-	var teamID string
-	teamID = data.TeamID.ValueString()
+	request, requestDiags := data.ToOperationsTeamsAssignRoleRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	assignRole := data.ToSharedAssignRole()
-	request := operations.TeamsAssignRoleRequest{
-		TeamID:     teamID,
-		AssignRole: assignRole,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Roles.TeamsAssignRole(ctx, request)
+	res, err := r.client.Roles.TeamsAssignRole(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -305,17 +302,13 @@ func (r *TeamRoleResource) Delete(ctx context.Context, req resource.DeleteReques
 		return
 	}
 
-	var teamID string
-	teamID = data.TeamID.ValueString()
+	request, requestDiags := data.ToOperationsTeamsRemoveRoleRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var roleID string
-	roleID = data.ID.ValueString()
-
-	request := operations.TeamsRemoveRoleRequest{
-		TeamID: teamID,
-		RoleID: roleID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Roles.TeamsRemoveRole(ctx, request)
+	res, err := r.client.Roles.TeamsRemoveRole(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

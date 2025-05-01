@@ -8,10 +8,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *CloudGatewayConfigurationResourceModel) ToSharedCreateConfigurationRequest() *shared.CreateConfigurationRequest {
+func (r *CloudGatewayConfigurationResourceModel) ToSharedCreateConfigurationRequest(ctx context.Context) (*shared.CreateConfigurationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
@@ -19,7 +22,7 @@ func (r *CloudGatewayConfigurationResourceModel) ToSharedCreateConfigurationRequ
 	var version string
 	version = r.Version.ValueString()
 
-	var dataplaneGroups []shared.CreateConfigurationDataPlaneGroup = []shared.CreateConfigurationDataPlaneGroup{}
+	dataplaneGroups := make([]shared.CreateConfigurationDataPlaneGroup, 0, len(r.DataplaneGroups))
 	for _, dataplaneGroupsItem := range r.DataplaneGroups {
 		provider := shared.ProviderName(dataplaneGroupsItem.Provider.ValueString())
 		var region string
@@ -70,7 +73,7 @@ func (r *CloudGatewayConfigurationResourceModel) ToSharedCreateConfigurationRequ
 				ConfigurationDataPlaneGroupAutoscaleAutopilot: configurationDataPlaneGroupAutoscaleAutopilot,
 			}
 		}
-		var environment []shared.ConfigurationDataPlaneGroupEnvironmentField = []shared.ConfigurationDataPlaneGroupEnvironmentField{}
+		environment := make([]shared.ConfigurationDataPlaneGroupEnvironmentField, 0, len(dataplaneGroupsItem.Environment))
 		for _, environmentItem := range dataplaneGroupsItem.Environment {
 			var name string
 			name = environmentItem.Name.ValueString()
@@ -104,7 +107,21 @@ func (r *CloudGatewayConfigurationResourceModel) ToSharedCreateConfigurationRequ
 		DataplaneGroups: dataplaneGroups,
 		APIAccess:       apiAccess,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *CloudGatewayConfigurationResourceModel) ToOperationsGetConfigurationRequest(ctx context.Context) (*operations.GetConfigurationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var configurationID string
+	configurationID = r.ID.ValueString()
+
+	out := operations.GetConfigurationRequest{
+		ConfigurationID: configurationID,
+	}
+
+	return &out, diags
 }
 
 func (r *CloudGatewayConfigurationResourceModel) RefreshFromSharedConfigurationManifest(ctx context.Context, resp *shared.ConfigurationManifest) diag.Diagnostics {

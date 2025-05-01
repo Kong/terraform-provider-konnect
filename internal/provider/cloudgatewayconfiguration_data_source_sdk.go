@@ -8,8 +8,22 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *CloudGatewayConfigurationDataSourceModel) ToOperationsGetConfigurationRequest(ctx context.Context) (*operations.GetConfigurationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var configurationID string
+	configurationID = r.ID.ValueString()
+
+	out := operations.GetConfigurationRequest{
+		ConfigurationID: configurationID,
+	}
+
+	return &out, diags
+}
 
 func (r *CloudGatewayConfigurationDataSourceModel) RefreshFromSharedConfigurationManifest(ctx context.Context, resp *shared.ConfigurationManifest) diag.Diagnostics {
 	var diags diag.Diagnostics

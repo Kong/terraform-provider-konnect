@@ -10,7 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -121,13 +120,13 @@ func (r *TeamDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		return
 	}
 
-	var teamID string
-	teamID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetTeamRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.GetTeamRequest{
-		TeamID: teamID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Teams.GetTeam(ctx, request)
+	res, err := r.client.Teams.GetTeam(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -137,10 +136,6 @@ func (r *TeamDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
 		return
 	}
 	if res.StatusCode != 200 {

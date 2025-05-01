@@ -8,10 +8,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginLogglyResourceModel) ToSharedLogglyPlugin() *shared.LogglyPlugin {
+func (r *GatewayPluginLogglyResourceModel) ToSharedLogglyPlugin(ctx context.Context) (*shared.LogglyPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -40,7 +43,7 @@ func (r *GatewayPluginLogglyResourceModel) ToSharedLogglyPlugin() *shared.Loggly
 	if r.Ordering != nil {
 		var after *shared.LogglyPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -50,7 +53,7 @@ func (r *GatewayPluginLogglyResourceModel) ToSharedLogglyPlugin() *shared.Loggly
 		}
 		var before *shared.LogglyPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -63,7 +66,7 @@ func (r *GatewayPluginLogglyResourceModel) ToSharedLogglyPlugin() *shared.Loggly
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -123,7 +126,7 @@ func (r *GatewayPluginLogglyResourceModel) ToSharedLogglyPlugin() *shared.Loggly
 		} else {
 			successfulSeverity = nil
 		}
-		var tags1 []string = []string{}
+		tags1 := make([]string, 0, len(r.Config.Tags))
 		for _, tagsItem1 := range r.Config.Tags {
 			tags1 = append(tags1, tagsItem1.ValueString())
 		}
@@ -158,7 +161,7 @@ func (r *GatewayPluginLogglyResourceModel) ToSharedLogglyPlugin() *shared.Loggly
 			ID: id1,
 		}
 	}
-	var protocols []shared.LogglyPluginProtocols = []shared.LogglyPluginProtocols{}
+	protocols := make([]shared.LogglyPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.LogglyPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -200,7 +203,88 @@ func (r *GatewayPluginLogglyResourceModel) ToSharedLogglyPlugin() *shared.Loggly
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginLogglyResourceModel) ToOperationsCreateLogglyPluginRequest(ctx context.Context) (*operations.CreateLogglyPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	logglyPlugin, logglyPluginDiags := r.ToSharedLogglyPlugin(ctx)
+	diags.Append(logglyPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateLogglyPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		LogglyPlugin:   *logglyPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginLogglyResourceModel) ToOperationsUpdateLogglyPluginRequest(ctx context.Context) (*operations.UpdateLogglyPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	logglyPlugin, logglyPluginDiags := r.ToSharedLogglyPlugin(ctx)
+	diags.Append(logglyPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateLogglyPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		LogglyPlugin:   *logglyPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginLogglyResourceModel) ToOperationsGetLogglyPluginRequest(ctx context.Context) (*operations.GetLogglyPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetLogglyPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginLogglyResourceModel) ToOperationsDeleteLogglyPluginRequest(ctx context.Context) (*operations.DeleteLogglyPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteLogglyPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginLogglyResourceModel) RefreshFromSharedLogglyPlugin(ctx context.Context, resp *shared.LogglyPlugin) diag.Diagnostics {

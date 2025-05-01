@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlugin() *shared.RequestValidatorPlugin {
+func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlugin(ctx context.Context) (*shared.RequestValidatorPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlu
 	if r.Ordering != nil {
 		var after *shared.RequestValidatorPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlu
 		}
 		var before *shared.RequestValidatorPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlu
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -74,7 +77,7 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlu
 	}
 	var config *shared.RequestValidatorPluginConfig
 	if r.Config != nil {
-		var allowedContentTypes []string = []string{}
+		allowedContentTypes := make([]string, 0, len(r.Config.AllowedContentTypes))
 		for _, allowedContentTypesItem := range r.Config.AllowedContentTypes {
 			allowedContentTypes = append(allowedContentTypes, allowedContentTypesItem.ValueString())
 		}
@@ -90,7 +93,7 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlu
 		} else {
 			contentTypeParameterValidation = nil
 		}
-		var parameterSchema []shared.ParameterSchema = []shared.ParameterSchema{}
+		parameterSchema := make([]shared.ParameterSchema, 0, len(r.Config.ParameterSchema))
 		for _, parameterSchemaItem := range r.Config.ParameterSchema {
 			explode := new(bool)
 			if !parameterSchemaItem.Explode.IsUnknown() && !parameterSchemaItem.Explode.IsNull() {
@@ -159,7 +162,7 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlu
 			ID: id1,
 		}
 	}
-	var protocols []shared.RequestValidatorPluginProtocols = []shared.RequestValidatorPluginProtocols{}
+	protocols := make([]shared.RequestValidatorPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.RequestValidatorPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -201,7 +204,88 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlu
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsCreateRequestvalidatorPluginRequest(ctx context.Context) (*operations.CreateRequestvalidatorPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	requestValidatorPlugin, requestValidatorPluginDiags := r.ToSharedRequestValidatorPlugin(ctx)
+	diags.Append(requestValidatorPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateRequestvalidatorPluginRequest{
+		ControlPlaneID:         controlPlaneID,
+		RequestValidatorPlugin: *requestValidatorPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsUpdateRequestvalidatorPluginRequest(ctx context.Context) (*operations.UpdateRequestvalidatorPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	requestValidatorPlugin, requestValidatorPluginDiags := r.ToSharedRequestValidatorPlugin(ctx)
+	diags.Append(requestValidatorPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateRequestvalidatorPluginRequest{
+		PluginID:               pluginID,
+		ControlPlaneID:         controlPlaneID,
+		RequestValidatorPlugin: *requestValidatorPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsGetRequestvalidatorPluginRequest(ctx context.Context) (*operations.GetRequestvalidatorPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetRequestvalidatorPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsDeleteRequestvalidatorPluginRequest(ctx context.Context) (*operations.DeleteRequestvalidatorPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteRequestvalidatorPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginRequestValidatorResourceModel) RefreshFromSharedRequestValidatorPlugin(ctx context.Context, resp *shared.RequestValidatorPlugin) diag.Diagnostics {

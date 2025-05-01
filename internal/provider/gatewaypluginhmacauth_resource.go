@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -241,15 +240,13 @@ func (r *GatewayPluginHmacAuthResource) Create(ctx context.Context, req resource
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateHmacauthPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	hmacAuthPlugin := *data.ToSharedHmacAuthPlugin()
-	request := operations.CreateHmacauthPluginRequest{
-		ControlPlaneID: controlPlaneID,
-		HmacAuthPlugin: hmacAuthPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateHmacauthPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateHmacauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -303,17 +300,13 @@ func (r *GatewayPluginHmacAuthResource) Read(ctx context.Context, req resource.R
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetHmacauthPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetHmacauthPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetHmacauthPlugin(ctx, request)
+	res, err := r.client.Plugins.GetHmacauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -361,19 +354,13 @@ func (r *GatewayPluginHmacAuthResource) Update(ctx context.Context, req resource
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateHmacauthPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	hmacAuthPlugin := *data.ToSharedHmacAuthPlugin()
-	request := operations.UpdateHmacauthPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-		HmacAuthPlugin: hmacAuthPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateHmacauthPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateHmacauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -427,17 +414,13 @@ func (r *GatewayPluginHmacAuthResource) Delete(ctx context.Context, req resource
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteHmacauthPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteHmacauthPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteHmacauthPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteHmacauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginHmacAuthResourceModel) ToSharedHmacAuthPlugin() *shared.HmacAuthPlugin {
+func (r *GatewayPluginHmacAuthResourceModel) ToSharedHmacAuthPlugin(ctx context.Context) (*shared.HmacAuthPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginHmacAuthResourceModel) ToSharedHmacAuthPlugin() *shared.Hm
 	if r.Ordering != nil {
 		var after *shared.HmacAuthPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginHmacAuthResourceModel) ToSharedHmacAuthPlugin() *shared.Hm
 		}
 		var before *shared.HmacAuthPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginHmacAuthResourceModel) ToSharedHmacAuthPlugin() *shared.Hm
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -74,7 +77,7 @@ func (r *GatewayPluginHmacAuthResourceModel) ToSharedHmacAuthPlugin() *shared.Hm
 	}
 	var config *shared.HmacAuthPluginConfig
 	if r.Config != nil {
-		var algorithms []shared.Algorithms = []shared.Algorithms{}
+		algorithms := make([]shared.Algorithms, 0, len(r.Config.Algorithms))
 		for _, algorithmsItem := range r.Config.Algorithms {
 			algorithms = append(algorithms, shared.Algorithms(algorithmsItem.ValueString()))
 		}
@@ -90,7 +93,7 @@ func (r *GatewayPluginHmacAuthResourceModel) ToSharedHmacAuthPlugin() *shared.Hm
 		} else {
 			clockSkew = nil
 		}
-		var enforceHeaders []string = []string{}
+		enforceHeaders := make([]string, 0, len(r.Config.EnforceHeaders))
 		for _, enforceHeadersItem := range r.Config.EnforceHeaders {
 			enforceHeaders = append(enforceHeaders, enforceHeadersItem.ValueString())
 		}
@@ -122,7 +125,7 @@ func (r *GatewayPluginHmacAuthResourceModel) ToSharedHmacAuthPlugin() *shared.Hm
 			ValidateRequestBody: validateRequestBody,
 		}
 	}
-	var protocols []shared.HmacAuthPluginProtocols = []shared.HmacAuthPluginProtocols{}
+	protocols := make([]shared.HmacAuthPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.HmacAuthPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -163,7 +166,88 @@ func (r *GatewayPluginHmacAuthResourceModel) ToSharedHmacAuthPlugin() *shared.Hm
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginHmacAuthResourceModel) ToOperationsCreateHmacauthPluginRequest(ctx context.Context) (*operations.CreateHmacauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	hmacAuthPlugin, hmacAuthPluginDiags := r.ToSharedHmacAuthPlugin(ctx)
+	diags.Append(hmacAuthPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateHmacauthPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		HmacAuthPlugin: *hmacAuthPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginHmacAuthResourceModel) ToOperationsUpdateHmacauthPluginRequest(ctx context.Context) (*operations.UpdateHmacauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	hmacAuthPlugin, hmacAuthPluginDiags := r.ToSharedHmacAuthPlugin(ctx)
+	diags.Append(hmacAuthPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateHmacauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		HmacAuthPlugin: *hmacAuthPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginHmacAuthResourceModel) ToOperationsGetHmacauthPluginRequest(ctx context.Context) (*operations.GetHmacauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetHmacauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginHmacAuthResourceModel) ToOperationsDeleteHmacauthPluginRequest(ctx context.Context) (*operations.DeleteHmacauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteHmacauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginHmacAuthResourceModel) RefreshFromSharedHmacAuthPlugin(ctx context.Context, resp *shared.HmacAuthPlugin) diag.Diagnostics {

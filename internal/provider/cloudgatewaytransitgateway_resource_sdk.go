@@ -8,23 +8,26 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRequest() *shared.CreateTransitGatewayRequest {
+func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRequest(ctx context.Context) (*shared.CreateTransitGatewayRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var out shared.CreateTransitGatewayRequest
 	var awsTransitGateway *shared.AWSTransitGateway
 	if r.AWSTransitGateway != nil {
 		var name string
 		name = r.AWSTransitGateway.Name.ValueString()
 
-		var dnsConfig []shared.TransitGatewayDNSConfig = []shared.TransitGatewayDNSConfig{}
+		dnsConfig := make([]shared.TransitGatewayDNSConfig, 0, len(r.AWSTransitGateway.DNSConfig))
 		for _, dnsConfigItem := range r.AWSTransitGateway.DNSConfig {
-			var remoteDNSServerIPAddresses []string = []string{}
+			remoteDNSServerIPAddresses := make([]string, 0, len(dnsConfigItem.RemoteDNSServerIPAddresses))
 			for _, remoteDNSServerIPAddressesItem := range dnsConfigItem.RemoteDNSServerIPAddresses {
 				remoteDNSServerIPAddresses = append(remoteDNSServerIPAddresses, remoteDNSServerIPAddressesItem.ValueString())
 			}
-			var domainProxyList []string = []string{}
+			domainProxyList := make([]string, 0, len(dnsConfigItem.DomainProxyList))
 			for _, domainProxyListItem := range dnsConfigItem.DomainProxyList {
 				domainProxyList = append(domainProxyList, domainProxyListItem.ValueString())
 			}
@@ -33,7 +36,7 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 				DomainProxyList:            domainProxyList,
 			})
 		}
-		var cidrBlocks []string = []string{}
+		cidrBlocks := make([]string, 0, len(r.AWSTransitGateway.CidrBlocks))
 		for _, cidrBlocksItem := range r.AWSTransitGateway.CidrBlocks {
 			cidrBlocks = append(cidrBlocks, cidrBlocksItem.ValueString())
 		}
@@ -66,13 +69,13 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 		var name1 string
 		name1 = r.AWSVpcPeeringGateway.Name.ValueString()
 
-		var dnsConfig1 []shared.TransitGatewayDNSConfig = []shared.TransitGatewayDNSConfig{}
+		dnsConfig1 := make([]shared.TransitGatewayDNSConfig, 0, len(r.AWSVpcPeeringGateway.DNSConfig))
 		for _, dnsConfigItem1 := range r.AWSVpcPeeringGateway.DNSConfig {
-			var remoteDNSServerIPAddresses1 []string = []string{}
+			remoteDNSServerIPAddresses1 := make([]string, 0, len(dnsConfigItem1.RemoteDNSServerIPAddresses))
 			for _, remoteDNSServerIPAddressesItem1 := range dnsConfigItem1.RemoteDNSServerIPAddresses {
 				remoteDNSServerIPAddresses1 = append(remoteDNSServerIPAddresses1, remoteDNSServerIPAddressesItem1.ValueString())
 			}
-			var domainProxyList1 []string = []string{}
+			domainProxyList1 := make([]string, 0, len(dnsConfigItem1.DomainProxyList))
 			for _, domainProxyListItem1 := range dnsConfigItem1.DomainProxyList {
 				domainProxyList1 = append(domainProxyList1, domainProxyListItem1.ValueString())
 			}
@@ -81,7 +84,7 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 				DomainProxyList:            domainProxyList1,
 			})
 		}
-		var cidrBlocks1 []string = []string{}
+		cidrBlocks1 := make([]string, 0, len(r.AWSVpcPeeringGateway.CidrBlocks))
 		for _, cidrBlocksItem1 := range r.AWSVpcPeeringGateway.CidrBlocks {
 			cidrBlocks1 = append(cidrBlocks1, cidrBlocksItem1.ValueString())
 		}
@@ -118,13 +121,13 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 		var name2 string
 		name2 = r.AzureTransitGateway.Name.ValueString()
 
-		var dnsConfig2 []shared.TransitGatewayDNSConfig = []shared.TransitGatewayDNSConfig{}
+		dnsConfig2 := make([]shared.TransitGatewayDNSConfig, 0, len(r.AzureTransitGateway.DNSConfig))
 		for _, dnsConfigItem2 := range r.AzureTransitGateway.DNSConfig {
-			var remoteDNSServerIPAddresses2 []string = []string{}
+			remoteDNSServerIPAddresses2 := make([]string, 0, len(dnsConfigItem2.RemoteDNSServerIPAddresses))
 			for _, remoteDNSServerIPAddressesItem2 := range dnsConfigItem2.RemoteDNSServerIPAddresses {
 				remoteDNSServerIPAddresses2 = append(remoteDNSServerIPAddresses2, remoteDNSServerIPAddressesItem2.ValueString())
 			}
-			var domainProxyList2 []string = []string{}
+			domainProxyList2 := make([]string, 0, len(dnsConfigItem2.DomainProxyList))
 			for _, domainProxyListItem2 := range dnsConfigItem2.DomainProxyList {
 				domainProxyList2 = append(domainProxyList2, domainProxyListItem2.ValueString())
 			}
@@ -164,7 +167,63 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 			AzureTransitGateway: azureTransitGateway,
 		}
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *CloudGatewayTransitGatewayResourceModel) ToOperationsCreateTransitGatewayRequest(ctx context.Context) (*operations.CreateTransitGatewayRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var networkID string
+	networkID = r.NetworkID.ValueString()
+
+	createTransitGatewayRequest, createTransitGatewayRequestDiags := r.ToSharedCreateTransitGatewayRequest(ctx)
+	diags.Append(createTransitGatewayRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateTransitGatewayRequest{
+		NetworkID:                   networkID,
+		CreateTransitGatewayRequest: *createTransitGatewayRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *CloudGatewayTransitGatewayResourceModel) ToOperationsGetTransitGatewayRequest(ctx context.Context) (*operations.GetTransitGatewayRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var networkID string
+	networkID = r.NetworkID.ValueString()
+
+	var transitGatewayID string
+	transitGatewayID = r.ID.ValueString()
+
+	out := operations.GetTransitGatewayRequest{
+		NetworkID:        networkID,
+		TransitGatewayID: transitGatewayID,
+	}
+
+	return &out, diags
+}
+
+func (r *CloudGatewayTransitGatewayResourceModel) ToOperationsDeleteTransitGatewayRequest(ctx context.Context) (*operations.DeleteTransitGatewayRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var networkID string
+	networkID = r.NetworkID.ValueString()
+
+	var transitGatewayID string
+	transitGatewayID = r.ID.ValueString()
+
+	out := operations.DeleteTransitGatewayRequest{
+		NetworkID:        networkID,
+		TransitGatewayID: transitGatewayID,
+	}
+
+	return &out, diags
 }
 
 func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewayResponse(ctx context.Context, resp *shared.TransitGatewayResponse) diag.Diagnostics {

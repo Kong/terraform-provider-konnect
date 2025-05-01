@@ -12,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -98,15 +97,13 @@ func (r *SystemAccountTeamResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	var teamID string
-	teamID = data.TeamID.ValueString()
+	request, requestDiags := data.ToOperationsPostTeamsTeamIDSystemAccountsRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	addSystemAccountToTeam := data.ToSharedAddSystemAccountToTeam()
-	request := operations.PostTeamsTeamIDSystemAccountsRequest{
-		TeamID:                 teamID,
-		AddSystemAccountToTeam: addSystemAccountToTeam,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.SystemAccountsTeamMembership.PostTeamsTeamIDSystemAccounts(ctx, request)
+	res, err := r.client.SystemAccountsTeamMembership.PostTeamsTeamIDSystemAccounts(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -195,17 +192,13 @@ func (r *SystemAccountTeamResource) Delete(ctx context.Context, req resource.Del
 		return
 	}
 
-	var teamID string
-	teamID = data.TeamID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteTeamsTeamIDSystemAccountsAccountIDRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var accountID string
-	accountID = data.AccountID.ValueString()
-
-	request := operations.DeleteTeamsTeamIDSystemAccountsAccountIDRequest{
-		TeamID:    teamID,
-		AccountID: accountID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.SystemAccountsTeamMembership.DeleteTeamsTeamIDSystemAccountsAccountID(ctx, request)
+	res, err := r.client.SystemAccountsTeamMembership.DeleteTeamsTeamIDSystemAccountsAccountID(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayControlPlaneResourceModel) ToSharedCreateControlPlaneRequest() *shared.CreateControlPlaneRequest {
+func (r *GatewayControlPlaneResourceModel) ToSharedCreateControlPlaneRequest(ctx context.Context) (*shared.CreateControlPlaneRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var name string
 	name = r.Name.ValueString()
 
@@ -38,7 +41,7 @@ func (r *GatewayControlPlaneResourceModel) ToSharedCreateControlPlaneRequest() *
 	} else {
 		cloudGateway = nil
 	}
-	var proxyUrls []shared.ProxyURL = []shared.ProxyURL{}
+	proxyUrls := make([]shared.ProxyURL, 0, len(r.ProxyUrls))
 	for _, proxyUrlsItem := range r.ProxyUrls {
 		var host string
 		host = proxyUrlsItem.Host.ValueString()
@@ -74,7 +77,114 @@ func (r *GatewayControlPlaneResourceModel) ToSharedCreateControlPlaneRequest() *
 		ProxyUrls:    proxyUrls,
 		Labels:       labels,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayControlPlaneResourceModel) ToSharedUpdateControlPlaneRequest(ctx context.Context) (*shared.UpdateControlPlaneRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
+	authType := new(shared.UpdateControlPlaneRequestAuthType)
+	if !r.AuthType.IsUnknown() && !r.AuthType.IsNull() {
+		*authType = shared.UpdateControlPlaneRequestAuthType(r.AuthType.ValueString())
+	} else {
+		authType = nil
+	}
+	proxyUrls := make([]shared.ProxyURL, 0, len(r.ProxyUrls))
+	for _, proxyUrlsItem := range r.ProxyUrls {
+		var host string
+		host = proxyUrlsItem.Host.ValueString()
+
+		var port int64
+		port = proxyUrlsItem.Port.ValueInt64()
+
+		var protocol string
+		protocol = proxyUrlsItem.Protocol.ValueString()
+
+		proxyUrls = append(proxyUrls, shared.ProxyURL{
+			Host:     host,
+			Port:     port,
+			Protocol: protocol,
+		})
+	}
+	labels := make(map[string]*string)
+	for labelsKey, labelsValue := range r.Labels {
+		labelsInst := new(string)
+		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
+			*labelsInst = labelsValue.ValueString()
+		} else {
+			labelsInst = nil
+		}
+		labels[labelsKey] = labelsInst
+	}
+	out := shared.UpdateControlPlaneRequest{
+		Name:        name,
+		Description: description,
+		AuthType:    authType,
+		ProxyUrls:   proxyUrls,
+		Labels:      labels,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayControlPlaneResourceModel) ToOperationsUpdateControlPlaneRequest(ctx context.Context) (*operations.UpdateControlPlaneRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	updateControlPlaneRequest, updateControlPlaneRequestDiags := r.ToSharedUpdateControlPlaneRequest(ctx)
+	diags.Append(updateControlPlaneRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateControlPlaneRequest{
+		ID:                        id,
+		UpdateControlPlaneRequest: *updateControlPlaneRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayControlPlaneResourceModel) ToOperationsGetControlPlaneRequest(ctx context.Context) (*operations.GetControlPlaneRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.GetControlPlaneRequest{
+		ID: id,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayControlPlaneResourceModel) ToOperationsDeleteControlPlaneRequest(ctx context.Context) (*operations.DeleteControlPlaneRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.DeleteControlPlaneRequest{
+		ID: id,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayControlPlaneResourceModel) RefreshFromSharedControlPlane(ctx context.Context, resp *shared.ControlPlane) diag.Diagnostics {
@@ -115,60 +225,4 @@ func (r *GatewayControlPlaneResourceModel) RefreshFromSharedControlPlane(ctx con
 	}
 
 	return diags
-}
-
-func (r *GatewayControlPlaneResourceModel) ToSharedUpdateControlPlaneRequest() *shared.UpdateControlPlaneRequest {
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
-	}
-	description := new(string)
-	if !r.Description.IsUnknown() && !r.Description.IsNull() {
-		*description = r.Description.ValueString()
-	} else {
-		description = nil
-	}
-	authType := new(shared.UpdateControlPlaneRequestAuthType)
-	if !r.AuthType.IsUnknown() && !r.AuthType.IsNull() {
-		*authType = shared.UpdateControlPlaneRequestAuthType(r.AuthType.ValueString())
-	} else {
-		authType = nil
-	}
-	var proxyUrls []shared.ProxyURL = []shared.ProxyURL{}
-	for _, proxyUrlsItem := range r.ProxyUrls {
-		var host string
-		host = proxyUrlsItem.Host.ValueString()
-
-		var port int64
-		port = proxyUrlsItem.Port.ValueInt64()
-
-		var protocol string
-		protocol = proxyUrlsItem.Protocol.ValueString()
-
-		proxyUrls = append(proxyUrls, shared.ProxyURL{
-			Host:     host,
-			Port:     port,
-			Protocol: protocol,
-		})
-	}
-	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
-		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
-		} else {
-			labelsInst = nil
-		}
-		labels[labelsKey] = labelsInst
-	}
-	out := shared.UpdateControlPlaneRequest{
-		Name:        name,
-		Description: description,
-		AuthType:    authType,
-		ProxyUrls:   proxyUrls,
-		Labels:      labels,
-	}
-	return &out
 }

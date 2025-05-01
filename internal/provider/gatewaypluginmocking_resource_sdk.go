@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginMockingResourceModel) ToSharedMockingPlugin() *shared.MockingPlugin {
+func (r *GatewayPluginMockingResourceModel) ToSharedMockingPlugin(ctx context.Context) (*shared.MockingPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginMockingResourceModel) ToSharedMockingPlugin() *shared.Mock
 	if r.Ordering != nil {
 		var after *shared.MockingPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginMockingResourceModel) ToSharedMockingPlugin() *shared.Mock
 		}
 		var before *shared.MockingPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginMockingResourceModel) ToSharedMockingPlugin() *shared.Mock
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -98,7 +101,7 @@ func (r *GatewayPluginMockingResourceModel) ToSharedMockingPlugin() *shared.Mock
 		} else {
 			includeBasePath = nil
 		}
-		var includedStatusCodes []int64 = []int64{}
+		includedStatusCodes := make([]int64, 0, len(r.Config.IncludedStatusCodes))
 		for _, includedStatusCodesItem := range r.Config.IncludedStatusCodes {
 			includedStatusCodes = append(includedStatusCodes, includedStatusCodesItem.ValueInt64())
 		}
@@ -157,7 +160,7 @@ func (r *GatewayPluginMockingResourceModel) ToSharedMockingPlugin() *shared.Mock
 			ID: id1,
 		}
 	}
-	var protocols []shared.MockingPluginProtocols = []shared.MockingPluginProtocols{}
+	protocols := make([]shared.MockingPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.MockingPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -199,7 +202,88 @@ func (r *GatewayPluginMockingResourceModel) ToSharedMockingPlugin() *shared.Mock
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginMockingResourceModel) ToOperationsCreateMockingPluginRequest(ctx context.Context) (*operations.CreateMockingPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	mockingPlugin, mockingPluginDiags := r.ToSharedMockingPlugin(ctx)
+	diags.Append(mockingPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateMockingPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		MockingPlugin:  *mockingPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginMockingResourceModel) ToOperationsUpdateMockingPluginRequest(ctx context.Context) (*operations.UpdateMockingPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	mockingPlugin, mockingPluginDiags := r.ToSharedMockingPlugin(ctx)
+	diags.Append(mockingPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateMockingPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		MockingPlugin:  *mockingPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginMockingResourceModel) ToOperationsGetMockingPluginRequest(ctx context.Context) (*operations.GetMockingPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetMockingPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginMockingResourceModel) ToOperationsDeleteMockingPluginRequest(ctx context.Context) (*operations.DeleteMockingPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteMockingPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginMockingResourceModel) RefreshFromSharedMockingPlugin(ctx context.Context, resp *shared.MockingPlugin) diag.Diagnostics {

@@ -8,10 +8,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginUDPLogResourceModel) ToSharedUDPLogPlugin() *shared.UDPLogPlugin {
+func (r *GatewayPluginUDPLogResourceModel) ToSharedUDPLogPlugin(ctx context.Context) (*shared.UDPLogPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -40,7 +43,7 @@ func (r *GatewayPluginUDPLogResourceModel) ToSharedUDPLogPlugin() *shared.UDPLog
 	if r.Ordering != nil {
 		var after *shared.UDPLogPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -50,7 +53,7 @@ func (r *GatewayPluginUDPLogResourceModel) ToSharedUDPLogPlugin() *shared.UDPLog
 		}
 		var before *shared.UDPLogPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -63,7 +66,7 @@ func (r *GatewayPluginUDPLogResourceModel) ToSharedUDPLogPlugin() *shared.UDPLog
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -118,7 +121,7 @@ func (r *GatewayPluginUDPLogResourceModel) ToSharedUDPLogPlugin() *shared.UDPLog
 			ID: id1,
 		}
 	}
-	var protocols []shared.UDPLogPluginProtocols = []shared.UDPLogPluginProtocols{}
+	protocols := make([]shared.UDPLogPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.UDPLogPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -160,7 +163,88 @@ func (r *GatewayPluginUDPLogResourceModel) ToSharedUDPLogPlugin() *shared.UDPLog
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginUDPLogResourceModel) ToOperationsCreateUdplogPluginRequest(ctx context.Context) (*operations.CreateUdplogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	udpLogPlugin, udpLogPluginDiags := r.ToSharedUDPLogPlugin(ctx)
+	diags.Append(udpLogPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateUdplogPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		UDPLogPlugin:   *udpLogPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginUDPLogResourceModel) ToOperationsUpdateUdplogPluginRequest(ctx context.Context) (*operations.UpdateUdplogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	udpLogPlugin, udpLogPluginDiags := r.ToSharedUDPLogPlugin(ctx)
+	diags.Append(udpLogPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateUdplogPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		UDPLogPlugin:   *udpLogPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginUDPLogResourceModel) ToOperationsGetUdplogPluginRequest(ctx context.Context) (*operations.GetUdplogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetUdplogPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginUDPLogResourceModel) ToOperationsDeleteUdplogPluginRequest(ctx context.Context) (*operations.DeleteUdplogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteUdplogPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginUDPLogResourceModel) RefreshFromSharedUDPLogPlugin(ctx context.Context, resp *shared.UDPLogPlugin) diag.Diagnostics {

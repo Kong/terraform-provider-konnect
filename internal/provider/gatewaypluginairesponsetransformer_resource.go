@@ -22,7 +22,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -601,15 +600,13 @@ func (r *GatewayPluginAiResponseTransformerResource) Create(ctx context.Context,
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateAiresponsetransformerPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	aiResponseTransformerPlugin := *data.ToSharedAiResponseTransformerPlugin()
-	request := operations.CreateAiresponsetransformerPluginRequest{
-		ControlPlaneID:              controlPlaneID,
-		AiResponseTransformerPlugin: aiResponseTransformerPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateAiresponsetransformerPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateAiresponsetransformerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -663,17 +660,13 @@ func (r *GatewayPluginAiResponseTransformerResource) Read(ctx context.Context, r
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetAiresponsetransformerPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetAiresponsetransformerPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetAiresponsetransformerPlugin(ctx, request)
+	res, err := r.client.Plugins.GetAiresponsetransformerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -721,19 +714,13 @@ func (r *GatewayPluginAiResponseTransformerResource) Update(ctx context.Context,
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateAiresponsetransformerPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	aiResponseTransformerPlugin := *data.ToSharedAiResponseTransformerPlugin()
-	request := operations.UpdateAiresponsetransformerPluginRequest{
-		PluginID:                    pluginID,
-		ControlPlaneID:              controlPlaneID,
-		AiResponseTransformerPlugin: aiResponseTransformerPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateAiresponsetransformerPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateAiresponsetransformerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -787,17 +774,13 @@ func (r *GatewayPluginAiResponseTransformerResource) Delete(ctx context.Context,
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteAiresponsetransformerPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteAiresponsetransformerPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteAiresponsetransformerPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteAiresponsetransformerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin() *shared.KeyAuthPlugin {
+func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin(ctx context.Context) (*shared.KeyAuthPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin() *shared.KeyA
 	if r.Ordering != nil {
 		var after *shared.KeyAuthPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin() *shared.KeyA
 		}
 		var before *shared.KeyAuthPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin() *shared.KeyA
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -86,7 +89,7 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin() *shared.KeyA
 		} else {
 			hideCredentials = nil
 		}
-		var identityRealms []shared.IdentityRealms = []shared.IdentityRealms{}
+		identityRealms := make([]shared.IdentityRealms, 0, len(r.Config.IdentityRealms))
 		for _, identityRealmsItem := range r.Config.IdentityRealms {
 			id1 := new(string)
 			if !identityRealmsItem.ID.IsUnknown() && !identityRealmsItem.ID.IsNull() {
@@ -130,7 +133,7 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin() *shared.KeyA
 		} else {
 			keyInQuery = nil
 		}
-		var keyNames []string = []string{}
+		keyNames := make([]string, 0, len(r.Config.KeyNames))
 		for _, keyNamesItem := range r.Config.KeyNames {
 			keyNames = append(keyNames, keyNamesItem.ValueString())
 		}
@@ -158,7 +161,7 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin() *shared.KeyA
 			RunOnPreflight:  runOnPreflight,
 		}
 	}
-	var protocols []shared.KeyAuthPluginProtocols = []shared.KeyAuthPluginProtocols{}
+	protocols := make([]shared.KeyAuthPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.KeyAuthPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -199,7 +202,88 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin() *shared.KeyA
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginKeyAuthResourceModel) ToOperationsCreateKeyauthPluginRequest(ctx context.Context) (*operations.CreateKeyauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	keyAuthPlugin, keyAuthPluginDiags := r.ToSharedKeyAuthPlugin(ctx)
+	diags.Append(keyAuthPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateKeyauthPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		KeyAuthPlugin:  *keyAuthPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginKeyAuthResourceModel) ToOperationsUpdateKeyauthPluginRequest(ctx context.Context) (*operations.UpdateKeyauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	keyAuthPlugin, keyAuthPluginDiags := r.ToSharedKeyAuthPlugin(ctx)
+	diags.Append(keyAuthPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateKeyauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		KeyAuthPlugin:  *keyAuthPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginKeyAuthResourceModel) ToOperationsGetKeyauthPluginRequest(ctx context.Context) (*operations.GetKeyauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetKeyauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginKeyAuthResourceModel) ToOperationsDeleteKeyauthPluginRequest(ctx context.Context) (*operations.DeleteKeyauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteKeyauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginKeyAuthResourceModel) RefreshFromSharedKeyAuthPlugin(ctx context.Context, resp *shared.KeyAuthPlugin) diag.Diagnostics {

@@ -7,8 +7,22 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *ServerlessCloudGatewayDataSourceModel) ToOperationsGetServerlessCloudGatewayRequest(ctx context.Context) (*operations.GetServerlessCloudGatewayRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlane.ID.ValueString()
+
+	out := operations.GetServerlessCloudGatewayRequest{
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
 
 func (r *ServerlessCloudGatewayDataSourceModel) RefreshFromSharedServerlessCloudGateway(ctx context.Context, resp *shared.ServerlessCloudGateway) diag.Diagnostics {
 	var diags diag.Diagnostics

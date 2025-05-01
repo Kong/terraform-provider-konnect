@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -254,15 +253,13 @@ func (r *GatewayPluginPreFunctionResource) Create(ctx context.Context, req resou
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreatePrefunctionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	preFunctionPlugin := *data.ToSharedPreFunctionPlugin()
-	request := operations.CreatePrefunctionPluginRequest{
-		ControlPlaneID:    controlPlaneID,
-		PreFunctionPlugin: preFunctionPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreatePrefunctionPlugin(ctx, request)
+	res, err := r.client.Plugins.CreatePrefunctionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -316,17 +313,13 @@ func (r *GatewayPluginPreFunctionResource) Read(ctx context.Context, req resourc
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetPrefunctionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetPrefunctionPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetPrefunctionPlugin(ctx, request)
+	res, err := r.client.Plugins.GetPrefunctionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -374,19 +367,13 @@ func (r *GatewayPluginPreFunctionResource) Update(ctx context.Context, req resou
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdatePrefunctionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	preFunctionPlugin := *data.ToSharedPreFunctionPlugin()
-	request := operations.UpdatePrefunctionPluginRequest{
-		PluginID:          pluginID,
-		ControlPlaneID:    controlPlaneID,
-		PreFunctionPlugin: preFunctionPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdatePrefunctionPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdatePrefunctionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -440,17 +427,13 @@ func (r *GatewayPluginPreFunctionResource) Delete(ctx context.Context, req resou
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeletePrefunctionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeletePrefunctionPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeletePrefunctionPlugin(ctx, request)
+	res, err := r.client.Plugins.DeletePrefunctionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

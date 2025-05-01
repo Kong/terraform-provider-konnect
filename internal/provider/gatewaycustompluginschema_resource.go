@@ -15,7 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -113,15 +112,13 @@ func (r *GatewayCustomPluginSchemaResource) Create(ctx context.Context, req reso
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreatePluginSchemasRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	createPluginSchemas := data.ToSharedCreatePluginSchemas()
-	request := operations.CreatePluginSchemasRequest{
-		ControlPlaneID:      controlPlaneID,
-		CreatePluginSchemas: createPluginSchemas,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.CustomPluginSchemas.CreatePluginSchemas(ctx, request)
+	res, err := r.client.CustomPluginSchemas.CreatePluginSchemas(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -175,17 +172,13 @@ func (r *GatewayCustomPluginSchemaResource) Read(ctx context.Context, req resour
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsGetPluginSchemaRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var name string
-	name = data.Name.ValueString()
-
-	request := operations.GetPluginSchemaRequest{
-		ControlPlaneID: controlPlaneID,
-		Name:           name,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.CustomPluginSchemas.GetPluginSchema(ctx, request)
+	res, err := r.client.CustomPluginSchemas.GetPluginSchema(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -233,19 +226,13 @@ func (r *GatewayCustomPluginSchemaResource) Update(ctx context.Context, req reso
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsUpdatePluginSchemasRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var name string
-	name = data.Name.ValueString()
-
-	createPluginSchemas := data.ToSharedCreatePluginSchemas()
-	request := operations.UpdatePluginSchemasRequest{
-		ControlPlaneID:      controlPlaneID,
-		Name:                name,
-		CreatePluginSchemas: createPluginSchemas,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.CustomPluginSchemas.UpdatePluginSchemas(ctx, request)
+	res, err := r.client.CustomPluginSchemas.UpdatePluginSchemas(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -299,17 +286,13 @@ func (r *GatewayCustomPluginSchemaResource) Delete(ctx context.Context, req reso
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsDeletePluginSchemasRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var name string
-	name = data.Name.ValueString()
-
-	request := operations.DeletePluginSchemasRequest{
-		ControlPlaneID: controlPlaneID,
-		Name:           name,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.CustomPluginSchemas.DeletePluginSchemas(ctx, request)
+	res, err := r.client.CustomPluginSchemas.DeletePluginSchemas(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

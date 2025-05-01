@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginRedirectResourceModel) ToSharedRedirectPlugin() *shared.RedirectPlugin {
+func (r *GatewayPluginRedirectResourceModel) ToSharedRedirectPlugin(ctx context.Context) (*shared.RedirectPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginRedirectResourceModel) ToSharedRedirectPlugin() *shared.Re
 	if r.Ordering != nil {
 		var after *shared.RedirectPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginRedirectResourceModel) ToSharedRedirectPlugin() *shared.Re
 		}
 		var before *shared.RedirectPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginRedirectResourceModel) ToSharedRedirectPlugin() *shared.Re
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -122,7 +125,7 @@ func (r *GatewayPluginRedirectResourceModel) ToSharedRedirectPlugin() *shared.Re
 			ID: id2,
 		}
 	}
-	var protocols []shared.RedirectPluginProtocols = []shared.RedirectPluginProtocols{}
+	protocols := make([]shared.RedirectPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.RedirectPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -165,7 +168,88 @@ func (r *GatewayPluginRedirectResourceModel) ToSharedRedirectPlugin() *shared.Re
 		Route:         route,
 		Service:       service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRedirectResourceModel) ToOperationsCreateRedirectPluginRequest(ctx context.Context) (*operations.CreateRedirectPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	redirectPlugin, redirectPluginDiags := r.ToSharedRedirectPlugin(ctx)
+	diags.Append(redirectPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateRedirectPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		RedirectPlugin: *redirectPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRedirectResourceModel) ToOperationsUpdateRedirectPluginRequest(ctx context.Context) (*operations.UpdateRedirectPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	redirectPlugin, redirectPluginDiags := r.ToSharedRedirectPlugin(ctx)
+	diags.Append(redirectPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateRedirectPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		RedirectPlugin: *redirectPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRedirectResourceModel) ToOperationsGetRedirectPluginRequest(ctx context.Context) (*operations.GetRedirectPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetRedirectPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRedirectResourceModel) ToOperationsDeleteRedirectPluginRequest(ctx context.Context) (*operations.DeleteRedirectPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteRedirectPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginRedirectResourceModel) RefreshFromSharedRedirectPlugin(ctx context.Context, resp *shared.RedirectPlugin) diag.Diagnostics {

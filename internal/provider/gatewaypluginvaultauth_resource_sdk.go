@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginVaultAuthResourceModel) ToSharedVaultAuthPlugin() *shared.VaultAuthPlugin {
+func (r *GatewayPluginVaultAuthResourceModel) ToSharedVaultAuthPlugin(ctx context.Context) (*shared.VaultAuthPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginVaultAuthResourceModel) ToSharedVaultAuthPlugin() *shared.
 	if r.Ordering != nil {
 		var after *shared.VaultAuthPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginVaultAuthResourceModel) ToSharedVaultAuthPlugin() *shared.
 		}
 		var before *shared.VaultAuthPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginVaultAuthResourceModel) ToSharedVaultAuthPlugin() *shared.
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -126,7 +129,7 @@ func (r *GatewayPluginVaultAuthResourceModel) ToSharedVaultAuthPlugin() *shared.
 			Vault:           vault,
 		}
 	}
-	var protocols []shared.VaultAuthPluginProtocols = []shared.VaultAuthPluginProtocols{}
+	protocols := make([]shared.VaultAuthPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.VaultAuthPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -167,7 +170,88 @@ func (r *GatewayPluginVaultAuthResourceModel) ToSharedVaultAuthPlugin() *shared.
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginVaultAuthResourceModel) ToOperationsCreateVaultauthPluginRequest(ctx context.Context) (*operations.CreateVaultauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	vaultAuthPlugin, vaultAuthPluginDiags := r.ToSharedVaultAuthPlugin(ctx)
+	diags.Append(vaultAuthPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateVaultauthPluginRequest{
+		ControlPlaneID:  controlPlaneID,
+		VaultAuthPlugin: *vaultAuthPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginVaultAuthResourceModel) ToOperationsUpdateVaultauthPluginRequest(ctx context.Context) (*operations.UpdateVaultauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	vaultAuthPlugin, vaultAuthPluginDiags := r.ToSharedVaultAuthPlugin(ctx)
+	diags.Append(vaultAuthPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateVaultauthPluginRequest{
+		PluginID:        pluginID,
+		ControlPlaneID:  controlPlaneID,
+		VaultAuthPlugin: *vaultAuthPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginVaultAuthResourceModel) ToOperationsGetVaultauthPluginRequest(ctx context.Context) (*operations.GetVaultauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetVaultauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginVaultAuthResourceModel) ToOperationsDeleteVaultauthPluginRequest(ctx context.Context) (*operations.DeleteVaultauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteVaultauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginVaultAuthResourceModel) RefreshFromSharedVaultAuthPlugin(ctx context.Context, resp *shared.VaultAuthPlugin) diag.Diagnostics {

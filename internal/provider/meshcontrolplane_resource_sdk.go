@@ -8,10 +8,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *MeshControlPlaneResourceModel) ToSharedCreateMeshControlPlaneRequest() *shared.CreateMeshControlPlaneRequest {
+func (r *MeshControlPlaneResourceModel) ToSharedCreateMeshControlPlaneRequest(ctx context.Context) (*shared.CreateMeshControlPlaneRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var name string
 	name = r.Name.ValueString()
 
@@ -21,7 +24,7 @@ func (r *MeshControlPlaneResourceModel) ToSharedCreateMeshControlPlaneRequest() 
 	} else {
 		description = nil
 	}
-	var features []shared.MeshControlPlaneFeature = []shared.MeshControlPlaneFeature{}
+	features := make([]shared.MeshControlPlaneFeature, 0, len(r.Features))
 	for _, featuresItem := range r.Features {
 		typeVar := shared.Type(featuresItem.Type.ValueString())
 		var hostnameGeneratorCreation *shared.MeshControlPlaneFeatureHostnameGenerationCreation
@@ -64,7 +67,83 @@ func (r *MeshControlPlaneResourceModel) ToSharedCreateMeshControlPlaneRequest() 
 		Features:    features,
 		Labels:      labels,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *MeshControlPlaneResourceModel) ToSharedPutMeshControlPlaneRequest(ctx context.Context) (*shared.PutMeshControlPlaneRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var name string
+	name = r.Name.ValueString()
+
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
+	labels := make(map[string]string)
+	for labelsKey, labelsValue := range r.Labels {
+		var labelsInst string
+		labelsInst = labelsValue.ValueString()
+
+		labels[labelsKey] = labelsInst
+	}
+	out := shared.PutMeshControlPlaneRequest{
+		Name:        name,
+		Description: description,
+		Labels:      labels,
+	}
+
+	return &out, diags
+}
+
+func (r *MeshControlPlaneResourceModel) ToOperationsUpdateCpRequest(ctx context.Context) (*operations.UpdateCpRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.ID.ValueString()
+
+	putMeshControlPlaneRequest, putMeshControlPlaneRequestDiags := r.ToSharedPutMeshControlPlaneRequest(ctx)
+	diags.Append(putMeshControlPlaneRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateCpRequest{
+		CpID:                       cpID,
+		PutMeshControlPlaneRequest: *putMeshControlPlaneRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *MeshControlPlaneResourceModel) ToOperationsGetMeshControlPlaneRequest(ctx context.Context) (*operations.GetMeshControlPlaneRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.ID.ValueString()
+
+	out := operations.GetMeshControlPlaneRequest{
+		CpID: cpID,
+	}
+
+	return &out, diags
+}
+
+func (r *MeshControlPlaneResourceModel) ToOperationsDeleteMeshControlPlaneRequest(ctx context.Context) (*operations.DeleteMeshControlPlaneRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.ID.ValueString()
+
+	out := operations.DeleteMeshControlPlaneRequest{
+		CpID: cpID,
+	}
+
+	return &out, diags
 }
 
 func (r *MeshControlPlaneResourceModel) RefreshFromSharedMeshControlPlane(ctx context.Context, resp *shared.MeshControlPlane) diag.Diagnostics {
@@ -112,29 +191,4 @@ func (r *MeshControlPlaneResourceModel) RefreshFromSharedMeshControlPlane(ctx co
 	}
 
 	return diags
-}
-
-func (r *MeshControlPlaneResourceModel) ToSharedPutMeshControlPlaneRequest() *shared.PutMeshControlPlaneRequest {
-	var name string
-	name = r.Name.ValueString()
-
-	description := new(string)
-	if !r.Description.IsUnknown() && !r.Description.IsNull() {
-		*description = r.Description.ValueString()
-	} else {
-		description = nil
-	}
-	labels := make(map[string]string)
-	for labelsKey, labelsValue := range r.Labels {
-		var labelsInst string
-		labelsInst = labelsValue.ValueString()
-
-		labels[labelsKey] = labelsInst
-	}
-	out := shared.PutMeshControlPlaneRequest{
-		Name:        name,
-		Description: description,
-		Labels:      labels,
-	}
-	return &out
 }

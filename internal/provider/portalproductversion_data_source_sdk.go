@@ -8,8 +8,26 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *PortalProductVersionDataSourceModel) ToOperationsGetPortalProductVersionRequest(ctx context.Context) (*operations.GetPortalProductVersionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var productVersionID string
+	productVersionID = r.ProductVersionID.ValueString()
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.GetPortalProductVersionRequest{
+		ProductVersionID: productVersionID,
+		PortalID:         portalID,
+	}
+
+	return &out, diags
+}
 
 func (r *PortalProductVersionDataSourceModel) RefreshFromSharedPortalProductVersion(ctx context.Context, resp *shared.PortalProductVersion) diag.Diagnostics {
 	var diags diag.Diagnostics

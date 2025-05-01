@@ -8,10 +8,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin() *shared.UpstreamOauthPlugin {
+func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ctx context.Context) (*shared.UpstreamOauthPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -40,7 +43,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin() 
 	if r.Ordering != nil {
 		var after *shared.UpstreamOauthPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -50,7 +53,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin() 
 		}
 		var before *shared.UpstreamOauthPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -63,7 +66,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin() 
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -101,7 +104,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin() 
 			} else {
 				idpErrorResponseStatusCode = nil
 			}
-			var purgeTokenOnUpstreamStatusCodes []int64 = []int64{}
+			purgeTokenOnUpstreamStatusCodes := make([]int64, 0, len(r.Config.Behavior.PurgeTokenOnUpstreamStatusCodes))
 			for _, purgeTokenOnUpstreamStatusCodesItem := range r.Config.Behavior.PurgeTokenOnUpstreamStatusCodes {
 				purgeTokenOnUpstreamStatusCodes = append(purgeTokenOnUpstreamStatusCodes, purgeTokenOnUpstreamStatusCodesItem.ValueInt64())
 			}
@@ -154,7 +157,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin() 
 				} else {
 					clusterMaxRedirections = nil
 				}
-				var clusterNodes []shared.UpstreamOauthPluginClusterNodes = []shared.UpstreamOauthPluginClusterNodes{}
+				clusterNodes := make([]shared.UpstreamOauthPluginClusterNodes, 0, len(r.Config.Cache.Redis.ClusterNodes))
 				for _, clusterNodesItem := range r.Config.Cache.Redis.ClusterNodes {
 					ip := new(string)
 					if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
@@ -239,7 +242,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin() 
 				} else {
 					sentinelMaster = nil
 				}
-				var sentinelNodes []shared.UpstreamOauthPluginSentinelNodes = []shared.UpstreamOauthPluginSentinelNodes{}
+				sentinelNodes := make([]shared.UpstreamOauthPluginSentinelNodes, 0, len(r.Config.Cache.Redis.SentinelNodes))
 				for _, sentinelNodesItem := range r.Config.Cache.Redis.SentinelNodes {
 					host1 := new(string)
 					if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
@@ -422,7 +425,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin() 
 		}
 		var oauth *shared.Oauth
 		if r.Config.Oauth != nil {
-			var audience []string = []string{}
+			audience := make([]string, 0, len(r.Config.Oauth.Audience))
 			for _, audienceItem := range r.Config.Oauth.Audience {
 				audience = append(audience, audienceItem.ValueString())
 			}
@@ -450,9 +453,12 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin() 
 			} else {
 				password1 = nil
 			}
-			var scopes []string = []string{}
-			for _, scopesItem := range r.Config.Oauth.Scopes {
-				scopes = append(scopes, scopesItem.ValueString())
+			var scopes []string
+			if r.Config.Oauth.Scopes != nil {
+				scopes = make([]string, 0, len(r.Config.Oauth.Scopes))
+				for _, scopesItem := range r.Config.Oauth.Scopes {
+					scopes = append(scopes, scopesItem.ValueString())
+				}
 			}
 			tokenEndpoint := new(string)
 			if !r.Config.Oauth.TokenEndpoint.IsUnknown() && !r.Config.Oauth.TokenEndpoint.IsNull() {
@@ -522,7 +528,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin() 
 			ID: id2,
 		}
 	}
-	var protocols []shared.UpstreamOauthPluginProtocols = []shared.UpstreamOauthPluginProtocols{}
+	protocols := make([]shared.UpstreamOauthPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.UpstreamOauthPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -565,7 +571,88 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin() 
 		Route:         route,
 		Service:       service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsCreateUpstreamoauthPluginRequest(ctx context.Context) (*operations.CreateUpstreamoauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	upstreamOauthPlugin, upstreamOauthPluginDiags := r.ToSharedUpstreamOauthPlugin(ctx)
+	diags.Append(upstreamOauthPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateUpstreamoauthPluginRequest{
+		ControlPlaneID:      controlPlaneID,
+		UpstreamOauthPlugin: *upstreamOauthPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsUpdateUpstreamoauthPluginRequest(ctx context.Context) (*operations.UpdateUpstreamoauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	upstreamOauthPlugin, upstreamOauthPluginDiags := r.ToSharedUpstreamOauthPlugin(ctx)
+	diags.Append(upstreamOauthPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateUpstreamoauthPluginRequest{
+		PluginID:            pluginID,
+		ControlPlaneID:      controlPlaneID,
+		UpstreamOauthPlugin: *upstreamOauthPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsGetUpstreamoauthPluginRequest(ctx context.Context) (*operations.GetUpstreamoauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetUpstreamoauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsDeleteUpstreamoauthPluginRequest(ctx context.Context) (*operations.DeleteUpstreamoauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteUpstreamoauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauthPlugin(ctx context.Context, resp *shared.UpstreamOauthPlugin) diag.Diagnostics {

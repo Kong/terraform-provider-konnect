@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -256,15 +255,13 @@ func (r *GatewayPluginIPRestrictionResource) Create(ctx context.Context, req res
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateIprestrictionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	ipRestrictionPlugin := *data.ToSharedIPRestrictionPlugin()
-	request := operations.CreateIprestrictionPluginRequest{
-		ControlPlaneID:      controlPlaneID,
-		IPRestrictionPlugin: ipRestrictionPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateIprestrictionPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateIprestrictionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -318,17 +315,13 @@ func (r *GatewayPluginIPRestrictionResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetIprestrictionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetIprestrictionPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetIprestrictionPlugin(ctx, request)
+	res, err := r.client.Plugins.GetIprestrictionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -376,19 +369,13 @@ func (r *GatewayPluginIPRestrictionResource) Update(ctx context.Context, req res
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateIprestrictionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	ipRestrictionPlugin := *data.ToSharedIPRestrictionPlugin()
-	request := operations.UpdateIprestrictionPluginRequest{
-		PluginID:            pluginID,
-		ControlPlaneID:      controlPlaneID,
-		IPRestrictionPlugin: ipRestrictionPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateIprestrictionPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateIprestrictionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -442,17 +429,13 @@ func (r *GatewayPluginIPRestrictionResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteIprestrictionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteIprestrictionPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteIprestrictionPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteIprestrictionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

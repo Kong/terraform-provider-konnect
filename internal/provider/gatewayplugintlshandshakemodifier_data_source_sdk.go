@@ -7,8 +7,26 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *GatewayPluginTLSHandshakeModifierDataSourceModel) ToOperationsGetTlshandshakemodifierPluginRequest(ctx context.Context) (*operations.GetTlshandshakemodifierPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetTlshandshakemodifierPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
 
 func (r *GatewayPluginTLSHandshakeModifierDataSourceModel) RefreshFromSharedTLSHandshakeModifierPlugin(ctx context.Context, resp *shared.TLSHandshakeModifierPlugin) diag.Diagnostics {
 	var diags diag.Diagnostics

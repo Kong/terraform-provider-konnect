@@ -8,8 +8,22 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *MeshControlPlaneDataSourceModel) ToOperationsGetMeshControlPlaneRequest(ctx context.Context) (*operations.GetMeshControlPlaneRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.ID.ValueString()
+
+	out := operations.GetMeshControlPlaneRequest{
+		CpID: cpID,
+	}
+
+	return &out, diags
+}
 
 func (r *MeshControlPlaneDataSourceModel) RefreshFromSharedMeshControlPlane(ctx context.Context, resp *shared.MeshControlPlane) diag.Diagnostics {
 	var diags diag.Diagnostics

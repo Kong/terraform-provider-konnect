@@ -20,7 +20,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -245,15 +244,13 @@ func (r *GatewayPluginUpstreamTimeoutResource) Create(ctx context.Context, req r
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateUpstreamtimeoutPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	upstreamTimeoutPlugin := *data.ToSharedUpstreamTimeoutPlugin()
-	request := operations.CreateUpstreamtimeoutPluginRequest{
-		ControlPlaneID:        controlPlaneID,
-		UpstreamTimeoutPlugin: upstreamTimeoutPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateUpstreamtimeoutPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateUpstreamtimeoutPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -307,17 +304,13 @@ func (r *GatewayPluginUpstreamTimeoutResource) Read(ctx context.Context, req res
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetUpstreamtimeoutPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetUpstreamtimeoutPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetUpstreamtimeoutPlugin(ctx, request)
+	res, err := r.client.Plugins.GetUpstreamtimeoutPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -365,19 +358,13 @@ func (r *GatewayPluginUpstreamTimeoutResource) Update(ctx context.Context, req r
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateUpstreamtimeoutPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	upstreamTimeoutPlugin := *data.ToSharedUpstreamTimeoutPlugin()
-	request := operations.UpdateUpstreamtimeoutPluginRequest{
-		PluginID:              pluginID,
-		ControlPlaneID:        controlPlaneID,
-		UpstreamTimeoutPlugin: upstreamTimeoutPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateUpstreamtimeoutPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateUpstreamtimeoutPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -431,17 +418,13 @@ func (r *GatewayPluginUpstreamTimeoutResource) Delete(ctx context.Context, req r
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteUpstreamtimeoutPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteUpstreamtimeoutPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteUpstreamtimeoutPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteUpstreamtimeoutPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

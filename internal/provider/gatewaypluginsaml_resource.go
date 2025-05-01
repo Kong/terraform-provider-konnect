@@ -21,7 +21,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 	"regexp"
 )
@@ -652,15 +651,13 @@ func (r *GatewayPluginSamlResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateSamlPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	samlPlugin := *data.ToSharedSamlPlugin()
-	request := operations.CreateSamlPluginRequest{
-		ControlPlaneID: controlPlaneID,
-		SamlPlugin:     samlPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateSamlPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateSamlPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -714,17 +711,13 @@ func (r *GatewayPluginSamlResource) Read(ctx context.Context, req resource.ReadR
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetSamlPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetSamlPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetSamlPlugin(ctx, request)
+	res, err := r.client.Plugins.GetSamlPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -772,19 +765,13 @@ func (r *GatewayPluginSamlResource) Update(ctx context.Context, req resource.Upd
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateSamlPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	samlPlugin := *data.ToSharedSamlPlugin()
-	request := operations.UpdateSamlPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-		SamlPlugin:     samlPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateSamlPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateSamlPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -838,17 +825,13 @@ func (r *GatewayPluginSamlResource) Delete(ctx context.Context, req resource.Del
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteSamlPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteSamlPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteSamlPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteSamlPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

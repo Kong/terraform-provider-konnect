@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -254,15 +253,13 @@ func (r *GatewayPluginPostFunctionResource) Create(ctx context.Context, req reso
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreatePostfunctionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	postFunctionPlugin := *data.ToSharedPostFunctionPlugin()
-	request := operations.CreatePostfunctionPluginRequest{
-		ControlPlaneID:     controlPlaneID,
-		PostFunctionPlugin: postFunctionPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreatePostfunctionPlugin(ctx, request)
+	res, err := r.client.Plugins.CreatePostfunctionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -316,17 +313,13 @@ func (r *GatewayPluginPostFunctionResource) Read(ctx context.Context, req resour
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetPostfunctionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetPostfunctionPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetPostfunctionPlugin(ctx, request)
+	res, err := r.client.Plugins.GetPostfunctionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -374,19 +367,13 @@ func (r *GatewayPluginPostFunctionResource) Update(ctx context.Context, req reso
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdatePostfunctionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	postFunctionPlugin := *data.ToSharedPostFunctionPlugin()
-	request := operations.UpdatePostfunctionPluginRequest{
-		PluginID:           pluginID,
-		ControlPlaneID:     controlPlaneID,
-		PostFunctionPlugin: postFunctionPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdatePostfunctionPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdatePostfunctionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -440,17 +427,13 @@ func (r *GatewayPluginPostFunctionResource) Delete(ctx context.Context, req reso
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeletePostfunctionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeletePostfunctionPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeletePostfunctionPlugin(ctx, request)
+	res, err := r.client.Plugins.DeletePostfunctionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

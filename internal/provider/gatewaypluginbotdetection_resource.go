@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -216,15 +215,13 @@ func (r *GatewayPluginBotDetectionResource) Create(ctx context.Context, req reso
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateBotdetectionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	botDetectionPlugin := *data.ToSharedBotDetectionPlugin()
-	request := operations.CreateBotdetectionPluginRequest{
-		ControlPlaneID:     controlPlaneID,
-		BotDetectionPlugin: botDetectionPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateBotdetectionPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateBotdetectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -278,17 +275,13 @@ func (r *GatewayPluginBotDetectionResource) Read(ctx context.Context, req resour
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetBotdetectionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetBotdetectionPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetBotdetectionPlugin(ctx, request)
+	res, err := r.client.Plugins.GetBotdetectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -336,19 +329,13 @@ func (r *GatewayPluginBotDetectionResource) Update(ctx context.Context, req reso
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateBotdetectionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	botDetectionPlugin := *data.ToSharedBotDetectionPlugin()
-	request := operations.UpdateBotdetectionPluginRequest{
-		PluginID:           pluginID,
-		ControlPlaneID:     controlPlaneID,
-		BotDetectionPlugin: botDetectionPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateBotdetectionPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateBotdetectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -402,17 +389,13 @@ func (r *GatewayPluginBotDetectionResource) Delete(ctx context.Context, req reso
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteBotdetectionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteBotdetectionPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteBotdetectionPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteBotdetectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

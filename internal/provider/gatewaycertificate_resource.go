@@ -15,7 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -145,15 +144,13 @@ func (r *GatewayCertificateResource) Create(ctx context.Context, req resource.Cr
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateCertificateRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	certificate := *data.ToSharedCertificate()
-	request := operations.CreateCertificateRequest{
-		ControlPlaneID: controlPlaneID,
-		Certificate:    certificate,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Certificates.CreateCertificate(ctx, request)
+	res, err := r.client.Certificates.CreateCertificate(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -207,17 +204,13 @@ func (r *GatewayCertificateResource) Read(ctx context.Context, req resource.Read
 		return
 	}
 
-	var certificateID string
-	certificateID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetCertificateRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetCertificateRequest{
-		CertificateID:  certificateID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Certificates.GetCertificate(ctx, request)
+	res, err := r.client.Certificates.GetCertificate(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -265,19 +258,13 @@ func (r *GatewayCertificateResource) Update(ctx context.Context, req resource.Up
 		return
 	}
 
-	var certificateID string
-	certificateID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpsertCertificateRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	certificate := *data.ToSharedCertificate()
-	request := operations.UpsertCertificateRequest{
-		CertificateID:  certificateID,
-		ControlPlaneID: controlPlaneID,
-		Certificate:    certificate,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Certificates.UpsertCertificate(ctx, request)
+	res, err := r.client.Certificates.UpsertCertificate(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -331,17 +318,13 @@ func (r *GatewayCertificateResource) Delete(ctx context.Context, req resource.De
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteCertificateRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var certificateID string
-	certificateID = data.ID.ValueString()
-
-	request := operations.DeleteCertificateRequest{
-		ControlPlaneID: controlPlaneID,
-		CertificateID:  certificateID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Certificates.DeleteCertificate(ctx, request)
+	res, err := r.client.Certificates.DeleteCertificate(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

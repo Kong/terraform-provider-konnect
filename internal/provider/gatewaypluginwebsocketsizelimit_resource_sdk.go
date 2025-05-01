@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToSharedWebsocketSizeLimitPlugin() *shared.WebsocketSizeLimitPlugin {
+func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToSharedWebsocketSizeLimitPlugin(ctx context.Context) (*shared.WebsocketSizeLimitPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToSharedWebsocketSizeLimi
 	if r.Ordering != nil {
 		var after *shared.WebsocketSizeLimitPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToSharedWebsocketSizeLimi
 		}
 		var before *shared.WebsocketSizeLimitPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToSharedWebsocketSizeLimi
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -103,7 +106,7 @@ func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToSharedWebsocketSizeLimi
 			ID: id1,
 		}
 	}
-	var protocols []shared.WebsocketSizeLimitPluginProtocols = []shared.WebsocketSizeLimitPluginProtocols{}
+	protocols := make([]shared.WebsocketSizeLimitPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.WebsocketSizeLimitPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -145,7 +148,88 @@ func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToSharedWebsocketSizeLimi
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToOperationsCreateWebsocketsizelimitPluginRequest(ctx context.Context) (*operations.CreateWebsocketsizelimitPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	websocketSizeLimitPlugin, websocketSizeLimitPluginDiags := r.ToSharedWebsocketSizeLimitPlugin(ctx)
+	diags.Append(websocketSizeLimitPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateWebsocketsizelimitPluginRequest{
+		ControlPlaneID:           controlPlaneID,
+		WebsocketSizeLimitPlugin: *websocketSizeLimitPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToOperationsUpdateWebsocketsizelimitPluginRequest(ctx context.Context) (*operations.UpdateWebsocketsizelimitPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	websocketSizeLimitPlugin, websocketSizeLimitPluginDiags := r.ToSharedWebsocketSizeLimitPlugin(ctx)
+	diags.Append(websocketSizeLimitPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateWebsocketsizelimitPluginRequest{
+		PluginID:                 pluginID,
+		ControlPlaneID:           controlPlaneID,
+		WebsocketSizeLimitPlugin: *websocketSizeLimitPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToOperationsGetWebsocketsizelimitPluginRequest(ctx context.Context) (*operations.GetWebsocketsizelimitPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetWebsocketsizelimitPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToOperationsDeleteWebsocketsizelimitPluginRequest(ctx context.Context) (*operations.DeleteWebsocketsizelimitPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteWebsocketsizelimitPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginWebsocketSizeLimitResourceModel) RefreshFromSharedWebsocketSizeLimitPlugin(ctx context.Context, resp *shared.WebsocketSizeLimitPlugin) diag.Diagnostics {

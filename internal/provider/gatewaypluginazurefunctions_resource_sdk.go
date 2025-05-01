@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginAzureFunctionsResourceModel) ToSharedAzureFunctionsPlugin() *shared.AzureFunctionsPlugin {
+func (r *GatewayPluginAzureFunctionsResourceModel) ToSharedAzureFunctionsPlugin(ctx context.Context) (*shared.AzureFunctionsPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginAzureFunctionsResourceModel) ToSharedAzureFunctionsPlugin(
 	if r.Ordering != nil {
 		var after *shared.AzureFunctionsPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginAzureFunctionsResourceModel) ToSharedAzureFunctionsPlugin(
 		}
 		var before *shared.AzureFunctionsPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginAzureFunctionsResourceModel) ToSharedAzureFunctionsPlugin(
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -159,7 +162,7 @@ func (r *GatewayPluginAzureFunctionsResourceModel) ToSharedAzureFunctionsPlugin(
 			ID: id1,
 		}
 	}
-	var protocols []shared.AzureFunctionsPluginProtocols = []shared.AzureFunctionsPluginProtocols{}
+	protocols := make([]shared.AzureFunctionsPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.AzureFunctionsPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -201,7 +204,88 @@ func (r *GatewayPluginAzureFunctionsResourceModel) ToSharedAzureFunctionsPlugin(
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsCreateAzurefunctionsPluginRequest(ctx context.Context) (*operations.CreateAzurefunctionsPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	azureFunctionsPlugin, azureFunctionsPluginDiags := r.ToSharedAzureFunctionsPlugin(ctx)
+	diags.Append(azureFunctionsPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateAzurefunctionsPluginRequest{
+		ControlPlaneID:       controlPlaneID,
+		AzureFunctionsPlugin: *azureFunctionsPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsUpdateAzurefunctionsPluginRequest(ctx context.Context) (*operations.UpdateAzurefunctionsPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	azureFunctionsPlugin, azureFunctionsPluginDiags := r.ToSharedAzureFunctionsPlugin(ctx)
+	diags.Append(azureFunctionsPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAzurefunctionsPluginRequest{
+		PluginID:             pluginID,
+		ControlPlaneID:       controlPlaneID,
+		AzureFunctionsPlugin: *azureFunctionsPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsGetAzurefunctionsPluginRequest(ctx context.Context) (*operations.GetAzurefunctionsPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetAzurefunctionsPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsDeleteAzurefunctionsPluginRequest(ctx context.Context) (*operations.DeleteAzurefunctionsPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteAzurefunctionsPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginAzureFunctionsResourceModel) RefreshFromSharedAzureFunctionsPlugin(ctx context.Context, resp *shared.AzureFunctionsPlugin) diag.Diagnostics {

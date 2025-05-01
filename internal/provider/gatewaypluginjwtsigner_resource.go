@@ -21,7 +21,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
@@ -748,15 +747,13 @@ func (r *GatewayPluginJwtSignerResource) Create(ctx context.Context, req resourc
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateJwtsignerPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	jwtSignerPlugin := *data.ToSharedJwtSignerPlugin()
-	request := operations.CreateJwtsignerPluginRequest{
-		ControlPlaneID:  controlPlaneID,
-		JwtSignerPlugin: jwtSignerPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateJwtsignerPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateJwtsignerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -810,17 +807,13 @@ func (r *GatewayPluginJwtSignerResource) Read(ctx context.Context, req resource.
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetJwtsignerPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetJwtsignerPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetJwtsignerPlugin(ctx, request)
+	res, err := r.client.Plugins.GetJwtsignerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -868,19 +861,13 @@ func (r *GatewayPluginJwtSignerResource) Update(ctx context.Context, req resourc
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateJwtsignerPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	jwtSignerPlugin := *data.ToSharedJwtSignerPlugin()
-	request := operations.UpdateJwtsignerPluginRequest{
-		PluginID:        pluginID,
-		ControlPlaneID:  controlPlaneID,
-		JwtSignerPlugin: jwtSignerPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateJwtsignerPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateJwtsignerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -934,17 +921,13 @@ func (r *GatewayPluginJwtSignerResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteJwtsignerPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteJwtsignerPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteJwtsignerPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteJwtsignerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

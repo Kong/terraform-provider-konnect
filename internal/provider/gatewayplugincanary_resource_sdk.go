@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginCanaryResourceModel) ToSharedCanaryPlugin() *shared.CanaryPlugin {
+func (r *GatewayPluginCanaryResourceModel) ToSharedCanaryPlugin(ctx context.Context) (*shared.CanaryPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginCanaryResourceModel) ToSharedCanaryPlugin() *shared.Canary
 	if r.Ordering != nil {
 		var after *shared.CanaryPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginCanaryResourceModel) ToSharedCanaryPlugin() *shared.Canary
 		}
 		var before *shared.CanaryPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginCanaryResourceModel) ToSharedCanaryPlugin() *shared.Canary
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -86,7 +89,7 @@ func (r *GatewayPluginCanaryResourceModel) ToSharedCanaryPlugin() *shared.Canary
 		} else {
 			duration = nil
 		}
-		var groups []string = []string{}
+		groups := make([]string, 0, len(r.Config.Groups))
 		for _, groupsItem := range r.Config.Groups {
 			groups = append(groups, groupsItem.ValueString())
 		}
@@ -159,7 +162,7 @@ func (r *GatewayPluginCanaryResourceModel) ToSharedCanaryPlugin() *shared.Canary
 			UpstreamURI:        upstreamURI,
 		}
 	}
-	var protocols []shared.CanaryPluginProtocols = []shared.CanaryPluginProtocols{}
+	protocols := make([]shared.CanaryPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.CanaryPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -200,7 +203,88 @@ func (r *GatewayPluginCanaryResourceModel) ToSharedCanaryPlugin() *shared.Canary
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginCanaryResourceModel) ToOperationsCreateCanaryPluginRequest(ctx context.Context) (*operations.CreateCanaryPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	canaryPlugin, canaryPluginDiags := r.ToSharedCanaryPlugin(ctx)
+	diags.Append(canaryPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateCanaryPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		CanaryPlugin:   *canaryPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginCanaryResourceModel) ToOperationsUpdateCanaryPluginRequest(ctx context.Context) (*operations.UpdateCanaryPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	canaryPlugin, canaryPluginDiags := r.ToSharedCanaryPlugin(ctx)
+	diags.Append(canaryPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateCanaryPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		CanaryPlugin:   *canaryPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginCanaryResourceModel) ToOperationsGetCanaryPluginRequest(ctx context.Context) (*operations.GetCanaryPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetCanaryPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginCanaryResourceModel) ToOperationsDeleteCanaryPluginRequest(ctx context.Context) (*operations.DeleteCanaryPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteCanaryPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginCanaryResourceModel) RefreshFromSharedCanaryPlugin(ctx context.Context, resp *shared.CanaryPlugin) diag.Diagnostics {

@@ -22,7 +22,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 )
@@ -408,15 +407,13 @@ func (r *GatewayPluginDatadogResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateDatadogPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	datadogPlugin := *data.ToSharedDatadogPlugin()
-	request := operations.CreateDatadogPluginRequest{
-		ControlPlaneID: controlPlaneID,
-		DatadogPlugin:  datadogPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateDatadogPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateDatadogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -470,17 +467,13 @@ func (r *GatewayPluginDatadogResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetDatadogPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetDatadogPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetDatadogPlugin(ctx, request)
+	res, err := r.client.Plugins.GetDatadogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -528,19 +521,13 @@ func (r *GatewayPluginDatadogResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateDatadogPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	datadogPlugin := *data.ToSharedDatadogPlugin()
-	request := operations.UpdateDatadogPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-		DatadogPlugin:  datadogPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateDatadogPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateDatadogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -594,17 +581,13 @@ func (r *GatewayPluginDatadogResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteDatadogPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteDatadogPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteDatadogPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteDatadogPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

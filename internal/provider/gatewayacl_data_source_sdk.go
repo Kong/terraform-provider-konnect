@@ -7,8 +7,30 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *GatewayACLDataSourceModel) ToOperationsGetACLWithConsumerRequest(ctx context.Context) (*operations.GetACLWithConsumerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	var aclID string
+	aclID = r.ID.ValueString()
+
+	out := operations.GetACLWithConsumerRequest{
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		ACLID:          aclID,
+	}
+
+	return &out, diags
+}
 
 func (r *GatewayACLDataSourceModel) RefreshFromSharedACL(ctx context.Context, resp *shared.ACL) diag.Diagnostics {
 	var diags diag.Diagnostics

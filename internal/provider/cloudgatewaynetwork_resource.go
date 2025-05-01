@@ -21,7 +21,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
@@ -219,8 +218,13 @@ func (r *CloudGatewayNetworkResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	request := *data.ToSharedCreateNetworkRequest()
-	res, err := r.client.CloudGateways.CreateNetwork(ctx, request)
+	request, requestDiags := data.ToSharedCreateNetworkRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res, err := r.client.CloudGateways.CreateNetwork(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -274,13 +278,13 @@ func (r *CloudGatewayNetworkResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	var networkID string
-	networkID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetNetworkRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.GetNetworkRequest{
-		NetworkID: networkID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.CloudGateways.GetNetwork(ctx, request)
+	res, err := r.client.CloudGateways.GetNetwork(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -328,15 +332,13 @@ func (r *CloudGatewayNetworkResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	var networkID string
-	networkID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateNetworkRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	patchNetworkRequest := *data.ToSharedPatchNetworkRequest()
-	request := operations.UpdateNetworkRequest{
-		NetworkID:           networkID,
-		PatchNetworkRequest: patchNetworkRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.CloudGateways.UpdateNetwork(ctx, request)
+	res, err := r.client.CloudGateways.UpdateNetwork(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -390,13 +392,13 @@ func (r *CloudGatewayNetworkResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	var networkID string
-	networkID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteNetworkRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.DeleteNetworkRequest{
-		NetworkID: networkID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.CloudGateways.DeleteNetwork(ctx, request)
+	res, err := r.client.CloudGateways.DeleteNetwork(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayUpstreamResourceModel) ToSharedUpstream() *shared.Upstream {
+func (r *GatewayUpstreamResourceModel) ToSharedUpstream(ctx context.Context) (*shared.Upstream, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	algorithm := new(shared.UpstreamAlgorithm)
 	if !r.Algorithm.IsUnknown() && !r.Algorithm.IsNull() {
 		*algorithm = shared.UpstreamAlgorithm(r.Algorithm.ValueString())
@@ -114,7 +117,7 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstream() *shared.Upstream {
 			}
 			var healthy *shared.Healthy
 			if r.Healthchecks.Active.Healthy != nil {
-				var httpStatuses []int64 = []int64{}
+				httpStatuses := make([]int64, 0, len(r.Healthchecks.Active.Healthy.HTTPStatuses))
 				for _, httpStatusesItem := range r.Healthchecks.Active.Healthy.HTTPStatuses {
 					httpStatuses = append(httpStatuses, httpStatusesItem.ValueInt64())
 				}
@@ -174,7 +177,7 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstream() *shared.Upstream {
 				} else {
 					httpFailures = nil
 				}
-				var httpStatuses1 []int64 = []int64{}
+				httpStatuses1 := make([]int64, 0, len(r.Healthchecks.Active.Unhealthy.HTTPStatuses))
 				for _, httpStatusesItem1 := range r.Healthchecks.Active.Unhealthy.HTTPStatuses {
 					httpStatuses1 = append(httpStatuses1, httpStatusesItem1.ValueInt64())
 				}
@@ -220,7 +223,7 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstream() *shared.Upstream {
 		if r.Healthchecks.Passive != nil {
 			var healthy1 *shared.UpstreamHealthy
 			if r.Healthchecks.Passive.Healthy != nil {
-				var httpStatuses2 []int64 = []int64{}
+				httpStatuses2 := make([]int64, 0, len(r.Healthchecks.Passive.Healthy.HTTPStatuses))
 				for _, httpStatusesItem2 := range r.Healthchecks.Passive.Healthy.HTTPStatuses {
 					httpStatuses2 = append(httpStatuses2, httpStatusesItem2.ValueInt64())
 				}
@@ -249,7 +252,7 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstream() *shared.Upstream {
 				} else {
 					httpFailures1 = nil
 				}
-				var httpStatuses3 []int64 = []int64{}
+				httpStatuses3 := make([]int64, 0, len(r.Healthchecks.Passive.Unhealthy.HTTPStatuses))
 				for _, httpStatusesItem3 := range r.Healthchecks.Passive.Unhealthy.HTTPStatuses {
 					httpStatuses3 = append(httpStatuses3, httpStatusesItem3.ValueInt64())
 				}
@@ -311,7 +314,7 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstream() *shared.Upstream {
 	} else {
 		slots = nil
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -350,7 +353,88 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstream() *shared.Upstream {
 		UpdatedAt:              updatedAt,
 		UseSrvName:             useSrvName,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayUpstreamResourceModel) ToOperationsCreateUpstreamRequest(ctx context.Context) (*operations.CreateUpstreamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	upstream, upstreamDiags := r.ToSharedUpstream(ctx)
+	diags.Append(upstreamDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateUpstreamRequest{
+		ControlPlaneID: controlPlaneID,
+		Upstream:       *upstream,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayUpstreamResourceModel) ToOperationsUpsertUpstreamRequest(ctx context.Context) (*operations.UpsertUpstreamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var upstreamID string
+	upstreamID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	upstream, upstreamDiags := r.ToSharedUpstream(ctx)
+	diags.Append(upstreamDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpsertUpstreamRequest{
+		UpstreamID:     upstreamID,
+		ControlPlaneID: controlPlaneID,
+		Upstream:       *upstream,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayUpstreamResourceModel) ToOperationsGetUpstreamRequest(ctx context.Context) (*operations.GetUpstreamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var upstreamID string
+	upstreamID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetUpstreamRequest{
+		UpstreamID:     upstreamID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayUpstreamResourceModel) ToOperationsDeleteUpstreamRequest(ctx context.Context) (*operations.DeleteUpstreamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var upstreamID string
+	upstreamID = r.ID.ValueString()
+
+	out := operations.DeleteUpstreamRequest{
+		ControlPlaneID: controlPlaneID,
+		UpstreamID:     upstreamID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayUpstreamResourceModel) RefreshFromSharedUpstream(ctx context.Context, resp *shared.Upstream) diag.Diagnostics {

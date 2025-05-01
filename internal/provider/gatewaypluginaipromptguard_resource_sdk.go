@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginAiPromptGuardResourceModel) ToSharedAiPromptGuardPlugin() *shared.AiPromptGuardPlugin {
+func (r *GatewayPluginAiPromptGuardResourceModel) ToSharedAiPromptGuardPlugin(ctx context.Context) (*shared.AiPromptGuardPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToSharedAiPromptGuardPlugin() 
 	if r.Ordering != nil {
 		var after *shared.AiPromptGuardPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToSharedAiPromptGuardPlugin() 
 		}
 		var before *shared.AiPromptGuardPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToSharedAiPromptGuardPlugin() 
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -80,11 +83,11 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToSharedAiPromptGuardPlugin() 
 		} else {
 			allowAllConversationHistory = nil
 		}
-		var allowPatterns []string = []string{}
+		allowPatterns := make([]string, 0, len(r.Config.AllowPatterns))
 		for _, allowPatternsItem := range r.Config.AllowPatterns {
 			allowPatterns = append(allowPatterns, allowPatternsItem.ValueString())
 		}
-		var denyPatterns []string = []string{}
+		denyPatterns := make([]string, 0, len(r.Config.DenyPatterns))
 		for _, denyPatternsItem := range r.Config.DenyPatterns {
 			denyPatterns = append(denyPatterns, denyPatternsItem.ValueString())
 		}
@@ -139,7 +142,7 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToSharedAiPromptGuardPlugin() 
 			ID: id2,
 		}
 	}
-	var protocols []shared.AiPromptGuardPluginProtocols = []shared.AiPromptGuardPluginProtocols{}
+	protocols := make([]shared.AiPromptGuardPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.AiPromptGuardPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -182,7 +185,88 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToSharedAiPromptGuardPlugin() 
 		Route:         route,
 		Service:       service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsCreateAipromptguardPluginRequest(ctx context.Context) (*operations.CreateAipromptguardPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiPromptGuardPlugin, aiPromptGuardPluginDiags := r.ToSharedAiPromptGuardPlugin(ctx)
+	diags.Append(aiPromptGuardPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateAipromptguardPluginRequest{
+		ControlPlaneID:      controlPlaneID,
+		AiPromptGuardPlugin: *aiPromptGuardPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsUpdateAipromptguardPluginRequest(ctx context.Context) (*operations.UpdateAipromptguardPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiPromptGuardPlugin, aiPromptGuardPluginDiags := r.ToSharedAiPromptGuardPlugin(ctx)
+	diags.Append(aiPromptGuardPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAipromptguardPluginRequest{
+		PluginID:            pluginID,
+		ControlPlaneID:      controlPlaneID,
+		AiPromptGuardPlugin: *aiPromptGuardPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsGetAipromptguardPluginRequest(ctx context.Context) (*operations.GetAipromptguardPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetAipromptguardPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiPromptGuardResourceModel) ToOperationsDeleteAipromptguardPluginRequest(ctx context.Context) (*operations.DeleteAipromptguardPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteAipromptguardPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginAiPromptGuardResourceModel) RefreshFromSharedAiPromptGuardPlugin(ctx context.Context, resp *shared.AiPromptGuardPlugin) diag.Diagnostics {

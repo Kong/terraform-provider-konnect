@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginKafkaUpstreamResourceModel) ToSharedKafkaUpstreamPlugin() *shared.KafkaUpstreamPlugin {
+func (r *GatewayPluginKafkaUpstreamResourceModel) ToSharedKafkaUpstreamPlugin(ctx context.Context) (*shared.KafkaUpstreamPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToSharedKafkaUpstreamPlugin() 
 	if r.Ordering != nil {
 		var after *shared.KafkaUpstreamPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToSharedKafkaUpstreamPlugin() 
 		}
 		var before *shared.KafkaUpstreamPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToSharedKafkaUpstreamPlugin() 
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -74,7 +77,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToSharedKafkaUpstreamPlugin() 
 	}
 	var config *shared.KafkaUpstreamPluginConfig
 	if r.Config != nil {
-		var allowedTopics []string = []string{}
+		allowedTopics := make([]string, 0, len(r.Config.AllowedTopics))
 		for _, allowedTopicsItem := range r.Config.AllowedTopics {
 			allowedTopics = append(allowedTopics, allowedTopicsItem.ValueString())
 		}
@@ -118,7 +121,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToSharedKafkaUpstreamPlugin() 
 				User:      user,
 			}
 		}
-		var bootstrapServers []shared.KafkaUpstreamPluginBootstrapServers = []shared.KafkaUpstreamPluginBootstrapServers{}
+		bootstrapServers := make([]shared.KafkaUpstreamPluginBootstrapServers, 0, len(r.Config.BootstrapServers))
 		for _, bootstrapServersItem := range r.Config.BootstrapServers {
 			var host string
 			host = bootstrapServersItem.Host.ValueString()
@@ -173,7 +176,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToSharedKafkaUpstreamPlugin() 
 		} else {
 			keepaliveEnabled = nil
 		}
-		var messageByLuaFunctions []string = []string{}
+		messageByLuaFunctions := make([]string, 0, len(r.Config.MessageByLuaFunctions))
 		for _, messageByLuaFunctionsItem := range r.Config.MessageByLuaFunctions {
 			messageByLuaFunctions = append(messageByLuaFunctions, messageByLuaFunctionsItem.ValueString())
 		}
@@ -307,7 +310,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToSharedKafkaUpstreamPlugin() 
 			ID: id1,
 		}
 	}
-	var protocols []shared.KafkaUpstreamPluginProtocols = []shared.KafkaUpstreamPluginProtocols{}
+	protocols := make([]shared.KafkaUpstreamPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.KafkaUpstreamPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -349,7 +352,88 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToSharedKafkaUpstreamPlugin() 
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsCreateKafkaupstreamPluginRequest(ctx context.Context) (*operations.CreateKafkaupstreamPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	kafkaUpstreamPlugin, kafkaUpstreamPluginDiags := r.ToSharedKafkaUpstreamPlugin(ctx)
+	diags.Append(kafkaUpstreamPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateKafkaupstreamPluginRequest{
+		ControlPlaneID:      controlPlaneID,
+		KafkaUpstreamPlugin: *kafkaUpstreamPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsUpdateKafkaupstreamPluginRequest(ctx context.Context) (*operations.UpdateKafkaupstreamPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	kafkaUpstreamPlugin, kafkaUpstreamPluginDiags := r.ToSharedKafkaUpstreamPlugin(ctx)
+	diags.Append(kafkaUpstreamPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateKafkaupstreamPluginRequest{
+		PluginID:            pluginID,
+		ControlPlaneID:      controlPlaneID,
+		KafkaUpstreamPlugin: *kafkaUpstreamPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsGetKafkaupstreamPluginRequest(ctx context.Context) (*operations.GetKafkaupstreamPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetKafkaupstreamPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsDeleteKafkaupstreamPluginRequest(ctx context.Context) (*operations.DeleteKafkaupstreamPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteKafkaupstreamPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginKafkaUpstreamResourceModel) RefreshFromSharedKafkaUpstreamPlugin(ctx context.Context, resp *shared.KafkaUpstreamPlugin) diag.Diagnostics {

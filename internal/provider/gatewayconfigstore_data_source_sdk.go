@@ -7,8 +7,26 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *GatewayConfigStoreDataSourceModel) ToOperationsGetConfigStoreRequest(ctx context.Context) (*operations.GetConfigStoreRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var configStoreID string
+	configStoreID = r.ID.ValueString()
+
+	out := operations.GetConfigStoreRequest{
+		ControlPlaneID: controlPlaneID,
+		ConfigStoreID:  configStoreID,
+	}
+
+	return &out, diags
+}
 
 func (r *GatewayConfigStoreDataSourceModel) RefreshFromSharedConfigStore(ctx context.Context, resp *shared.ConfigStore) diag.Diagnostics {
 	var diags diag.Diagnostics

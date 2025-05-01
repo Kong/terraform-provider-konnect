@@ -11,7 +11,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -143,23 +142,13 @@ func (r *CloudGatewayProviderAccountListDataSource) Read(ctx context.Context, re
 		return
 	}
 
-	pageSize := new(int64)
-	if !data.PageSize.IsUnknown() && !data.PageSize.IsNull() {
-		*pageSize = data.PageSize.ValueInt64()
-	} else {
-		pageSize = nil
+	request, requestDiags := data.ToOperationsListProviderAccountsRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	pageNumber := new(int64)
-	if !data.PageNumber.IsUnknown() && !data.PageNumber.IsNull() {
-		*pageNumber = data.PageNumber.ValueInt64()
-	} else {
-		pageNumber = nil
-	}
-	request := operations.ListProviderAccountsRequest{
-		PageSize:   pageSize,
-		PageNumber: pageNumber,
-	}
-	res, err := r.client.CloudGateways.ListProviderAccounts(ctx, request)
+	res, err := r.client.CloudGateways.ListProviderAccounts(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -169,10 +158,6 @@ func (r *CloudGatewayProviderAccountListDataSource) Read(ctx context.Context, re
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
 		return
 	}
 	if res.StatusCode != 200 {

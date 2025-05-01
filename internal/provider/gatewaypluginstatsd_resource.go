@@ -22,7 +22,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 )
@@ -483,15 +482,13 @@ func (r *GatewayPluginStatsdResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateStatsdPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	statsdPlugin := *data.ToSharedStatsdPlugin()
-	request := operations.CreateStatsdPluginRequest{
-		ControlPlaneID: controlPlaneID,
-		StatsdPlugin:   statsdPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateStatsdPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateStatsdPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -545,17 +542,13 @@ func (r *GatewayPluginStatsdResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetStatsdPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetStatsdPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetStatsdPlugin(ctx, request)
+	res, err := r.client.Plugins.GetStatsdPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -603,19 +596,13 @@ func (r *GatewayPluginStatsdResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateStatsdPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	statsdPlugin := *data.ToSharedStatsdPlugin()
-	request := operations.UpdateStatsdPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-		StatsdPlugin:   statsdPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateStatsdPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateStatsdPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -669,17 +656,13 @@ func (r *GatewayPluginStatsdResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteStatsdPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteStatsdPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteStatsdPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteStatsdPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

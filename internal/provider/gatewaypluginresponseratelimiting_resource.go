@@ -22,7 +22,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
@@ -335,15 +334,13 @@ func (r *GatewayPluginResponseRatelimitingResource) Create(ctx context.Context, 
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateResponseratelimitingPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	responseRatelimitingPlugin := *data.ToSharedResponseRatelimitingPlugin()
-	request := operations.CreateResponseratelimitingPluginRequest{
-		ControlPlaneID:             controlPlaneID,
-		ResponseRatelimitingPlugin: responseRatelimitingPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateResponseratelimitingPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateResponseratelimitingPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -397,17 +394,13 @@ func (r *GatewayPluginResponseRatelimitingResource) Read(ctx context.Context, re
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetResponseratelimitingPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetResponseratelimitingPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetResponseratelimitingPlugin(ctx, request)
+	res, err := r.client.Plugins.GetResponseratelimitingPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -455,19 +448,13 @@ func (r *GatewayPluginResponseRatelimitingResource) Update(ctx context.Context, 
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateResponseratelimitingPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	responseRatelimitingPlugin := *data.ToSharedResponseRatelimitingPlugin()
-	request := operations.UpdateResponseratelimitingPluginRequest{
-		PluginID:                   pluginID,
-		ControlPlaneID:             controlPlaneID,
-		ResponseRatelimitingPlugin: responseRatelimitingPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateResponseratelimitingPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateResponseratelimitingPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -521,17 +508,13 @@ func (r *GatewayPluginResponseRatelimitingResource) Delete(ctx context.Context, 
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteResponseratelimitingPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteResponseratelimitingPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteResponseratelimitingPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteResponseratelimitingPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

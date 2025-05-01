@@ -21,7 +21,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 )
 
@@ -437,15 +436,13 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Create(ctx context.Cont
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateGraphqlproxycacheadvancedPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	graphqlProxyCacheAdvancedPlugin := *data.ToSharedGraphqlProxyCacheAdvancedPlugin()
-	request := operations.CreateGraphqlproxycacheadvancedPluginRequest{
-		ControlPlaneID:                  controlPlaneID,
-		GraphqlProxyCacheAdvancedPlugin: graphqlProxyCacheAdvancedPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateGraphqlproxycacheadvancedPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateGraphqlproxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -499,17 +496,13 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Read(ctx context.Contex
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetGraphqlproxycacheadvancedPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetGraphqlproxycacheadvancedPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetGraphqlproxycacheadvancedPlugin(ctx, request)
+	res, err := r.client.Plugins.GetGraphqlproxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -557,19 +550,13 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Update(ctx context.Cont
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateGraphqlproxycacheadvancedPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	graphqlProxyCacheAdvancedPlugin := *data.ToSharedGraphqlProxyCacheAdvancedPlugin()
-	request := operations.UpdateGraphqlproxycacheadvancedPluginRequest{
-		PluginID:                        pluginID,
-		ControlPlaneID:                  controlPlaneID,
-		GraphqlProxyCacheAdvancedPlugin: graphqlProxyCacheAdvancedPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateGraphqlproxycacheadvancedPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateGraphqlproxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -623,17 +610,13 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Delete(ctx context.Cont
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteGraphqlproxycacheadvancedPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteGraphqlproxycacheadvancedPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteGraphqlproxycacheadvancedPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteGraphqlproxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

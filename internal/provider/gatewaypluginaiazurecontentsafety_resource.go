@@ -20,7 +20,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/v2/internal/validators/int64validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
@@ -313,15 +312,13 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Create(ctx context.Context, 
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateAiazurecontentsafetyPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	aiAzureContentSafetyPlugin := *data.ToSharedAiAzureContentSafetyPlugin()
-	request := operations.CreateAiazurecontentsafetyPluginRequest{
-		ControlPlaneID:             controlPlaneID,
-		AiAzureContentSafetyPlugin: aiAzureContentSafetyPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateAiazurecontentsafetyPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateAiazurecontentsafetyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -375,17 +372,13 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Read(ctx context.Context, re
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetAiazurecontentsafetyPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetAiazurecontentsafetyPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetAiazurecontentsafetyPlugin(ctx, request)
+	res, err := r.client.Plugins.GetAiazurecontentsafetyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -433,19 +426,13 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Update(ctx context.Context, 
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateAiazurecontentsafetyPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	aiAzureContentSafetyPlugin := *data.ToSharedAiAzureContentSafetyPlugin()
-	request := operations.UpdateAiazurecontentsafetyPluginRequest{
-		PluginID:                   pluginID,
-		ControlPlaneID:             controlPlaneID,
-		AiAzureContentSafetyPlugin: aiAzureContentSafetyPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateAiazurecontentsafetyPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateAiazurecontentsafetyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -499,17 +486,13 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Delete(ctx context.Context, 
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteAiazurecontentsafetyPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteAiazurecontentsafetyPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteAiazurecontentsafetyPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteAiazurecontentsafetyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

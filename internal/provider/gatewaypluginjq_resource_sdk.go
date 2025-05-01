@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginJqResourceModel) ToSharedJqPlugin() *shared.JqPlugin {
+func (r *GatewayPluginJqResourceModel) ToSharedJqPlugin(ctx context.Context) (*shared.JqPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginJqResourceModel) ToSharedJqPlugin() *shared.JqPlugin {
 	if r.Ordering != nil {
 		var after *shared.JqPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginJqResourceModel) ToSharedJqPlugin() *shared.JqPlugin {
 		}
 		var before *shared.JqPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginJqResourceModel) ToSharedJqPlugin() *shared.JqPlugin {
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -74,7 +77,7 @@ func (r *GatewayPluginJqResourceModel) ToSharedJqPlugin() *shared.JqPlugin {
 	}
 	var config *shared.JqPluginConfig
 	if r.Config != nil {
-		var requestIfMediaType []string = []string{}
+		requestIfMediaType := make([]string, 0, len(r.Config.RequestIfMediaType))
 		for _, requestIfMediaTypeItem := range r.Config.RequestIfMediaType {
 			requestIfMediaType = append(requestIfMediaType, requestIfMediaTypeItem.ValueString())
 		}
@@ -124,11 +127,11 @@ func (r *GatewayPluginJqResourceModel) ToSharedJqPlugin() *shared.JqPlugin {
 				SortKeys:      sortKeys,
 			}
 		}
-		var responseIfMediaType []string = []string{}
+		responseIfMediaType := make([]string, 0, len(r.Config.ResponseIfMediaType))
 		for _, responseIfMediaTypeItem := range r.Config.ResponseIfMediaType {
 			responseIfMediaType = append(responseIfMediaType, responseIfMediaTypeItem.ValueString())
 		}
-		var responseIfStatusCode []int64 = []int64{}
+		responseIfStatusCode := make([]int64, 0, len(r.Config.ResponseIfStatusCode))
 		for _, responseIfStatusCodeItem := range r.Config.ResponseIfStatusCode {
 			responseIfStatusCode = append(responseIfStatusCode, responseIfStatusCodeItem.ValueInt64())
 		}
@@ -200,7 +203,7 @@ func (r *GatewayPluginJqResourceModel) ToSharedJqPlugin() *shared.JqPlugin {
 			ID: id1,
 		}
 	}
-	var protocols []shared.JqPluginProtocols = []shared.JqPluginProtocols{}
+	protocols := make([]shared.JqPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.JqPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -242,7 +245,88 @@ func (r *GatewayPluginJqResourceModel) ToSharedJqPlugin() *shared.JqPlugin {
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginJqResourceModel) ToOperationsCreateJqPluginRequest(ctx context.Context) (*operations.CreateJqPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	jqPlugin, jqPluginDiags := r.ToSharedJqPlugin(ctx)
+	diags.Append(jqPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateJqPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		JqPlugin:       *jqPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginJqResourceModel) ToOperationsUpdateJqPluginRequest(ctx context.Context) (*operations.UpdateJqPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	jqPlugin, jqPluginDiags := r.ToSharedJqPlugin(ctx)
+	diags.Append(jqPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateJqPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		JqPlugin:       *jqPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginJqResourceModel) ToOperationsGetJqPluginRequest(ctx context.Context) (*operations.GetJqPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetJqPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginJqResourceModel) ToOperationsDeleteJqPluginRequest(ctx context.Context) (*operations.DeleteJqPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteJqPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginJqResourceModel) RefreshFromSharedJqPlugin(ctx context.Context, resp *shared.JqPlugin) diag.Diagnostics {

@@ -22,7 +22,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
@@ -327,15 +326,13 @@ func (r *GatewayPluginLogglyResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateLogglyPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	logglyPlugin := *data.ToSharedLogglyPlugin()
-	request := operations.CreateLogglyPluginRequest{
-		ControlPlaneID: controlPlaneID,
-		LogglyPlugin:   logglyPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateLogglyPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateLogglyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -389,17 +386,13 @@ func (r *GatewayPluginLogglyResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetLogglyPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetLogglyPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetLogglyPlugin(ctx, request)
+	res, err := r.client.Plugins.GetLogglyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -447,19 +440,13 @@ func (r *GatewayPluginLogglyResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateLogglyPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	logglyPlugin := *data.ToSharedLogglyPlugin()
-	request := operations.UpdateLogglyPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-		LogglyPlugin:   logglyPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateLogglyPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateLogglyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -513,17 +500,13 @@ func (r *GatewayPluginLogglyResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteLogglyPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteLogglyPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteLogglyPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteLogglyPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

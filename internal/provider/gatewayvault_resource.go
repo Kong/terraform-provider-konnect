@@ -16,7 +16,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
@@ -143,15 +142,13 @@ func (r *GatewayVaultResource) Create(ctx context.Context, req resource.CreateRe
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateVaultRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	vault := *data.ToSharedVault()
-	request := operations.CreateVaultRequest{
-		ControlPlaneID: controlPlaneID,
-		Vault:          vault,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Vaults.CreateVault(ctx, request)
+	res, err := r.client.Vaults.CreateVault(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -205,17 +202,13 @@ func (r *GatewayVaultResource) Read(ctx context.Context, req resource.ReadReques
 		return
 	}
 
-	var vaultID string
-	vaultID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetVaultRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetVaultRequest{
-		VaultID:        vaultID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Vaults.GetVault(ctx, request)
+	res, err := r.client.Vaults.GetVault(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -263,19 +256,13 @@ func (r *GatewayVaultResource) Update(ctx context.Context, req resource.UpdateRe
 		return
 	}
 
-	var vaultID string
-	vaultID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpsertVaultRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	vault := *data.ToSharedVault()
-	request := operations.UpsertVaultRequest{
-		VaultID:        vaultID,
-		ControlPlaneID: controlPlaneID,
-		Vault:          vault,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Vaults.UpsertVault(ctx, request)
+	res, err := r.client.Vaults.UpsertVault(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -329,17 +316,13 @@ func (r *GatewayVaultResource) Delete(ctx context.Context, req resource.DeleteRe
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteVaultRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var vaultID string
-	vaultID = data.ID.ValueString()
-
-	request := operations.DeleteVaultRequest{
-		ControlPlaneID: controlPlaneID,
-		VaultID:        vaultID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Vaults.DeleteVault(ctx, request)
+	res, err := r.client.Vaults.DeleteVault(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

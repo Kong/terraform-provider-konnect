@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginPreFunctionResourceModel) ToSharedPreFunctionPlugin() *shared.PreFunctionPlugin {
+func (r *GatewayPluginPreFunctionResourceModel) ToSharedPreFunctionPlugin(ctx context.Context) (*shared.PreFunctionPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginPreFunctionResourceModel) ToSharedPreFunctionPlugin() *sha
 	if r.Ordering != nil {
 		var after *shared.PreFunctionPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginPreFunctionResourceModel) ToSharedPreFunctionPlugin() *sha
 		}
 		var before *shared.PreFunctionPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginPreFunctionResourceModel) ToSharedPreFunctionPlugin() *sha
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -74,43 +77,43 @@ func (r *GatewayPluginPreFunctionResourceModel) ToSharedPreFunctionPlugin() *sha
 	}
 	var config *shared.PreFunctionPluginConfig
 	if r.Config != nil {
-		var access2 []string = []string{}
+		access2 := make([]string, 0, len(r.Config.Access))
 		for _, accessItem2 := range r.Config.Access {
 			access2 = append(access2, accessItem2.ValueString())
 		}
-		var bodyFilter []string = []string{}
+		bodyFilter := make([]string, 0, len(r.Config.BodyFilter))
 		for _, bodyFilterItem := range r.Config.BodyFilter {
 			bodyFilter = append(bodyFilter, bodyFilterItem.ValueString())
 		}
-		var certificate []string = []string{}
+		certificate := make([]string, 0, len(r.Config.Certificate))
 		for _, certificateItem := range r.Config.Certificate {
 			certificate = append(certificate, certificateItem.ValueString())
 		}
-		var headerFilter []string = []string{}
+		headerFilter := make([]string, 0, len(r.Config.HeaderFilter))
 		for _, headerFilterItem := range r.Config.HeaderFilter {
 			headerFilter = append(headerFilter, headerFilterItem.ValueString())
 		}
-		var log []string = []string{}
+		log := make([]string, 0, len(r.Config.Log))
 		for _, logItem := range r.Config.Log {
 			log = append(log, logItem.ValueString())
 		}
-		var rewrite []string = []string{}
+		rewrite := make([]string, 0, len(r.Config.Rewrite))
 		for _, rewriteItem := range r.Config.Rewrite {
 			rewrite = append(rewrite, rewriteItem.ValueString())
 		}
-		var wsClientFrame []string = []string{}
+		wsClientFrame := make([]string, 0, len(r.Config.WsClientFrame))
 		for _, wsClientFrameItem := range r.Config.WsClientFrame {
 			wsClientFrame = append(wsClientFrame, wsClientFrameItem.ValueString())
 		}
-		var wsClose []string = []string{}
+		wsClose := make([]string, 0, len(r.Config.WsClose))
 		for _, wsCloseItem := range r.Config.WsClose {
 			wsClose = append(wsClose, wsCloseItem.ValueString())
 		}
-		var wsHandshake []string = []string{}
+		wsHandshake := make([]string, 0, len(r.Config.WsHandshake))
 		for _, wsHandshakeItem := range r.Config.WsHandshake {
 			wsHandshake = append(wsHandshake, wsHandshakeItem.ValueString())
 		}
-		var wsUpstreamFrame []string = []string{}
+		wsUpstreamFrame := make([]string, 0, len(r.Config.WsUpstreamFrame))
 		for _, wsUpstreamFrameItem := range r.Config.WsUpstreamFrame {
 			wsUpstreamFrame = append(wsUpstreamFrame, wsUpstreamFrameItem.ValueString())
 		}
@@ -127,7 +130,7 @@ func (r *GatewayPluginPreFunctionResourceModel) ToSharedPreFunctionPlugin() *sha
 			WsUpstreamFrame: wsUpstreamFrame,
 		}
 	}
-	var protocols []shared.PreFunctionPluginProtocols = []shared.PreFunctionPluginProtocols{}
+	protocols := make([]shared.PreFunctionPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.PreFunctionPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -168,7 +171,88 @@ func (r *GatewayPluginPreFunctionResourceModel) ToSharedPreFunctionPlugin() *sha
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginPreFunctionResourceModel) ToOperationsCreatePrefunctionPluginRequest(ctx context.Context) (*operations.CreatePrefunctionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	preFunctionPlugin, preFunctionPluginDiags := r.ToSharedPreFunctionPlugin(ctx)
+	diags.Append(preFunctionPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreatePrefunctionPluginRequest{
+		ControlPlaneID:    controlPlaneID,
+		PreFunctionPlugin: *preFunctionPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginPreFunctionResourceModel) ToOperationsUpdatePrefunctionPluginRequest(ctx context.Context) (*operations.UpdatePrefunctionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	preFunctionPlugin, preFunctionPluginDiags := r.ToSharedPreFunctionPlugin(ctx)
+	diags.Append(preFunctionPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdatePrefunctionPluginRequest{
+		PluginID:          pluginID,
+		ControlPlaneID:    controlPlaneID,
+		PreFunctionPlugin: *preFunctionPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginPreFunctionResourceModel) ToOperationsGetPrefunctionPluginRequest(ctx context.Context) (*operations.GetPrefunctionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetPrefunctionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginPreFunctionResourceModel) ToOperationsDeletePrefunctionPluginRequest(ctx context.Context) (*operations.DeletePrefunctionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeletePrefunctionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginPreFunctionResourceModel) RefreshFromSharedPreFunctionPlugin(ctx context.Context, resp *shared.PreFunctionPlugin) diag.Diagnostics {

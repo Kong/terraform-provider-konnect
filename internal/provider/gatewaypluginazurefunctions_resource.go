@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -269,15 +268,13 @@ func (r *GatewayPluginAzureFunctionsResource) Create(ctx context.Context, req re
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateAzurefunctionsPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	azureFunctionsPlugin := *data.ToSharedAzureFunctionsPlugin()
-	request := operations.CreateAzurefunctionsPluginRequest{
-		ControlPlaneID:       controlPlaneID,
-		AzureFunctionsPlugin: azureFunctionsPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateAzurefunctionsPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateAzurefunctionsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -331,17 +328,13 @@ func (r *GatewayPluginAzureFunctionsResource) Read(ctx context.Context, req reso
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetAzurefunctionsPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetAzurefunctionsPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetAzurefunctionsPlugin(ctx, request)
+	res, err := r.client.Plugins.GetAzurefunctionsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -389,19 +382,13 @@ func (r *GatewayPluginAzureFunctionsResource) Update(ctx context.Context, req re
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateAzurefunctionsPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	azureFunctionsPlugin := *data.ToSharedAzureFunctionsPlugin()
-	request := operations.UpdateAzurefunctionsPluginRequest{
-		PluginID:             pluginID,
-		ControlPlaneID:       controlPlaneID,
-		AzureFunctionsPlugin: azureFunctionsPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateAzurefunctionsPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateAzurefunctionsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -455,17 +442,13 @@ func (r *GatewayPluginAzureFunctionsResource) Delete(ctx context.Context, req re
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteAzurefunctionsPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteAzurefunctionsPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteAzurefunctionsPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteAzurefunctionsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

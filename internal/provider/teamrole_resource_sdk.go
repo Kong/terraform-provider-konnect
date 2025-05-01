@@ -6,10 +6,13 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *TeamRoleResourceModel) ToSharedAssignRole() *shared.AssignRole {
+func (r *TeamRoleResourceModel) ToSharedAssignRole(ctx context.Context) (*shared.AssignRole, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	roleName := new(shared.RoleName)
 	if !r.RoleName.IsUnknown() && !r.RoleName.IsNull() {
 		*roleName = shared.RoleName(r.RoleName.ValueString())
@@ -40,7 +43,46 @@ func (r *TeamRoleResourceModel) ToSharedAssignRole() *shared.AssignRole {
 		EntityTypeName: entityTypeName,
 		EntityRegion:   entityRegion,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *TeamRoleResourceModel) ToOperationsTeamsAssignRoleRequest(ctx context.Context) (*operations.TeamsAssignRoleRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var teamID string
+	teamID = r.TeamID.ValueString()
+
+	assignRole, assignRoleDiags := r.ToSharedAssignRole(ctx)
+	diags.Append(assignRoleDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.TeamsAssignRoleRequest{
+		TeamID:     teamID,
+		AssignRole: assignRole,
+	}
+
+	return &out, diags
+}
+
+func (r *TeamRoleResourceModel) ToOperationsTeamsRemoveRoleRequest(ctx context.Context) (*operations.TeamsRemoveRoleRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var teamID string
+	teamID = r.TeamID.ValueString()
+
+	var roleID string
+	roleID = r.ID.ValueString()
+
+	out := operations.TeamsRemoveRoleRequest{
+		TeamID: teamID,
+		RoleID: roleID,
+	}
+
+	return &out, diags
 }
 
 func (r *TeamRoleResourceModel) RefreshFromSharedAssignedRole(ctx context.Context, resp *shared.AssignedRole) diag.Diagnostics {

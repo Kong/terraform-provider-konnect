@@ -21,7 +21,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -284,15 +283,13 @@ func (r *GatewayPluginJSONThreatProtectionResource) Create(ctx context.Context, 
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateJsonthreatprotectionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	jsonThreatProtectionPlugin := *data.ToSharedJSONThreatProtectionPlugin()
-	request := operations.CreateJsonthreatprotectionPluginRequest{
-		ControlPlaneID:             controlPlaneID,
-		JSONThreatProtectionPlugin: jsonThreatProtectionPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateJsonthreatprotectionPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateJsonthreatprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -346,17 +343,13 @@ func (r *GatewayPluginJSONThreatProtectionResource) Read(ctx context.Context, re
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetJsonthreatprotectionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetJsonthreatprotectionPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetJsonthreatprotectionPlugin(ctx, request)
+	res, err := r.client.Plugins.GetJsonthreatprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -404,19 +397,13 @@ func (r *GatewayPluginJSONThreatProtectionResource) Update(ctx context.Context, 
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateJsonthreatprotectionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	jsonThreatProtectionPlugin := *data.ToSharedJSONThreatProtectionPlugin()
-	request := operations.UpdateJsonthreatprotectionPluginRequest{
-		PluginID:                   pluginID,
-		ControlPlaneID:             controlPlaneID,
-		JSONThreatProtectionPlugin: jsonThreatProtectionPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateJsonthreatprotectionPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateJsonthreatprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -470,17 +457,13 @@ func (r *GatewayPluginJSONThreatProtectionResource) Delete(ctx context.Context, 
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteJsonthreatprotectionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteJsonthreatprotectionPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteJsonthreatprotectionPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteJsonthreatprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

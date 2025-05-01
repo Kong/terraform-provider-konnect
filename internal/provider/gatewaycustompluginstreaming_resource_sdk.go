@@ -6,10 +6,13 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayCustomPluginStreamingResourceModel) ToSharedCustomPlugin() *shared.CustomPlugin {
+func (r *GatewayCustomPluginStreamingResourceModel) ToSharedCustomPlugin(ctx context.Context) (*shared.CustomPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -31,7 +34,7 @@ func (r *GatewayCustomPluginStreamingResourceModel) ToSharedCustomPlugin() *shar
 	var schema string
 	schema = r.Schema.ValueString()
 
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -50,7 +53,88 @@ func (r *GatewayCustomPluginStreamingResourceModel) ToSharedCustomPlugin() *shar
 		Tags:      tags,
 		UpdatedAt: updatedAt,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayCustomPluginStreamingResourceModel) ToOperationsCreateCustomPluginRequest(ctx context.Context) (*operations.CreateCustomPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	customPlugin, customPluginDiags := r.ToSharedCustomPlugin(ctx)
+	diags.Append(customPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateCustomPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		CustomPlugin:   *customPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayCustomPluginStreamingResourceModel) ToOperationsUpsertCustomPluginRequest(ctx context.Context) (*operations.UpsertCustomPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var customPluginID string
+	customPluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	customPlugin, customPluginDiags := r.ToSharedCustomPlugin(ctx)
+	diags.Append(customPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpsertCustomPluginRequest{
+		CustomPluginID: customPluginID,
+		ControlPlaneID: controlPlaneID,
+		CustomPlugin:   *customPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayCustomPluginStreamingResourceModel) ToOperationsGetCustomPluginRequest(ctx context.Context) (*operations.GetCustomPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var customPluginID string
+	customPluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetCustomPluginRequest{
+		CustomPluginID: customPluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayCustomPluginStreamingResourceModel) ToOperationsDeleteCustomPluginRequest(ctx context.Context) (*operations.DeleteCustomPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var customPluginID string
+	customPluginID = r.ID.ValueString()
+
+	out := operations.DeleteCustomPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		CustomPluginID: customPluginID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayCustomPluginStreamingResourceModel) RefreshFromSharedCustomPlugin(ctx context.Context, resp *shared.CustomPlugin) diag.Diagnostics {

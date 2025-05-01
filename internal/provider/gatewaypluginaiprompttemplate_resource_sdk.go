@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginAiPromptTemplateResourceModel) ToSharedAiPromptTemplatePlugin() *shared.AiPromptTemplatePlugin {
+func (r *GatewayPluginAiPromptTemplateResourceModel) ToSharedAiPromptTemplatePlugin(ctx context.Context) (*shared.AiPromptTemplatePlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) ToSharedAiPromptTemplatePlu
 	if r.Ordering != nil {
 		var after *shared.AiPromptTemplatePluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) ToSharedAiPromptTemplatePlu
 		}
 		var before *shared.AiPromptTemplatePluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) ToSharedAiPromptTemplatePlu
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -92,7 +95,7 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) ToSharedAiPromptTemplatePlu
 		} else {
 			maxRequestBodySize = nil
 		}
-		var templates []shared.Templates = []shared.Templates{}
+		templates := make([]shared.Templates, 0, len(r.Config.Templates))
 		for _, templatesItem := range r.Config.Templates {
 			var name string
 			name = templatesItem.Name.ValueString()
@@ -136,7 +139,7 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) ToSharedAiPromptTemplatePlu
 			ID: id2,
 		}
 	}
-	var protocols []shared.AiPromptTemplatePluginProtocols = []shared.AiPromptTemplatePluginProtocols{}
+	protocols := make([]shared.AiPromptTemplatePluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.AiPromptTemplatePluginProtocols(protocolsItem.ValueString()))
 	}
@@ -179,7 +182,88 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) ToSharedAiPromptTemplatePlu
 		Route:         route,
 		Service:       service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsCreateAiprompttemplatePluginRequest(ctx context.Context) (*operations.CreateAiprompttemplatePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiPromptTemplatePlugin, aiPromptTemplatePluginDiags := r.ToSharedAiPromptTemplatePlugin(ctx)
+	diags.Append(aiPromptTemplatePluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateAiprompttemplatePluginRequest{
+		ControlPlaneID:         controlPlaneID,
+		AiPromptTemplatePlugin: *aiPromptTemplatePlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsUpdateAiprompttemplatePluginRequest(ctx context.Context) (*operations.UpdateAiprompttemplatePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiPromptTemplatePlugin, aiPromptTemplatePluginDiags := r.ToSharedAiPromptTemplatePlugin(ctx)
+	diags.Append(aiPromptTemplatePluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAiprompttemplatePluginRequest{
+		PluginID:               pluginID,
+		ControlPlaneID:         controlPlaneID,
+		AiPromptTemplatePlugin: *aiPromptTemplatePlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsGetAiprompttemplatePluginRequest(ctx context.Context) (*operations.GetAiprompttemplatePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetAiprompttemplatePluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiPromptTemplateResourceModel) ToOperationsDeleteAiprompttemplatePluginRequest(ctx context.Context) (*operations.DeleteAiprompttemplatePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteAiprompttemplatePluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginAiPromptTemplateResourceModel) RefreshFromSharedAiPromptTemplatePlugin(ctx context.Context, resp *shared.AiPromptTemplatePlugin) diag.Diagnostics {

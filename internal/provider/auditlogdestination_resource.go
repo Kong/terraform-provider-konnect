@@ -13,7 +13,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
@@ -139,7 +138,12 @@ func (r *AuditLogDestinationResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	request := data.ToSharedCreateAuditLogDestination()
+	request, requestDiags := data.ToSharedCreateAuditLogDestination(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	res, err := r.client.AuditLogs.CreateAuditLogDestination(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -171,13 +175,13 @@ func (r *AuditLogDestinationResource) Create(ctx context.Context, req resource.C
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	var auditLogDestinationID string
-	auditLogDestinationID = data.ID.ValueString()
+	request1, request1Diags := data.ToOperationsGetAuditLogDestinationRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
 
-	request1 := operations.GetAuditLogDestinationRequest{
-		AuditLogDestinationID: auditLogDestinationID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.AuditLogs.GetAuditLogDestination(ctx, request1)
+	res1, err := r.client.AuditLogs.GetAuditLogDestination(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -231,13 +235,13 @@ func (r *AuditLogDestinationResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	var auditLogDestinationID string
-	auditLogDestinationID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetAuditLogDestinationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.GetAuditLogDestinationRequest{
-		AuditLogDestinationID: auditLogDestinationID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AuditLogs.GetAuditLogDestination(ctx, request)
+	res, err := r.client.AuditLogs.GetAuditLogDestination(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -285,15 +289,13 @@ func (r *AuditLogDestinationResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	var auditLogDestinationID string
-	auditLogDestinationID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateAuditLogDestinationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	updateAuditLogDestination := data.ToSharedUpdateAuditLogDestination()
-	request := operations.UpdateAuditLogDestinationRequest{
-		AuditLogDestinationID:     auditLogDestinationID,
-		UpdateAuditLogDestination: updateAuditLogDestination,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AuditLogs.UpdateAuditLogDestination(ctx, request)
+	res, err := r.client.AuditLogs.UpdateAuditLogDestination(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -324,13 +326,13 @@ func (r *AuditLogDestinationResource) Update(ctx context.Context, req resource.U
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	var auditLogDestinationId1 string
-	auditLogDestinationId1 = data.ID.ValueString()
+	request1, request1Diags := data.ToOperationsGetAuditLogDestinationRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
 
-	request1 := operations.GetAuditLogDestinationRequest{
-		AuditLogDestinationID: auditLogDestinationId1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.AuditLogs.GetAuditLogDestination(ctx, request1)
+	res1, err := r.client.AuditLogs.GetAuditLogDestination(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -384,13 +386,13 @@ func (r *AuditLogDestinationResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	var auditLogDestinationID string
-	auditLogDestinationID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteAuditLogDestinationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.DeleteAuditLogDestinationRequest{
-		AuditLogDestinationID: auditLogDestinationID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AuditLogs.DeleteAuditLogDestination(ctx, request)
+	res, err := r.client.AuditLogs.DeleteAuditLogDestination(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

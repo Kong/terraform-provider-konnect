@@ -15,7 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 	"regexp"
 )
@@ -126,15 +125,13 @@ func (r *PortalTeamResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsCreatePortalTeamRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	portalCreateTeamRequest := data.ToSharedPortalCreateTeamRequest()
-	request := operations.CreatePortalTeamRequest{
-		PortalID:                portalID,
-		PortalCreateTeamRequest: portalCreateTeamRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalTeams.CreatePortalTeam(ctx, request)
+	res, err := r.client.PortalTeams.CreatePortalTeam(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -188,17 +185,13 @@ func (r *PortalTeamResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	var teamID string
-	teamID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetPortalTeamRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
-
-	request := operations.GetPortalTeamRequest{
-		TeamID:   teamID,
-		PortalID: portalID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalTeams.GetPortalTeam(ctx, request)
+	res, err := r.client.PortalTeams.GetPortalTeam(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -246,19 +239,13 @@ func (r *PortalTeamResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
-	var teamID string
-	teamID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdatePortalTeamRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
-
-	portalUpdateTeamRequest := data.ToSharedPortalUpdateTeamRequest()
-	request := operations.UpdatePortalTeamRequest{
-		TeamID:                  teamID,
-		PortalID:                portalID,
-		PortalUpdateTeamRequest: portalUpdateTeamRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalTeams.UpdatePortalTeam(ctx, request)
+	res, err := r.client.PortalTeams.UpdatePortalTeam(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -312,17 +299,13 @@ func (r *PortalTeamResource) Delete(ctx context.Context, req resource.DeleteRequ
 		return
 	}
 
-	var teamID string
-	teamID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeletePortalTeamRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
-
-	request := operations.DeletePortalTeamRequest{
-		TeamID:   teamID,
-		PortalID: portalID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalTeams.DeletePortalTeam(ctx, request)
+	res, err := r.client.PortalTeams.DeletePortalTeam(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -20,7 +20,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 )
@@ -327,15 +326,13 @@ func (r *GatewayPluginAiPromptDecoratorResource) Create(ctx context.Context, req
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateAipromptdecoratorPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	aiPromptDecoratorPlugin := *data.ToSharedAiPromptDecoratorPlugin()
-	request := operations.CreateAipromptdecoratorPluginRequest{
-		ControlPlaneID:          controlPlaneID,
-		AiPromptDecoratorPlugin: aiPromptDecoratorPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateAipromptdecoratorPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateAipromptdecoratorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -389,17 +386,13 @@ func (r *GatewayPluginAiPromptDecoratorResource) Read(ctx context.Context, req r
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetAipromptdecoratorPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetAipromptdecoratorPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetAipromptdecoratorPlugin(ctx, request)
+	res, err := r.client.Plugins.GetAipromptdecoratorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -447,19 +440,13 @@ func (r *GatewayPluginAiPromptDecoratorResource) Update(ctx context.Context, req
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateAipromptdecoratorPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	aiPromptDecoratorPlugin := *data.ToSharedAiPromptDecoratorPlugin()
-	request := operations.UpdateAipromptdecoratorPluginRequest{
-		PluginID:                pluginID,
-		ControlPlaneID:          controlPlaneID,
-		AiPromptDecoratorPlugin: aiPromptDecoratorPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateAipromptdecoratorPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateAipromptdecoratorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -513,17 +500,13 @@ func (r *GatewayPluginAiPromptDecoratorResource) Delete(ctx context.Context, req
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteAipromptdecoratorPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteAipromptdecoratorPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteAipromptdecoratorPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteAipromptdecoratorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

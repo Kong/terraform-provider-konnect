@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -245,15 +244,13 @@ func (r *GatewayPluginKeyAuthEncResource) Create(ctx context.Context, req resour
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateKeyauthencPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	keyAuthEncPlugin := *data.ToSharedKeyAuthEncPlugin()
-	request := operations.CreateKeyauthencPluginRequest{
-		ControlPlaneID:   controlPlaneID,
-		KeyAuthEncPlugin: keyAuthEncPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateKeyauthencPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateKeyauthencPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -307,17 +304,13 @@ func (r *GatewayPluginKeyAuthEncResource) Read(ctx context.Context, req resource
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetKeyauthencPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetKeyauthencPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetKeyauthencPlugin(ctx, request)
+	res, err := r.client.Plugins.GetKeyauthencPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -365,19 +358,13 @@ func (r *GatewayPluginKeyAuthEncResource) Update(ctx context.Context, req resour
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateKeyauthencPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	keyAuthEncPlugin := *data.ToSharedKeyAuthEncPlugin()
-	request := operations.UpdateKeyauthencPluginRequest{
-		PluginID:         pluginID,
-		ControlPlaneID:   controlPlaneID,
-		KeyAuthEncPlugin: keyAuthEncPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateKeyauthencPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateKeyauthencPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -431,17 +418,13 @@ func (r *GatewayPluginKeyAuthEncResource) Delete(ctx context.Context, req resour
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteKeyauthencPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteKeyauthencPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteKeyauthencPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteKeyauthencPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -12,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -106,19 +105,13 @@ func (r *GatewayConsumerGroupMemberResource) Create(ctx context.Context, req res
 		return
 	}
 
-	var consumerGroupID string
-	consumerGroupID = data.ConsumerGroupID.ValueString()
+	request, requestDiags := data.ToOperationsAddConsumerToGroupRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	requestBody := data.ToOperationsAddConsumerToGroupRequestBody()
-	request := operations.AddConsumerToGroupRequest{
-		ConsumerGroupID: consumerGroupID,
-		ControlPlaneID:  controlPlaneID,
-		RequestBody:     requestBody,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.ConsumerGroups.AddConsumerToGroup(ctx, request)
+	res, err := r.client.ConsumerGroups.AddConsumerToGroup(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -207,21 +200,13 @@ func (r *GatewayConsumerGroupMemberResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	var consumerGroupID string
-	consumerGroupID = data.ConsumerGroupID.ValueString()
+	request, requestDiags := data.ToOperationsRemoveConsumerFromGroupRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var consumerID string
-	consumerID = data.ConsumerID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.RemoveConsumerFromGroupRequest{
-		ConsumerGroupID: consumerGroupID,
-		ConsumerID:      consumerID,
-		ControlPlaneID:  controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.ConsumerGroups.RemoveConsumerFromGroup(ctx, request)
+	res, err := r.client.ConsumerGroups.RemoveConsumerFromGroup(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

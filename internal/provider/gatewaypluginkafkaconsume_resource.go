@@ -21,7 +21,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/v2/internal/validators/int64validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
@@ -380,15 +379,13 @@ func (r *GatewayPluginKafkaConsumeResource) Create(ctx context.Context, req reso
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateKafkaconsumePluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	kafkaConsumePlugin := *data.ToSharedKafkaConsumePlugin()
-	request := operations.CreateKafkaconsumePluginRequest{
-		ControlPlaneID:     controlPlaneID,
-		KafkaConsumePlugin: kafkaConsumePlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateKafkaconsumePlugin(ctx, request)
+	res, err := r.client.Plugins.CreateKafkaconsumePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -442,17 +439,13 @@ func (r *GatewayPluginKafkaConsumeResource) Read(ctx context.Context, req resour
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetKafkaconsumePluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetKafkaconsumePluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetKafkaconsumePlugin(ctx, request)
+	res, err := r.client.Plugins.GetKafkaconsumePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -500,19 +493,13 @@ func (r *GatewayPluginKafkaConsumeResource) Update(ctx context.Context, req reso
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateKafkaconsumePluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	kafkaConsumePlugin := *data.ToSharedKafkaConsumePlugin()
-	request := operations.UpdateKafkaconsumePluginRequest{
-		PluginID:           pluginID,
-		ControlPlaneID:     controlPlaneID,
-		KafkaConsumePlugin: kafkaConsumePlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateKafkaconsumePlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateKafkaconsumePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -566,17 +553,13 @@ func (r *GatewayPluginKafkaConsumeResource) Delete(ctx context.Context, req reso
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteKafkaconsumePluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteKafkaconsumePluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteKafkaconsumePlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteKafkaconsumePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

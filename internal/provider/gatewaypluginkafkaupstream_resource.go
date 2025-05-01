@@ -21,7 +21,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/v2/internal/validators/int64validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
@@ -420,15 +419,13 @@ func (r *GatewayPluginKafkaUpstreamResource) Create(ctx context.Context, req res
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateKafkaupstreamPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	kafkaUpstreamPlugin := *data.ToSharedKafkaUpstreamPlugin()
-	request := operations.CreateKafkaupstreamPluginRequest{
-		ControlPlaneID:      controlPlaneID,
-		KafkaUpstreamPlugin: kafkaUpstreamPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateKafkaupstreamPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateKafkaupstreamPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -482,17 +479,13 @@ func (r *GatewayPluginKafkaUpstreamResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetKafkaupstreamPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetKafkaupstreamPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetKafkaupstreamPlugin(ctx, request)
+	res, err := r.client.Plugins.GetKafkaupstreamPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -540,19 +533,13 @@ func (r *GatewayPluginKafkaUpstreamResource) Update(ctx context.Context, req res
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateKafkaupstreamPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	kafkaUpstreamPlugin := *data.ToSharedKafkaUpstreamPlugin()
-	request := operations.UpdateKafkaupstreamPluginRequest{
-		PluginID:            pluginID,
-		ControlPlaneID:      controlPlaneID,
-		KafkaUpstreamPlugin: kafkaUpstreamPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateKafkaupstreamPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateKafkaupstreamPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -606,17 +593,13 @@ func (r *GatewayPluginKafkaUpstreamResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteKafkaupstreamPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteKafkaupstreamPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteKafkaupstreamPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteKafkaupstreamPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

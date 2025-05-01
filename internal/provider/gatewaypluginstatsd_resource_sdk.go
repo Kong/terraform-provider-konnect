@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginStatsdResourceModel) ToSharedStatsdPlugin() *shared.StatsdPlugin {
+func (r *GatewayPluginStatsdResourceModel) ToSharedStatsdPlugin(ctx context.Context) (*shared.StatsdPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedStatsdPlugin() *shared.Statsd
 	if r.Ordering != nil {
 		var after *shared.StatsdPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedStatsdPlugin() *shared.Statsd
 		}
 		var before *shared.StatsdPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedStatsdPlugin() *shared.Statsd
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -74,7 +77,7 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedStatsdPlugin() *shared.Statsd
 	}
 	var config *shared.StatsdPluginConfig
 	if r.Config != nil {
-		var allowStatusCodes []string = []string{}
+		allowStatusCodes := make([]string, 0, len(r.Config.AllowStatusCodes))
 		for _, allowStatusCodesItem := range r.Config.AllowStatusCodes {
 			allowStatusCodes = append(allowStatusCodes, allowStatusCodesItem.ValueString())
 		}
@@ -102,7 +105,7 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedStatsdPlugin() *shared.Statsd
 		} else {
 			hostnameInPrefix = nil
 		}
-		var metrics []shared.StatsdPluginMetrics = []shared.StatsdPluginMetrics{}
+		metrics := make([]shared.StatsdPluginMetrics, 0, len(r.Config.Metrics))
 		for _, metricsItem := range r.Config.Metrics {
 			consumerIdentifier := new(shared.StatsdPluginConsumerIdentifier)
 			if !metricsItem.ConsumerIdentifier.IsUnknown() && !metricsItem.ConsumerIdentifier.IsNull() {
@@ -285,7 +288,7 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedStatsdPlugin() *shared.Statsd
 			ID: id1,
 		}
 	}
-	var protocols []shared.StatsdPluginProtocols = []shared.StatsdPluginProtocols{}
+	protocols := make([]shared.StatsdPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.StatsdPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -327,7 +330,88 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedStatsdPlugin() *shared.Statsd
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginStatsdResourceModel) ToOperationsCreateStatsdPluginRequest(ctx context.Context) (*operations.CreateStatsdPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	statsdPlugin, statsdPluginDiags := r.ToSharedStatsdPlugin(ctx)
+	diags.Append(statsdPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateStatsdPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		StatsdPlugin:   *statsdPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginStatsdResourceModel) ToOperationsUpdateStatsdPluginRequest(ctx context.Context) (*operations.UpdateStatsdPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	statsdPlugin, statsdPluginDiags := r.ToSharedStatsdPlugin(ctx)
+	diags.Append(statsdPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateStatsdPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		StatsdPlugin:   *statsdPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginStatsdResourceModel) ToOperationsGetStatsdPluginRequest(ctx context.Context) (*operations.GetStatsdPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetStatsdPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginStatsdResourceModel) ToOperationsDeleteStatsdPluginRequest(ctx context.Context) (*operations.DeleteStatsdPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteStatsdPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginStatsdResourceModel) RefreshFromSharedStatsdPlugin(ctx context.Context, resp *shared.StatsdPlugin) diag.Diagnostics {

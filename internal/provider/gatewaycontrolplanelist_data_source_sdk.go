@@ -7,8 +7,126 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *GatewayControlPlaneListDataSourceModel) ToOperationsListControlPlanesRequest(ctx context.Context) (*operations.ListControlPlanesRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	pageSize := new(int64)
+	if !r.PageSize.IsUnknown() && !r.PageSize.IsNull() {
+		*pageSize = r.PageSize.ValueInt64()
+	} else {
+		pageSize = nil
+	}
+	pageNumber := new(int64)
+	if !r.PageNumber.IsUnknown() && !r.PageNumber.IsNull() {
+		*pageNumber = r.PageNumber.ValueInt64()
+	} else {
+		pageNumber = nil
+	}
+	var filter *shared.ControlPlaneFilterParameters
+	if r.Filter != nil {
+		var id *shared.ID
+		if r.Filter.ID != nil {
+			eq := new(string)
+			if !r.Filter.ID.Eq.IsUnknown() && !r.Filter.ID.Eq.IsNull() {
+				*eq = r.Filter.ID.Eq.ValueString()
+			} else {
+				eq = nil
+			}
+			oeq := new(string)
+			if !r.Filter.ID.Oeq.IsUnknown() && !r.Filter.ID.Oeq.IsNull() {
+				*oeq = r.Filter.ID.Oeq.ValueString()
+			} else {
+				oeq = nil
+			}
+			id = &shared.ID{
+				Eq:  eq,
+				Oeq: oeq,
+			}
+		}
+		var name *shared.Name
+		if r.Filter.Name != nil {
+			eq1 := new(string)
+			if !r.Filter.Name.Eq.IsUnknown() && !r.Filter.Name.Eq.IsNull() {
+				*eq1 = r.Filter.Name.Eq.ValueString()
+			} else {
+				eq1 = nil
+			}
+			contains := new(string)
+			if !r.Filter.Name.Contains.IsUnknown() && !r.Filter.Name.Contains.IsNull() {
+				*contains = r.Filter.Name.Contains.ValueString()
+			} else {
+				contains = nil
+			}
+			neq := new(string)
+			if !r.Filter.Name.Neq.IsUnknown() && !r.Filter.Name.Neq.IsNull() {
+				*neq = r.Filter.Name.Neq.ValueString()
+			} else {
+				neq = nil
+			}
+			name = &shared.Name{
+				Eq:       eq1,
+				Contains: contains,
+				Neq:      neq,
+			}
+		}
+		var clusterType *shared.ClusterType
+		if r.Filter.ClusterType != nil {
+			eq2 := new(string)
+			if !r.Filter.ClusterType.Eq.IsUnknown() && !r.Filter.ClusterType.Eq.IsNull() {
+				*eq2 = r.Filter.ClusterType.Eq.ValueString()
+			} else {
+				eq2 = nil
+			}
+			neq1 := new(string)
+			if !r.Filter.ClusterType.Neq.IsUnknown() && !r.Filter.ClusterType.Neq.IsNull() {
+				*neq1 = r.Filter.ClusterType.Neq.ValueString()
+			} else {
+				neq1 = nil
+			}
+			clusterType = &shared.ClusterType{
+				Eq:  eq2,
+				Neq: neq1,
+			}
+		}
+		cloudGateway := new(bool)
+		if !r.Filter.CloudGateway.IsUnknown() && !r.Filter.CloudGateway.IsNull() {
+			*cloudGateway = r.Filter.CloudGateway.ValueBool()
+		} else {
+			cloudGateway = nil
+		}
+		filter = &shared.ControlPlaneFilterParameters{
+			ID:           id,
+			Name:         name,
+			ClusterType:  clusterType,
+			CloudGateway: cloudGateway,
+		}
+	}
+	labels := new(string)
+	if !r.Labels.IsUnknown() && !r.Labels.IsNull() {
+		*labels = r.Labels.ValueString()
+	} else {
+		labels = nil
+	}
+	sort := new(string)
+	if !r.Sort.IsUnknown() && !r.Sort.IsNull() {
+		*sort = r.Sort.ValueString()
+	} else {
+		sort = nil
+	}
+	out := operations.ListControlPlanesRequest{
+		PageSize:   pageSize,
+		PageNumber: pageNumber,
+		Filter:     filter,
+		Labels:     labels,
+		Sort:       sort,
+	}
+
+	return &out, diags
+}
 
 func (r *GatewayControlPlaneListDataSourceModel) RefreshFromSharedListControlPlanesResponse(ctx context.Context, resp *shared.ListControlPlanesResponse) diag.Diagnostics {
 	var diags diag.Diagnostics

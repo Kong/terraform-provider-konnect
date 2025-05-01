@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlugin() *shared.ConfluentConsumePlugin {
+func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlugin(ctx context.Context) (*shared.ConfluentConsumePlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 	if r.Ordering != nil {
 		var after *shared.ConfluentConsumePluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 		}
 		var before *shared.ConfluentConsumePluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -80,7 +83,7 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 		} else {
 			autoOffsetReset = nil
 		}
-		var bootstrapServers []shared.ConfluentConsumePluginBootstrapServers = []shared.ConfluentConsumePluginBootstrapServers{}
+		bootstrapServers := make([]shared.ConfluentConsumePluginBootstrapServers, 0, len(r.Config.BootstrapServers))
 		for _, bootstrapServersItem := range r.Config.BootstrapServers {
 			var host string
 			host = bootstrapServersItem.Host.ValueString()
@@ -159,7 +162,7 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 		} else {
 			timeout = nil
 		}
-		var topics []shared.Topics = []shared.Topics{}
+		topics := make([]shared.Topics, 0, len(r.Config.Topics))
 		for _, topicsItem := range r.Config.Topics {
 			var name string
 			name = topicsItem.Name.ValueString()
@@ -197,7 +200,7 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 			ID: id1,
 		}
 	}
-	var protocols []shared.ConfluentConsumePluginProtocols = []shared.ConfluentConsumePluginProtocols{}
+	protocols := make([]shared.ConfluentConsumePluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.ConfluentConsumePluginProtocols(protocolsItem.ValueString()))
 	}
@@ -239,7 +242,88 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsCreateConfluentconsumePluginRequest(ctx context.Context) (*operations.CreateConfluentconsumePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	confluentConsumePlugin, confluentConsumePluginDiags := r.ToSharedConfluentConsumePlugin(ctx)
+	diags.Append(confluentConsumePluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateConfluentconsumePluginRequest{
+		ControlPlaneID:         controlPlaneID,
+		ConfluentConsumePlugin: *confluentConsumePlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsUpdateConfluentconsumePluginRequest(ctx context.Context) (*operations.UpdateConfluentconsumePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	confluentConsumePlugin, confluentConsumePluginDiags := r.ToSharedConfluentConsumePlugin(ctx)
+	diags.Append(confluentConsumePluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateConfluentconsumePluginRequest{
+		PluginID:               pluginID,
+		ControlPlaneID:         controlPlaneID,
+		ConfluentConsumePlugin: *confluentConsumePlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsGetConfluentconsumePluginRequest(ctx context.Context) (*operations.GetConfluentconsumePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetConfluentconsumePluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsDeleteConfluentconsumePluginRequest(ctx context.Context) (*operations.DeleteConfluentconsumePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteConfluentconsumePluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentConsumePlugin(ctx context.Context, resp *shared.ConfluentConsumePlugin) diag.Diagnostics {

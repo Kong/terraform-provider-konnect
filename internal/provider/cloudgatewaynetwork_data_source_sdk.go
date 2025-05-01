@@ -7,8 +7,22 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *CloudGatewayNetworkDataSourceModel) ToOperationsGetNetworkRequest(ctx context.Context) (*operations.GetNetworkRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var networkID string
+	networkID = r.ID.ValueString()
+
+	out := operations.GetNetworkRequest{
+		NetworkID: networkID,
+	}
+
+	return &out, diags
+}
 
 func (r *CloudGatewayNetworkDataSourceModel) RefreshFromSharedNetwork(ctx context.Context, resp *shared.Network) diag.Diagnostics {
 	var diags diag.Diagnostics

@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *PortalTeamResourceModel) ToSharedPortalCreateTeamRequest() *shared.PortalCreateTeamRequest {
+func (r *PortalTeamResourceModel) ToSharedPortalCreateTeamRequest(ctx context.Context) (*shared.PortalCreateTeamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var name string
 	name = r.Name.ValueString()
 
@@ -24,24 +27,34 @@ func (r *PortalTeamResourceModel) ToSharedPortalCreateTeamRequest() *shared.Port
 		Name:        name,
 		Description: description,
 	}
-	return &out
+
+	return &out, diags
 }
 
-func (r *PortalTeamResourceModel) RefreshFromSharedPortalTeamResponse(ctx context.Context, resp *shared.PortalTeamResponse) diag.Diagnostics {
+func (r *PortalTeamResourceModel) ToOperationsCreatePortalTeamRequest(ctx context.Context) (*operations.CreatePortalTeamRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	if resp != nil {
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.Description = types.StringPointerValue(resp.Description)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.Name = types.StringPointerValue(resp.Name)
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	portalCreateTeamRequest, portalCreateTeamRequestDiags := r.ToSharedPortalCreateTeamRequest(ctx)
+	diags.Append(portalCreateTeamRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
 	}
 
-	return diags
+	out := operations.CreatePortalTeamRequest{
+		PortalID:                portalID,
+		PortalCreateTeamRequest: portalCreateTeamRequest,
+	}
+
+	return &out, diags
 }
 
-func (r *PortalTeamResourceModel) ToSharedPortalUpdateTeamRequest() *shared.PortalUpdateTeamRequest {
+func (r *PortalTeamResourceModel) ToSharedPortalUpdateTeamRequest(ctx context.Context) (*shared.PortalUpdateTeamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	name := new(string)
 	if !r.Name.IsUnknown() && !r.Name.IsNull() {
 		*name = r.Name.ValueString()
@@ -58,5 +71,79 @@ func (r *PortalTeamResourceModel) ToSharedPortalUpdateTeamRequest() *shared.Port
 		Name:        name,
 		Description: description,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *PortalTeamResourceModel) ToOperationsUpdatePortalTeamRequest(ctx context.Context) (*operations.UpdatePortalTeamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var teamID string
+	teamID = r.ID.ValueString()
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	portalUpdateTeamRequest, portalUpdateTeamRequestDiags := r.ToSharedPortalUpdateTeamRequest(ctx)
+	diags.Append(portalUpdateTeamRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdatePortalTeamRequest{
+		TeamID:                  teamID,
+		PortalID:                portalID,
+		PortalUpdateTeamRequest: portalUpdateTeamRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalTeamResourceModel) ToOperationsGetPortalTeamRequest(ctx context.Context) (*operations.GetPortalTeamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var teamID string
+	teamID = r.ID.ValueString()
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.GetPortalTeamRequest{
+		TeamID:   teamID,
+		PortalID: portalID,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalTeamResourceModel) ToOperationsDeletePortalTeamRequest(ctx context.Context) (*operations.DeletePortalTeamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var teamID string
+	teamID = r.ID.ValueString()
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.DeletePortalTeamRequest{
+		TeamID:   teamID,
+		PortalID: portalID,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalTeamResourceModel) RefreshFromSharedPortalTeamResponse(ctx context.Context, resp *shared.PortalTeamResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.Description = types.StringPointerValue(resp.Description)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.Name = types.StringPointerValue(resp.Name)
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+	}
+
+	return diags
 }

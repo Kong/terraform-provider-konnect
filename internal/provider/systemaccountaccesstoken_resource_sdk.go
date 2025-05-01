@@ -7,11 +7,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"time"
 )
 
-func (r *SystemAccountAccessTokenResourceModel) ToSharedCreateSystemAccountAccessToken() *shared.CreateSystemAccountAccessToken {
+func (r *SystemAccountAccessTokenResourceModel) ToSharedCreateSystemAccountAccessToken(ctx context.Context) (*shared.CreateSystemAccountAccessToken, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	name := new(string)
 	if !r.Name.IsUnknown() && !r.Name.IsNull() {
 		*name = r.Name.ValueString()
@@ -28,7 +31,104 @@ func (r *SystemAccountAccessTokenResourceModel) ToSharedCreateSystemAccountAcces
 		Name:      name,
 		ExpiresAt: expiresAt,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *SystemAccountAccessTokenResourceModel) ToOperationsPostSystemAccountsIDAccessTokensRequest(ctx context.Context) (*operations.PostSystemAccountsIDAccessTokensRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var accountID string
+	accountID = r.AccountID.ValueString()
+
+	createSystemAccountAccessToken, createSystemAccountAccessTokenDiags := r.ToSharedCreateSystemAccountAccessToken(ctx)
+	diags.Append(createSystemAccountAccessTokenDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PostSystemAccountsIDAccessTokensRequest{
+		AccountID:                      accountID,
+		CreateSystemAccountAccessToken: createSystemAccountAccessToken,
+	}
+
+	return &out, diags
+}
+
+func (r *SystemAccountAccessTokenResourceModel) ToSharedUpdateSystemAccountAccessToken(ctx context.Context) (*shared.UpdateSystemAccountAccessToken, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
+	out := shared.UpdateSystemAccountAccessToken{
+		Name: name,
+	}
+
+	return &out, diags
+}
+
+func (r *SystemAccountAccessTokenResourceModel) ToOperationsPatchSystemAccountsIDAccessTokensIDRequest(ctx context.Context) (*operations.PatchSystemAccountsIDAccessTokensIDRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var accountID string
+	accountID = r.AccountID.ValueString()
+
+	var tokenID string
+	tokenID = r.ID.ValueString()
+
+	updateSystemAccountAccessToken, updateSystemAccountAccessTokenDiags := r.ToSharedUpdateSystemAccountAccessToken(ctx)
+	diags.Append(updateSystemAccountAccessTokenDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PatchSystemAccountsIDAccessTokensIDRequest{
+		AccountID:                      accountID,
+		TokenID:                        tokenID,
+		UpdateSystemAccountAccessToken: updateSystemAccountAccessToken,
+	}
+
+	return &out, diags
+}
+
+func (r *SystemAccountAccessTokenResourceModel) ToOperationsGetSystemAccountsIDAccessTokensIDRequest(ctx context.Context) (*operations.GetSystemAccountsIDAccessTokensIDRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var accountID string
+	accountID = r.AccountID.ValueString()
+
+	var tokenID string
+	tokenID = r.ID.ValueString()
+
+	out := operations.GetSystemAccountsIDAccessTokensIDRequest{
+		AccountID: accountID,
+		TokenID:   tokenID,
+	}
+
+	return &out, diags
+}
+
+func (r *SystemAccountAccessTokenResourceModel) ToOperationsDeleteSystemAccountsIDAccessTokensIDRequest(ctx context.Context) (*operations.DeleteSystemAccountsIDAccessTokensIDRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var accountID string
+	accountID = r.AccountID.ValueString()
+
+	var tokenID string
+	tokenID = r.ID.ValueString()
+
+	out := operations.DeleteSystemAccountsIDAccessTokensIDRequest{
+		AccountID: accountID,
+		TokenID:   tokenID,
+	}
+
+	return &out, diags
 }
 
 func (r *SystemAccountAccessTokenResourceModel) RefreshFromSharedSystemAccountAccessTokenCreated(ctx context.Context, resp *shared.SystemAccountAccessTokenCreated) diag.Diagnostics {
@@ -60,17 +160,4 @@ func (r *SystemAccountAccessTokenResourceModel) RefreshFromSharedSystemAccountAc
 	}
 
 	return diags
-}
-
-func (r *SystemAccountAccessTokenResourceModel) ToSharedUpdateSystemAccountAccessToken() *shared.UpdateSystemAccountAccessToken {
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
-	}
-	out := shared.UpdateSystemAccountAccessToken{
-		Name: name,
-	}
-	return &out
 }

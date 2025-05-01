@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginRequestTerminationResourceModel) ToSharedRequestTerminationPlugin() *shared.RequestTerminationPlugin {
+func (r *GatewayPluginRequestTerminationResourceModel) ToSharedRequestTerminationPlugin(ctx context.Context) (*shared.RequestTerminationPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToSharedRequestTerminatio
 	if r.Ordering != nil {
 		var after *shared.RequestTerminationPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToSharedRequestTerminatio
 		}
 		var before *shared.RequestTerminationPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToSharedRequestTerminatio
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -143,7 +146,7 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToSharedRequestTerminatio
 			ID: id2,
 		}
 	}
-	var protocols []shared.RequestTerminationPluginProtocols = []shared.RequestTerminationPluginProtocols{}
+	protocols := make([]shared.RequestTerminationPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.RequestTerminationPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -186,7 +189,88 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToSharedRequestTerminatio
 		Route:         route,
 		Service:       service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRequestTerminationResourceModel) ToOperationsCreateRequestterminationPluginRequest(ctx context.Context) (*operations.CreateRequestterminationPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	requestTerminationPlugin, requestTerminationPluginDiags := r.ToSharedRequestTerminationPlugin(ctx)
+	diags.Append(requestTerminationPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateRequestterminationPluginRequest{
+		ControlPlaneID:           controlPlaneID,
+		RequestTerminationPlugin: *requestTerminationPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRequestTerminationResourceModel) ToOperationsUpdateRequestterminationPluginRequest(ctx context.Context) (*operations.UpdateRequestterminationPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	requestTerminationPlugin, requestTerminationPluginDiags := r.ToSharedRequestTerminationPlugin(ctx)
+	diags.Append(requestTerminationPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateRequestterminationPluginRequest{
+		PluginID:                 pluginID,
+		ControlPlaneID:           controlPlaneID,
+		RequestTerminationPlugin: *requestTerminationPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRequestTerminationResourceModel) ToOperationsGetRequestterminationPluginRequest(ctx context.Context) (*operations.GetRequestterminationPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetRequestterminationPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRequestTerminationResourceModel) ToOperationsDeleteRequestterminationPluginRequest(ctx context.Context) (*operations.DeleteRequestterminationPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteRequestterminationPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginRequestTerminationResourceModel) RefreshFromSharedRequestTerminationPlugin(ctx context.Context, resp *shared.RequestTerminationPlugin) diag.Diagnostics {

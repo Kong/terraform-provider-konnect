@@ -26,7 +26,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -196,19 +195,13 @@ func (r *GatewayTargetResource) Create(ctx context.Context, req resource.CreateR
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateTargetWithUpstreamRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var upstreamID string
-	upstreamID = data.UpstreamID.ValueString()
-
-	targetWithoutParents := *data.ToSharedTargetWithoutParents()
-	request := operations.CreateTargetWithUpstreamRequest{
-		ControlPlaneID:       controlPlaneID,
-		UpstreamID:           upstreamID,
-		TargetWithoutParents: targetWithoutParents,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Targets.CreateTargetWithUpstream(ctx, request)
+	res, err := r.client.Targets.CreateTargetWithUpstream(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -262,21 +255,13 @@ func (r *GatewayTargetResource) Read(ctx context.Context, req resource.ReadReque
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsGetTargetWithUpstreamRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var upstreamID string
-	upstreamID = data.UpstreamID.ValueString()
-
-	var targetID string
-	targetID = data.ID.ValueString()
-
-	request := operations.GetTargetWithUpstreamRequest{
-		ControlPlaneID: controlPlaneID,
-		UpstreamID:     upstreamID,
-		TargetID:       targetID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Targets.GetTargetWithUpstream(ctx, request)
+	res, err := r.client.Targets.GetTargetWithUpstream(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -348,21 +333,13 @@ func (r *GatewayTargetResource) Delete(ctx context.Context, req resource.DeleteR
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteTargetWithUpstreamRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var upstreamID string
-	upstreamID = data.UpstreamID.ValueString()
-
-	var targetID string
-	targetID = data.ID.ValueString()
-
-	request := operations.DeleteTargetWithUpstreamRequest{
-		ControlPlaneID: controlPlaneID,
-		UpstreamID:     upstreamID,
-		TargetID:       targetID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Targets.DeleteTargetWithUpstream(ctx, request)
+	res, err := r.client.Targets.DeleteTargetWithUpstream(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

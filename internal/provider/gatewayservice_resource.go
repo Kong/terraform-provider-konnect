@@ -20,7 +20,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -229,15 +228,13 @@ func (r *GatewayServiceResource) Create(ctx context.Context, req resource.Create
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateServiceRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	service := *data.ToSharedService()
-	request := operations.CreateServiceRequest{
-		ControlPlaneID: controlPlaneID,
-		Service:        service,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Services.CreateService(ctx, request)
+	res, err := r.client.Services.CreateService(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -291,17 +288,13 @@ func (r *GatewayServiceResource) Read(ctx context.Context, req resource.ReadRequ
 		return
 	}
 
-	var serviceID string
-	serviceID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetServiceRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetServiceRequest{
-		ServiceID:      serviceID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Services.GetService(ctx, request)
+	res, err := r.client.Services.GetService(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -349,19 +342,13 @@ func (r *GatewayServiceResource) Update(ctx context.Context, req resource.Update
 		return
 	}
 
-	var serviceID string
-	serviceID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpsertServiceRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	service := *data.ToSharedService()
-	request := operations.UpsertServiceRequest{
-		ServiceID:      serviceID,
-		ControlPlaneID: controlPlaneID,
-		Service:        service,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Services.UpsertService(ctx, request)
+	res, err := r.client.Services.UpsertService(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -415,17 +402,13 @@ func (r *GatewayServiceResource) Delete(ctx context.Context, req resource.Delete
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteServiceRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var serviceID string
-	serviceID = data.ID.ValueString()
-
-	request := operations.DeleteServiceRequest{
-		ControlPlaneID: controlPlaneID,
-		ServiceID:      serviceID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Services.DeleteService(ctx, request)
+	res, err := r.client.Services.DeleteService(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

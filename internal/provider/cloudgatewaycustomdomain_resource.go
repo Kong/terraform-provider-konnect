@@ -17,7 +17,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
@@ -192,8 +191,13 @@ func (r *CloudGatewayCustomDomainResource) Create(ctx context.Context, req resou
 		return
 	}
 
-	request := *data.ToSharedCreateCustomDomainRequest()
-	res, err := r.client.CloudGateways.CreateCustomDomains(ctx, request)
+	request, requestDiags := data.ToSharedCreateCustomDomainRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res, err := r.client.CloudGateways.CreateCustomDomains(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -247,13 +251,13 @@ func (r *CloudGatewayCustomDomainResource) Read(ctx context.Context, req resourc
 		return
 	}
 
-	var customDomainID string
-	customDomainID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetCustomDomainRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.GetCustomDomainRequest{
-		CustomDomainID: customDomainID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.CloudGateways.GetCustomDomain(ctx, request)
+	res, err := r.client.CloudGateways.GetCustomDomain(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -325,13 +329,13 @@ func (r *CloudGatewayCustomDomainResource) Delete(ctx context.Context, req resou
 		return
 	}
 
-	var customDomainID string
-	customDomainID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteCustomDomainRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.DeleteCustomDomainRequest{
-		CustomDomainID: customDomainID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.CloudGateways.DeleteCustomDomain(ctx, request)
+	res, err := r.client.CloudGateways.DeleteCustomDomain(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

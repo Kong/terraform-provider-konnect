@@ -7,8 +7,22 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *PortalAppearanceDataSourceModel) ToOperationsGetPortalAppearanceRequest(ctx context.Context) (*operations.GetPortalAppearanceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.GetPortalAppearanceRequest{
+		PortalID: portalID,
+	}
+
+	return &out, diags
+}
 
 func (r *PortalAppearanceDataSourceModel) RefreshFromSharedGetPortalAppearanceResponse(ctx context.Context, resp *shared.GetPortalAppearanceResponse) diag.Diagnostics {
 	var diags diag.Diagnostics

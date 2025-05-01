@@ -18,7 +18,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -235,8 +234,13 @@ func (r *GatewayControlPlaneResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	request := *data.ToSharedCreateControlPlaneRequest()
-	res, err := r.client.ControlPlanes.CreateControlPlane(ctx, request)
+	request, requestDiags := data.ToSharedCreateControlPlaneRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res, err := r.client.ControlPlanes.CreateControlPlane(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -267,13 +271,13 @@ func (r *GatewayControlPlaneResource) Create(ctx context.Context, req resource.C
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	var id string
-	id = data.ID.ValueString()
+	request1, request1Diags := data.ToOperationsGetControlPlaneRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
 
-	request1 := operations.GetControlPlaneRequest{
-		ID: id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.ControlPlanes.GetControlPlane(ctx, request1)
+	res1, err := r.client.ControlPlanes.GetControlPlane(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -327,13 +331,13 @@ func (r *GatewayControlPlaneResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetControlPlaneRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.GetControlPlaneRequest{
-		ID: id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.ControlPlanes.GetControlPlane(ctx, request)
+	res, err := r.client.ControlPlanes.GetControlPlane(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -381,15 +385,13 @@ func (r *GatewayControlPlaneResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateControlPlaneRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	updateControlPlaneRequest := *data.ToSharedUpdateControlPlaneRequest()
-	request := operations.UpdateControlPlaneRequest{
-		ID:                        id,
-		UpdateControlPlaneRequest: updateControlPlaneRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.ControlPlanes.UpdateControlPlane(ctx, request)
+	res, err := r.client.ControlPlanes.UpdateControlPlane(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -420,13 +422,13 @@ func (r *GatewayControlPlaneResource) Update(ctx context.Context, req resource.U
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	var id1 string
-	id1 = data.ID.ValueString()
+	request1, request1Diags := data.ToOperationsGetControlPlaneRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
 
-	request1 := operations.GetControlPlaneRequest{
-		ID: id1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.ControlPlanes.GetControlPlane(ctx, request1)
+	res1, err := r.client.ControlPlanes.GetControlPlane(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -480,13 +482,13 @@ func (r *GatewayControlPlaneResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteControlPlaneRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.DeleteControlPlaneRequest{
-		ID: id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.ControlPlanes.DeleteControlPlane(ctx, request)
+	res, err := r.client.ControlPlanes.DeleteControlPlane(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

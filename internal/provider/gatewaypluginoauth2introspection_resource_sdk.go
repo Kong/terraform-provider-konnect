@@ -8,10 +8,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginOauth2IntrospectionResourceModel) ToSharedOauth2IntrospectionPlugin() *shared.Oauth2IntrospectionPlugin {
+func (r *GatewayPluginOauth2IntrospectionResourceModel) ToSharedOauth2IntrospectionPlugin(ctx context.Context) (*shared.Oauth2IntrospectionPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -40,7 +43,7 @@ func (r *GatewayPluginOauth2IntrospectionResourceModel) ToSharedOauth2Introspect
 	if r.Ordering != nil {
 		var after *shared.Oauth2IntrospectionPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -50,7 +53,7 @@ func (r *GatewayPluginOauth2IntrospectionResourceModel) ToSharedOauth2Introspect
 		}
 		var before *shared.Oauth2IntrospectionPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -63,7 +66,7 @@ func (r *GatewayPluginOauth2IntrospectionResourceModel) ToSharedOauth2Introspect
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -93,7 +96,7 @@ func (r *GatewayPluginOauth2IntrospectionResourceModel) ToSharedOauth2Introspect
 		} else {
 			consumerBy = nil
 		}
-		var customClaimsForward []string = []string{}
+		customClaimsForward := make([]string, 0, len(r.Config.CustomClaimsForward))
 		for _, customClaimsForwardItem := range r.Config.CustomClaimsForward {
 			customClaimsForward = append(customClaimsForward, customClaimsForwardItem.ValueString())
 		}
@@ -167,7 +170,7 @@ func (r *GatewayPluginOauth2IntrospectionResourceModel) ToSharedOauth2Introspect
 			TTL:                        ttl,
 		}
 	}
-	var protocols []shared.Oauth2IntrospectionPluginProtocols = []shared.Oauth2IntrospectionPluginProtocols{}
+	protocols := make([]shared.Oauth2IntrospectionPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.Oauth2IntrospectionPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -208,7 +211,88 @@ func (r *GatewayPluginOauth2IntrospectionResourceModel) ToSharedOauth2Introspect
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginOauth2IntrospectionResourceModel) ToOperationsCreateOauth2introspectionPluginRequest(ctx context.Context) (*operations.CreateOauth2introspectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	oauth2IntrospectionPlugin, oauth2IntrospectionPluginDiags := r.ToSharedOauth2IntrospectionPlugin(ctx)
+	diags.Append(oauth2IntrospectionPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateOauth2introspectionPluginRequest{
+		ControlPlaneID:            controlPlaneID,
+		Oauth2IntrospectionPlugin: *oauth2IntrospectionPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginOauth2IntrospectionResourceModel) ToOperationsUpdateOauth2introspectionPluginRequest(ctx context.Context) (*operations.UpdateOauth2introspectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	oauth2IntrospectionPlugin, oauth2IntrospectionPluginDiags := r.ToSharedOauth2IntrospectionPlugin(ctx)
+	diags.Append(oauth2IntrospectionPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateOauth2introspectionPluginRequest{
+		PluginID:                  pluginID,
+		ControlPlaneID:            controlPlaneID,
+		Oauth2IntrospectionPlugin: *oauth2IntrospectionPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginOauth2IntrospectionResourceModel) ToOperationsGetOauth2introspectionPluginRequest(ctx context.Context) (*operations.GetOauth2introspectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetOauth2introspectionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginOauth2IntrospectionResourceModel) ToOperationsDeleteOauth2introspectionPluginRequest(ctx context.Context) (*operations.DeleteOauth2introspectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteOauth2introspectionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginOauth2IntrospectionResourceModel) RefreshFromSharedOauth2IntrospectionPlugin(ctx context.Context, resp *shared.Oauth2IntrospectionPlugin) diag.Diagnostics {

@@ -127,7 +127,12 @@ func (r *AuditLogResource) Create(ctx context.Context, req resource.CreateReques
 		return
 	}
 
-	request := data.ToSharedUpdateAuditLogWebhook()
+	request, requestDiags := data.ToSharedUpdateAuditLogWebhook(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	res, err := r.client.AuditLogs.UpdateAuditLogWebhook(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -255,7 +260,12 @@ func (r *AuditLogResource) Update(ctx context.Context, req resource.UpdateReques
 		return
 	}
 
-	request := data.ToSharedUpdateAuditLogWebhook()
+	request, requestDiags := data.ToSharedUpdateAuditLogWebhook(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	res, err := r.client.AuditLogs.UpdateAuditLogWebhook(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -335,7 +345,12 @@ func (r *AuditLogResource) Delete(ctx context.Context, req resource.DeleteReques
 		return
 	}
 
-	request := data.ToOperationsDeleteAuditLogWebhookRequestBody()
+	request, requestDiags := data.ToOperationsDeleteAuditLogWebhookRequestBody(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	res, err := r.client.AuditLogs.DeleteAuditLogWebhook(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())

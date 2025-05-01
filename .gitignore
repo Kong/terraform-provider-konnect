@@ -1,3 +1,5 @@
+**/.speakeasy/temp/
+**/.speakeasy/logs/
 tests/e2e/local-plugins
 .terraform
 .terraform*
