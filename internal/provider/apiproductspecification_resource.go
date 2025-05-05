@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/Kong/shared-speakeasy/customtypes/encodedstring"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -34,13 +35,13 @@ type APIProductSpecificationResource struct {
 
 // APIProductSpecificationResourceModel describes the resource data model.
 type APIProductSpecificationResourceModel struct {
-	APIProductID        types.String `tfsdk:"api_product_id"`
-	APIProductVersionID types.String `tfsdk:"api_product_version_id"`
-	Content             types.String `tfsdk:"content"`
-	CreatedAt           types.String `tfsdk:"created_at"`
-	ID                  types.String `tfsdk:"id"`
-	Name                types.String `tfsdk:"name"`
-	UpdatedAt           types.String `tfsdk:"updated_at"`
+	APIProductID        types.String              `tfsdk:"api_product_id"`
+	APIProductVersionID types.String              `tfsdk:"api_product_version_id"`
+	Content             encodedstring.Base64Input `tfsdk:"content"`
+	CreatedAt           types.String              `tfsdk:"created_at"`
+	ID                  types.String              `tfsdk:"id"`
+	Name                types.String              `tfsdk:"name"`
+	UpdatedAt           types.String              `tfsdk:"updated_at"`
 }
 
 func (r *APIProductSpecificationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -60,6 +61,7 @@ func (r *APIProductSpecificationResource) Schema(ctx context.Context, req resour
 				Description: `The API product version identifier`,
 			},
 			"content": schema.StringAttribute{
+				CustomType:  encodedstring.Base64InputType{},
 				Required:    true,
 				Description: `The base64 encoded contents of the API product version specification`,
 				Validators: []validator.String{
