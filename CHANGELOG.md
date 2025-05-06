@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2.7.2
-> Released on ?
+> Released on 2025/05/06
 
 ### Bug fixes
 
