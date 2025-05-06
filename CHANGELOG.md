@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.7.2
+> Released on ?
+
+### Bug fixes
+
+* Fixed output of `terraform plan` for `konnect_api_product_document` and `konnect_api_product_specification` resources.
+
 ## 2.7.1
 > Released on 2025/05/01
 

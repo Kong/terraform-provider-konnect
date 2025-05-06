@@ -4,6 +4,7 @@ package provider
 
 import (
 	"context"
+	"github.com/Kong/shared-speakeasy/customtypes/encodedstring"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
@@ -151,7 +152,9 @@ func (r *APIProductSpecificationResourceModel) RefreshFromSharedAPIProductVersio
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		r.Content = types.StringValue(resp.Content)
+		contentValuable, contentDiags := encodedstring.Base64InputType{}.ValueFromString(ctx, types.StringValue(resp.Content))
+		diags.Append(contentDiags...)
+		r.Content, _ = contentValuable.(encodedstring.Base64Input)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.ID = types.StringValue(resp.ID)
 		r.Name = types.StringValue(resp.Name)
