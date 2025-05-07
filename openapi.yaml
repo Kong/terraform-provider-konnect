@@ -14708,6 +14708,11 @@ components:
           format: byte
           minLength: 1
           type: string
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/encodedstring
+            schemaType: 'encodedstring.Base64InputType{}'
+            valueType: encodedstring.Base64Input
       additionalProperties: false
       required:
         - name
@@ -14740,6 +14745,11 @@ components:
           description: Can be markdown string content or base64 encoded string
           example: '## My Markdown'
           type: string
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/encodedstring
+            schemaType: 'encodedstring.Base64OrPlainInputType{}'
+            valueType: encodedstring.Base64OrPlainInput
         metadata:
           description: metadata of the document
           type: object
@@ -14780,6 +14790,11 @@ components:
           description: Can be markdown string content or base64 encoded string
           example: YmFzZTY0LWVuY29kZWQgdGV4dCBzdHJpbmc=
           type: string
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/encodedstring
+            schemaType: 'encodedstring.Base64OrPlainInputType{}'
+            valueType: encodedstring.Base64OrPlainInput
         metadata:
           type: object
           nullable: false
@@ -14845,6 +14860,11 @@ components:
           format: byte
           minLength: 1
           type: string
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/encodedstring
+            schemaType: 'encodedstring.Base64InputType{}'
+            valueType: encodedstring.Base64Input
       additionalProperties: false
       title: Update API Product Version Specification Request
     LegacyGatewayServicePayload:

@@ -1,8 +1,9 @@
 module github.com/kong/terraform-provider-konnect/v2
 
-go 1.23.0
+go 1.23.4
 
 require (
+	github.com/Kong/shared-speakeasy/customtypes v0.1.0
 	github.com/ericlagergren/decimal v0.0.0-20221120152707-495c53812d05
 	github.com/hashicorp/go-uuid v1.0.3
 	github.com/hashicorp/terraform-plugin-docs v0.20.1
