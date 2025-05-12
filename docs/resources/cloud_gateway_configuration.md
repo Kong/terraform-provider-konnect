@@ -81,6 +81,7 @@ Read-Only:
 - `id` (String) ID of the data-plane group that represents a deployment target for a set of data-planes.
 - `private_ip_addresses` (List of String) List of private IP addresses of the internal load balancer that proxies traffic to this data-plane group.
 - `state` (String) State of the data-plane group. must be one of ["created", "initializing", "ready", "terminating", "terminated"]
+- `state_metadata` (Attributes) Metadata describing the backing state of the dataplane group and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--dataplane_groups--state_metadata))
 - `updated_at` (String) An RFC-3339 timestamp representation of data-plane group update date.
 
 <a id="nestedatt--dataplane_groups--autoscale"></a>
@@ -119,6 +120,15 @@ Optional:
 
 - `name` (String) Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_. Not Null
 - `value` (String) Value assigned to the environment variable field for the data-plane group. Not Null
+
+
+<a id="nestedatt--dataplane_groups--state_metadata"></a>
+### Nested Schema for `dataplane_groups.state_metadata`
+
+Read-Only:
+
+- `reason` (String) Reason why the dataplane group may be in an erroneous state, reported from backing infrastructure.
+- `reported_status` (String) Reported status of the dataplane group from backing infrastructure.
 
 
 

@@ -265,6 +265,13 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 			r.AwsTransitGatewayResponse.Name = types.StringValue(resp.AwsTransitGatewayResponse.Name)
 			r.Name = r.AwsTransitGatewayResponse.Name
 			r.AwsTransitGatewayResponse.State = types.StringValue(string(resp.AwsTransitGatewayResponse.State))
+			if resp.AwsTransitGatewayResponse.StateMetadata == nil {
+				r.AwsTransitGatewayResponse.StateMetadata = nil
+			} else {
+				r.AwsTransitGatewayResponse.StateMetadata = &tfTypes.StateMetadata{}
+				r.AwsTransitGatewayResponse.StateMetadata.Reason = types.StringPointerValue(resp.AwsTransitGatewayResponse.StateMetadata.Reason)
+				r.AwsTransitGatewayResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AwsTransitGatewayResponse.StateMetadata.ReportedStatus)
+			}
 			r.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.Kind = types.StringValue(string(resp.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.Kind))
 			r.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.RAMShareArn = types.StringValue(resp.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.RAMShareArn)
 			r.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.TransitGatewayID = types.StringValue(resp.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.TransitGatewayID)
@@ -305,6 +312,13 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 			r.AwsVpcPeeringGatewayResponse.Name = types.StringValue(resp.AwsVpcPeeringGatewayResponse.Name)
 			r.Name = r.AwsVpcPeeringGatewayResponse.Name
 			r.AwsVpcPeeringGatewayResponse.State = types.StringValue(string(resp.AwsVpcPeeringGatewayResponse.State))
+			if resp.AwsVpcPeeringGatewayResponse.StateMetadata == nil {
+				r.AwsVpcPeeringGatewayResponse.StateMetadata = nil
+			} else {
+				r.AwsVpcPeeringGatewayResponse.StateMetadata = &tfTypes.StateMetadata{}
+				r.AwsVpcPeeringGatewayResponse.StateMetadata.Reason = types.StringPointerValue(resp.AwsVpcPeeringGatewayResponse.StateMetadata.Reason)
+				r.AwsVpcPeeringGatewayResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AwsVpcPeeringGatewayResponse.StateMetadata.ReportedStatus)
+			}
 			r.AwsVpcPeeringGatewayResponse.TransitGatewayAttachmentConfig.Kind = types.StringValue(string(resp.AwsVpcPeeringGatewayResponse.TransitGatewayAttachmentConfig.Kind))
 			r.AwsVpcPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeerAccountID = types.StringValue(resp.AwsVpcPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeerAccountID)
 			r.AwsVpcPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeerVpcID = types.StringValue(resp.AwsVpcPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeerVpcID)
@@ -342,6 +356,13 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 			r.AzureTransitGatewayResponse.Name = types.StringValue(resp.AzureTransitGatewayResponse.Name)
 			r.Name = r.AzureTransitGatewayResponse.Name
 			r.AzureTransitGatewayResponse.State = types.StringValue(string(resp.AzureTransitGatewayResponse.State))
+			if resp.AzureTransitGatewayResponse.StateMetadata == nil {
+				r.AzureTransitGatewayResponse.StateMetadata = nil
+			} else {
+				r.AzureTransitGatewayResponse.StateMetadata = &tfTypes.StateMetadata{}
+				r.AzureTransitGatewayResponse.StateMetadata.Reason = types.StringPointerValue(resp.AzureTransitGatewayResponse.StateMetadata.Reason)
+				r.AzureTransitGatewayResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AzureTransitGatewayResponse.StateMetadata.ReportedStatus)
+			}
 			r.AzureTransitGatewayResponse.TransitGatewayAttachmentConfig.Kind = types.StringValue(string(resp.AzureTransitGatewayResponse.TransitGatewayAttachmentConfig.Kind))
 			r.AzureTransitGatewayResponse.TransitGatewayAttachmentConfig.ResourceGroupName = types.StringValue(resp.AzureTransitGatewayResponse.TransitGatewayAttachmentConfig.ResourceGroupName)
 			r.AzureTransitGatewayResponse.TransitGatewayAttachmentConfig.SubscriptionID = types.StringValue(resp.AzureTransitGatewayResponse.TransitGatewayAttachmentConfig.SubscriptionID)

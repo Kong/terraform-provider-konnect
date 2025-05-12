@@ -103,6 +103,20 @@ func (r *CloudGatewayTransitGatewayDataSource) Schema(ctx context.Context, req d
 							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted and is no longer accepting new traffic.` + "\n" +
 							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.`,
 					},
+					"state_metadata": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"reason": schema.StringAttribute{
+								Computed:    true,
+								Description: `Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.`,
+							},
+							"reported_status": schema.StringAttribute{
+								Computed:    true,
+								Description: `Reported status of the transit gateway from backing infrastructure.`,
+							},
+						},
+						Description: `Metadata describing the backing state of the transit gateway and why it may be in an erroneous state.`,
+					},
 					"transit_gateway_attachment_config": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
@@ -180,6 +194,20 @@ func (r *CloudGatewayTransitGatewayDataSource) Schema(ctx context.Context, req d
 							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted and is no longer accepting new traffic.` + "\n" +
 							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.`,
 					},
+					"state_metadata": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"reason": schema.StringAttribute{
+								Computed:    true,
+								Description: `Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.`,
+							},
+							"reported_status": schema.StringAttribute{
+								Computed:    true,
+								Description: `Reported status of the transit gateway from backing infrastructure.`,
+							},
+						},
+						Description: `Metadata describing the backing state of the transit gateway and why it may be in an erroneous state.`,
+					},
 					"transit_gateway_attachment_config": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
@@ -251,6 +279,20 @@ func (r *CloudGatewayTransitGatewayDataSource) Schema(ctx context.Context, req d
 							`- ` + "`" + `ready` + "`" + ` - The transit gateway attachment is fully operational and can route traffic as configured.` + "\n" +
 							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted and is no longer accepting new traffic.` + "\n" +
 							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.`,
+					},
+					"state_metadata": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"reason": schema.StringAttribute{
+								Computed:    true,
+								Description: `Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.`,
+							},
+							"reported_status": schema.StringAttribute{
+								Computed:    true,
+								Description: `Reported status of the transit gateway from backing infrastructure.`,
+							},
+						},
+						Description: `Metadata describing the backing state of the transit gateway and why it may be in an erroneous state.`,
 					},
 					"transit_gateway_attachment_config": schema.SingleNestedAttribute{
 						Computed: true,
