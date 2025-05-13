@@ -223,6 +223,13 @@ func (r *CloudGatewayConfigurationResourceModel) RefreshFromSharedConfigurationM
 			dataplaneGroups.Provider = types.StringValue(string(dataplaneGroupsItem.Provider))
 			dataplaneGroups.Region = types.StringValue(dataplaneGroupsItem.Region)
 			dataplaneGroups.State = types.StringValue(string(dataplaneGroupsItem.State))
+			if dataplaneGroupsItem.StateMetadata == nil {
+				dataplaneGroups.StateMetadata = nil
+			} else {
+				dataplaneGroups.StateMetadata = &tfTypes.StateMetadata{}
+				dataplaneGroups.StateMetadata.Reason = types.StringPointerValue(dataplaneGroupsItem.StateMetadata.Reason)
+				dataplaneGroups.StateMetadata.ReportedStatus = types.StringPointerValue(dataplaneGroupsItem.StateMetadata.ReportedStatus)
+			}
 			dataplaneGroups.UpdatedAt = types.StringValue(typeconvert.TimeToString(dataplaneGroupsItem.UpdatedAt))
 			if dataplaneGroupsCount+1 > len(r.DataplaneGroups) {
 				r.DataplaneGroups = append(r.DataplaneGroups, dataplaneGroups)
@@ -237,6 +244,7 @@ func (r *CloudGatewayConfigurationResourceModel) RefreshFromSharedConfigurationM
 				r.DataplaneGroups[dataplaneGroupsCount].Provider = dataplaneGroups.Provider
 				r.DataplaneGroups[dataplaneGroupsCount].Region = dataplaneGroups.Region
 				r.DataplaneGroups[dataplaneGroupsCount].State = dataplaneGroups.State
+				r.DataplaneGroups[dataplaneGroupsCount].StateMetadata = dataplaneGroups.StateMetadata
 				r.DataplaneGroups[dataplaneGroupsCount].UpdatedAt = dataplaneGroups.UpdatedAt
 			}
 		}

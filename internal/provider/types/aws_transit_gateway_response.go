@@ -12,6 +12,7 @@ type AwsTransitGatewayResponse struct {
 	ID                             types.String                      `tfsdk:"id"`
 	Name                           types.String                      `tfsdk:"name"`
 	State                          types.String                      `tfsdk:"state"`
+	StateMetadata                  *StateMetadata                    `tfsdk:"state_metadata"`
 	TransitGatewayAttachmentConfig AwsTransitGatewayAttachmentConfig `tfsdk:"transit_gateway_attachment_config"`
 	UpdatedAt                      types.String                      `tfsdk:"updated_at"`
 }

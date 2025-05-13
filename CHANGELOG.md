@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.7.3
+> Released on 2025/05/13
+
+### Bug fixes
+
+* Fixed JSON parsing errors when provisioning AWS VPC peering gateway in `konnect_cloud_gateway_transit_gateway` resource.
+
 ## 2.7.2
 > Released on 2025/05/06
 

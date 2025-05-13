@@ -401,6 +401,20 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 								),
 							},
 						},
+						"state_metadata": schema.SingleNestedAttribute{
+							Computed: true,
+							Attributes: map[string]schema.Attribute{
+								"reason": schema.StringAttribute{
+									Computed:    true,
+									Description: `Reason why the dataplane group may be in an erroneous state, reported from backing infrastructure.`,
+								},
+								"reported_status": schema.StringAttribute{
+									Computed:    true,
+									Description: `Reported status of the dataplane group from backing infrastructure.`,
+								},
+							},
+							Description: `Metadata describing the backing state of the dataplane group and why it may be in an erroneous state.`,
+						},
 						"updated_at": schema.StringAttribute{
 							Computed:    true,
 							Description: `An RFC-3339 timestamp representation of data-plane group update date.`,

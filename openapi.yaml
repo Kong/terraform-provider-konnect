@@ -13311,6 +13311,22 @@ components:
             - ready
             - terminating
             - terminated
+        state_metadata:
+          description: |
+            Metadata describing the backing state of the dataplane group and why it may be in an erroneous state.
+          type: object
+          additionalProperties: false
+          properties:
+            reported_status:
+              description: Reported status of the dataplane group from backing infrastructure.
+              type: string
+              example: ERROR
+            reason:
+              description: |
+                Reason why the dataplane group may be in an erroneous state, reported from backing infrastructure.
+              type: string
+              example: |
+                Dataplane group could not be deployed due to insufficient cloud provider compute instances.
         private_ip_addresses:
           description: |
             List of private IP addresses of the internal load balancer that proxies traffic to this data-plane group.
@@ -13779,6 +13795,24 @@ components:
           $ref: '#/components/schemas/TransitGatewayId'
         state:
           $ref: '#/components/schemas/TransitGatewayState'
+        state_metadata:
+          description: |
+            Metadata describing the backing state of the transit gateway and why it may be in an erroneous state.
+          type: object
+          additionalProperties: false
+          properties:
+            reported_status:
+              description: Reported status of the transit gateway from backing infrastructure.
+              type: string
+              example: ERROR
+            reason:
+              description: |
+                Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
+              type: string
+              example: |
+                Transit Gateway Attachment configuration could not find a resource with the provided ram share arn.
+          readOnly: true
+          title: TransitGatewayStateMetadata
         entity_version:
           description: |
             Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
@@ -13824,6 +13858,24 @@ components:
           $ref: '#/components/schemas/TransitGatewayId'
         state:
           $ref: '#/components/schemas/TransitGatewayState'
+        state_metadata:
+          description: |
+            Metadata describing the backing state of the transit gateway and why it may be in an erroneous state.
+          type: object
+          additionalProperties: false
+          properties:
+            reported_status:
+              description: Reported status of the transit gateway from backing infrastructure.
+              type: string
+              example: ERROR
+            reason:
+              description: |
+                Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
+              type: string
+              example: |
+                Transit Gateway Attachment configuration could not find a resource with the provided ram share arn.
+          readOnly: true
+          title: TransitGatewayStateMetadata
         entity_version:
           description: |
             Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
@@ -13867,6 +13919,24 @@ components:
           $ref: '#/components/schemas/TransitGatewayId'
         state:
           $ref: '#/components/schemas/TransitGatewayState'
+        state_metadata:
+          description: |
+            Metadata describing the backing state of the transit gateway and why it may be in an erroneous state.
+          type: object
+          additionalProperties: false
+          properties:
+            reported_status:
+              description: Reported status of the transit gateway from backing infrastructure.
+              type: string
+              example: ERROR
+            reason:
+              description: |
+                Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
+              type: string
+              example: |
+                Transit Gateway Attachment configuration could not find a resource with the provided ram share arn.
+          readOnly: true
+          title: TransitGatewayStateMetadata
         entity_version:
           description: |
             Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the

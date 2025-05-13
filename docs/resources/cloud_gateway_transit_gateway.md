@@ -243,6 +243,7 @@ transit gateway.
 - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
 - `terminated` - The attachment has been fully deleted and is no longer available.
 must be one of ["created", "initializing", "pending-acceptance", "ready", "terminating", "terminated"]
+- `state_metadata` (Attributes) Metadata describing the backing state of the transit gateway and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--aws_transit_gateway_response--state_metadata))
 - `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--aws_transit_gateway_response--transit_gateway_attachment_config))
 - `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
 
@@ -254,6 +255,15 @@ Read-Only:
 - `domain_proxy_list` (List of String) Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,
 for a transit gateway.
 - `remote_dns_server_ip_addresses` (List of String) Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway.
+
+
+<a id="nestedatt--aws_transit_gateway_response--state_metadata"></a>
+### Nested Schema for `aws_transit_gateway_response.state_metadata`
+
+Read-Only:
+
+- `reason` (String) Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
+- `reported_status` (String) Reported status of the transit gateway from backing infrastructure.
 
 
 <a id="nestedatt--aws_transit_gateway_response--transit_gateway_attachment_config"></a>
@@ -289,6 +299,7 @@ transit gateway.
 - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
 - `terminated` - The attachment has been fully deleted and is no longer available.
 must be one of ["created", "initializing", "pending-acceptance", "ready", "terminating", "terminated"]
+- `state_metadata` (Attributes) Metadata describing the backing state of the transit gateway and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--aws_vpc_peering_gateway_response--state_metadata))
 - `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--aws_vpc_peering_gateway_response--transit_gateway_attachment_config))
 - `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
 
@@ -300,6 +311,15 @@ Read-Only:
 - `domain_proxy_list` (List of String) Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,
 for a transit gateway.
 - `remote_dns_server_ip_addresses` (List of String) Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway.
+
+
+<a id="nestedatt--aws_vpc_peering_gateway_response--state_metadata"></a>
+### Nested Schema for `aws_vpc_peering_gateway_response.state_metadata`
+
+Read-Only:
+
+- `reason` (String) Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
+- `reported_status` (String) Reported status of the transit gateway from backing infrastructure.
 
 
 <a id="nestedatt--aws_vpc_peering_gateway_response--transit_gateway_attachment_config"></a>
@@ -334,6 +354,7 @@ transit gateway.
 - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
 - `terminated` - The attachment has been fully deleted and is no longer available.
 must be one of ["created", "initializing", "pending-acceptance", "ready", "terminating", "terminated"]
+- `state_metadata` (Attributes) Metadata describing the backing state of the transit gateway and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--azure_transit_gateway_response--state_metadata))
 - `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--azure_transit_gateway_response--transit_gateway_attachment_config))
 - `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
 
@@ -345,6 +366,15 @@ Read-Only:
 - `domain_proxy_list` (List of String) Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,
 for a transit gateway.
 - `remote_dns_server_ip_addresses` (List of String) Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway.
+
+
+<a id="nestedatt--azure_transit_gateway_response--state_metadata"></a>
+### Nested Schema for `azure_transit_gateway_response.state_metadata`
+
+Read-Only:
+
+- `reason` (String) Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
+- `reported_status` (String) Reported status of the transit gateway from backing infrastructure.
 
 
 <a id="nestedatt--azure_transit_gateway_response--transit_gateway_attachment_config"></a>

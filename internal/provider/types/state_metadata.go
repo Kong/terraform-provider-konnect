@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type CustomDomainStateMetadata struct {
+type StateMetadata struct {
 	Reason         types.String `tfsdk:"reason"`
 	ReportedStatus types.String `tfsdk:"reported_status"`
 }
