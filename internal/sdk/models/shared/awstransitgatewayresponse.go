@@ -7,6 +7,29 @@ import (
 	"time"
 )
 
+// TransitGatewayStateMetadata - Metadata describing the backing state of the transit gateway and why it may be in an erroneous state.
+type TransitGatewayStateMetadata struct {
+	// Reported status of the transit gateway from backing infrastructure.
+	ReportedStatus *string `json:"reported_status,omitempty"`
+	// Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
+	//
+	Reason *string `json:"reason,omitempty"`
+}
+
+func (o *TransitGatewayStateMetadata) GetReportedStatus() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ReportedStatus
+}
+
+func (o *TransitGatewayStateMetadata) GetReason() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Reason
+}
+
 type AwsTransitGatewayResponse struct {
 	// Human-readable name of the transit gateway.
 	Name string `json:"name"`
@@ -29,6 +52,9 @@ type AwsTransitGatewayResponse struct {
 	// - `terminated` - The attachment has been fully deleted and is no longer available.
 	//
 	State TransitGatewayState `json:"state"`
+	// Metadata describing the backing state of the transit gateway and why it may be in an erroneous state.
+	//
+	StateMetadata *TransitGatewayStateMetadata `json:"state_metadata,omitempty"`
 	// Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
 	// transit gateway.
 	//
@@ -90,6 +116,13 @@ func (o *AwsTransitGatewayResponse) GetState() TransitGatewayState {
 		return TransitGatewayState("")
 	}
 	return o.State
+}
+
+func (o *AwsTransitGatewayResponse) GetStateMetadata() *TransitGatewayStateMetadata {
+	if o == nil {
+		return nil
+	}
+	return o.StateMetadata
 }
 
 func (o *AwsTransitGatewayResponse) GetEntityVersion() int64 {

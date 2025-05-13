@@ -45,6 +45,29 @@ func (e *State) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// StateMetadata - Metadata describing the backing state of the dataplane group and why it may be in an erroneous state.
+type StateMetadata struct {
+	// Reported status of the dataplane group from backing infrastructure.
+	ReportedStatus *string `json:"reported_status,omitempty"`
+	// Reason why the dataplane group may be in an erroneous state, reported from backing infrastructure.
+	//
+	Reason *string `json:"reason,omitempty"`
+}
+
+func (o *StateMetadata) GetReportedStatus() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ReportedStatus
+}
+
+func (o *StateMetadata) GetReason() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Reason
+}
+
 // ConfigurationDataPlaneGroup - Object that describes the set of data-plane groups currently pointed to this configuration.
 type ConfigurationDataPlaneGroup struct {
 	// ID of the data-plane group that represents a deployment target for a set of data-planes.
@@ -59,6 +82,9 @@ type ConfigurationDataPlaneGroup struct {
 	CloudGatewayNetworkID string                                        `json:"cloud_gateway_network_id"`
 	// State of the data-plane group.
 	State State `json:"state"`
+	// Metadata describing the backing state of the dataplane group and why it may be in an erroneous state.
+	//
+	StateMetadata *StateMetadata `json:"state_metadata,omitempty"`
 	// List of private IP addresses of the internal load balancer that proxies traffic to this data-plane group.
 	//
 	PrivateIPAddresses []string `json:"private_ip_addresses,omitempty"`
@@ -129,6 +155,13 @@ func (o *ConfigurationDataPlaneGroup) GetState() State {
 		return State("")
 	}
 	return o.State
+}
+
+func (o *ConfigurationDataPlaneGroup) GetStateMetadata() *StateMetadata {
+	if o == nil {
+		return nil
+	}
+	return o.StateMetadata
 }
 
 func (o *ConfigurationDataPlaneGroup) GetPrivateIPAddresses() []string {
