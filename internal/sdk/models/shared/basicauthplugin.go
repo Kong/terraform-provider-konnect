@@ -49,6 +49,33 @@ func (o *BasicAuthPluginOrdering) GetBefore() *BasicAuthPluginBefore {
 	return o.Before
 }
 
+type BasicAuthPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *BasicAuthPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *BasicAuthPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *BasicAuthPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type BasicAuthPluginConfig struct {
 	// An optional string (Consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`. Please note that this value must refer to the Consumer `id` or `username` attribute, and **not** its `custom_id`.
 	Anonymous *string `json:"anonymous,omitempty"`
@@ -146,11 +173,12 @@ type BasicAuthPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                    `json:"enabled,omitempty"`
-	ID           *string                  `json:"id,omitempty"`
-	InstanceName *string                  `json:"instance_name,omitempty"`
-	name         string                   `const:"basic-auth" json:"name"`
-	Ordering     *BasicAuthPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                     `json:"enabled,omitempty"`
+	ID           *string                   `json:"id,omitempty"`
+	InstanceName *string                   `json:"instance_name,omitempty"`
+	name         string                    `const:"basic-auth" json:"name"`
+	Ordering     *BasicAuthPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []BasicAuthPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -212,6 +240,13 @@ func (o *BasicAuthPlugin) GetOrdering() *BasicAuthPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *BasicAuthPlugin) GetPartials() []BasicAuthPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *BasicAuthPlugin) GetTags() []string {

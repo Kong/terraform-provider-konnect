@@ -65,6 +65,35 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 			Before: before,
 		}
 	}
+	var partials []shared.AiProxyPluginPartials
+	if r.Partials != nil {
+		partials = make([]shared.AiProxyPluginPartials, 0, len(r.Partials))
+		for _, partialsItem := range r.Partials {
+			id1 := new(string)
+			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
+				*id1 = partialsItem.ID.ValueString()
+			} else {
+				id1 = nil
+			}
+			name := new(string)
+			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
+				*name = partialsItem.Name.ValueString()
+			} else {
+				name = nil
+			}
+			path := new(string)
+			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
+				*path = partialsItem.Path.ValueString()
+			} else {
+				path = nil
+			}
+			partials = append(partials, shared.AiProxyPluginPartials{
+				ID:   id1,
+				Name: name,
+				Path: path,
+			})
+		}
+	}
 	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
@@ -213,11 +242,11 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 		}
 		var model *shared.Model
 		if r.Config.Model != nil {
-			name := new(string)
+			name1 := new(string)
 			if !r.Config.Model.Name.IsUnknown() && !r.Config.Model.Name.IsNull() {
-				*name = r.Config.Model.Name.ValueString()
+				*name1 = r.Config.Model.Name.ValueString()
 			} else {
-				name = nil
+				name1 = nil
 			}
 			var optionsVar *shared.OptionsObj
 			if r.Config.Model.Options != nil {
@@ -410,7 +439,7 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 				provider = nil
 			}
 			model = &shared.Model{
-				Name:     name,
+				Name:     name1,
 				Options:  optionsVar,
 				Provider: provider,
 			}
@@ -446,26 +475,26 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 	}
 	var consumer *shared.AiProxyPluginConsumer
 	if r.Consumer != nil {
-		id1 := new(string)
+		id2 := new(string)
 		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id1 = r.Consumer.ID.ValueString()
+			*id2 = r.Consumer.ID.ValueString()
 		} else {
-			id1 = nil
+			id2 = nil
 		}
 		consumer = &shared.AiProxyPluginConsumer{
-			ID: id1,
+			ID: id2,
 		}
 	}
 	var consumerGroup *shared.AiProxyPluginConsumerGroup
 	if r.ConsumerGroup != nil {
-		id2 := new(string)
+		id3 := new(string)
 		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id2 = r.ConsumerGroup.ID.ValueString()
+			*id3 = r.ConsumerGroup.ID.ValueString()
 		} else {
-			id2 = nil
+			id3 = nil
 		}
 		consumerGroup = &shared.AiProxyPluginConsumerGroup{
-			ID: id2,
+			ID: id3,
 		}
 	}
 	protocols := make([]shared.AiProxyPluginProtocols, 0, len(r.Protocols))
@@ -474,26 +503,26 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 	}
 	var route *shared.AiProxyPluginRoute
 	if r.Route != nil {
-		id3 := new(string)
+		id4 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id3 = r.Route.ID.ValueString()
+			*id4 = r.Route.ID.ValueString()
 		} else {
-			id3 = nil
+			id4 = nil
 		}
 		route = &shared.AiProxyPluginRoute{
-			ID: id3,
+			ID: id4,
 		}
 	}
 	var service *shared.AiProxyPluginService
 	if r.Service != nil {
-		id4 := new(string)
+		id5 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id4 = r.Service.ID.ValueString()
+			*id5 = r.Service.ID.ValueString()
 		} else {
-			id4 = nil
+			id5 = nil
 		}
 		service = &shared.AiProxyPluginService{
-			ID: id4,
+			ID: id5,
 		}
 	}
 	out := shared.AiProxyPlugin{
@@ -502,6 +531,7 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 		ID:            id,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
+		Partials:      partials,
 		Tags:          tags,
 		UpdatedAt:     updatedAt,
 		Config:        config,
@@ -749,6 +779,25 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
+		if resp.Partials != nil {
+			r.Partials = []tfTypes.Partials{}
+			if len(r.Partials) > len(resp.Partials) {
+				r.Partials = r.Partials[:len(resp.Partials)]
+			}
+			for partialsCount, partialsItem := range resp.Partials {
+				var partials tfTypes.Partials
+				partials.ID = types.StringPointerValue(partialsItem.ID)
+				partials.Name = types.StringPointerValue(partialsItem.Name)
+				partials.Path = types.StringPointerValue(partialsItem.Path)
+				if partialsCount+1 > len(r.Partials) {
+					r.Partials = append(r.Partials, partials)
+				} else {
+					r.Partials[partialsCount].ID = partials.ID
+					r.Partials[partialsCount].Name = partials.Name
+					r.Partials[partialsCount].Path = partials.Path
 				}
 			}
 		}

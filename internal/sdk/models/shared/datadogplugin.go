@@ -49,6 +49,33 @@ func (o *DatadogPluginOrdering) GetBefore() *DatadogPluginBefore {
 	return o.Before
 }
 
+type DatadogPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *DatadogPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *DatadogPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *DatadogPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // ConsumerIdentifier - Authenticated user detail
 type ConsumerIdentifier string
 
@@ -503,11 +530,12 @@ type DatadogPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                  `json:"enabled,omitempty"`
-	ID           *string                `json:"id,omitempty"`
-	InstanceName *string                `json:"instance_name,omitempty"`
-	name         string                 `const:"datadog" json:"name"`
-	Ordering     *DatadogPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                   `json:"enabled,omitempty"`
+	ID           *string                 `json:"id,omitempty"`
+	InstanceName *string                 `json:"instance_name,omitempty"`
+	name         string                  `const:"datadog" json:"name"`
+	Ordering     *DatadogPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []DatadogPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -571,6 +599,13 @@ func (o *DatadogPlugin) GetOrdering() *DatadogPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *DatadogPlugin) GetPartials() []DatadogPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *DatadogPlugin) GetTags() []string {

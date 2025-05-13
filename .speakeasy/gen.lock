@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: a51b4d90ae298db12a3057eac67b4a64
+  docChecksum: be6b4914d5f25e5fa4851f30a6ec669a
   docVersion: 2.0.0
   speakeasyVersion: 1.541.2
   generationVersion: 2.595.4
@@ -61,6 +61,7 @@ generatedFiles:
   - examples/data-sources/konnect_gateway_key_auth/data-source.tf
   - examples/data-sources/konnect_gateway_key_set/data-source.tf
   - examples/data-sources/konnect_gateway_mtls_auth/data-source.tf
+  - examples/data-sources/konnect_gateway_partial/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_acl/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_acme/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_ai_azure_content_safety/data-source.tf
@@ -233,6 +234,8 @@ generatedFiles:
   - examples/resources/konnect_gateway_key_set/resource.tf
   - examples/resources/konnect_gateway_mtls_auth/import.sh
   - examples/resources/konnect_gateway_mtls_auth/resource.tf
+  - examples/resources/konnect_gateway_partial/import.sh
+  - examples/resources/konnect_gateway_partial/resource.tf
   - examples/resources/konnect_gateway_plugin_acl/import.sh
   - examples/resources/konnect_gateway_plugin_acl/resource.tf
   - examples/resources/konnect_gateway_plugin_acme/import.sh
@@ -598,6 +601,10 @@ generatedFiles:
   - internal/provider/gatewaymtlsauth_data_source_sdk.go
   - internal/provider/gatewaymtlsauth_resource.go
   - internal/provider/gatewaymtlsauth_resource_sdk.go
+  - internal/provider/gatewaypartial_data_source.go
+  - internal/provider/gatewaypartial_data_source_sdk.go
+  - internal/provider/gatewaypartial_resource.go
+  - internal/provider/gatewaypartial_resource_sdk.go
   - internal/provider/gatewaypluginacl_data_source.go
   - internal/provider/gatewaypluginacl_data_source_sdk.go
   - internal/provider/gatewaypluginacl_resource.go
@@ -1250,6 +1257,7 @@ generatedFiles:
   - internal/provider/types/page_meta.go
   - internal/provider/types/paginated_meta.go
   - internal/provider/types/parameter_schema.go
+  - internal/provider/types/partials.go
   - internal/provider/types/passive.go
   - internal/provider/types/pem.go
   - internal/provider/types/pgvector.go
@@ -1472,6 +1480,7 @@ generatedFiles:
   - internal/sdk/models/operations/createopaplugin.go
   - internal/sdk/models/operations/createopenidconnectplugin.go
   - internal/sdk/models/operations/createopentelemetryplugin.go
+  - internal/sdk/models/operations/createpartial.go
   - internal/sdk/models/operations/createplugin.go
   - internal/sdk/models/operations/createpluginschemas.go
   - internal/sdk/models/operations/createportal.go
@@ -1609,6 +1618,7 @@ generatedFiles:
   - internal/sdk/models/operations/deleteopaplugin.go
   - internal/sdk/models/operations/deleteopenidconnectplugin.go
   - internal/sdk/models/operations/deleteopentelemetryplugin.go
+  - internal/sdk/models/operations/deletepartial.go
   - internal/sdk/models/operations/deleteplugin.go
   - internal/sdk/models/operations/deletepluginschemas.go
   - internal/sdk/models/operations/deleteportal.go
@@ -1753,6 +1763,7 @@ generatedFiles:
   - internal/sdk/models/operations/getopaplugin.go
   - internal/sdk/models/operations/getopenidconnectplugin.go
   - internal/sdk/models/operations/getopentelemetryplugin.go
+  - internal/sdk/models/operations/getpartial.go
   - internal/sdk/models/operations/getplugin.go
   - internal/sdk/models/operations/getpluginschema.go
   - internal/sdk/models/operations/getportalappearance.go
@@ -1946,6 +1957,7 @@ generatedFiles:
   - internal/sdk/models/operations/upsertcustomplugin.go
   - internal/sdk/models/operations/upsertkey.go
   - internal/sdk/models/operations/upsertkeyset.go
+  - internal/sdk/models/operations/upsertpartial.go
   - internal/sdk/models/operations/upsertplugin.go
   - internal/sdk/models/operations/upsertroute.go
   - internal/sdk/models/operations/upsertrouterouteexpression.go
@@ -2142,6 +2154,7 @@ generatedFiles:
   - internal/sdk/models/shared/opentelemetryplugin.go
   - internal/sdk/models/shared/pagemeta.go
   - internal/sdk/models/shared/paginatedmeta.go
+  - internal/sdk/models/shared/partial.go
   - internal/sdk/models/shared/partialappauthstrategyconfigopenidconnect.go
   - internal/sdk/models/shared/patchnetworkrequest.go
   - internal/sdk/models/shared/plugin.go
@@ -2238,6 +2251,7 @@ generatedFiles:
   - internal/sdk/models/shared/xmlthreatprotectionplugin.go
   - internal/sdk/models/shared/zipkinplugin.go
   - internal/sdk/mtlsauthcredentials.go
+  - internal/sdk/partials.go
   - internal/sdk/plugins.go
   - internal/sdk/portalappearance.go
   - internal/sdk/portalauthsettings.go
@@ -9012,5 +9026,50 @@ examples:
           application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "config": {}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 805093}
+  create-partial:
+    speakeasy-default-create-partial:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"key": "<value>", "key1": "<value>"}, "type": "<value>"}
+      responses:
+        "201":
+          application/json: {"config": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "type": "<value>"}
+        "401":
+          application/json: {"message": "<value>", "status": 520657}
+  delete-partial:
+    "":
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          PartialId: ""
+      responses:
+        "401":
+          application/json: {"message": "<value>", "status": 746418}
+  get-partial:
+    "":
+      parameters:
+        path:
+          PartialId: ""
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"config": {"key": "<value>"}, "type": "<value>"}
+        "401":
+          application/json: {"message": "<value>", "status": 200517}
+  upsert-partial:
+    "":
+      parameters:
+        path:
+          PartialId: ""
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {}, "type": "<value>"}
+      responses:
+        "200":
+          application/json: {"config": {"key": "<value>", "key1": "<value>"}, "type": "<value>"}
+        "401":
+          application/json: {"message": "<value>", "status": 208224}
 examplesVersion: 1.0.1
 generatedTests: {}

@@ -49,6 +49,33 @@ func (o *RequestCalloutPluginOrdering) GetBefore() *RequestCalloutPluginBefore {
 	return o.Before
 }
 
+type RequestCalloutPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *RequestCalloutPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *RequestCalloutPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *RequestCalloutPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type RequestCalloutPluginMemory struct {
 	// The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. Note that this dictionary currently must be defined manually in the Kong Nginx template.
 	DictionaryName *string `json:"dictionary_name,omitempty"`
@@ -1087,11 +1114,12 @@ type RequestCalloutPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                         `json:"enabled,omitempty"`
-	ID           *string                       `json:"id,omitempty"`
-	InstanceName *string                       `json:"instance_name,omitempty"`
-	name         string                        `const:"request-callout" json:"name"`
-	Ordering     *RequestCalloutPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                          `json:"enabled,omitempty"`
+	ID           *string                        `json:"id,omitempty"`
+	InstanceName *string                        `json:"instance_name,omitempty"`
+	name         string                         `const:"request-callout" json:"name"`
+	Ordering     *RequestCalloutPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []RequestCalloutPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -1157,6 +1185,13 @@ func (o *RequestCalloutPlugin) GetOrdering() *RequestCalloutPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *RequestCalloutPlugin) GetPartials() []RequestCalloutPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *RequestCalloutPlugin) GetTags() []string {

@@ -49,6 +49,33 @@ func (o *CanaryPluginOrdering) GetBefore() *CanaryPluginBefore {
 	return o.Before
 }
 
+type CanaryPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *CanaryPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *CanaryPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *CanaryPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // Hash algorithm to be used for canary release.
 //
 // * `consumer`: The hash will be based on the consumer.
@@ -274,11 +301,12 @@ type CanaryPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                 `json:"enabled,omitempty"`
-	ID           *string               `json:"id,omitempty"`
-	InstanceName *string               `json:"instance_name,omitempty"`
-	name         string                `const:"canary" json:"name"`
-	Ordering     *CanaryPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                  `json:"enabled,omitempty"`
+	ID           *string                `json:"id,omitempty"`
+	InstanceName *string                `json:"instance_name,omitempty"`
+	name         string                 `const:"canary" json:"name"`
+	Ordering     *CanaryPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []CanaryPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -340,6 +368,13 @@ func (o *CanaryPlugin) GetOrdering() *CanaryPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *CanaryPlugin) GetPartials() []CanaryPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *CanaryPlugin) GetTags() []string {

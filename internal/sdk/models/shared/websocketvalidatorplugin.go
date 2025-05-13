@@ -49,6 +49,33 @@ func (o *WebsocketValidatorPluginOrdering) GetBefore() *WebsocketValidatorPlugin
 	return o.Before
 }
 
+type WebsocketValidatorPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *WebsocketValidatorPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *WebsocketValidatorPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *WebsocketValidatorPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // WebsocketValidatorPluginType - The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
 type WebsocketValidatorPluginType string
 
@@ -353,11 +380,12 @@ type WebsocketValidatorPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                             `json:"enabled,omitempty"`
-	ID           *string                           `json:"id,omitempty"`
-	InstanceName *string                           `json:"instance_name,omitempty"`
-	name         string                            `const:"websocket-validator" json:"name"`
-	Ordering     *WebsocketValidatorPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                              `json:"enabled,omitempty"`
+	ID           *string                            `json:"id,omitempty"`
+	InstanceName *string                            `json:"instance_name,omitempty"`
+	name         string                             `const:"websocket-validator" json:"name"`
+	Ordering     *WebsocketValidatorPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []WebsocketValidatorPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -421,6 +449,13 @@ func (o *WebsocketValidatorPlugin) GetOrdering() *WebsocketValidatorPluginOrderi
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *WebsocketValidatorPlugin) GetPartials() []WebsocketValidatorPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *WebsocketValidatorPlugin) GetTags() []string {

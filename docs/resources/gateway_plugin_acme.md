@@ -98,6 +98,13 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
       ]
     }
   }
+  partials = [
+    {
+      id   = "...my_id..."
+      name = "...my_name..."
+      path = "...my_path..."
+    }
+  ]
   protocols = [
     "grpc"
   ]
@@ -122,6 +129,7 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
+- `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
 - `protocols` (List of String) A set of strings representing HTTP protocols.
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
@@ -263,6 +271,17 @@ Optional:
 Optional:
 
 - `access` (List of String)
+
+
+
+<a id="nestedatt--partials"></a>
+### Nested Schema for `partials`
+
+Optional:
+
+- `id` (String)
+- `name` (String)
+- `path` (String)
 
 ## Import
 

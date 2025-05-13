@@ -49,6 +49,33 @@ func (o *JSONThreatProtectionPluginOrdering) GetBefore() *JSONThreatProtectionPl
 	return o.Before
 }
 
+type JSONThreatProtectionPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *JSONThreatProtectionPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *JSONThreatProtectionPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *JSONThreatProtectionPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // JSONThreatProtectionPluginEnforcementMode - Enforcement mode of the security policy.
 type JSONThreatProtectionPluginEnforcementMode string
 
@@ -230,11 +257,12 @@ type JSONThreatProtectionPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                               `json:"enabled,omitempty"`
-	ID           *string                             `json:"id,omitempty"`
-	InstanceName *string                             `json:"instance_name,omitempty"`
-	name         string                              `const:"json-threat-protection" json:"name"`
-	Ordering     *JSONThreatProtectionPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                                `json:"enabled,omitempty"`
+	ID           *string                              `json:"id,omitempty"`
+	InstanceName *string                              `json:"instance_name,omitempty"`
+	name         string                               `const:"json-threat-protection" json:"name"`
+	Ordering     *JSONThreatProtectionPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []JSONThreatProtectionPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -296,6 +324,13 @@ func (o *JSONThreatProtectionPlugin) GetOrdering() *JSONThreatProtectionPluginOr
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *JSONThreatProtectionPlugin) GetPartials() []JSONThreatProtectionPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *JSONThreatProtectionPlugin) GetTags() []string {

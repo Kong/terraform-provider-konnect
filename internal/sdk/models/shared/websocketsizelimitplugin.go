@@ -49,6 +49,33 @@ func (o *WebsocketSizeLimitPluginOrdering) GetBefore() *WebsocketSizeLimitPlugin
 	return o.Before
 }
 
+type WebsocketSizeLimitPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *WebsocketSizeLimitPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *WebsocketSizeLimitPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *WebsocketSizeLimitPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type WebsocketSizeLimitPluginConfig struct {
 	ClientMaxPayload   *int64 `json:"client_max_payload,omitempty"`
 	UpstreamMaxPayload *int64 `json:"upstream_max_payload,omitempty"`
@@ -135,11 +162,12 @@ type WebsocketSizeLimitPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                             `json:"enabled,omitempty"`
-	ID           *string                           `json:"id,omitempty"`
-	InstanceName *string                           `json:"instance_name,omitempty"`
-	name         string                            `const:"websocket-size-limit" json:"name"`
-	Ordering     *WebsocketSizeLimitPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                              `json:"enabled,omitempty"`
+	ID           *string                            `json:"id,omitempty"`
+	InstanceName *string                            `json:"instance_name,omitempty"`
+	name         string                             `const:"websocket-size-limit" json:"name"`
+	Ordering     *WebsocketSizeLimitPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []WebsocketSizeLimitPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -203,6 +231,13 @@ func (o *WebsocketSizeLimitPlugin) GetOrdering() *WebsocketSizeLimitPluginOrderi
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *WebsocketSizeLimitPlugin) GetPartials() []WebsocketSizeLimitPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *WebsocketSizeLimitPlugin) GetTags() []string {

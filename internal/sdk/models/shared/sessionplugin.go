@@ -49,6 +49,33 @@ func (o *SessionPluginOrdering) GetBefore() *SessionPluginBefore {
 	return o.Before
 }
 
+type SessionPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *SessionPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *SessionPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *SessionPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // CookieSameSite - Determines whether and how a cookie may be sent with cross-site requests.
 type CookieSameSite string
 
@@ -527,11 +554,12 @@ type SessionPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                  `json:"enabled,omitempty"`
-	ID           *string                `json:"id,omitempty"`
-	InstanceName *string                `json:"instance_name,omitempty"`
-	name         string                 `const:"session" json:"name"`
-	Ordering     *SessionPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                   `json:"enabled,omitempty"`
+	ID           *string                 `json:"id,omitempty"`
+	InstanceName *string                 `json:"instance_name,omitempty"`
+	name         string                  `const:"session" json:"name"`
+	Ordering     *SessionPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []SessionPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -593,6 +621,13 @@ func (o *SessionPlugin) GetOrdering() *SessionPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *SessionPlugin) GetPartials() []SessionPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *SessionPlugin) GetTags() []string {
