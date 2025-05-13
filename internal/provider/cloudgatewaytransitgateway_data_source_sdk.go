@@ -4,6 +4,7 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
@@ -75,6 +76,12 @@ func (r *CloudGatewayTransitGatewayDataSourceModel) RefreshFromSharedTransitGate
 		}
 		if resp.AwsVpcPeeringGatewayResponse != nil {
 			r.AwsVpcPeeringGatewayResponse = &tfTypes.AwsVpcPeeringGatewayResponse{}
+			if resp.AwsVpcPeeringGatewayResponse.AdditionalProperties == nil {
+				r.AwsVpcPeeringGatewayResponse.AdditionalProperties = types.StringNull()
+			} else {
+				additionalPropertiesResult, _ := json.Marshal(resp.AwsVpcPeeringGatewayResponse.AdditionalProperties)
+				r.AwsVpcPeeringGatewayResponse.AdditionalProperties = types.StringValue(string(additionalPropertiesResult))
+			}
 			r.AwsVpcPeeringGatewayResponse.CidrBlocks = make([]types.String, 0, len(resp.AwsVpcPeeringGatewayResponse.CidrBlocks))
 			for _, v := range resp.AwsVpcPeeringGatewayResponse.CidrBlocks {
 				r.AwsVpcPeeringGatewayResponse.CidrBlocks = append(r.AwsVpcPeeringGatewayResponse.CidrBlocks, types.StringValue(v))

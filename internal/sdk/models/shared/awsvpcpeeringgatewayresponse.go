@@ -36,7 +36,8 @@ type AwsVpcPeeringGatewayResponse struct {
 	// An RFC-3339 timestamp representation of transit gateway creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An RFC-3339 timestamp representation of transit gateway update date.
-	UpdatedAt time.Time `json:"updated_at"`
+	UpdatedAt            time.Time `json:"updated_at"`
+	AdditionalProperties any       `additionalProperties:"true" json:"-"`
 }
 
 func (a AwsVpcPeeringGatewayResponse) MarshalJSON() ([]byte, error) {
@@ -111,4 +112,11 @@ func (o *AwsVpcPeeringGatewayResponse) GetUpdatedAt() time.Time {
 		return time.Time{}
 	}
 	return o.UpdatedAt
+}
+
+func (o *AwsVpcPeeringGatewayResponse) GetAdditionalProperties() any {
+	if o == nil {
+		return nil
+	}
+	return o.AdditionalProperties
 }

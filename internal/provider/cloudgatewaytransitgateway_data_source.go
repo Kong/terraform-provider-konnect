@@ -128,6 +128,10 @@ func (r *CloudGatewayTransitGatewayDataSource) Schema(ctx context.Context, req d
 			"aws_vpc_peering_gateway_response": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
+					"additional_properties": schema.StringAttribute{
+						Computed:    true,
+						Description: `Parsed as JSON.`,
+					},
 					"cidr_blocks": schema.ListAttribute{
 						Computed:    true,
 						ElementType: types.StringType,

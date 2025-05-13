@@ -272,6 +272,7 @@ Read-Only:
 
 Read-Only:
 
+- `additional_properties` (String) Parsed as JSON.
 - `cidr_blocks` (List of String) CIDR blocks for constructing a route table for the transit gateway, when attaching to the owning
 network.
 - `created_at` (String) An RFC-3339 timestamp representation of transit gateway creation date.

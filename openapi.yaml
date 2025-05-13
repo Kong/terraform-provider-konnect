@@ -13811,6 +13811,7 @@ components:
       title: AWS Transit Gateway
     AwsVpcPeeringGatewayResponse:
       type: object
+      additionalProperties: true
       properties:
         name:
           $ref: '#/components/schemas/TransitGatewayName'
