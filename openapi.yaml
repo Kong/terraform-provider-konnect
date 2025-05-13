@@ -2413,6 +2413,91 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Keys
+  '/v2/control-planes/{controlPlaneId}/core-entities/partials':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation: GatewayPartial#create
+      operationId: create-partial
+      summary: Create a new Partial
+      description: Create a new Partial
+      requestBody:
+        description: Description of the new Partial for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Partial'
+      responses:
+        '201':
+          description: Successfully created Partial
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partial'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Partials
+  '/v2/control-planes/{controlPlaneId}/core-entities/partials/{PartialId}':
+    delete:
+      x-speakeasy-entity-operation: GatewayPartial#delete
+      operationId: delete-partial
+      summary: Delete a Partial
+      description: Delete a Partial
+      parameters:
+        - $ref: '#/components/parameters/PartialId'
+      responses:
+        '204':
+          description: Successfully deleted Partial or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Partials
+    get:
+      x-speakeasy-entity-operation: GatewayPartial#read
+      operationId: get-partial
+      summary: Fetch a Partial
+      description: Get a Partial using ID.
+      responses:
+        '200':
+          description: Successfully fetched Partial
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partial'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Partials
+    parameters:
+      - $ref: '#/components/parameters/PartialId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation: GatewayPartial#update
+      operationId: upsert-partial
+      summary: Upsert a Partial
+      description: Create or Update Partial using ID.
+      requestBody:
+        description: Description of the Partial
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Partial'
+      responses:
+        '200':
+          description: Successfully upserted Partial
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partial'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Partials
   '/v2/control-planes/{controlPlaneId}/core-entities/plugin-schemas':
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
@@ -12347,6 +12432,15 @@ components:
       schema:
         type: integer
         example: 10
+    PartialId:
+      description: ID of the Partial to lookup
+      example: ''
+      in: path
+      name: PartialId
+      required: true
+      schema:
+        type: string
+      x-speakeasy-match: id
     PluginId:
       description: ID of the Plugin to lookup
       example: 3473c251-5b6c-4f45-b1ff-7ede735a366d
@@ -28059,6 +28153,37 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+    Partial:
+      x-speakeasy-entity: GatewayPartial
+      type: object
+      properties:
+        config:
+          type: object
+          additionalProperties: true
+        created_at:
+          description: Unix epoch when the resource was created.
+          type: integer
+          nullable: true
+        id:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+        type:
+          type: string
+        updated_at:
+          description: Unix epoch when the resource was last updated.
+          type: integer
+          nullable: true
+      additionalProperties: false
+      required:
+        - type
+        - config
     Plugin:
       description: 'A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.'
       type: object
@@ -28233,6 +28358,18 @@ components:
                   type: array
                   items:
                     type: string
+        partials:
+          type: array
+          items:
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              path:
+                type: string
+            type: object
+          nullable: true
         tags:
           description: An optional set of strings associated with the Plugin for grouping and filtering.
           type: array
@@ -35957,6 +36094,7 @@ tags:
   - name: HMAC-auth credentials
   - name: MTLS-auth credentials
   - name: ACLs
+  - name: Partials
 externalDocs:
   description: Documentation for Kong Gateway and its APIs
   url: 'https://developer.konghq.com'
