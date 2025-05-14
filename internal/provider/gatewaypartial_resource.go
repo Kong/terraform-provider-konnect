@@ -7,7 +7,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -35,14 +34,14 @@ type GatewayPartialResource struct {
 
 // GatewayPartialResourceModel describes the resource data model.
 type GatewayPartialResourceModel struct {
-	Config         map[string]types.String `tfsdk:"config"`
-	ControlPlaneID types.String            `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64             `tfsdk:"created_at"`
-	ID             types.String            `tfsdk:"id"`
-	Name           types.String            `tfsdk:"name"`
-	Tags           []types.String          `tfsdk:"tags"`
-	Type           types.String            `tfsdk:"type"`
-	UpdatedAt      types.Int64             `tfsdk:"updated_at"`
+	Config         types.String   `tfsdk:"config"`
+	ControlPlaneID types.String   `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64    `tfsdk:"created_at"`
+	ID             types.String   `tfsdk:"id"`
+	Name           types.String   `tfsdk:"name"`
+	Tags           []types.String `tfsdk:"tags"`
+	Type           types.String   `tfsdk:"type"`
+	UpdatedAt      types.Int64    `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPartialResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -53,11 +52,11 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPartial Resource",
 		Attributes: map[string]schema.Attribute{
-			"config": schema.MapAttribute{
+			"config": schema.StringAttribute{
 				Required:    true,
-				ElementType: types.StringType,
-				Validators: []validator.Map{
-					mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+				Description: `Parsed as JSON.`,
+				Validators: []validator.String{
+					validators.IsValidJSON(),
 				},
 			},
 			"control_plane_id": schema.StringAttribute{

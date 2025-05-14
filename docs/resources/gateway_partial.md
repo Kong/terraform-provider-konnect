@@ -14,9 +14,7 @@ GatewayPartial Resource
 
 ```terraform
 resource "konnect_gateway_partial" "my_gatewaypartial" {
-  config = {
-    key = jsonencode("value")
-  }
+  config           = "{ \"see\": \"documentation\" }"
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 4
   id               = "...my_id..."
@@ -34,7 +32,7 @@ resource "konnect_gateway_partial" "my_gatewaypartial" {
 
 ### Required
 
-- `config` (Map of String)
+- `config` (String) Parsed as JSON.
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 - `type` (String)
 

@@ -3,7 +3,7 @@
 package shared
 
 type Partial struct {
-	Config map[string]any `json:"config"`
+	Config any `json:"config"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64   `json:"created_at,omitempty"`
 	ID        *string  `json:"id,omitempty"`
@@ -14,9 +14,9 @@ type Partial struct {
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }
 
-func (o *Partial) GetConfig() map[string]any {
+func (o *Partial) GetConfig() any {
 	if o == nil {
-		return map[string]any{}
+		return nil
 	}
 	return o.Config
 }

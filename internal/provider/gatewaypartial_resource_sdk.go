@@ -14,12 +14,8 @@ import (
 func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*shared.Partial, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	config := make(map[string]interface{})
-	for configKey, configValue := range r.Config {
-		var configInst interface{}
-		_ = json.Unmarshal([]byte(configValue.ValueString()), &configInst)
-		config[configKey] = configInst
-	}
+	var config interface{}
+	_ = json.Unmarshal([]byte(r.Config.ValueString()), &config)
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -148,13 +144,8 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if len(resp.Config) > 0 {
-			r.Config = make(map[string]types.String, len(resp.Config))
-			for key, value := range resp.Config {
-				result, _ := json.Marshal(value)
-				r.Config[key] = types.StringValue(string(result))
-			}
-		}
+		configResult, _ := json.Marshal(resp.Config)
+		r.Config = types.StringValue(string(configResult))
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Name = types.StringPointerValue(resp.Name)

@@ -32,13 +32,8 @@ func (r *GatewayPartialDataSourceModel) RefreshFromSharedPartial(ctx context.Con
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if len(resp.Config) > 0 {
-			r.Config = make(map[string]types.String, len(resp.Config))
-			for key, value := range resp.Config {
-				result, _ := json.Marshal(value)
-				r.Config[key] = types.StringValue(string(result))
-			}
-		}
+		configResult, _ := json.Marshal(resp.Config)
+		r.Config = types.StringValue(string(configResult))
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Name = types.StringPointerValue(resp.Name)

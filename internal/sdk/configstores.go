@@ -14,6 +14,7 @@ import (
 	"net/http"
 )
 
+// ConfigStores - Config Stores
 type ConfigStores struct {
 	sdkConfiguration sdkConfiguration
 }

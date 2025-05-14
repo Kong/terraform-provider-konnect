@@ -27,14 +27,14 @@ type GatewayPartialDataSource struct {
 
 // GatewayPartialDataSourceModel describes the data model.
 type GatewayPartialDataSourceModel struct {
-	Config         map[string]types.String `tfsdk:"config"`
-	ControlPlaneID types.String            `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64             `tfsdk:"created_at"`
-	ID             types.String            `tfsdk:"id"`
-	Name           types.String            `tfsdk:"name"`
-	Tags           []types.String          `tfsdk:"tags"`
-	Type           types.String            `tfsdk:"type"`
-	UpdatedAt      types.Int64             `tfsdk:"updated_at"`
+	Config         types.String   `tfsdk:"config"`
+	ControlPlaneID types.String   `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64    `tfsdk:"created_at"`
+	ID             types.String   `tfsdk:"id"`
+	Name           types.String   `tfsdk:"name"`
+	Tags           []types.String `tfsdk:"tags"`
+	Type           types.String   `tfsdk:"type"`
+	UpdatedAt      types.Int64    `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -48,9 +48,9 @@ func (r *GatewayPartialDataSource) Schema(ctx context.Context, req datasource.Sc
 		MarkdownDescription: "GatewayPartial DataSource",
 
 		Attributes: map[string]schema.Attribute{
-			"config": schema.MapAttribute{
+			"config": schema.StringAttribute{
 				Computed:    true,
-				ElementType: types.StringType,
+				Description: `Parsed as JSON.`,
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
