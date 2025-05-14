@@ -12,7 +12,9 @@ type CustomizeKongDomainHook struct{}
 func (i *CustomizeKongDomainHook) BeforeRequest(hookCtx BeforeRequestContext, req *http.Request) (*http.Request, error) {
 	customDomain := os.Getenv("KONG_CUSTOM_DOMAIN")
 	if customDomain != "" {
-		req.URL.Host = strings.Replace(req.URL.Host, ".konghq.com", "."+customDomain, 1)
+		host := strings.Replace(req.URL.Host, ".konghq.com", "."+customDomain, 1)
+		req.URL.Host = host
+		req.Host = host
 	}
 
 	return req, nil

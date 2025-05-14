@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.7.4
+> Released on 2025/05/14
+
+### Bug fixes
+
+* Fixed custom domain hook so that it sets both Host header and URL correctly.
+
 ## 2.7.3
 > Released on 2025/05/13
 
