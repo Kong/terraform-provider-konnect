@@ -28160,6 +28160,7 @@ components:
         config:
           type: object
           additionalProperties: true
+          x-speakeasy-type-override: any
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
