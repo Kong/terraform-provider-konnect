@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.8.0  
+> Released on ?
+
+### Features
+
+* Add support for new resource `konnect_gateway_partial` which enables users to define shared configuration for Redis.
+
 ## 2.7.3
 > Released on 2025/05/13
 
