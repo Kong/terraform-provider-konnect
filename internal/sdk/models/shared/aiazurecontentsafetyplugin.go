@@ -49,6 +49,33 @@ func (o *AiAzureContentSafetyPluginOrdering) GetBefore() *AiAzureContentSafetyPl
 	return o.Before
 }
 
+type AiAzureContentSafetyPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *AiAzureContentSafetyPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *AiAzureContentSafetyPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *AiAzureContentSafetyPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type Categories struct {
 	Name           string `json:"name"`
 	RejectionLevel int64  `json:"rejection_level"`
@@ -303,11 +330,12 @@ type AiAzureContentSafetyPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                               `json:"enabled,omitempty"`
-	ID           *string                             `json:"id,omitempty"`
-	InstanceName *string                             `json:"instance_name,omitempty"`
-	name         string                              `const:"ai-azure-content-safety" json:"name"`
-	Ordering     *AiAzureContentSafetyPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                                `json:"enabled,omitempty"`
+	ID           *string                              `json:"id,omitempty"`
+	InstanceName *string                              `json:"instance_name,omitempty"`
+	name         string                               `const:"ai-azure-content-safety" json:"name"`
+	Ordering     *AiAzureContentSafetyPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []AiAzureContentSafetyPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -369,6 +397,13 @@ func (o *AiAzureContentSafetyPlugin) GetOrdering() *AiAzureContentSafetyPluginOr
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *AiAzureContentSafetyPlugin) GetPartials() []AiAzureContentSafetyPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *AiAzureContentSafetyPlugin) GetTags() []string {

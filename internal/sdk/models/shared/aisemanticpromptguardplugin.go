@@ -49,6 +49,33 @@ func (o *AiSemanticPromptGuardPluginOrdering) GetBefore() *AiSemanticPromptGuard
 	return o.Before
 }
 
+type AiSemanticPromptGuardPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *AiSemanticPromptGuardPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *AiSemanticPromptGuardPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *AiSemanticPromptGuardPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // AiSemanticPromptGuardPluginParamLocation - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
 type AiSemanticPromptGuardPluginParamLocation string
 
@@ -1191,11 +1218,12 @@ type AiSemanticPromptGuardPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                                `json:"enabled,omitempty"`
-	ID           *string                              `json:"id,omitempty"`
-	InstanceName *string                              `json:"instance_name,omitempty"`
-	name         string                               `const:"ai-semantic-prompt-guard" json:"name"`
-	Ordering     *AiSemanticPromptGuardPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                                 `json:"enabled,omitempty"`
+	ID           *string                               `json:"id,omitempty"`
+	InstanceName *string                               `json:"instance_name,omitempty"`
+	name         string                                `const:"ai-semantic-prompt-guard" json:"name"`
+	Ordering     *AiSemanticPromptGuardPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []AiSemanticPromptGuardPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -1261,6 +1289,13 @@ func (o *AiSemanticPromptGuardPlugin) GetOrdering() *AiSemanticPromptGuardPlugin
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *AiSemanticPromptGuardPlugin) GetPartials() []AiSemanticPromptGuardPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *AiSemanticPromptGuardPlugin) GetTags() []string {

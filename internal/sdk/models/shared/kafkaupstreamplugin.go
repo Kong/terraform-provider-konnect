@@ -49,6 +49,33 @@ func (o *KafkaUpstreamPluginOrdering) GetBefore() *KafkaUpstreamPluginBefore {
 	return o.Before
 }
 
+type KafkaUpstreamPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *KafkaUpstreamPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *KafkaUpstreamPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *KafkaUpstreamPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // KafkaUpstreamPluginMechanism - The SASL authentication mechanism.  Supported options: `PLAIN`, `SCRAM-SHA-256`, or `SCRAM-SHA-512`.
 type KafkaUpstreamPluginMechanism string
 
@@ -512,11 +539,12 @@ type KafkaUpstreamPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                        `json:"enabled,omitempty"`
-	ID           *string                      `json:"id,omitempty"`
-	InstanceName *string                      `json:"instance_name,omitempty"`
-	name         string                       `const:"kafka-upstream" json:"name"`
-	Ordering     *KafkaUpstreamPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                         `json:"enabled,omitempty"`
+	ID           *string                       `json:"id,omitempty"`
+	InstanceName *string                       `json:"instance_name,omitempty"`
+	name         string                        `const:"kafka-upstream" json:"name"`
+	Ordering     *KafkaUpstreamPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []KafkaUpstreamPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -580,6 +608,13 @@ func (o *KafkaUpstreamPlugin) GetOrdering() *KafkaUpstreamPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *KafkaUpstreamPlugin) GetPartials() []KafkaUpstreamPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *KafkaUpstreamPlugin) GetTags() []string {

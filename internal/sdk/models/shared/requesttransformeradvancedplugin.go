@@ -49,6 +49,33 @@ func (o *RequestTransformerAdvancedPluginOrdering) GetBefore() *RequestTransform
 	return o.Before
 }
 
+type RequestTransformerAdvancedPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *RequestTransformerAdvancedPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *RequestTransformerAdvancedPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *RequestTransformerAdvancedPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type JSONTypes string
 
 const (
@@ -468,11 +495,12 @@ type RequestTransformerAdvancedPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                                     `json:"enabled,omitempty"`
-	ID           *string                                   `json:"id,omitempty"`
-	InstanceName *string                                   `json:"instance_name,omitempty"`
-	name         string                                    `const:"request-transformer-advanced" json:"name"`
-	Ordering     *RequestTransformerAdvancedPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                                      `json:"enabled,omitempty"`
+	ID           *string                                    `json:"id,omitempty"`
+	InstanceName *string                                    `json:"instance_name,omitempty"`
+	name         string                                     `const:"request-transformer-advanced" json:"name"`
+	Ordering     *RequestTransformerAdvancedPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []RequestTransformerAdvancedPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -538,6 +566,13 @@ func (o *RequestTransformerAdvancedPlugin) GetOrdering() *RequestTransformerAdva
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *RequestTransformerAdvancedPlugin) GetPartials() []RequestTransformerAdvancedPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *RequestTransformerAdvancedPlugin) GetTags() []string {

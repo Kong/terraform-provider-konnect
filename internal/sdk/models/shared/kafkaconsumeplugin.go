@@ -49,6 +49,33 @@ func (o *KafkaConsumePluginOrdering) GetBefore() *KafkaConsumePluginBefore {
 	return o.Before
 }
 
+type KafkaConsumePluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *KafkaConsumePluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *KafkaConsumePluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *KafkaConsumePluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // Mechanism - The SASL authentication mechanism.  Supported options: `PLAIN` or `SCRAM-SHA-256`.
 type Mechanism string
 
@@ -473,11 +500,12 @@ type KafkaConsumePlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                       `json:"enabled,omitempty"`
-	ID           *string                     `json:"id,omitempty"`
-	InstanceName *string                     `json:"instance_name,omitempty"`
-	name         string                      `const:"kafka-consume" json:"name"`
-	Ordering     *KafkaConsumePluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                        `json:"enabled,omitempty"`
+	ID           *string                      `json:"id,omitempty"`
+	InstanceName *string                      `json:"instance_name,omitempty"`
+	name         string                       `const:"kafka-consume" json:"name"`
+	Ordering     *KafkaConsumePluginOrdering  `json:"ordering,omitempty"`
+	Partials     []KafkaConsumePluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -541,6 +569,13 @@ func (o *KafkaConsumePlugin) GetOrdering() *KafkaConsumePluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *KafkaConsumePlugin) GetPartials() []KafkaConsumePluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *KafkaConsumePlugin) GetTags() []string {

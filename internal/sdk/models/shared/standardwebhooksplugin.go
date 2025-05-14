@@ -49,6 +49,33 @@ func (o *StandardWebhooksPluginOrdering) GetBefore() *StandardWebhooksPluginBefo
 	return o.Before
 }
 
+type StandardWebhooksPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *StandardWebhooksPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *StandardWebhooksPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *StandardWebhooksPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type StandardWebhooksPluginConfig struct {
 	// Webhook secret
 	SecretV1 *string `json:"secret_v1,omitempty"`
@@ -143,11 +170,12 @@ type StandardWebhooksPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                           `json:"enabled,omitempty"`
-	ID           *string                         `json:"id,omitempty"`
-	InstanceName *string                         `json:"instance_name,omitempty"`
-	name         string                          `const:"standard-webhooks" json:"name"`
-	Ordering     *StandardWebhooksPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                            `json:"enabled,omitempty"`
+	ID           *string                          `json:"id,omitempty"`
+	InstanceName *string                          `json:"instance_name,omitempty"`
+	name         string                           `const:"standard-webhooks" json:"name"`
+	Ordering     *StandardWebhooksPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []StandardWebhooksPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -211,6 +239,13 @@ func (o *StandardWebhooksPlugin) GetOrdering() *StandardWebhooksPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *StandardWebhooksPlugin) GetPartials() []StandardWebhooksPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *StandardWebhooksPlugin) GetTags() []string {

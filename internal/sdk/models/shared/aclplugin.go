@@ -49,6 +49,33 @@ func (o *ACLPluginOrdering) GetBefore() *ACLPluginBefore {
 	return o.Before
 }
 
+type Partials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *Partials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *Partials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *Partials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type ACLPluginConfig struct {
 	// Arbitrary group names that are allowed to consume the service or route. One of `config.allow` or `config.deny` must be specified.
 	Allow []string `json:"allow,omitempty"`
@@ -163,6 +190,7 @@ type ACLPlugin struct {
 	InstanceName *string            `json:"instance_name,omitempty"`
 	name         string             `const:"acl" json:"name"`
 	Ordering     *ACLPluginOrdering `json:"ordering,omitempty"`
+	Partials     []Partials         `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -224,6 +252,13 @@ func (o *ACLPlugin) GetOrdering() *ACLPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *ACLPlugin) GetPartials() []Partials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *ACLPlugin) GetTags() []string {

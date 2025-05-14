@@ -121,7 +121,8 @@ type Konnect struct {
 	KeySets *KeySets
 	// A key object holds a representation of asymmetric keys in various formats. When Kong Gateway or a Kong plugin requires a specific public or private key to perform certain operations, it can use this entity.
 	//
-	Keys *Keys
+	Keys     *Keys
+	Partials *Partials
 	// Custom Plugin Schemas
 	CustomPluginSchemas *CustomPluginSchemas
 	// A plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. Plugins let you add functionality to services that run behind a Kong Gateway instance, like authentication or rate limiting.
@@ -365,6 +366,8 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.KeySets = newKeySets(sdk.sdkConfiguration)
 
 	sdk.Keys = newKeys(sdk.sdkConfiguration)
+
+	sdk.Partials = newPartials(sdk.sdkConfiguration)
 
 	sdk.CustomPluginSchemas = newCustomPluginSchemas(sdk.sdkConfiguration)
 

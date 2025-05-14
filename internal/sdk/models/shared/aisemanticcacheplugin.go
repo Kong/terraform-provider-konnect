@@ -49,6 +49,33 @@ func (o *AiSemanticCachePluginOrdering) GetBefore() *AiSemanticCachePluginBefore
 	return o.Before
 }
 
+type AiSemanticCachePluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *AiSemanticCachePluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *AiSemanticCachePluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *AiSemanticCachePluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // AiSemanticCachePluginParamLocation - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
 type AiSemanticCachePluginParamLocation string
 
@@ -1187,11 +1214,12 @@ type AiSemanticCachePlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                          `json:"enabled,omitempty"`
-	ID           *string                        `json:"id,omitempty"`
-	InstanceName *string                        `json:"instance_name,omitempty"`
-	name         string                         `const:"ai-semantic-cache" json:"name"`
-	Ordering     *AiSemanticCachePluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                           `json:"enabled,omitempty"`
+	ID           *string                         `json:"id,omitempty"`
+	InstanceName *string                         `json:"instance_name,omitempty"`
+	name         string                          `const:"ai-semantic-cache" json:"name"`
+	Ordering     *AiSemanticCachePluginOrdering  `json:"ordering,omitempty"`
+	Partials     []AiSemanticCachePluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -1257,6 +1285,13 @@ func (o *AiSemanticCachePlugin) GetOrdering() *AiSemanticCachePluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *AiSemanticCachePlugin) GetPartials() []AiSemanticCachePluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *AiSemanticCachePlugin) GetTags() []string {

@@ -49,6 +49,33 @@ func (o *DegraphqlPluginOrdering) GetBefore() *DegraphqlPluginBefore {
 	return o.Before
 }
 
+type DegraphqlPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *DegraphqlPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *DegraphqlPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *DegraphqlPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type DegraphqlPluginConfig struct {
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
 	GraphqlServerPath *string `json:"graphql_server_path,omitempty"`
@@ -122,11 +149,12 @@ type DegraphqlPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                    `json:"enabled,omitempty"`
-	ID           *string                  `json:"id,omitempty"`
-	InstanceName *string                  `json:"instance_name,omitempty"`
-	name         string                   `const:"degraphql" json:"name"`
-	Ordering     *DegraphqlPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                     `json:"enabled,omitempty"`
+	ID           *string                   `json:"id,omitempty"`
+	InstanceName *string                   `json:"instance_name,omitempty"`
+	name         string                    `const:"degraphql" json:"name"`
+	Ordering     *DegraphqlPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []DegraphqlPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -188,6 +216,13 @@ func (o *DegraphqlPlugin) GetOrdering() *DegraphqlPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *DegraphqlPlugin) GetPartials() []DegraphqlPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *DegraphqlPlugin) GetTags() []string {

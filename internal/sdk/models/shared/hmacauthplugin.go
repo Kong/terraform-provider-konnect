@@ -49,6 +49,33 @@ func (o *HmacAuthPluginOrdering) GetBefore() *HmacAuthPluginBefore {
 	return o.Before
 }
 
+type HmacAuthPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *HmacAuthPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *HmacAuthPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *HmacAuthPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type Algorithms string
 
 const (
@@ -214,11 +241,12 @@ type HmacAuthPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                   `json:"enabled,omitempty"`
-	ID           *string                 `json:"id,omitempty"`
-	InstanceName *string                 `json:"instance_name,omitempty"`
-	name         string                  `const:"hmac-auth" json:"name"`
-	Ordering     *HmacAuthPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                    `json:"enabled,omitempty"`
+	ID           *string                  `json:"id,omitempty"`
+	InstanceName *string                  `json:"instance_name,omitempty"`
+	name         string                   `const:"hmac-auth" json:"name"`
+	Ordering     *HmacAuthPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []HmacAuthPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -280,6 +308,13 @@ func (o *HmacAuthPlugin) GetOrdering() *HmacAuthPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *HmacAuthPlugin) GetPartials() []HmacAuthPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *HmacAuthPlugin) GetTags() []string {

@@ -49,6 +49,33 @@ func (o *DatadogTracingPluginOrdering) GetBefore() *DatadogTracingPluginBefore {
 	return o.Before
 }
 
+type DatadogTracingPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *DatadogTracingPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *DatadogTracingPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *DatadogTracingPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type DatadogTracingPluginConfig struct {
 	BatchFlushDelay *int64  `json:"batch_flush_delay,omitempty"`
 	BatchSpanCount  *int64  `json:"batch_span_count,omitempty"`
@@ -189,11 +216,12 @@ type DatadogTracingPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                         `json:"enabled,omitempty"`
-	ID           *string                       `json:"id,omitempty"`
-	InstanceName *string                       `json:"instance_name,omitempty"`
-	name         string                        `const:"datadog-tracing" json:"name"`
-	Ordering     *DatadogTracingPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                          `json:"enabled,omitempty"`
+	ID           *string                        `json:"id,omitempty"`
+	InstanceName *string                        `json:"instance_name,omitempty"`
+	name         string                         `const:"datadog-tracing" json:"name"`
+	Ordering     *DatadogTracingPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []DatadogTracingPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -257,6 +285,13 @@ func (o *DatadogTracingPlugin) GetOrdering() *DatadogTracingPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *DatadogTracingPlugin) GetPartials() []DatadogTracingPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *DatadogTracingPlugin) GetTags() []string {

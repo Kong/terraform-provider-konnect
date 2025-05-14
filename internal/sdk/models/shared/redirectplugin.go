@@ -49,6 +49,33 @@ func (o *RedirectPluginOrdering) GetBefore() *RedirectPluginBefore {
 	return o.Before
 }
 
+type RedirectPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *RedirectPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *RedirectPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *RedirectPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type RedirectPluginConfig struct {
 	// Use the incoming request's path and query string in the redirect URL
 	KeepIncomingPath *bool `json:"keep_incoming_path,omitempty"`
@@ -164,11 +191,12 @@ type RedirectPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                   `json:"enabled,omitempty"`
-	ID           *string                 `json:"id,omitempty"`
-	InstanceName *string                 `json:"instance_name,omitempty"`
-	name         string                  `const:"redirect" json:"name"`
-	Ordering     *RedirectPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                    `json:"enabled,omitempty"`
+	ID           *string                  `json:"id,omitempty"`
+	InstanceName *string                  `json:"instance_name,omitempty"`
+	name         string                   `const:"redirect" json:"name"`
+	Ordering     *RedirectPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []RedirectPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -234,6 +262,13 @@ func (o *RedirectPlugin) GetOrdering() *RedirectPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *RedirectPlugin) GetPartials() []RedirectPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *RedirectPlugin) GetTags() []string {

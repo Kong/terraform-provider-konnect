@@ -65,6 +65,35 @@ func (r *GatewayPluginDatadogTracingResourceModel) ToSharedDatadogTracingPlugin(
 			Before: before,
 		}
 	}
+	var partials []shared.DatadogTracingPluginPartials
+	if r.Partials != nil {
+		partials = make([]shared.DatadogTracingPluginPartials, 0, len(r.Partials))
+		for _, partialsItem := range r.Partials {
+			id1 := new(string)
+			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
+				*id1 = partialsItem.ID.ValueString()
+			} else {
+				id1 = nil
+			}
+			name := new(string)
+			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
+				*name = partialsItem.Name.ValueString()
+			} else {
+				name = nil
+			}
+			path := new(string)
+			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
+				*path = partialsItem.Path.ValueString()
+			} else {
+				path = nil
+			}
+			partials = append(partials, shared.DatadogTracingPluginPartials{
+				ID:   id1,
+				Name: name,
+				Path: path,
+			})
+		}
+	}
 	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
@@ -138,14 +167,14 @@ func (r *GatewayPluginDatadogTracingResourceModel) ToSharedDatadogTracingPlugin(
 	}
 	var consumerGroup *shared.DatadogTracingPluginConsumerGroup
 	if r.ConsumerGroup != nil {
-		id1 := new(string)
+		id2 := new(string)
 		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
+			*id2 = r.ConsumerGroup.ID.ValueString()
 		} else {
-			id1 = nil
+			id2 = nil
 		}
 		consumerGroup = &shared.DatadogTracingPluginConsumerGroup{
-			ID: id1,
+			ID: id2,
 		}
 	}
 	protocols := make([]shared.DatadogTracingPluginProtocols, 0, len(r.Protocols))
@@ -154,26 +183,26 @@ func (r *GatewayPluginDatadogTracingResourceModel) ToSharedDatadogTracingPlugin(
 	}
 	var route *shared.DatadogTracingPluginRoute
 	if r.Route != nil {
-		id2 := new(string)
+		id3 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id2 = r.Route.ID.ValueString()
+			*id3 = r.Route.ID.ValueString()
 		} else {
-			id2 = nil
+			id3 = nil
 		}
 		route = &shared.DatadogTracingPluginRoute{
-			ID: id2,
+			ID: id3,
 		}
 	}
 	var service *shared.DatadogTracingPluginService
 	if r.Service != nil {
-		id3 := new(string)
+		id4 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id3 = r.Service.ID.ValueString()
+			*id4 = r.Service.ID.ValueString()
 		} else {
-			id3 = nil
+			id4 = nil
 		}
 		service = &shared.DatadogTracingPluginService{
-			ID: id3,
+			ID: id4,
 		}
 	}
 	out := shared.DatadogTracingPlugin{
@@ -182,6 +211,7 @@ func (r *GatewayPluginDatadogTracingResourceModel) ToSharedDatadogTracingPlugin(
 		ID:            id,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
+		Partials:      partials,
 		Tags:          tags,
 		UpdatedAt:     updatedAt,
 		Config:        config,
@@ -321,6 +351,25 @@ func (r *GatewayPluginDatadogTracingResourceModel) RefreshFromSharedDatadogTraci
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
+		if resp.Partials != nil {
+			r.Partials = []tfTypes.Partials{}
+			if len(r.Partials) > len(resp.Partials) {
+				r.Partials = r.Partials[:len(resp.Partials)]
+			}
+			for partialsCount, partialsItem := range resp.Partials {
+				var partials tfTypes.Partials
+				partials.ID = types.StringPointerValue(partialsItem.ID)
+				partials.Name = types.StringPointerValue(partialsItem.Name)
+				partials.Path = types.StringPointerValue(partialsItem.Path)
+				if partialsCount+1 > len(r.Partials) {
+					r.Partials = append(r.Partials, partials)
+				} else {
+					r.Partials[partialsCount].ID = partials.ID
+					r.Partials[partialsCount].Name = partials.Name
+					r.Partials[partialsCount].Path = partials.Path
 				}
 			}
 		}

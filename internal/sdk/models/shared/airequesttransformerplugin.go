@@ -49,6 +49,33 @@ func (o *AiRequestTransformerPluginOrdering) GetBefore() *AiRequestTransformerPl
 	return o.Before
 }
 
+type AiRequestTransformerPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *AiRequestTransformerPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *AiRequestTransformerPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *AiRequestTransformerPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // AiRequestTransformerPluginParamLocation - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
 type AiRequestTransformerPluginParamLocation string
 
@@ -836,11 +863,12 @@ type AiRequestTransformerPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                               `json:"enabled,omitempty"`
-	ID           *string                             `json:"id,omitempty"`
-	InstanceName *string                             `json:"instance_name,omitempty"`
-	name         string                              `const:"ai-request-transformer" json:"name"`
-	Ordering     *AiRequestTransformerPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                                `json:"enabled,omitempty"`
+	ID           *string                              `json:"id,omitempty"`
+	InstanceName *string                              `json:"instance_name,omitempty"`
+	name         string                               `const:"ai-request-transformer" json:"name"`
+	Ordering     *AiRequestTransformerPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []AiRequestTransformerPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -904,6 +932,13 @@ func (o *AiRequestTransformerPlugin) GetOrdering() *AiRequestTransformerPluginOr
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *AiRequestTransformerPlugin) GetPartials() []AiRequestTransformerPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *AiRequestTransformerPlugin) GetTags() []string {

@@ -49,6 +49,33 @@ func (o *RouteByHeaderPluginOrdering) GetBefore() *RouteByHeaderPluginBefore {
 	return o.Before
 }
 
+type RouteByHeaderPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *RouteByHeaderPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *RouteByHeaderPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *RouteByHeaderPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type RouteByHeaderPluginRules struct {
 	Condition    map[string]any `json:"condition"`
 	UpstreamName string         `json:"upstream_name"`
@@ -153,11 +180,12 @@ type RouteByHeaderPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                        `json:"enabled,omitempty"`
-	ID           *string                      `json:"id,omitempty"`
-	InstanceName *string                      `json:"instance_name,omitempty"`
-	name         string                       `const:"route-by-header" json:"name"`
-	Ordering     *RouteByHeaderPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                         `json:"enabled,omitempty"`
+	ID           *string                       `json:"id,omitempty"`
+	InstanceName *string                       `json:"instance_name,omitempty"`
+	name         string                        `const:"route-by-header" json:"name"`
+	Ordering     *RouteByHeaderPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []RouteByHeaderPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -221,6 +249,13 @@ func (o *RouteByHeaderPlugin) GetOrdering() *RouteByHeaderPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *RouteByHeaderPlugin) GetPartials() []RouteByHeaderPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *RouteByHeaderPlugin) GetTags() []string {

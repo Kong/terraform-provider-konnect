@@ -49,6 +49,33 @@ func (o *TLSMetadataHeadersPluginOrdering) GetBefore() *TLSMetadataHeadersPlugin
 	return o.Before
 }
 
+type TLSMetadataHeadersPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *TLSMetadataHeadersPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *TLSMetadataHeadersPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *TLSMetadataHeadersPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type TLSMetadataHeadersPluginConfig struct {
 	// Define the HTTP header name used for the SHA1 fingerprint of the client certificate.
 	ClientCertFingerprintHeaderName *string `json:"client_cert_fingerprint_header_name,omitempty"`
@@ -164,11 +191,12 @@ type TLSMetadataHeadersPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                             `json:"enabled,omitempty"`
-	ID           *string                           `json:"id,omitempty"`
-	InstanceName *string                           `json:"instance_name,omitempty"`
-	name         string                            `const:"tls-metadata-headers" json:"name"`
-	Ordering     *TLSMetadataHeadersPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                              `json:"enabled,omitempty"`
+	ID           *string                            `json:"id,omitempty"`
+	InstanceName *string                            `json:"instance_name,omitempty"`
+	name         string                             `const:"tls-metadata-headers" json:"name"`
+	Ordering     *TLSMetadataHeadersPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []TLSMetadataHeadersPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -230,6 +258,13 @@ func (o *TLSMetadataHeadersPlugin) GetOrdering() *TLSMetadataHeadersPluginOrderi
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *TLSMetadataHeadersPlugin) GetPartials() []TLSMetadataHeadersPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *TLSMetadataHeadersPlugin) GetTags() []string {

@@ -20,6 +20,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 )
 
@@ -46,6 +47,7 @@ type GatewayPluginWebsocketValidatorResourceModel struct {
 	ID             types.String                            `tfsdk:"id"`
 	InstanceName   types.String                            `tfsdk:"instance_name"`
 	Ordering       *tfTypes.ACLPluginOrdering              `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials                      `tfsdk:"partials"`
 	Protocols      []types.String                          `tfsdk:"protocols"`
 	Route          *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"route"`
 	Service        *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"service"`
@@ -234,6 +236,29 @@ func (r *GatewayPluginWebsocketValidatorResource) Schema(ctx context.Context, re
 								Optional:    true,
 								ElementType: types.StringType,
 							},
+						},
+					},
+				},
+			},
+			"partials": schema.ListNestedAttribute{
+				Computed: true,
+				Optional: true,
+				NestedObject: schema.NestedAttributeObject{
+					Validators: []validator.Object{
+						speakeasy_objectvalidators.NotNull(),
+					},
+					Attributes: map[string]schema.Attribute{
+						"id": schema.StringAttribute{
+							Computed: true,
+							Optional: true,
+						},
+						"name": schema.StringAttribute{
+							Computed: true,
+							Optional: true,
+						},
+						"path": schema.StringAttribute{
+							Computed: true,
+							Optional: true,
 						},
 					},
 				},

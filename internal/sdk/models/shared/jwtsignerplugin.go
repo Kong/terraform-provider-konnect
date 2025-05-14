@@ -49,6 +49,33 @@ func (o *JwtSignerPluginOrdering) GetBefore() *JwtSignerPluginBefore {
 	return o.Before
 }
 
+type JwtSignerPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *JwtSignerPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *JwtSignerPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *JwtSignerPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type AccessTokenConsumerBy string
 
 const (
@@ -1179,11 +1206,12 @@ type JwtSignerPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                    `json:"enabled,omitempty"`
-	ID           *string                  `json:"id,omitempty"`
-	InstanceName *string                  `json:"instance_name,omitempty"`
-	name         string                   `const:"jwt-signer" json:"name"`
-	Ordering     *JwtSignerPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                     `json:"enabled,omitempty"`
+	ID           *string                   `json:"id,omitempty"`
+	InstanceName *string                   `json:"instance_name,omitempty"`
+	name         string                    `const:"jwt-signer" json:"name"`
+	Ordering     *JwtSignerPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []JwtSignerPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -1245,6 +1273,13 @@ func (o *JwtSignerPlugin) GetOrdering() *JwtSignerPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *JwtSignerPlugin) GetPartials() []JwtSignerPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *JwtSignerPlugin) GetTags() []string {

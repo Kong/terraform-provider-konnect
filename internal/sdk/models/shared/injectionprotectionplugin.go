@@ -49,6 +49,33 @@ func (o *InjectionProtectionPluginOrdering) GetBefore() *InjectionProtectionPlug
 	return o.Before
 }
 
+type InjectionProtectionPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *InjectionProtectionPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *InjectionProtectionPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *InjectionProtectionPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type CustomInjections struct {
 	// A unique name for this injection.
 	Name string `json:"name"`
@@ -282,11 +309,12 @@ type InjectionProtectionPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                              `json:"enabled,omitempty"`
-	ID           *string                            `json:"id,omitempty"`
-	InstanceName *string                            `json:"instance_name,omitempty"`
-	name         string                             `const:"injection-protection" json:"name"`
-	Ordering     *InjectionProtectionPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                               `json:"enabled,omitempty"`
+	ID           *string                             `json:"id,omitempty"`
+	InstanceName *string                             `json:"instance_name,omitempty"`
+	name         string                              `const:"injection-protection" json:"name"`
+	Ordering     *InjectionProtectionPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []InjectionProtectionPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -348,6 +376,13 @@ func (o *InjectionProtectionPlugin) GetOrdering() *InjectionProtectionPluginOrde
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *InjectionProtectionPlugin) GetPartials() []InjectionProtectionPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *InjectionProtectionPlugin) GetTags() []string {

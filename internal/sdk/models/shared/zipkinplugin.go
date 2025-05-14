@@ -49,6 +49,33 @@ func (o *ZipkinPluginOrdering) GetBefore() *ZipkinPluginBefore {
 	return o.Before
 }
 
+type ZipkinPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *ZipkinPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *ZipkinPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *ZipkinPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // DefaultHeaderType - Allows specifying the type of header to be added to requests with no pre-existing tracing headers and when `config.header_type` is set to `"preserve"`. When `header_type` is set to any other value, `default_header_type` is ignored.
 type DefaultHeaderType string
 
@@ -788,11 +815,12 @@ type ZipkinPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                 `json:"enabled,omitempty"`
-	ID           *string               `json:"id,omitempty"`
-	InstanceName *string               `json:"instance_name,omitempty"`
-	name         string                `const:"zipkin" json:"name"`
-	Ordering     *ZipkinPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                  `json:"enabled,omitempty"`
+	ID           *string                `json:"id,omitempty"`
+	InstanceName *string                `json:"instance_name,omitempty"`
+	name         string                 `const:"zipkin" json:"name"`
+	Ordering     *ZipkinPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []ZipkinPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -856,6 +884,13 @@ func (o *ZipkinPlugin) GetOrdering() *ZipkinPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *ZipkinPlugin) GetPartials() []ZipkinPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *ZipkinPlugin) GetTags() []string {

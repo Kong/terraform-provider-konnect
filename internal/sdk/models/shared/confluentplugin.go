@@ -49,6 +49,33 @@ func (o *ConfluentPluginOrdering) GetBefore() *ConfluentPluginBefore {
 	return o.Before
 }
 
+type ConfluentPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *ConfluentPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *ConfluentPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *ConfluentPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type BootstrapServers struct {
 	// A string representing a host name, such as example.com.
 	Host string `json:"host"`
@@ -409,11 +436,12 @@ type ConfluentPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                    `json:"enabled,omitempty"`
-	ID           *string                  `json:"id,omitempty"`
-	InstanceName *string                  `json:"instance_name,omitempty"`
-	name         string                   `const:"confluent" json:"name"`
-	Ordering     *ConfluentPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                     `json:"enabled,omitempty"`
+	ID           *string                   `json:"id,omitempty"`
+	InstanceName *string                   `json:"instance_name,omitempty"`
+	name         string                    `const:"confluent" json:"name"`
+	Ordering     *ConfluentPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []ConfluentPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -477,6 +505,13 @@ func (o *ConfluentPlugin) GetOrdering() *ConfluentPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *ConfluentPlugin) GetPartials() []ConfluentPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *ConfluentPlugin) GetTags() []string {

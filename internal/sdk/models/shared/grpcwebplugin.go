@@ -49,6 +49,33 @@ func (o *GrpcWebPluginOrdering) GetBefore() *GrpcWebPluginBefore {
 	return o.Before
 }
 
+type GrpcWebPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *GrpcWebPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *GrpcWebPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *GrpcWebPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type GrpcWebPluginConfig struct {
 	// The value of the `Access-Control-Allow-Origin` header in the response to the gRPC-Web client.
 	AllowOriginHeader *string `json:"allow_origin_header,omitempty"`
@@ -171,11 +198,12 @@ type GrpcWebPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                  `json:"enabled,omitempty"`
-	ID           *string                `json:"id,omitempty"`
-	InstanceName *string                `json:"instance_name,omitempty"`
-	name         string                 `const:"grpc-web" json:"name"`
-	Ordering     *GrpcWebPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                   `json:"enabled,omitempty"`
+	ID           *string                 `json:"id,omitempty"`
+	InstanceName *string                 `json:"instance_name,omitempty"`
+	name         string                  `const:"grpc-web" json:"name"`
+	Ordering     *GrpcWebPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []GrpcWebPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -239,6 +267,13 @@ func (o *GrpcWebPlugin) GetOrdering() *GrpcWebPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *GrpcWebPlugin) GetPartials() []GrpcWebPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *GrpcWebPlugin) GetTags() []string {

@@ -37,6 +37,7 @@ type GatewayPluginRequestTerminationDataSourceModel struct {
 	ID             types.String                            `tfsdk:"id"`
 	InstanceName   types.String                            `tfsdk:"instance_name"`
 	Ordering       *tfTypes.ACLPluginOrdering              `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials                      `tfsdk:"partials"`
 	Protocols      []types.String                          `tfsdk:"protocols"`
 	Route          *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"route"`
 	Service        *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"service"`
@@ -139,6 +140,22 @@ func (r *GatewayPluginRequestTerminationDataSource) Schema(ctx context.Context, 
 								Computed:    true,
 								ElementType: types.StringType,
 							},
+						},
+					},
+				},
+			},
+			"partials": schema.ListNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"id": schema.StringAttribute{
+							Computed: true,
+						},
+						"name": schema.StringAttribute{
+							Computed: true,
+						},
+						"path": schema.StringAttribute{
+							Computed: true,
 						},
 					},
 				},

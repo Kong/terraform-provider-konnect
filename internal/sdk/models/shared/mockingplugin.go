@@ -49,6 +49,33 @@ func (o *MockingPluginOrdering) GetBefore() *MockingPluginBefore {
 	return o.Before
 }
 
+type MockingPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *MockingPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *MockingPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *MockingPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type MockingPluginConfig struct {
 	// The contents of the specification file. You must use this option for hybrid or DB-less mode. You can include the full specification as part of the configuration. In Kong Manager, you can copy and paste the contents of the spec directly into the `Config.Api Specification` text field.
 	APISpecification *string `json:"api_specification,omitempty"`
@@ -215,11 +242,12 @@ type MockingPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                  `json:"enabled,omitempty"`
-	ID           *string                `json:"id,omitempty"`
-	InstanceName *string                `json:"instance_name,omitempty"`
-	name         string                 `const:"mocking" json:"name"`
-	Ordering     *MockingPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                   `json:"enabled,omitempty"`
+	ID           *string                 `json:"id,omitempty"`
+	InstanceName *string                 `json:"instance_name,omitempty"`
+	name         string                  `const:"mocking" json:"name"`
+	Ordering     *MockingPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []MockingPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -283,6 +311,13 @@ func (o *MockingPlugin) GetOrdering() *MockingPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *MockingPlugin) GetPartials() []MockingPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *MockingPlugin) GetTags() []string {

@@ -49,6 +49,33 @@ func (o *ServiceProtectionPluginOrdering) GetBefore() *ServiceProtectionPluginBe
 	return o.Before
 }
 
+type ServiceProtectionPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *ServiceProtectionPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *ServiceProtectionPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *ServiceProtectionPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type ServiceProtectionPluginClusterNodes struct {
 	// A string representing a host name, such as example.com.
 	IP *string `json:"ip,omitempty"`
@@ -547,11 +574,12 @@ type ServiceProtectionPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                            `json:"enabled,omitempty"`
-	ID           *string                          `json:"id,omitempty"`
-	InstanceName *string                          `json:"instance_name,omitempty"`
-	name         string                           `const:"service-protection" json:"name"`
-	Ordering     *ServiceProtectionPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                             `json:"enabled,omitempty"`
+	ID           *string                           `json:"id,omitempty"`
+	InstanceName *string                           `json:"instance_name,omitempty"`
+	name         string                            `const:"service-protection" json:"name"`
+	Ordering     *ServiceProtectionPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []ServiceProtectionPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -611,6 +639,13 @@ func (o *ServiceProtectionPlugin) GetOrdering() *ServiceProtectionPluginOrdering
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *ServiceProtectionPlugin) GetPartials() []ServiceProtectionPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *ServiceProtectionPlugin) GetTags() []string {

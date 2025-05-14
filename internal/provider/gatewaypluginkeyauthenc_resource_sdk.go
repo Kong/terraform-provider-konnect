@@ -65,6 +65,35 @@ func (r *GatewayPluginKeyAuthEncResourceModel) ToSharedKeyAuthEncPlugin(ctx cont
 			Before: before,
 		}
 	}
+	var partials []shared.KeyAuthEncPluginPartials
+	if r.Partials != nil {
+		partials = make([]shared.KeyAuthEncPluginPartials, 0, len(r.Partials))
+		for _, partialsItem := range r.Partials {
+			id1 := new(string)
+			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
+				*id1 = partialsItem.ID.ValueString()
+			} else {
+				id1 = nil
+			}
+			name := new(string)
+			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
+				*name = partialsItem.Name.ValueString()
+			} else {
+				name = nil
+			}
+			path := new(string)
+			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
+				*path = partialsItem.Path.ValueString()
+			} else {
+				path = nil
+			}
+			partials = append(partials, shared.KeyAuthEncPluginPartials{
+				ID:   id1,
+				Name: name,
+				Path: path,
+			})
+		}
+	}
 	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
@@ -140,26 +169,26 @@ func (r *GatewayPluginKeyAuthEncResourceModel) ToSharedKeyAuthEncPlugin(ctx cont
 	}
 	var route *shared.KeyAuthEncPluginRoute
 	if r.Route != nil {
-		id1 := new(string)
+		id2 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id1 = r.Route.ID.ValueString()
+			*id2 = r.Route.ID.ValueString()
 		} else {
-			id1 = nil
+			id2 = nil
 		}
 		route = &shared.KeyAuthEncPluginRoute{
-			ID: id1,
+			ID: id2,
 		}
 	}
 	var service *shared.KeyAuthEncPluginService
 	if r.Service != nil {
-		id2 := new(string)
+		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id2 = r.Service.ID.ValueString()
+			*id3 = r.Service.ID.ValueString()
 		} else {
-			id2 = nil
+			id3 = nil
 		}
 		service = &shared.KeyAuthEncPluginService{
-			ID: id2,
+			ID: id3,
 		}
 	}
 	out := shared.KeyAuthEncPlugin{
@@ -168,6 +197,7 @@ func (r *GatewayPluginKeyAuthEncResourceModel) ToSharedKeyAuthEncPlugin(ctx cont
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
+		Partials:     partials,
 		Tags:         tags,
 		UpdatedAt:    updatedAt,
 		Config:       config,
@@ -303,6 +333,25 @@ func (r *GatewayPluginKeyAuthEncResourceModel) RefreshFromSharedKeyAuthEncPlugin
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
+		if resp.Partials != nil {
+			r.Partials = []tfTypes.Partials{}
+			if len(r.Partials) > len(resp.Partials) {
+				r.Partials = r.Partials[:len(resp.Partials)]
+			}
+			for partialsCount, partialsItem := range resp.Partials {
+				var partials tfTypes.Partials
+				partials.ID = types.StringPointerValue(partialsItem.ID)
+				partials.Name = types.StringPointerValue(partialsItem.Name)
+				partials.Path = types.StringPointerValue(partialsItem.Path)
+				if partialsCount+1 > len(r.Partials) {
+					r.Partials = append(r.Partials, partials)
+				} else {
+					r.Partials[partialsCount].ID = partials.ID
+					r.Partials[partialsCount].Name = partials.Name
+					r.Partials[partialsCount].Path = partials.Path
 				}
 			}
 		}

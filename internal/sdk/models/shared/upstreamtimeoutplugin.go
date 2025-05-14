@@ -49,6 +49,33 @@ func (o *UpstreamTimeoutPluginOrdering) GetBefore() *UpstreamTimeoutPluginBefore
 	return o.Before
 }
 
+type UpstreamTimeoutPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *UpstreamTimeoutPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *UpstreamTimeoutPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *UpstreamTimeoutPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type UpstreamTimeoutPluginConfig struct {
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
@@ -152,11 +179,12 @@ type UpstreamTimeoutPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                          `json:"enabled,omitempty"`
-	ID           *string                        `json:"id,omitempty"`
-	InstanceName *string                        `json:"instance_name,omitempty"`
-	name         string                         `const:"upstream-timeout" json:"name"`
-	Ordering     *UpstreamTimeoutPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                           `json:"enabled,omitempty"`
+	ID           *string                         `json:"id,omitempty"`
+	InstanceName *string                         `json:"instance_name,omitempty"`
+	name         string                          `const:"upstream-timeout" json:"name"`
+	Ordering     *UpstreamTimeoutPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []UpstreamTimeoutPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -220,6 +248,13 @@ func (o *UpstreamTimeoutPlugin) GetOrdering() *UpstreamTimeoutPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *UpstreamTimeoutPlugin) GetPartials() []UpstreamTimeoutPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *UpstreamTimeoutPlugin) GetTags() []string {

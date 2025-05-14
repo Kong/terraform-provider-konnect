@@ -49,6 +49,33 @@ func (o *ForwardProxyPluginOrdering) GetBefore() *ForwardProxyPluginBefore {
 	return o.Before
 }
 
+type ForwardProxyPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *ForwardProxyPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *ForwardProxyPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *ForwardProxyPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // ProxyScheme - The proxy scheme to use when connecting. Only `http` is supported.
 type ProxyScheme string
 
@@ -262,11 +289,12 @@ type ForwardProxyPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                       `json:"enabled,omitempty"`
-	ID           *string                     `json:"id,omitempty"`
-	InstanceName *string                     `json:"instance_name,omitempty"`
-	name         string                      `const:"forward-proxy" json:"name"`
-	Ordering     *ForwardProxyPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                        `json:"enabled,omitempty"`
+	ID           *string                      `json:"id,omitempty"`
+	InstanceName *string                      `json:"instance_name,omitempty"`
+	name         string                       `const:"forward-proxy" json:"name"`
+	Ordering     *ForwardProxyPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []ForwardProxyPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -330,6 +358,13 @@ func (o *ForwardProxyPlugin) GetOrdering() *ForwardProxyPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *ForwardProxyPlugin) GetPartials() []ForwardProxyPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *ForwardProxyPlugin) GetTags() []string {

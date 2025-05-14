@@ -49,6 +49,33 @@ func (o *AiPromptTemplatePluginOrdering) GetBefore() *AiPromptTemplatePluginBefo
 	return o.Before
 }
 
+type AiPromptTemplatePluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *AiPromptTemplatePluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *AiPromptTemplatePluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *AiPromptTemplatePluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type Templates struct {
 	// Unique name for the template, can be called with `{template://NAME}`
 	Name string `json:"name"`
@@ -194,11 +221,12 @@ type AiPromptTemplatePlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                           `json:"enabled,omitempty"`
-	ID           *string                         `json:"id,omitempty"`
-	InstanceName *string                         `json:"instance_name,omitempty"`
-	name         string                          `const:"ai-prompt-template" json:"name"`
-	Ordering     *AiPromptTemplatePluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                            `json:"enabled,omitempty"`
+	ID           *string                          `json:"id,omitempty"`
+	InstanceName *string                          `json:"instance_name,omitempty"`
+	name         string                           `const:"ai-prompt-template" json:"name"`
+	Ordering     *AiPromptTemplatePluginOrdering  `json:"ordering,omitempty"`
+	Partials     []AiPromptTemplatePluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -264,6 +292,13 @@ func (o *AiPromptTemplatePlugin) GetOrdering() *AiPromptTemplatePluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *AiPromptTemplatePlugin) GetPartials() []AiPromptTemplatePluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *AiPromptTemplatePlugin) GetTags() []string {

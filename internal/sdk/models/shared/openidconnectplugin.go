@@ -49,6 +49,33 @@ func (o *OpenidConnectPluginOrdering) GetBefore() *OpenidConnectPluginBefore {
 	return o.Before
 }
 
+type OpenidConnectPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *OpenidConnectPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *OpenidConnectPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OpenidConnectPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type AuthMethods string
 
 const (
@@ -3998,11 +4025,12 @@ type OpenidConnectPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                        `json:"enabled,omitempty"`
-	ID           *string                      `json:"id,omitempty"`
-	InstanceName *string                      `json:"instance_name,omitempty"`
-	name         string                       `const:"openid-connect" json:"name"`
-	Ordering     *OpenidConnectPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                         `json:"enabled,omitempty"`
+	ID           *string                       `json:"id,omitempty"`
+	InstanceName *string                       `json:"instance_name,omitempty"`
+	name         string                        `const:"openid-connect" json:"name"`
+	Ordering     *OpenidConnectPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []OpenidConnectPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -4064,6 +4092,13 @@ func (o *OpenidConnectPlugin) GetOrdering() *OpenidConnectPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *OpenidConnectPlugin) GetPartials() []OpenidConnectPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *OpenidConnectPlugin) GetTags() []string {

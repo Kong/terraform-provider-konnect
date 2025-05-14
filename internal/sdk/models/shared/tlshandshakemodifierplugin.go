@@ -49,6 +49,33 @@ func (o *TLSHandshakeModifierPluginOrdering) GetBefore() *TLSHandshakeModifierPl
 	return o.Before
 }
 
+type TLSHandshakeModifierPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *TLSHandshakeModifierPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *TLSHandshakeModifierPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *TLSHandshakeModifierPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // TLSClientCertificate - TLS Client Certificate
 type TLSClientCertificate string
 
@@ -143,11 +170,12 @@ type TLSHandshakeModifierPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                               `json:"enabled,omitempty"`
-	ID           *string                             `json:"id,omitempty"`
-	InstanceName *string                             `json:"instance_name,omitempty"`
-	name         string                              `const:"tls-handshake-modifier" json:"name"`
-	Ordering     *TLSHandshakeModifierPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                                `json:"enabled,omitempty"`
+	ID           *string                              `json:"id,omitempty"`
+	InstanceName *string                              `json:"instance_name,omitempty"`
+	name         string                               `const:"tls-handshake-modifier" json:"name"`
+	Ordering     *TLSHandshakeModifierPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []TLSHandshakeModifierPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -209,6 +237,13 @@ func (o *TLSHandshakeModifierPlugin) GetOrdering() *TLSHandshakeModifierPluginOr
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *TLSHandshakeModifierPlugin) GetPartials() []TLSHandshakeModifierPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *TLSHandshakeModifierPlugin) GetTags() []string {

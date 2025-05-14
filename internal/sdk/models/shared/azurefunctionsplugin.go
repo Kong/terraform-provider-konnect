@@ -49,6 +49,33 @@ func (o *AzureFunctionsPluginOrdering) GetBefore() *AzureFunctionsPluginBefore {
 	return o.Before
 }
 
+type AzureFunctionsPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *AzureFunctionsPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *AzureFunctionsPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *AzureFunctionsPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type AzureFunctionsPluginConfig struct {
 	// The apikey to access the Azure resources. If provided, it is injected as the `x-functions-key` header.
 	Apikey *string `json:"apikey,omitempty"`
@@ -234,11 +261,12 @@ type AzureFunctionsPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                         `json:"enabled,omitempty"`
-	ID           *string                       `json:"id,omitempty"`
-	InstanceName *string                       `json:"instance_name,omitempty"`
-	name         string                        `const:"azure-functions" json:"name"`
-	Ordering     *AzureFunctionsPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                          `json:"enabled,omitempty"`
+	ID           *string                        `json:"id,omitempty"`
+	InstanceName *string                        `json:"instance_name,omitempty"`
+	name         string                         `const:"azure-functions" json:"name"`
+	Ordering     *AzureFunctionsPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []AzureFunctionsPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -302,6 +330,13 @@ func (o *AzureFunctionsPlugin) GetOrdering() *AzureFunctionsPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *AzureFunctionsPlugin) GetPartials() []AzureFunctionsPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *AzureFunctionsPlugin) GetTags() []string {
