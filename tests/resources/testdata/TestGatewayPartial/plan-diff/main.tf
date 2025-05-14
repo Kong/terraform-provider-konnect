@@ -1,5 +1,10 @@
-resource "konnect_gateway_partial" "my_gatewaypartialce" {
-  control_plane_id = konnect_gateway_control_plane.tfdemo2.id
+resource "konnect_gateway_control_plane" "tfdemo" {
+  name         = "Terraform Control Plane For Partial"
+  description  = "This is a sample description"
+  cluster_type = "CLUSTER_TYPE_CONTROL_PLANE"
+}
+resource "konnect_gateway_partial" "my_gatewaypartial" {
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
   redis_ce = {
     config = {
       database    = 5
@@ -12,7 +17,7 @@ resource "konnect_gateway_partial" "my_gatewaypartialce" {
       timeout     = 1000
       username    = "redisceusername"
     }
-    name       = "redis-ce-partial"
+    name       = "my_tf_redis_ee_partial"
     tags = [
       "redisce"
     ]
