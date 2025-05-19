@@ -10,6 +10,5 @@ type PartialRedisEE struct {
 	ID        types.String         `tfsdk:"id"`
 	Name      types.String         `tfsdk:"name"`
 	Tags      []types.String       `tfsdk:"tags"`
-	Type      types.String         `tfsdk:"type"`
 	UpdatedAt types.Int64          `tfsdk:"updated_at"`
 }

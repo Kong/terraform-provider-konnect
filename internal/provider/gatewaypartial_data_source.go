@@ -121,9 +121,6 @@ func (r *GatewayPartialDataSource) Schema(ctx context.Context, req datasource.Sc
 						Computed:    true,
 						ElementType: types.StringType,
 					},
-					"type": schema.StringAttribute{
-						Computed: true,
-					},
 					"updated_at": schema.Int64Attribute{
 						Computed:    true,
 						Description: `Unix epoch when the resource was last updated.`,
@@ -260,9 +257,6 @@ func (r *GatewayPartialDataSource) Schema(ctx context.Context, req datasource.Sc
 					"tags": schema.ListAttribute{
 						Computed:    true,
 						ElementType: types.StringType,
-					},
-					"type": schema.StringAttribute{
-						Computed: true,
 					},
 					"updated_at": schema.Int64Attribute{
 						Computed:    true,

@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -20,7 +19,6 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
-	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -148,15 +146,6 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
-					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "redis-ce"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("redis-ce"),
-						},
 					},
 					"updated_at": schema.Int64Attribute{
 						Computed:    true,
@@ -340,15 +329,6 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
-					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "redis-ee"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("redis-ee"),
-						},
 					},
 					"updated_at": schema.Int64Attribute{
 						Computed:    true,

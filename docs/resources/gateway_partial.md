@@ -33,7 +33,6 @@ resource "konnect_gateway_partial" "my_gatewaypartial" {
     tags = [
       "..."
     ]
-    type       = "redis-ce"
     updated_at = 2
   }
   redis_ee = {
@@ -76,7 +75,6 @@ resource "konnect_gateway_partial" "my_gatewaypartial" {
     tags = [
       "..."
     ]
-    type       = "redis-ee"
     updated_at = 8
   }
 }
@@ -111,7 +109,6 @@ Optional:
 - `id` (String)
 - `name` (String)
 - `tags` (List of String)
-- `type` (String) Not Null; must be "redis-ce"
 - `updated_at` (Number) Unix epoch when the resource was last updated.
 
 <a id="nestedatt--redis_ce--config"></a>
@@ -141,7 +138,6 @@ Optional:
 - `id` (String)
 - `name` (String)
 - `tags` (List of String)
-- `type` (String) Not Null; must be "redis-ee"
 - `updated_at` (Number) Unix epoch when the resource was last updated.
 
 <a id="nestedatt--redis_ee--config"></a>

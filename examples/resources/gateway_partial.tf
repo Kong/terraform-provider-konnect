@@ -16,6 +16,5 @@ resource "konnect_gateway_partial" "my_gatewaypartialce" {
     tags = [
       "redisce"
     ]
-    type       = "redis-ce"
   }
 }

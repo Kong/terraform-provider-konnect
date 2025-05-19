@@ -53,7 +53,6 @@ func (r *GatewayPartialDataSourceModel) RefreshFromSharedPartial(ctx context.Con
 			for _, v := range resp.PartialRedisCE.Tags {
 				r.RedisCe.Tags = append(r.RedisCe.Tags, types.StringValue(v))
 			}
-			r.RedisCe.Type = types.StringValue(string(resp.PartialRedisCE.Type))
 			r.RedisCe.UpdatedAt = types.Int64PointerValue(resp.PartialRedisCE.UpdatedAt)
 			r.UpdatedAt = r.RedisCe.UpdatedAt
 		}
@@ -118,7 +117,6 @@ func (r *GatewayPartialDataSourceModel) RefreshFromSharedPartial(ctx context.Con
 			for _, v := range resp.PartialRedisEE.Tags {
 				r.RedisEe.Tags = append(r.RedisEe.Tags, types.StringValue(v))
 			}
-			r.RedisEe.Type = types.StringValue(string(resp.PartialRedisEE.Type))
 			r.RedisEe.UpdatedAt = types.Int64PointerValue(resp.PartialRedisEE.UpdatedAt)
 			r.UpdatedAt = r.RedisEe.UpdatedAt
 		}

@@ -244,40 +244,28 @@ func (o *PartialRedisEEConfig) GetUsername() *string {
 	return o.Username
 }
 
-type PartialRedisEEType string
-
-const (
-	PartialRedisEETypeRedisEe PartialRedisEEType = "redis-ee"
-)
-
-func (e PartialRedisEEType) ToPointer() *PartialRedisEEType {
-	return &e
-}
-func (e *PartialRedisEEType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "redis-ee":
-		*e = PartialRedisEEType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PartialRedisEEType: %v", v)
-	}
-}
-
 type PartialRedisEE struct {
 	// Redis-EE configuration
 	Config PartialRedisEEConfig `json:"config"`
 	// Unix epoch when the resource was created.
-	CreatedAt *int64             `json:"created_at,omitempty"`
-	ID        *string            `json:"id,omitempty"`
-	Name      *string            `json:"name,omitempty"`
-	Tags      []string           `json:"tags,omitempty"`
-	Type      PartialRedisEEType `json:"type"`
+	CreatedAt *int64   `json:"created_at,omitempty"`
+	ID        *string  `json:"id,omitempty"`
+	Name      *string  `json:"name,omitempty"`
+	Tags      []string `json:"tags,omitempty"`
+	type_     string   `const:"redis-ee" json:"type"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
+}
+
+func (p PartialRedisEE) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PartialRedisEE) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *PartialRedisEE) GetConfig() PartialRedisEEConfig {
@@ -315,11 +303,8 @@ func (o *PartialRedisEE) GetTags() []string {
 	return o.Tags
 }
 
-func (o *PartialRedisEE) GetType() PartialRedisEEType {
-	if o == nil {
-		return PartialRedisEEType("")
-	}
-	return o.Type
+func (o *PartialRedisEE) GetType() string {
+	return "redis-ee"
 }
 
 func (o *PartialRedisEE) GetUpdatedAt() *int64 {
@@ -414,40 +399,28 @@ func (o *PartialRedisCEConfig) GetUsername() *string {
 	return o.Username
 }
 
-type PartialRedisCEType string
-
-const (
-	PartialRedisCETypeRedisCe PartialRedisCEType = "redis-ce"
-)
-
-func (e PartialRedisCEType) ToPointer() *PartialRedisCEType {
-	return &e
-}
-func (e *PartialRedisCEType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "redis-ce":
-		*e = PartialRedisCEType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PartialRedisCEType: %v", v)
-	}
-}
-
 type PartialRedisCE struct {
 	// Redis-CE configuration
 	Config PartialRedisCEConfig `json:"config"`
 	// Unix epoch when the resource was created.
-	CreatedAt *int64             `json:"created_at,omitempty"`
-	ID        *string            `json:"id,omitempty"`
-	Name      *string            `json:"name,omitempty"`
-	Tags      []string           `json:"tags,omitempty"`
-	Type      PartialRedisCEType `json:"type"`
+	CreatedAt *int64   `json:"created_at,omitempty"`
+	ID        *string  `json:"id,omitempty"`
+	Name      *string  `json:"name,omitempty"`
+	Tags      []string `json:"tags,omitempty"`
+	type_     string   `const:"redis-ce" json:"type"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
+}
+
+func (p PartialRedisCE) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PartialRedisCE) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *PartialRedisCE) GetConfig() PartialRedisCEConfig {
@@ -485,11 +458,8 @@ func (o *PartialRedisCE) GetTags() []string {
 	return o.Tags
 }
 
-func (o *PartialRedisCE) GetType() PartialRedisCEType {
-	if o == nil {
-		return PartialRedisCEType("")
-	}
-	return o.Type
+func (o *PartialRedisCE) GetType() string {
+	return "redis-ce"
 }
 
 func (o *PartialRedisCE) GetUpdatedAt() *int64 {
@@ -516,9 +486,6 @@ type Partial struct {
 func CreatePartialRedisCe(redisCe PartialRedisCE) Partial {
 	typ := PartialTypeRedisCe
 
-	typStr := PartialRedisCEType(typ)
-	redisCe.Type = typStr
-
 	return Partial{
 		PartialRedisCE: &redisCe,
 		Type:           typ,
@@ -527,9 +494,6 @@ func CreatePartialRedisCe(redisCe PartialRedisCE) Partial {
 
 func CreatePartialRedisEe(redisEe PartialRedisEE) Partial {
 	typ := PartialTypeRedisEe
-
-	typStr := PartialRedisEEType(typ)
-	redisEe.Type = typStr
 
 	return Partial{
 		PartialRedisEE: &redisEe,
