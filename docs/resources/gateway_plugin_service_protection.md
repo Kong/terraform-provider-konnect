@@ -83,6 +83,13 @@ resource "konnect_gateway_plugin_service_protection" "my_gatewaypluginservicepro
       ]
     }
   }
+  partials = [
+    {
+      id   = "...my_id..."
+      name = "...my_name..."
+      path = "...my_path..."
+    }
+  ]
   protocols = [
     "http"
   ]
@@ -110,6 +117,7 @@ resource "konnect_gateway_plugin_service_protection" "my_gatewaypluginservicepro
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
+- `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
 - `protocols` (List of String) A set of strings representing HTTP protocols.
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
@@ -209,6 +217,16 @@ Optional:
 
 - `access` (List of String)
 
+
+
+<a id="nestedatt--partials"></a>
+### Nested Schema for `partials`
+
+Optional:
+
+- `id` (String)
+- `name` (String)
+- `path` (String)
 
 
 <a id="nestedatt--service"></a>

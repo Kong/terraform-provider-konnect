@@ -49,6 +49,33 @@ func (o *ResponseRatelimitingPluginOrdering) GetBefore() *ResponseRatelimitingPl
 	return o.Before
 }
 
+type ResponseRatelimitingPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *ResponseRatelimitingPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *ResponseRatelimitingPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *ResponseRatelimitingPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // ResponseRatelimitingPluginLimitBy - The entity that will be used when aggregating the limits: `consumer`, `credential`, `ip`. If the `consumer` or the `credential` cannot be determined, the system will always fallback to `ip`.
 type ResponseRatelimitingPluginLimitBy string
 
@@ -342,11 +369,12 @@ type ResponseRatelimitingPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                               `json:"enabled,omitempty"`
-	ID           *string                             `json:"id,omitempty"`
-	InstanceName *string                             `json:"instance_name,omitempty"`
-	name         string                              `const:"response-ratelimiting" json:"name"`
-	Ordering     *ResponseRatelimitingPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                                `json:"enabled,omitempty"`
+	ID           *string                              `json:"id,omitempty"`
+	InstanceName *string                              `json:"instance_name,omitempty"`
+	name         string                               `const:"response-ratelimiting" json:"name"`
+	Ordering     *ResponseRatelimitingPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []ResponseRatelimitingPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -410,6 +438,13 @@ func (o *ResponseRatelimitingPlugin) GetOrdering() *ResponseRatelimitingPluginOr
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *ResponseRatelimitingPlugin) GetPartials() []ResponseRatelimitingPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *ResponseRatelimitingPlugin) GetTags() []string {

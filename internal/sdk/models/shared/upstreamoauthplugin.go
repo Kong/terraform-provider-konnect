@@ -49,6 +49,33 @@ func (o *UpstreamOauthPluginOrdering) GetBefore() *UpstreamOauthPluginBefore {
 	return o.Before
 }
 
+type UpstreamOauthPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *UpstreamOauthPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *UpstreamOauthPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *UpstreamOauthPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type Behavior struct {
 	// The template to use to create the body of the response to return to the consumer if Kong fails to obtain a token from the IdP.
 	IdpErrorResponseBodyTemplate *string `json:"idp_error_response_body_template,omitempty"`
@@ -857,11 +884,12 @@ type UpstreamOauthPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                        `json:"enabled,omitempty"`
-	ID           *string                      `json:"id,omitempty"`
-	InstanceName *string                      `json:"instance_name,omitempty"`
-	name         string                       `const:"upstream-oauth" json:"name"`
-	Ordering     *UpstreamOauthPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                         `json:"enabled,omitempty"`
+	ID           *string                       `json:"id,omitempty"`
+	InstanceName *string                       `json:"instance_name,omitempty"`
+	name         string                        `const:"upstream-oauth" json:"name"`
+	Ordering     *UpstreamOauthPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []UpstreamOauthPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -927,6 +955,13 @@ func (o *UpstreamOauthPlugin) GetOrdering() *UpstreamOauthPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *UpstreamOauthPlugin) GetPartials() []UpstreamOauthPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *UpstreamOauthPlugin) GetTags() []string {

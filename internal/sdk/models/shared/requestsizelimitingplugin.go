@@ -49,6 +49,33 @@ func (o *RequestSizeLimitingPluginOrdering) GetBefore() *RequestSizeLimitingPlug
 	return o.Before
 }
 
+type RequestSizeLimitingPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *RequestSizeLimitingPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *RequestSizeLimitingPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *RequestSizeLimitingPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // SizeUnit - Size unit can be set either in `bytes`, `kilobytes`, or `megabytes` (default). This configuration is not available in versions prior to Kong Gateway 1.3 and Kong Gateway (OSS) 2.0.
 type SizeUnit string
 
@@ -182,11 +209,12 @@ type RequestSizeLimitingPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                              `json:"enabled,omitempty"`
-	ID           *string                            `json:"id,omitempty"`
-	InstanceName *string                            `json:"instance_name,omitempty"`
-	name         string                             `const:"request-size-limiting" json:"name"`
-	Ordering     *RequestSizeLimitingPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                               `json:"enabled,omitempty"`
+	ID           *string                             `json:"id,omitempty"`
+	InstanceName *string                             `json:"instance_name,omitempty"`
+	name         string                              `const:"request-size-limiting" json:"name"`
+	Ordering     *RequestSizeLimitingPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []RequestSizeLimitingPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -250,6 +278,13 @@ func (o *RequestSizeLimitingPlugin) GetOrdering() *RequestSizeLimitingPluginOrde
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *RequestSizeLimitingPlugin) GetPartials() []RequestSizeLimitingPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *RequestSizeLimitingPlugin) GetTags() []string {

@@ -32,6 +32,7 @@ type KonnectProviderModel struct {
 	KonnectAccessToken       types.String `tfsdk:"konnect_access_token"`
 	PersonalAccessToken      types.String `tfsdk:"personal_access_token"`
 	ServerURL                types.String `tfsdk:"server_url"`
+	ServiceAccessToken       types.String `tfsdk:"service_access_token"`
 	SystemAccountAccessToken types.String `tfsdk:"system_account_access_token"`
 }
 
@@ -54,6 +55,10 @@ func (p *KonnectProvider) Schema(ctx context.Context, req provider.SchemaRequest
 			"server_url": schema.StringAttribute{
 				Description: `Server URL (defaults to https://global.api.konghq.com)`,
 				Optional:    true,
+			},
+			"service_access_token": schema.StringAttribute{
+				Optional:  true,
+				Sensitive: true,
 			},
 			"system_account_access_token": schema.StringAttribute{
 				Optional:  true,
@@ -108,10 +113,17 @@ func (p *KonnectProvider) Configure(ctx context.Context, req provider.ConfigureR
 	} else {
 		konnectAccessToken = nil
 	}
+	serviceAccessToken := new(string)
+	if !data.ServiceAccessToken.IsUnknown() && !data.ServiceAccessToken.IsNull() {
+		*serviceAccessToken = data.ServiceAccessToken.ValueString()
+	} else {
+		serviceAccessToken = nil
+	}
 	security := shared.Security{
 		PersonalAccessToken:      personalAccessToken,
 		SystemAccountAccessToken: systemAccountAccessToken,
 		KonnectAccessToken:       konnectAccessToken,
+		ServiceAccessToken:       serviceAccessToken,
 	}
 
 	providerHTTPTransportOpts := ProviderHTTPTransportOpts{
@@ -166,6 +178,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayKeyAuthResource,
 		NewGatewayKeySetResource,
 		NewGatewayMTLSAuthResource,
+		NewGatewayPartialResource,
 		NewGatewayPluginACLResource,
 		NewGatewayPluginAcmeResource,
 		NewGatewayPluginAiAzureContentSafetyResource,
@@ -320,6 +333,7 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewGatewayKeyAuthDataSource,
 		NewGatewayKeySetDataSource,
 		NewGatewayMTLSAuthDataSource,
+		NewGatewayPartialDataSource,
 		NewGatewayPluginACLDataSource,
 		NewGatewayPluginAcmeDataSource,
 		NewGatewayPluginAiAzureContentSafetyDataSource,

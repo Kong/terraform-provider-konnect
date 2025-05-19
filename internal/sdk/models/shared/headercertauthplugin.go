@@ -49,6 +49,33 @@ func (o *HeaderCertAuthPluginOrdering) GetBefore() *HeaderCertAuthPluginBefore {
 	return o.Before
 }
 
+type HeaderCertAuthPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *HeaderCertAuthPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *HeaderCertAuthPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *HeaderCertAuthPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // AuthenticatedGroupBy - Certificate property to use as the authenticated group. Valid values are `CN` (Common Name) or `DN` (Distinguished Name). Once `skip_consumer_lookup` is applied, any client with a valid certificate can access the Service/API. To restrict usage to only some of the authenticated users, also add the ACL plugin (not covered here) and create allowed or denied groups of users.
 type AuthenticatedGroupBy string
 
@@ -385,11 +412,12 @@ type HeaderCertAuthPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                         `json:"enabled,omitempty"`
-	ID           *string                       `json:"id,omitempty"`
-	InstanceName *string                       `json:"instance_name,omitempty"`
-	name         string                        `const:"header-cert-auth" json:"name"`
-	Ordering     *HeaderCertAuthPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                          `json:"enabled,omitempty"`
+	ID           *string                        `json:"id,omitempty"`
+	InstanceName *string                        `json:"instance_name,omitempty"`
+	name         string                         `const:"header-cert-auth" json:"name"`
+	Ordering     *HeaderCertAuthPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []HeaderCertAuthPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -451,6 +479,13 @@ func (o *HeaderCertAuthPlugin) GetOrdering() *HeaderCertAuthPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *HeaderCertAuthPlugin) GetPartials() []HeaderCertAuthPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *HeaderCertAuthPlugin) GetTags() []string {

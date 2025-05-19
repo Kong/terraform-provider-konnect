@@ -49,6 +49,33 @@ func (o *AiRateLimitingAdvancedPluginOrdering) GetBefore() *AiRateLimitingAdvanc
 	return o.Before
 }
 
+type AiRateLimitingAdvancedPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *AiRateLimitingAdvancedPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *AiRateLimitingAdvancedPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *AiRateLimitingAdvancedPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // Identifier - The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`. Note if `identifier` is `consumer-group`, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate.
 type Identifier string
 
@@ -805,11 +832,12 @@ type AiRateLimitingAdvancedPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                                 `json:"enabled,omitempty"`
-	ID           *string                               `json:"id,omitempty"`
-	InstanceName *string                               `json:"instance_name,omitempty"`
-	name         string                                `const:"ai-rate-limiting-advanced" json:"name"`
-	Ordering     *AiRateLimitingAdvancedPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                                  `json:"enabled,omitempty"`
+	ID           *string                                `json:"id,omitempty"`
+	InstanceName *string                                `json:"instance_name,omitempty"`
+	name         string                                 `const:"ai-rate-limiting-advanced" json:"name"`
+	Ordering     *AiRateLimitingAdvancedPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []AiRateLimitingAdvancedPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -875,6 +903,13 @@ func (o *AiRateLimitingAdvancedPlugin) GetOrdering() *AiRateLimitingAdvancedPlug
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *AiRateLimitingAdvancedPlugin) GetPartials() []AiRateLimitingAdvancedPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *AiRateLimitingAdvancedPlugin) GetTags() []string {

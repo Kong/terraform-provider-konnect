@@ -49,6 +49,33 @@ func (o *Oauth2PluginOrdering) GetBefore() *Oauth2PluginBefore {
 	return o.Before
 }
 
+type Oauth2PluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *Oauth2PluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *Oauth2PluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *Oauth2PluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // Pkce - Specifies a mode of how the Proof Key for Code Exchange (PKCE) should be handled by the plugin.
 type Pkce string
 
@@ -310,11 +337,12 @@ type Oauth2Plugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                 `json:"enabled,omitempty"`
-	ID           *string               `json:"id,omitempty"`
-	InstanceName *string               `json:"instance_name,omitempty"`
-	name         string                `const:"oauth2" json:"name"`
-	Ordering     *Oauth2PluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                  `json:"enabled,omitempty"`
+	ID           *string                `json:"id,omitempty"`
+	InstanceName *string                `json:"instance_name,omitempty"`
+	name         string                 `const:"oauth2" json:"name"`
+	Ordering     *Oauth2PluginOrdering  `json:"ordering,omitempty"`
+	Partials     []Oauth2PluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -376,6 +404,13 @@ func (o *Oauth2Plugin) GetOrdering() *Oauth2PluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *Oauth2Plugin) GetPartials() []Oauth2PluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *Oauth2Plugin) GetTags() []string {

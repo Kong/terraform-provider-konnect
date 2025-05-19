@@ -49,6 +49,33 @@ func (o *RouteTransformerAdvancedPluginOrdering) GetBefore() *RouteTransformerAd
 	return o.Before
 }
 
+type RouteTransformerAdvancedPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *RouteTransformerAdvancedPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *RouteTransformerAdvancedPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *RouteTransformerAdvancedPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type RouteTransformerAdvancedPluginConfig struct {
 	EscapePath *bool   `json:"escape_path,omitempty"`
 	Host       *string `json:"host,omitempty"`
@@ -157,11 +184,12 @@ type RouteTransformerAdvancedPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                                   `json:"enabled,omitempty"`
-	ID           *string                                 `json:"id,omitempty"`
-	InstanceName *string                                 `json:"instance_name,omitempty"`
-	name         string                                  `const:"route-transformer-advanced" json:"name"`
-	Ordering     *RouteTransformerAdvancedPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                                    `json:"enabled,omitempty"`
+	ID           *string                                  `json:"id,omitempty"`
+	InstanceName *string                                  `json:"instance_name,omitempty"`
+	name         string                                   `const:"route-transformer-advanced" json:"name"`
+	Ordering     *RouteTransformerAdvancedPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []RouteTransformerAdvancedPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -225,6 +253,13 @@ func (o *RouteTransformerAdvancedPlugin) GetOrdering() *RouteTransformerAdvanced
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *RouteTransformerAdvancedPlugin) GetPartials() []RouteTransformerAdvancedPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *RouteTransformerAdvancedPlugin) GetTags() []string {

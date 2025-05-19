@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type RateLimitingPluginRedis struct {
+type PartialRedisCEConfig struct {
 	Database   types.Int64  `tfsdk:"database"`
 	Host       types.String `tfsdk:"host"`
 	Password   types.String `tfsdk:"password"`

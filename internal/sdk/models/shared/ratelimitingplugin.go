@@ -49,6 +49,33 @@ func (o *RateLimitingPluginOrdering) GetBefore() *RateLimitingPluginBefore {
 	return o.Before
 }
 
+type RateLimitingPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *RateLimitingPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *RateLimitingPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *RateLimitingPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // LimitBy - The entity that is used when aggregating the limits.
 type LimitBy string
 
@@ -438,11 +465,12 @@ type RateLimitingPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                       `json:"enabled,omitempty"`
-	ID           *string                     `json:"id,omitempty"`
-	InstanceName *string                     `json:"instance_name,omitempty"`
-	name         string                      `const:"rate-limiting" json:"name"`
-	Ordering     *RateLimitingPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                        `json:"enabled,omitempty"`
+	ID           *string                      `json:"id,omitempty"`
+	InstanceName *string                      `json:"instance_name,omitempty"`
+	name         string                       `const:"rate-limiting" json:"name"`
+	Ordering     *RateLimitingPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []RateLimitingPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -508,6 +536,13 @@ func (o *RateLimitingPlugin) GetOrdering() *RateLimitingPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *RateLimitingPlugin) GetPartials() []RateLimitingPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *RateLimitingPlugin) GetTags() []string {

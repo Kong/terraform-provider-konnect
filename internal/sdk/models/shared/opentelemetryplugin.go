@@ -49,6 +49,33 @@ func (o *OpentelemetryPluginOrdering) GetBefore() *OpentelemetryPluginBefore {
 	return o.Before
 }
 
+type OpentelemetryPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *OpentelemetryPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *OpentelemetryPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OpentelemetryPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type HeaderType string
 
 const (
@@ -582,11 +609,12 @@ type OpentelemetryPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                        `json:"enabled,omitempty"`
-	ID           *string                      `json:"id,omitempty"`
-	InstanceName *string                      `json:"instance_name,omitempty"`
-	name         string                       `const:"opentelemetry" json:"name"`
-	Ordering     *OpentelemetryPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                         `json:"enabled,omitempty"`
+	ID           *string                       `json:"id,omitempty"`
+	InstanceName *string                       `json:"instance_name,omitempty"`
+	name         string                        `const:"opentelemetry" json:"name"`
+	Ordering     *OpentelemetryPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []OpentelemetryPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -650,6 +678,13 @@ func (o *OpentelemetryPlugin) GetOrdering() *OpentelemetryPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *OpentelemetryPlugin) GetPartials() []OpentelemetryPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *OpentelemetryPlugin) GetTags() []string {

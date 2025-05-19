@@ -149,7 +149,7 @@ func (r *GatewayControlPlaneListDataSource) Schema(ctx context.Context, req data
 								Optional: true,
 							},
 						},
-						Description: `Returns entities that exact match any of the comma-delimited phrases in the filter string.`,
+						Description: `Filters on the given comma separated string by one or more exact match.`,
 					},
 					"name": schema.SingleNestedAttribute{
 						Optional: true,

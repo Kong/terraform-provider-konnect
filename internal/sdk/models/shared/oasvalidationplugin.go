@@ -49,6 +49,33 @@ func (o *OasValidationPluginOrdering) GetBefore() *OasValidationPluginBefore {
 	return o.Before
 }
 
+type OasValidationPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *OasValidationPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *OasValidationPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OasValidationPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type OasValidationPluginConfig struct {
 	// List of header parameters in the request that will be ignored when performing HTTP header validation. These are additional headers added to an API request beyond those defined in the API specification.  For example, you might include the HTTP header `User-Agent`, which lets servers and network peers identify the application, operating system, vendor, and/or version of the requesting user agent.
 	AllowedHeaderParameters *string `json:"allowed_header_parameters,omitempty"`
@@ -260,11 +287,12 @@ type OasValidationPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                        `json:"enabled,omitempty"`
-	ID           *string                      `json:"id,omitempty"`
-	InstanceName *string                      `json:"instance_name,omitempty"`
-	name         string                       `const:"oas-validation" json:"name"`
-	Ordering     *OasValidationPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                         `json:"enabled,omitempty"`
+	ID           *string                       `json:"id,omitempty"`
+	InstanceName *string                       `json:"instance_name,omitempty"`
+	name         string                        `const:"oas-validation" json:"name"`
+	Ordering     *OasValidationPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []OasValidationPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -328,6 +356,13 @@ func (o *OasValidationPlugin) GetOrdering() *OasValidationPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *OasValidationPlugin) GetPartials() []OasValidationPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *OasValidationPlugin) GetTags() []string {

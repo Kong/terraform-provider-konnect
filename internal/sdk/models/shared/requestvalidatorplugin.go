@@ -49,6 +49,33 @@ func (o *RequestValidatorPluginOrdering) GetBefore() *RequestValidatorPluginBefo
 	return o.Before
 }
 
+type RequestValidatorPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *RequestValidatorPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *RequestValidatorPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *RequestValidatorPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // In - The location of the parameter.
 type In string
 
@@ -335,11 +362,12 @@ type RequestValidatorPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                           `json:"enabled,omitempty"`
-	ID           *string                         `json:"id,omitempty"`
-	InstanceName *string                         `json:"instance_name,omitempty"`
-	name         string                          `const:"request-validator" json:"name"`
-	Ordering     *RequestValidatorPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                            `json:"enabled,omitempty"`
+	ID           *string                          `json:"id,omitempty"`
+	InstanceName *string                          `json:"instance_name,omitempty"`
+	name         string                           `const:"request-validator" json:"name"`
+	Ordering     *RequestValidatorPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []RequestValidatorPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -403,6 +431,13 @@ func (o *RequestValidatorPlugin) GetOrdering() *RequestValidatorPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *RequestValidatorPlugin) GetPartials() []RequestValidatorPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *RequestValidatorPlugin) GetTags() []string {

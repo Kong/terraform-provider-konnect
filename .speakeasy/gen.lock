@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: a51b4d90ae298db12a3057eac67b4a64
+  docChecksum: af74751aae3423ab20fedfcf8f2b8016
   docVersion: 2.0.0
   speakeasyVersion: 1.541.2
   generationVersion: 2.595.4
@@ -61,6 +61,7 @@ generatedFiles:
   - examples/data-sources/konnect_gateway_key_auth/data-source.tf
   - examples/data-sources/konnect_gateway_key_set/data-source.tf
   - examples/data-sources/konnect_gateway_mtls_auth/data-source.tf
+  - examples/data-sources/konnect_gateway_partial/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_acl/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_acme/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_ai_azure_content_safety/data-source.tf
@@ -233,6 +234,8 @@ generatedFiles:
   - examples/resources/konnect_gateway_key_set/resource.tf
   - examples/resources/konnect_gateway_mtls_auth/import.sh
   - examples/resources/konnect_gateway_mtls_auth/resource.tf
+  - examples/resources/konnect_gateway_partial/import.sh
+  - examples/resources/konnect_gateway_partial/resource.tf
   - examples/resources/konnect_gateway_plugin_acl/import.sh
   - examples/resources/konnect_gateway_plugin_acl/resource.tf
   - examples/resources/konnect_gateway_plugin_acme/import.sh
@@ -598,6 +601,10 @@ generatedFiles:
   - internal/provider/gatewaymtlsauth_data_source_sdk.go
   - internal/provider/gatewaymtlsauth_resource.go
   - internal/provider/gatewaymtlsauth_resource_sdk.go
+  - internal/provider/gatewaypartial_data_source.go
+  - internal/provider/gatewaypartial_data_source_sdk.go
+  - internal/provider/gatewaypartial_resource.go
+  - internal/provider/gatewaypartial_resource_sdk.go
   - internal/provider/gatewaypluginacl_data_source.go
   - internal/provider/gatewaypluginacl_data_source_sdk.go
   - internal/provider/gatewaypluginacl_resource.go
@@ -1095,13 +1102,10 @@ generatedFiles:
   - internal/provider/types/ai_prompt_decorator_plugin_config.go
   - internal/provider/types/ai_prompt_guard_plugin_config.go
   - internal/provider/types/ai_prompt_template_plugin_config.go
-  - internal/provider/types/ai_proxy_advanced_plugin_cluster_nodes.go
   - internal/provider/types/ai_proxy_advanced_plugin_config.go
   - internal/provider/types/ai_proxy_advanced_plugin_config_model.go
   - internal/provider/types/ai_proxy_advanced_plugin_model.go
   - internal/provider/types/ai_proxy_advanced_plugin_options.go
-  - internal/provider/types/ai_proxy_advanced_plugin_redis.go
-  - internal/provider/types/ai_proxy_advanced_plugin_sentinel_nodes.go
   - internal/provider/types/ai_proxy_plugin_config.go
   - internal/provider/types/ai_rag_injector_plugin_config.go
   - internal/provider/types/ai_rag_injector_plugin_embeddings.go
@@ -1250,6 +1254,13 @@ generatedFiles:
   - internal/provider/types/page_meta.go
   - internal/provider/types/paginated_meta.go
   - internal/provider/types/parameter_schema.go
+  - internal/provider/types/partial_redis_ce.go
+  - internal/provider/types/partial_redis_ce_config.go
+  - internal/provider/types/partial_redis_ee.go
+  - internal/provider/types/partial_redis_ee_cluster_nodes.go
+  - internal/provider/types/partial_redis_ee_config.go
+  - internal/provider/types/partial_redis_ee_sentinel_nodes.go
+  - internal/provider/types/partials.go
   - internal/provider/types/passive.go
   - internal/provider/types/pem.go
   - internal/provider/types/pgvector.go
@@ -1269,7 +1280,6 @@ generatedFiles:
   - internal/provider/types/rate_limiting_advanced_plugin_config.go
   - internal/provider/types/rate_limiting_advanced_plugin_redis.go
   - internal/provider/types/rate_limiting_plugin_config.go
-  - internal/provider/types/rate_limiting_plugin_redis.go
   - internal/provider/types/redirect_plugin_config.go
   - internal/provider/types/replace.go
   - internal/provider/types/request.go
@@ -1472,6 +1482,7 @@ generatedFiles:
   - internal/sdk/models/operations/createopaplugin.go
   - internal/sdk/models/operations/createopenidconnectplugin.go
   - internal/sdk/models/operations/createopentelemetryplugin.go
+  - internal/sdk/models/operations/createpartial.go
   - internal/sdk/models/operations/createplugin.go
   - internal/sdk/models/operations/createpluginschemas.go
   - internal/sdk/models/operations/createportal.go
@@ -1609,6 +1620,7 @@ generatedFiles:
   - internal/sdk/models/operations/deleteopaplugin.go
   - internal/sdk/models/operations/deleteopenidconnectplugin.go
   - internal/sdk/models/operations/deleteopentelemetryplugin.go
+  - internal/sdk/models/operations/deletepartial.go
   - internal/sdk/models/operations/deleteplugin.go
   - internal/sdk/models/operations/deletepluginschemas.go
   - internal/sdk/models/operations/deleteportal.go
@@ -1753,6 +1765,7 @@ generatedFiles:
   - internal/sdk/models/operations/getopaplugin.go
   - internal/sdk/models/operations/getopenidconnectplugin.go
   - internal/sdk/models/operations/getopentelemetryplugin.go
+  - internal/sdk/models/operations/getpartial.go
   - internal/sdk/models/operations/getplugin.go
   - internal/sdk/models/operations/getpluginschema.go
   - internal/sdk/models/operations/getportalappearance.go
@@ -1946,6 +1959,7 @@ generatedFiles:
   - internal/sdk/models/operations/upsertcustomplugin.go
   - internal/sdk/models/operations/upsertkey.go
   - internal/sdk/models/operations/upsertkeyset.go
+  - internal/sdk/models/operations/upsertpartial.go
   - internal/sdk/models/operations/upsertplugin.go
   - internal/sdk/models/operations/upsertroute.go
   - internal/sdk/models/operations/upsertrouterouteexpression.go
@@ -2130,6 +2144,7 @@ generatedFiles:
   - internal/sdk/models/shared/networkcreatestate.go
   - internal/sdk/models/shared/networkprovidermetadata.go
   - internal/sdk/models/shared/networkstate.go
+  - internal/sdk/models/shared/networkstatemetadata.go
   - internal/sdk/models/shared/notfounderror.go
   - internal/sdk/models/shared/nullableappearancefonts.go
   - internal/sdk/models/shared/nullableappearancetextvariables.go
@@ -2142,6 +2157,7 @@ generatedFiles:
   - internal/sdk/models/shared/opentelemetryplugin.go
   - internal/sdk/models/shared/pagemeta.go
   - internal/sdk/models/shared/paginatedmeta.go
+  - internal/sdk/models/shared/partial.go
   - internal/sdk/models/shared/partialappauthstrategyconfigopenidconnect.go
   - internal/sdk/models/shared/patchnetworkrequest.go
   - internal/sdk/models/shared/plugin.go
@@ -2238,6 +2254,7 @@ generatedFiles:
   - internal/sdk/models/shared/xmlthreatprotectionplugin.go
   - internal/sdk/models/shared/zipkinplugin.go
   - internal/sdk/mtlsauthcredentials.go
+  - internal/sdk/partials.go
   - internal/sdk/plugins.go
   - internal/sdk/portalappearance.go
   - internal/sdk/portalauthsettings.go
@@ -2896,7 +2913,7 @@ examples:
         application/json: {"name": "us-east-2 network", "cloud_gateway_provider_account_id": "929b2449-c69f-44c4-b6ad-9ecec6f811ae", "region": "us-east-2", "availability_zones": ["use2-az1", "use2-az2", "use2-az3"], "cidr_block": "10.0.0.0/8", "state": "initializing"}
       responses:
         "201":
-          application/json: {"id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "name": "us-east-2 network", "default": false, "cloud_gateway_provider_account_id": "929b2449-c69f-44c4-b6ad-9ecec6f811ae", "region": "us-east-2", "availability_zones": ["use2-az1", "use2-az2", "use2-az3"], "cidr_block": "10.0.0.0/8", "state": "ready", "provider_metadata": {}, "transit_gateway_count": 0, "configuration_reference_count": 0, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "name": "us-east-2 network", "default": false, "cloud_gateway_provider_account_id": "929b2449-c69f-44c4-b6ad-9ecec6f811ae", "region": "us-east-2", "availability_zones": ["use2-az1", "use2-az2", "use2-az3"], "cidr_block": "10.0.0.0/8", "state": "ready", "state_metadata": {"reported_status": "INVALID", "reason": "Network could not be deployed due to insufficient cloud provider compute instances.\n"}, "provider_metadata": {}, "transit_gateway_count": 0, "configuration_reference_count": 0, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 651863, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value>"], "source": "body"}, {"field": "name", "source": "body", "reason": "is a required field"}, {"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -2912,7 +2929,7 @@ examples:
           networkId: "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
       responses:
         "200":
-          application/json: {"id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "name": "us-east-2 network", "default": false, "cloud_gateway_provider_account_id": "929b2449-c69f-44c4-b6ad-9ecec6f811ae", "region": "us-east-2", "availability_zones": ["use2-az1", "use2-az2", "use2-az3"], "cidr_block": "10.0.0.0/8", "state": "created", "provider_metadata": {}, "transit_gateway_count": 0, "configuration_reference_count": 0, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "name": "us-east-2 network", "default": false, "cloud_gateway_provider_account_id": "929b2449-c69f-44c4-b6ad-9ecec6f811ae", "region": "us-east-2", "availability_zones": ["use2-az1", "use2-az2", "use2-az3"], "cidr_block": "10.0.0.0/8", "state": "created", "state_metadata": {"reported_status": "INVALID", "reason": "Network could not be deployed due to insufficient cloud provider compute instances.\n"}, "provider_metadata": {}, "transit_gateway_count": 0, "configuration_reference_count": 0, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -2928,7 +2945,7 @@ examples:
         application/json: {"name": "us-east-2 network"}
       responses:
         "200":
-          application/json: {"id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "name": "us-east-2 network", "default": false, "cloud_gateway_provider_account_id": "929b2449-c69f-44c4-b6ad-9ecec6f811ae", "region": "us-east-2", "availability_zones": ["use2-az1", "use2-az2", "use2-az3"], "cidr_block": "10.0.0.0/8", "state": "offline", "provider_metadata": {}, "transit_gateway_count": 0, "configuration_reference_count": 0, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "name": "us-east-2 network", "default": false, "cloud_gateway_provider_account_id": "929b2449-c69f-44c4-b6ad-9ecec6f811ae", "region": "us-east-2", "availability_zones": ["use2-az1", "use2-az2", "use2-az3"], "cidr_block": "10.0.0.0/8", "state": "offline", "state_metadata": {"reported_status": "INVALID", "reason": "Network could not be deployed due to insufficient cloud provider compute instances.\n"}, "provider_metadata": {}, "transit_gateway_count": 0, "configuration_reference_count": 0, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 168453, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -9012,5 +9029,50 @@ examples:
           application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "config": {}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 805093}
+  create-partial:
+    speakeasy-default-create-partial:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"cluster_nodes": [{"ip": "192.168.1.10", "port": 6380}], "connect_timeout": 2000, "database": 0, "host": "localhost", "keepalive_pool_size": 256, "password": "password", "port": 6379, "read_timeout": 1000, "send_timeout": 1000, "sentinel_nodes": [{"host": "sentinel1.redis.server", "port": 26379}], "server_name": "redis-ee", "ssl": false, "ssl_verify": false, "username": "username"}, "type": "redis-ee"}
+      responses:
+        "201":
+          application/json: {"config": {"cluster_nodes": [{"ip": "192.168.1.10", "port": 6380}], "connect_timeout": 2000, "database": 0, "host": "localhost", "keepalive_pool_size": 256, "password": "password", "port": 6379, "read_timeout": 1000, "send_timeout": 1000, "sentinel_nodes": [{"host": "sentinel1.redis.server", "port": 26379}], "server_name": "redis-ee", "ssl": false, "ssl_verify": false, "username": "username"}, "type": "redis-ee"}
+        "401":
+          application/json: {"message": "<value>", "status": 520657}
+  delete-partial:
+    "":
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          PartialId: ""
+      responses:
+        "401":
+          application/json: {"message": "<value>", "status": 746418}
+  get-partial:
+    "":
+      parameters:
+        path:
+          PartialId: ""
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"config": {"database": 0, "host": "localhost", "password": "password", "port": 6379, "server_name": "redis", "ssl": false, "ssl_verify": false, "timeout": 2000, "username": "username"}, "type": "redis-ce"}
+        "401":
+          application/json: {"message": "<value>", "status": 200517}
+  upsert-partial:
+    "":
+      parameters:
+        path:
+          PartialId: ""
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"database": 0, "host": "localhost", "password": "password", "port": 6379, "server_name": "redis", "ssl": false, "ssl_verify": false, "timeout": 2000, "username": "username"}, "type": "redis-ce"}
+      responses:
+        "200":
+          application/json: {"config": {"cluster_nodes": [{"ip": "192.168.1.10", "port": 6380}], "connect_timeout": 2000, "database": 0, "host": "localhost", "keepalive_pool_size": 256, "password": "password", "port": 6379, "read_timeout": 1000, "send_timeout": 1000, "sentinel_nodes": [{"host": "sentinel1.redis.server", "port": 26379}], "server_name": "redis-ee", "ssl": false, "ssl_verify": false, "username": "username"}, "type": "redis-ee"}
+        "401":
+          application/json: {"message": "<value>", "status": 208224}
 examplesVersion: 1.0.1
 generatedTests: {}

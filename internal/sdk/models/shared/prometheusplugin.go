@@ -49,6 +49,33 @@ func (o *PrometheusPluginOrdering) GetBefore() *PrometheusPluginBefore {
 	return o.Before
 }
 
+type PrometheusPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *PrometheusPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *PrometheusPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *PrometheusPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type PrometheusPluginConfig struct {
 	// A boolean value that determines if ai metrics should be collected. If enabled, the `ai_llm_requests_total`, `ai_llm_cost_total` and `ai_llm_tokens_total` metrics will be exported.
 	AiMetrics *bool `json:"ai_metrics,omitempty"`
@@ -207,11 +234,12 @@ type PrometheusPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                     `json:"enabled,omitempty"`
-	ID           *string                   `json:"id,omitempty"`
-	InstanceName *string                   `json:"instance_name,omitempty"`
-	name         string                    `const:"prometheus" json:"name"`
-	Ordering     *PrometheusPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                      `json:"enabled,omitempty"`
+	ID           *string                    `json:"id,omitempty"`
+	InstanceName *string                    `json:"instance_name,omitempty"`
+	name         string                     `const:"prometheus" json:"name"`
+	Ordering     *PrometheusPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []PrometheusPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -275,6 +303,13 @@ func (o *PrometheusPlugin) GetOrdering() *PrometheusPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *PrometheusPlugin) GetPartials() []PrometheusPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *PrometheusPlugin) GetTags() []string {

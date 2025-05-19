@@ -49,6 +49,33 @@ func (o *LdapAuthPluginOrdering) GetBefore() *LdapAuthPluginBefore {
 	return o.Before
 }
 
+type LdapAuthPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *LdapAuthPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *LdapAuthPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *LdapAuthPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type LdapAuthPluginConfig struct {
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request fails with an authentication failure `4xx`.
 	Anonymous *string `json:"anonymous,omitempty"`
@@ -245,11 +272,12 @@ type LdapAuthPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                   `json:"enabled,omitempty"`
-	ID           *string                 `json:"id,omitempty"`
-	InstanceName *string                 `json:"instance_name,omitempty"`
-	name         string                  `const:"ldap-auth" json:"name"`
-	Ordering     *LdapAuthPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                    `json:"enabled,omitempty"`
+	ID           *string                  `json:"id,omitempty"`
+	InstanceName *string                  `json:"instance_name,omitempty"`
+	name         string                   `const:"ldap-auth" json:"name"`
+	Ordering     *LdapAuthPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []LdapAuthPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -311,6 +339,13 @@ func (o *LdapAuthPlugin) GetOrdering() *LdapAuthPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *LdapAuthPlugin) GetPartials() []LdapAuthPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *LdapAuthPlugin) GetTags() []string {

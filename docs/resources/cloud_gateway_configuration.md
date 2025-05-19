@@ -99,7 +99,7 @@ Optional:
 
 - `base_rps` (Number) Base number of requests per second that the deployment target should support. Not Null
 - `kind` (String) Not Null; must be "autopilot"
-- `max_rps` (Number) Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps.
+- `max_rps` (Number, Deprecated) Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps. This field is deprecated and shouldn't be used in new configurations as it will be removed in a future version. max_rps is now calculated as 10x base_rps.
 
 
 <a id="nestedatt--dataplane_groups--autoscale--configuration_data_plane_group_autoscale_static"></a>
@@ -158,7 +158,7 @@ Read-Only:
 
 - `base_rps` (Number) Base number of requests per second that the deployment target should support.
 - `kind` (String) must be "autopilot"
-- `max_rps` (Number) Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps.
+- `max_rps` (Number, Deprecated) Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps. This field is deprecated and shouldn't be used in new configurations as it will be removed in a future version. max_rps is now calculated as 10x base_rps.
 
 
 <a id="nestedatt--dataplane_group_config--autoscale--configuration_data_plane_group_autoscale_static"></a>

@@ -49,6 +49,33 @@ func (o *ConfluentConsumePluginOrdering) GetBefore() *ConfluentConsumePluginBefo
 	return o.Before
 }
 
+type ConfluentConsumePluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *ConfluentConsumePluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *ConfluentConsumePluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *ConfluentConsumePluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // AutoOffsetReset - The offset to start from when there is no initial offset in the consumer group.
 type AutoOffsetReset string
 
@@ -390,11 +417,12 @@ type ConfluentConsumePlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                           `json:"enabled,omitempty"`
-	ID           *string                         `json:"id,omitempty"`
-	InstanceName *string                         `json:"instance_name,omitempty"`
-	name         string                          `const:"confluent-consume" json:"name"`
-	Ordering     *ConfluentConsumePluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                            `json:"enabled,omitempty"`
+	ID           *string                          `json:"id,omitempty"`
+	InstanceName *string                          `json:"instance_name,omitempty"`
+	name         string                           `const:"confluent-consume" json:"name"`
+	Ordering     *ConfluentConsumePluginOrdering  `json:"ordering,omitempty"`
+	Partials     []ConfluentConsumePluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -458,6 +486,13 @@ func (o *ConfluentConsumePlugin) GetOrdering() *ConfluentConsumePluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *ConfluentConsumePlugin) GetPartials() []ConfluentConsumePluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *ConfluentConsumePlugin) GetTags() []string {
