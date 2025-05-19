@@ -28247,8 +28247,7 @@ components:
             type: string
         type:
           type: string
-          enum:
-            - redis-ce
+          const: redis-ce
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -28381,8 +28380,7 @@ components:
             type: string
         type:
           type: string
-          enum:
-            - redis-ee
+          const: redis-ee
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
