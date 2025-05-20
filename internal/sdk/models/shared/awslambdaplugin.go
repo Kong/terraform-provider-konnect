@@ -49,6 +49,33 @@ func (o *AwsLambdaPluginOrdering) GetBefore() *AwsLambdaPluginBefore {
 	return o.Before
 }
 
+type AwsLambdaPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *AwsLambdaPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *AwsLambdaPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *AwsLambdaPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // AwsImdsProtocolVersion - Identifier to select the IMDS protocol version to use: `v1` or `v2`.
 type AwsImdsProtocolVersion string
 
@@ -478,11 +505,12 @@ type AwsLambdaPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                    `json:"enabled,omitempty"`
-	ID           *string                  `json:"id,omitempty"`
-	InstanceName *string                  `json:"instance_name,omitempty"`
-	name         string                   `const:"aws-lambda" json:"name"`
-	Ordering     *AwsLambdaPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                     `json:"enabled,omitempty"`
+	ID           *string                   `json:"id,omitempty"`
+	InstanceName *string                   `json:"instance_name,omitempty"`
+	name         string                    `const:"aws-lambda" json:"name"`
+	Ordering     *AwsLambdaPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []AwsLambdaPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -546,6 +574,13 @@ func (o *AwsLambdaPlugin) GetOrdering() *AwsLambdaPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *AwsLambdaPlugin) GetPartials() []AwsLambdaPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *AwsLambdaPlugin) GetTags() []string {

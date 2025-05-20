@@ -25,6 +25,9 @@ type Network struct {
 	CidrBlock string `json:"cidr_block"`
 	// State of the network.
 	State NetworkState `json:"state"`
+	// Metadata describing the backing state of the network and why it may be in an erroneous state.
+	//
+	StateMetadata *NetworkStateMetadata `json:"state_metadata,omitempty"`
 	// Metadata describing attributes returned by cloud-provider for the network.
 	ProviderMetadata NetworkProviderMetadata `json:"provider_metadata"`
 	// The number of transit gateways attached to this network.
@@ -105,6 +108,13 @@ func (o *Network) GetState() NetworkState {
 		return NetworkState("")
 	}
 	return o.State
+}
+
+func (o *Network) GetStateMetadata() *NetworkStateMetadata {
+	if o == nil {
+		return nil
+	}
+	return o.StateMetadata
 }
 
 func (o *Network) GetProviderMetadata() NetworkProviderMetadata {

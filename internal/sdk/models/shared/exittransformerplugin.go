@@ -49,6 +49,33 @@ func (o *ExitTransformerPluginOrdering) GetBefore() *ExitTransformerPluginBefore
 	return o.Before
 }
 
+type ExitTransformerPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *ExitTransformerPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *ExitTransformerPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *ExitTransformerPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type ExitTransformerPluginConfig struct {
 	Functions []string `json:"functions,omitempty"`
 	// Determines whether to handle unexpected errors by transforming their responses.
@@ -151,11 +178,12 @@ type ExitTransformerPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                          `json:"enabled,omitempty"`
-	ID           *string                        `json:"id,omitempty"`
-	InstanceName *string                        `json:"instance_name,omitempty"`
-	name         string                         `const:"exit-transformer" json:"name"`
-	Ordering     *ExitTransformerPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                           `json:"enabled,omitempty"`
+	ID           *string                         `json:"id,omitempty"`
+	InstanceName *string                         `json:"instance_name,omitempty"`
+	name         string                          `const:"exit-transformer" json:"name"`
+	Ordering     *ExitTransformerPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []ExitTransformerPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -219,6 +247,13 @@ func (o *ExitTransformerPlugin) GetOrdering() *ExitTransformerPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *ExitTransformerPlugin) GetPartials() []ExitTransformerPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *ExitTransformerPlugin) GetTags() []string {

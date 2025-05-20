@@ -49,6 +49,33 @@ func (o *KeyAuthEncPluginOrdering) GetBefore() *KeyAuthEncPluginBefore {
 	return o.Before
 }
 
+type KeyAuthEncPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *KeyAuthEncPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *KeyAuthEncPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *KeyAuthEncPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type KeyAuthEncPluginConfig struct {
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`. Note that this value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
 	Anonymous *string `json:"anonymous,omitempty"`
@@ -191,11 +218,12 @@ type KeyAuthEncPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                     `json:"enabled,omitempty"`
-	ID           *string                   `json:"id,omitempty"`
-	InstanceName *string                   `json:"instance_name,omitempty"`
-	name         string                    `const:"key-auth-enc" json:"name"`
-	Ordering     *KeyAuthEncPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                      `json:"enabled,omitempty"`
+	ID           *string                    `json:"id,omitempty"`
+	InstanceName *string                    `json:"instance_name,omitempty"`
+	name         string                     `const:"key-auth-enc" json:"name"`
+	Ordering     *KeyAuthEncPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []KeyAuthEncPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -257,6 +285,13 @@ func (o *KeyAuthEncPlugin) GetOrdering() *KeyAuthEncPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *KeyAuthEncPlugin) GetPartials() []KeyAuthEncPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *KeyAuthEncPlugin) GetTags() []string {

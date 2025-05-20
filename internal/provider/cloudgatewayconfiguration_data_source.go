@@ -84,8 +84,9 @@ func (r *CloudGatewayConfigurationDataSource) Schema(ctx context.Context, req da
 											Computed: true,
 										},
 										"max_rps": schema.Int64Attribute{
-											Computed:    true,
-											Description: `Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps.`,
+											Computed:           true,
+											DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+											Description:        `Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps. This field is deprecated and shouldn't be used in new configurations as it will be removed in a future version. max_rps is now calculated as 10x base_rps.`,
 										},
 									},
 									Description: `Object that describes the autopilot autoscaling strategy.`,
@@ -158,8 +159,9 @@ func (r *CloudGatewayConfigurationDataSource) Schema(ctx context.Context, req da
 											Computed: true,
 										},
 										"max_rps": schema.Int64Attribute{
-											Computed:    true,
-											Description: `Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps.`,
+											Computed:           true,
+											DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+											Description:        `Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps. This field is deprecated and shouldn't be used in new configurations as it will be removed in a future version. max_rps is now calculated as 10x base_rps.`,
 										},
 									},
 									Description: `Object that describes the autopilot autoscaling strategy.`,

@@ -49,6 +49,33 @@ func (o *AiRagInjectorPluginOrdering) GetBefore() *AiRagInjectorPluginBefore {
 	return o.Before
 }
 
+type AiRagInjectorPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *AiRagInjectorPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *AiRagInjectorPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *AiRagInjectorPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // AiRagInjectorPluginParamLocation - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
 type AiRagInjectorPluginParamLocation string
 
@@ -1139,11 +1166,12 @@ type AiRagInjectorPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                        `json:"enabled,omitempty"`
-	ID           *string                      `json:"id,omitempty"`
-	InstanceName *string                      `json:"instance_name,omitempty"`
-	name         string                       `const:"ai-rag-injector" json:"name"`
-	Ordering     *AiRagInjectorPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                         `json:"enabled,omitempty"`
+	ID           *string                       `json:"id,omitempty"`
+	InstanceName *string                       `json:"instance_name,omitempty"`
+	name         string                        `const:"ai-rag-injector" json:"name"`
+	Ordering     *AiRagInjectorPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []AiRagInjectorPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -1209,6 +1237,13 @@ func (o *AiRagInjectorPlugin) GetOrdering() *AiRagInjectorPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *AiRagInjectorPlugin) GetPartials() []AiRagInjectorPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *AiRagInjectorPlugin) GetTags() []string {

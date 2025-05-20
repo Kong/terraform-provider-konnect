@@ -49,6 +49,33 @@ func (o *BotDetectionPluginOrdering) GetBefore() *BotDetectionPluginBefore {
 	return o.Before
 }
 
+type BotDetectionPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *BotDetectionPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *BotDetectionPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *BotDetectionPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type BotDetectionPluginConfig struct {
 	// An array of regular expressions that should be allowed. The regular expressions will be checked against the `User-Agent` header.
 	Allow []string `json:"allow,omitempty"`
@@ -131,11 +158,12 @@ type BotDetectionPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                       `json:"enabled,omitempty"`
-	ID           *string                     `json:"id,omitempty"`
-	InstanceName *string                     `json:"instance_name,omitempty"`
-	name         string                      `const:"bot-detection" json:"name"`
-	Ordering     *BotDetectionPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                        `json:"enabled,omitempty"`
+	ID           *string                      `json:"id,omitempty"`
+	InstanceName *string                      `json:"instance_name,omitempty"`
+	name         string                       `const:"bot-detection" json:"name"`
+	Ordering     *BotDetectionPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []BotDetectionPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -197,6 +225,13 @@ func (o *BotDetectionPlugin) GetOrdering() *BotDetectionPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *BotDetectionPlugin) GetPartials() []BotDetectionPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *BotDetectionPlugin) GetTags() []string {

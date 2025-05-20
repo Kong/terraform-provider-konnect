@@ -49,6 +49,33 @@ func (o *OpaPluginOrdering) GetBefore() *OpaPluginBefore {
 	return o.Before
 }
 
+type OpaPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *OpaPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *OpaPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *OpaPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // OpaProtocol - The protocol to use when talking to Open Policy Agent (OPA) server. Allowed protocols are `http` and `https`.
 type OpaProtocol string
 
@@ -238,11 +265,12 @@ type OpaPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool              `json:"enabled,omitempty"`
-	ID           *string            `json:"id,omitempty"`
-	InstanceName *string            `json:"instance_name,omitempty"`
-	name         string             `const:"opa" json:"name"`
-	Ordering     *OpaPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool               `json:"enabled,omitempty"`
+	ID           *string             `json:"id,omitempty"`
+	InstanceName *string             `json:"instance_name,omitempty"`
+	name         string              `const:"opa" json:"name"`
+	Ordering     *OpaPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []OpaPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -304,6 +332,13 @@ func (o *OpaPlugin) GetOrdering() *OpaPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *OpaPlugin) GetPartials() []OpaPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *OpaPlugin) GetTags() []string {

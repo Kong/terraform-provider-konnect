@@ -51,14 +51,14 @@ func (r *GatewayPluginRequestCalloutDataSourceModel) RefreshFromSharedRequestCal
 				if resp.Config.Cache.Redis == nil {
 					r.Config.Cache.Redis = nil
 				} else {
-					r.Config.Cache.Redis = &tfTypes.AiProxyAdvancedPluginRedis{}
+					r.Config.Cache.Redis = &tfTypes.PartialRedisEEConfig{}
 					r.Config.Cache.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Cache.Redis.ClusterMaxRedirections)
-					r.Config.Cache.Redis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
+					r.Config.Cache.Redis.ClusterNodes = []tfTypes.PartialRedisEEClusterNodes{}
 					if len(r.Config.Cache.Redis.ClusterNodes) > len(resp.Config.Cache.Redis.ClusterNodes) {
 						r.Config.Cache.Redis.ClusterNodes = r.Config.Cache.Redis.ClusterNodes[:len(resp.Config.Cache.Redis.ClusterNodes)]
 					}
 					for clusterNodesCount, clusterNodesItem := range resp.Config.Cache.Redis.ClusterNodes {
-						var clusterNodes tfTypes.AiProxyAdvancedPluginClusterNodes
+						var clusterNodes tfTypes.PartialRedisEEClusterNodes
 						clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 						clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
 						if clusterNodesCount+1 > len(r.Config.Cache.Redis.ClusterNodes) {
@@ -79,12 +79,12 @@ func (r *GatewayPluginRequestCalloutDataSourceModel) RefreshFromSharedRequestCal
 					r.Config.Cache.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ReadTimeout)
 					r.Config.Cache.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.SendTimeout)
 					r.Config.Cache.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Cache.Redis.SentinelMaster)
-					r.Config.Cache.Redis.SentinelNodes = []tfTypes.AiProxyAdvancedPluginSentinelNodes{}
+					r.Config.Cache.Redis.SentinelNodes = []tfTypes.PartialRedisEESentinelNodes{}
 					if len(r.Config.Cache.Redis.SentinelNodes) > len(resp.Config.Cache.Redis.SentinelNodes) {
 						r.Config.Cache.Redis.SentinelNodes = r.Config.Cache.Redis.SentinelNodes[:len(resp.Config.Cache.Redis.SentinelNodes)]
 					}
 					for sentinelNodesCount, sentinelNodesItem := range resp.Config.Cache.Redis.SentinelNodes {
-						var sentinelNodes tfTypes.AiProxyAdvancedPluginSentinelNodes
+						var sentinelNodes tfTypes.PartialRedisEESentinelNodes
 						sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 						sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 						if sentinelNodesCount+1 > len(r.Config.Cache.Redis.SentinelNodes) {
@@ -280,6 +280,25 @@ func (r *GatewayPluginRequestCalloutDataSourceModel) RefreshFromSharedRequestCal
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
+		if resp.Partials != nil {
+			r.Partials = []tfTypes.Partials{}
+			if len(r.Partials) > len(resp.Partials) {
+				r.Partials = r.Partials[:len(resp.Partials)]
+			}
+			for partialsCount, partialsItem := range resp.Partials {
+				var partials tfTypes.Partials
+				partials.ID = types.StringPointerValue(partialsItem.ID)
+				partials.Name = types.StringPointerValue(partialsItem.Name)
+				partials.Path = types.StringPointerValue(partialsItem.Path)
+				if partialsCount+1 > len(r.Partials) {
+					r.Partials = append(r.Partials, partials)
+				} else {
+					r.Partials[partialsCount].ID = partials.ID
+					r.Partials[partialsCount].Name = partials.Name
+					r.Partials[partialsCount].Path = partials.Path
 				}
 			}
 		}

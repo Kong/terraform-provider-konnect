@@ -65,6 +65,35 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 			Before: before,
 		}
 	}
+	var partials []shared.AiRateLimitingAdvancedPluginPartials
+	if r.Partials != nil {
+		partials = make([]shared.AiRateLimitingAdvancedPluginPartials, 0, len(r.Partials))
+		for _, partialsItem := range r.Partials {
+			id1 := new(string)
+			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
+				*id1 = partialsItem.ID.ValueString()
+			} else {
+				id1 = nil
+			}
+			name := new(string)
+			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
+				*name = partialsItem.Name.ValueString()
+			} else {
+				name = nil
+			}
+			path := new(string)
+			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
+				*path = partialsItem.Path.ValueString()
+			} else {
+				path = nil
+			}
+			partials = append(partials, shared.AiRateLimitingAdvancedPluginPartials{
+				ID:   id1,
+				Name: name,
+				Path: path,
+			})
+		}
+	}
 	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
@@ -137,22 +166,22 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 			for _, limitItem := range llmProvidersItem.Limit {
 				limit = append(limit, limitItem.ValueFloat64())
 			}
-			name := shared.AiRateLimitingAdvancedPluginName(llmProvidersItem.Name.ValueString())
+			name1 := shared.AiRateLimitingAdvancedPluginName(llmProvidersItem.Name.ValueString())
 			windowSize := make([]float64, 0, len(llmProvidersItem.WindowSize))
 			for _, windowSizeItem := range llmProvidersItem.WindowSize {
 				windowSize = append(windowSize, windowSizeItem.ValueFloat64())
 			}
 			llmProviders = append(llmProviders, shared.LlmProviders{
 				Limit:      limit,
-				Name:       name,
+				Name:       name1,
 				WindowSize: windowSize,
 			})
 		}
-		path := new(string)
+		path1 := new(string)
 		if !r.Config.Path.IsUnknown() && !r.Config.Path.IsNull() {
-			*path = r.Config.Path.ValueString()
+			*path1 = r.Config.Path.ValueString()
 		} else {
-			path = nil
+			path1 = nil
 		}
 		var redis *shared.Redis
 		if r.Config.Redis != nil {
@@ -379,7 +408,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 			Identifier:                 identifier,
 			LlmFormat:                  llmFormat,
 			LlmProviders:               llmProviders,
-			Path:                       path,
+			Path:                       path1,
 			Redis:                      redis,
 			RequestPromptCountFunction: requestPromptCountFunction,
 			RetryAfterJitterMax:        retryAfterJitterMax,
@@ -391,26 +420,26 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 	}
 	var consumer *shared.AiRateLimitingAdvancedPluginConsumer
 	if r.Consumer != nil {
-		id1 := new(string)
+		id2 := new(string)
 		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id1 = r.Consumer.ID.ValueString()
+			*id2 = r.Consumer.ID.ValueString()
 		} else {
-			id1 = nil
+			id2 = nil
 		}
 		consumer = &shared.AiRateLimitingAdvancedPluginConsumer{
-			ID: id1,
+			ID: id2,
 		}
 	}
 	var consumerGroup *shared.AiRateLimitingAdvancedPluginConsumerGroup
 	if r.ConsumerGroup != nil {
-		id2 := new(string)
+		id3 := new(string)
 		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id2 = r.ConsumerGroup.ID.ValueString()
+			*id3 = r.ConsumerGroup.ID.ValueString()
 		} else {
-			id2 = nil
+			id3 = nil
 		}
 		consumerGroup = &shared.AiRateLimitingAdvancedPluginConsumerGroup{
-			ID: id2,
+			ID: id3,
 		}
 	}
 	protocols := make([]shared.AiRateLimitingAdvancedPluginProtocols, 0, len(r.Protocols))
@@ -419,26 +448,26 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 	}
 	var route *shared.AiRateLimitingAdvancedPluginRoute
 	if r.Route != nil {
-		id3 := new(string)
+		id4 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id3 = r.Route.ID.ValueString()
+			*id4 = r.Route.ID.ValueString()
 		} else {
-			id3 = nil
+			id4 = nil
 		}
 		route = &shared.AiRateLimitingAdvancedPluginRoute{
-			ID: id3,
+			ID: id4,
 		}
 	}
 	var service *shared.AiRateLimitingAdvancedPluginService
 	if r.Service != nil {
-		id4 := new(string)
+		id5 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id4 = r.Service.ID.ValueString()
+			*id5 = r.Service.ID.ValueString()
 		} else {
-			id4 = nil
+			id5 = nil
 		}
 		service = &shared.AiRateLimitingAdvancedPluginService{
-			ID: id4,
+			ID: id5,
 		}
 	}
 	out := shared.AiRateLimitingAdvancedPlugin{
@@ -447,6 +476,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 		ID:            id,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
+		Partials:      partials,
 		Tags:          tags,
 		UpdatedAt:     updatedAt,
 		Config:        config,
@@ -592,14 +622,14 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) RefreshFromSharedAiRa
 			if resp.Config.Redis == nil {
 				r.Config.Redis = nil
 			} else {
-				r.Config.Redis = &tfTypes.AiProxyAdvancedPluginRedis{}
+				r.Config.Redis = &tfTypes.PartialRedisEEConfig{}
 				r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
-				r.Config.Redis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
+				r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEEClusterNodes{}
 				if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
 					r.Config.Redis.ClusterNodes = r.Config.Redis.ClusterNodes[:len(resp.Config.Redis.ClusterNodes)]
 				}
 				for clusterNodesCount, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
-					var clusterNodes tfTypes.AiProxyAdvancedPluginClusterNodes
+					var clusterNodes tfTypes.PartialRedisEEClusterNodes
 					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
 					if clusterNodesCount+1 > len(r.Config.Redis.ClusterNodes) {
@@ -620,12 +650,12 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) RefreshFromSharedAiRa
 				r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
 				r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 				r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
-				r.Config.Redis.SentinelNodes = []tfTypes.AiProxyAdvancedPluginSentinelNodes{}
+				r.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEESentinelNodes{}
 				if len(r.Config.Redis.SentinelNodes) > len(resp.Config.Redis.SentinelNodes) {
 					r.Config.Redis.SentinelNodes = r.Config.Redis.SentinelNodes[:len(resp.Config.Redis.SentinelNodes)]
 				}
 				for sentinelNodesCount, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
-					var sentinelNodes tfTypes.AiProxyAdvancedPluginSentinelNodes
+					var sentinelNodes tfTypes.PartialRedisEESentinelNodes
 					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 					if sentinelNodesCount+1 > len(r.Config.Redis.SentinelNodes) {
@@ -702,6 +732,25 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) RefreshFromSharedAiRa
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
+		if resp.Partials != nil {
+			r.Partials = []tfTypes.Partials{}
+			if len(r.Partials) > len(resp.Partials) {
+				r.Partials = r.Partials[:len(resp.Partials)]
+			}
+			for partialsCount, partialsItem := range resp.Partials {
+				var partials tfTypes.Partials
+				partials.ID = types.StringPointerValue(partialsItem.ID)
+				partials.Name = types.StringPointerValue(partialsItem.Name)
+				partials.Path = types.StringPointerValue(partialsItem.Path)
+				if partialsCount+1 > len(r.Partials) {
+					r.Partials = append(r.Partials, partials)
+				} else {
+					r.Partials[partialsCount].ID = partials.ID
+					r.Partials[partialsCount].Name = partials.Name
+					r.Partials[partialsCount].Path = partials.Path
 				}
 			}
 		}

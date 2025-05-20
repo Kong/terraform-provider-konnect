@@ -49,6 +49,33 @@ func (o *AcmePluginOrdering) GetBefore() *AcmePluginBefore {
 	return o.Before
 }
 
+type AcmePluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *AcmePluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *AcmePluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *AcmePluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // AccountKey - The private key associated with the account.
 type AccountKey struct {
 	// The Key ID.
@@ -713,11 +740,12 @@ type AcmePlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool               `json:"enabled,omitempty"`
-	ID           *string             `json:"id,omitempty"`
-	InstanceName *string             `json:"instance_name,omitempty"`
-	name         string              `const:"acme" json:"name"`
-	Ordering     *AcmePluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                `json:"enabled,omitempty"`
+	ID           *string              `json:"id,omitempty"`
+	InstanceName *string              `json:"instance_name,omitempty"`
+	name         string               `const:"acme" json:"name"`
+	Ordering     *AcmePluginOrdering  `json:"ordering,omitempty"`
+	Partials     []AcmePluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -775,6 +803,13 @@ func (o *AcmePlugin) GetOrdering() *AcmePluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *AcmePlugin) GetPartials() []AcmePluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *AcmePlugin) GetTags() []string {

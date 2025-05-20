@@ -49,6 +49,33 @@ func (o *JweDecryptPluginOrdering) GetBefore() *JweDecryptPluginBefore {
 	return o.Before
 }
 
+type JweDecryptPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *JweDecryptPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *JweDecryptPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *JweDecryptPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type JweDecryptPluginConfig struct {
 	// The name of the header that is used to set the decrypted value.
 	ForwardHeaderName *string `json:"forward_header_name,omitempty"`
@@ -149,11 +176,12 @@ type JweDecryptPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                     `json:"enabled,omitempty"`
-	ID           *string                   `json:"id,omitempty"`
-	InstanceName *string                   `json:"instance_name,omitempty"`
-	name         string                    `const:"jwe-decrypt" json:"name"`
-	Ordering     *JweDecryptPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                      `json:"enabled,omitempty"`
+	ID           *string                    `json:"id,omitempty"`
+	InstanceName *string                    `json:"instance_name,omitempty"`
+	name         string                     `const:"jwe-decrypt" json:"name"`
+	Ordering     *JweDecryptPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []JweDecryptPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -215,6 +243,13 @@ func (o *JweDecryptPlugin) GetOrdering() *JweDecryptPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *JweDecryptPlugin) GetPartials() []JweDecryptPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *JweDecryptPlugin) GetTags() []string {
