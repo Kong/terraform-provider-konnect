@@ -1,5 +1,5 @@
 resource "konnect_gateway_partial" "my_gatewaypartialce" {
-  control_plane_id = konnect_gateway_control_plane.tfdemo2.id
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
   redis_ce = {
     config = {
       database    = 5
@@ -17,4 +17,17 @@ resource "konnect_gateway_partial" "my_gatewaypartialce" {
       "redisce"
     ]
   }
+}
+
+resource "konnect_gateway_plugin_rate_limiting" "my_rate_limiting" {
+  enabled = true
+  config = {
+    second = 5
+    hour = 10000
+    policy = "local"
+  }
+  partials = [{
+    id = konnect_gateway_partial.my_gatewaypartialce.id
+  }]
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
 }
