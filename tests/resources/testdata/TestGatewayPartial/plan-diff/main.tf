@@ -17,7 +17,7 @@ resource "konnect_gateway_partial" "my_gatewaypartial" {
       timeout     = 1000
       username    = "redisceusername"
     }
-    name       = "my_tf_redis_ee_partial"
+    name       = "my_tf_redis_ce_partial"
     tags = [
       "redisce"
     ]
