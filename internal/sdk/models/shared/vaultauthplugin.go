@@ -49,6 +49,33 @@ func (o *VaultAuthPluginOrdering) GetBefore() *VaultAuthPluginBefore {
 	return o.Before
 }
 
+type VaultAuthPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *VaultAuthPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *VaultAuthPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *VaultAuthPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type VaultAuthPluginConfig struct {
 	// Describes an array of comma-separated parameter names where the plugin looks for an access token. The client must send the access token in one of those key names, and the plugin will try to read the credential from a header or the querystring parameter with the same name. The key names can only contain [a-z], [A-Z], [0-9], [_], and [-].
 	AccessTokenName *string `json:"access_token_name,omitempty"`
@@ -176,11 +203,12 @@ type VaultAuthPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                    `json:"enabled,omitempty"`
-	ID           *string                  `json:"id,omitempty"`
-	InstanceName *string                  `json:"instance_name,omitempty"`
-	name         string                   `const:"vault-auth" json:"name"`
-	Ordering     *VaultAuthPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                     `json:"enabled,omitempty"`
+	ID           *string                   `json:"id,omitempty"`
+	InstanceName *string                   `json:"instance_name,omitempty"`
+	name         string                    `const:"vault-auth" json:"name"`
+	Ordering     *VaultAuthPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []VaultAuthPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -242,6 +270,13 @@ func (o *VaultAuthPlugin) GetOrdering() *VaultAuthPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *VaultAuthPlugin) GetPartials() []VaultAuthPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *VaultAuthPlugin) GetTags() []string {

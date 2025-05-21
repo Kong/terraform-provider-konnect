@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type AiProxyAdvancedPluginSentinelNodes struct {
+type PartialRedisEESentinelNodes struct {
 	Host types.String `tfsdk:"host"`
 	Port types.Int64  `tfsdk:"port"`
 }

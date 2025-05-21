@@ -17,7 +17,7 @@ terraform {
   required_providers {
     konnect = {
       source  = "kong/konnect"
-      version = "2.7.4"
+      version = "2.8.0"
     }
   }
 }
@@ -35,4 +35,5 @@ provider "konnect" {
 - `konnect_access_token` (String, Sensitive)
 - `personal_access_token` (String, Sensitive)
 - `server_url` (String) Server URL (defaults to https://global.api.konghq.com)
+- `service_access_token` (String, Sensitive)
 - `system_account_access_token` (String, Sensitive)

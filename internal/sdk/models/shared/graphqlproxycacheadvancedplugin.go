@@ -49,6 +49,33 @@ func (o *GraphqlProxyCacheAdvancedPluginOrdering) GetBefore() *GraphqlProxyCache
 	return o.Before
 }
 
+type GraphqlProxyCacheAdvancedPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *GraphqlProxyCacheAdvancedPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *GraphqlProxyCacheAdvancedPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *GraphqlProxyCacheAdvancedPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type Memory struct {
 	// The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. This dictionary currently must be defined manually in the Kong Nginx template.
 	DictionaryName *string `json:"dictionary_name,omitempty"`
@@ -480,11 +507,12 @@ type GraphqlProxyCacheAdvancedPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                                    `json:"enabled,omitempty"`
-	ID           *string                                  `json:"id,omitempty"`
-	InstanceName *string                                  `json:"instance_name,omitempty"`
-	name         string                                   `const:"graphql-proxy-cache-advanced" json:"name"`
-	Ordering     *GraphqlProxyCacheAdvancedPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                                     `json:"enabled,omitempty"`
+	ID           *string                                   `json:"id,omitempty"`
+	InstanceName *string                                   `json:"instance_name,omitempty"`
+	name         string                                    `const:"graphql-proxy-cache-advanced" json:"name"`
+	Ordering     *GraphqlProxyCacheAdvancedPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []GraphqlProxyCacheAdvancedPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -548,6 +576,13 @@ func (o *GraphqlProxyCacheAdvancedPlugin) GetOrdering() *GraphqlProxyCacheAdvanc
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *GraphqlProxyCacheAdvancedPlugin) GetPartials() []GraphqlProxyCacheAdvancedPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *GraphqlProxyCacheAdvancedPlugin) GetTags() []string {

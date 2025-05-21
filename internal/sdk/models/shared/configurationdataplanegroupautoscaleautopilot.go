@@ -35,7 +35,9 @@ type ConfigurationDataPlaneGroupAutoscaleAutopilot struct {
 	Kind ConfigurationDataPlaneGroupAutoscaleAutopilotKind `json:"kind"`
 	// Base number of requests per second that the deployment target should support.
 	BaseRps int64 `json:"base_rps"`
-	// Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps.
+	// Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps. This field is deprecated and shouldn't be used in new configurations as it will be removed in a future version. max_rps is now calculated as 10x base_rps.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	MaxRps *int64 `json:"max_rps,omitempty"`
 }
 

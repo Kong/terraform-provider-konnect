@@ -49,6 +49,33 @@ func (o *CorsPluginOrdering) GetBefore() *CorsPluginBefore {
 	return o.Before
 }
 
+type CorsPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *CorsPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *CorsPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *CorsPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type Methods string
 
 const (
@@ -241,11 +268,12 @@ type CorsPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool               `json:"enabled,omitempty"`
-	ID           *string             `json:"id,omitempty"`
-	InstanceName *string             `json:"instance_name,omitempty"`
-	name         string              `const:"cors" json:"name"`
-	Ordering     *CorsPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                `json:"enabled,omitempty"`
+	ID           *string              `json:"id,omitempty"`
+	InstanceName *string              `json:"instance_name,omitempty"`
+	name         string               `const:"cors" json:"name"`
+	Ordering     *CorsPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []CorsPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -307,6 +335,13 @@ func (o *CorsPlugin) GetOrdering() *CorsPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *CorsPlugin) GetPartials() []CorsPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *CorsPlugin) GetTags() []string {

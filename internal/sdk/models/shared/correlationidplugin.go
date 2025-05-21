@@ -49,6 +49,33 @@ func (o *CorrelationIDPluginOrdering) GetBefore() *CorrelationIDPluginBefore {
 	return o.Before
 }
 
+type CorrelationIDPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *CorrelationIDPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *CorrelationIDPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *CorrelationIDPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // Generator - The generator to use for the correlation ID. Accepted values are `uuid`, `uuid#counter`, and `tracker`. See [Generators](#generators).
 type Generator string
 
@@ -182,11 +209,12 @@ type CorrelationIDPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                        `json:"enabled,omitempty"`
-	ID           *string                      `json:"id,omitempty"`
-	InstanceName *string                      `json:"instance_name,omitempty"`
-	name         string                       `const:"correlation-id" json:"name"`
-	Ordering     *CorrelationIDPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                         `json:"enabled,omitempty"`
+	ID           *string                       `json:"id,omitempty"`
+	InstanceName *string                       `json:"instance_name,omitempty"`
+	name         string                        `const:"correlation-id" json:"name"`
+	Ordering     *CorrelationIDPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []CorrelationIDPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -250,6 +278,13 @@ func (o *CorrelationIDPlugin) GetOrdering() *CorrelationIDPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *CorrelationIDPlugin) GetPartials() []CorrelationIDPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *CorrelationIDPlugin) GetTags() []string {

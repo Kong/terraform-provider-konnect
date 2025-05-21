@@ -66,6 +66,35 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 			Before: before,
 		}
 	}
+	var partials []shared.UpstreamOauthPluginPartials
+	if r.Partials != nil {
+		partials = make([]shared.UpstreamOauthPluginPartials, 0, len(r.Partials))
+		for _, partialsItem := range r.Partials {
+			id1 := new(string)
+			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
+				*id1 = partialsItem.ID.ValueString()
+			} else {
+				id1 = nil
+			}
+			name := new(string)
+			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
+				*name = partialsItem.Name.ValueString()
+			} else {
+				name = nil
+			}
+			path := new(string)
+			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
+				*path = partialsItem.Path.ValueString()
+			} else {
+				path = nil
+			}
+			partials = append(partials, shared.UpstreamOauthPluginPartials{
+				ID:   id1,
+				Name: name,
+				Path: path,
+			})
+		}
+	}
 	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
@@ -506,26 +535,26 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 	}
 	var consumer *shared.UpstreamOauthPluginConsumer
 	if r.Consumer != nil {
-		id1 := new(string)
+		id2 := new(string)
 		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id1 = r.Consumer.ID.ValueString()
+			*id2 = r.Consumer.ID.ValueString()
 		} else {
-			id1 = nil
+			id2 = nil
 		}
 		consumer = &shared.UpstreamOauthPluginConsumer{
-			ID: id1,
+			ID: id2,
 		}
 	}
 	var consumerGroup *shared.UpstreamOauthPluginConsumerGroup
 	if r.ConsumerGroup != nil {
-		id2 := new(string)
+		id3 := new(string)
 		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id2 = r.ConsumerGroup.ID.ValueString()
+			*id3 = r.ConsumerGroup.ID.ValueString()
 		} else {
-			id2 = nil
+			id3 = nil
 		}
 		consumerGroup = &shared.UpstreamOauthPluginConsumerGroup{
-			ID: id2,
+			ID: id3,
 		}
 	}
 	protocols := make([]shared.UpstreamOauthPluginProtocols, 0, len(r.Protocols))
@@ -534,26 +563,26 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 	}
 	var route *shared.UpstreamOauthPluginRoute
 	if r.Route != nil {
-		id3 := new(string)
+		id4 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id3 = r.Route.ID.ValueString()
+			*id4 = r.Route.ID.ValueString()
 		} else {
-			id3 = nil
+			id4 = nil
 		}
 		route = &shared.UpstreamOauthPluginRoute{
-			ID: id3,
+			ID: id4,
 		}
 	}
 	var service *shared.UpstreamOauthPluginService
 	if r.Service != nil {
-		id4 := new(string)
+		id5 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id4 = r.Service.ID.ValueString()
+			*id5 = r.Service.ID.ValueString()
 		} else {
-			id4 = nil
+			id5 = nil
 		}
 		service = &shared.UpstreamOauthPluginService{
-			ID: id4,
+			ID: id5,
 		}
 	}
 	out := shared.UpstreamOauthPlugin{
@@ -562,6 +591,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 		ID:            id,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
+		Partials:      partials,
 		Tags:          tags,
 		UpdatedAt:     updatedAt,
 		Config:        config,
@@ -692,14 +722,14 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 				if resp.Config.Cache.Redis == nil {
 					r.Config.Cache.Redis = nil
 				} else {
-					r.Config.Cache.Redis = &tfTypes.AiProxyAdvancedPluginRedis{}
+					r.Config.Cache.Redis = &tfTypes.PartialRedisEEConfig{}
 					r.Config.Cache.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Cache.Redis.ClusterMaxRedirections)
-					r.Config.Cache.Redis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
+					r.Config.Cache.Redis.ClusterNodes = []tfTypes.PartialRedisEEClusterNodes{}
 					if len(r.Config.Cache.Redis.ClusterNodes) > len(resp.Config.Cache.Redis.ClusterNodes) {
 						r.Config.Cache.Redis.ClusterNodes = r.Config.Cache.Redis.ClusterNodes[:len(resp.Config.Cache.Redis.ClusterNodes)]
 					}
 					for clusterNodesCount, clusterNodesItem := range resp.Config.Cache.Redis.ClusterNodes {
-						var clusterNodes tfTypes.AiProxyAdvancedPluginClusterNodes
+						var clusterNodes tfTypes.PartialRedisEEClusterNodes
 						clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 						clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
 						if clusterNodesCount+1 > len(r.Config.Cache.Redis.ClusterNodes) {
@@ -720,12 +750,12 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 					r.Config.Cache.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ReadTimeout)
 					r.Config.Cache.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.SendTimeout)
 					r.Config.Cache.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Cache.Redis.SentinelMaster)
-					r.Config.Cache.Redis.SentinelNodes = []tfTypes.AiProxyAdvancedPluginSentinelNodes{}
+					r.Config.Cache.Redis.SentinelNodes = []tfTypes.PartialRedisEESentinelNodes{}
 					if len(r.Config.Cache.Redis.SentinelNodes) > len(resp.Config.Cache.Redis.SentinelNodes) {
 						r.Config.Cache.Redis.SentinelNodes = r.Config.Cache.Redis.SentinelNodes[:len(resp.Config.Cache.Redis.SentinelNodes)]
 					}
 					for sentinelNodesCount, sentinelNodesItem := range resp.Config.Cache.Redis.SentinelNodes {
-						var sentinelNodes tfTypes.AiProxyAdvancedPluginSentinelNodes
+						var sentinelNodes tfTypes.PartialRedisEESentinelNodes
 						sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 						sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 						if sentinelNodesCount+1 > len(r.Config.Cache.Redis.SentinelNodes) {
@@ -853,6 +883,25 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
+		if resp.Partials != nil {
+			r.Partials = []tfTypes.Partials{}
+			if len(r.Partials) > len(resp.Partials) {
+				r.Partials = r.Partials[:len(resp.Partials)]
+			}
+			for partialsCount, partialsItem := range resp.Partials {
+				var partials tfTypes.Partials
+				partials.ID = types.StringPointerValue(partialsItem.ID)
+				partials.Name = types.StringPointerValue(partialsItem.Name)
+				partials.Path = types.StringPointerValue(partialsItem.Path)
+				if partialsCount+1 > len(r.Partials) {
+					r.Partials = append(r.Partials, partials)
+				} else {
+					r.Partials[partialsCount].ID = partials.ID
+					r.Partials[partialsCount].Name = partials.Name
+					r.Partials[partialsCount].Path = partials.Path
 				}
 			}
 		}

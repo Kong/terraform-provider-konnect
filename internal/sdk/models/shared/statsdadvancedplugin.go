@@ -49,6 +49,33 @@ func (o *StatsdAdvancedPluginOrdering) GetBefore() *StatsdAdvancedPluginBefore {
 	return o.Before
 }
 
+type StatsdAdvancedPluginPartials struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *StatsdAdvancedPluginPartials) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *StatsdAdvancedPluginPartials) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *StatsdAdvancedPluginPartials) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 // StatsdAdvancedPluginConsumerIdentifierDefault - The default consumer identifier for metrics. This will take effect when a metric's consumer identifier is omitted. Allowed values are `custom_id`, `consumer_id`, `username`.
 type StatsdAdvancedPluginConsumerIdentifierDefault string
 
@@ -684,11 +711,12 @@ type StatsdAdvancedPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                         `json:"enabled,omitempty"`
-	ID           *string                       `json:"id,omitempty"`
-	InstanceName *string                       `json:"instance_name,omitempty"`
-	name         string                        `const:"statsd-advanced" json:"name"`
-	Ordering     *StatsdAdvancedPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool                          `json:"enabled,omitempty"`
+	ID           *string                        `json:"id,omitempty"`
+	InstanceName *string                        `json:"instance_name,omitempty"`
+	name         string                         `const:"statsd-advanced" json:"name"`
+	Ordering     *StatsdAdvancedPluginOrdering  `json:"ordering,omitempty"`
+	Partials     []StatsdAdvancedPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -752,6 +780,13 @@ func (o *StatsdAdvancedPlugin) GetOrdering() *StatsdAdvancedPluginOrdering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *StatsdAdvancedPlugin) GetPartials() []StatsdAdvancedPluginPartials {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *StatsdAdvancedPlugin) GetTags() []string {

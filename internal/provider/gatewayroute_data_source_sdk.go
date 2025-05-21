@@ -34,12 +34,12 @@ func (r *GatewayRouteDataSourceModel) RefreshFromSharedRouteJSON(ctx context.Con
 	if resp != nil {
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		if resp.Destinations != nil {
-			r.Destinations = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
+			r.Destinations = []tfTypes.PartialRedisEEClusterNodes{}
 			if len(r.Destinations) > len(resp.Destinations) {
 				r.Destinations = r.Destinations[:len(resp.Destinations)]
 			}
 			for destinationsCount, destinationsItem := range resp.Destinations {
-				var destinations tfTypes.AiProxyAdvancedPluginClusterNodes
+				var destinations tfTypes.PartialRedisEEClusterNodes
 				destinations.IP = types.StringPointerValue(destinationsItem.IP)
 				destinations.Port = types.Int64PointerValue(destinationsItem.Port)
 				if destinationsCount+1 > len(r.Destinations) {
@@ -115,12 +115,12 @@ func (r *GatewayRouteDataSourceModel) RefreshFromSharedRouteJSON(ctx context.Con
 			}
 		}
 		if resp.Sources != nil {
-			r.Sources = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
+			r.Sources = []tfTypes.PartialRedisEEClusterNodes{}
 			if len(r.Sources) > len(resp.Sources) {
 				r.Sources = r.Sources[:len(resp.Sources)]
 			}
 			for sourcesCount, sourcesItem := range resp.Sources {
-				var sources tfTypes.AiProxyAdvancedPluginClusterNodes
+				var sources tfTypes.PartialRedisEEClusterNodes
 				sources.IP = types.StringPointerValue(sourcesItem.IP)
 				sources.Port = types.Int64PointerValue(sourcesItem.Port)
 				if sourcesCount+1 > len(r.Sources) {

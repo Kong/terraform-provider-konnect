@@ -5,9 +5,9 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type AiRagInjectorPluginVectordb struct {
-	Dimensions     types.Int64                 `tfsdk:"dimensions"`
-	DistanceMetric types.String                `tfsdk:"distance_metric"`
-	Pgvector       *Pgvector                   `tfsdk:"pgvector"`
-	Redis          *AiProxyAdvancedPluginRedis `tfsdk:"redis"`
-	Strategy       types.String                `tfsdk:"strategy"`
+	Dimensions     types.Int64           `tfsdk:"dimensions"`
+	DistanceMetric types.String          `tfsdk:"distance_metric"`
+	Pgvector       *Pgvector             `tfsdk:"pgvector"`
+	Redis          *PartialRedisEEConfig `tfsdk:"redis"`
+	Strategy       types.String          `tfsdk:"strategy"`
 }
