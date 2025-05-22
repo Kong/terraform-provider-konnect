@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.8.1  
+> Released on 2025/05/22
+
+### Bug fixes
+
+* The provider now works with terraform v1.12.1
+
 ## 2.8.0  
 > Released on 2025/05/20
 
