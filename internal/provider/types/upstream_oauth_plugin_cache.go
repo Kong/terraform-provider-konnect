@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type UpstreamOauthPluginCache struct {
 	DefaultTTL    types.Float64         `tfsdk:"default_ttl"`

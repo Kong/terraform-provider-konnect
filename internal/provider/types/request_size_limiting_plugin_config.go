@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type RequestSizeLimitingPluginConfig struct {
 	AllowedPayloadSize   types.Int64  `tfsdk:"allowed_payload_size"`

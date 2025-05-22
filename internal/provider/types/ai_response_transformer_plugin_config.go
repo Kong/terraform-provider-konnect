@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type AiResponseTransformerPluginConfig struct {
 	HTTPProxyHost                    types.String `tfsdk:"http_proxy_host"`

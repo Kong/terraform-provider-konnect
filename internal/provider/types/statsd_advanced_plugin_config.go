@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type StatsdAdvancedPluginConfig struct {
 	AllowStatusCodes           []types.String        `tfsdk:"allow_status_codes"`

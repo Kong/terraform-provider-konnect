@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type TLSMetadataHeadersPluginConfig struct {
 	ClientCertFingerprintHeaderName types.String `tfsdk:"client_cert_fingerprint_header_name"`

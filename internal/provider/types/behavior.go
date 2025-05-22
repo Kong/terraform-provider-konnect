@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type Behavior struct {
 	IdpErrorResponseBodyTemplate    types.String  `tfsdk:"idp_error_response_body_template"`

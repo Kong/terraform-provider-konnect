@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type AiPromptGuardPluginConfig struct {
 	AllowAllConversationHistory types.Bool     `tfsdk:"allow_all_conversation_history"`

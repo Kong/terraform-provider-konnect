@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type Bedrock struct {
 	AwsAssumeRoleArn   types.String `tfsdk:"aws_assume_role_arn"`

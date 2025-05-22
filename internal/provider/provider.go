@@ -87,43 +87,30 @@ func (p *KonnectProvider) Configure(ctx context.Context, req provider.ConfigureR
 		ServerURL = "https://global.api.konghq.com"
 	}
 
-	personalAccessToken := new(string)
-	if !data.PersonalAccessToken.IsUnknown() && !data.PersonalAccessToken.IsNull() {
-		*personalAccessToken = data.PersonalAccessToken.ValueString()
-	} else {
-		if len(os.Getenv("KONNECT_TOKEN")) > 0 {
-			*personalAccessToken = os.Getenv("KONNECT_TOKEN")
-		} else {
-			personalAccessToken = nil
-		}
+	security := shared.Security{}
+
+	if !data.PersonalAccessToken.IsUnknown() {
+		security.PersonalAccessToken = data.PersonalAccessToken.ValueStringPointer()
 	}
-	systemAccountAccessToken := new(string)
-	if !data.SystemAccountAccessToken.IsUnknown() && !data.SystemAccountAccessToken.IsNull() {
-		*systemAccountAccessToken = data.SystemAccountAccessToken.ValueString()
-	} else {
-		if len(os.Getenv("KONNECT_SPAT")) > 0 {
-			*systemAccountAccessToken = os.Getenv("KONNECT_SPAT")
-		} else {
-			systemAccountAccessToken = nil
-		}
+
+	if personalAccessTokenEnvVar := os.Getenv("KONNECT_TOKEN"); security.PersonalAccessToken == nil && personalAccessTokenEnvVar != "" {
+		security.PersonalAccessToken = &personalAccessTokenEnvVar
 	}
-	konnectAccessToken := new(string)
-	if !data.KonnectAccessToken.IsUnknown() && !data.KonnectAccessToken.IsNull() {
-		*konnectAccessToken = data.KonnectAccessToken.ValueString()
-	} else {
-		konnectAccessToken = nil
+
+	if !data.SystemAccountAccessToken.IsUnknown() {
+		security.SystemAccountAccessToken = data.SystemAccountAccessToken.ValueStringPointer()
 	}
-	serviceAccessToken := new(string)
-	if !data.ServiceAccessToken.IsUnknown() && !data.ServiceAccessToken.IsNull() {
-		*serviceAccessToken = data.ServiceAccessToken.ValueString()
-	} else {
-		serviceAccessToken = nil
+
+	if systemAccountAccessTokenEnvVar := os.Getenv("KONNECT_SPAT"); security.SystemAccountAccessToken == nil && systemAccountAccessTokenEnvVar != "" {
+		security.SystemAccountAccessToken = &systemAccountAccessTokenEnvVar
 	}
-	security := shared.Security{
-		PersonalAccessToken:      personalAccessToken,
-		SystemAccountAccessToken: systemAccountAccessToken,
-		KonnectAccessToken:       konnectAccessToken,
-		ServiceAccessToken:       serviceAccessToken,
+
+	if !data.KonnectAccessToken.IsUnknown() {
+		security.KonnectAccessToken = data.KonnectAccessToken.ValueStringPointer()
+	}
+
+	if !data.ServiceAccessToken.IsUnknown() {
+		security.ServiceAccessToken = data.ServiceAccessToken.ValueStringPointer()
 	}
 
 	providerHTTPTransportOpts := ProviderHTTPTransportOpts{

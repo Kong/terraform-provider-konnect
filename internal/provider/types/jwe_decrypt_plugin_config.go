@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type JweDecryptPluginConfig struct {
 	ForwardHeaderName types.String   `tfsdk:"forward_header_name"`

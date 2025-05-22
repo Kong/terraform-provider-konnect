@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type PortalOIDCConfig struct {
 	ClaimMappings *PortalClaimMappings `tfsdk:"claim_mappings"`

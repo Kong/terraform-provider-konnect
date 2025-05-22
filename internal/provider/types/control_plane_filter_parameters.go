@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type ControlPlaneFilterParameters struct {
 	CloudGateway types.Bool   `queryParam:"name=cloud_gateway" tfsdk:"cloud_gateway"`

@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type RateLimitingPluginConfig struct {
 	Day               types.Float64         `tfsdk:"day"`

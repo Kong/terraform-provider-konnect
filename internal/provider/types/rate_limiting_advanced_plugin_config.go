@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type RateLimitingAdvancedPluginConfig struct {
 	CompoundIdentifier    []types.String                   `tfsdk:"compound_identifier"`

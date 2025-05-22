@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type CanaryPluginConfig struct {
 	CanaryByHeaderName types.String   `tfsdk:"canary_by_header_name"`

@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type LogglyPluginConfig struct {
 	ClientErrorsSeverity types.String            `tfsdk:"client_errors_severity"`

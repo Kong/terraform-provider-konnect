@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type TLSHandshakeModifierPluginConfig struct {
 	TLSClientCertificate types.String `tfsdk:"tls_client_certificate"`

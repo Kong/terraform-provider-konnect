@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type ConfluentPluginConfig struct {
 	AllowedTopics                                []types.String     `tfsdk:"allowed_topics"`

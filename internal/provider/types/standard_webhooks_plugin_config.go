@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type StandardWebhooksPluginConfig struct {
 	SecretV1        types.String `tfsdk:"secret_v1"`
