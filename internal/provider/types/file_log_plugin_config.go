@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type FileLogPluginConfig struct {
 	CustomFieldsByLua map[string]types.String `tfsdk:"custom_fields_by_lua"`

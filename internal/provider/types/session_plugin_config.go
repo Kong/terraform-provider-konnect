@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type SessionPluginConfig struct {
 	AbsoluteTimeout         types.Float64  `tfsdk:"absolute_timeout"`

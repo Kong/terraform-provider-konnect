@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type ResponseRatelimitingPluginConfig struct {
 	BlockOnFirstViolation types.Bool              `tfsdk:"block_on_first_violation"`

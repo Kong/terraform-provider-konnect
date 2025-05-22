@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type OpaPluginConfig struct {
 	IncludeBodyInOpaInput           types.Bool   `tfsdk:"include_body_in_opa_input"`

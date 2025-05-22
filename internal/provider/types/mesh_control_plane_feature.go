@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type MeshControlPlaneFeature struct {
 	HostnameGeneratorCreation *MeshControlPlaneFeatureHostnameGenerationCreation `tfsdk:"hostname_generator_creation"`

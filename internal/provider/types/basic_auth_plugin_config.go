@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type BasicAuthPluginConfig struct {
 	Anonymous       types.String `tfsdk:"anonymous"`

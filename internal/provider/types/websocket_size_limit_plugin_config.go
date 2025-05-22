@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type WebsocketSizeLimitPluginConfig struct {
 	ClientMaxPayload   types.Int64 `tfsdk:"client_max_payload"`

@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type HeaderCertAuthPluginConfig struct {
 	AllowPartialChain       types.Bool     `tfsdk:"allow_partial_chain"`

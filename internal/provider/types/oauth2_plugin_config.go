@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type Oauth2PluginConfig struct {
 	AcceptHTTPIfAlreadyTerminated types.Bool     `tfsdk:"accept_http_if_already_terminated"`

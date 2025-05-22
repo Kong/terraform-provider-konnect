@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type JqPluginConfig struct {
 	RequestIfMediaType       []types.String           `tfsdk:"request_if_media_type"`

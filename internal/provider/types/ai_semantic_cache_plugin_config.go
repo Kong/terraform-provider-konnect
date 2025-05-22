@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type AiSemanticCachePluginConfig struct {
 	CacheControl           types.Bool                     `tfsdk:"cache_control"`

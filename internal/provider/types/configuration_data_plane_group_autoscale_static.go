@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type ConfigurationDataPlaneGroupAutoscaleStatic struct {
 	InstanceType       types.String `tfsdk:"instance_type"`

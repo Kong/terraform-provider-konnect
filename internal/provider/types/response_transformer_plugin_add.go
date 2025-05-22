@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type ResponseTransformerPluginAdd struct {
 	Headers   []types.String `tfsdk:"headers"`

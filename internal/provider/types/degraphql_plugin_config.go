@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type DegraphqlPluginConfig struct {
 	GraphqlServerPath types.String `tfsdk:"graphql_server_path"`

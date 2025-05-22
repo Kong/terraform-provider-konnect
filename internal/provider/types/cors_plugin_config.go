@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type CorsPluginConfig struct {
 	AllowOriginAbsent types.Bool     `tfsdk:"allow_origin_absent"`

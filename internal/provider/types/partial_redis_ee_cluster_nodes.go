@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type PartialRedisEEClusterNodes struct {
 	IP   types.String `tfsdk:"ip"`

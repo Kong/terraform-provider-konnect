@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type AppAuthStrategyKeyAuthRequest struct {
 	Active       types.Bool                           `tfsdk:"active"`

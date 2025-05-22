@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type JSONThreatProtectionPluginConfig struct {
 	AllowDuplicateObjectEntryName types.Bool   `tfsdk:"allow_duplicate_object_entry_name"`

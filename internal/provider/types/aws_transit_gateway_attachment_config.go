@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type AwsTransitGatewayAttachmentConfig struct {
 	Kind             types.String `tfsdk:"kind"`
