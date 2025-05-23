@@ -23,10 +23,10 @@ terraform:
   additionalEphemeralResources: []
   additionalProviderAttributes:
     httpHeaders: ""
-  additionalResources:
-    - importAlias: custom
-      importLocation: github.com/kong/terraform-provider-konnect/v2/src
-      resource: custom.NewCustomPluginResource
+  additionalResources: []
+    #- importAlias: custom
+    #  importLocation: github.com/kong/terraform-provider-konnect/v2/src
+    #  resource: custom.NewCustomPluginResource
   allowUnknownFieldsInWeakUnions: false
   author: kong
   defaultErrorName: SDKError
