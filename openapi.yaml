@@ -103,6 +103,23 @@ paths:
       tags:
         - Serverless Cloud Gateways
   /v1/mesh/control-planes:
+    get:
+      x-speakeasy-entity-operation: MeshControlPlanes#get
+      operationId: list-mesh-control-planes
+      summary: List Control Planes
+      description: Returns an array of control planes objects.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListMeshControlPlanesResponse'
+        '401':
+          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
+        '403':
+          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
+      tags:
+        - Mesh
     post:
       x-speakeasy-entity-operation: MeshControlPlane#create
       operationId: create-cp
@@ -1971,7 +1988,6 @@ paths:
         - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
       requestBody:
         description: Description of new JWT for creation
-        required: true
         content:
           application/json:
             schema:
@@ -2032,7 +2048,6 @@ paths:
         - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
       requestBody:
         description: Description of new API-key for creation
-        required: true
         content:
           application/json:
             schema:
@@ -25314,6 +25329,7 @@ components:
           nullable: true
         key:
           type: string
+          nullable: true
         tags:
           type: array
           items:
@@ -25328,8 +25344,6 @@ components:
         id: b2f34145-0343-41a4-9602-4c69dec2f269
         key: IL1deIyHyQA40WpeLeA1bIUXuvTwlGjo
       additionalProperties: false
-      required:
-        - key
     KeyAuthEncPlugin:
       x-speakeasy-entity: GatewayPluginKeyAuthEnc
       allOf:
@@ -25513,6 +25527,7 @@ components:
           nullable: true
         key:
           type: string
+          nullable: true
         tags:
           type: array
           items:
@@ -25525,8 +25540,6 @@ components:
         id: b2f34145-0343-41a4-9602-4c69dec2f269
         key: IL1deIyHyQA40WpeLeA1bIUXuvTwlGjo
       additionalProperties: false
-      required:
-        - key
     KeySet:
       x-speakeasy-entity: GatewayKeySet
       type: object
@@ -35760,6 +35773,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/MeshControlPlane'
+    ListMeshControlPlanesResponse:
+      description: A paginated list response for a collection of control planes.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MeshControlPlane'
+            title: ListMeshControlPlanesResponse
     SlugConflict:
       description: Conflict - `slug` property must be unique
       content:

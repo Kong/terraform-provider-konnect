@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.9.0  
+> Released on ?
+
+### Features
+
+* Add support for `konnect_mesh_control_planes`  data source
+
 ## 2.8.1  
 > Released on 2025/05/22
 

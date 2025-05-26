@@ -18,7 +18,7 @@ type KeyAuthWithoutParents struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64   `json:"created_at,omitempty"`
 	ID        *string  `json:"id,omitempty"`
-	Key       string   `json:"key"`
+	Key       *string  `json:"key,omitempty"`
 	Tags      []string `json:"tags,omitempty"`
 	// key-auth ttl in seconds
 	TTL *int64 `json:"ttl,omitempty"`
@@ -45,9 +45,9 @@ func (o *KeyAuthWithoutParents) GetID() *string {
 	return o.ID
 }
 
-func (o *KeyAuthWithoutParents) GetKey() string {
+func (o *KeyAuthWithoutParents) GetKey() *string {
 	if o == nil {
-		return ""
+		return nil
 	}
 	return o.Key
 }

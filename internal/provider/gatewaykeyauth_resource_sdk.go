@@ -38,9 +38,12 @@ func (r *GatewayKeyAuthResourceModel) ToSharedKeyAuthWithoutParents(ctx context.
 	} else {
 		id1 = nil
 	}
-	var key string
-	key = r.Key.ValueString()
-
+	key := new(string)
+	if !r.Key.IsUnknown() && !r.Key.IsNull() {
+		*key = r.Key.ValueString()
+	} else {
+		key = nil
+	}
 	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
@@ -82,7 +85,7 @@ func (r *GatewayKeyAuthResourceModel) ToOperationsCreateKeyAuthWithConsumerReque
 	out := operations.CreateKeyAuthWithConsumerRequest{
 		ControlPlaneID:        controlPlaneID,
 		ConsumerID:            consumerID,
-		KeyAuthWithoutParents: *keyAuthWithoutParents,
+		KeyAuthWithoutParents: keyAuthWithoutParents,
 	}
 
 	return &out, diags
@@ -142,7 +145,7 @@ func (r *GatewayKeyAuthResourceModel) RefreshFromSharedKeyAuth(ctx context.Conte
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
-		r.Key = types.StringValue(resp.Key)
+		r.Key = types.StringPointerValue(resp.Key)
 		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))

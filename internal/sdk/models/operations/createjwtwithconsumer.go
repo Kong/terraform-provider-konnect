@@ -13,7 +13,7 @@ type CreateJwtWithConsumerRequest struct {
 	// Consumer ID for nested entities
 	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// Description of new JWT for creation
-	JWTWithoutParents shared.JWTWithoutParents `request:"mediaType=application/json"`
+	JWTWithoutParents *shared.JWTWithoutParents `request:"mediaType=application/json"`
 }
 
 func (o *CreateJwtWithConsumerRequest) GetControlPlaneID() string {
@@ -30,9 +30,9 @@ func (o *CreateJwtWithConsumerRequest) GetConsumerID() string {
 	return o.ConsumerID
 }
 
-func (o *CreateJwtWithConsumerRequest) GetJWTWithoutParents() shared.JWTWithoutParents {
+func (o *CreateJwtWithConsumerRequest) GetJWTWithoutParents() *shared.JWTWithoutParents {
 	if o == nil {
-		return shared.JWTWithoutParents{}
+		return nil
 	}
 	return o.JWTWithoutParents
 }

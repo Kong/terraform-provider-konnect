@@ -36,13 +36,13 @@ resource "konnect_gateway_key_auth" "my_gatewaykeyauth" {
 
 - `consumer_id` (String) Consumer ID for nested entities. Requires replacement if changed.
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
-- `key` (String) Requires replacement if changed.
 
 ### Optional
 
 - `consumer` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created. Requires replacement if changed.
 - `id` (String) Requires replacement if changed.
+- `key` (String) Requires replacement if changed.
 - `tags` (List of String) Requires replacement if changed.
 - `ttl` (Number) key-auth ttl in seconds. Requires replacement if changed.
 
