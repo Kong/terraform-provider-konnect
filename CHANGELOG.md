@@ -7,6 +7,10 @@
 
 * Add support for `konnect_mesh_control_planes`  data source
 
+### Bug fixes
+
+* The `token` in `konnect_system_account_access_token` is now marked as sensitive
+
 ## 2.8.1  
 > Released on 2025/05/22
 
