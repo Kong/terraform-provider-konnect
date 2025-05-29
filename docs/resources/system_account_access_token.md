@@ -37,7 +37,7 @@ resource "konnect_system_account_access_token" "my_systemaccountaccesstoken" {
 - `created_at` (String) Timestamp of when the system account access token was created.
 - `id` (String) ID of the system account access token.
 - `last_used_at` (String) Timestamp of when the system account access token was last used.
-- `token` (String) The token of the system account access token.
+- `token` (String, Sensitive) The token of the system account access token.
 - `updated_at` (String) Timestamp of when the system account access token was last updated.
 
 ## Import

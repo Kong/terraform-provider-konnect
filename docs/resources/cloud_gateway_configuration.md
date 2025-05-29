@@ -30,7 +30,7 @@ resource "konnect_cloud_gateway_configuration" "my_cloudgatewayconfiguration" {
       environment = [
         {
           name  = "KONG_LOG_LEVEL"
-          value = "INFO"
+          value = "info"
         }
       ]
       provider = "aws"
