@@ -13362,7 +13362,7 @@ components:
         value:
           description: Value assigned to the environment variable field for the data-plane group.
           type: string
-          example: INFO
+          example: info
           maxLength: 120
           minLength: 1
       required:
@@ -36026,6 +36026,7 @@ components:
                 description: The token of the system account access token.
                 type: string
                 readOnly: true
+                x-speakeasy-param-sensitive: true
             example:
               id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
               name: Sample Access Token
