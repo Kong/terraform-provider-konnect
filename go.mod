@@ -2,8 +2,10 @@ module github.com/kong/terraform-provider-konnect/v2
 
 go 1.23.4
 
+toolchain go1.24.3
+
 require (
-	github.com/Kong/shared-speakeasy/customtypes v0.1.0
+	github.com/Kong/shared-speakeasy/customtypes v0.2.2
 	github.com/ericlagergren/decimal v0.0.0-20221120152707-495c53812d05
 	github.com/hashicorp/go-uuid v1.0.3
 	github.com/hashicorp/terraform-plugin-docs v0.20.1
@@ -27,7 +29,7 @@ require (
 	github.com/bgentry/speakeasy v0.1.0 // indirect
 	github.com/bmatcuk/doublestar/v4 v4.7.1 // indirect
 	github.com/cloudflare/circl v1.6.0 // indirect
-	github.com/fatih/color v1.16.0 // indirect
+	github.com/fatih/color v1.18.0 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
