@@ -10,6 +10,7 @@
 ### Bug fixes
 
 * The `token` in `konnect_system_account_access_token` is now marked as sensitive
+* Fixed output of `terraform plan` for `konnect_cloud_gateway_configuration` resource when there are no changes.
 
 ## 2.8.1  
 > Released on 2025/05/22
