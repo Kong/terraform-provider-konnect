@@ -17272,6 +17272,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -17560,6 +17561,7 @@ components:
               - http
               - https
             type: string
+          format: set
     AiAzureContentSafetyPlugin:
       x-speakeasy-entity: GatewayPluginAiAzureContentSafety
       allOf:
@@ -17641,6 +17643,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -17756,6 +17759,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -17852,6 +17856,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -17940,6 +17945,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -18611,6 +18617,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -18875,6 +18882,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -19259,6 +19267,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -19548,6 +19557,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -19816,6 +19826,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -20097,6 +20108,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -20231,6 +20243,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -20635,6 +20648,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -21047,6 +21061,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -21197,6 +21212,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -21287,6 +21303,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -21379,6 +21396,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -21472,6 +21490,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -21616,6 +21635,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -21798,6 +21818,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -21950,6 +21971,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -22081,6 +22103,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -22170,6 +22193,7 @@ components:
               - https
             minLength: 1
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -22382,6 +22406,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -22457,6 +22482,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -22503,6 +22529,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -22566,6 +22593,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -22636,6 +22664,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -22735,6 +22764,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -22941,6 +22971,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -23167,6 +23198,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -23230,6 +23262,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -23299,6 +23332,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -23492,6 +23526,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -23568,6 +23603,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -23707,6 +23743,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -23801,6 +23838,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -23889,6 +23927,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -24100,6 +24139,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -24190,6 +24230,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -24247,6 +24288,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -24333,6 +24375,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -24748,6 +24791,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -24892,6 +24936,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -25046,6 +25091,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -25220,6 +25266,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -25396,6 +25443,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -25485,6 +25533,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -25669,6 +25718,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -25758,6 +25808,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -25882,6 +25933,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -26055,6 +26107,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -26165,6 +26218,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -26263,6 +26317,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -26351,6 +26406,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -26457,6 +26513,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -26537,6 +26594,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -27963,6 +28021,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -28168,6 +28227,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -28688,6 +28748,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -28778,6 +28839,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -28859,6 +28921,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -29113,6 +29176,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -29250,6 +29314,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -29526,6 +29591,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -29708,6 +29774,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -29782,6 +29849,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -30208,6 +30276,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -30274,6 +30343,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -30357,6 +30427,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -30535,6 +30606,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -30690,6 +30762,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -30803,6 +30876,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -30942,6 +31016,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -31129,6 +31204,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -31288,6 +31364,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -31356,6 +31433,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -31671,6 +31749,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -32122,6 +32201,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -32445,6 +32525,7 @@ components:
               - http
               - https
             type: string
+          format: set
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
@@ -32608,6 +32689,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -32668,6 +32750,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -32874,6 +32957,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -33093,6 +33177,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -33225,6 +33310,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -33397,6 +33483,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -33444,6 +33531,7 @@ components:
               - https
               - tls
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -33504,6 +33592,7 @@ components:
               - https
               - tls
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -33579,6 +33668,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -34175,6 +34265,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -34243,6 +34334,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -34364,6 +34456,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -34423,6 +34516,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -34536,6 +34630,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -34683,6 +34778,7 @@ components:
               - http
               - https
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
@@ -34946,6 +35042,7 @@ components:
               - ws
               - wss
             type: string
+          format: set
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object

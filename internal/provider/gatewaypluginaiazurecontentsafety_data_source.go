@@ -179,7 +179,7 @@ func (r *GatewayPluginAiAzureContentSafetyDataSource) Schema(ctx context.Context
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `A set of strings representing HTTP protocols.`,

@@ -204,7 +204,7 @@ func (r *GatewayPluginProxyCacheDataSource) Schema(ctx context.Context, req data
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `A set of strings representing protocols.`,

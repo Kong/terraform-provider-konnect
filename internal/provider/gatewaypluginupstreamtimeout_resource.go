@@ -182,7 +182,7 @@ func (r *GatewayPluginUpstreamTimeoutResource) Schema(ctx context.Context, req r
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,

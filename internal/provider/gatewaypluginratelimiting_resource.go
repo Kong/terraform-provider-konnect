@@ -325,7 +325,7 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,

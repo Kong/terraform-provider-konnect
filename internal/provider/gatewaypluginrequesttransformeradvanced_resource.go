@@ -322,7 +322,7 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
