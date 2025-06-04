@@ -156,7 +156,7 @@ func (r *GatewayPluginCorsDataSource) Schema(ctx context.Context, req datasource
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `A set of strings representing HTTP protocols.`,

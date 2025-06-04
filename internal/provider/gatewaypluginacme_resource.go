@@ -474,7 +474,7 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,

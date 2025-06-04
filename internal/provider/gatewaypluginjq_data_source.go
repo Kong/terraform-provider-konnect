@@ -184,7 +184,7 @@ func (r *GatewayPluginJqDataSource) Schema(ctx context.Context, req datasource.S
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `A set of strings representing HTTP protocols.`,

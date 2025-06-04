@@ -230,7 +230,7 @@ func (r *GatewayPluginStatsdAdvancedDataSource) Schema(ctx context.Context, req 
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `A set of strings representing protocols.`,
