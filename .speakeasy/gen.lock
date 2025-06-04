@@ -3,10 +3,10 @@ id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
   docChecksum: fbf9929f684591b5c10c93c35153ee3d
   docVersion: 2.0.0
-  speakeasyVersion: 1.549.1
-  generationVersion: 2.607.1
+  speakeasyVersion: 1.555.2
+  generationVersion: 2.620.2
   releaseVersion: 2.8.1
-  configChecksum: f4fb8d92d08a7fcb10ecd760d1da8f96
+  configChecksum: 13b899db89706f122d5b0e773ee8a20b
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -22,7 +22,7 @@ features:
     methodServerURLs: 2.82.1
     nameOverrides: 2.81.3
     nullables: 0.0.0
-    retries: 2.81.2
+    retries: 2.81.3
     sets: 0.1.2
     typeOverrides: 2.81.1
     unions: 2.81.17
@@ -1088,7 +1088,7 @@ generatedFiles:
   - internal/provider/teamuser_resource_sdk.go
   - internal/provider/typeconvert/date.go
   - internal/provider/typeconvert/datetime.go
-  - internal/provider/typeconvert/int32.go
+  - internal/provider/typeconvert/int.go
   - internal/provider/types/account_key.go
   - internal/provider/types/acl_plugin_after.go
   - internal/provider/types/acl_plugin_config.go
@@ -1379,6 +1379,7 @@ generatedFiles:
   - internal/sdk/docs/models/operations/option.md
   - internal/sdk/dpcertificates.go
   - internal/sdk/hmacauthcredentials.go
+  - internal/sdk/internal/config/sdkconfiguration.go
   - internal/sdk/internal/hooks/hooks.go
   - internal/sdk/internal/utils/contenttype.go
   - internal/sdk/internal/utils/env.go

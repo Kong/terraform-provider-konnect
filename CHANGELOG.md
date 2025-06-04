@@ -10,6 +10,7 @@
 ### Bug fixes
 
 * The `token` in `konnect_system_account_access_token` is now marked as sensitive
+* Fixed a false diff in the `protocols` field in Gateway plugin configurations 
 
 ## 2.8.1  
 > Released on 2025/05/22
