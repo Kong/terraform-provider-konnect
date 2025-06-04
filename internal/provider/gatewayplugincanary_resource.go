@@ -236,7 +236,7 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,

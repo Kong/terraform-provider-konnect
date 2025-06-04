@@ -37,6 +37,8 @@ const (
 	RoleNamePublisher                 RoleName = "Publisher"
 	RoleNameRouteAdmin                RoleName = "Route Admin"
 	RoleNameSniAdmin                  RoleName = "SNI Admin"
+	RoleNameScorecardAdmin            RoleName = "Scorecard Admin"
+	RoleNameScorecardViewer           RoleName = "Scorecard Viewer"
 	RoleNameServiceAdmin              RoleName = "Service Admin"
 	RoleNameServiceCreator            RoleName = "Service Creator"
 	RoleNameServiceViewer             RoleName = "Service Viewer"
@@ -105,6 +107,10 @@ func (e *RoleName) UnmarshalJSON(data []byte) error {
 	case "Route Admin":
 		fallthrough
 	case "SNI Admin":
+		fallthrough
+	case "Scorecard Admin":
+		fallthrough
+	case "Scorecard Viewer":
 		fallthrough
 	case "Service Admin":
 		fallthrough

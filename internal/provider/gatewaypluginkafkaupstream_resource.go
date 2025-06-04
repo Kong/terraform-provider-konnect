@@ -356,7 +356,7 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,

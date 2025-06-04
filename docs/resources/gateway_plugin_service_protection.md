@@ -118,7 +118,7 @@ resource "konnect_gateway_plugin_service_protection" "my_gatewaypluginservicepro
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
-- `protocols` (List of String) A set of strings representing HTTP protocols.
+- `protocols` (Set of String) A set of strings representing HTTP protocols.
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.

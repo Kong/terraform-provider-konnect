@@ -510,7 +510,7 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,

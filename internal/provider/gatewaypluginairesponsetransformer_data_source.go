@@ -385,7 +385,7 @@ func (r *GatewayPluginAiResponseTransformerDataSource) Schema(ctx context.Contex
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `A set of strings representing HTTP protocols.`,

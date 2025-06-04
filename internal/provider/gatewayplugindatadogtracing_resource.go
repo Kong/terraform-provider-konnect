@@ -199,7 +199,7 @@ func (r *GatewayPluginDatadogTracingResource) Schema(ctx context.Context, req re
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,

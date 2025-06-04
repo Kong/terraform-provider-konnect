@@ -282,7 +282,7 @@ func (r *GatewayPluginXMLThreatProtectionResource) Schema(ctx context.Context, r
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,

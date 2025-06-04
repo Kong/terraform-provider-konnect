@@ -259,7 +259,7 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,

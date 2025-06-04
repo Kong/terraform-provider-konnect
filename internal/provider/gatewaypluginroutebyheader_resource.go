@@ -191,7 +191,7 @@ func (r *GatewayPluginRouteByHeaderResource) Schema(ctx context.Context, req res
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,

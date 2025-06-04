@@ -148,7 +148,7 @@ func (r *GatewayPluginRedirectDataSource) Schema(ctx context.Context, req dataso
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `A set of strings representing HTTP protocols.`,

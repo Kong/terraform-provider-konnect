@@ -521,7 +521,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,

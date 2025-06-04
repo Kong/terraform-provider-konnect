@@ -133,7 +133,7 @@ func (r *GatewayPluginJweDecryptDataSource) Schema(ctx context.Context, req data
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `A set of strings representing HTTP protocols.`,

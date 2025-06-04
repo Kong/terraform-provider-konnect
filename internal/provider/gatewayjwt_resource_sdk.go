@@ -99,7 +99,7 @@ func (r *GatewayJWTResourceModel) ToOperationsCreateJwtWithConsumerRequest(ctx c
 	out := operations.CreateJwtWithConsumerRequest{
 		ControlPlaneID:    controlPlaneID,
 		ConsumerID:        consumerID,
-		JWTWithoutParents: *jwtWithoutParents,
+		JWTWithoutParents: jwtWithoutParents,
 	}
 
 	return &out, diags

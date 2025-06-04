@@ -318,7 +318,7 @@ func (r *GatewayPluginConfluentResource) Schema(ctx context.Context, req resourc
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,

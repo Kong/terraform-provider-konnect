@@ -335,7 +335,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedDataSource) Schema(ctx context.Conte
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `A set of strings representing HTTP protocols.`,
