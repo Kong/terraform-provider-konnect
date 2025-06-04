@@ -58,7 +58,6 @@ resource "konnect_cloud_gateway_configuration" "my_cloudgatewayconfiguration" {
 ### Read-Only
 
 - `created_at` (String) An RFC-3339 timestamp representation of configuration creation date.
-- `dataplane_group_config` (Attributes List) Object that describes where data-planes will be deployed to, along with how many instances. (see [below for nested schema](#nestedatt--dataplane_group_config))
 - `entity_version` (Number) Positive, monotonically increasing version integer, to serialize configuration changes.
 - `id` (String) The ID of this resource.
 - `updated_at` (String) An RFC-3339 timestamp representation of configuration update date.
@@ -81,7 +80,6 @@ Read-Only:
 - `id` (String) ID of the data-plane group that represents a deployment target for a set of data-planes.
 - `private_ip_addresses` (List of String) List of private IP addresses of the internal load balancer that proxies traffic to this data-plane group.
 - `state` (String) State of the data-plane group. must be one of ["created", "initializing", "ready", "terminating", "terminated"]
-- `state_metadata` (Attributes) Metadata describing the backing state of the dataplane group and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--dataplane_groups--state_metadata))
 - `updated_at` (String) An RFC-3339 timestamp representation of data-plane group update date.
 
 <a id="nestedatt--dataplane_groups--autoscale"></a>
@@ -120,65 +118,6 @@ Optional:
 
 - `name` (String) Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_. Not Null
 - `value` (String) Value assigned to the environment variable field for the data-plane group. Not Null
-
-
-<a id="nestedatt--dataplane_groups--state_metadata"></a>
-### Nested Schema for `dataplane_groups.state_metadata`
-
-Read-Only:
-
-- `reason` (String) Reason why the dataplane group may be in an erroneous state, reported from backing infrastructure.
-- `reported_status` (String) Reported status of the dataplane group from backing infrastructure.
-
-
-
-<a id="nestedatt--dataplane_group_config"></a>
-### Nested Schema for `dataplane_group_config`
-
-Read-Only:
-
-- `autoscale` (Attributes) (see [below for nested schema](#nestedatt--dataplane_group_config--autoscale))
-- `cloud_gateway_network_id` (String)
-- `environment` (Attributes List) Array of environment variables to set for a data-plane group. (see [below for nested schema](#nestedatt--dataplane_group_config--environment))
-- `provider` (String) Name of cloud provider. must be one of ["aws", "azure"]
-- `region` (String) Region ID for cloud provider region.
-
-<a id="nestedatt--dataplane_group_config--autoscale"></a>
-### Nested Schema for `dataplane_group_config.autoscale`
-
-Read-Only:
-
-- `configuration_data_plane_group_autoscale_autopilot` (Attributes) Object that describes the autopilot autoscaling strategy. (see [below for nested schema](#nestedatt--dataplane_group_config--autoscale--configuration_data_plane_group_autoscale_autopilot))
-- `configuration_data_plane_group_autoscale_static` (Attributes) Object that describes the static autoscaling strategy. (see [below for nested schema](#nestedatt--dataplane_group_config--autoscale--configuration_data_plane_group_autoscale_static))
-
-<a id="nestedatt--dataplane_group_config--autoscale--configuration_data_plane_group_autoscale_autopilot"></a>
-### Nested Schema for `dataplane_group_config.autoscale.configuration_data_plane_group_autoscale_autopilot`
-
-Read-Only:
-
-- `base_rps` (Number) Base number of requests per second that the deployment target should support.
-- `kind` (String) must be "autopilot"
-- `max_rps` (Number, Deprecated) Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps. This field is deprecated and shouldn't be used in new configurations as it will be removed in a future version. max_rps is now calculated as 10x base_rps.
-
-
-<a id="nestedatt--dataplane_group_config--autoscale--configuration_data_plane_group_autoscale_static"></a>
-### Nested Schema for `dataplane_group_config.autoscale.configuration_data_plane_group_autoscale_static`
-
-Read-Only:
-
-- `instance_type` (String) Instance type name to indicate capacity. must be one of ["small", "medium", "large"]
-- `kind` (String) must be "static"
-- `requested_instances` (Number) Number of data-planes the deployment target will contain.
-
-
-
-<a id="nestedatt--dataplane_group_config--environment"></a>
-### Nested Schema for `dataplane_group_config.environment`
-
-Read-Only:
-
-- `name` (String) Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_.
-- `value` (String) Value assigned to the environment variable field for the data-plane group.
 
 ## Import
 

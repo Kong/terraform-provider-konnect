@@ -13396,6 +13396,7 @@ components:
       items:
         $ref: '#/components/schemas/ConfigurationDataPlaneGroupConfig'
       title: Configuration Data-Plane Group Configs
+      x-speakeasy-terraform-ignore: true
     ConfigurationDataPlaneGroup:
       description: Object that describes the set of data-plane groups currently pointed to this configuration.
       type: object
@@ -13437,6 +13438,7 @@ components:
               type: string
               example: |
                 Dataplane group could not be deployed due to insufficient cloud provider compute instances.
+          x-speakeasy-terraform-ignore: true
         private_ip_addresses:
           description: |
             List of private IP addresses of the internal load balancer that proxies traffic to this data-plane group.

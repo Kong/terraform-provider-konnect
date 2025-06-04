@@ -268,7 +268,7 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 			if resp.AwsTransitGatewayResponse.StateMetadata == nil {
 				r.AwsTransitGatewayResponse.StateMetadata = nil
 			} else {
-				r.AwsTransitGatewayResponse.StateMetadata = &tfTypes.StateMetadata{}
+				r.AwsTransitGatewayResponse.StateMetadata = &tfTypes.CustomDomainStateMetadata{}
 				r.AwsTransitGatewayResponse.StateMetadata.Reason = types.StringPointerValue(resp.AwsTransitGatewayResponse.StateMetadata.Reason)
 				r.AwsTransitGatewayResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AwsTransitGatewayResponse.StateMetadata.ReportedStatus)
 			}
@@ -315,7 +315,7 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 			if resp.AwsVpcPeeringGatewayResponse.StateMetadata == nil {
 				r.AwsVpcPeeringGatewayResponse.StateMetadata = nil
 			} else {
-				r.AwsVpcPeeringGatewayResponse.StateMetadata = &tfTypes.StateMetadata{}
+				r.AwsVpcPeeringGatewayResponse.StateMetadata = &tfTypes.CustomDomainStateMetadata{}
 				r.AwsVpcPeeringGatewayResponse.StateMetadata.Reason = types.StringPointerValue(resp.AwsVpcPeeringGatewayResponse.StateMetadata.Reason)
 				r.AwsVpcPeeringGatewayResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AwsVpcPeeringGatewayResponse.StateMetadata.ReportedStatus)
 			}
@@ -359,7 +359,7 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 			if resp.AzureTransitGatewayResponse.StateMetadata == nil {
 				r.AzureTransitGatewayResponse.StateMetadata = nil
 			} else {
-				r.AzureTransitGatewayResponse.StateMetadata = &tfTypes.StateMetadata{}
+				r.AzureTransitGatewayResponse.StateMetadata = &tfTypes.CustomDomainStateMetadata{}
 				r.AzureTransitGatewayResponse.StateMetadata.Reason = types.StringPointerValue(resp.AzureTransitGatewayResponse.StateMetadata.Reason)
 				r.AzureTransitGatewayResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AzureTransitGatewayResponse.StateMetadata.ReportedStatus)
 			}
