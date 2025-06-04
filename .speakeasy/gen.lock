@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: fbf9929f684591b5c10c93c35153ee3d
+  docChecksum: b92ed57e4c6b87877ae274548ef83055
   docVersion: 2.0.0
   speakeasyVersion: 1.549.1
   generationVersion: 2.607.1
@@ -1174,7 +1174,6 @@ generatedFiles:
   - internal/provider/types/configuration_data_plane_group_autoscale.go
   - internal/provider/types/configuration_data_plane_group_autoscale_autopilot.go
   - internal/provider/types/configuration_data_plane_group_autoscale_static.go
-  - internal/provider/types/configuration_data_plane_group_config.go
   - internal/provider/types/configuration_data_plane_group_environment_field.go
   - internal/provider/types/confluent_consume_plugin_config.go
   - internal/provider/types/confluent_plugin_config.go
@@ -1183,6 +1182,7 @@ generatedFiles:
   - internal/provider/types/control_plane_filter_parameters.go
   - internal/provider/types/correlation_id_plugin_config.go
   - internal/provider/types/cors_plugin_config.go
+  - internal/provider/types/custom_domain_state_metadata.go
   - internal/provider/types/custom_injections.go
   - internal/provider/types/custom_patterns.go
   - internal/provider/types/datadog_plugin_config.go
@@ -1325,7 +1325,6 @@ generatedFiles:
   - internal/provider/types/session_plugin_config.go
   - internal/provider/types/shm.go
   - internal/provider/types/standard_webhooks_plugin_config.go
-  - internal/provider/types/state_metadata.go
   - internal/provider/types/statsd_advanced_plugin_config.go
   - internal/provider/types/statsd_plugin_config.go
   - internal/provider/types/statsd_plugin_metrics.go
