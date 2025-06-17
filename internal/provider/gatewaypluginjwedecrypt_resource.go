@@ -163,7 +163,7 @@ func (r *GatewayPluginJweDecryptResource) Schema(ctx context.Context, req resour
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,

@@ -2,9 +2,12 @@
 
 package sdk
 
+// Generated from OpenAPI doc version 2.0.0 and generator version 2.620.2
+
 import (
 	"context"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/config"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/hooks"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -23,7 +26,7 @@ var ServerList = []string{
 	"https://in.api.konghq.com",
 }
 
-// HTTPClient provides an interface for suplying the SDK with a custom HTTP client
+// HTTPClient provides an interface for supplying the SDK with a custom HTTP client
 type HTTPClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
@@ -49,33 +52,11 @@ func Float64(f float64) *float64 { return &f }
 // Pointer provides a helper function to return a pointer to a type
 func Pointer[T any](v T) *T { return &v }
 
-type sdkConfiguration struct {
-	Client            HTTPClient
-	Security          func(context.Context) (interface{}, error)
-	ServerURL         string
-	ServerIndex       int
-	Language          string
-	OpenAPIDocVersion string
-	SDKVersion        string
-	GenVersion        string
-	UserAgent         string
-	RetryConfig       *retry.Config
-	Hooks             *hooks.Hooks
-	Timeout           *time.Duration
-}
-
-func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
-	if c.ServerURL != "" {
-		return c.ServerURL, nil
-	}
-
-	return ServerList[c.ServerIndex], nil
-}
-
 // Konnect API: The Konnect platform API
 //
 // https://developer.konghq.com - Documentation for Kong Gateway and its APIs
 type Konnect struct {
+	SDKVersion                     string
 	ServerlessCloudGateways        *ServerlessCloudGateways
 	Mesh                           *Mesh
 	APIProducts                    *APIProducts
@@ -221,7 +202,8 @@ type Konnect struct {
 	SystemAccountsTeamMembership *SystemAccountsTeamMembership
 	TeamMembership               *TeamMembership
 
-	sdkConfiguration sdkConfiguration
+	sdkConfiguration config.SDKConfiguration
+	hooks            *hooks.Hooks
 }
 
 type SDKOption func(*Konnect)
@@ -294,14 +276,12 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *Konnect {
 	sdk := &Konnect{
-		sdkConfiguration: sdkConfiguration{
-			Language:          "go",
-			OpenAPIDocVersion: "2.0.0",
-			SDKVersion:        "2.8.1",
-			GenVersion:        "2.607.1",
-			UserAgent:         "speakeasy-sdk/terraform 2.8.1 2.607.1 2.0.0 github.com/kong/terraform-provider-konnect/v2/internal/sdk",
-			Hooks:             hooks.New(),
+		SDKVersion: "2.9.0",
+		sdkConfiguration: config.SDKConfiguration{
+			UserAgent:  "speakeasy-sdk/terraform 2.9.0 2.620.2 2.0.0 github.com/kong/terraform-provider-konnect/v2/internal/sdk",
+			ServerList: ServerList,
 		},
+		hooks: hooks.New(),
 	}
 	for _, opt := range opts {
 		opt(sdk)
@@ -314,104 +294,58 @@ func New(opts ...SDKOption) *Konnect {
 
 	currentServerURL, _ := sdk.sdkConfiguration.GetServerDetails()
 	serverURL := currentServerURL
-	serverURL, sdk.sdkConfiguration.Client = sdk.sdkConfiguration.Hooks.SDKInit(currentServerURL, sdk.sdkConfiguration.Client)
-	if serverURL != currentServerURL {
+	serverURL, sdk.sdkConfiguration.Client = sdk.hooks.SDKInit(currentServerURL, sdk.sdkConfiguration.Client)
+	if currentServerURL != serverURL {
 		sdk.sdkConfiguration.ServerURL = serverURL
 	}
 
-	sdk.ServerlessCloudGateways = newServerlessCloudGateways(sdk.sdkConfiguration)
-
-	sdk.Mesh = newMesh(sdk.sdkConfiguration)
-
-	sdk.APIProducts = newAPIProducts(sdk.sdkConfiguration)
-
-	sdk.APIProductDocumentation = newAPIProductDocumentation(sdk.sdkConfiguration)
-
-	sdk.APIProductVersions = newAPIProductVersions(sdk.sdkConfiguration)
-
-	sdk.APIProductVersionSpecification = newAPIProductVersionSpecification(sdk.sdkConfiguration)
-
-	sdk.AppAuthStrategies = newAppAuthStrategies(sdk.sdkConfiguration)
-
-	sdk.AuditLogs = newAuditLogs(sdk.sdkConfiguration)
-
-	sdk.CloudGateways = newCloudGateways(sdk.sdkConfiguration)
-
-	sdk.ControlPlanes = newControlPlanes(sdk.sdkConfiguration)
-
-	sdk.ConfigStores = newConfigStores(sdk.sdkConfiguration)
-
-	sdk.CACertificates = newCACertificates(sdk.sdkConfiguration)
-
-	sdk.Certificates = newCertificates(sdk.sdkConfiguration)
-
-	sdk.ConsumerGroups = newConsumerGroups(sdk.sdkConfiguration)
-
-	sdk.Consumers = newConsumers(sdk.sdkConfiguration)
-
-	sdk.ACLs = newACLs(sdk.sdkConfiguration)
-
-	sdk.BasicAuthCredentials = newBasicAuthCredentials(sdk.sdkConfiguration)
-
-	sdk.HMACAuthCredentials = newHMACAuthCredentials(sdk.sdkConfiguration)
-
-	sdk.JWTs = newJWTs(sdk.sdkConfiguration)
-
-	sdk.APIKeys = newAPIKeys(sdk.sdkConfiguration)
-
-	sdk.MTLSAuthCredentials = newMTLSAuthCredentials(sdk.sdkConfiguration)
-
-	sdk.CustomPlugins = newCustomPlugins(sdk.sdkConfiguration)
-
-	sdk.KeySets = newKeySets(sdk.sdkConfiguration)
-
-	sdk.Keys = newKeys(sdk.sdkConfiguration)
-
-	sdk.Partials = newPartials(sdk.sdkConfiguration)
-
-	sdk.CustomPluginSchemas = newCustomPluginSchemas(sdk.sdkConfiguration)
-
-	sdk.Plugins = newPlugins(sdk.sdkConfiguration)
-
-	sdk.Routes = newRoutes(sdk.sdkConfiguration)
-
-	sdk.Services = newServices(sdk.sdkConfiguration)
-
-	sdk.SNIs = newSNIs(sdk.sdkConfiguration)
-
-	sdk.Upstreams = newUpstreams(sdk.sdkConfiguration)
-
-	sdk.Targets = newTargets(sdk.sdkConfiguration)
-
-	sdk.Vaults = newVaults(sdk.sdkConfiguration)
-
-	sdk.DPCertificates = newDPCertificates(sdk.sdkConfiguration)
-
-	sdk.ControlPlaneGroups = newControlPlaneGroups(sdk.sdkConfiguration)
-
-	sdk.Portals = newPortals(sdk.sdkConfiguration)
-
-	sdk.PortalAppearance = newPortalAppearance(sdk.sdkConfiguration)
-
-	sdk.PortalAuthSettings = newPortalAuthSettings(sdk.sdkConfiguration)
-
-	sdk.PortalProductVersions = newPortalProductVersions(sdk.sdkConfiguration)
-
-	sdk.PortalTeams = newPortalTeams(sdk.sdkConfiguration)
-
-	sdk.SystemAccounts = newSystemAccounts(sdk.sdkConfiguration)
-
-	sdk.SystemAccountsAccessTokens = newSystemAccountsAccessTokens(sdk.sdkConfiguration)
-
-	sdk.SystemAccountsRoles = newSystemAccountsRoles(sdk.sdkConfiguration)
-
-	sdk.Teams = newTeams(sdk.sdkConfiguration)
-
-	sdk.Roles = newRoles(sdk.sdkConfiguration)
-
-	sdk.SystemAccountsTeamMembership = newSystemAccountsTeamMembership(sdk.sdkConfiguration)
-
-	sdk.TeamMembership = newTeamMembership(sdk.sdkConfiguration)
+	sdk.ServerlessCloudGateways = newServerlessCloudGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Mesh = newMesh(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APIProducts = newAPIProducts(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APIProductDocumentation = newAPIProductDocumentation(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APIProductVersions = newAPIProductVersions(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APIProductVersionSpecification = newAPIProductVersionSpecification(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AppAuthStrategies = newAppAuthStrategies(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AuditLogs = newAuditLogs(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CloudGateways = newCloudGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.ControlPlanes = newControlPlanes(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.ConfigStores = newConfigStores(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CACertificates = newCACertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Certificates = newCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.ConsumerGroups = newConsumerGroups(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Consumers = newConsumers(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.ACLs = newACLs(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.BasicAuthCredentials = newBasicAuthCredentials(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.HMACAuthCredentials = newHMACAuthCredentials(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.JWTs = newJWTs(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APIKeys = newAPIKeys(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MTLSAuthCredentials = newMTLSAuthCredentials(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CustomPlugins = newCustomPlugins(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.KeySets = newKeySets(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Keys = newKeys(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Partials = newPartials(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CustomPluginSchemas = newCustomPluginSchemas(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Plugins = newPlugins(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Routes = newRoutes(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Services = newServices(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.SNIs = newSNIs(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Upstreams = newUpstreams(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Targets = newTargets(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Vaults = newVaults(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.DPCertificates = newDPCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.ControlPlaneGroups = newControlPlaneGroups(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Portals = newPortals(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalAppearance = newPortalAppearance(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalAuthSettings = newPortalAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalProductVersions = newPortalProductVersions(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalTeams = newPortalTeams(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.SystemAccounts = newSystemAccounts(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.SystemAccountsAccessTokens = newSystemAccountsAccessTokens(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.SystemAccountsRoles = newSystemAccountsRoles(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Teams = newTeams(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Roles = newRoles(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.SystemAccountsTeamMembership = newSystemAccountsTeamMembership(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.TeamMembership = newTeamMembership(sdk, sdk.sdkConfiguration, sdk.hooks)
 
 	return sdk
 }

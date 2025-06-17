@@ -200,7 +200,7 @@ func (r *GatewayPluginJwtResource) Schema(ctx context.Context, req resource.Sche
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,

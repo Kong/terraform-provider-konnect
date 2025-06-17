@@ -93,6 +93,7 @@ func (r *SystemAccountAccessTokenResource) Schema(ctx context.Context, req resou
 			},
 			"token": schema.StringAttribute{
 				Computed:    true,
+				Sensitive:   true,
 				Description: `The token of the system account access token.`,
 			},
 			"updated_at": schema.StringAttribute{

@@ -156,7 +156,7 @@ func (r *GatewayPluginPreFunctionDataSource) Schema(ctx context.Context, req dat
 					},
 				},
 			},
-			"protocols": schema.ListAttribute{
+			"protocols": schema.SetAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `A set of strings representing protocols.`,

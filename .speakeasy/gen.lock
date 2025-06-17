@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: afc2e4d6197109ef32af81a1c386e0c3
+  docChecksum: 7941d6f6303b4ba8a7e40e83c538d97a
   docVersion: 2.0.0
-  speakeasyVersion: 1.549.1
-  generationVersion: 2.607.1
-  releaseVersion: 2.8.1
-  configChecksum: f4fb8d92d08a7fcb10ecd760d1da8f96
+  speakeasyVersion: 1.555.2
+  generationVersion: 2.620.2
+  releaseVersion: 2.9.0
+  configChecksum: d793a81244c1cec44062af32bdf0b2f1
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -22,7 +22,7 @@ features:
     methodServerURLs: 2.82.1
     nameOverrides: 2.81.3
     nullables: 0.0.0
-    retries: 2.81.2
+    retries: 2.81.3
     sets: 0.1.2
     typeOverrides: 2.81.1
     unions: 2.81.17
@@ -166,6 +166,7 @@ generatedFiles:
   - examples/data-sources/konnect_gateway_upstream/data-source.tf
   - examples/data-sources/konnect_gateway_vault/data-source.tf
   - examples/data-sources/konnect_mesh_control_plane/data-source.tf
+  - examples/data-sources/konnect_mesh_control_planes/data-source.tf
   - examples/data-sources/konnect_portal_appearance/data-source.tf
   - examples/data-sources/konnect_portal_auth/data-source.tf
   - examples/data-sources/konnect_portal_list/data-source.tf
@@ -1024,6 +1025,8 @@ generatedFiles:
   - internal/provider/meshcontrolplane_data_source_sdk.go
   - internal/provider/meshcontrolplane_resource.go
   - internal/provider/meshcontrolplane_resource_sdk.go
+  - internal/provider/meshcontrolplanes_data_source.go
+  - internal/provider/meshcontrolplanes_data_source_sdk.go
   - internal/provider/portal_resource.go
   - internal/provider/portal_resource_sdk.go
   - internal/provider/portalappearance_data_source.go
@@ -1085,7 +1088,7 @@ generatedFiles:
   - internal/provider/teamuser_resource_sdk.go
   - internal/provider/typeconvert/date.go
   - internal/provider/typeconvert/datetime.go
-  - internal/provider/typeconvert/int32.go
+  - internal/provider/typeconvert/int.go
   - internal/provider/types/account_key.go
   - internal/provider/types/acl_plugin_after.go
   - internal/provider/types/acl_plugin_config.go
@@ -1229,6 +1232,7 @@ generatedFiles:
   - internal/provider/types/loggly_plugin_config.go
   - internal/provider/types/members.go
   - internal/provider/types/memory.go
+  - internal/provider/types/mesh_control_plane.go
   - internal/provider/types/mesh_control_plane_feature.go
   - internal/provider/types/mesh_control_plane_feature_hostname_generation_creation.go
   - internal/provider/types/metadata.go
@@ -1375,6 +1379,7 @@ generatedFiles:
   - internal/sdk/docs/models/operations/option.md
   - internal/sdk/dpcertificates.go
   - internal/sdk/hmacauthcredentials.go
+  - internal/sdk/internal/config/sdkconfiguration.go
   - internal/sdk/internal/hooks/hooks.go
   - internal/sdk/internal/utils/contenttype.go
   - internal/sdk/internal/utils/env.go
@@ -1821,6 +1826,7 @@ generatedFiles:
   - internal/sdk/models/operations/getxmlthreatprotectionplugin.go
   - internal/sdk/models/operations/getzipkinplugin.go
   - internal/sdk/models/operations/listcontrolplanes.go
+  - internal/sdk/models/operations/listmeshcontrolplanes.go
   - internal/sdk/models/operations/listportals.go
   - internal/sdk/models/operations/listprovideraccounts.go
   - internal/sdk/models/operations/options.go
@@ -2128,6 +2134,7 @@ generatedFiles:
   - internal/sdk/models/shared/ldapauthadvancedplugin.go
   - internal/sdk/models/shared/ldapauthplugin.go
   - internal/sdk/models/shared/listcontrolplanesresponse.go
+  - internal/sdk/models/shared/listmeshcontrolplanesresponse.go
   - internal/sdk/models/shared/listportalsresponse.go
   - internal/sdk/models/shared/listprovideraccountsresponse.go
   - internal/sdk/models/shared/logglyplugin.go
@@ -9075,5 +9082,18 @@ examples:
           application/problem+json: {"status": 154714, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>"], "source": "body"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>"], "source": "body"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>"], "source": "body"}]}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  list-mesh-control-planes:
+    speakeasy-default-list-mesh-control-planes:
+      parameters:
+        query:
+          page[size]: 10
+          page[number]: 1
+      responses:
+        "200":
+          application/json: {"meta": {"page": {"number": 1, "size": 10, "total": 100}}, "data": [{"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "labels": {"test": "true"}, "created_at": "2023-01-11T02:30:42.227Z", "updated_at": "2023-01-11T02:30:42.227Z"}, {"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "labels": {"test": "true"}, "created_at": "2023-01-11T02:30:42.227Z", "updated_at": "2023-01-11T02:30:42.227Z"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
 examplesVersion: 1.0.2
 generatedTests: {}
