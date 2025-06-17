@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2.9.0  
-> Released on ?
+> Released on 2025/06/16
 
 ### Features
 
