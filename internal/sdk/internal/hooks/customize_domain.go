@@ -2,20 +2,32 @@ package hooks
 
 import (
 	"net/http"
-	"os"
 	"strings"
 )
 
-type CustomizeKongDomainHook struct{}
+type CustomizeKongDomainHook struct {
+	Enabled           bool
+	Domain            string
+	ReplaceFullDomain bool
+}
 
 // Replace `.konghq.com` with the custom domain set in the `KONG_CUSTOM_DOMAIN` environment variable.
 func (i *CustomizeKongDomainHook) BeforeRequest(hookCtx BeforeRequestContext, req *http.Request) (*http.Request, error) {
-	customDomain := os.Getenv("KONG_CUSTOM_DOMAIN")
-	if customDomain != "" {
-		host := strings.Replace(req.URL.Host, ".konghq.com", "."+customDomain, 1)
-		req.URL.Host = host
-		req.Host = host
+	if !i.Enabled {
+		return req, nil
 	}
+
+	customDomain := i.Domain
+	host := req.URL.Host
+
+	if i.ReplaceFullDomain {
+		host = i.Domain
+	} else {
+		host = strings.Replace(req.URL.Host, ".konghq.com", "."+customDomain, 1)
+	}
+
+	req.URL.Host = host
+	req.Host = host
 
 	return req, nil
 }
