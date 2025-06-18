@@ -28,17 +28,17 @@ type CloudGatewayCustomDomainDataSource struct {
 
 // CloudGatewayCustomDomainDataSourceModel describes the data model.
 type CloudGatewayCustomDomainDataSourceModel struct {
-	CertificateID   types.String          `tfsdk:"certificate_id"`
-	ControlPlaneGeo types.String          `tfsdk:"control_plane_geo"`
-	ControlPlaneID  types.String          `tfsdk:"control_plane_id"`
-	CreatedAt       types.String          `tfsdk:"created_at"`
-	Domain          types.String          `tfsdk:"domain"`
-	EntityVersion   types.Int64           `tfsdk:"entity_version"`
-	ID              types.String          `tfsdk:"id"`
-	SniID           types.String          `tfsdk:"sni_id"`
-	State           types.String          `tfsdk:"state"`
-	StateMetadata   tfTypes.StateMetadata `tfsdk:"state_metadata"`
-	UpdatedAt       types.String          `tfsdk:"updated_at"`
+	CertificateID   types.String                      `tfsdk:"certificate_id"`
+	ControlPlaneGeo types.String                      `tfsdk:"control_plane_geo"`
+	ControlPlaneID  types.String                      `tfsdk:"control_plane_id"`
+	CreatedAt       types.String                      `tfsdk:"created_at"`
+	Domain          types.String                      `tfsdk:"domain"`
+	EntityVersion   types.Int64                       `tfsdk:"entity_version"`
+	ID              types.String                      `tfsdk:"id"`
+	SniID           types.String                      `tfsdk:"sni_id"`
+	State           types.String                      `tfsdk:"state"`
+	StateMetadata   tfTypes.CustomDomainStateMetadata `tfsdk:"state_metadata"`
+	UpdatedAt       types.String                      `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.

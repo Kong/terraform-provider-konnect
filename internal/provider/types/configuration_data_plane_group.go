@@ -17,6 +17,5 @@ type ConfigurationDataPlaneGroup struct {
 	Provider              types.String                                  `tfsdk:"provider"`
 	Region                types.String                                  `tfsdk:"region"`
 	State                 types.String                                  `tfsdk:"state"`
-	StateMetadata         *StateMetadata                                `tfsdk:"state_metadata"`
 	UpdatedAt             types.String                                  `tfsdk:"updated_at"`
 }

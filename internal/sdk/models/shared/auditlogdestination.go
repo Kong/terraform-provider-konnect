@@ -3,38 +3,9 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 	"time"
 )
-
-// AuditLogDestinationLogFormat - The output format of each log messages.
-type AuditLogDestinationLogFormat string
-
-const (
-	AuditLogDestinationLogFormatCef  AuditLogDestinationLogFormat = "cef"
-	AuditLogDestinationLogFormatJSON AuditLogDestinationLogFormat = "json"
-)
-
-func (e AuditLogDestinationLogFormat) ToPointer() *AuditLogDestinationLogFormat {
-	return &e
-}
-func (e *AuditLogDestinationLogFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "cef":
-		fallthrough
-	case "json":
-		*e = AuditLogDestinationLogFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AuditLogDestinationLogFormat: %v", v)
-	}
-}
 
 // AuditLogDestination - Audit Log Destination Schema
 type AuditLogDestination struct {
@@ -45,7 +16,7 @@ type AuditLogDestination struct {
 	// The endpoint that will receive audit log messages.
 	Endpoint *string `json:"endpoint,omitempty"`
 	// The output format of each log messages.
-	LogFormat *AuditLogDestinationLogFormat `json:"log_format,omitempty"`
+	LogFormat *LogFormat `default:"cef" json:"log_format"`
 	// Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
 	SkipSslVerification *bool `json:"skip_ssl_verification,omitempty"`
 	// Timestamp when this webhook was created.
@@ -86,7 +57,7 @@ func (o *AuditLogDestination) GetEndpoint() *string {
 	return o.Endpoint
 }
 
-func (o *AuditLogDestination) GetLogFormat() *AuditLogDestinationLogFormat {
+func (o *AuditLogDestination) GetLogFormat() *LogFormat {
 	if o == nil {
 		return nil
 	}

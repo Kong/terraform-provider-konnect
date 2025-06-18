@@ -2,7 +2,7 @@
 
 package shared
 
-// ID - Filters on the given comma separated string by one or more exact match.
+// ID - Returns entities that exact match any of the comma-delimited phrases in the filter string.
 type ID struct {
 	Eq  *string `queryParam:"name=eq"`
 	Oeq *string `queryParam:"name=oeq"`
@@ -71,7 +71,7 @@ func (o *ClusterType) GetNeq() *string {
 }
 
 type ControlPlaneFilterParameters struct {
-	// Filters on the given comma separated string by one or more exact match.
+	// Returns entities that exact match any of the comma-delimited phrases in the filter string.
 	ID *ID `queryParam:"name=id"`
 	// Filters on the given string field value by exact match inequality.
 	Name *Name `queryParam:"name=name"`

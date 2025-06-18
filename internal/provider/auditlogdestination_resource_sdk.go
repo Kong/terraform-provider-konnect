@@ -26,7 +26,12 @@ func (r *AuditLogDestinationResourceModel) ToSharedCreateAuditLogDestination(ctx
 	} else {
 		authorization = nil
 	}
-	logFormat := shared.LogFormat(r.LogFormat.ValueString())
+	logFormat := new(shared.LogFormat)
+	if !r.LogFormat.IsUnknown() && !r.LogFormat.IsNull() {
+		*logFormat = shared.LogFormat(r.LogFormat.ValueString())
+	} else {
+		logFormat = nil
+	}
 	skipSslVerification := new(bool)
 	if !r.SkipSslVerification.IsUnknown() && !r.SkipSslVerification.IsNull() {
 		*skipSslVerification = r.SkipSslVerification.ValueBool()
@@ -65,9 +70,9 @@ func (r *AuditLogDestinationResourceModel) ToSharedUpdateAuditLogDestination(ctx
 	} else {
 		authorization = nil
 	}
-	logFormat := new(shared.UpdateAuditLogDestinationLogFormat)
+	logFormat := new(shared.LogFormat)
 	if !r.LogFormat.IsUnknown() && !r.LogFormat.IsNull() {
-		*logFormat = shared.UpdateAuditLogDestinationLogFormat(r.LogFormat.ValueString())
+		*logFormat = shared.LogFormat(r.LogFormat.ValueString())
 	} else {
 		logFormat = nil
 	}

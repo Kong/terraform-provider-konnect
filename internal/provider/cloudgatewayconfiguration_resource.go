@@ -39,16 +39,15 @@ type CloudGatewayConfigurationResource struct {
 
 // CloudGatewayConfigurationResourceModel describes the resource data model.
 type CloudGatewayConfigurationResourceModel struct {
-	APIAccess            types.String                                `tfsdk:"api_access"`
-	ControlPlaneGeo      types.String                                `tfsdk:"control_plane_geo"`
-	ControlPlaneID       types.String                                `tfsdk:"control_plane_id"`
-	CreatedAt            types.String                                `tfsdk:"created_at"`
-	DataplaneGroupConfig []tfTypes.ConfigurationDataPlaneGroupConfig `tfsdk:"dataplane_group_config"`
-	DataplaneGroups      []tfTypes.ConfigurationDataPlaneGroup       `tfsdk:"dataplane_groups"`
-	EntityVersion        types.Float64                               `tfsdk:"entity_version"`
-	ID                   types.String                                `tfsdk:"id"`
-	UpdatedAt            types.String                                `tfsdk:"updated_at"`
-	Version              types.String                                `tfsdk:"version"`
+	APIAccess       types.String                          `tfsdk:"api_access"`
+	ControlPlaneGeo types.String                          `tfsdk:"control_plane_geo"`
+	ControlPlaneID  types.String                          `tfsdk:"control_plane_id"`
+	CreatedAt       types.String                          `tfsdk:"created_at"`
+	DataplaneGroups []tfTypes.ConfigurationDataPlaneGroup `tfsdk:"dataplane_groups"`
+	EntityVersion   types.Float64                         `tfsdk:"entity_version"`
+	ID              types.String                          `tfsdk:"id"`
+	UpdatedAt       types.String                          `tfsdk:"updated_at"`
+	Version         types.String                          `tfsdk:"version"`
 }
 
 func (r *CloudGatewayConfigurationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -94,123 +93,6 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 				Validators: []validator.String{
 					validators.IsRFC3339(),
 				},
-			},
-			"dataplane_group_config": schema.ListNestedAttribute{
-				Computed: true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"autoscale": schema.SingleNestedAttribute{
-							Computed: true,
-							Attributes: map[string]schema.Attribute{
-								"configuration_data_plane_group_autoscale_autopilot": schema.SingleNestedAttribute{
-									Computed: true,
-									Attributes: map[string]schema.Attribute{
-										"base_rps": schema.Int64Attribute{
-											Computed:    true,
-											Description: `Base number of requests per second that the deployment target should support.`,
-										},
-										"kind": schema.StringAttribute{
-											Computed:    true,
-											Description: `must be "autopilot"`,
-											Validators: []validator.String{
-												stringvalidator.OneOf(
-													"autopilot",
-												),
-											},
-										},
-										"max_rps": schema.Int64Attribute{
-											Computed:           true,
-											DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
-											Description:        `Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps. This field is deprecated and shouldn't be used in new configurations as it will be removed in a future version. max_rps is now calculated as 10x base_rps.`,
-										},
-									},
-									Description: `Object that describes the autopilot autoscaling strategy.`,
-									Validators: []validator.Object{
-										objectvalidator.ConflictsWith(path.Expressions{
-											path.MatchRelative().AtParent().AtName("configuration_data_plane_group_autoscale_static"),
-										}...),
-									},
-								},
-								"configuration_data_plane_group_autoscale_static": schema.SingleNestedAttribute{
-									Computed: true,
-									Attributes: map[string]schema.Attribute{
-										"instance_type": schema.StringAttribute{
-											Computed:    true,
-											Description: `Instance type name to indicate capacity. must be one of ["small", "medium", "large"]`,
-											Validators: []validator.String{
-												stringvalidator.OneOf(
-													"small",
-													"medium",
-													"large",
-												),
-											},
-										},
-										"kind": schema.StringAttribute{
-											Computed:    true,
-											Description: `must be "static"`,
-											Validators: []validator.String{
-												stringvalidator.OneOf("static"),
-											},
-										},
-										"requested_instances": schema.Int64Attribute{
-											Computed:    true,
-											Description: `Number of data-planes the deployment target will contain.`,
-										},
-									},
-									Description: `Object that describes the static autoscaling strategy.`,
-									Validators: []validator.Object{
-										objectvalidator.ConflictsWith(path.Expressions{
-											path.MatchRelative().AtParent().AtName("configuration_data_plane_group_autoscale_autopilot"),
-										}...),
-									},
-								},
-							},
-						},
-						"cloud_gateway_network_id": schema.StringAttribute{
-							Computed: true,
-							PlanModifiers: []planmodifier.String{
-								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-							},
-						},
-						"environment": schema.ListNestedAttribute{
-							Computed: true,
-							NestedObject: schema.NestedAttributeObject{
-								Attributes: map[string]schema.Attribute{
-									"name": schema.StringAttribute{
-										Computed:    true,
-										Description: `Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_.`,
-										Validators: []validator.String{
-											stringvalidator.UTF8LengthBetween(6, 120),
-										},
-									},
-									"value": schema.StringAttribute{
-										Computed:    true,
-										Description: `Value assigned to the environment variable field for the data-plane group.`,
-										Validators: []validator.String{
-											stringvalidator.UTF8LengthBetween(1, 120),
-										},
-									},
-								},
-							},
-							Description: `Array of environment variables to set for a data-plane group.`,
-						},
-						"provider": schema.StringAttribute{
-							Computed:    true,
-							Description: `Name of cloud provider. must be one of ["aws", "azure"]`,
-							Validators: []validator.String{
-								stringvalidator.OneOf(
-									"aws",
-									"azure",
-								),
-							},
-						},
-						"region": schema.StringAttribute{
-							Computed:    true,
-							Description: `Region ID for cloud provider region.`,
-						},
-					},
-				},
-				Description: `Object that describes where data-planes will be deployed to, along with how many instances.`,
 			},
 			"dataplane_groups": schema.SetNestedAttribute{
 				Required: true,
@@ -295,7 +177,8 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 											},
 										},
 									},
-									Description: `Object that describes the static autoscaling strategy.`,
+									DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+									Description:        `Object that describes the static autoscaling strategy. Deprecated in favor of the autopilot autoscaling strategy. Static autoscaling will be removed in a future version.`,
 									Validators: []validator.Object{
 										objectvalidator.ConflictsWith(path.Expressions{
 											path.MatchRelative().AtParent().AtName("configuration_data_plane_group_autoscale_autopilot"),
@@ -402,20 +285,6 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 									"terminated",
 								),
 							},
-						},
-						"state_metadata": schema.SingleNestedAttribute{
-							Computed: true,
-							Attributes: map[string]schema.Attribute{
-								"reason": schema.StringAttribute{
-									Computed:    true,
-									Description: `Reason why the dataplane group may be in an erroneous state, reported from backing infrastructure.`,
-								},
-								"reported_status": schema.StringAttribute{
-									Computed:    true,
-									Description: `Reported status of the dataplane group from backing infrastructure.`,
-								},
-							},
-							Description: `Metadata describing the backing state of the dataplane group and why it may be in an erroneous state.`,
 						},
 						"updated_at": schema.StringAttribute{
 							Computed:    true,

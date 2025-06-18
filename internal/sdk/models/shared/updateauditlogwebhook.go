@@ -3,36 +3,8 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
-
-// UpdateAuditLogWebhookLogFormat - The output format of each log message.
-type UpdateAuditLogWebhookLogFormat string
-
-const (
-	UpdateAuditLogWebhookLogFormatCef  UpdateAuditLogWebhookLogFormat = "cef"
-	UpdateAuditLogWebhookLogFormatJSON UpdateAuditLogWebhookLogFormat = "json"
-)
-
-func (e UpdateAuditLogWebhookLogFormat) ToPointer() *UpdateAuditLogWebhookLogFormat {
-	return &e
-}
-func (e *UpdateAuditLogWebhookLogFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "cef":
-		fallthrough
-	case "json":
-		*e = UpdateAuditLogWebhookLogFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UpdateAuditLogWebhookLogFormat: %v", v)
-	}
-}
 
 // UpdateAuditLogWebhook - The request schema to modify an audit log webhook.
 type UpdateAuditLogWebhook struct {
@@ -42,12 +14,23 @@ type UpdateAuditLogWebhook struct {
 	Authorization *string `json:"authorization,omitempty"`
 	// Indicates if the data should be sent to the webhook.
 	Enabled *bool `json:"enabled,omitempty"`
-	// The output format of each log message.
-	LogFormat *UpdateAuditLogWebhookLogFormat `json:"log_format,omitempty"`
+	// The output format of each log messages.
+	LogFormat *LogFormat `default:"cef" json:"log_format"`
 	// Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
 	// We strongly recommend not setting this to 'true' as you are subject to man-in-the-middle and other attacks.
 	// This option should be considered only for self-signed SSL certificates used in a non-production environment.
 	SkipSslVerification *bool `json:"skip_ssl_verification,omitempty"`
+}
+
+func (u UpdateAuditLogWebhook) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAuditLogWebhook) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpdateAuditLogWebhook) GetEndpoint() *string {
@@ -71,7 +54,7 @@ func (o *UpdateAuditLogWebhook) GetEnabled() *bool {
 	return o.Enabled
 }
 
-func (o *UpdateAuditLogWebhook) GetLogFormat() *UpdateAuditLogWebhookLogFormat {
+func (o *UpdateAuditLogWebhook) GetLogFormat() *LogFormat {
 	if o == nil {
 		return nil
 	}

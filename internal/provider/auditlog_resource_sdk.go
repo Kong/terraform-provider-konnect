@@ -32,9 +32,9 @@ func (r *AuditLogResourceModel) ToSharedUpdateAuditLogWebhook(ctx context.Contex
 	} else {
 		enabled = nil
 	}
-	logFormat := new(shared.UpdateAuditLogWebhookLogFormat)
+	logFormat := new(shared.LogFormat)
 	if !r.LogFormat.IsUnknown() && !r.LogFormat.IsNull() {
-		*logFormat = shared.UpdateAuditLogWebhookLogFormat(r.LogFormat.ValueString())
+		*logFormat = shared.LogFormat(r.LogFormat.ValueString())
 	} else {
 		logFormat = nil
 	}

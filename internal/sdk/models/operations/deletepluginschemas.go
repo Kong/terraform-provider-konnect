@@ -36,11 +36,11 @@ type DeletePluginSchemasResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	KonnectCPLegacyUnauthorizedError *shared.KonnectCPLegacyUnauthorizedError
 	// Forbidden
-	ForbiddenError *shared.ForbiddenError
-	// Not Found
-	NotFoundError *shared.NotFoundError
+	KonnectCPLegacyForbiddenError *shared.KonnectCPLegacyForbiddenError
+	// Forbidden
+	KonnectCPLegacyNotFoundError *shared.KonnectCPLegacyNotFoundError
 }
 
 func (o *DeletePluginSchemasResponse) GetContentType() string {
@@ -64,23 +64,23 @@ func (o *DeletePluginSchemasResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *DeletePluginSchemasResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *DeletePluginSchemasResponse) GetKonnectCPLegacyUnauthorizedError() *shared.KonnectCPLegacyUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.KonnectCPLegacyUnauthorizedError
 }
 
-func (o *DeletePluginSchemasResponse) GetForbiddenError() *shared.ForbiddenError {
+func (o *DeletePluginSchemasResponse) GetKonnectCPLegacyForbiddenError() *shared.KonnectCPLegacyForbiddenError {
 	if o == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return o.KonnectCPLegacyForbiddenError
 }
 
-func (o *DeletePluginSchemasResponse) GetNotFoundError() *shared.NotFoundError {
+func (o *DeletePluginSchemasResponse) GetKonnectCPLegacyNotFoundError() *shared.KonnectCPLegacyNotFoundError {
 	if o == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return o.KonnectCPLegacyNotFoundError
 }

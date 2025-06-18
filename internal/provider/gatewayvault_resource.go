@@ -54,7 +54,8 @@ func (r *GatewayVaultResource) Schema(ctx context.Context, req resource.SchemaRe
 		MarkdownDescription: "GatewayVault Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.StringAttribute{
-				Required:    true,
+				Computed:    true,
+				Optional:    true,
 				Description: `The configuration properties for the Vault which can be found on the vaults' documentation page. Parsed as JSON.`,
 				Validators: []validator.String{
 					validators.IsValidJSON(),
