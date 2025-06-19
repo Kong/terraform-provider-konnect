@@ -13,7 +13,11 @@ import "os"
 func initHooks(h *Hooks) {
 
 	// Domain customization - enable usage with non-prod domains
-	h.registerBeforeRequestHook(&CustomizeKongDomainHook{})
+	h.registerBeforeRequestHook(&CustomizeKongDomainHook{
+		Enabled:           os.Getenv("KONG_CUSTOM_DOMAIN") != "",
+		Domain:            os.Getenv("KONG_CUSTOM_DOMAIN"),
+		ReplaceFullDomain: os.Getenv("KONG_CUSTOM_DOMAIN_REPLACE_FULL_DOMAIN") == "true",
+	})
 
 	// Debug hooks - dump request/response
 	h.registerBeforeRequestHook(&HTTPDumpRequestHook{
