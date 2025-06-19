@@ -32,8 +32,12 @@ func (r *GatewayVaultDataSourceModel) RefreshFromSharedVault(ctx context.Context
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		configResult, _ := json.Marshal(resp.Config)
-		r.Config = types.StringValue(string(configResult))
+		if resp.Config == nil {
+			r.Config = types.StringNull()
+		} else {
+			configResult, _ := json.Marshal(resp.Config)
+			r.Config = types.StringValue(string(configResult))
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringPointerValue(resp.ID)

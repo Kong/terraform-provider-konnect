@@ -28,16 +28,15 @@ type CloudGatewayConfigurationDataSource struct {
 
 // CloudGatewayConfigurationDataSourceModel describes the data model.
 type CloudGatewayConfigurationDataSourceModel struct {
-	APIAccess            types.String                                `tfsdk:"api_access"`
-	ControlPlaneGeo      types.String                                `tfsdk:"control_plane_geo"`
-	ControlPlaneID       types.String                                `tfsdk:"control_plane_id"`
-	CreatedAt            types.String                                `tfsdk:"created_at"`
-	DataplaneGroupConfig []tfTypes.ConfigurationDataPlaneGroupConfig `tfsdk:"dataplane_group_config"`
-	DataplaneGroups      []tfTypes.ConfigurationDataPlaneGroup       `tfsdk:"dataplane_groups"`
-	EntityVersion        types.Float64                               `tfsdk:"entity_version"`
-	ID                   types.String                                `tfsdk:"id"`
-	UpdatedAt            types.String                                `tfsdk:"updated_at"`
-	Version              types.String                                `tfsdk:"version"`
+	APIAccess       types.String                          `tfsdk:"api_access"`
+	ControlPlaneGeo types.String                          `tfsdk:"control_plane_geo"`
+	ControlPlaneID  types.String                          `tfsdk:"control_plane_id"`
+	CreatedAt       types.String                          `tfsdk:"created_at"`
+	DataplaneGroups []tfTypes.ConfigurationDataPlaneGroup `tfsdk:"dataplane_groups"`
+	EntityVersion   types.Float64                         `tfsdk:"entity_version"`
+	ID              types.String                          `tfsdk:"id"`
+	UpdatedAt       types.String                          `tfsdk:"updated_at"`
+	Version         types.String                          `tfsdk:"version"`
 }
 
 // Metadata returns the data source type name.
@@ -65,81 +64,6 @@ func (r *CloudGatewayConfigurationDataSource) Schema(ctx context.Context, req da
 			"created_at": schema.StringAttribute{
 				Computed:    true,
 				Description: `An RFC-3339 timestamp representation of configuration creation date.`,
-			},
-			"dataplane_group_config": schema.ListNestedAttribute{
-				Computed: true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"autoscale": schema.SingleNestedAttribute{
-							Computed: true,
-							Attributes: map[string]schema.Attribute{
-								"configuration_data_plane_group_autoscale_autopilot": schema.SingleNestedAttribute{
-									Computed: true,
-									Attributes: map[string]schema.Attribute{
-										"base_rps": schema.Int64Attribute{
-											Computed:    true,
-											Description: `Base number of requests per second that the deployment target should support.`,
-										},
-										"kind": schema.StringAttribute{
-											Computed: true,
-										},
-										"max_rps": schema.Int64Attribute{
-											Computed:           true,
-											DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
-											Description:        `Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps. This field is deprecated and shouldn't be used in new configurations as it will be removed in a future version. max_rps is now calculated as 10x base_rps.`,
-										},
-									},
-									Description: `Object that describes the autopilot autoscaling strategy.`,
-								},
-								"configuration_data_plane_group_autoscale_static": schema.SingleNestedAttribute{
-									Computed: true,
-									Attributes: map[string]schema.Attribute{
-										"instance_type": schema.StringAttribute{
-											Computed:    true,
-											Description: `Instance type name to indicate capacity.`,
-										},
-										"kind": schema.StringAttribute{
-											Computed: true,
-										},
-										"requested_instances": schema.Int64Attribute{
-											Computed:    true,
-											Description: `Number of data-planes the deployment target will contain.`,
-										},
-									},
-									Description: `Object that describes the static autoscaling strategy.`,
-								},
-							},
-						},
-						"cloud_gateway_network_id": schema.StringAttribute{
-							Computed: true,
-						},
-						"environment": schema.ListNestedAttribute{
-							Computed: true,
-							NestedObject: schema.NestedAttributeObject{
-								Attributes: map[string]schema.Attribute{
-									"name": schema.StringAttribute{
-										Computed:    true,
-										Description: `Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_.`,
-									},
-									"value": schema.StringAttribute{
-										Computed:    true,
-										Description: `Value assigned to the environment variable field for the data-plane group.`,
-									},
-								},
-							},
-							Description: `Array of environment variables to set for a data-plane group.`,
-						},
-						"provider": schema.StringAttribute{
-							Computed:    true,
-							Description: `Name of cloud provider.`,
-						},
-						"region": schema.StringAttribute{
-							Computed:    true,
-							Description: `Region ID for cloud provider region.`,
-						},
-					},
-				},
-				Description: `Object that describes where data-planes will be deployed to, along with how many instances.`,
 			},
 			"dataplane_groups": schema.SetNestedAttribute{
 				Computed: true,
@@ -181,7 +105,8 @@ func (r *CloudGatewayConfigurationDataSource) Schema(ctx context.Context, req da
 											Description: `Number of data-planes the deployment target will contain.`,
 										},
 									},
-									Description: `Object that describes the static autoscaling strategy.`,
+									DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+									Description:        `Object that describes the static autoscaling strategy. Deprecated in favor of the autopilot autoscaling strategy. Static autoscaling will be removed in a future version.`,
 								},
 							},
 						},
@@ -233,20 +158,6 @@ func (r *CloudGatewayConfigurationDataSource) Schema(ctx context.Context, req da
 						"state": schema.StringAttribute{
 							Computed:    true,
 							Description: `State of the data-plane group.`,
-						},
-						"state_metadata": schema.SingleNestedAttribute{
-							Computed: true,
-							Attributes: map[string]schema.Attribute{
-								"reason": schema.StringAttribute{
-									Computed:    true,
-									Description: `Reason why the dataplane group may be in an erroneous state, reported from backing infrastructure.`,
-								},
-								"reported_status": schema.StringAttribute{
-									Computed:    true,
-									Description: `Reported status of the dataplane group from backing infrastructure.`,
-								},
-							},
-							Description: `Metadata describing the backing state of the dataplane group and why it may be in an erroneous state.`,
 						},
 						"updated_at": schema.StringAttribute{
 							Computed:    true,

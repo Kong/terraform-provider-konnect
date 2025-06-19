@@ -36,7 +36,6 @@ func (s *CustomPluginSchemas) CreatePluginSchemas(ctx context.Context, request o
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
-		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
 	for _, opt := range opts {
@@ -85,12 +84,7 @@ func (s *CustomPluginSchemas) CreatePluginSchemas(ctx context.Context, request o
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
-	if o.AcceptHeaderOverride != nil {
-		req.Header.Set("Accept", string(*o.AcceptHeaderOverride))
-	} else {
-		req.Header.Set("Accept", "application/json;q=1, application/problem+json;q=0")
-	}
-
+	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 	if reqContentType != "" {
 		req.Header.Set("Content-Type", reqContentType)
@@ -163,18 +157,18 @@ func (s *CustomPluginSchemas) CreatePluginSchemas(ctx context.Context, request o
 		}
 	case httpRes.StatusCode == 400:
 		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
 				return nil, err
 			}
 
-			var out shared.BadRequestError
+			var out shared.KonnectCPLegacyBadRequestError
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.BadRequestError = &out
+			res.KonnectCPLegacyBadRequestError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -184,18 +178,18 @@ func (s *CustomPluginSchemas) CreatePluginSchemas(ctx context.Context, request o
 		}
 	case httpRes.StatusCode == 401:
 		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
 				return nil, err
 			}
 
-			var out shared.UnauthorizedError
+			var out shared.KonnectCPLegacyUnauthorizedError
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.UnauthorizedError = &out
+			res.KonnectCPLegacyUnauthorizedError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -205,18 +199,18 @@ func (s *CustomPluginSchemas) CreatePluginSchemas(ctx context.Context, request o
 		}
 	case httpRes.StatusCode == 403:
 		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
 				return nil, err
 			}
 
-			var out shared.ForbiddenError
+			var out shared.KonnectCPLegacyForbiddenError
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.ForbiddenError = &out
+			res.KonnectCPLegacyForbiddenError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -226,18 +220,18 @@ func (s *CustomPluginSchemas) CreatePluginSchemas(ctx context.Context, request o
 		}
 	case httpRes.StatusCode == 409:
 		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
 				return nil, err
 			}
 
-			var out shared.ConflictError
+			var out shared.KonnectCPLegacyConflictError
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.ConflictError = &out
+			res.KonnectCPLegacyConflictError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -263,7 +257,6 @@ func (s *CustomPluginSchemas) GetPluginSchema(ctx context.Context, request opera
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
-		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
 	for _, opt := range opts {
@@ -308,12 +301,7 @@ func (s *CustomPluginSchemas) GetPluginSchema(ctx context.Context, request opera
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
-	if o.AcceptHeaderOverride != nil {
-		req.Header.Set("Accept", string(*o.AcceptHeaderOverride))
-	} else {
-		req.Header.Set("Accept", "application/json;q=1, application/problem+json;q=0")
-	}
-
+	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
 	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
@@ -383,18 +371,18 @@ func (s *CustomPluginSchemas) GetPluginSchema(ctx context.Context, request opera
 		}
 	case httpRes.StatusCode == 401:
 		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
 				return nil, err
 			}
 
-			var out shared.UnauthorizedError
+			var out shared.KonnectCPLegacyUnauthorizedError
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.UnauthorizedError = &out
+			res.KonnectCPLegacyUnauthorizedError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -404,18 +392,18 @@ func (s *CustomPluginSchemas) GetPluginSchema(ctx context.Context, request opera
 		}
 	case httpRes.StatusCode == 403:
 		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
 				return nil, err
 			}
 
-			var out shared.ForbiddenError
+			var out shared.KonnectCPLegacyForbiddenError
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.ForbiddenError = &out
+			res.KonnectCPLegacyForbiddenError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -425,18 +413,18 @@ func (s *CustomPluginSchemas) GetPluginSchema(ctx context.Context, request opera
 		}
 	case httpRes.StatusCode == 404:
 		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
 				return nil, err
 			}
 
-			var out shared.NotFoundError
+			var out shared.KonnectCPLegacyNotFoundError
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.NotFoundError = &out
+			res.KonnectCPLegacyNotFoundError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -506,7 +494,7 @@ func (s *CustomPluginSchemas) DeletePluginSchemas(ctx context.Context, request o
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
-	req.Header.Set("Accept", "application/problem+json")
+	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
 	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
@@ -556,18 +544,18 @@ func (s *CustomPluginSchemas) DeletePluginSchemas(ctx context.Context, request o
 	case httpRes.StatusCode == 204:
 	case httpRes.StatusCode == 401:
 		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
 				return nil, err
 			}
 
-			var out shared.UnauthorizedError
+			var out shared.KonnectCPLegacyUnauthorizedError
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.UnauthorizedError = &out
+			res.KonnectCPLegacyUnauthorizedError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -577,18 +565,18 @@ func (s *CustomPluginSchemas) DeletePluginSchemas(ctx context.Context, request o
 		}
 	case httpRes.StatusCode == 403:
 		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
 				return nil, err
 			}
 
-			var out shared.ForbiddenError
+			var out shared.KonnectCPLegacyForbiddenError
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.ForbiddenError = &out
+			res.KonnectCPLegacyForbiddenError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -598,18 +586,18 @@ func (s *CustomPluginSchemas) DeletePluginSchemas(ctx context.Context, request o
 		}
 	case httpRes.StatusCode == 404:
 		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
 				return nil, err
 			}
 
-			var out shared.NotFoundError
+			var out shared.KonnectCPLegacyNotFoundError
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.NotFoundError = &out
+			res.KonnectCPLegacyNotFoundError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -635,7 +623,6 @@ func (s *CustomPluginSchemas) UpdatePluginSchemas(ctx context.Context, request o
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
-		operations.SupportedOptionAcceptHeaderOverride,
 	}
 
 	for _, opt := range opts {
@@ -684,12 +671,7 @@ func (s *CustomPluginSchemas) UpdatePluginSchemas(ctx context.Context, request o
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
-	if o.AcceptHeaderOverride != nil {
-		req.Header.Set("Accept", string(*o.AcceptHeaderOverride))
-	} else {
-		req.Header.Set("Accept", "application/json;q=1, application/problem+json;q=0")
-	}
-
+	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 	if reqContentType != "" {
 		req.Header.Set("Content-Type", reqContentType)
@@ -762,18 +744,18 @@ func (s *CustomPluginSchemas) UpdatePluginSchemas(ctx context.Context, request o
 		}
 	case httpRes.StatusCode == 401:
 		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
 				return nil, err
 			}
 
-			var out shared.UnauthorizedError
+			var out shared.KonnectCPLegacyUnauthorizedError
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.UnauthorizedError = &out
+			res.KonnectCPLegacyUnauthorizedError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -783,18 +765,18 @@ func (s *CustomPluginSchemas) UpdatePluginSchemas(ctx context.Context, request o
 		}
 	case httpRes.StatusCode == 403:
 		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
 				return nil, err
 			}
 
-			var out shared.ForbiddenError
+			var out shared.KonnectCPLegacyForbiddenError
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.ForbiddenError = &out
+			res.KonnectCPLegacyForbiddenError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -804,18 +786,18 @@ func (s *CustomPluginSchemas) UpdatePluginSchemas(ctx context.Context, request o
 		}
 	case httpRes.StatusCode == 404:
 		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
 				return nil, err
 			}
 
-			var out shared.NotFoundError
+			var out shared.KonnectCPLegacyNotFoundError
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.NotFoundError = &out
+			res.KonnectCPLegacyNotFoundError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

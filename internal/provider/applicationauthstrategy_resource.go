@@ -65,7 +65,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 		Attributes: map[string]schema.Attribute{
 			"active": schema.BoolAttribute{
 				Computed:    true,
-				Description: `At least one published product version is using this auth strategy.`,
+				Description: `At least one published entity is using this auth strategy.`,
 			},
 			"display_name": schema.StringAttribute{
 				Computed:    true,
@@ -91,7 +91,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						PlanModifiers: []planmodifier.Bool{
 							speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 						},
-						Description: `At least one published product version is using this auth strategy.`,
+						Description: `At least one published entity is using this auth strategy.`,
 					},
 					"configs": schema.SingleNestedAttribute{
 						Computed: true,
@@ -292,7 +292,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						PlanModifiers: []planmodifier.Bool{
 							speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 						},
-						Description: `At least one published product version is using this auth strategy.`,
+						Description: `At least one published entity is using this auth strategy.`,
 					},
 					"configs": schema.SingleNestedAttribute{
 						Computed: true,

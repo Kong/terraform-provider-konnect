@@ -61,7 +61,7 @@ Optional:
 
 - `cloud_gateway` (Boolean) Filter by a boolean value (true/false).
 - `cluster_type` (Attributes) Filters on the given string field value by exact match inequality. (see [below for nested schema](#nestedatt--filter--cluster_type))
-- `id` (Attributes) Filters on the given comma separated string by one or more exact match. (see [below for nested schema](#nestedatt--filter--id))
+- `id` (Attributes) Returns entities that exact match any of the comma-delimited phrases in the filter string. (see [below for nested schema](#nestedatt--filter--id))
 - `name` (Attributes) Filters on the given string field value by exact match inequality. (see [below for nested schema](#nestedatt--filter--name))
 
 <a id="nestedatt--filter--cluster_type"></a>

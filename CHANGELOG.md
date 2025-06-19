@@ -1,11 +1,23 @@
 # Changelog
 
+## 2.10.0  
+> Released on 2025/06/19
+
+### Features
+
+* Add support for `konnect_cloud_gateway_private_dns` resource
+
+### Bug fixes
+
+* Fixed error while running `terraform apply` for `konnect_gateway_custom_plugin_schema` resource when custom plugin schema is deleted
+* Fixed false diff in output of `terraform plan` for `konnect_cloud_gateway_configuration` resource
+
 ## 2.9.0  
 > Released on 2025/06/16
 
 ### Features
 
-* Add support for `konnect_mesh_control_planes`  data source
+* Add support for `konnect_mesh_control_planes` data source
 
 ### Bug fixes
 

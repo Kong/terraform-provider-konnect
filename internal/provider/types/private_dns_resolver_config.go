@@ -6,7 +6,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type StateMetadata struct {
-	Reason         types.String `tfsdk:"reason"`
-	ReportedStatus types.String `tfsdk:"reported_status"`
+type PrivateDNSResolverConfig struct {
+	RemoteDNSServerIPAddresses []types.String `tfsdk:"remote_dns_server_ip_addresses"`
 }

@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 7941d6f6303b4ba8a7e40e83c538d97a
+  docChecksum: cfc86e4bd0f5e21d649efa102accfb3a
   docVersion: 2.0.0
   speakeasyVersion: 1.555.2
   generationVersion: 2.620.2
-  releaseVersion: 2.9.0
-  configChecksum: d793a81244c1cec44062af32bdf0b2f1
+  releaseVersion: 2.10.0
+  configChecksum: 07156c3db1ff3138c75f9e55c0f17319
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -40,6 +40,7 @@ generatedFiles:
   - examples/data-sources/konnect_cloud_gateway_configuration/data-source.tf
   - examples/data-sources/konnect_cloud_gateway_custom_domain/data-source.tf
   - examples/data-sources/konnect_cloud_gateway_network/data-source.tf
+  - examples/data-sources/konnect_cloud_gateway_private_dns/data-source.tf
   - examples/data-sources/konnect_cloud_gateway_provider_account_list/data-source.tf
   - examples/data-sources/konnect_cloud_gateway_transit_gateway/data-source.tf
   - examples/data-sources/konnect_gateway_acl/data-source.tf
@@ -196,6 +197,8 @@ generatedFiles:
   - examples/resources/konnect_cloud_gateway_custom_domain/resource.tf
   - examples/resources/konnect_cloud_gateway_network/import.sh
   - examples/resources/konnect_cloud_gateway_network/resource.tf
+  - examples/resources/konnect_cloud_gateway_private_dns/import.sh
+  - examples/resources/konnect_cloud_gateway_private_dns/resource.tf
   - examples/resources/konnect_cloud_gateway_transit_gateway/import.sh
   - examples/resources/konnect_cloud_gateway_transit_gateway/resource.tf
   - examples/resources/konnect_gateway_acl/import.sh
@@ -521,6 +524,10 @@ generatedFiles:
   - internal/provider/cloudgatewaynetwork_data_source_sdk.go
   - internal/provider/cloudgatewaynetwork_resource.go
   - internal/provider/cloudgatewaynetwork_resource_sdk.go
+  - internal/provider/cloudgatewayprivatedns_data_source.go
+  - internal/provider/cloudgatewayprivatedns_data_source_sdk.go
+  - internal/provider/cloudgatewayprivatedns_resource.go
+  - internal/provider/cloudgatewayprivatedns_resource_sdk.go
   - internal/provider/cloudgatewayprovideraccountlist_data_source.go
   - internal/provider/cloudgatewayprovideraccountlist_data_source_sdk.go
   - internal/provider/cloudgatewaytransitgateway_data_source.go
@@ -1142,6 +1149,10 @@ generatedFiles:
   - internal/provider/types/auth_strategy_key_auth.go
   - internal/provider/types/authentication.go
   - internal/provider/types/aws_lambda_plugin_config.go
+  - internal/provider/types/aws_private_dns_resolver_attachment_config.go
+  - internal/provider/types/aws_private_dns_resolver_response.go
+  - internal/provider/types/aws_private_hosted_zone_attachment_config.go
+  - internal/provider/types/aws_private_hosted_zone_response.go
   - internal/provider/types/aws_transit_gateway.go
   - internal/provider/types/aws_transit_gateway_attachment_config.go
   - internal/provider/types/aws_transit_gateway_response.go
@@ -1174,7 +1185,6 @@ generatedFiles:
   - internal/provider/types/configuration_data_plane_group_autoscale.go
   - internal/provider/types/configuration_data_plane_group_autoscale_autopilot.go
   - internal/provider/types/configuration_data_plane_group_autoscale_static.go
-  - internal/provider/types/configuration_data_plane_group_config.go
   - internal/provider/types/configuration_data_plane_group_environment_field.go
   - internal/provider/types/confluent_consume_plugin_config.go
   - internal/provider/types/confluent_plugin_config.go
@@ -1183,6 +1193,7 @@ generatedFiles:
   - internal/provider/types/control_plane_filter_parameters.go
   - internal/provider/types/correlation_id_plugin_config.go
   - internal/provider/types/cors_plugin_config.go
+  - internal/provider/types/custom_domain_state_metadata.go
   - internal/provider/types/custom_injections.go
   - internal/provider/types/custom_patterns.go
   - internal/provider/types/datadog_plugin_config.go
@@ -1271,6 +1282,8 @@ generatedFiles:
   - internal/provider/types/portal_claim_mappings.go
   - internal/provider/types/portal_oidc_config.go
   - internal/provider/types/post_function_plugin_config.go
+  - internal/provider/types/private_dns_attachment_config.go
+  - internal/provider/types/private_dns_resolver_config.go
   - internal/provider/types/prometheus_plugin_config.go
   - internal/provider/types/prompts.go
   - internal/provider/types/propagation.go
@@ -1325,7 +1338,6 @@ generatedFiles:
   - internal/provider/types/session_plugin_config.go
   - internal/provider/types/shm.go
   - internal/provider/types/standard_webhooks_plugin_config.go
-  - internal/provider/types/state_metadata.go
   - internal/provider/types/statsd_advanced_plugin_config.go
   - internal/provider/types/statsd_plugin_config.go
   - internal/provider/types/statsd_plugin_metrics.go
@@ -1493,6 +1505,7 @@ generatedFiles:
   - internal/sdk/models/operations/createportalteam.go
   - internal/sdk/models/operations/createpostfunctionplugin.go
   - internal/sdk/models/operations/createprefunctionplugin.go
+  - internal/sdk/models/operations/createprivatedns.go
   - internal/sdk/models/operations/createprometheusplugin.go
   - internal/sdk/models/operations/createproxycacheadvancedplugin.go
   - internal/sdk/models/operations/createproxycacheplugin.go
@@ -1632,6 +1645,7 @@ generatedFiles:
   - internal/sdk/models/operations/deleteportalteam.go
   - internal/sdk/models/operations/deletepostfunctionplugin.go
   - internal/sdk/models/operations/deleteprefunctionplugin.go
+  - internal/sdk/models/operations/deleteprivatedns.go
   - internal/sdk/models/operations/deleteprometheusplugin.go
   - internal/sdk/models/operations/deleteproxycacheadvancedplugin.go
   - internal/sdk/models/operations/deleteproxycacheplugin.go
@@ -1778,6 +1792,7 @@ generatedFiles:
   - internal/sdk/models/operations/getportalteam.go
   - internal/sdk/models/operations/getpostfunctionplugin.go
   - internal/sdk/models/operations/getprefunctionplugin.go
+  - internal/sdk/models/operations/getprivatedns.go
   - internal/sdk/models/operations/getprometheusplugin.go
   - internal/sdk/models/operations/getproxycacheadvancedplugin.go
   - internal/sdk/models/operations/getproxycacheplugin.go
@@ -1921,6 +1936,7 @@ generatedFiles:
   - internal/sdk/models/operations/updateportalteam.go
   - internal/sdk/models/operations/updatepostfunctionplugin.go
   - internal/sdk/models/operations/updateprefunctionplugin.go
+  - internal/sdk/models/operations/updateprivatedns.go
   - internal/sdk/models/operations/updateprometheusplugin.go
   - internal/sdk/models/operations/updateproxycacheadvancedplugin.go
   - internal/sdk/models/operations/updateproxycacheplugin.go
@@ -2016,6 +2032,10 @@ generatedFiles:
   - internal/sdk/models/shared/authstrategykeyauth.go
   - internal/sdk/models/shared/authstrategysyncerror.go
   - internal/sdk/models/shared/awslambdaplugin.go
+  - internal/sdk/models/shared/awsprivatednsresolverattachmentconfig.go
+  - internal/sdk/models/shared/awsprivatednsresolverresponse.go
+  - internal/sdk/models/shared/awsprivatehostedzoneattachmentconfig.go
+  - internal/sdk/models/shared/awsprivatehostedzoneresponse.go
   - internal/sdk/models/shared/awstransitgateway.go
   - internal/sdk/models/shared/awstransitgatewayattachmentconfig.go
   - internal/sdk/models/shared/awstransitgatewayresponse.go
@@ -2072,6 +2092,7 @@ generatedFiles:
   - internal/sdk/models/shared/createpluginschemas.go
   - internal/sdk/models/shared/createportalrequest.go
   - internal/sdk/models/shared/createportalresponse.go
+  - internal/sdk/models/shared/createprivatednsrequest.go
   - internal/sdk/models/shared/createserverlesscloudgatewayrequest.go
   - internal/sdk/models/shared/createsystemaccount.go
   - internal/sdk/models/shared/createsystemaccountaccesstoken.go
@@ -2131,12 +2152,18 @@ generatedFiles:
   - internal/sdk/models/shared/keyauthplugin.go
   - internal/sdk/models/shared/keyauthwithoutparents.go
   - internal/sdk/models/shared/keyset.go
+  - internal/sdk/models/shared/konnectcplegacybadrequesterror.go
+  - internal/sdk/models/shared/konnectcplegacyconflicterror.go
+  - internal/sdk/models/shared/konnectcplegacyforbiddenerror.go
+  - internal/sdk/models/shared/konnectcplegacynotfounderror.go
+  - internal/sdk/models/shared/konnectcplegacyunauthorizederror.go
   - internal/sdk/models/shared/ldapauthadvancedplugin.go
   - internal/sdk/models/shared/ldapauthplugin.go
   - internal/sdk/models/shared/listcontrolplanesresponse.go
   - internal/sdk/models/shared/listmeshcontrolplanesresponse.go
   - internal/sdk/models/shared/listportalsresponse.go
   - internal/sdk/models/shared/listprovideraccountsresponse.go
+  - internal/sdk/models/shared/logformat.go
   - internal/sdk/models/shared/logglyplugin.go
   - internal/sdk/models/shared/meshcontrolplane.go
   - internal/sdk/models/shared/meshcontrolplanefeature.go
@@ -2166,6 +2193,7 @@ generatedFiles:
   - internal/sdk/models/shared/partial.go
   - internal/sdk/models/shared/partialappauthstrategyconfigopenidconnect.go
   - internal/sdk/models/shared/patchnetworkrequest.go
+  - internal/sdk/models/shared/patchprivatednsrequest.go
   - internal/sdk/models/shared/plugin.go
   - internal/sdk/models/shared/pluginschemas.go
   - internal/sdk/models/shared/portal.go
@@ -2182,6 +2210,9 @@ generatedFiles:
   - internal/sdk/models/shared/portalupdateteamrequest.go
   - internal/sdk/models/shared/postfunctionplugin.go
   - internal/sdk/models/shared/prefunctionplugin.go
+  - internal/sdk/models/shared/privatednsresolverconfig.go
+  - internal/sdk/models/shared/privatednsresponse.go
+  - internal/sdk/models/shared/privatednsstate.go
   - internal/sdk/models/shared/prometheusplugin.go
   - internal/sdk/models/shared/provideraccount.go
   - internal/sdk/models/shared/providername.go
@@ -2384,6 +2415,8 @@ examples:
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "400":
+          application/problem+json: {"status": 812290, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
   update-cp:
     "":
       parameters:
@@ -3764,12 +3797,16 @@ examples:
           application/json: {"item": {"lua_schema": "return { name = \\\"myplugin\\\", fields = { { config = { type = \\\"record\\\", fields = { } } } } }", "name": "myplugin", "created_at": 1422386534, "updated_at": 1422412345}}
         "400":
           application/problem+json: {"status": 625309, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+          application/json: {"message": "Bad Request"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+          application/json: {"message": "Unauthorized"}
         "403":
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+          application/json: {"message": "Forbidden"}
         "409":
           application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+          application/json: {"message": "Conflict"}
   get-plugin-schema:
     speakeasy-default-get-plugin-schema:
       parameters:
@@ -3781,10 +3818,13 @@ examples:
           application/json: {"item": {"lua_schema": "return { name = \\\"myplugin\\\", fields = { { config = { type = \\\"record\\\", fields = { } } } } }", "name": "myplugin", "created_at": 1422386534, "updated_at": 1422412345}}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+          application/json: {"message": "Unauthorized"}
         "403":
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+          application/json: {"message": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+          application/json: {"message": "Not Found"}
   delete-plugin-schemas:
     speakeasy-default-delete-plugin-schemas:
       parameters:
@@ -3794,10 +3834,13 @@ examples:
       responses:
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+          application/json: {"message": "Unauthorized"}
         "403":
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+          application/json: {"message": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+          application/json: {"message": "Not Found"}
   update-plugin-schemas:
     speakeasy-default-update-plugin-schemas:
       parameters:
@@ -3811,10 +3854,13 @@ examples:
           application/json: {"item": {"lua_schema": "return { name = \\\"myplugin\\\", fields = { { config = { type = \\\"record\\\", fields = { } } } } }", "name": "myplugin", "created_at": 1422386534, "updated_at": 1422412345}}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+          application/json: {"message": "Unauthorized"}
         "403":
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+          application/json: {"message": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+          application/json: {"message": "Not Found"}
   create-plugin:
     speakeasy-default-create-plugin:
       parameters:
@@ -9095,5 +9141,76 @@ examples:
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  create-private-dns:
+    speakeasy-default-create-private-dns:
+      parameters:
+        path:
+          networkId: "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
+      requestBody:
+        application/json: {"name": "us-east-2 private dns", "private_dns_attachment_config": {"kind": "aws-private-hosted-zone-attachment", "hosted_zone_id": "<id>"}}
+      responses:
+        "201":
+          application/json: {"id": "1850820b-c69f-4a2a-b9be-bbcdbc5cd618", "state": "error", "state_metadata": {"reported_status": "ERROR", "reason": "Failed to create Private Dns due to invalid Cloud Provider configuration.\n"}, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "us-east-2 private dns", "private_dns_attachment_config": {"kind": "aws-private-hosted-zone-attachment", "hosted_zone_id": "<id>"}}
+        "400":
+          application/problem+json: {"status": 709476, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>"], "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  get-private-dns:
+    speakeasy-default-get-private-dns:
+      parameters:
+        path:
+          networkId: "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
+          privateDnsId: "1850820b-c69f-4a2a-b9be-bbcdbc5cd618"
+      responses:
+        "200":
+          application/json: {"id": "1850820b-c69f-4a2a-b9be-bbcdbc5cd618", "state": "terminating", "state_metadata": {"reported_status": "ERROR", "reason": "Failed to create Private Dns due to invalid Cloud Provider configuration.\n"}, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "us-east-2 private dns", "private_dns_attachment_config": {"kind": "aws-outbound-resolver", "dns_config": {"global.api.konghq.com": {"remote_dns_server_ip_addresses": ["10.0.0.2"]}, "us.api.konghq.dev": {"remote_dns_server_ip_addresses": ["10.0.0.8"]}}}}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-private-dns:
+    speakeasy-default-update-private-dns:
+      parameters:
+        path:
+          networkId: "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
+          privateDnsId: "1850820b-c69f-4a2a-b9be-bbcdbc5cd618"
+      requestBody:
+        application/json: {"name": "us-east-2 private dns", "private_dns_attachment_config": {"kind": "aws-outbound-resolver", "dns_config": {"global.api.konghq.com": {"remote_dns_server_ip_addresses": ["10.0.0.2"]}, "us.api.konghq.dev": {"remote_dns_server_ip_addresses": ["10.0.0.8"]}}}}
+      responses:
+        "200":
+          application/json: {"id": "1850820b-c69f-4a2a-b9be-bbcdbc5cd618", "state": "ready", "state_metadata": {"reported_status": "ERROR", "reason": "Failed to create Private Dns due to invalid Cloud Provider configuration.\n"}, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "us-east-2 private dns", "private_dns_attachment_config": {"kind": "aws-private-hosted-zone-attachment", "hosted_zone_id": "<id>"}}
+        "400":
+          application/problem+json: {"status": 473178, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  delete-private-dns:
+    speakeasy-default-delete-private-dns:
+      parameters:
+        path:
+          networkId: "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
+          privateDnsId: "1850820b-c69f-4a2a-b9be-bbcdbc5cd618"
+      responses:
+        "400":
+          application/problem+json: {"status": 837834, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value 1>", "<value 2>"], "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
 examplesVersion: 1.0.2
 generatedTests: {}

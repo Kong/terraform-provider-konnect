@@ -15,7 +15,9 @@ func (r *GatewayVaultResourceModel) ToSharedVault(ctx context.Context) (*shared.
 	var diags diag.Diagnostics
 
 	var config interface{}
-	_ = json.Unmarshal([]byte(r.Config.ValueString()), &config)
+	if !r.Config.IsUnknown() && !r.Config.IsNull() {
+		_ = json.Unmarshal([]byte(r.Config.ValueString()), &config)
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -148,8 +150,12 @@ func (r *GatewayVaultResourceModel) RefreshFromSharedVault(ctx context.Context, 
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		configResult, _ := json.Marshal(resp.Config)
-		r.Config = types.StringValue(string(configResult))
+		if resp.Config == nil {
+			r.Config = types.StringNull()
+		} else {
+			configResult, _ := json.Marshal(resp.Config)
+			r.Config = types.StringValue(string(configResult))
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringPointerValue(resp.ID)
