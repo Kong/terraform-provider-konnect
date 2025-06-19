@@ -26,6 +26,8 @@ type DeleteMeshControlPlaneResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Validation Error
+	BadRequestError *shared.BadRequestError
 	// Unauthorized Error
 	UnauthorizedError *shared.UnauthorizedError
 	// Permission denied
@@ -53,6 +55,13 @@ func (o *DeleteMeshControlPlaneResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *DeleteMeshControlPlaneResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
+		return nil
+	}
+	return o.BadRequestError
 }
 
 func (o *DeleteMeshControlPlaneResponse) GetUnauthorizedError() *shared.UnauthorizedError {

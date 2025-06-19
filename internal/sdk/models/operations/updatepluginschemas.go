@@ -46,11 +46,11 @@ type UpdatePluginSchemasResponse struct {
 	// A response for a single custom plugin schema.
 	PluginSchemas *shared.PluginSchemas
 	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
+	KonnectCPLegacyUnauthorizedError *shared.KonnectCPLegacyUnauthorizedError
 	// Forbidden
-	ForbiddenError *shared.ForbiddenError
-	// Not Found
-	NotFoundError *shared.NotFoundError
+	KonnectCPLegacyForbiddenError *shared.KonnectCPLegacyForbiddenError
+	// Forbidden
+	KonnectCPLegacyNotFoundError *shared.KonnectCPLegacyNotFoundError
 }
 
 func (o *UpdatePluginSchemasResponse) GetContentType() string {
@@ -81,23 +81,23 @@ func (o *UpdatePluginSchemasResponse) GetPluginSchemas() *shared.PluginSchemas {
 	return o.PluginSchemas
 }
 
-func (o *UpdatePluginSchemasResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *UpdatePluginSchemasResponse) GetKonnectCPLegacyUnauthorizedError() *shared.KonnectCPLegacyUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.KonnectCPLegacyUnauthorizedError
 }
 
-func (o *UpdatePluginSchemasResponse) GetForbiddenError() *shared.ForbiddenError {
+func (o *UpdatePluginSchemasResponse) GetKonnectCPLegacyForbiddenError() *shared.KonnectCPLegacyForbiddenError {
 	if o == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return o.KonnectCPLegacyForbiddenError
 }
 
-func (o *UpdatePluginSchemasResponse) GetNotFoundError() *shared.NotFoundError {
+func (o *UpdatePluginSchemasResponse) GetKonnectCPLegacyNotFoundError() *shared.KonnectCPLegacyNotFoundError {
 	if o == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return o.KonnectCPLegacyNotFoundError
 }

@@ -178,6 +178,8 @@ paths:
       responses:
         '204':
           description: No Content
+        '400':
+          $ref: '#/components/responses/DeleteMeshControlPlaneValidationError'
         '401':
           $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
         '403':
@@ -186,6 +188,16 @@ paths:
           $ref: '#/components/responses/MeshControlPlaneNotFoundError'
       tags:
         - Mesh
+      x-speakeasy-retries:
+        strategy: backoff
+        backoff:
+          initialInterval: 1000
+          maxInterval: 60000
+          maxElapsedTime: 360000
+          exponent: 2
+        statusCodes:
+          - 400
+        retryConnectionErrors: true
     put:
       x-speakeasy-entity-operation: MeshControlPlane#update
       operationId: update-cp
@@ -1107,6 +1119,157 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Networks
+      x-speakeasy-group: CloudGateways
+      x-speakeasy-retries:
+        strategy: backoff
+        backoff:
+          initialInterval: 10000
+          maxInterval: 60000
+          maxElapsedTime: 1800000
+          exponent: 1.5
+        statusCodes:
+          - 400
+        retryConnectionErrors: false
+  '/v2/cloud-gateways/networks/{networkId}/private-dns':
+    post:
+      x-speakeasy-entity-operation: CloudGatewayPrivateDns#create
+      operationId: create-private-dns
+      summary: Create Private DNS
+      description: Creates a new Private DNS for a given network.
+      parameters:
+        - name: networkId
+          in: path
+          description: The network to operate on.
+          required: true
+          schema:
+            $ref: '#/components/schemas/NetworkId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePrivateDnsRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreatePrivateDnsResponse'
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Private DNS
+      x-speakeasy-group: CloudGateways
+      x-speakeasy-retries:
+        strategy: backoff
+        backoff:
+          initialInterval: 30000
+          maxInterval: 60000
+          maxElapsedTime: 3600000
+          exponent: 1.5
+        statusCodes:
+          - 400
+        retryConnectionErrors: false
+  '/v2/cloud-gateways/networks/{networkId}/private-dns/{privateDnsId}':
+    get:
+      x-speakeasy-entity-operation: CloudGatewayPrivateDns#read
+      operationId: get-private-dns
+      summary: Get Private DNS
+      description: Retrieves a Private DNS by ID for a given network.
+      parameters:
+        - name: networkId
+          in: path
+          description: The network to operate on.
+          required: true
+          schema:
+            $ref: '#/components/schemas/NetworkId'
+        - $ref: '#/components/parameters/PrivateDnsId'
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrievePrivateDnsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Private DNS
+      x-speakeasy-group: CloudGateways
+    patch:
+      x-speakeasy-entity-operation: CloudGatewayPrivateDns#update
+      operationId: update-private-dns
+      summary: Update Private DNS
+      description: Updates a Private DNS by ID for a given network.
+      parameters:
+        - name: networkId
+          in: path
+          description: The network to operate on.
+          required: true
+          schema:
+            $ref: '#/components/schemas/NetworkId'
+        - $ref: '#/components/parameters/PrivateDnsId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchPrivateDnsRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/PatchPrivateDnsResponse'
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Private DNS
+      x-speakeasy-group: CloudGateways
+    delete:
+      x-speakeasy-entity-operation: CloudGatewayPrivateDns#delete
+      operationId: delete-private-dns
+      summary: Delete Private DNS
+      description: Deletes a Private DNS by ID for a given network.
+      parameters:
+        - name: networkId
+          in: path
+          description: The network to operate on.
+          required: true
+          schema:
+            $ref: '#/components/schemas/NetworkId'
+        - $ref: '#/components/parameters/PrivateDnsId'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Private DNS
       x-speakeasy-group: CloudGateways
       x-speakeasy-retries:
         strategy: backoff
@@ -2527,13 +2690,13 @@ paths:
         '201':
           $ref: '#/components/responses/plugin-schemas'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/KonnectCPLegacyBadRequest'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/KonnectCPLegacyUnauthorized'
         '403':
-          $ref: '#/components/responses/Forbidden'
+          $ref: '#/components/responses/KonnectCPLegacyForbidden'
         '409':
-          $ref: '#/components/responses/Conflict'
+          $ref: '#/components/responses/KonnectCPLegacyConflict'
       tags:
         - Custom Plugin Schemas
   '/v2/control-planes/{controlPlaneId}/core-entities/plugin-schemas/{name}':
@@ -2555,11 +2718,11 @@ paths:
         '200':
           $ref: '#/components/responses/plugin-schemas'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/KonnectCPLegacyUnauthorized'
         '403':
-          $ref: '#/components/responses/Forbidden'
+          $ref: '#/components/responses/KonnectCPLegacyForbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/KonnectCPLegacyNotFound'
       tags:
         - Custom Plugin Schemas
     delete:
@@ -2571,11 +2734,11 @@ paths:
         '204':
           description: No Content
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/KonnectCPLegacyUnauthorized'
         '403':
-          $ref: '#/components/responses/Forbidden'
+          $ref: '#/components/responses/KonnectCPLegacyForbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/KonnectCPLegacyNotFound'
       tags:
         - Custom Plugin Schemas
     put:
@@ -2589,11 +2752,11 @@ paths:
         '200':
           $ref: '#/components/responses/plugin-schemas'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/KonnectCPLegacyUnauthorized'
         '403':
-          $ref: '#/components/responses/Forbidden'
+          $ref: '#/components/responses/KonnectCPLegacyForbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: '#/components/responses/KonnectCPLegacyNotFound'
       tags:
         - Custom Plugin Schemas
   '/v2/control-planes/{controlPlaneId}/core-entities/plugins':
@@ -12473,6 +12636,14 @@ components:
       in: path
       required: true
       description: ID of the portal.
+    PrivateDnsId:
+      name: privateDnsId
+      in: path
+      description: The ID of the Private DNS to operate on.
+      required: true
+      schema:
+        $ref: '#/components/schemas/PrivateDnsId'
+      x-speakeasy-match: id
     ProductVersionId:
       name: productVersionId
       description: API product version identifier
@@ -12828,7 +12999,7 @@ components:
       type: object
       properties:
         id:
-          description: Filters on the given comma separated string by one or more exact match.
+          description: Returns entities that exact match any of the comma-delimited phrases in the filter string.
           type: object
           additionalProperties: false
           properties:
@@ -13248,6 +13419,11 @@ components:
       format: uuid
       example: 0850820b-d153-4a2a-b9be-7d2204779139
       readOnly: true
+    PrivateDnsId:
+      type: string
+      format: uuid
+      example: 1850820b-c69f-4a2a-b9be-bbcdbc5cd618
+      readOnly: true
     ProviderAccountId:
       type: string
       format: uuid
@@ -13300,7 +13476,7 @@ components:
         - $ref: '#/components/schemas/ConfigurationDataPlaneGroupAutoscaleStatic'
         - $ref: '#/components/schemas/ConfigurationDataPlaneGroupAutoscaleAutopilot'
     ConfigurationDataPlaneGroupAutoscaleStatic:
-      description: Object that describes the static autoscaling strategy.
+      description: Object that describes the static autoscaling strategy. Deprecated in favor of the autopilot autoscaling strategy. Static autoscaling will be removed in a future version.
       type: object
       properties:
         kind:
@@ -13314,6 +13490,7 @@ components:
           type: integer
           example: 3
       additionalProperties: false
+      deprecated: true
       required:
         - kind
         - instance_type
@@ -13390,12 +13567,6 @@ components:
         - region
         - cloud_gateway_network_id
       title: Configuration Data-Plane Group Config Item
-    ConfigurationDataPlaneGroupConfigs:
-      description: 'Object that describes where data-planes will be deployed to, along with how many instances.'
-      type: array
-      items:
-        $ref: '#/components/schemas/ConfigurationDataPlaneGroupConfig'
-      title: Configuration Data-Plane Group Configs
     ConfigurationDataPlaneGroup:
       description: Object that describes the set of data-plane groups currently pointed to this configuration.
       type: object
@@ -13437,6 +13608,7 @@ components:
               type: string
               example: |
                 Dataplane group could not be deployed due to insufficient cloud provider compute instances.
+          x-speakeasy-terraform-ignore: true
         private_ip_addresses:
           description: |
             List of private IP addresses of the internal load balancer that proxies traffic to this data-plane group.
@@ -13491,7 +13663,12 @@ components:
         api_access:
           $ref: '#/components/schemas/ApiAccess'
         dataplane_group_config:
-          $ref: '#/components/schemas/ConfigurationDataPlaneGroupConfigs'
+          description: 'Object that describes where data-planes will be deployed to, along with how many instances.'
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfigurationDataPlaneGroupConfig'
+          title: Configuration Data-Plane Group Configs
+          x-speakeasy-terraform-ignore: true
         dataplane_groups:
           description: |
             List of data-plane groups that describe where data-planes will be deployed to, along with how many
@@ -13911,6 +14088,225 @@ components:
         - 100.64.0.0/10
         - 172.16.0.0/12
       title: Transit Gateway CIDR Blocks
+    PrivateDnsResponse:
+      oneOf:
+        - $ref: '#/components/schemas/AwsPrivateHostedZoneResponse'
+        - $ref: '#/components/schemas/AwsPrivateDnsResolverResponse'
+    AwsPrivateHostedZoneResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/PrivateDnsId'
+        state:
+          $ref: '#/components/schemas/PrivateDnsState'
+        state_metadata:
+          description: |
+            Metadata describing the backing state of the Private Dns and why it may be in an erroneous state.
+          type: object
+          additionalProperties: false
+          properties:
+            reported_status:
+              description: Reported status of the Private Dns from backing infrastructure.
+              type: string
+              example: ERROR
+            reason:
+              description: |
+                Reason why the Private Dns may be in an erroneous state, reported from backing infrastructure.
+              type: string
+              example: |
+                Failed to create Private Dns due to invalid Cloud Provider configuration.
+          title: PrivateDnsStateMetadata
+        entity_version:
+          description: |
+            Monotonically-increasing version count of the Private DNS, to indicate the order of updates to the
+            Private DNS.
+          type: integer
+          example: 1
+          readOnly: true
+        created_at:
+          description: An RFC-3339 timestamp representation of Private DNS creation date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        updated_at:
+          description: An RFC-3339 timestamp representation of Private DNS update date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        name:
+          $ref: '#/components/schemas/PrivateDnsName'
+        private_dns_attachment_config:
+          $ref: '#/components/schemas/AwsPrivateHostedZoneAttachmentConfig'
+      required:
+        - id
+        - state
+        - state_metadata
+        - entity_version
+        - created_at
+        - updated_at
+        - name
+        - private_dns_attachment_config
+    AwsPrivateHostedZoneAttachmentConfig:
+      type: object
+      properties:
+        kind:
+          enum:
+            - aws-private-hosted-zone-attachment
+          title: AWS Private Hosted Zone Type
+        hosted_zone_id:
+          description: AWS Hosted Zone to create attachment to.
+          type: string
+          title: Hosted Zone Id
+      additionalProperties: false
+      required:
+        - kind
+        - hosted_zone_id
+      title: AWS Private Hosted Zone Attachment Config
+    AwsPrivateDnsResolverResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/PrivateDnsId'
+        state:
+          $ref: '#/components/schemas/PrivateDnsState'
+        state_metadata:
+          description: |
+            Metadata describing the backing state of the Private Dns and why it may be in an erroneous state.
+          type: object
+          additionalProperties: false
+          properties:
+            reported_status:
+              description: Reported status of the Private Dns from backing infrastructure.
+              type: string
+              example: ERROR
+            reason:
+              description: |
+                Reason why the Private Dns may be in an erroneous state, reported from backing infrastructure.
+              type: string
+              example: |
+                Failed to create Private Dns due to invalid Cloud Provider configuration.
+          title: PrivateDnsStateMetadata
+        entity_version:
+          description: |
+            Monotonically-increasing version count of the Private DNS, to indicate the order of updates to the
+            Private DNS.
+          type: integer
+          example: 1
+          readOnly: true
+        created_at:
+          description: An RFC-3339 timestamp representation of Private DNS creation date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        updated_at:
+          description: An RFC-3339 timestamp representation of Private DNS update date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        name:
+          $ref: '#/components/schemas/PrivateDnsName'
+        private_dns_attachment_config:
+          $ref: '#/components/schemas/AwsPrivateDnsResolverAttachmentConfig'
+      required:
+        - id
+        - state
+        - state_metadata
+        - entity_version
+        - created_at
+        - updated_at
+        - name
+        - private_dns_attachment_config
+    AwsPrivateDnsResolverAttachmentConfig:
+      type: object
+      properties:
+        kind:
+          enum:
+            - aws-outbound-resolver
+          title: AWS Private DNS Resolver Type
+        dns_config:
+          $ref: '#/components/schemas/PrivateDnsResolverConfig'
+      additionalProperties: false
+      required:
+        - kind
+        - dns_config
+      title: AWS Private DNS Resolver Attachment Config
+    PrivateDnsResolverConfig:
+      description: |
+        Object that contains mappings from proxied internal domains to remote DNS server IP address for a Private DNS Resolver.
+      type: object
+      example:
+        global.api.konghq.com:
+          remote_dns_server_ip_addresses:
+            - 10.0.0.2
+        us.api.konghq.dev:
+          remote_dns_server_ip_addresses:
+            - 10.0.0.8
+      additionalProperties:
+        type: object
+        properties:
+          remote_dns_server_ip_addresses:
+            description: IP addresses of remote DNS servers used by the Private DNS Resolver for DNS resolution.
+            type: array
+            items:
+              type: string
+            example:
+              - 10.0.0.2
+        required:
+          - remote_dns_server_ip_addresses
+      title: Private DNS Resolver Config Item
+    PrivateDnsName:
+      description: Human-readable name of the Private DNS.
+      type: string
+      example: us-east-2 private dns
+      title: Private DNS Name
+    PrivateDnsState:
+      description: |
+        The current state of the Private DNS attachment. Possible values:
+        - `created` - The attachment has been created but is not attached to Private DNS.
+        - `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
+        - `pending-association` The attachment request is awaiting association to the cloud provider infrastructure in order for provisioning to proceed.
+        - `ready` - The attachment is fully operational and can route traffic as configured.
+        - `error` - The attachment is in an error state, and is not operational.
+        - `terminating` - The attachment is in the process of being deleted.
+        - `terminated` - The attachment has been fully deleted and is no longer available.
+      type: string
+      enum:
+        - created
+        - initializing
+        - pending-association
+        - ready
+        - error
+        - terminating
+        - terminated
+      title: Private DNS State
+    PatchAwsPrivateDnsResolver:
+      description: Request schema for updating a Private DNS AWS Resolver.
+      properties:
+        name:
+          $ref: '#/components/schemas/PrivateDnsName'
+        private_dns_attachment_config:
+          $ref: '#/components/schemas/AwsPrivateDnsResolverAttachmentConfig'
+    CreatePrivateDnsRequest:
+      description: Request schema for creating a Private DNS.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/PrivateDnsName'
+        private_dns_attachment_config:
+          oneOf:
+            - $ref: '#/components/schemas/AwsPrivateHostedZoneAttachmentConfig'
+            - $ref: '#/components/schemas/AwsPrivateDnsResolverAttachmentConfig'
+      title: CreatePrivateDnsRequest
+    PatchPrivateDnsRequest:
+      description: Request schema for updating a Private DNS.
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/PatchAwsPrivateDnsResolver'
+      title: PatchPrivateDnsRequest
     AwsTransitGatewayResponse:
       type: object
       properties:
@@ -16613,7 +17009,7 @@ components:
           required:
             - key-auth
         active:
-          description: At least one published product version is using this auth strategy.
+          description: At least one published entity is using this auth strategy.
           type: boolean
         dcr_provider:
           type: object
@@ -16709,7 +17105,7 @@ components:
           required:
             - openid-connect
         active:
-          description: At least one published product version is using this auth strategy.
+          description: At least one published entity is using this auth strategy.
           type: boolean
         dcr_provider:
           type: object
@@ -17104,6 +17500,13 @@ components:
         - region
       title: Control plane
       x-go-name: ControlPlane
+    LogFormat:
+      description: The output format of each log messages.
+      type: string
+      default: cef
+      enum:
+        - cef
+        - json
     AuditLogDestination:
       description: Audit Log Destination Schema
       type: object
@@ -17120,12 +17523,7 @@ components:
           type: string
           example: 'https://example.com/audit-logs'
         log_format:
-          description: The output format of each log messages.
-          type: string
-          example: cef
-          enum:
-            - cef
-            - json
+          $ref: '#/components/schemas/LogFormat'
         skip_ssl_verification:
           description: Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
           type: boolean
@@ -34364,6 +34762,7 @@ components:
           description: The configuration properties for the Vault which can be found on the vaults' documentation page.
           type: object
           additionalProperties: true
+          nullable: true
           x-speakeasy-type-override: any
         created_at:
           description: Unix epoch when the resource was created.
@@ -34405,7 +34804,6 @@ components:
       required:
         - name
         - prefix
-        - config
     VaultAuthPlugin:
       x-speakeasy-entity: GatewayPluginVaultAuth
       allOf:
@@ -35063,6 +35461,51 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+    KonnectCPLegacyBaseError:
+      description: standard error
+      type: object
+      properties:
+        message:
+          description: |
+            A short summary of the problem.
+          type: string
+          readOnly: true
+      title: Error
+    KonnectCPLegacyBadRequestError:
+      allOf:
+        - $ref: '#/components/schemas/KonnectCPLegacyBaseError'
+        - type: object
+          properties:
+            message:
+              example: Bad Request
+    KonnectCPLegacyUnauthorizedError:
+      allOf:
+        - $ref: '#/components/schemas/KonnectCPLegacyBaseError'
+        - type: object
+          properties:
+            message:
+              example: Unauthorized
+    KonnectCPLegacyForbiddenError:
+      allOf:
+        - $ref: '#/components/schemas/KonnectCPLegacyBaseError'
+        - type: object
+          properties:
+            message:
+              example: Forbidden
+    KonnectCPLegacyConflictError:
+      allOf:
+        - $ref: '#/components/schemas/KonnectCPLegacyBaseError'
+        - type: object
+          properties:
+            message:
+              example: Conflict
+    KonnectCPLegacyNotFoundError:
+      allOf:
+        - $ref: '#/components/schemas/KonnectCPLegacyBaseError'
+        - type: object
+          properties:
+            message:
+              example: Not Found
   requestBodies:
     GroupMembershipAdd:
       content:
@@ -35421,12 +35864,7 @@ components:
                 type: boolean
                 example: true
               log_format:
-                description: The output format of each log message.
-                type: string
-                example: cef
-                enum:
-                  - cef
-                  - json
+                $ref: '#/components/schemas/LogFormat'
               skip_ssl_verification:
                 description: |-
                   Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
@@ -35456,12 +35894,7 @@ components:
                 example: Bearer sometoken
                 writeOnly: true
               log_format:
-                description: The output format of each log message.
-                type: string
-                example: cef
-                enum:
-                  - cef
-                  - json
+                $ref: '#/components/schemas/LogFormat'
               skip_ssl_verification:
                 description: |-
                   Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
@@ -35494,12 +35927,7 @@ components:
                 example: Bearer sometoken
                 writeOnly: true
               log_format:
-                description: The output format of each log message.
-                type: string
-                example: cef
-                enum:
-                  - cef
-                  - json
+                $ref: '#/components/schemas/LogFormat'
               skip_ssl_verification:
                 description: |-
                   Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
@@ -35758,6 +36186,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Network'
+    CreatePrivateDnsResponse:
+      description: Response format for creating a Private DNS.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PrivateDnsResponse'
+    PatchPrivateDnsResponse:
+      description: Response format for updating a Private DNS.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PrivateDnsResponse'
+    RetrievePrivateDnsResponse:
+      description: Response format for retrieving a Private DNS.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PrivateDnsResponse'
     CreateTransitGatewayResponse:
       description: Response format for creating a transit gateway.
       content:
@@ -35843,6 +36289,12 @@ components:
           schema:
             $ref: '#/components/schemas/BadRequestError'
     PutMeshControlPlaneValidationError:
+      description: Validation Error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+    DeleteMeshControlPlaneValidationError:
       description: Validation Error
       content:
         application/problem+json:
@@ -36162,12 +36614,7 @@ components:
                 type: boolean
                 example: true
               log_format:
-                description: The output format of each log messages.
-                type: string
-                example: cef
-                enum:
-                  - cef
-                  - json
+                $ref: '#/components/schemas/LogFormat'
               skip_ssl_verification:
                 description: Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
                 type: boolean
@@ -36255,6 +36702,36 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/GatewayUnauthorizedError'
+    KonnectCPLegacyBadRequest:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KonnectCPLegacyBadRequestError'
+    KonnectCPLegacyUnauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KonnectCPLegacyUnauthorizedError'
+    KonnectCPLegacyForbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KonnectCPLegacyForbiddenError'
+    KonnectCPLegacyConflict:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KonnectCPLegacyConflictError'
+    KonnectCPLegacyNotFound:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KonnectCPLegacyNotFoundError'
   securitySchemes:
     personalAccessToken:
       type: http
@@ -36287,6 +36764,7 @@ tags:
   - name: Data-Plane Group Configurations
   - name: Networks
   - name: Transit Gateways
+  - name: Private DNS
   - name: Provider Accounts
   - name: Custom Domains
   - name: Mesh

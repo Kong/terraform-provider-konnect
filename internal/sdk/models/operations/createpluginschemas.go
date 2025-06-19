@@ -36,14 +36,14 @@ type CreatePluginSchemasResponse struct {
 	RawResponse *http.Response
 	// A response for a single custom plugin schema.
 	PluginSchemas *shared.PluginSchemas
-	// Bad Request
-	BadRequestError *shared.BadRequestError
-	// Unauthorized
-	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
-	ForbiddenError *shared.ForbiddenError
-	// Conflict
-	ConflictError *shared.ConflictError
+	KonnectCPLegacyBadRequestError *shared.KonnectCPLegacyBadRequestError
+	// Unauthorized
+	KonnectCPLegacyUnauthorizedError *shared.KonnectCPLegacyUnauthorizedError
+	// Forbidden
+	KonnectCPLegacyForbiddenError *shared.KonnectCPLegacyForbiddenError
+	// Forbidden
+	KonnectCPLegacyConflictError *shared.KonnectCPLegacyConflictError
 }
 
 func (o *CreatePluginSchemasResponse) GetContentType() string {
@@ -74,30 +74,30 @@ func (o *CreatePluginSchemasResponse) GetPluginSchemas() *shared.PluginSchemas {
 	return o.PluginSchemas
 }
 
-func (o *CreatePluginSchemasResponse) GetBadRequestError() *shared.BadRequestError {
+func (o *CreatePluginSchemasResponse) GetKonnectCPLegacyBadRequestError() *shared.KonnectCPLegacyBadRequestError {
 	if o == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return o.KonnectCPLegacyBadRequestError
 }
 
-func (o *CreatePluginSchemasResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreatePluginSchemasResponse) GetKonnectCPLegacyUnauthorizedError() *shared.KonnectCPLegacyUnauthorizedError {
 	if o == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return o.KonnectCPLegacyUnauthorizedError
 }
 
-func (o *CreatePluginSchemasResponse) GetForbiddenError() *shared.ForbiddenError {
+func (o *CreatePluginSchemasResponse) GetKonnectCPLegacyForbiddenError() *shared.KonnectCPLegacyForbiddenError {
 	if o == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return o.KonnectCPLegacyForbiddenError
 }
 
-func (o *CreatePluginSchemasResponse) GetConflictError() *shared.ConflictError {
+func (o *CreatePluginSchemasResponse) GetKonnectCPLegacyConflictError() *shared.KonnectCPLegacyConflictError {
 	if o == nil {
 		return nil
 	}
-	return o.ConflictError
+	return o.KonnectCPLegacyConflictError
 }

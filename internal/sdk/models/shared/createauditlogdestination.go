@@ -3,36 +3,8 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
-
-// LogFormat - The output format of each log message.
-type LogFormat string
-
-const (
-	LogFormatCef  LogFormat = "cef"
-	LogFormatJSON LogFormat = "json"
-)
-
-func (e LogFormat) ToPointer() *LogFormat {
-	return &e
-}
-func (e *LogFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "cef":
-		fallthrough
-	case "json":
-		*e = LogFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for LogFormat: %v", v)
-	}
-}
 
 // CreateAuditLogDestination - The request schema to create an audit log destination.
 type CreateAuditLogDestination struct {
@@ -42,12 +14,23 @@ type CreateAuditLogDestination struct {
 	Endpoint string `json:"endpoint"`
 	// The value to include in the `Authorization` header when sending audit logs to the webhook.
 	Authorization *string `json:"authorization,omitempty"`
-	// The output format of each log message.
-	LogFormat LogFormat `json:"log_format"`
+	// The output format of each log messages.
+	LogFormat *LogFormat `default:"cef" json:"log_format"`
 	// Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
 	// We strongly recommend not setting this to 'true' as you are subject to man-in-the-middle and other attacks.
 	// This option should be considered only for self-signed SSL certificates used in a non-production environment.
 	SkipSslVerification *bool `json:"skip_ssl_verification,omitempty"`
+}
+
+func (c CreateAuditLogDestination) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAuditLogDestination) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CreateAuditLogDestination) GetName() string {
@@ -71,9 +54,9 @@ func (o *CreateAuditLogDestination) GetAuthorization() *string {
 	return o.Authorization
 }
 
-func (o *CreateAuditLogDestination) GetLogFormat() LogFormat {
+func (o *CreateAuditLogDestination) GetLogFormat() *LogFormat {
 	if o == nil {
-		return LogFormat("")
+		return nil
 	}
 	return o.LogFormat
 }

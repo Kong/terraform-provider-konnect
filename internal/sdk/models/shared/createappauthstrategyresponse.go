@@ -102,7 +102,7 @@ type AppAuthStrategyOpenIDConnectResponse struct {
 	StrategyType AppAuthStrategyOpenIDConnectResponseStrategyType `json:"strategy_type"`
 	// JSON-B object containing the configuration for the OIDC strategy
 	Configs AppAuthStrategyOpenIDConnectResponseConfigs `json:"configs"`
-	// At least one published product version is using this auth strategy.
+	// At least one published entity is using this auth strategy.
 	Active      bool                                             `json:"active"`
 	DcrProvider *AppAuthStrategyOpenIDConnectResponseDcrProvider `json:"dcr_provider"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
@@ -288,7 +288,7 @@ type AppAuthStrategyKeyAuthResponse struct {
 	StrategyType AppAuthStrategyKeyAuthResponseStrategyType `json:"strategy_type"`
 	// JSON-B object containing the configuration for the Key Auth strategy
 	Configs AppAuthStrategyKeyAuthResponseConfigs `json:"configs"`
-	// At least one published product version is using this auth strategy.
+	// At least one published entity is using this auth strategy.
 	Active      bool         `json:"active"`
 	DcrProvider *DcrProvider `json:"dcr_provider"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.

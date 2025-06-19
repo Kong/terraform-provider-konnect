@@ -3,38 +3,9 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 	"time"
 )
-
-// AuditLogWebhookLogFormat - The output format of each log messages.
-type AuditLogWebhookLogFormat string
-
-const (
-	AuditLogWebhookLogFormatCef  AuditLogWebhookLogFormat = "cef"
-	AuditLogWebhookLogFormatJSON AuditLogWebhookLogFormat = "json"
-)
-
-func (e AuditLogWebhookLogFormat) ToPointer() *AuditLogWebhookLogFormat {
-	return &e
-}
-func (e *AuditLogWebhookLogFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "cef":
-		fallthrough
-	case "json":
-		*e = AuditLogWebhookLogFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AuditLogWebhookLogFormat: %v", v)
-	}
-}
 
 // AuditLogWebhook - Get response for audit log webhook
 type AuditLogWebhook struct {
@@ -43,7 +14,7 @@ type AuditLogWebhook struct {
 	// Indicates whether audit data should be sent to the webhook.
 	Enabled *bool `json:"enabled,omitempty"`
 	// The output format of each log messages.
-	LogFormat *AuditLogWebhookLogFormat `json:"log_format,omitempty"`
+	LogFormat *LogFormat `default:"cef" json:"log_format"`
 	// Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
 	SkipSslVerification *bool `json:"skip_ssl_verification,omitempty"`
 	// Timestamp when this webhook was last updated. Initial value is 0001-01-01T00:00:0Z.
@@ -75,7 +46,7 @@ func (o *AuditLogWebhook) GetEnabled() *bool {
 	return o.Enabled
 }
 
-func (o *AuditLogWebhook) GetLogFormat() *AuditLogWebhookLogFormat {
+func (o *AuditLogWebhook) GetLogFormat() *LogFormat {
 	if o == nil {
 		return nil
 	}
