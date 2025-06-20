@@ -12214,6 +12214,26 @@ paths:
       tags:
         - System Accounts - Roles
   /v3/teams:
+    get:
+      x-speakeasy-entity-operation: TeamList#read
+      operationId: list-teams
+      summary: List Teams
+      description: Returns an array of team objects containing information about the Konnect Teams.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/ListTeamsFilter'
+      responses:
+        '200':
+          $ref: '#/components/responses/TeamCollection'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Teams
     parameters: []
     post:
       x-speakeasy-entity-operation: Team#create
@@ -12752,6 +12772,14 @@ components:
       schema:
         type: string
       x-speakeasy-match: id
+    ListTeamsFilter:
+      schema:
+        $ref: '#/components/schemas/ListTeamsFilterParameters'
+      in: query
+      name: filter
+      description: Filter teams returned in the response.
+      required: false
+      style: deepObject
     MTLSAuthId:
       description: ID of the MTLS-auth credential to lookup
       example: ''
@@ -15678,6 +15706,21 @@ components:
       required:
         - id
         - control_plane_id
+    StringFieldFilter:
+      description: Filters on the given string field value by exact match inequality.
+      type: object
+      properties:
+        eq:
+          type: string
+        contains:
+          type: string
+        ocontains:
+          type: string
+        oeq:
+          type: string
+        neq:
+          type: string
+      additionalProperties: false
     PublicLabels:
       description: |
         Public labels store information about an entity that can be used for filtering a list of objects.
@@ -17786,6 +17829,11 @@ components:
         expires_at: '2022-12-31T12:52:23Z'
         last_used_at: '2022-10-24T13:05:42Z'
       title: System Account Access Token
+    ListTeamsFilterParameters:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/StringFieldFilter'
     schemas-IdentityProviderEnabled:
       description: |
         Indicates whether the identity provider is enabled. 
@@ -36934,6 +36982,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Team'
+    TeamCollection:
+      description: A paginated list response for a collection of users.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Team'
+            title: Team Collection Response
     AssignedRoleSingle:
       description: A get action response of a single assigned role.
       content:
