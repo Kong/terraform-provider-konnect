@@ -6,6 +6,7 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
@@ -49,6 +50,14 @@ func (r *AuthenticationSettingsResourceModel) ToSharedUpdateAuthenticationSettin
 		IdpMappingEnabled:     idpMappingEnabled,
 		KonnectMappingEnabled: konnectMappingEnabled,
 	}
+
+	return &out, diags
+}
+
+func (r *AuthenticationSettingsResourceModel) ToOperationsResetAuthenticationSettingsRequestBody(ctx context.Context) (*operations.ResetAuthenticationSettingsRequestBody, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	out := operations.ResetAuthenticationSettingsRequestBody{}
 
 	return &out, diags
 }

@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 451440196d5e7980eb72c0adedc19097
+  docChecksum: 48498f634fd28db6da4d8f7c8ed6bb45
   docVersion: 2.0.0
   speakeasyVersion: 1.567.3
   generationVersion: 2.632.2
@@ -1880,6 +1880,7 @@ generatedFiles:
   - internal/sdk/models/operations/removeconsumerfromgroup.go
   - internal/sdk/models/operations/removeuserfromteam.go
   - internal/sdk/models/operations/replaceportalproductversion.go
+  - internal/sdk/models/operations/resetauthenticationsettings.go
   - internal/sdk/models/operations/teamsassignrole.go
   - internal/sdk/models/operations/teamsremoverole.go
   - internal/sdk/models/operations/updateaclplugin.go
@@ -12873,7 +12874,7 @@ examples:
   create-identity-provider:
     speakeasy-default-create-identity-provider:
       requestBody:
-        application/json: {"enabled": true, "type": "oidc", "config": {"issuer_url": "https://konghq.okta.com/oauth2/default", "client_id": "YOUR_CLIENT_ID", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "groups"}, "client_secret": "YOUR_CLIENT_SECRET"}, "login_path": "myapp"}
+        application/json: {"enabled": true, "type": "oidc", "config": {"issuer_url": "https://konghq.okta.com/oauth2/default", "client_id": "YOUR_CLIENT_ID", "client_secret": "YOUR_CLIENT_SECRET", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "groups"}}, "login_path": "myapp"}
       responses:
         "201":
           application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "type": "oidc", "enabled": true, "config": {"issuer_url": "https://konghq.okta.com/oauth2/default", "client_id": "YOUR_CLIENT_ID", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "groups"}}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "login_path": "myapp"}
@@ -12935,5 +12936,14 @@ examples:
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  reset-authentication-settings:
+    speakeasy-default-reset-authentication-settings:
+      responses:
+        "200":
+          application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": false, "saml_auth_enabled": false, "idp_mapping_enabled": true, "konnect_mapping_enabled": false}
+        "400":
+          application/problem+json: {"status": 785204, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
 examplesVersion: 1.0.2
 generatedTests: {}
