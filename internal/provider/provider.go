@@ -442,6 +442,7 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewSystemAccountDataSource,
 		NewSystemAccountAccessTokenDataSource,
 		NewTeamDataSource,
+		NewTeamListDataSource,
 	}
 }
 

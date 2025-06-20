@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 48498f634fd28db6da4d8f7c8ed6bb45
+  docChecksum: f8dd8216109a1588a679aab4bd33a9d8
   docVersion: 2.0.0
   speakeasyVersion: 1.567.3
   generationVersion: 2.632.2
@@ -180,6 +180,7 @@ generatedFiles:
   - examples/data-sources/konnect_system_account/data-source.tf
   - examples/data-sources/konnect_system_account_access_token/data-source.tf
   - examples/data-sources/konnect_team/data-source.tf
+  - examples/data-sources/konnect_team_list/data-source.tf
   - examples/provider/provider.tf
   - examples/resources/konnect_api_product/import.sh
   - examples/resources/konnect_api_product/resource.tf
@@ -1103,6 +1104,8 @@ generatedFiles:
   - internal/provider/team_data_source_sdk.go
   - internal/provider/team_resource.go
   - internal/provider/team_resource_sdk.go
+  - internal/provider/teamlist_data_source.go
+  - internal/provider/teamlist_data_source_sdk.go
   - internal/provider/teamrole_resource.go
   - internal/provider/teamrole_resource_sdk.go
   - internal/provider/teamuser_resource.go
@@ -1254,6 +1257,7 @@ generatedFiles:
   - internal/provider/types/key_auth_plugin_config.go
   - internal/provider/types/ldap_auth_advanced_plugin_config.go
   - internal/provider/types/ldap_auth_plugin_config.go
+  - internal/provider/types/list_teams_filter_parameters.go
   - internal/provider/types/llm.go
   - internal/provider/types/llm_providers.go
   - internal/provider/types/logging.go
@@ -1361,9 +1365,11 @@ generatedFiles:
   - internal/provider/types/statsd_plugin_config.go
   - internal/provider/types/statsd_plugin_metrics.go
   - internal/provider/types/storage_config.go
+  - internal/provider/types/string_field_filter.go
   - internal/provider/types/syslog_plugin_config.go
   - internal/provider/types/targets.go
   - internal/provider/types/tcp_log_plugin_config.go
+  - internal/provider/types/team.go
   - internal/provider/types/templates.go
   - internal/provider/types/text.go
   - internal/provider/types/timeouts.go
@@ -1868,6 +1874,7 @@ generatedFiles:
   - internal/sdk/models/operations/listmeshcontrolplanes.go
   - internal/sdk/models/operations/listportals.go
   - internal/sdk/models/operations/listprovideraccounts.go
+  - internal/sdk/models/operations/listteams.go
   - internal/sdk/models/operations/options.go
   - internal/sdk/models/operations/patchsystemaccountsid.go
   - internal/sdk/models/operations/patchsystemaccountsidaccesstokensid.go
@@ -2195,6 +2202,7 @@ generatedFiles:
   - internal/sdk/models/shared/listmeshcontrolplanesresponse.go
   - internal/sdk/models/shared/listportalsresponse.go
   - internal/sdk/models/shared/listprovideraccountsresponse.go
+  - internal/sdk/models/shared/listteamsfilterparameters.go
   - internal/sdk/models/shared/logformat.go
   - internal/sdk/models/shared/logglyplugin.go
   - internal/sdk/models/shared/meshcontrolplane.go
@@ -2288,6 +2296,7 @@ generatedFiles:
   - internal/sdk/models/shared/standardwebhooksplugin.go
   - internal/sdk/models/shared/statsdadvancedplugin.go
   - internal/sdk/models/shared/statsdplugin.go
+  - internal/sdk/models/shared/stringfieldfilter.go
   - internal/sdk/models/shared/syslogplugin.go
   - internal/sdk/models/shared/systemaccount.go
   - internal/sdk/models/shared/systemaccountaccesstoken.go
@@ -2296,6 +2305,7 @@ generatedFiles:
   - internal/sdk/models/shared/targetwithoutparents.go
   - internal/sdk/models/shared/tcplogplugin.go
   - internal/sdk/models/shared/team.go
+  - internal/sdk/models/shared/teamcollection.go
   - internal/sdk/models/shared/tlshandshakemodifierplugin.go
   - internal/sdk/models/shared/tlsmetadataheadersplugin.go
   - internal/sdk/models/shared/transitgatewaydnsconfig.go
@@ -12945,5 +12955,18 @@ examples:
           application/problem+json: {"status": 785204, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+  list-teams:
+    speakeasy-default-list-teams:
+      parameters:
+        query:
+          page[size]: 10
+          page[number]: 1
+      responses:
+        "200":
+          application/json: {"meta": {"page": {"number": 1, "size": 10, "total": 100}}, "data": [{"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "IDM - Developers", "description": "The developers for the IDM API.", "system_team": false, "labels": {"env": "test"}, "created_at": "1992-02-07T17:46:57.52Z", "updated_at": "2022-08-31T17:00:00.52Z"}]}
+        "400":
+          application/problem+json: {"status": 947905, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
 examplesVersion: 1.0.2
 generatedTests: {}
