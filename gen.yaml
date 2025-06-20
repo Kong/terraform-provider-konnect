@@ -30,6 +30,7 @@ terraform:
       resource: custom.NewCustomPluginResource
   allowUnknownFieldsInWeakUnions: false
   author: kong
+  baseErrorName: KonnectError
   defaultErrorName: SDKError
   enableTypeDeduplication: true
   environmentVariables:
