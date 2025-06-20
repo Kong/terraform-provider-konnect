@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.11.0
+> Released on 2025/??/??
+
+### Features
+
+* Add support for `konnect_identity_provider` and `konnect_authentication_settings` resources
+
 ## 2.10.0  
 > Released on 2025/06/19
 

@@ -154,7 +154,7 @@ func (r *APIProductSpecificationResourceModel) RefreshFromSharedAPIProductVersio
 	if resp != nil {
 		contentValuable, contentDiags := encodedstring.Base64InputType{}.ValueFromString(ctx, types.StringValue(resp.Content))
 		diags.Append(contentDiags...)
-		r.Content, _ = contentValuable.(encodedstring.Base64Input)
+		r.Content = contentValuable.(encodedstring.Base64Input)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.ID = types.StringValue(resp.ID)
 		r.Name = types.StringValue(resp.Name)

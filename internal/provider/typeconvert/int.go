@@ -24,6 +24,17 @@ func IntPointerToInt64Pointer(value *int) *int64 {
 	return &int64Value
 }
 
+// Converts an *int32 to *int.
+func Int32PointerToIntPointer(value *int32) *int {
+	if value == nil {
+		return nil
+	}
+
+	intValue := int(*value)
+
+	return &intValue
+}
+
 // Converts an *int64 to *int32.
 func Int64PointerToInt32Pointer(value *int64) *int32 {
 	if value == nil {

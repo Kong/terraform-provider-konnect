@@ -18,7 +18,7 @@ func (i *CustomizeKongDomainHook) BeforeRequest(hookCtx BeforeRequestContext, re
 	}
 
 	customDomain := i.Domain
-	host := req.URL.Host
+	var host string
 
 	if i.ReplaceFullDomain {
 		host = i.Domain
