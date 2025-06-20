@@ -12524,6 +12524,43 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Audit Logs
+  /v3/authentication-settings#delete:
+    patch:
+      x-speakeasy-entity-operation: AuthenticationSettings#delete
+      operationId: reset-authentication-settings
+      summary: Reset Auth Settings
+      description: Reset authentication configuration.
+      requestBody:
+        description: Reset authentication settings to defaults
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                basic_auth_enabled:
+                  type: boolean
+                  const: true
+                oidc_auth_enabled:
+                  type: boolean
+                  const: false
+                saml_auth_enabled:
+                  type: boolean
+                  const: false
+                idp_mapping_enabled:
+                  type: boolean
+                  const: false
+                konnect_mapping_enabled:
+                  type: boolean
+                  const: true
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthenticationSettings'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
 components:
   parameters:
     ACLId:
