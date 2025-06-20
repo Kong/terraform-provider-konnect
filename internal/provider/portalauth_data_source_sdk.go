@@ -39,7 +39,7 @@ func (r *PortalAuthDataSourceModel) RefreshFromSharedPortalAuthenticationSetting
 			if resp.OidcConfig.ClaimMappings == nil {
 				r.OidcConfig.ClaimMappings = nil
 			} else {
-				r.OidcConfig.ClaimMappings = &tfTypes.PortalClaimMappings{}
+				r.OidcConfig.ClaimMappings = &tfTypes.OIDCIdentityProviderClaimMappings{}
 				r.OidcConfig.ClaimMappings.Email = types.StringPointerValue(resp.OidcConfig.ClaimMappings.Email)
 				r.OidcConfig.ClaimMappings.Groups = types.StringPointerValue(resp.OidcConfig.ClaimMappings.Groups)
 				r.OidcConfig.ClaimMappings.Name = types.StringPointerValue(resp.OidcConfig.ClaimMappings.Name)

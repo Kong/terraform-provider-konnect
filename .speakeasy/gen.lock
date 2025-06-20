@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: cfc86e4bd0f5e21d649efa102accfb3a
+  docChecksum: 451440196d5e7980eb72c0adedc19097
   docVersion: 2.0.0
   speakeasyVersion: 1.567.3
   generationVersion: 2.632.2
@@ -19,6 +19,7 @@ features:
     globalServerURLs: 2.82.2
     groups: 2.81.2
     ignores: 2.81.1
+    inputOutputModels: 2.83.0
     methodServerURLs: 2.82.1
     nameOverrides: 2.81.3
     nullables: 0.0.0
@@ -37,6 +38,7 @@ generatedFiles:
   - examples/data-sources/konnect_application_auth_strategy/data-source.tf
   - examples/data-sources/konnect_audit_log/data-source.tf
   - examples/data-sources/konnect_audit_log_destination/data-source.tf
+  - examples/data-sources/konnect_authentication_settings/data-source.tf
   - examples/data-sources/konnect_cloud_gateway_configuration/data-source.tf
   - examples/data-sources/konnect_cloud_gateway_custom_domain/data-source.tf
   - examples/data-sources/konnect_cloud_gateway_network/data-source.tf
@@ -166,6 +168,7 @@ generatedFiles:
   - examples/data-sources/konnect_gateway_target/data-source.tf
   - examples/data-sources/konnect_gateway_upstream/data-source.tf
   - examples/data-sources/konnect_gateway_vault/data-source.tf
+  - examples/data-sources/konnect_identity_provider/data-source.tf
   - examples/data-sources/konnect_mesh_control_plane/data-source.tf
   - examples/data-sources/konnect_mesh_control_planes/data-source.tf
   - examples/data-sources/konnect_portal_appearance/data-source.tf
@@ -191,6 +194,7 @@ generatedFiles:
   - examples/resources/konnect_audit_log/resource.tf
   - examples/resources/konnect_audit_log_destination/import.sh
   - examples/resources/konnect_audit_log_destination/resource.tf
+  - examples/resources/konnect_authentication_settings/resource.tf
   - examples/resources/konnect_cloud_gateway_configuration/import.sh
   - examples/resources/konnect_cloud_gateway_configuration/resource.tf
   - examples/resources/konnect_cloud_gateway_custom_domain/import.sh
@@ -447,6 +451,8 @@ generatedFiles:
   - examples/resources/konnect_gateway_upstream/resource.tf
   - examples/resources/konnect_gateway_vault/import.sh
   - examples/resources/konnect_gateway_vault/resource.tf
+  - examples/resources/konnect_identity_provider/import.sh
+  - examples/resources/konnect_identity_provider/resource.tf
   - examples/resources/konnect_mesh_control_plane/import.sh
   - examples/resources/konnect_mesh_control_plane/resource.tf
   - examples/resources/konnect_portal/resource.tf
@@ -512,6 +518,10 @@ generatedFiles:
   - internal/provider/auditlogdestination_data_source_sdk.go
   - internal/provider/auditlogdestination_resource.go
   - internal/provider/auditlogdestination_resource_sdk.go
+  - internal/provider/authenticationsettings_data_source.go
+  - internal/provider/authenticationsettings_data_source_sdk.go
+  - internal/provider/authenticationsettings_resource.go
+  - internal/provider/authenticationsettings_resource_sdk.go
   - internal/provider/cloudgatewayconfiguration_data_source.go
   - internal/provider/cloudgatewayconfiguration_data_source_sdk.go
   - internal/provider/cloudgatewayconfiguration_resource.go
@@ -1028,6 +1038,10 @@ generatedFiles:
   - internal/provider/gatewayvault_data_source_sdk.go
   - internal/provider/gatewayvault_resource.go
   - internal/provider/gatewayvault_resource_sdk.go
+  - internal/provider/identityprovider_data_source.go
+  - internal/provider/identityprovider_data_source_sdk.go
+  - internal/provider/identityprovider_resource.go
+  - internal/provider/identityprovider_resource_sdk.go
   - internal/provider/meshcontrolplane_data_source.go
   - internal/provider/meshcontrolplane_data_source_sdk.go
   - internal/provider/meshcontrolplane_resource.go
@@ -1186,6 +1200,7 @@ generatedFiles:
   - internal/provider/types/configuration_data_plane_group_autoscale_autopilot.go
   - internal/provider/types/configuration_data_plane_group_autoscale_static.go
   - internal/provider/types/configuration_data_plane_group_environment_field.go
+  - internal/provider/types/configure_oidc_identity_provider_config.go
   - internal/provider/types/confluent_consume_plugin_config.go
   - internal/provider/types/confluent_plugin_config.go
   - internal/provider/types/consul.go
@@ -1193,6 +1208,7 @@ generatedFiles:
   - internal/provider/types/control_plane_filter_parameters.go
   - internal/provider/types/correlation_id_plugin_config.go
   - internal/provider/types/cors_plugin_config.go
+  - internal/provider/types/create_identity_provider_config.go
   - internal/provider/types/custom_domain_state_metadata.go
   - internal/provider/types/custom_injections.go
   - internal/provider/types/custom_patterns.go
@@ -1221,6 +1237,7 @@ generatedFiles:
   - internal/provider/types/http_opts.go
   - internal/provider/types/huggingface.go
   - internal/provider/types/id.go
+  - internal/provider/types/identity_provider_config.go
   - internal/provider/types/identity_realms.go
   - internal/provider/types/injection_protection_plugin_config.go
   - internal/provider/types/ip_restriction_plugin_config.go
@@ -1260,6 +1277,8 @@ generatedFiles:
   - internal/provider/types/oauth.go
   - internal/provider/types/oauth2_introspection_plugin_config.go
   - internal/provider/types/oauth2_plugin_config.go
+  - internal/provider/types/oidc_identity_provider_claim_mappings.go
+  - internal/provider/types/oidc_identity_provider_config.go
   - internal/provider/types/opa_plugin_config.go
   - internal/provider/types/openid_connect_plugin_config.go
   - internal/provider/types/openid_connect_plugin_redis.go
@@ -1279,7 +1298,6 @@ generatedFiles:
   - internal/provider/types/pem.go
   - internal/provider/types/pgvector.go
   - internal/provider/types/portal.go
-  - internal/provider/types/portal_claim_mappings.go
   - internal/provider/types/portal_oidc_config.go
   - internal/provider/types/post_function_plugin_config.go
   - internal/provider/types/private_dns_attachment_config.go
@@ -1330,6 +1348,7 @@ generatedFiles:
   - internal/provider/types/route_by_header_plugin_rules.go
   - internal/provider/types/route_transformer_advanced_plugin_config.go
   - internal/provider/types/rules.go
+  - internal/provider/types/saml_identity_provider_config.go
   - internal/provider/types/saml_plugin_config.go
   - internal/provider/types/search.go
   - internal/provider/types/section.go
@@ -1377,6 +1396,7 @@ generatedFiles:
   - internal/sdk/apiproductversionspecification.go
   - internal/sdk/appauthstrategies.go
   - internal/sdk/auditlogs.go
+  - internal/sdk/authsettings.go
   - internal/sdk/basicauthcredentials.go
   - internal/sdk/cacertificates.go
   - internal/sdk/certificates.go
@@ -1469,6 +1489,7 @@ generatedFiles:
   - internal/sdk/models/operations/createhmacauthplugin.go
   - internal/sdk/models/operations/createhmacauthwithconsumer.go
   - internal/sdk/models/operations/createhttplogplugin.go
+  - internal/sdk/models/operations/createidentityprovider.go
   - internal/sdk/models/operations/createinjectionprotectionplugin.go
   - internal/sdk/models/operations/createiprestrictionplugin.go
   - internal/sdk/models/operations/createjqplugin.go
@@ -1607,6 +1628,7 @@ generatedFiles:
   - internal/sdk/models/operations/deletehmacauthplugin.go
   - internal/sdk/models/operations/deletehmacauthwithconsumer.go
   - internal/sdk/models/operations/deletehttplogplugin.go
+  - internal/sdk/models/operations/deleteidentityprovider.go
   - internal/sdk/models/operations/deleteinjectionprotectionplugin.go
   - internal/sdk/models/operations/deleteiprestrictionplugin.go
   - internal/sdk/models/operations/deletejqplugin.go
@@ -1719,6 +1741,7 @@ generatedFiles:
   - internal/sdk/models/operations/getappauthstrategy.go
   - internal/sdk/models/operations/getauditlogdestination.go
   - internal/sdk/models/operations/getauditlogwebhook.go
+  - internal/sdk/models/operations/getauthenticationsettings.go
   - internal/sdk/models/operations/getawslambdaplugin.go
   - internal/sdk/models/operations/getazurefunctionsplugin.go
   - internal/sdk/models/operations/getbasicauthplugin.go
@@ -1753,6 +1776,7 @@ generatedFiles:
   - internal/sdk/models/operations/gethmacauthplugin.go
   - internal/sdk/models/operations/gethmacauthwithconsumer.go
   - internal/sdk/models/operations/gethttplogplugin.go
+  - internal/sdk/models/operations/getidentityprovider.go
   - internal/sdk/models/operations/getinjectionprotectionplugin.go
   - internal/sdk/models/operations/getiprestrictionplugin.go
   - internal/sdk/models/operations/getjqplugin.go
@@ -1880,6 +1904,7 @@ generatedFiles:
   - internal/sdk/models/operations/updateappauthstrategy.go
   - internal/sdk/models/operations/updateauditlogdestination.go
   - internal/sdk/models/operations/updateauditlogwebhook.go
+  - internal/sdk/models/operations/updateauthenticationsettings.go
   - internal/sdk/models/operations/updateawslambdaplugin.go
   - internal/sdk/models/operations/updateazurefunctionsplugin.go
   - internal/sdk/models/operations/updatebasicauthplugin.go
@@ -1905,6 +1930,7 @@ generatedFiles:
   - internal/sdk/models/operations/updateheadercertauthplugin.go
   - internal/sdk/models/operations/updatehmacauthplugin.go
   - internal/sdk/models/operations/updatehttplogplugin.go
+  - internal/sdk/models/operations/updateidentityprovider.go
   - internal/sdk/models/operations/updateinjectionprotectionplugin.go
   - internal/sdk/models/operations/updateiprestrictionplugin.go
   - internal/sdk/models/operations/updatejqplugin.go
@@ -2027,6 +2053,7 @@ generatedFiles:
   - internal/sdk/models/shared/assignrole.go
   - internal/sdk/models/shared/auditlogdestination.go
   - internal/sdk/models/shared/auditlogwebhook.go
+  - internal/sdk/models/shared/authenticationsettings.go
   - internal/sdk/models/shared/authstrategy.go
   - internal/sdk/models/shared/authstrategyclientcredentials.go
   - internal/sdk/models/shared/authstrategykeyauth.go
@@ -2063,6 +2090,7 @@ generatedFiles:
   - internal/sdk/models/shared/configurationdataplanegroupconfig.go
   - internal/sdk/models/shared/configurationdataplanegroupenvironmentfield.go
   - internal/sdk/models/shared/configurationmanifest.go
+  - internal/sdk/models/shared/configureoidcidentityproviderconfig.go
   - internal/sdk/models/shared/conflicterror.go
   - internal/sdk/models/shared/confluentconsumeplugin.go
   - internal/sdk/models/shared/confluentplugin.go
@@ -2087,6 +2115,7 @@ generatedFiles:
   - internal/sdk/models/shared/createconfigurationrequest.go
   - internal/sdk/models/shared/createcontrolplanerequest.go
   - internal/sdk/models/shared/createcustomdomainrequest.go
+  - internal/sdk/models/shared/createidentityprovider.go
   - internal/sdk/models/shared/createmeshcontrolplanerequest.go
   - internal/sdk/models/shared/createnetworkrequest.go
   - internal/sdk/models/shared/createpluginschemas.go
@@ -2125,6 +2154,8 @@ generatedFiles:
   - internal/sdk/models/shared/hmacauthplugin.go
   - internal/sdk/models/shared/hmacauthwithoutparents.go
   - internal/sdk/models/shared/httplogplugin.go
+  - internal/sdk/models/shared/identityprovider.go
+  - internal/sdk/models/shared/identityprovidertype.go
   - internal/sdk/models/shared/injectionprotectionplugin.go
   - internal/sdk/models/shared/instancetypename.go
   - internal/sdk/models/shared/internalservererror.go
@@ -2185,6 +2216,9 @@ generatedFiles:
   - internal/sdk/models/shared/oasvalidationplugin.go
   - internal/sdk/models/shared/oauth2introspectionplugin.go
   - internal/sdk/models/shared/oauth2plugin.go
+  - internal/sdk/models/shared/oidcidentityproviderclaimmappings.go
+  - internal/sdk/models/shared/oidcidentityproviderconfig.go
+  - internal/sdk/models/shared/oidcidentityproviderconfigoutput.go
   - internal/sdk/models/shared/opaplugin.go
   - internal/sdk/models/shared/openidconnectplugin.go
   - internal/sdk/models/shared/opentelemetryplugin.go
@@ -2238,6 +2272,8 @@ generatedFiles:
   - internal/sdk/models/shared/routeexpression.go
   - internal/sdk/models/shared/routejson.go
   - internal/sdk/models/shared/routetransformeradvancedplugin.go
+  - internal/sdk/models/shared/samlidentityproviderconfig.go
+  - internal/sdk/models/shared/samlidentityproviderconfiginput.go
   - internal/sdk/models/shared/samlplugin.go
   - internal/sdk/models/shared/security.go
   - internal/sdk/models/shared/serverlesscloudgateway.go
@@ -2274,8 +2310,10 @@ generatedFiles:
   - internal/sdk/models/shared/updateappauthstrategyrequest.go
   - internal/sdk/models/shared/updateauditlogdestination.go
   - internal/sdk/models/shared/updateauditlogwebhook.go
+  - internal/sdk/models/shared/updateauthenticationsettings.go
   - internal/sdk/models/shared/updateconfigstore.go
   - internal/sdk/models/shared/updatecontrolplanerequest.go
+  - internal/sdk/models/shared/updateidentityprovider.go
   - internal/sdk/models/shared/updateportalappearanceresponse.go
   - internal/sdk/models/shared/updateportalrequest.go
   - internal/sdk/models/shared/updatesystemaccount.go
@@ -12808,6 +12846,89 @@ examples:
       responses:
         "400":
           application/problem+json: {"status": 837834, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value 1>", "<value 2>"], "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  get-authentication-settings:
+    speakeasy-default-get-authentication-settings:
+      responses:
+        "200":
+          application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": false, "saml_auth_enabled": false, "idp_mapping_enabled": true, "konnect_mapping_enabled": false}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+  update-authentication-settings:
+    speakeasy-default-update-authentication-settings:
+      requestBody:
+        application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": false, "saml_auth_enabled": false, "idp_mapping_enabled": true, "konnect_mapping_enabled": false}
+      responses:
+        "200":
+          application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": false, "saml_auth_enabled": false, "idp_mapping_enabled": true, "konnect_mapping_enabled": false}
+        "400":
+          application/problem+json: {"status": 39407, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+  create-identity-provider:
+    speakeasy-default-create-identity-provider:
+      requestBody:
+        application/json: {"enabled": true, "type": "oidc", "config": {"issuer_url": "https://konghq.okta.com/oauth2/default", "client_id": "YOUR_CLIENT_ID", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "groups"}, "client_secret": "YOUR_CLIENT_SECRET"}, "login_path": "myapp"}
+      responses:
+        "201":
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "type": "oidc", "enabled": true, "config": {"issuer_url": "https://konghq.okta.com/oauth2/default", "client_id": "YOUR_CLIENT_ID", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "groups"}}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "login_path": "myapp"}
+        "400":
+          application/problem+json: {"status": 824534, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value 1>", "<value 2>"], "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  get-identity-provider:
+    speakeasy-default-get-identity-provider:
+      parameters:
+        path:
+          id: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "200":
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "type": "oidc", "enabled": true, "config": {"idp_metadata_url": "https://mocksaml.com/api/saml/metadata", "idp_metadata_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<EntityDescriptor xmlns=\"urn:oasis:names:tc:SAML:2.0:metadata\">\n  <!-- SAML metadata content here -->\n</EntityDescriptor>\n", "sp_metadata_url": "https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/metadata", "sp_entity_id": "https://cloud.konghq.com/sp/00000000-0000-0000-0000-000000000000", "callback_url": "https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/acs", "login_url": "https://cloud.konghq.com/login/the-saml-konnect-org"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "login_path": "myapp"}
+        "400":
+          application/problem+json: {"status": 381490, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-identity-provider:
+    speakeasy-default-update-identity-provider:
+      parameters:
+        path:
+          id: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      requestBody:
+        application/json: {"enabled": true, "config": {"issuer_url": "https://konghq.okta.com/oauth2/default", "client_id": "YOUR_CLIENT_ID", "client_secret": "YOUR_CLIENT_SECRET", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "groups"}}, "login_path": "myapp"}
+      responses:
+        "200":
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "type": "oidc", "enabled": true, "config": {"issuer_url": "https://konghq.okta.com/oauth2/default", "client_id": "YOUR_CLIENT_ID", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "groups"}}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "login_path": "myapp"}
+        "400":
+          application/problem+json: {"status": 67521, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  delete-identity-provider:
+    speakeasy-default-delete-identity-provider:
+      parameters:
+        path:
+          id: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "400":
+          application/problem+json: {"status": 187769, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": [], "source": "body"}]}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
