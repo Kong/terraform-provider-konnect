@@ -40,9 +40,6 @@ resource "konnect_application_auth_strategy" "my_applicationauthstrategy" {
           "..."
         ]
         issuer = "...my_issuer..."
-        labels = {
-          key = "value"
-        }
         scopes = [
           "..."
         ]
@@ -170,10 +167,6 @@ Optional:
 - `auth_methods` (List of String) Not Null; Requires replacement if changed.
 - `credential_claim` (List of String) Not Null; Requires replacement if changed.
 - `issuer` (String) Not Null; Requires replacement if changed.
-- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
-
-Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-Requires replacement if changed.
 - `scopes` (List of String) Not Null; Requires replacement if changed.
 
 
