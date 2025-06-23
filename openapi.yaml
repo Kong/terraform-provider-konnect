@@ -35958,7 +35958,7 @@ components:
                 description: |
                   The custom plugin schema; `jq -Rs '.' schema.lua`.
                 type: string
-                example: 'return { name = \"myplugin\", fields = { { config = { type = \"record\", fields = { } } } } }'
+                example: 'return { name = "myplugin", fields = { { config = { type = "record", fields = { } } } } }'
             required:
               - lua_schema
     CreateConfigStoreRequest:
