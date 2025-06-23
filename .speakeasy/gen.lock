@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: cfc86e4bd0f5e21d649efa102accfb3a
+  docChecksum: ad3dfd05ec09b53b64e534cb192728cf
   docVersion: 2.0.0
   speakeasyVersion: 1.567.3
   generationVersion: 2.632.2
@@ -4248,7 +4248,7 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"lua_schema": "return { name = \\\"myplugin\\\", fields = { { config = { type = \\\"record\\\", fields = { } } } } }"}
+        application/json: {"lua_schema": "return { name = \"myplugin\", fields = { { config = { type = \"record\", fields = { } } } } }"}
       responses:
         "201":
           application/json: {"item": {"lua_schema": "return { name = \\\"myplugin\\\", fields = { { config = { type = \\\"record\\\", fields = { } } } } }", "name": "myplugin", "created_at": 1422386534, "updated_at": 1422412345}}
@@ -4305,7 +4305,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           name: "myplugin"
       requestBody:
-        application/json: {"lua_schema": "return { name = \\\"myplugin\\\", fields = { { config = { type = \\\"record\\\", fields = { } } } } }"}
+        application/json: {"lua_schema": "return { name = \"myplugin\", fields = { { config = { type = \"record\", fields = { } } } } }"}
       responses:
         "200":
           application/json: {"item": {"lua_schema": "return { name = \\\"myplugin\\\", fields = { { config = { type = \\\"record\\\", fields = { } } } } }", "name": "myplugin", "created_at": 1422386534, "updated_at": 1422412345}}

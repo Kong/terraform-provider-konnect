@@ -83,16 +83,6 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 		for _, authMethodsItem := range r.OpenidConnect.Configs.OpenidConnect.AuthMethods {
 			authMethods = append(authMethods, authMethodsItem.ValueString())
 		}
-		labels1 := make(map[string]*string)
-		for labelsKey1, labelsValue1 := range r.OpenidConnect.Configs.OpenidConnect.Labels {
-			labelsInst1 := new(string)
-			if !labelsValue1.IsUnknown() && !labelsValue1.IsNull() {
-				*labelsInst1 = labelsValue1.ValueString()
-			} else {
-				labelsInst1 = nil
-			}
-			labels1[labelsKey1] = labelsInst1
-		}
 		var additionalProperties interface{}
 		if !r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties.IsUnknown() && !r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties.IsNull() {
 			_ = json.Unmarshal([]byte(r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties.ValueString()), &additionalProperties)
@@ -102,7 +92,6 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 			CredentialClaim:      credentialClaim,
 			Scopes:               scopes,
 			AuthMethods:          authMethods,
-			Labels:               labels1,
 			AdditionalProperties: additionalProperties,
 		}
 		configs1 := shared.AppAuthStrategyOpenIDConnectRequestConfigs{
@@ -114,15 +103,15 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 		} else {
 			dcrProviderID = nil
 		}
-		labels2 := make(map[string]*string)
-		for labelsKey2, labelsValue2 := range r.OpenidConnect.Labels {
-			labelsInst2 := new(string)
-			if !labelsValue2.IsUnknown() && !labelsValue2.IsNull() {
-				*labelsInst2 = labelsValue2.ValueString()
+		labels1 := make(map[string]*string)
+		for labelsKey1, labelsValue1 := range r.OpenidConnect.Labels {
+			labelsInst1 := new(string)
+			if !labelsValue1.IsUnknown() && !labelsValue1.IsNull() {
+				*labelsInst1 = labelsValue1.ValueString()
 			} else {
-				labelsInst2 = nil
+				labelsInst1 = nil
 			}
-			labels2[labelsKey2] = labelsInst2
+			labels1[labelsKey1] = labelsInst1
 		}
 		appAuthStrategyOpenIDConnectRequest = &shared.AppAuthStrategyOpenIDConnectRequest{
 			Name:          name1,
@@ -130,7 +119,7 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 			StrategyType:  strategyType1,
 			Configs:       configs1,
 			DcrProviderID: dcrProviderID,
-			Labels:        labels2,
+			Labels:        labels1,
 		}
 	}
 	if appAuthStrategyOpenIDConnectRequest != nil {
@@ -268,12 +257,6 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 				r.OpenidConnect.Configs.OpenidConnect.CredentialClaim = append(r.OpenidConnect.Configs.OpenidConnect.CredentialClaim, types.StringValue(v))
 			}
 			r.OpenidConnect.Configs.OpenidConnect.Issuer = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Issuer)
-			if len(resp.AppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Labels) > 0 {
-				r.OpenidConnect.Configs.OpenidConnect.Labels = make(map[string]types.String, len(resp.AppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Labels))
-				for key1, value1 := range resp.AppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Labels {
-					r.OpenidConnect.Configs.OpenidConnect.Labels[key1] = types.StringPointerValue(value1)
-				}
-			}
 			r.OpenidConnect.Configs.OpenidConnect.Scopes = make([]types.String, 0, len(resp.AppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Scopes))
 			for _, v := range resp.AppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Scopes {
 				r.OpenidConnect.Configs.OpenidConnect.Scopes = append(r.OpenidConnect.Configs.OpenidConnect.Scopes, types.StringValue(v))
@@ -294,8 +277,8 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			r.ID = r.OpenidConnect.ID
 			if len(resp.AppAuthStrategyOpenIDConnectResponse.Labels) > 0 {
 				r.OpenidConnect.Labels = make(map[string]types.String, len(resp.AppAuthStrategyOpenIDConnectResponse.Labels))
-				for key2, value2 := range resp.AppAuthStrategyOpenIDConnectResponse.Labels {
-					r.OpenidConnect.Labels[key2] = types.StringPointerValue(value2)
+				for key1, value1 := range resp.AppAuthStrategyOpenIDConnectResponse.Labels {
+					r.OpenidConnect.Labels[key1] = types.StringPointerValue(value1)
 				}
 			}
 			r.OpenidConnect.Name = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponse.Name)
