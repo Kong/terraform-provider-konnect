@@ -222,6 +222,273 @@ paths:
           $ref: '#/components/responses/MeshControlPlaneNotFoundError'
       tags:
         - Mesh
+  /v1/realms:
+    post:
+      x-speakeasy-entity-operation: Realm#create
+      operationId: create-realm
+      summary: Create a realm
+      description: |
+        Create a new Realm. Centrally Managed Consumers are created within a Realm. 
+
+        Each Realm can be restricted to a specific set of control planes if needed using `allowed_control_planes` or `allow_all_control_planes`.
+
+        `ttl` and `negative_ttl` control how long the consumers are kept in memory by a running Gateway. 
+
+        Any `consumer_groups` added to the Realm are automatically applied to all consumers within this Realm.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateConsumerRealm'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateConsumerRealmResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+      tags:
+        - Realms
+  '/v1/realms/{realmId}':
+    parameters:
+      - $ref: '#/components/parameters/realmId'
+    get:
+      x-speakeasy-entity-operation: Realm#read
+      operationId: get-realm
+      summary: Get a realm
+      description: 'Fetch the details of a specific realm, identified by its UUID'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsumerRealm'
+      tags:
+        - Realms
+    patch:
+      x-speakeasy-entity-operation: Realm#update
+      operationId: update-realm
+      summary: Update a realm
+      description: |
+        Update a realm's details. Any consumers already cached in a running Gateway will not be affected body
+        the changes to the Realm until `ttl` minutes have passed.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateConsumerRealm'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsumerRealm'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+      tags:
+        - Realms
+    delete:
+      x-speakeasy-entity-operation: Realm#delete
+      operationId: delete-realm
+      summary: Delete a realm
+      description: |
+        Delete a Realm, and all consumers and credentials containined within the Realm.
+
+        Only empty Realms can be deleted, unless you specify `?force=true` as a query string parameter in your request.
+      parameters:
+        - name: force
+          in: query
+          description: |
+            If set to "true", the realm and all consumers and credentials will be deleted when running `terraform destroy`.
+            If set to "false", the realm will not be deleted until all child entities are manually removed.
+            This will IRREVERSIBLY DELETE ALL REGISTERED CONSUMERS AND THEIR CREDENTIALS. Only set to "true" if you want this behavior.
+          schema:
+            type: string
+            default: 'false'
+            enum:
+              - 'true'
+              - 'false'
+          x-speakeasy-name-override: force_destroy
+      responses:
+        '204':
+          description: success
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Realms
+  '/v1/realms/{realmId}/consumers':
+    parameters:
+      - $ref: '#/components/parameters/realmIdForChildren'
+    post:
+      x-speakeasy-entity-operation: CentralizedConsumer#create
+      operationId: create-consumer-in-realm
+      summary: Create a consumer
+      description: |
+        Create a new consumer in this Realm. It will be available to use for authentication within a few seconds, unless
+        the consumer's username is blocked in the Gateway. If this is the case, the new consumer will be available in
+        `negative_ttl` (see the Realm definition) seconds.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateConsumer'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateConsumerResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Centrally Managed Consumers
+  '/v1/realms/{realmId}/consumers/{consumerId}':
+    parameters:
+      - $ref: '#/components/parameters/realmIdForChildren'
+      - $ref: '#/components/parameters/consumerId'
+    get:
+      x-speakeasy-entity-operation: CentralizedConsumer#read
+      operationId: get-consumer-from-realm
+      summary: Get a consumer
+      description: |
+        Get a consumer from the given realm.
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CentralizedConsumer'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Centrally Managed Consumers
+    patch:
+      x-speakeasy-entity-operation: CentralizedConsumer#update
+      operationId: update-consumer-in-realm
+      summary: Update a consumer
+      description: |
+        Update a Consumer's details. Any consumers already cached in a running Gateway will not be affected body the changes to the Realm until `ttl` minutes have passed.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateConsumer'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CentralizedConsumer'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Centrally Managed Consumers
+    delete:
+      x-speakeasy-entity-operation: CentralizedConsumer#delete
+      operationId: delete-consumer-in-realm
+      summary: Delete a consumer
+      description: |
+        Delete a consumer. This operation removes the consumer from the system, causing all future authentication
+        requests using keys associated with that consumer to fail. However, it does not immediately invalidate any
+        cached keys stored in the gateway's state. These keys may remain usable until the cache expires, based on the
+        TTL (Time-To-Live) configured for the realm.
+      responses:
+        '204':
+          description: success
+        '404':
+          description: not found
+      tags:
+        - Centrally Managed Consumers
+  '/v1/realms/{realmId}/consumers/{consumerId}/keys':
+    parameters:
+      - $ref: '#/components/parameters/realmIdForChildren'
+      - $ref: '#/components/parameters/centralizedConsumerIdForChildren'
+    post:
+      x-speakeasy-entity-operation: CentralizedConsumerKey#create
+      operationId: create-consumer-key
+      summary: Create a key
+      description: |
+        This operation generates an API key for the specified consumer. The key is returned only at the time of creation
+        and will not be retrievable in any subsequent GET requests on the entity.
+
+        The API supports two key creation types: `new` and `legacy`.
+
+        * `new`: The recommended and more efficient option. The API automatically generates the key and returns it during
+        this operation.
+        * `legacy`: Allows you to provide your own secret. This approach has a performance impact when proxying requests, as it involves
+        additional processing and resource usage.
+
+        Note: Regardless of the type selected, the key is only returned by the API when a key is created. It is not retrievable in the future.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApiKey'
+      responses:
+        '201':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateApiKeyResult'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Centrally Managed Keys
+  '/v1/realms/{realmId}/consumers/{consumerId}/keys/{keyId}':
+    parameters:
+      - $ref: '#/components/parameters/realmIdForChildren'
+      - $ref: '#/components/parameters/centralizedConsumerIdForChildren'
+      - $ref: '#/components/parameters/keyId'
+    get:
+      x-speakeasy-entity-operation: CentralizedConsumerKey#read
+      operationId: get-consumer-key
+      summary: Get a key
+      description: |
+        Returns the key entity. This operation does **NOT** return the key itself. The key is only available at the time of creation.
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKey'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Centrally Managed Keys
+    delete:
+      x-speakeasy-entity-operation: CentralizedConsumerKey#delete
+      operationId: delete-consumer-key
+      summary: Delete a key
+      description: |
+        Delete a key. This operation removes the key from the system, causing all future authentication
+        requests using this key to fail. However, it does not immediately invalidate any
+        cached keys stored in the gateway's state. These keys may remain usable until the cache expires, based on the
+        TTL (Time-To-Live) configured for the realm.
+      responses:
+        '204':
+          description: success
+        '404':
+          description: not found
+      tags:
+        - Centrally Managed Keys
   /v2/api-products:
     post:
       x-speakeasy-entity-operation: ApiProduct#create
@@ -12751,6 +13018,13 @@ components:
       schema:
         type: string
       x-speakeasy-match: id
+    centralizedConsumerIdForChildren:
+      name: consumerId
+      in: path
+      required: true
+      description: ID of the of the consumer
+      schema:
+        type: string
     configStoreId:
       schema:
         type: string
@@ -12761,6 +13035,14 @@ components:
       required: true
       description: Config Store identifier
       x-speakeasy-match: id
+    consumerId:
+      x-speakeasy-match: id
+      name: consumerId
+      in: path
+      required: true
+      description: ID of the of the consumer
+      schema:
+        type: string
     controlPlaneId:
       x-speakeasy-param-force-new: true
       name: controlPlaneId
@@ -12771,6 +13053,31 @@ components:
         format: uuid
         example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
       description: The UUID of your control plane. This variable is available in the Konnect manager.
+    keyId:
+      x-speakeasy-match: id
+      name: keyId
+      in: path
+      required: true
+      description: ID of the key
+      schema:
+        type: string
+    realmId:
+      x-speakeasy-match: id
+      name: realmId
+      in: path
+      required: true
+      description: ID of the realm
+      schema:
+        type: string
+        format: uuid
+    realmIdForChildren:
+      name: realmId
+      in: path
+      required: true
+      description: ID of the realm
+      schema:
+        type: string
+        format: uuid
   schemas:
     GroupMembership:
       x-speakeasy-entity: GatewayControlPlaneMembership
@@ -13383,12 +13690,14 @@ components:
       format: date-time
       example: '2022-11-04T20:10:06.927Z'
       readOnly: true
+      x-speakeasy-param-suppress-computed-diff: true
     UpdatedAt:
       description: An ISO-8601 timestamp representation of entity update date.
       type: string
       format: date-time
       example: '2022-11-04T20:10:06.927Z'
       readOnly: true
+      x-speakeasy-param-suppress-computed-diff: true
     ControlPlaneId:
       type: string
       format: uuid
@@ -15939,9 +16248,9 @@ components:
         product_version_id:
           $ref: '#/components/schemas/UUID_RW'
         created_at:
-          $ref: '#/components/schemas/CreatedAt'
+          $ref: '#/components/schemas/schemas-CreatedAt'
         updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
+          $ref: '#/components/schemas/schemas-UpdatedAt'
         auth_strategies:
           $ref: '#/components/schemas/AuthStrategies'
         application_registration_enabled:
@@ -16768,6 +17077,20 @@ components:
       format: uuid
       example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
       readOnly: true
+    schemas-CreatedAt:
+      description: An ISO-8601 timestamp representation of entity creation date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+      x-speakeasy-param-suppress-computed-diff: true
+    schemas-UpdatedAt:
+      description: An ISO-8601 timestamp representation of entity update date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+      x-speakeasy-param-suppress-computed-diff: true
     schemas-UUID:
       description: Contains a unique identifier used by the API for this resource.
       type: string
@@ -17537,6 +17860,274 @@ components:
           format: date-time
           readOnly: true
       title: AuditLogDestination
+    CreateApiKeyResult:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/KeyTypeEnum'
+        secret:
+          type: string
+          x-speakeasy-param-sensitive: true
+        created_at:
+          $ref: '#/components/schemas/schemas-CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/schemas-UpdatedAt'
+        tags:
+          $ref: '#/components/schemas/Tags'
+      required:
+        - id
+        - type
+        - secret
+        - created_at
+        - updated_at
+        - tags
+    KeyTypeEnum:
+      type: string
+      enum:
+        - legacy
+        - new
+    ApiKey:
+      type: object
+      properties:
+        id:
+          type: string
+        created_at:
+          $ref: '#/components/schemas/schemas-CreatedAt'
+        tags:
+          $ref: '#/components/schemas/Tags'
+        type:
+          $ref: '#/components/schemas/KeyTypeEnum'
+      required:
+        - id
+        - created_at
+        - type
+        - tags
+    ConsumerRealm:
+      type: object
+      properties:
+        id:
+          type: string
+          x-speakeasy-param-suppress-computed-diff: true
+        name:
+          type: string
+        ttl:
+          $ref: '#/components/schemas/RealmTTL'
+        negative_ttl:
+          $ref: '#/components/schemas/NegativeTTL'
+        consumer_groups:
+          $ref: '#/components/schemas/RealmConsumerGroups'
+        allowed_control_planes:
+          $ref: '#/components/schemas/AllowedControlPlanes'
+        allow_all_control_planes:
+          $ref: '#/components/schemas/AllowAllControlPlanes'
+        created_at:
+          $ref: '#/components/schemas/schemas-CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/schemas-UpdatedAt'
+      required:
+        - id
+        - name
+        - allowed_control_planes
+        - allow_all_control_planes
+        - ttl
+        - negative_ttl
+        - consumer_groups
+        - created_at
+        - updated_at
+    ConsumerRealmCreateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        allowed_control_planes:
+          $ref: '#/components/schemas/AllowedControlPlanes'
+        allow_all_control_planes:
+          $ref: '#/components/schemas/AllowAllControlPlanes'
+        ttl:
+          $ref: '#/components/schemas/RealmTTL'
+        negative_ttl:
+          $ref: '#/components/schemas/NegativeTTL'
+        consumer_groups:
+          $ref: '#/components/schemas/RealmConsumerGroups'
+      additionalProperties: false
+      required:
+        - name
+    UpdateConsumerPayload:
+      type: object
+      properties:
+        username:
+          $ref: '#/components/schemas/ConsumerUsername'
+        custom_id:
+          $ref: '#/components/schemas/ConsumerCustomID'
+        consumer_groups:
+          $ref: '#/components/schemas/ConsumerGroups'
+        type:
+          $ref: '#/components/schemas/ConsumerType'
+        tags:
+          $ref: '#/components/schemas/Tags'
+      additionalProperties: false
+    AllowAllControlPlanes:
+      description: |
+        Allow all control planes to use the realm. When this value is set it takes precedence on `allowed_control_planes`.
+      type: boolean
+      nullable: false
+      x-speakeasy-param-suppress-computed-diff: true
+    ConsumerRealmUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        allowed_control_planes:
+          $ref: '#/components/schemas/AllowedControlPlanes'
+        allow_all_control_planes:
+          $ref: '#/components/schemas/AllowAllControlPlanes'
+        consumer_groups:
+          $ref: '#/components/schemas/RealmConsumerGroups'
+        ttl:
+          $ref: '#/components/schemas/RealmTTL'
+        negative_ttl:
+          $ref: '#/components/schemas/NegativeTTL'
+      additionalProperties: false
+    ConsumerUsername:
+      description: The unique username of the Consumer.
+      type: string
+      minLength: 1
+    ConsumerCustomID:
+      description: Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database.
+      type: string
+      minLength: 1
+    RealmTTL:
+      description: |
+        The time in minutes that the Consumer will be cached in memory on a running Gateway if it is
+        successfully loaded from Konnect.
+      type: integer
+      default: 10
+      minimum: 5
+    NegativeTTL:
+      description: |
+        If a running Gateway triggers a lookup for a Consumer that cannot be authenticated this realm, a `negative_ttl`
+        is set. The Gateway will not try to lookup the Consumer in Konnect for `negative_ttl` minutes.
+
+        A Consumer will be cached for `negative_ttl` if they do not exist in the Realm, or if the provided credentials
+        are invalid.
+      type: integer
+      default: 10
+      minimum: 5
+    ConsumerCreateRequest:
+      type: object
+      properties:
+        username:
+          $ref: '#/components/schemas/ConsumerUsername'
+        custom_id:
+          $ref: '#/components/schemas/ConsumerCustomID'
+        consumer_groups:
+          $ref: '#/components/schemas/ConsumerGroups'
+        type:
+          $ref: '#/components/schemas/ConsumerType'
+        tags:
+          $ref: '#/components/schemas/Tags'
+      additionalProperties: false
+      required:
+        - username
+    AllowedControlPlanes:
+      description: |
+        List of control plane ids that are allowed to use the realm. This is used when `allow_all_control_planes` value
+        is set to false.
+      type: array
+      items:
+        type: string
+        uniqueItems: true
+        x-speakeasy-param-suppress-computed-diff: true
+      format: set
+    ConsumerType:
+      description: |
+        Type of the consumer.
+      type: string
+      default: proxy
+      enum:
+        - proxy
+        - developer
+        - admin
+        - application
+    Tags:
+      type: array
+      items:
+        type: string
+      uniqueItems: true
+      x-speakeasy-param-suppress-computed-diff: true
+    ConsumerGroups:
+      description: |
+        A list of consumer groups that the Consumer is in.
+        If `consumer_groups` are provided on the Consumer object _and_ on the Realm, the Consumer will be placed in all defined consumer groups.
+      type: array
+      items:
+        type: string
+        uniqueItems: true
+      title: ConsumerGroups
+      x-speakeasy-param-suppress-computed-diff: true
+    CentralizedConsumer:
+      description: 'The Consumer object represents a consumer - or a user - of a Service. You can either rely on Kong as the primary datastore, or you can map the consumer list with your database to keep consistency between Kong and your existing primary datastore.'
+      type: object
+      properties:
+        id:
+          description: The Consumer ID.
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        username:
+          description: The unique username of the Consumer. You must send either this field or `custom_id` with the request.
+          type: string
+          nullable: true
+        custom_id:
+          description: Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database. You must send either this field or `username` with the request.
+          type: string
+          nullable: true
+        type:
+          $ref: '#/components/schemas/ConsumerType'
+        tags:
+          $ref: '#/components/schemas/Tags'
+        consumer_groups:
+          $ref: '#/components/schemas/ConsumerGroups'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      example:
+        custom_id: '4200'
+        id: 8a388226-80e8-4027-a486-25e4f7db5d21
+        type: proxy
+        consumer_groups:
+          - gold
+        tags:
+          - partner
+        username: bob-the-builder
+        created_at: '2025-06-17T16:55:58.569399532Z'
+        updated_at: '2025-06-17T16:55:58.569399532Z'
+      additionalProperties: false
+      required:
+        - id
+        - username
+        - custom_id
+        - type
+        - tags
+        - consumer_groups
+        - created_at
+        - updated_at
+    RealmConsumerGroups:
+      description: |
+        A list of consumer groups to automatically add to any consumers created within this Realm.
+        If `consumer_groups` are provided on the Consumer object _and_ on the Realm, the Consumer will be placed in all defined consumer groups.
+      type: array
+      items:
+        type: string
+        uniqueItems: true
+      format: set
+      title: RealmConsumerGroups
+      x-speakeasy-param-suppress-computed-diff: true
     DataPlaneClientCertificate:
       x-speakeasy-entity: GatewayDataPlaneClientCertificate
       type: object
@@ -35504,6 +36095,30 @@ components:
           properties:
             message:
               example: Not Found
+    CreateApiKeyPayload:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - new
+            - legacy
+        secret:
+          description: secret to be created. Must be unique within the realm. If not specified a secret will be automatically generated.
+          type: string
+          x-speakeasy-plan-validators: CentralizedConsumerKeyValidator
+        tags:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+      example:
+        type: new
+        consumer_id: ...consumer_id...
+        realm_id: ...realm_id...
+      additionalProperties: false
+      required:
+        - type
   requestBodies:
     GroupMembershipAdd:
       content:
@@ -35933,6 +36548,36 @@ components:
                   This option should be considered only for self-signed SSL certificates used in a non-production environment.
                 type: boolean
                 example: false
+    UpdateConsumer:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateConsumerPayload'
+    CreateApiKey:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateApiKeyPayload'
+    UpdateConsumerRealm:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConsumerRealmUpdateRequest'
+    CreateConsumerRealm:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConsumerRealmCreateRequest'
+    CreateConsumer:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConsumerCreateRequest'
     DataPlaneClientCertificateRequest:
       content:
         application/json:
@@ -36640,6 +37285,18 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/BadRequestError'
+    CreateConsumerResponse:
+      description: success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CentralizedConsumer'
+    CreateConsumerRealmResponse:
+      description: success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConsumerRealm'
     DataPlaneClientCertificateResponse:
       description: Response body for retrieving a dp-client-certificate.
       content:
@@ -36800,6 +37457,15 @@ tags:
   - name: System Accounts - Team Membership
   - name: Serverless Cloud Gateways
   - name: Audit Logs
+  - name: Realms
+    description: |
+      Use a realm to group consumers around an identity, defined by organizational boundaries, such as a production realm or a development realm. Realms are connected to a [geographic region](https://docs.konghq.com/konnect/geo/) in Konnect. Centrally managed consumers defined in realms can be used across multiple control planes.
+  - name: Centrally Managed Consumers
+    description: |
+      Consumers can be scoped to a Konnect region and managed centrally, or be scoped to a control plane in Gateway Manager. Use centrally managed consumers to set up identity of the consumer once, and share it across multiple control planes. Consumers that are managed centrally aren’t part of the configuration that is pushed down from the control plane to the data planes, so it reduces config size and latency.
+  - name: Centrally Managed Keys
+    description: |
+      Centrally managed consumers use key-auth mechanism to authenticate consumers. Keys refer to the API key credential used by the consumer to authenticate to your services. 
   - description: DP Certificates
     name: DP Certificates
   - description: Custom Plugin Schemas
@@ -36833,6 +37499,7 @@ tags:
       - `grpcs`: At least one of `hosts`, `headers`, `paths`, or `snis`
       - `ws`: At least one of `hosts`, `headers`, or `paths`
       - `wss`: At least one of `hosts`, `headers`, `paths`, or `snis`
+
 
 
 
