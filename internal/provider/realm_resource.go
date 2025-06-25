@@ -3,72 +3,85 @@
 package provider
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
-	"github.com/Kong/shared-speakeasy/customtypes/encodedstring"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/boolplanmodifier"
+	speakeasy_setplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/setplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
-	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &APIProductSpecificationResource{}
-var _ resource.ResourceWithImportState = &APIProductSpecificationResource{}
+var _ resource.Resource = &RealmResource{}
+var _ resource.ResourceWithImportState = &RealmResource{}
 
-func NewAPIProductSpecificationResource() resource.Resource {
-	return &APIProductSpecificationResource{}
+func NewRealmResource() resource.Resource {
+	return &RealmResource{}
 }
 
-// APIProductSpecificationResource defines the resource implementation.
-type APIProductSpecificationResource struct {
+// RealmResource defines the resource implementation.
+type RealmResource struct {
 	client *sdk.Konnect
 }
 
-// APIProductSpecificationResourceModel describes the resource data model.
-type APIProductSpecificationResourceModel struct {
-	APIProductID        types.String              `tfsdk:"api_product_id"`
-	APIProductVersionID types.String              `tfsdk:"api_product_version_id"`
-	Content             encodedstring.Base64Input `tfsdk:"content"`
-	CreatedAt           types.String              `tfsdk:"created_at"`
-	ID                  types.String              `tfsdk:"id"`
-	Name                types.String              `tfsdk:"name"`
-	UpdatedAt           types.String              `tfsdk:"updated_at"`
+// RealmResourceModel describes the resource data model.
+type RealmResourceModel struct {
+	AllowAllControlPlanes types.Bool     `tfsdk:"allow_all_control_planes"`
+	AllowedControlPlanes  []types.String `tfsdk:"allowed_control_planes"`
+	ConsumerGroups        []types.String `tfsdk:"consumer_groups"`
+	CreatedAt             types.String   `tfsdk:"created_at"`
+	ForceDestroy          types.String   `queryParam:"style=form,explode=true,name=force" tfsdk:"force_destroy"`
+	ID                    types.String   `tfsdk:"id"`
+	Name                  types.String   `tfsdk:"name"`
+	NegativeTTL           types.Int64    `tfsdk:"negative_ttl"`
+	TTL                   types.Int64    `tfsdk:"ttl"`
+	UpdatedAt             types.String   `tfsdk:"updated_at"`
 }
 
-func (r *APIProductSpecificationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_api_product_specification"
+func (r *RealmResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_realm"
 }
 
-func (r *APIProductSpecificationResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *RealmResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "APIProductSpecification Resource",
+		MarkdownDescription: "Realm Resource",
 		Attributes: map[string]schema.Attribute{
-			"api_product_id": schema.StringAttribute{
-				Required:    true,
-				Description: `The API product identifier`,
-			},
-			"api_product_version_id": schema.StringAttribute{
-				Required:    true,
-				Description: `The API product version identifier`,
-			},
-			"content": schema.StringAttribute{
-				CustomType:  encodedstring.Base64InputType{},
-				Required:    true,
-				Description: `The base64 encoded contents of the API product version specification`,
-				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtLeast(1),
+			"allow_all_control_planes": schema.BoolAttribute{
+				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.Bool{
+					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 				},
+				Description: `Allow all control planes to use the realm. When this value is set it takes precedence on ` + "`" + `allowed_control_planes` + "`" + `.`,
+			},
+			"allowed_control_planes": schema.SetAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `List of control plane ids that are allowed to use the realm. This is used when ` + "`" + `allow_all_control_planes` + "`" + ` value` + "\n" +
+					`is set to false.`,
+			},
+			"consumer_groups": schema.SetAttribute{
+				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.Set{
+					speakeasy_setplanmodifier.SuppressDiff(speakeasy_setplanmodifier.ExplicitSuppress),
+				},
+				ElementType: types.StringType,
+				MarkdownDescription: `A list of consumer groups to automatically add to any consumers created within this Realm.` + "\n" +
+					`If ` + "`" + `consumer_groups` + "`" + ` are provided on the Consumer object _and_ on the Realm, the Consumer will be placed in all defined consumer groups.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -80,16 +93,53 @@ func (r *APIProductSpecificationResource) Schema(ctx context.Context, req resour
 					validators.IsRFC3339(),
 				},
 			},
+			"force_destroy": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`false`),
+				MarkdownDescription: `If set to "true", the realm and all consumers and credentials will be deleted when running ` + "`" + `terraform destroy` + "`" + `.` + "\n" +
+					`If set to "false", the realm will not be deleted until all child entities are manually removed.` + "\n" +
+					`This will IRREVERSIBLY DELETE ALL REGISTERED CONSUMERS AND THEIR CREDENTIALS. Only set to "true" if you want this behavior.` + "\n" +
+					`Default: "false"; must be one of ["true", "false"]`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"true",
+						"false",
+					),
+				},
+			},
 			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `The API product version specification identifier.`,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 			},
 			"name": schema.StringAttribute{
-				Required:    true,
-				Description: `The name of the API product version specification`,
-				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 255),
-					stringvalidator.RegexMatches(regexp.MustCompile(`^.+(?:\.yaml|\.yml|\.json)$`), "must match pattern "+regexp.MustCompile(`^.+(?:\.yaml|\.yml|\.json)$`).String()),
+				Required: true,
+			},
+			"negative_ttl": schema.Int64Attribute{
+				Computed: true,
+				Optional: true,
+				Default:  int64default.StaticInt64(10),
+				MarkdownDescription: `If a running Gateway triggers a lookup for a Consumer that cannot be authenticated this realm, a ` + "`" + `negative_ttl` + "`" + `` + "\n" +
+					`is set. The Gateway will not try to lookup the Consumer in Konnect for ` + "`" + `negative_ttl` + "`" + ` minutes.` + "\n" +
+					`` + "\n" +
+					`A Consumer will be cached for ` + "`" + `negative_ttl` + "`" + ` if they do not exist in the Realm, or if the provided credentials` + "\n" +
+					`are invalid.` + "\n" +
+					`Default: 10`,
+				Validators: []validator.Int64{
+					int64validator.AtLeast(5),
+				},
+			},
+			"ttl": schema.Int64Attribute{
+				Computed: true,
+				Optional: true,
+				Default:  int64default.StaticInt64(10),
+				MarkdownDescription: `The time in minutes that the Consumer will be cached in memory on a running Gateway if it is` + "\n" +
+					`successfully loaded from Konnect.` + "\n" +
+					`Default: 10`,
+				Validators: []validator.Int64{
+					int64validator.AtLeast(5),
 				},
 			},
 			"updated_at": schema.StringAttribute{
@@ -106,7 +156,7 @@ func (r *APIProductSpecificationResource) Schema(ctx context.Context, req resour
 	}
 }
 
-func (r *APIProductSpecificationResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *RealmResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -126,8 +176,8 @@ func (r *APIProductSpecificationResource) Configure(ctx context.Context, req res
 	r.client = client
 }
 
-func (r *APIProductSpecificationResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *APIProductSpecificationResourceModel
+func (r *RealmResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *RealmResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -144,13 +194,13 @@ func (r *APIProductSpecificationResource) Create(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAPIProductVersionSpecRequest(ctx)
+	request, requestDiags := data.ToSharedConsumerRealmCreateRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.APIProductVersionSpecification.CreateAPIProductVersionSpec(ctx, *request)
+	res, err := r.client.Realms.CreateRealm(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -166,11 +216,11 @@ func (r *APIProductSpecificationResource) Create(ctx context.Context, req resour
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.APIProductVersionSpec != nil) {
+	if !(res.ConsumerRealm != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAPIProductVersionSpec(ctx, res.APIProductVersionSpec)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedConsumerRealm(ctx, res.ConsumerRealm)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -186,8 +236,8 @@ func (r *APIProductSpecificationResource) Create(ctx context.Context, req resour
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *APIProductSpecificationResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *APIProductSpecificationResourceModel
+func (r *RealmResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *RealmResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -204,13 +254,13 @@ func (r *APIProductSpecificationResource) Read(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAPIProductVersionSpecRequest(ctx)
+	request, requestDiags := data.ToOperationsGetRealmRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.APIProductVersionSpecification.GetAPIProductVersionSpec(ctx, *request)
+	res, err := r.client.Realms.GetRealm(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -230,11 +280,11 @@ func (r *APIProductSpecificationResource) Read(ctx context.Context, req resource
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.APIProductVersionSpec != nil) {
+	if !(res.ConsumerRealm != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAPIProductVersionSpec(ctx, res.APIProductVersionSpec)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedConsumerRealm(ctx, res.ConsumerRealm)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -244,8 +294,8 @@ func (r *APIProductSpecificationResource) Read(ctx context.Context, req resource
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *APIProductSpecificationResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *APIProductSpecificationResourceModel
+func (r *RealmResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *RealmResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -258,13 +308,13 @@ func (r *APIProductSpecificationResource) Update(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAPIProductVersionSpecRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateRealmRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.APIProductVersionSpecification.UpdateAPIProductVersionSpec(ctx, *request)
+	res, err := r.client.Realms.UpdateRealm(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -280,11 +330,11 @@ func (r *APIProductSpecificationResource) Update(ctx context.Context, req resour
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.APIProductVersionSpec != nil) {
+	if !(res.ConsumerRealm != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAPIProductVersionSpec(ctx, res.APIProductVersionSpec)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedConsumerRealm(ctx, res.ConsumerRealm)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -300,8 +350,8 @@ func (r *APIProductSpecificationResource) Update(ctx context.Context, req resour
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *APIProductSpecificationResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *APIProductSpecificationResourceModel
+func (r *RealmResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *RealmResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -318,13 +368,13 @@ func (r *APIProductSpecificationResource) Delete(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAPIProductVersionSpecRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteRealmRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.APIProductVersionSpecification.DeleteAPIProductVersionSpec(ctx, *request)
+	res, err := r.client.Realms.DeleteRealm(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -343,34 +393,6 @@ func (r *APIProductSpecificationResource) Delete(ctx context.Context, req resour
 
 }
 
-func (r *APIProductSpecificationResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
-	dec.DisallowUnknownFields()
-	var data struct {
-		APIProductID        string `json:"api_product_id"`
-		APIProductVersionID string `json:"api_product_version_id"`
-		ID                  string `json:"id"`
-	}
-
-	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "api_product_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a",  "api_product_version_id": "9f5061ce-78f6-4452-9108-ad7c02821fd5",  "id": "742ff9f1-fb89-4aeb-a599-f0e278c7aeaa"}': `+err.Error())
-		return
-	}
-
-	if len(data.APIProductID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field api_product_id is required but was not found in the json encoded ID. It's expected to be a value alike '"d32d905a-ed33-46a3-a093-d8f536af9a8a"`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("api_product_id"), data.APIProductID)...)
-	if len(data.APIProductVersionID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field api_product_version_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9f5061ce-78f6-4452-9108-ad7c02821fd5"`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("api_product_version_id"), data.APIProductVersionID)...)
-	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"742ff9f1-fb89-4aeb-a599-f0e278c7aeaa"`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
-
+func (r *RealmResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), req.ID)...)
 }

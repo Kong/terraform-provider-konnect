@@ -56,9 +56,18 @@ func Pointer[T any](v T) *T { return &v }
 //
 // https://developer.konghq.com - Documentation for Kong Gateway and its APIs
 type Konnect struct {
-	SDKVersion                     string
-	ServerlessCloudGateways        *ServerlessCloudGateways
-	Mesh                           *Mesh
+	SDKVersion              string
+	ServerlessCloudGateways *ServerlessCloudGateways
+	Mesh                    *Mesh
+	// Use a realm to group consumers around an identity, defined by organizational boundaries, such as a production realm or a development realm. Realms are connected to a [geographic region](https://docs.konghq.com/konnect/geo/) in Konnect. Centrally managed consumers defined in realms can be used across multiple control planes.
+	//
+	Realms *Realms
+	// Consumers can be scoped to a Konnect region and managed centrally, or be scoped to a control plane in Gateway Manager. Use centrally managed consumers to set up identity of the consumer once, and share it across multiple control planes. Consumers that are managed centrally aren’t part of the configuration that is pushed down from the control plane to the data planes, so it reduces config size and latency.
+	//
+	CentrallyManagedConsumers *CentrallyManagedConsumers
+	// Centrally managed consumers use key-auth mechanism to authenticate consumers. Keys refer to the API key credential used by the consumer to authenticate to your services.
+	//
+	CentrallyManagedKeys           *CentrallyManagedKeys
 	APIProducts                    *APIProducts
 	APIProductDocumentation        *APIProductDocumentation
 	APIProductVersions             *APIProductVersions
@@ -130,6 +139,7 @@ type Konnect struct {
 	// - `grpcs`: At least one of `hosts`, `headers`, `paths`, or `snis`
 	// - `ws`: At least one of `hosts`, `headers`, or `paths`
 	// - `wss`: At least one of `hosts`, `headers`, `paths`, or `snis`
+	//
 	//
 	//
 	//
@@ -301,6 +311,9 @@ func New(opts ...SDKOption) *Konnect {
 
 	sdk.ServerlessCloudGateways = newServerlessCloudGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Mesh = newMesh(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Realms = newRealms(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CentrallyManagedConsumers = newCentrallyManagedConsumers(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CentrallyManagedKeys = newCentrallyManagedKeys(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APIProducts = newAPIProducts(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APIProductDocumentation = newAPIProductDocumentation(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APIProductVersions = newAPIProductVersions(sdk, sdk.sdkConfiguration, sdk.hooks)

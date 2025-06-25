@@ -57,7 +57,7 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Description: `Contains a unique identifier used by the API for this resource.`,
+				Description: `Contains a unique identifier used for this resource.`,
 			},
 			"key_auth": schema.SingleNestedAttribute{
 				Computed: true,
@@ -98,7 +98,7 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 							},
 							"id": schema.StringAttribute{
 								Computed:    true,
-								Description: `Contains a unique identifier used by the API for this resource.`,
+								Description: `Contains a unique identifier used for this resource.`,
 							},
 							"name": schema.StringAttribute{
 								Computed: true,
@@ -115,7 +115,7 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 					},
 					"id": schema.StringAttribute{
 						Computed:    true,
-						Description: `Contains a unique identifier used by the API for this resource.`,
+						Description: `Contains a unique identifier used for this resource.`,
 					},
 					"labels": schema.MapAttribute{
 						Computed:    true,
@@ -196,7 +196,7 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 							},
 							"id": schema.StringAttribute{
 								Computed:    true,
-								Description: `Contains a unique identifier used by the API for this resource.`,
+								Description: `Contains a unique identifier used for this resource.`,
 							},
 							"name": schema.StringAttribute{
 								Computed: true,
@@ -213,7 +213,7 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 					},
 					"id": schema.StringAttribute{
 						Computed:    true,
-						Description: `Contains a unique identifier used by the API for this resource.`,
+						Description: `Contains a unique identifier used for this resource.`,
 					},
 					"labels": schema.MapAttribute{
 						Computed:    true,
