@@ -12917,7 +12917,7 @@ components:
       in: path
       required: true
       schema:
-        $ref: '#/components/schemas/schemas-UUID'
+        $ref: '#/components/schemas/UUID'
     RouteId:
       description: ID of the Route to lookup
       example: a4326a41-aa12-44e3-93e4-6b6e58bfb9d7
@@ -16242,15 +16242,15 @@ components:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/schemas-UUID'
+          $ref: '#/components/schemas/UUID'
         publish_status:
           $ref: '#/components/schemas/PortalProductVersionPublishStatus'
         product_version_id:
           $ref: '#/components/schemas/UUID_RW'
         created_at:
-          $ref: '#/components/schemas/schemas-CreatedAt'
+          $ref: '#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '#/components/schemas/schemas-UpdatedAt'
+          $ref: '#/components/schemas/UpdatedAt'
         auth_strategies:
           $ref: '#/components/schemas/AuthStrategies'
         application_registration_enabled:
@@ -17072,33 +17072,13 @@ components:
         - dark_mode
         - custom
     UUID:
-      description: Contains a unique identifier used by the API for this resource.
-      type: string
-      format: uuid
-      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-      readOnly: true
-    schemas-CreatedAt:
-      description: An ISO-8601 timestamp representation of entity creation date.
-      type: string
-      format: date-time
-      example: '2022-11-04T20:10:06.927Z'
-      readOnly: true
-      x-speakeasy-param-suppress-computed-diff: true
-    schemas-UpdatedAt:
-      description: An ISO-8601 timestamp representation of entity update date.
-      type: string
-      format: date-time
-      example: '2022-11-04T20:10:06.927Z'
-      readOnly: true
-      x-speakeasy-param-suppress-computed-diff: true
-    schemas-UUID:
-      description: Contains a unique identifier used by the API for this resource.
+      description: Contains a unique identifier used for this resource.
       type: string
       format: uuid
       example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
       readOnly: true
     UUID_RW:
-      description: Contains a unique identifier used by the API for this resource.
+      description: Contains a unique identifier used for this resource.
       type: string
       format: uuid
       example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
@@ -17871,9 +17851,9 @@ components:
           type: string
           x-speakeasy-param-sensitive: true
         created_at:
-          $ref: '#/components/schemas/schemas-CreatedAt'
+          $ref: '#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '#/components/schemas/schemas-UpdatedAt'
+          $ref: '#/components/schemas/UpdatedAt'
         tags:
           $ref: '#/components/schemas/Tags'
       required:
@@ -17894,7 +17874,7 @@ components:
         id:
           type: string
         created_at:
-          $ref: '#/components/schemas/schemas-CreatedAt'
+          $ref: '#/components/schemas/CreatedAt'
         tags:
           $ref: '#/components/schemas/Tags'
         type:
@@ -17923,9 +17903,9 @@ components:
         allow_all_control_planes:
           $ref: '#/components/schemas/AllowAllControlPlanes'
         created_at:
-          $ref: '#/components/schemas/schemas-CreatedAt'
+          $ref: '#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '#/components/schemas/schemas-UpdatedAt'
+          $ref: '#/components/schemas/UpdatedAt'
       required:
         - id
         - name
