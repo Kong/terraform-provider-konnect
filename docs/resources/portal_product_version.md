@@ -47,7 +47,7 @@ resource "konnect_portal_product_version" "my_portalproductversion" {
 
 - `auth_strategies` (Attributes List) A list of authentication strategies (see [below for nested schema](#nestedatt--auth_strategies))
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `id` (String) Contains a unique identifier used by the API for this resource.
+- `id` (String) Contains a unique identifier used for this resource.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--auth_strategies"></a>

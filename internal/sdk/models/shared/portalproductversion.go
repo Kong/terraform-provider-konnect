@@ -14,11 +14,11 @@ import (
 // - Application registration settings like auto approve or whether application registration is enabled
 // - The Authentication Strategy (if present) that is enabled for Application Registration
 type PortalProductVersion struct {
-	// Contains a unique identifier used by the API for this resource.
+	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// Publication status of the API product version on the portal
 	PublishStatus PortalProductVersionPublishStatus `json:"publish_status"`
-	// Contains a unique identifier used by the API for this resource.
+	// Contains a unique identifier used for this resource.
 	ProductVersionID string `json:"product_version_id"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`

@@ -3,6 +3,10 @@
 ## 2.11.0  
 > Released on ?
 
+### Features
+
+* Add support for the `konnect_realm`, `konnect_centralized_consumer` and `konnect_centralized_consumer_key` resources
+
 ### Bug fixes
 
 * Fixed error while creating openid-connect strategy in `konnect_application_auth_strategy` resource

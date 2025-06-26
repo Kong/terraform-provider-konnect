@@ -215,9 +215,9 @@ func (r *PortalResourceModel) ToOperationsDeletePortalRequest(ctx context.Contex
 	var portalID string
 	portalID = r.ID.ValueString()
 
-	force := new(operations.Force)
+	force := new(operations.QueryParamForce)
 	if !r.Force.IsUnknown() && !r.Force.IsNull() {
-		*force = operations.Force(r.Force.ValueString())
+		*force = operations.QueryParamForce(r.Force.ValueString())
 	} else {
 		force = nil
 	}

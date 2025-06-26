@@ -122,7 +122,7 @@ func (r *PortalProductVersionDataSource) Schema(ctx context.Context, req datasou
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Description: `Contains a unique identifier used by the API for this resource.`,
+				Description: `Contains a unique identifier used for this resource.`,
 			},
 			"portal_id": schema.StringAttribute{
 				Required:    true,

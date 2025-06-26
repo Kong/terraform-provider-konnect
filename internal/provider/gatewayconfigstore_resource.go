@@ -16,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
@@ -58,7 +59,10 @@ func (r *GatewayConfigStoreResource) Schema(ctx context.Context, req resource.Sc
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -76,7 +80,10 @@ func (r *GatewayConfigStoreResource) Schema(ctx context.Context, req resource.Sc
 				},
 			},
 			"updated_at": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),

@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: ad3dfd05ec09b53b64e534cb192728cf
+  docChecksum: c23e9a3dc15a404f613168f286e7e7e1
   docVersion: 2.0.0
   speakeasyVersion: 1.567.3
   generationVersion: 2.632.2
@@ -37,6 +37,8 @@ generatedFiles:
   - examples/data-sources/konnect_application_auth_strategy/data-source.tf
   - examples/data-sources/konnect_audit_log/data-source.tf
   - examples/data-sources/konnect_audit_log_destination/data-source.tf
+  - examples/data-sources/konnect_centralized_consumer/data-source.tf
+  - examples/data-sources/konnect_centralized_consumer_key/data-source.tf
   - examples/data-sources/konnect_cloud_gateway_configuration/data-source.tf
   - examples/data-sources/konnect_cloud_gateway_custom_domain/data-source.tf
   - examples/data-sources/konnect_cloud_gateway_network/data-source.tf
@@ -173,6 +175,7 @@ generatedFiles:
   - examples/data-sources/konnect_portal_list/data-source.tf
   - examples/data-sources/konnect_portal_product_version/data-source.tf
   - examples/data-sources/konnect_portal_team/data-source.tf
+  - examples/data-sources/konnect_realm/data-source.tf
   - examples/data-sources/konnect_serverless_cloud_gateway/data-source.tf
   - examples/data-sources/konnect_system_account/data-source.tf
   - examples/data-sources/konnect_system_account_access_token/data-source.tf
@@ -191,6 +194,10 @@ generatedFiles:
   - examples/resources/konnect_audit_log/resource.tf
   - examples/resources/konnect_audit_log_destination/import.sh
   - examples/resources/konnect_audit_log_destination/resource.tf
+  - examples/resources/konnect_centralized_consumer/import.sh
+  - examples/resources/konnect_centralized_consumer/resource.tf
+  - examples/resources/konnect_centralized_consumer_key/import.sh
+  - examples/resources/konnect_centralized_consumer_key/resource.tf
   - examples/resources/konnect_cloud_gateway_configuration/import.sh
   - examples/resources/konnect_cloud_gateway_configuration/resource.tf
   - examples/resources/konnect_cloud_gateway_custom_domain/import.sh
@@ -458,6 +465,8 @@ generatedFiles:
   - examples/resources/konnect_portal_product_version/resource.tf
   - examples/resources/konnect_portal_team/import.sh
   - examples/resources/konnect_portal_team/resource.tf
+  - examples/resources/konnect_realm/import.sh
+  - examples/resources/konnect_realm/resource.tf
   - examples/resources/konnect_serverless_cloud_gateway/import.sh
   - examples/resources/konnect_serverless_cloud_gateway/resource.tf
   - examples/resources/konnect_system_account/import.sh
@@ -512,6 +521,14 @@ generatedFiles:
   - internal/provider/auditlogdestination_data_source_sdk.go
   - internal/provider/auditlogdestination_resource.go
   - internal/provider/auditlogdestination_resource_sdk.go
+  - internal/provider/centralizedconsumer_data_source.go
+  - internal/provider/centralizedconsumer_data_source_sdk.go
+  - internal/provider/centralizedconsumer_resource.go
+  - internal/provider/centralizedconsumer_resource_sdk.go
+  - internal/provider/centralizedconsumerkey_data_source.go
+  - internal/provider/centralizedconsumerkey_data_source_sdk.go
+  - internal/provider/centralizedconsumerkey_resource.go
+  - internal/provider/centralizedconsumerkey_resource_sdk.go
   - internal/provider/cloudgatewayconfiguration_data_source.go
   - internal/provider/cloudgatewayconfiguration_data_source_sdk.go
   - internal/provider/cloudgatewayconfiguration_resource.go
@@ -1055,6 +1072,10 @@ generatedFiles:
   - internal/provider/portalteam_resource.go
   - internal/provider/portalteam_resource_sdk.go
   - internal/provider/provider.go
+  - internal/provider/realm_data_source.go
+  - internal/provider/realm_data_source_sdk.go
+  - internal/provider/realm_resource.go
+  - internal/provider/realm_resource_sdk.go
   - internal/provider/reflect/diags.go
   - internal/provider/reflect/doc.go
   - internal/provider/reflect/generic_attr_value.go
@@ -1379,6 +1400,8 @@ generatedFiles:
   - internal/sdk/auditlogs.go
   - internal/sdk/basicauthcredentials.go
   - internal/sdk/cacertificates.go
+  - internal/sdk/centrallymanagedconsumers.go
+  - internal/sdk/centrallymanagedkeys.go
   - internal/sdk/certificates.go
   - internal/sdk/cloudgateways.go
   - internal/sdk/configstores.go
@@ -1448,6 +1471,8 @@ generatedFiles:
   - internal/sdk/models/operations/createconfluentplugin.go
   - internal/sdk/models/operations/createconsumer.go
   - internal/sdk/models/operations/createconsumergroup.go
+  - internal/sdk/models/operations/createconsumerinrealm.go
+  - internal/sdk/models/operations/createconsumerkey.go
   - internal/sdk/models/operations/createcontrolplane.go
   - internal/sdk/models/operations/createcorrelationidplugin.go
   - internal/sdk/models/operations/createcorsplugin.go
@@ -1511,6 +1536,7 @@ generatedFiles:
   - internal/sdk/models/operations/createproxycacheplugin.go
   - internal/sdk/models/operations/createratelimitingadvancedplugin.go
   - internal/sdk/models/operations/createratelimitingplugin.go
+  - internal/sdk/models/operations/createrealm.go
   - internal/sdk/models/operations/createredirectplugin.go
   - internal/sdk/models/operations/createrequestcalloutplugin.go
   - internal/sdk/models/operations/createrequestsizelimitingplugin.go
@@ -1587,6 +1613,8 @@ generatedFiles:
   - internal/sdk/models/operations/deleteconfluentplugin.go
   - internal/sdk/models/operations/deleteconsumer.go
   - internal/sdk/models/operations/deleteconsumergroup.go
+  - internal/sdk/models/operations/deleteconsumerinrealm.go
+  - internal/sdk/models/operations/deleteconsumerkey.go
   - internal/sdk/models/operations/deletecontrolplane.go
   - internal/sdk/models/operations/deletecorrelationidplugin.go
   - internal/sdk/models/operations/deletecorsplugin.go
@@ -1651,6 +1679,7 @@ generatedFiles:
   - internal/sdk/models/operations/deleteproxycacheplugin.go
   - internal/sdk/models/operations/deleteratelimitingadvancedplugin.go
   - internal/sdk/models/operations/deleteratelimitingplugin.go
+  - internal/sdk/models/operations/deleterealm.go
   - internal/sdk/models/operations/deleteredirectplugin.go
   - internal/sdk/models/operations/deleterequestcalloutplugin.go
   - internal/sdk/models/operations/deleterequestsizelimitingplugin.go
@@ -1732,7 +1761,9 @@ generatedFiles:
   - internal/sdk/models/operations/getconfluentconsumeplugin.go
   - internal/sdk/models/operations/getconfluentplugin.go
   - internal/sdk/models/operations/getconsumer.go
+  - internal/sdk/models/operations/getconsumerfromrealm.go
   - internal/sdk/models/operations/getconsumergroup.go
+  - internal/sdk/models/operations/getconsumerkey.go
   - internal/sdk/models/operations/getcontrolplane.go
   - internal/sdk/models/operations/getcorrelationidplugin.go
   - internal/sdk/models/operations/getcorsplugin.go
@@ -1798,6 +1829,7 @@ generatedFiles:
   - internal/sdk/models/operations/getproxycacheplugin.go
   - internal/sdk/models/operations/getratelimitingadvancedplugin.go
   - internal/sdk/models/operations/getratelimitingplugin.go
+  - internal/sdk/models/operations/getrealm.go
   - internal/sdk/models/operations/getredirectplugin.go
   - internal/sdk/models/operations/getrequestcalloutplugin.go
   - internal/sdk/models/operations/getrequestsizelimitingplugin.go
@@ -1888,6 +1920,7 @@ generatedFiles:
   - internal/sdk/models/operations/updateconfigstore.go
   - internal/sdk/models/operations/updateconfluentconsumeplugin.go
   - internal/sdk/models/operations/updateconfluentplugin.go
+  - internal/sdk/models/operations/updateconsumerinrealm.go
   - internal/sdk/models/operations/updatecontrolplane.go
   - internal/sdk/models/operations/updatecorrelationidplugin.go
   - internal/sdk/models/operations/updatecorsplugin.go
@@ -1942,6 +1975,7 @@ generatedFiles:
   - internal/sdk/models/operations/updateproxycacheplugin.go
   - internal/sdk/models/operations/updateratelimitingadvancedplugin.go
   - internal/sdk/models/operations/updateratelimitingplugin.go
+  - internal/sdk/models/operations/updaterealm.go
   - internal/sdk/models/operations/updateredirectplugin.go
   - internal/sdk/models/operations/updaterequestcalloutplugin.go
   - internal/sdk/models/operations/updaterequestsizelimitingplugin.go
@@ -2008,6 +2042,7 @@ generatedFiles:
   - internal/sdk/models/shared/aisemanticcacheplugin.go
   - internal/sdk/models/shared/aisemanticpromptguardplugin.go
   - internal/sdk/models/shared/apiaccess.go
+  - internal/sdk/models/shared/apikey.go
   - internal/sdk/models/shared/apiproduct.go
   - internal/sdk/models/shared/apiproductdocument.go
   - internal/sdk/models/shared/apiproductportal.go
@@ -2054,6 +2089,7 @@ generatedFiles:
   - internal/sdk/models/shared/botdetectionplugin.go
   - internal/sdk/models/shared/cacertificate.go
   - internal/sdk/models/shared/canaryplugin.go
+  - internal/sdk/models/shared/centralizedconsumer.go
   - internal/sdk/models/shared/certificate.go
   - internal/sdk/models/shared/configstore.go
   - internal/sdk/models/shared/configurationdataplanegroup.go
@@ -2067,14 +2103,21 @@ generatedFiles:
   - internal/sdk/models/shared/confluentconsumeplugin.go
   - internal/sdk/models/shared/confluentplugin.go
   - internal/sdk/models/shared/consumer.go
+  - internal/sdk/models/shared/consumercreaterequest.go
   - internal/sdk/models/shared/consumergroup.go
   - internal/sdk/models/shared/consumergroupinsidewrapper.go
+  - internal/sdk/models/shared/consumerrealm.go
+  - internal/sdk/models/shared/consumerrealmcreaterequest.go
+  - internal/sdk/models/shared/consumerrealmupdaterequest.go
+  - internal/sdk/models/shared/consumertype.go
   - internal/sdk/models/shared/controlplane.go
   - internal/sdk/models/shared/controlplanefilterparameters.go
   - internal/sdk/models/shared/controlplanegeo.go
   - internal/sdk/models/shared/correlationidplugin.go
   - internal/sdk/models/shared/corsplugin.go
   - internal/sdk/models/shared/cpregion.go
+  - internal/sdk/models/shared/createapikeypayload.go
+  - internal/sdk/models/shared/createapikeyresult.go
   - internal/sdk/models/shared/createapiproductdocumentdto.go
   - internal/sdk/models/shared/createapiproductdto.go
   - internal/sdk/models/shared/createapiproductversiondto.go
@@ -2152,6 +2195,7 @@ generatedFiles:
   - internal/sdk/models/shared/keyauthplugin.go
   - internal/sdk/models/shared/keyauthwithoutparents.go
   - internal/sdk/models/shared/keyset.go
+  - internal/sdk/models/shared/keytypeenum.go
   - internal/sdk/models/shared/konnectcplegacybadrequesterror.go
   - internal/sdk/models/shared/konnectcplegacyconflicterror.go
   - internal/sdk/models/shared/konnectcplegacyforbiddenerror.go
@@ -2275,6 +2319,7 @@ generatedFiles:
   - internal/sdk/models/shared/updateauditlogdestination.go
   - internal/sdk/models/shared/updateauditlogwebhook.go
   - internal/sdk/models/shared/updateconfigstore.go
+  - internal/sdk/models/shared/updateconsumerpayload.go
   - internal/sdk/models/shared/updatecontrolplanerequest.go
   - internal/sdk/models/shared/updateportalappearanceresponse.go
   - internal/sdk/models/shared/updateportalrequest.go
@@ -2298,6 +2343,7 @@ generatedFiles:
   - internal/sdk/portalproductversions.go
   - internal/sdk/portals.go
   - internal/sdk/portalteams.go
+  - internal/sdk/realms.go
   - internal/sdk/retry/config.go
   - internal/sdk/roles.go
   - internal/sdk/routes.go
@@ -12814,5 +12860,126 @@ examples:
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-realm:
+    speakeasy-default-create-realm:
+      requestBody:
+        application/json: {"name": "<value>", "ttl": 10, "negative_ttl": 10}
+      responses:
+        "201":
+          application/json: {"id": "<id>", "name": "<value>", "ttl": 10, "negative_ttl": 10, "consumer_groups": ["<value 1>"], "allowed_control_planes": [], "allow_all_control_planes": false, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 490773, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+  get-realm:
+    speakeasy-default-get-realm:
+      parameters:
+        path:
+          realmId: "ab20277a-85b6-482a-a294-59742d804deb"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "name": "<value>", "ttl": 10, "negative_ttl": 10, "consumer_groups": ["<value 1>", "<value 2>", "<value 3>"], "allowed_control_planes": ["<value 1>", "<value 2>"], "allow_all_control_planes": false, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+  update-realm:
+    speakeasy-default-update-realm:
+      parameters:
+        path:
+          realmId: "46f421f7-dfb4-45d3-b196-0d5ae7afbc46"
+      requestBody:
+        application/json: {"ttl": 10, "negative_ttl": 10}
+      responses:
+        "200":
+          application/json: {"id": "<id>", "name": "<value>", "ttl": 10, "negative_ttl": 10, "consumer_groups": ["<value 1>", "<value 2>", "<value 3>"], "allowed_control_planes": ["<value 1>", "<value 2>", "<value 3>"], "allow_all_control_planes": true, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 516615, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": [], "source": "body"}]}
+  delete-realm:
+    speakeasy-default-delete-realm:
+      parameters:
+        path:
+          realmId: "91ab8a5c-2335-4646-bec7-7e39479d51f4"
+        query:
+          force: "false"
+      responses:
+        "400":
+          application/problem+json: {"status": 483713, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-consumer-in-realm:
+    speakeasy-default-create-consumer-in-realm:
+      parameters:
+        path:
+          realmId: "b2cf6ae1-d3e3-43dd-9d71-8c31f9840136"
+      requestBody:
+        application/json: {"username": "Jerome_Brown5", "type": "proxy"}
+      responses:
+        "201":
+          application/json: {"id": "8a388226-80e8-4027-a486-25e4f7db5d21", "username": "bob-the-builder", "custom_id": "4200", "type": "proxy", "tags": ["partner"], "consumer_groups": ["gold"], "created_at": "2025-06-17T16:55:58.569399532Z", "updated_at": "2025-06-17T16:55:58.569399532Z"}
+        "400":
+          application/problem+json: {"status": 53921, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  get-consumer-from-realm:
+    speakeasy-default-get-consumer-from-realm:
+      parameters:
+        path:
+          realmId: "b5d63b40-d37c-4a8b-9786-ab6cccaa34b6"
+          consumerId: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "8a388226-80e8-4027-a486-25e4f7db5d21", "username": "bob-the-builder", "custom_id": "4200", "type": "proxy", "tags": ["partner"], "consumer_groups": ["gold"], "created_at": "2025-06-17T16:55:58.569399532Z", "updated_at": "2025-06-17T16:55:58.569399532Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-consumer-in-realm:
+    speakeasy-default-update-consumer-in-realm:
+      parameters:
+        path:
+          realmId: "89d90b8d-3af9-44c6-895e-6bb840ee4abd"
+          consumerId: "<id>"
+      requestBody:
+        application/json: {"type": "proxy"}
+      responses:
+        "200":
+          application/json: {"id": "8a388226-80e8-4027-a486-25e4f7db5d21", "username": "bob-the-builder", "custom_id": "4200", "type": "proxy", "tags": ["partner"], "consumer_groups": ["gold"], "created_at": "2025-06-17T16:55:58.569399532Z", "updated_at": "2025-06-17T16:55:58.569399532Z"}
+        "400":
+          application/problem+json: {"status": 757714, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max_items", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  delete-consumer-in-realm:
+    speakeasy-default-delete-consumer-in-realm:
+      parameters:
+        path:
+          realmId: "a5ed97e5-1d41-4291-bdb6-1992742c238d"
+          consumerId: "<id>"
+  create-consumer-key:
+    speakeasy-default-create-consumer-key:
+      parameters:
+        path:
+          realmId: "886abe40-ce5b-41bc-bad2-73b89e02eaae"
+          consumerId: "<id>"
+      requestBody:
+        application/json: {"type": "new"}
+      responses:
+        "201":
+          application/json: {"id": "<id>", "type": "legacy", "secret": "<value>", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "tags": ["<value 1>", "<value 2>", "<value 3>"]}
+        "400":
+          application/problem+json: {"status": 445815, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  get-consumer-key:
+    speakeasy-default-get-consumer-key:
+      parameters:
+        path:
+          realmId: "b38543fe-2abb-43cc-99b7-acab561fc2e4"
+          consumerId: "<id>"
+          keyId: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "created_at": "2022-11-04T20:10:06.927Z", "tags": ["<value 1>"], "type": "new"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  delete-consumer-key:
+    speakeasy-default-delete-consumer-key:
+      parameters:
+        path:
+          realmId: "0767d501-b2f3-4c34-865c-fe41cb3cbb84"
+          consumerId: "<id>"
+          keyId: "<id>"
 examplesVersion: 1.0.2
 generatedTests: {}

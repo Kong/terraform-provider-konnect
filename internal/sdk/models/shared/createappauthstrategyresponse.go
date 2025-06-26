@@ -51,7 +51,7 @@ func (o *AppAuthStrategyOpenIDConnectResponseConfigs) GetOpenidConnect() AppAuth
 }
 
 type AppAuthStrategyOpenIDConnectResponseDcrProvider struct {
-	// Contains a unique identifier used by the API for this resource.
+	// Contains a unique identifier used for this resource.
 	ID   string `json:"id"`
 	Name string `json:"name"`
 	// The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
@@ -91,7 +91,7 @@ func (o *AppAuthStrategyOpenIDConnectResponseDcrProvider) GetProviderType() DcrP
 
 // AppAuthStrategyOpenIDConnectResponse - Response payload from creating an OIDC Application Auth Strategy
 type AppAuthStrategyOpenIDConnectResponse struct {
-	// Contains a unique identifier used by the API for this resource.
+	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.
 	//
@@ -237,7 +237,7 @@ func (o *AppAuthStrategyKeyAuthResponseConfigs) GetKeyAuth() AppAuthStrategyConf
 }
 
 type DcrProvider struct {
-	// Contains a unique identifier used by the API for this resource.
+	// Contains a unique identifier used for this resource.
 	ID   string `json:"id"`
 	Name string `json:"name"`
 	// The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
@@ -277,7 +277,7 @@ func (o *DcrProvider) GetProviderType() DcrProviderType {
 
 // AppAuthStrategyKeyAuthResponse - Response payload from creating or updating a Key Auth Application Auth Strategy
 type AppAuthStrategyKeyAuthResponse struct {
-	// Contains a unique identifier used by the API for this resource.
+	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.
 	//
