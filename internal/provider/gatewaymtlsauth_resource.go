@@ -41,14 +41,13 @@ type GatewayMTLSAuthResource struct {
 
 // GatewayMTLSAuthResourceModel describes the resource data model.
 type GatewayMTLSAuthResourceModel struct {
-	CaCertificate  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"ca_certificate"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
-	ConsumerID     types.String                       `tfsdk:"consumer_id"`
-	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                        `tfsdk:"created_at"`
-	ID             types.String                       `tfsdk:"id"`
-	SubjectName    types.String                       `tfsdk:"subject_name"`
-	Tags           []types.String                     `tfsdk:"tags"`
+	CaCertificate  *tfTypes.Set   `tfsdk:"ca_certificate"`
+	ConsumerID     types.String   `tfsdk:"consumer_id"`
+	ControlPlaneID types.String   `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64    `tfsdk:"created_at"`
+	ID             types.String   `tfsdk:"id"`
+	SubjectName    types.String   `tfsdk:"subject_name"`
+	Tags           []types.String `tfsdk:"tags"`
 }
 
 func (r *GatewayMTLSAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -60,28 +59,6 @@ func (r *GatewayMTLSAuthResource) Schema(ctx context.Context, req resource.Schem
 		MarkdownDescription: "GatewayMTLSAuth Resource",
 		Attributes: map[string]schema.Attribute{
 			"ca_certificate": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `Requires replacement if changed.`,
-					},
-				},
-				Description: `Requires replacement if changed.`,
-			},
-			"consumer": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
 				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{

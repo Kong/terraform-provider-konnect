@@ -9,7 +9,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 )
 
@@ -28,16 +27,15 @@ type GatewayJWTDataSource struct {
 
 // GatewayJWTDataSourceModel describes the data model.
 type GatewayJWTDataSourceModel struct {
-	Algorithm      types.String                       `tfsdk:"algorithm"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
-	ConsumerID     types.String                       `tfsdk:"consumer_id"`
-	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                        `tfsdk:"created_at"`
-	ID             types.String                       `tfsdk:"id"`
-	Key            types.String                       `tfsdk:"key"`
-	RsaPublicKey   types.String                       `tfsdk:"rsa_public_key"`
-	Secret         types.String                       `tfsdk:"secret"`
-	Tags           []types.String                     `tfsdk:"tags"`
+	Algorithm      types.String   `tfsdk:"algorithm"`
+	ConsumerID     types.String   `tfsdk:"consumer_id"`
+	ControlPlaneID types.String   `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64    `tfsdk:"created_at"`
+	ID             types.String   `tfsdk:"id"`
+	Key            types.String   `tfsdk:"key"`
+	RsaPublicKey   types.String   `tfsdk:"rsa_public_key"`
+	Secret         types.String   `tfsdk:"secret"`
+	Tags           []types.String `tfsdk:"tags"`
 }
 
 // Metadata returns the data source type name.
@@ -53,14 +51,6 @@ func (r *GatewayJWTDataSource) Schema(ctx context.Context, req datasource.Schema
 		Attributes: map[string]schema.Attribute{
 			"algorithm": schema.StringAttribute{
 				Computed: true,
-			},
-			"consumer": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Computed: true,
-					},
-				},
 			},
 			"consumer_id": schema.StringAttribute{
 				Required:    true,

@@ -6,7 +6,6 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
@@ -14,29 +13,17 @@ import (
 func (r *GatewayHMACAuthResourceModel) ToSharedHMACAuthWithoutParents(ctx context.Context) (*shared.HMACAuthWithoutParents, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var consumer *shared.HMACAuthWithoutParentsConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.HMACAuthWithoutParentsConsumer{
-			ID: id,
-		}
-	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
 	} else {
 		createdAt = nil
 	}
-	id1 := new(string)
+	id := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id1 = r.ID.ValueString()
+		*id = r.ID.ValueString()
 	} else {
-		id1 = nil
+		id = nil
 	}
 	secret := new(string)
 	if !r.Secret.IsUnknown() && !r.Secret.IsNull() {
@@ -52,9 +39,8 @@ func (r *GatewayHMACAuthResourceModel) ToSharedHMACAuthWithoutParents(ctx contex
 	username = r.Username.ValueString()
 
 	out := shared.HMACAuthWithoutParents{
-		Consumer:  consumer,
 		CreatedAt: createdAt,
-		ID:        id1,
+		ID:        id,
 		Secret:    secret,
 		Tags:      tags,
 		Username:  username,
@@ -134,12 +120,6 @@ func (r *GatewayHMACAuthResourceModel) RefreshFromSharedHMACAuth(ctx context.Con
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Consumer == nil {
-			r.Consumer = nil
-		} else {
-			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
-			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Secret = types.StringPointerValue(resp.Secret)

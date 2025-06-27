@@ -14,9 +14,6 @@ GatewayACL Resource
 
 ```terraform
 resource "konnect_gateway_acl" "my_gatewayacl" {
-  consumer = {
-    id = "...my_id..."
-  }
   consumer_id      = "f28acbfa-c866-4587-b688-0208ac24df21"
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 3
@@ -39,17 +36,9 @@ resource "konnect_gateway_acl" "my_gatewayacl" {
 
 ### Optional
 
-- `consumer` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created. Requires replacement if changed.
 - `id` (String) Requires replacement if changed.
 - `tags` (List of String) Requires replacement if changed.
-
-<a id="nestedatt--consumer"></a>
-### Nested Schema for `consumer`
-
-Optional:
-
-- `id` (String) Requires replacement if changed.
 
 ## Import
 

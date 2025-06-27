@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: e2d6ebb5243b7c9ca079319ded650933
+  docChecksum: 790cfb22fe4116f5b65852d381bf116b
   docVersion: 2.0.0
   speakeasyVersion: 1.567.3
   generationVersion: 2.632.2
@@ -1121,7 +1121,6 @@ generatedFiles:
   - internal/provider/types/acl_plugin_after.go
   - internal/provider/types/acl_plugin_config.go
   - internal/provider/types/acl_plugin_ordering.go
-  - internal/provider/types/acl_without_parents_consumer.go
   - internal/provider/types/acme_plugin_config.go
   - internal/provider/types/acme_plugin_redis.go
   - internal/provider/types/acme_plugin_vault.go
@@ -1357,6 +1356,7 @@ generatedFiles:
   - internal/provider/types/serverless_control_plane.go
   - internal/provider/types/service_protection_plugin_config.go
   - internal/provider/types/session_plugin_config.go
+  - internal/provider/types/set.go
   - internal/provider/types/shm.go
   - internal/provider/types/standard_webhooks_plugin_config.go
   - internal/provider/types/statsd_advanced_plugin_config.go

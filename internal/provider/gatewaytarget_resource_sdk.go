@@ -155,7 +155,7 @@ func (r *GatewayTargetResourceModel) RefreshFromSharedTarget(ctx context.Context
 		if resp.Upstream == nil {
 			r.Upstream = nil
 		} else {
-			r.Upstream = &tfTypes.ACLWithoutParentsConsumer{}
+			r.Upstream = &tfTypes.Set{}
 			r.Upstream.ID = types.StringPointerValue(resp.Upstream.ID)
 		}
 		r.Weight = types.Int64PointerValue(resp.Weight)

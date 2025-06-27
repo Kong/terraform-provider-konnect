@@ -41,7 +41,7 @@ func (r *GatewayServiceDataSourceModel) RefreshFromSharedService(ctx context.Con
 		if resp.ClientCertificate == nil {
 			r.ClientCertificate = nil
 		} else {
-			r.ClientCertificate = &tfTypes.ACLWithoutParentsConsumer{}
+			r.ClientCertificate = &tfTypes.Set{}
 			r.ClientCertificate.ID = types.StringPointerValue(resp.ClientCertificate.ID)
 		}
 		r.ConnectTimeout = types.Int64PointerValue(resp.ConnectTimeout)

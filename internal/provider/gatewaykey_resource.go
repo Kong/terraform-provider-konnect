@@ -35,17 +35,17 @@ type GatewayKeyResource struct {
 
 // GatewayKeyResourceModel describes the resource data model.
 type GatewayKeyResourceModel struct {
-	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                        `tfsdk:"created_at"`
-	ID             types.String                       `tfsdk:"id"`
-	Jwk            types.String                       `tfsdk:"jwk"`
-	Kid            types.String                       `tfsdk:"kid"`
-	Name           types.String                       `tfsdk:"name"`
-	Pem            *tfTypes.Pem                       `tfsdk:"pem"`
-	Set            *tfTypes.ACLWithoutParentsConsumer `tfsdk:"set"`
-	Tags           []types.String                     `tfsdk:"tags"`
-	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
-	X5t            types.String                       `tfsdk:"x5t"`
+	ControlPlaneID types.String   `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64    `tfsdk:"created_at"`
+	ID             types.String   `tfsdk:"id"`
+	Jwk            types.String   `tfsdk:"jwk"`
+	Kid            types.String   `tfsdk:"kid"`
+	Name           types.String   `tfsdk:"name"`
+	Pem            *tfTypes.Pem   `tfsdk:"pem"`
+	Set            *tfTypes.Set   `tfsdk:"set"`
+	Tags           []types.String `tfsdk:"tags"`
+	UpdatedAt      types.Int64    `tfsdk:"updated_at"`
+	X5t            types.String   `tfsdk:"x5t"`
 }
 
 func (r *GatewayKeyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

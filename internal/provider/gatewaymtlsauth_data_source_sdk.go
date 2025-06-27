@@ -39,14 +39,8 @@ func (r *GatewayMTLSAuthDataSourceModel) RefreshFromSharedMTLSAuth(ctx context.C
 		if resp.CaCertificate == nil {
 			r.CaCertificate = nil
 		} else {
-			r.CaCertificate = &tfTypes.ACLWithoutParentsConsumer{}
+			r.CaCertificate = &tfTypes.Set{}
 			r.CaCertificate.ID = types.StringPointerValue(resp.CaCertificate.ID)
-		}
-		if resp.Consumer == nil {
-			r.Consumer = nil
-		} else {
-			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
-			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
