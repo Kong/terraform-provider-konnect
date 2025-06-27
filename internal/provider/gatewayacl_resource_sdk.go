@@ -6,7 +6,6 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
@@ -14,18 +13,6 @@ import (
 func (r *GatewayACLResourceModel) ToSharedACLWithoutParents(ctx context.Context) (*shared.ACLWithoutParents, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var consumer *shared.ACLWithoutParentsConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.ACLWithoutParentsConsumer{
-			ID: id,
-		}
-	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -35,21 +22,20 @@ func (r *GatewayACLResourceModel) ToSharedACLWithoutParents(ctx context.Context)
 	var group string
 	group = r.Group.ValueString()
 
-	id1 := new(string)
+	id := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id1 = r.ID.ValueString()
+		*id = r.ID.ValueString()
 	} else {
-		id1 = nil
+		id = nil
 	}
 	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
 	out := shared.ACLWithoutParents{
-		Consumer:  consumer,
 		CreatedAt: createdAt,
 		Group:     group,
-		ID:        id1,
+		ID:        id,
 		Tags:      tags,
 	}
 
@@ -127,12 +113,6 @@ func (r *GatewayACLResourceModel) RefreshFromSharedACL(ctx context.Context, resp
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Consumer == nil {
-			r.Consumer = nil
-		} else {
-			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
-			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Group = types.StringValue(resp.Group)
 		r.ID = types.StringPointerValue(resp.ID)

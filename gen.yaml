@@ -18,7 +18,7 @@ generation:
     oAuth2PasswordEnabled: false
   baseServerURL: ""
 terraform:
-  version: 2.10.0
+  version: 2.11.0
   additionalDataSources: []
   additionalDependencies: {}
   additionalEphemeralResources: []
@@ -30,6 +30,7 @@ terraform:
       resource: custom.NewCustomPluginResource
   allowUnknownFieldsInWeakUnions: false
   author: kong
+  baseErrorName: KonnectError
   defaultErrorName: SDKError
   enableTypeDeduplication: true
   environmentVariables:

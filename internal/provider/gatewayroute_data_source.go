@@ -44,7 +44,7 @@ type GatewayRouteDataSourceModel struct {
 	RegexPriority           types.Int64                          `tfsdk:"regex_priority"`
 	RequestBuffering        types.Bool                           `tfsdk:"request_buffering"`
 	ResponseBuffering       types.Bool                           `tfsdk:"response_buffering"`
-	Service                 *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"service"`
+	Service                 *tfTypes.Set                         `tfsdk:"service"`
 	Snis                    []types.String                       `tfsdk:"snis"`
 	Sources                 []tfTypes.PartialRedisEEClusterNodes `tfsdk:"sources"`
 	StripPath               types.Bool                           `tfsdk:"strip_path"`

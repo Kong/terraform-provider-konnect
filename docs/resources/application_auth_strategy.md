@@ -40,9 +40,6 @@ resource "konnect_application_auth_strategy" "my_applicationauthstrategy" {
           "..."
         ]
         issuer = "...my_issuer..."
-        labels = {
-          key = "value"
-        }
         scopes = [
           "..."
         ]
@@ -71,7 +68,7 @@ resource "konnect_application_auth_strategy" "my_applicationauthstrategy" {
 
 - `active` (Boolean) At least one published entity is using this auth strategy.
 - `display_name` (String) The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.
-- `id` (String) Contains a unique identifier used by the API for this resource.
+- `id` (String) Contains a unique identifier used for this resource.
 - `name` (String) The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.
 
 <a id="nestedatt--key_auth"></a>
@@ -93,7 +90,7 @@ Read-Only:
 - `active` (Boolean) At least one published entity is using this auth strategy.
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `dcr_provider` (Attributes) (see [below for nested schema](#nestedatt--key_auth--dcr_provider))
-- `id` (String) Contains a unique identifier used by the API for this resource.
+- `id` (String) Contains a unique identifier used for this resource.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--key_auth--configs"></a>
@@ -121,7 +118,7 @@ Optional:
 Read-Only:
 
 - `display_name` (String) The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
-- `id` (String) Contains a unique identifier used by the API for this resource.
+- `id` (String) Contains a unique identifier used for this resource.
 - `name` (String)
 - `provider_type` (String) The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. must be one of ["auth0", "azureAd", "curity", "okta", "http"]
 
@@ -147,7 +144,7 @@ Read-Only:
 - `active` (Boolean) At least one published entity is using this auth strategy.
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `dcr_provider` (Attributes) (see [below for nested schema](#nestedatt--openid_connect--dcr_provider))
-- `id` (String) Contains a unique identifier used by the API for this resource.
+- `id` (String) Contains a unique identifier used for this resource.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--openid_connect--configs"></a>
@@ -170,10 +167,6 @@ Optional:
 - `auth_methods` (List of String) Not Null; Requires replacement if changed.
 - `credential_claim` (List of String) Not Null; Requires replacement if changed.
 - `issuer` (String) Not Null; Requires replacement if changed.
-- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
-
-Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-Requires replacement if changed.
 - `scopes` (List of String) Not Null; Requires replacement if changed.
 
 
@@ -184,7 +177,7 @@ Requires replacement if changed.
 Read-Only:
 
 - `display_name` (String) The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
-- `id` (String) Contains a unique identifier used by the API for this resource.
+- `id` (String) Contains a unique identifier used for this resource.
 - `name` (String)
 - `provider_type` (String) The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. must be one of ["auth0", "azureAd", "curity", "okta", "http"]
 

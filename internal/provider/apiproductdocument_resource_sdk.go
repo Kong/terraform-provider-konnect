@@ -186,11 +186,12 @@ func (r *APIProductDocumentResourceModel) RefreshFromSharedAPIProductDocument(ct
 	if resp != nil {
 		contentValuable, contentDiags := encodedstring.Base64OrPlainInputType{}.ValueFromString(ctx, types.StringValue(resp.Content))
 		diags.Append(contentDiags...)
-		r.Content, _ = contentValuable.(encodedstring.Base64OrPlainInput)
+		r.Content = contentValuable.(encodedstring.Base64OrPlainInput)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.ID = types.StringValue(resp.ID)
 		if r.Metadata == nil {
 			r.Metadata = &tfTypes.Metadata{}
+
 		}
 		r.ParentDocumentID = types.StringPointerValue(resp.ParentDocumentID)
 		r.Slug = types.StringValue(resp.Slug)

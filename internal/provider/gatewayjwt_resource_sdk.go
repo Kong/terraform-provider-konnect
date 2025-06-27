@@ -6,7 +6,6 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
@@ -20,29 +19,17 @@ func (r *GatewayJWTResourceModel) ToSharedJWTWithoutParents(ctx context.Context)
 	} else {
 		algorithm = nil
 	}
-	var consumer *shared.JWTWithoutParentsConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.JWTWithoutParentsConsumer{
-			ID: id,
-		}
-	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
 	} else {
 		createdAt = nil
 	}
-	id1 := new(string)
+	id := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id1 = r.ID.ValueString()
+		*id = r.ID.ValueString()
 	} else {
-		id1 = nil
+		id = nil
 	}
 	key := new(string)
 	if !r.Key.IsUnknown() && !r.Key.IsNull() {
@@ -68,9 +55,8 @@ func (r *GatewayJWTResourceModel) ToSharedJWTWithoutParents(ctx context.Context)
 	}
 	out := shared.JWTWithoutParents{
 		Algorithm:    algorithm,
-		Consumer:     consumer,
 		CreatedAt:    createdAt,
-		ID:           id1,
+		ID:           id,
 		Key:          key,
 		RsaPublicKey: rsaPublicKey,
 		Secret:       secret,
@@ -155,12 +141,6 @@ func (r *GatewayJWTResourceModel) RefreshFromSharedJwt(ctx context.Context, resp
 			r.Algorithm = types.StringValue(string(*resp.Algorithm))
 		} else {
 			r.Algorithm = types.StringNull()
-		}
-		if resp.Consumer == nil {
-			r.Consumer = nil
-		} else {
-			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
-			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)

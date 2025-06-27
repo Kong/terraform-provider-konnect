@@ -76,7 +76,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Description: `Contains a unique identifier used by the API for this resource.`,
+				Description: `Contains a unique identifier used for this resource.`,
 			},
 			"key_auth": schema.SingleNestedAttribute{
 				Computed: true,
@@ -169,7 +169,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 								PlanModifiers: []planmodifier.String{
 									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
-								Description: `Contains a unique identifier used by the API for this resource.`,
+								Description: `Contains a unique identifier used for this resource.`,
 							},
 							"name": schema.StringAttribute{
 								Computed: true,
@@ -213,7 +213,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						PlanModifiers: []planmodifier.String{
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `Contains a unique identifier used by the API for this resource.`,
+						Description: `Contains a unique identifier used for this resource.`,
 					},
 					"labels": schema.MapAttribute{
 						Computed: true,
@@ -363,19 +363,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 											stringvalidator.UTF8LengthAtMost(256),
 										},
 									},
-									"labels": schema.MapAttribute{
-										Computed: true,
-										Optional: true,
-										PlanModifiers: []planmodifier.Map{
-											mapplanmodifier.RequiresReplaceIfConfigured(),
-											speakeasy_mapplanmodifier.SuppressDiff(speakeasy_mapplanmodifier.ExplicitSuppress),
-										},
-										ElementType: types.StringType,
-										MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
-											`` + "\n" +
-											`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
-											`Requires replacement if changed.`,
-									},
 									"scopes": schema.ListAttribute{
 										Computed: true,
 										Optional: true,
@@ -437,7 +424,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 								PlanModifiers: []planmodifier.String{
 									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
-								Description: `Contains a unique identifier used by the API for this resource.`,
+								Description: `Contains a unique identifier used for this resource.`,
 							},
 							"name": schema.StringAttribute{
 								Computed: true,
@@ -490,7 +477,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						PlanModifiers: []planmodifier.String{
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `Contains a unique identifier used by the API for this resource.`,
+						Description: `Contains a unique identifier used for this resource.`,
 					},
 					"labels": schema.MapAttribute{
 						Computed: true,

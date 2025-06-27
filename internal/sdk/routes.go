@@ -37,8 +37,7 @@ import (
 //	<br><br>
 //	Learn more about the router:
 //
-// - [Configure routes using expressions](https://docs.konghq.com/gateway/latest/key-concepts/routes/expressions)
-// - [Router Expressions language reference](https://docs.konghq.com/gateway/latest/reference/router-expressions-language/)
+// - [Configure routes using expressions](https://developer.konghq.com/gateway/routing/expressions/)
 type Routes struct {
 	rootSDK          *Konnect
 	sdkConfiguration config.SDKConfiguration

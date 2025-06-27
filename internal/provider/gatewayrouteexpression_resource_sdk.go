@@ -241,7 +241,7 @@ func (r *GatewayRouteExpressionResourceModel) RefreshFromSharedRouteExpression(c
 		if resp.Service == nil {
 			r.Service = nil
 		} else {
-			r.Service = &tfTypes.ACLWithoutParentsConsumer{}
+			r.Service = &tfTypes.Set{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
 		r.StripPath = types.BoolPointerValue(resp.StripPath)

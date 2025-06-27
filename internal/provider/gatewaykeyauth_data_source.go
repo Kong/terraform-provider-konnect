@@ -9,7 +9,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 )
 
@@ -28,14 +27,13 @@ type GatewayKeyAuthDataSource struct {
 
 // GatewayKeyAuthDataSourceModel describes the data model.
 type GatewayKeyAuthDataSourceModel struct {
-	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
-	ConsumerID     types.String                       `tfsdk:"consumer_id"`
-	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                        `tfsdk:"created_at"`
-	ID             types.String                       `tfsdk:"id"`
-	Key            types.String                       `tfsdk:"key"`
-	Tags           []types.String                     `tfsdk:"tags"`
-	TTL            types.Int64                        `tfsdk:"ttl"`
+	ConsumerID     types.String   `tfsdk:"consumer_id"`
+	ControlPlaneID types.String   `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64    `tfsdk:"created_at"`
+	ID             types.String   `tfsdk:"id"`
+	Key            types.String   `tfsdk:"key"`
+	Tags           []types.String `tfsdk:"tags"`
+	TTL            types.Int64    `tfsdk:"ttl"`
 }
 
 // Metadata returns the data source type name.
@@ -49,14 +47,6 @@ func (r *GatewayKeyAuthDataSource) Schema(ctx context.Context, req datasource.Sc
 		MarkdownDescription: "GatewayKeyAuth DataSource",
 
 		Attributes: map[string]schema.Attribute{
-			"consumer": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Computed: true,
-					},
-				},
-			},
 			"consumer_id": schema.StringAttribute{
 				Required:    true,
 				Description: `Consumer ID for nested entities`,

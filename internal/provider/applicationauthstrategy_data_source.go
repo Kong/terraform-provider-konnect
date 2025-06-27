@@ -57,7 +57,7 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Description: `Contains a unique identifier used by the API for this resource.`,
+				Description: `Contains a unique identifier used for this resource.`,
 			},
 			"key_auth": schema.SingleNestedAttribute{
 				Computed: true,
@@ -98,7 +98,7 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 							},
 							"id": schema.StringAttribute{
 								Computed:    true,
-								Description: `Contains a unique identifier used by the API for this resource.`,
+								Description: `Contains a unique identifier used for this resource.`,
 							},
 							"name": schema.StringAttribute{
 								Computed: true,
@@ -115,7 +115,7 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 					},
 					"id": schema.StringAttribute{
 						Computed:    true,
-						Description: `Contains a unique identifier used by the API for this resource.`,
+						Description: `Contains a unique identifier used for this resource.`,
 					},
 					"labels": schema.MapAttribute{
 						Computed:    true,
@@ -170,13 +170,6 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 									"issuer": schema.StringAttribute{
 										Computed: true,
 									},
-									"labels": schema.MapAttribute{
-										Computed:    true,
-										ElementType: types.StringType,
-										MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
-											`` + "\n" +
-											`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
-									},
 									"scopes": schema.ListAttribute{
 										Computed:    true,
 										ElementType: types.StringType,
@@ -203,7 +196,7 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 							},
 							"id": schema.StringAttribute{
 								Computed:    true,
-								Description: `Contains a unique identifier used by the API for this resource.`,
+								Description: `Contains a unique identifier used for this resource.`,
 							},
 							"name": schema.StringAttribute{
 								Computed: true,
@@ -220,7 +213,7 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 					},
 					"id": schema.StringAttribute{
 						Computed:    true,
-						Description: `Contains a unique identifier used by the API for this resource.`,
+						Description: `Contains a unique identifier used for this resource.`,
 					},
 					"labels": schema.MapAttribute{
 						Computed:    true,

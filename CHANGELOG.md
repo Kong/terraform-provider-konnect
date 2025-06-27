@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.11.0  
+> Released on 2025/06/27
+
+### Features
+
+* Add support for the `konnect_realm`, `konnect_centralized_consumer` and `konnect_centralized_consumer_key` resources
+
+### Bug fixes
+
+* Fixed error while creating openid-connect strategy in `konnect_application_auth_strategy` resource
+* Fixed error while running `terraform apply` for `konnect_gateway_data_plane_client_certificate` resource when the data plane certificate is deleted
+* The `consumer.id` field has been removed from plugins. This was accidentally added. Use the `consumer_id` field instead
+
 ## 2.10.0  
 > Released on 2025/06/19
 

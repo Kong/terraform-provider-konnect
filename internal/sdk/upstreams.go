@@ -17,7 +17,7 @@ import (
 
 // Upstreams - The upstream object represents a virtual hostname and can be used to load balance incoming requests over multiple services (targets).
 // <br><br>
-// An upstream also includes a [health checker](https://docs.konghq.com/gateway/latest/how-kong-works/health-checks/), which can enable and disable targets based on their ability or inability to serve requests.
+// An upstream also includes a [health checker](https://developer.konghq.com/gateway/traffic-control/health-checks-circuit-breakers/), which can enable and disable targets based on their ability or inability to serve requests.
 // The configuration for the health checker is stored in the upstream object, and applies to all of its targets.
 type Upstreams struct {
 	rootSDK          *Konnect

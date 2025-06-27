@@ -48,7 +48,7 @@ type GatewayPluginServiceProtectionResourceModel struct {
 	Ordering       *tfTypes.ACLPluginOrdering             `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials                     `tfsdk:"partials"`
 	Protocols      []types.String                         `tfsdk:"protocols"`
-	Service        *tfTypes.ACLWithoutParentsConsumer     `tfsdk:"service"`
+	Service        *tfTypes.Set                           `tfsdk:"service"`
 	Tags           []types.String                         `tfsdk:"tags"`
 	UpdatedAt      types.Int64                            `tfsdk:"updated_at"`
 }

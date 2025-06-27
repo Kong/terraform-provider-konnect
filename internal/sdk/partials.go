@@ -15,6 +15,7 @@ import (
 	"net/http"
 )
 
+// Partials - Some entities in Kong Gateway share common configuration settings that often need to be repeated. For example, multiple plugins that connect to Redis may require the same connection settings. Without Partials, you would need to replicate this configuration across all plugins. If the settings change, you would need to update each plugin individually.
 type Partials struct {
 	rootSDK          *Konnect
 	sdkConfiguration config.SDKConfiguration

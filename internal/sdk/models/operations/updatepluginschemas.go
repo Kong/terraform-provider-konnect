@@ -45,6 +45,8 @@ type UpdatePluginSchemasResponse struct {
 	RawResponse *http.Response
 	// A response for a single custom plugin schema.
 	PluginSchemas *shared.PluginSchemas
+	// Forbidden
+	KonnectCPLegacyBadRequestError *shared.KonnectCPLegacyBadRequestError
 	// Unauthorized
 	KonnectCPLegacyUnauthorizedError *shared.KonnectCPLegacyUnauthorizedError
 	// Forbidden
@@ -79,6 +81,13 @@ func (o *UpdatePluginSchemasResponse) GetPluginSchemas() *shared.PluginSchemas {
 		return nil
 	}
 	return o.PluginSchemas
+}
+
+func (o *UpdatePluginSchemasResponse) GetKonnectCPLegacyBadRequestError() *shared.KonnectCPLegacyBadRequestError {
+	if o == nil {
+		return nil
+	}
+	return o.KonnectCPLegacyBadRequestError
 }
 
 func (o *UpdatePluginSchemasResponse) GetKonnectCPLegacyUnauthorizedError() *shared.KonnectCPLegacyUnauthorizedError {

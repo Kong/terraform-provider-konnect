@@ -96,7 +96,7 @@ func (r *PortalListDataSource) Schema(ctx context.Context, req datasource.Schema
 						},
 						"id": schema.StringAttribute{
 							Computed:    true,
-							Description: `Contains a unique identifier used by the API for this resource.`,
+							Description: `Contains a unique identifier used for this resource.`,
 						},
 						"is_public": schema.BoolAttribute{
 							Computed:    true,
