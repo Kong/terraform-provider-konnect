@@ -2698,7 +2698,6 @@ paths:
       description: Create a new KeySet
       requestBody:
         description: Description of the new KeySet for creation
-        required: true
         content:
           application/json:
             schema:
@@ -2757,7 +2756,6 @@ paths:
       description: Create or Update KeySet using ID or name.
       requestBody:
         description: Description of the KeySet
-        required: true
         content:
           application/json:
             schema:
@@ -18189,6 +18187,7 @@ components:
               type: string
           x-foreign: true
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -18286,6 +18285,7 @@ components:
               type: string
           x-foreign: true
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -22317,6 +22317,7 @@ components:
               type: string
           x-foreign: true
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -22410,6 +22411,7 @@ components:
               type: string
           x-foreign: true
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -24351,6 +24353,7 @@ components:
               type: string
           x-foreign: true
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -24389,6 +24392,7 @@ components:
               type: string
           x-foreign: true
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -24963,6 +24967,7 @@ components:
               type: string
           x-foreign: true
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -25021,6 +25026,7 @@ components:
               type: string
           x-foreign: true
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -26352,6 +26358,7 @@ components:
               type: string
           x-foreign: true
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -26552,6 +26559,7 @@ components:
               type: string
           x-foreign: true
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -26961,6 +26969,7 @@ components:
               type: string
           x-foreign: true
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -27006,6 +27015,7 @@ components:
               type: string
           x-foreign: true
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
