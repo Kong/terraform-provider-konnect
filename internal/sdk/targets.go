@@ -15,6 +15,9 @@ import (
 	"net/http"
 )
 
+// Targets - A target is an IP address or hostname with a port that identifies an instance of a backend service. Every upstream can have many targets, and the targets can be dynamically added, modified, or deleted. Changes take effect on the fly.
+// <br><br>
+// To disable a target, post a new one with `weight=0`, or use the `DELETE` method to accomplish the same.
 type Targets struct {
 	rootSDK          *Konnect
 	sdkConfiguration config.SDKConfiguration

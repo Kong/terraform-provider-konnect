@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: c23e9a3dc15a404f613168f286e7e7e1
+  docChecksum: e2d6ebb5243b7c9ca079319ded650933
   docVersion: 2.0.0
   speakeasyVersion: 1.567.3
   generationVersion: 2.632.2
@@ -2157,6 +2157,7 @@ generatedFiles:
   - internal/sdk/models/shared/forwardproxyplugin.go
   - internal/sdk/models/shared/gatewayservicepayload.go
   - internal/sdk/models/shared/gatewayunauthorizederror.go
+  - internal/sdk/models/shared/getpluginschemaresponse.go
   - internal/sdk/models/shared/getportalappearanceresponse.go
   - internal/sdk/models/shared/graphqlproxycacheadvancedplugin.go
   - internal/sdk/models/shared/graphqlratelimitingadvancedplugin.go
@@ -3361,10 +3362,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "id": "b2f34145-0343-41a4-9602-4c69dec2f260"}
+        application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "cert_digest": "9b8aaf19a276885f6c8a6bc48a30700fdb3a351d8b05374d153bfb7b178e2a9f", "created_at": 1706598432, "id": "b2f34145-0343-41a4-9602-4c69dec2f260", "tags": ["trusted", "api"]}
       responses:
         "201":
-          application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "id": "b2f34145-0343-41a4-9602-4c69dec2f260"}
+          application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "cert_digest": "9b8aaf19a276885f6c8a6bc48a30700fdb3a351d8b05374d153bfb7b178e2a9f", "created_at": 1706598432, "id": "b2f34145-0343-41a4-9602-4c69dec2f260", "tags": ["trusted", "api"]}
         "401":
           application/json: {"message": "<value>", "status": 400673}
   delete-ca_certificate:
@@ -3402,7 +3403,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "id": "b2f34145-0343-41a4-9602-4c69dec2f260"}
+          application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "cert_digest": "9b8aaf19a276885f6c8a6bc48a30700fdb3a351d8b05374d153bfb7b178e2a9f", "created_at": 1706598432, "id": "b2f34145-0343-41a4-9602-4c69dec2f260", "tags": ["trusted", "api"]}
         "401":
           application/json: {"message": "<value>", "status": 897051}
   upsert-ca_certificate:
@@ -3424,10 +3425,10 @@ examples:
           CACertificateId: "3c31f18a-f27a-4f9b-8cd4-bf841554612f"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "id": "b2f34145-0343-41a4-9602-4c69dec2f260"}
+        application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "cert_digest": "9b8aaf19a276885f6c8a6bc48a30700fdb3a351d8b05374d153bfb7b178e2a9f", "created_at": 1706598432, "id": "b2f34145-0343-41a4-9602-4c69dec2f260", "tags": ["trusted", "api"]}
       responses:
         "200":
-          application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "id": "b2f34145-0343-41a4-9602-4c69dec2f260"}
+          application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "cert_digest": "9b8aaf19a276885f6c8a6bc48a30700fdb3a351d8b05374d153bfb7b178e2a9f", "created_at": 1706598432, "id": "b2f34145-0343-41a4-9602-4c69dec2f260", "tags": ["trusted", "api"]}
         "401":
           application/json: {"message": "<value>", "status": 838404}
   create-certificate:
@@ -4364,6 +4365,8 @@ examples:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
           application/json: {"message": "Not Found"}
+        "400":
+          application/json: {"message": "Bad Request"}
   create-plugin:
     speakeasy-default-create-plugin:
       parameters:
@@ -12234,6 +12237,14 @@ examples:
       responses:
         "201":
           application/json: {}
+        "401":
+          application/json: {"message": "Unauthorized"}
+        "403":
+          application/json: {"message": "Forbidden"}
+        "404":
+          application/json: {"message": "Not Found"}
+        "400":
+          application/json: {"message": "Bad Request"}
   get-dataplane-certificate:
     speakeasy-default-get-dataplane-certificate:
       parameters:
@@ -12243,12 +12254,25 @@ examples:
       responses:
         "200":
           application/json: {}
+        "401":
+          application/json: {"message": "Unauthorized"}
+        "403":
+          application/json: {"message": "Forbidden"}
+        "404":
+          application/json: {"message": "Not Found"}
   delete-dataplane-certificate:
     speakeasy-default-delete-dataplane-certificate:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           certificateId: "<id>"
+      responses:
+        "401":
+          application/json: {"message": "Unauthorized"}
+        "403":
+          application/json: {"message": "Forbidden"}
+        "404":
+          application/json: {"message": "Not Found"}
   post-control-planes-id-group-memberships-add:
     speakeasy-default-post-control-planes-id-group-memberships-add:
       parameters:

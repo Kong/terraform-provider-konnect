@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
@@ -33,6 +34,12 @@ type DeleteDataplaneCertificateResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Unauthorized
+	KonnectCPLegacyUnauthorizedError *shared.KonnectCPLegacyUnauthorizedError
+	// Forbidden
+	KonnectCPLegacyForbiddenError *shared.KonnectCPLegacyForbiddenError
+	// Forbidden
+	KonnectCPLegacyNotFoundError *shared.KonnectCPLegacyNotFoundError
 }
 
 func (o *DeleteDataplaneCertificateResponse) GetContentType() string {
@@ -54,4 +61,25 @@ func (o *DeleteDataplaneCertificateResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *DeleteDataplaneCertificateResponse) GetKonnectCPLegacyUnauthorizedError() *shared.KonnectCPLegacyUnauthorizedError {
+	if o == nil {
+		return nil
+	}
+	return o.KonnectCPLegacyUnauthorizedError
+}
+
+func (o *DeleteDataplaneCertificateResponse) GetKonnectCPLegacyForbiddenError() *shared.KonnectCPLegacyForbiddenError {
+	if o == nil {
+		return nil
+	}
+	return o.KonnectCPLegacyForbiddenError
+}
+
+func (o *DeleteDataplaneCertificateResponse) GetKonnectCPLegacyNotFoundError() *shared.KonnectCPLegacyNotFoundError {
+	if o == nil {
+		return nil
+	}
+	return o.KonnectCPLegacyNotFoundError
 }

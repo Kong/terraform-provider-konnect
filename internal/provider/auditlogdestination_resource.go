@@ -73,11 +73,12 @@ func (r *AuditLogDestinationResource) Schema(ctx context.Context, req resource.S
 				Computed:    true,
 				Optional:    true,
 				Default:     stringdefault.StaticString(`cef`),
-				Description: `The output format of each log messages. Default: "cef"; must be one of ["cef", "json"]`,
+				Description: `The output format of each log messages. Default: "cef"; must be one of ["cef", "json", "cps"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"cef",
 						"json",
+						"cps",
 					),
 				},
 			},

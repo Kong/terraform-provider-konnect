@@ -10,6 +10,7 @@
 ### Bug fixes
 
 * Fixed error while creating openid-connect strategy in `konnect_application_auth_strategy` resource
+* Fixed error while running `terraform apply` for `konnect_gateway_data_plane_client_certificate` resource when the data plane certificate is deleted
 
 ## 2.10.0  
 > Released on 2025/06/19

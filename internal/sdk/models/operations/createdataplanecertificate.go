@@ -37,6 +37,14 @@ type CreateDataplaneCertificateResponse struct {
 	RawResponse *http.Response
 	// Response body for retrieving a dp-client-certificate.
 	DataPlaneClientCertificateResponse *shared.DataPlaneClientCertificateResponse
+	// Forbidden
+	KonnectCPLegacyBadRequestError *shared.KonnectCPLegacyBadRequestError
+	// Unauthorized
+	KonnectCPLegacyUnauthorizedError *shared.KonnectCPLegacyUnauthorizedError
+	// Forbidden
+	KonnectCPLegacyForbiddenError *shared.KonnectCPLegacyForbiddenError
+	// Forbidden
+	KonnectCPLegacyNotFoundError *shared.KonnectCPLegacyNotFoundError
 }
 
 func (o *CreateDataplaneCertificateResponse) GetContentType() string {
@@ -65,4 +73,32 @@ func (o *CreateDataplaneCertificateResponse) GetDataPlaneClientCertificateRespon
 		return nil
 	}
 	return o.DataPlaneClientCertificateResponse
+}
+
+func (o *CreateDataplaneCertificateResponse) GetKonnectCPLegacyBadRequestError() *shared.KonnectCPLegacyBadRequestError {
+	if o == nil {
+		return nil
+	}
+	return o.KonnectCPLegacyBadRequestError
+}
+
+func (o *CreateDataplaneCertificateResponse) GetKonnectCPLegacyUnauthorizedError() *shared.KonnectCPLegacyUnauthorizedError {
+	if o == nil {
+		return nil
+	}
+	return o.KonnectCPLegacyUnauthorizedError
+}
+
+func (o *CreateDataplaneCertificateResponse) GetKonnectCPLegacyForbiddenError() *shared.KonnectCPLegacyForbiddenError {
+	if o == nil {
+		return nil
+	}
+	return o.KonnectCPLegacyForbiddenError
+}
+
+func (o *CreateDataplaneCertificateResponse) GetKonnectCPLegacyNotFoundError() *shared.KonnectCPLegacyNotFoundError {
+	if o == nil {
+		return nil
+	}
+	return o.KonnectCPLegacyNotFoundError
 }

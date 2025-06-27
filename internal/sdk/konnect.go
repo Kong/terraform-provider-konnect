@@ -111,17 +111,15 @@ type Konnect struct {
 	KeySets *KeySets
 	// A key object holds a representation of asymmetric keys in various formats. When Kong Gateway or a Kong plugin requires a specific public or private key to perform certain operations, it can use this entity.
 	//
-	Keys     *Keys
+	Keys *Keys
+	// Some entities in Kong Gateway share common configuration settings that often need to be repeated. For example, multiple plugins that connect to Redis may require the same connection settings. Without Partials, you would need to replicate this configuration across all plugins. If the settings change, you would need to update each plugin individually.
 	Partials *Partials
 	// Custom Plugin Schemas
 	CustomPluginSchemas *CustomPluginSchemas
 	// A plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. Plugins let you add functionality to services that run behind a Kong Gateway instance, like authentication or rate limiting.
-	// You can find more information about available plugins and which values each plugin accepts at the [Plugin Hub](https://docs.konghq.com/hub/).
+	// You can find more information about available plugins and which values each plugin accepts at the [Plugin Hub](https://developer.konghq.com/plugins/).
 	// <br><br>
 	// When adding a plugin configuration to a service, the plugin will run on every request made by a client to that service. If a plugin needs to be tuned to different values for some specific consumers, you can do so by creating a separate plugin instance that specifies both the service and the consumer, through the service and consumer fields.
-	// <br><br>
-	// Plugins can be both [tagged and filtered by tags](https://docs.konghq.com/gateway/latest/admin-api/#tags).
-	//
 	Plugins *Plugins
 	// Route entities define rules to match client requests. Each route is associated with a service, and a service may have multiple routes associated to it. Every request matching a given route will be proxied to the associated service. You need at least one matching rule that applies to the protocol being matched by the route.
 	// <br><br>
@@ -153,17 +151,16 @@ type Konnect struct {
 	//   A route can't have both `tls` and `tls_passthrough` protocols at same time.
 	//   <br><br>
 	//   Learn more about the router:
-	// - [Configure routes using expressions](https://docs.konghq.com/gateway/latest/key-concepts/routes/expressions)
-	// - [Router Expressions language reference](https://docs.konghq.com/gateway/latest/reference/router-expressions-language/)
+	// - [Configure routes using expressions](https://developer.konghq.com/gateway/routing/expressions/)
 	//
 	Routes *Routes
 	// Service entities are abstractions of your microservice interfaces or formal APIs. For example, a service could be a data transformation microservice or a billing API.
 	// <br><br>
 	// The main attribute of a service is the destination URL for proxying traffic. This URL can be set as a single string or by specifying its protocol, host, port and path individually.
 	// <br><br>
-	// Services are associated to routes, and a single service can have many routes associated with it. Routes are entrypoints in Kong Gateway which define rules to match client requests. Once a route is matched, Kong Gateway proxies the request to its associated service. See the [Proxy Reference](https://docs.konghq.com/gateway/latest/how-kong-works/routing-traffic/) for a detailed explanation of how Kong proxies traffic.
+	// Services are associated to routes, and a single service can have many routes associated with it. Routes are entrypoints in Kong Gateway which define rules to match client requests. Once a route is matched, Kong Gateway proxies the request to its associated service. See the [Route documentation](https://developer.konghq.com/gateway/entities/route/) for a detailed explanation of how Kong proxies traffic.
 	// <br><br>
-	// Services can be both [tagged and filtered by tags](https://docs.konghq.com/gateway/latest/admin-api/#tags).
+	// Services can be both [tagged and filtered by tags](https://developer.konghq.com/admin-api/).
 	//
 	Services *Services
 	// An SNI object represents a many-to-one mapping of hostnames to a certificate.
@@ -172,17 +169,21 @@ type Konnect struct {
 	SNIs *SNIs
 	// The upstream object represents a virtual hostname and can be used to load balance incoming requests over multiple services (targets).
 	// <br><br>
-	// An upstream also includes a [health checker](https://docs.konghq.com/gateway/latest/how-kong-works/health-checks/), which can enable and disable targets based on their ability or inability to serve requests.
+	// An upstream also includes a [health checker](https://developer.konghq.com/gateway/traffic-control/health-checks-circuit-breakers/), which can enable and disable targets based on their ability or inability to serve requests.
 	// The configuration for the health checker is stored in the upstream object, and applies to all of its targets.
 	Upstreams *Upstreams
-	Targets   *Targets
-	// Vault objects are used to configure different vault connectors for [managing secrets](https://docs.konghq.com/gateway/latest/kong-enterprise/secrets-management/).
+	// A target is an IP address or hostname with a port that identifies an instance of a backend service. Every upstream can have many targets, and the targets can be dynamically added, modified, or deleted. Changes take effect on the fly.
+	// <br><br>
+	// To disable a target, post a new one with `weight=0`, or use the `DELETE` method to accomplish the same.
+	//
+	Targets *Targets
+	// Vault objects are used to configure different vault connectors for [managing secrets](https://developer.konghq.com/gateway/secrets-management/).
 	// Configuring a vault lets you reference secrets from other entities.
 	// This allows for a proper separation of secrets and configuration and prevents secret sprawl.
 	// <br><br>
 	// For example, you could store a certificate and a key in a vault, then reference them from a certificate entity. This way, the certificate and key are not stored in the entity directly and are more secure.
 	// <br><br>
-	// Secrets rotation can be managed using [TTLs](https://docs.konghq.com/gateway/latest/kong-enterprise/secrets-management/advanced-usage/).
+	// Secrets rotation can be managed using [TTLs](https://developer.konghq.com/gateway/entities/vault/).
 	//
 	Vaults *Vaults
 	// DP Certificates

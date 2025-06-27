@@ -459,7 +459,7 @@ func (r *CustomPluginResourceModel) RefreshFromResponse(ctx context.Context, cli
 	}
 
 	// Extract the plugin schema from the response
-	config, diag := utils.ExtractPluginConfigSchema(schema.Object.Fields, diags)
+	config, diag := utils.ExtractPluginConfigSchema(schema.GetGetPluginSchemaResponse().GetFields(), diags)
 	if diag.HasError() {
 		diags.Append(diag...)
 		return
