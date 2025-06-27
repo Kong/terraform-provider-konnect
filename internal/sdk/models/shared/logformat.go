@@ -13,6 +13,7 @@ type LogFormat string
 const (
 	LogFormatCef  LogFormat = "cef"
 	LogFormatJSON LogFormat = "json"
+	LogFormatCps  LogFormat = "cps"
 )
 
 func (e LogFormat) ToPointer() *LogFormat {
@@ -27,6 +28,8 @@ func (e *LogFormat) UnmarshalJSON(data []byte) error {
 	case "cef":
 		fallthrough
 	case "json":
+		fallthrough
+	case "cps":
 		*e = LogFormat(v)
 		return nil
 	default:
