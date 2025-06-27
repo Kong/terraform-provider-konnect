@@ -37,19 +37,19 @@ type GatewayPluginBasicAuthResource struct {
 
 // GatewayPluginBasicAuthResourceModel describes the resource data model.
 type GatewayPluginBasicAuthResourceModel struct {
-	Config         *tfTypes.BasicAuthPluginConfig     `tfsdk:"config"`
-	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                        `tfsdk:"created_at"`
-	Enabled        types.Bool                         `tfsdk:"enabled"`
-	ID             types.String                       `tfsdk:"id"`
-	InstanceName   types.String                       `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials                 `tfsdk:"partials"`
-	Protocols      []types.String                     `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer `tfsdk:"service"`
-	Tags           []types.String                     `tfsdk:"tags"`
-	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
+	Config         *tfTypes.BasicAuthPluginConfig `tfsdk:"config"`
+	ControlPlaneID types.String                   `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                    `tfsdk:"created_at"`
+	Enabled        types.Bool                     `tfsdk:"enabled"`
+	ID             types.String                   `tfsdk:"id"`
+	InstanceName   types.String                   `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering     `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials             `tfsdk:"partials"`
+	Protocols      []types.String                 `tfsdk:"protocols"`
+	Route          *tfTypes.Set                   `tfsdk:"route"`
+	Service        *tfTypes.Set                   `tfsdk:"service"`
+	Tags           []types.String                 `tfsdk:"tags"`
+	UpdatedAt      types.Int64                    `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginBasicAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

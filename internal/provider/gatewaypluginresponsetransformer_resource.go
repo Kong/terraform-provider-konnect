@@ -38,8 +38,8 @@ type GatewayPluginResponseTransformerResource struct {
 // GatewayPluginResponseTransformerResourceModel describes the resource data model.
 type GatewayPluginResponseTransformerResourceModel struct {
 	Config         *tfTypes.ResponseTransformerPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"consumer_group"`
+	Consumer       *tfTypes.Set                             `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.Set                             `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                             `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                              `tfsdk:"created_at"`
 	Enabled        types.Bool                               `tfsdk:"enabled"`
@@ -48,8 +48,8 @@ type GatewayPluginResponseTransformerResourceModel struct {
 	Ordering       *tfTypes.ACLPluginOrdering               `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials                       `tfsdk:"partials"`
 	Protocols      []types.String                           `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"service"`
+	Route          *tfTypes.Set                             `tfsdk:"route"`
+	Service        *tfTypes.Set                             `tfsdk:"service"`
 	Tags           []types.String                           `tfsdk:"tags"`
 	UpdatedAt      types.Int64                              `tfsdk:"updated_at"`
 }

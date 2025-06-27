@@ -7,14 +7,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -22,7 +19,6 @@ import (
 	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/int64planmodifier"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 )
 
@@ -41,14 +37,13 @@ type GatewayHMACAuthResource struct {
 
 // GatewayHMACAuthResourceModel describes the resource data model.
 type GatewayHMACAuthResourceModel struct {
-	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
-	ConsumerID     types.String                       `tfsdk:"consumer_id"`
-	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                        `tfsdk:"created_at"`
-	ID             types.String                       `tfsdk:"id"`
-	Secret         types.String                       `tfsdk:"secret"`
-	Tags           []types.String                     `tfsdk:"tags"`
-	Username       types.String                       `tfsdk:"username"`
+	ConsumerID     types.String   `tfsdk:"consumer_id"`
+	ControlPlaneID types.String   `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64    `tfsdk:"created_at"`
+	ID             types.String   `tfsdk:"id"`
+	Secret         types.String   `tfsdk:"secret"`
+	Tags           []types.String `tfsdk:"tags"`
+	Username       types.String   `tfsdk:"username"`
 }
 
 func (r *GatewayHMACAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -59,28 +54,6 @@ func (r *GatewayHMACAuthResource) Schema(ctx context.Context, req resource.Schem
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayHMACAuth Resource",
 		Attributes: map[string]schema.Attribute{
-			"consumer": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `Requires replacement if changed.`,
-					},
-				},
-				Description: `Requires replacement if changed.`,
-			},
 			"consumer_id": schema.StringAttribute{
 				Required: true,
 				PlanModifiers: []planmodifier.String{

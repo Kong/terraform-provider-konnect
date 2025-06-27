@@ -37,28 +37,28 @@ type GatewayUpstreamResource struct {
 
 // GatewayUpstreamResourceModel describes the resource data model.
 type GatewayUpstreamResourceModel struct {
-	Algorithm              types.String                       `tfsdk:"algorithm"`
-	ClientCertificate      *tfTypes.ACLWithoutParentsConsumer `tfsdk:"client_certificate"`
-	ControlPlaneID         types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt              types.Int64                        `tfsdk:"created_at"`
-	HashFallback           types.String                       `tfsdk:"hash_fallback"`
-	HashFallbackHeader     types.String                       `tfsdk:"hash_fallback_header"`
-	HashFallbackQueryArg   types.String                       `tfsdk:"hash_fallback_query_arg"`
-	HashFallbackURICapture types.String                       `tfsdk:"hash_fallback_uri_capture"`
-	HashOn                 types.String                       `tfsdk:"hash_on"`
-	HashOnCookie           types.String                       `tfsdk:"hash_on_cookie"`
-	HashOnCookiePath       types.String                       `tfsdk:"hash_on_cookie_path"`
-	HashOnHeader           types.String                       `tfsdk:"hash_on_header"`
-	HashOnQueryArg         types.String                       `tfsdk:"hash_on_query_arg"`
-	HashOnURICapture       types.String                       `tfsdk:"hash_on_uri_capture"`
-	Healthchecks           *tfTypes.Healthchecks              `tfsdk:"healthchecks"`
-	HostHeader             types.String                       `tfsdk:"host_header"`
-	ID                     types.String                       `tfsdk:"id"`
-	Name                   types.String                       `tfsdk:"name"`
-	Slots                  types.Int64                        `tfsdk:"slots"`
-	Tags                   []types.String                     `tfsdk:"tags"`
-	UpdatedAt              types.Int64                        `tfsdk:"updated_at"`
-	UseSrvName             types.Bool                         `tfsdk:"use_srv_name"`
+	Algorithm              types.String          `tfsdk:"algorithm"`
+	ClientCertificate      *tfTypes.Set          `tfsdk:"client_certificate"`
+	ControlPlaneID         types.String          `tfsdk:"control_plane_id"`
+	CreatedAt              types.Int64           `tfsdk:"created_at"`
+	HashFallback           types.String          `tfsdk:"hash_fallback"`
+	HashFallbackHeader     types.String          `tfsdk:"hash_fallback_header"`
+	HashFallbackQueryArg   types.String          `tfsdk:"hash_fallback_query_arg"`
+	HashFallbackURICapture types.String          `tfsdk:"hash_fallback_uri_capture"`
+	HashOn                 types.String          `tfsdk:"hash_on"`
+	HashOnCookie           types.String          `tfsdk:"hash_on_cookie"`
+	HashOnCookiePath       types.String          `tfsdk:"hash_on_cookie_path"`
+	HashOnHeader           types.String          `tfsdk:"hash_on_header"`
+	HashOnQueryArg         types.String          `tfsdk:"hash_on_query_arg"`
+	HashOnURICapture       types.String          `tfsdk:"hash_on_uri_capture"`
+	Healthchecks           *tfTypes.Healthchecks `tfsdk:"healthchecks"`
+	HostHeader             types.String          `tfsdk:"host_header"`
+	ID                     types.String          `tfsdk:"id"`
+	Name                   types.String          `tfsdk:"name"`
+	Slots                  types.Int64           `tfsdk:"slots"`
+	Tags                   []types.String        `tfsdk:"tags"`
+	UpdatedAt              types.Int64           `tfsdk:"updated_at"`
+	UseSrvName             types.Bool            `tfsdk:"use_srv_name"`
 }
 
 func (r *GatewayUpstreamResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

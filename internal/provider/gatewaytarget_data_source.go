@@ -28,15 +28,15 @@ type GatewayTargetDataSource struct {
 
 // GatewayTargetDataSourceModel describes the data model.
 type GatewayTargetDataSourceModel struct {
-	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt      types.Float64                      `tfsdk:"created_at"`
-	ID             types.String                       `tfsdk:"id"`
-	Tags           []types.String                     `tfsdk:"tags"`
-	Target         types.String                       `tfsdk:"target"`
-	UpdatedAt      types.Float64                      `tfsdk:"updated_at"`
-	Upstream       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"upstream"`
-	UpstreamID     types.String                       `tfsdk:"upstream_id"`
-	Weight         types.Int64                        `tfsdk:"weight"`
+	ControlPlaneID types.String   `tfsdk:"control_plane_id"`
+	CreatedAt      types.Float64  `tfsdk:"created_at"`
+	ID             types.String   `tfsdk:"id"`
+	Tags           []types.String `tfsdk:"tags"`
+	Target         types.String   `tfsdk:"target"`
+	UpdatedAt      types.Float64  `tfsdk:"updated_at"`
+	Upstream       *tfTypes.Set   `tfsdk:"upstream"`
+	UpstreamID     types.String   `tfsdk:"upstream_id"`
+	Weight         types.Int64    `tfsdk:"weight"`
 }
 
 // Metadata returns the data source type name.

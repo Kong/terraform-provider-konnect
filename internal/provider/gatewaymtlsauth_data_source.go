@@ -28,14 +28,13 @@ type GatewayMTLSAuthDataSource struct {
 
 // GatewayMTLSAuthDataSourceModel describes the data model.
 type GatewayMTLSAuthDataSourceModel struct {
-	CaCertificate  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"ca_certificate"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
-	ConsumerID     types.String                       `tfsdk:"consumer_id"`
-	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                        `tfsdk:"created_at"`
-	ID             types.String                       `tfsdk:"id"`
-	SubjectName    types.String                       `tfsdk:"subject_name"`
-	Tags           []types.String                     `tfsdk:"tags"`
+	CaCertificate  *tfTypes.Set   `tfsdk:"ca_certificate"`
+	ConsumerID     types.String   `tfsdk:"consumer_id"`
+	ControlPlaneID types.String   `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64    `tfsdk:"created_at"`
+	ID             types.String   `tfsdk:"id"`
+	SubjectName    types.String   `tfsdk:"subject_name"`
+	Tags           []types.String `tfsdk:"tags"`
 }
 
 // Metadata returns the data source type name.
@@ -50,14 +49,6 @@ func (r *GatewayMTLSAuthDataSource) Schema(ctx context.Context, req datasource.S
 
 		Attributes: map[string]schema.Attribute{
 			"ca_certificate": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Computed: true,
-					},
-				},
-			},
-			"consumer": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{

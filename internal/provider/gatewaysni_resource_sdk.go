@@ -150,7 +150,7 @@ func (r *GatewaySNIResourceModel) RefreshFromSharedSni(ctx context.Context, resp
 		if resp.Certificate == nil {
 			r.Certificate = nil
 		} else {
-			r.Certificate = &tfTypes.ACLWithoutParentsConsumer{}
+			r.Certificate = &tfTypes.Set{}
 			r.Certificate.ID = types.StringPointerValue(resp.Certificate.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)

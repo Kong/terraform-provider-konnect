@@ -67,7 +67,7 @@ func (r *GatewayKeySetResourceModel) ToOperationsCreateKeySetRequest(ctx context
 
 	out := operations.CreateKeySetRequest{
 		ControlPlaneID: controlPlaneID,
-		KeySet:         *keySet,
+		KeySet:         keySet,
 	}
 
 	return &out, diags
@@ -92,7 +92,7 @@ func (r *GatewayKeySetResourceModel) ToOperationsUpsertKeySetRequest(ctx context
 	out := operations.UpsertKeySetRequest{
 		KeySetID:       keySetID,
 		ControlPlaneID: controlPlaneID,
-		KeySet:         *keySet,
+		KeySet:         keySet,
 	}
 
 	return &out, diags

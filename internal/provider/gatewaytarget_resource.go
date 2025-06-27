@@ -43,15 +43,15 @@ type GatewayTargetResource struct {
 
 // GatewayTargetResourceModel describes the resource data model.
 type GatewayTargetResourceModel struct {
-	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt      types.Float64                      `tfsdk:"created_at"`
-	ID             types.String                       `tfsdk:"id"`
-	Tags           []types.String                     `tfsdk:"tags"`
-	Target         types.String                       `tfsdk:"target"`
-	UpdatedAt      types.Float64                      `tfsdk:"updated_at"`
-	Upstream       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"upstream"`
-	UpstreamID     types.String                       `tfsdk:"upstream_id"`
-	Weight         types.Int64                        `tfsdk:"weight"`
+	ControlPlaneID types.String   `tfsdk:"control_plane_id"`
+	CreatedAt      types.Float64  `tfsdk:"created_at"`
+	ID             types.String   `tfsdk:"id"`
+	Tags           []types.String `tfsdk:"tags"`
+	Target         types.String   `tfsdk:"target"`
+	UpdatedAt      types.Float64  `tfsdk:"updated_at"`
+	Upstream       *tfTypes.Set   `tfsdk:"upstream"`
+	UpstreamID     types.String   `tfsdk:"upstream_id"`
+	Weight         types.Int64    `tfsdk:"weight"`
 }
 
 func (r *GatewayTargetResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

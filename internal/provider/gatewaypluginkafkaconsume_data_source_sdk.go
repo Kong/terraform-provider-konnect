@@ -114,7 +114,7 @@ func (r *GatewayPluginKafkaConsumeDataSourceModel) RefreshFromSharedKafkaConsume
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
-			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
+			r.Consumer = &tfTypes.Set{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
@@ -170,13 +170,13 @@ func (r *GatewayPluginKafkaConsumeDataSourceModel) RefreshFromSharedKafkaConsume
 		if resp.Route == nil {
 			r.Route = nil
 		} else {
-			r.Route = &tfTypes.ACLWithoutParentsConsumer{}
+			r.Route = &tfTypes.Set{}
 			r.Route.ID = types.StringPointerValue(resp.Route.ID)
 		}
 		if resp.Service == nil {
 			r.Service = nil
 		} else {
-			r.Service = &tfTypes.ACLWithoutParentsConsumer{}
+			r.Service = &tfTypes.Set{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
 		r.Tags = make([]types.String, 0, len(resp.Tags))

@@ -37,25 +37,25 @@ type GatewayServiceResource struct {
 
 // GatewayServiceResourceModel describes the resource data model.
 type GatewayServiceResourceModel struct {
-	CaCertificates    []types.String                     `tfsdk:"ca_certificates"`
-	ClientCertificate *tfTypes.ACLWithoutParentsConsumer `tfsdk:"client_certificate"`
-	ConnectTimeout    types.Int64                        `tfsdk:"connect_timeout"`
-	ControlPlaneID    types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt         types.Int64                        `tfsdk:"created_at"`
-	Enabled           types.Bool                         `tfsdk:"enabled"`
-	Host              types.String                       `tfsdk:"host"`
-	ID                types.String                       `tfsdk:"id"`
-	Name              types.String                       `tfsdk:"name"`
-	Path              types.String                       `tfsdk:"path"`
-	Port              types.Int64                        `tfsdk:"port"`
-	Protocol          types.String                       `tfsdk:"protocol"`
-	ReadTimeout       types.Int64                        `tfsdk:"read_timeout"`
-	Retries           types.Int64                        `tfsdk:"retries"`
-	Tags              []types.String                     `tfsdk:"tags"`
-	TLSVerify         types.Bool                         `tfsdk:"tls_verify"`
-	TLSVerifyDepth    types.Int64                        `tfsdk:"tls_verify_depth"`
-	UpdatedAt         types.Int64                        `tfsdk:"updated_at"`
-	WriteTimeout      types.Int64                        `tfsdk:"write_timeout"`
+	CaCertificates    []types.String `tfsdk:"ca_certificates"`
+	ClientCertificate *tfTypes.Set   `tfsdk:"client_certificate"`
+	ConnectTimeout    types.Int64    `tfsdk:"connect_timeout"`
+	ControlPlaneID    types.String   `tfsdk:"control_plane_id"`
+	CreatedAt         types.Int64    `tfsdk:"created_at"`
+	Enabled           types.Bool     `tfsdk:"enabled"`
+	Host              types.String   `tfsdk:"host"`
+	ID                types.String   `tfsdk:"id"`
+	Name              types.String   `tfsdk:"name"`
+	Path              types.String   `tfsdk:"path"`
+	Port              types.Int64    `tfsdk:"port"`
+	Protocol          types.String   `tfsdk:"protocol"`
+	ReadTimeout       types.Int64    `tfsdk:"read_timeout"`
+	Retries           types.Int64    `tfsdk:"retries"`
+	Tags              []types.String `tfsdk:"tags"`
+	TLSVerify         types.Bool     `tfsdk:"tls_verify"`
+	TLSVerifyDepth    types.Int64    `tfsdk:"tls_verify_depth"`
+	UpdatedAt         types.Int64    `tfsdk:"updated_at"`
+	WriteTimeout      types.Int64    `tfsdk:"write_timeout"`
 }
 
 func (r *GatewayServiceResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
