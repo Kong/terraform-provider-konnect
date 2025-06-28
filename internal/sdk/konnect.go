@@ -138,15 +138,6 @@ type Konnect struct {
 	// - `ws`: At least one of `hosts`, `headers`, or `paths`
 	// - `wss`: At least one of `hosts`, `headers`, `paths`, or `snis`
 	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
 	//   <br>
 	//   A route can't have both `tls` and `tls_passthrough` protocols at same time.
 	//   <br><br>

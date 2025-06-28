@@ -2,7 +2,7 @@ module github.com/kong/terraform-provider-konnect/v2
 
 go 1.23.4
 
-toolchain go1.24.2
+toolchain go1.24.4
 
 require (
 	github.com/Kong/shared-speakeasy/customtypes v0.2.3
