@@ -6,7 +6,7 @@ speakeasy: check-speakeasy
 	speakeasy run --skip-versioning --output console --minimal
 	@go mod tidy
 	@go generate .
-	@git clean -fd examples docs/data-sources > /dev/null
+	@git clean -fd examples > /dev/null
 	@git checkout -- README.md examples/README.md
 	@rm USAGE.md
 
