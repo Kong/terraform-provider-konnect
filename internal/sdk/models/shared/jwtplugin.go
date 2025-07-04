@@ -112,17 +112,28 @@ type JwtPluginConfig struct {
 	// A list of HTTP header names that Kong will inspect to retrieve JWTs.
 	HeaderNames []string `json:"header_names,omitempty"`
 	// The name of the claim in which the key identifying the secret must be passed. The plugin will attempt to read this claim from the JWT payload and the header, in that order.
-	KeyClaimName *string `json:"key_claim_name,omitempty"`
+	KeyClaimName *string `default:"iss" json:"key_claim_name"`
 	// A value between 0 and 31536000 (365 days) limiting the lifetime of the JWT to maximum_expiration seconds in the future.
-	MaximumExpiration *float64 `json:"maximum_expiration,omitempty"`
+	MaximumExpiration *float64 `default:"0" json:"maximum_expiration"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
 	Realm *string `json:"realm,omitempty"`
 	// A boolean value that indicates whether the plugin should run (and try to authenticate) on OPTIONS preflight requests. If set to false, then OPTIONS requests will always be allowed.
-	RunOnPreflight *bool `json:"run_on_preflight,omitempty"`
+	RunOnPreflight *bool `default:"true" json:"run_on_preflight"`
 	// If true, the plugin assumes the credential’s secret to be base64 encoded. You will need to create a base64-encoded secret for your Consumer, and sign your JWT with the original secret.
-	SecretIsBase64 *bool `json:"secret_is_base64,omitempty"`
+	SecretIsBase64 *bool `default:"false" json:"secret_is_base64"`
 	// A list of querystring parameters that Kong will inspect to retrieve JWTs.
 	URIParamNames []string `json:"uri_param_names,omitempty"`
+}
+
+func (j JwtPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JwtPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *JwtPluginConfig) GetAnonymous() *string {
@@ -256,7 +267,7 @@ type JwtPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool               `json:"enabled,omitempty"`
+	Enabled      *bool               `default:"true" json:"enabled"`
 	ID           *string             `json:"id,omitempty"`
 	InstanceName *string             `json:"instance_name,omitempty"`
 	name         string              `const:"jwt" json:"name"`
@@ -268,7 +279,7 @@ type JwtPlugin struct {
 	UpdatedAt *int64           `json:"updated_at,omitempty"`
 	Config    *JwtPluginConfig `json:"config,omitempty"`
 	// A set of strings representing HTTP protocols.
-	Protocols []JwtPluginProtocols `json:"protocols,omitempty"`
+	Protocols []JwtPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *JwtPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

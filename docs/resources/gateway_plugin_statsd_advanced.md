@@ -103,7 +103,7 @@ resource "konnect_gateway_plugin_statsd_advanced" "my_gatewaypluginstatsdadvance
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -123,17 +123,17 @@ resource "konnect_gateway_plugin_statsd_advanced" "my_gatewaypluginstatsdadvance
 Optional:
 
 - `allow_status_codes` (List of String) List of status code ranges that are allowed to be logged in metrics.
-- `consumer_identifier_default` (String) The default consumer identifier for metrics. This will take effect when a metric's consumer identifier is omitted. Allowed values are `custom_id`, `consumer_id`, `username`. must be one of ["consumer_id", "custom_id", "username"]
-- `host` (String) A string representing a host name, such as example.com.
-- `hostname_in_prefix` (Boolean) Include the `hostname` in the `prefix` for each metric name.
+- `consumer_identifier_default` (String) The default consumer identifier for metrics. This will take effect when a metric's consumer identifier is omitted. Allowed values are `custom_id`, `consumer_id`, `username`. Default: "custom_id"; must be one of ["consumer_id", "custom_id", "username"]
+- `host` (String) A string representing a host name, such as example.com. Default: "localhost"
+- `hostname_in_prefix` (Boolean) Include the `hostname` in the `prefix` for each metric name. Default: false
 - `metrics` (Attributes List) List of Metrics to be logged. (see [below for nested schema](#nestedatt--config--metrics))
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
-- `prefix` (String) String to prefix to each metric's name.
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 8125
+- `prefix` (String) String to prefix to each metric's name. Default: "kong"
 - `queue` (Attributes) (see [below for nested schema](#nestedatt--config--queue))
-- `service_identifier_default` (String) The default service identifier for metrics. This will take effect when a metric's service identifier is omitted. Allowed values are `service_name_or_host`, `service_id`, `service_name`, `service_host`. must be one of ["service_host", "service_id", "service_name", "service_name_or_host"]
-- `udp_packet_size` (Number) Combine UDP packet up to the size configured. If zero (0), don't combine the UDP packet. Must be a number between 0 and 65507 (inclusive).
-- `use_tcp` (Boolean) Use TCP instead of UDP.
-- `workspace_identifier_default` (String) The default workspace identifier for metrics. This will take effect when a metric's workspace identifier is omitted. Allowed values are `workspace_id`, `workspace_name`. must be one of ["workspace_id", "workspace_name"]
+- `service_identifier_default` (String) The default service identifier for metrics. This will take effect when a metric's service identifier is omitted. Allowed values are `service_name_or_host`, `service_id`, `service_name`, `service_host`. Default: "service_name_or_host"; must be one of ["service_host", "service_id", "service_name", "service_name_or_host"]
+- `udp_packet_size` (Number) Combine UDP packet up to the size configured. If zero (0), don't combine the UDP packet. Must be a number between 0 and 65507 (inclusive). Default: 0
+- `use_tcp` (Boolean) Use TCP instead of UDP. Default: false
+- `workspace_identifier_default` (String) The default workspace identifier for metrics. This will take effect when a metric's workspace identifier is omitted. Allowed values are `workspace_id`, `workspace_name`. Default: "workspace_id"; must be one of ["workspace_id", "workspace_name"]
 
 <a id="nestedatt--config--metrics"></a>
 ### Nested Schema for `config.metrics`
@@ -153,14 +153,14 @@ Optional:
 
 Optional:
 
-- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. must be one of ["-1", "1"]
-- `initial_retry_delay` (Number) Time in seconds before the initial retry is made for a failing batch.
-- `max_batch_size` (Number) Maximum number of entries that can be processed at a time.
+- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of ["-1", "1"]
+- `initial_retry_delay` (Number) Time in seconds before the initial retry is made for a failing batch. Default: 0.01
+- `max_batch_size` (Number) Maximum number of entries that can be processed at a time. Default: 1
 - `max_bytes` (Number) Maximum number of bytes that can be waiting on a queue, requires string content.
-- `max_coalescing_delay` (Number) Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.
-- `max_entries` (Number) Maximum number of entries that can be waiting on the queue.
-- `max_retry_delay` (Number) Maximum time in seconds between retries, caps exponential backoff.
-- `max_retry_time` (Number) Time in seconds before the queue gives up calling a failed handler for a batch.
+- `max_coalescing_delay` (Number) Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler. Default: 1
+- `max_entries` (Number) Maximum number of entries that can be waiting on the queue. Default: 10000
+- `max_retry_delay` (Number) Maximum time in seconds between retries, caps exponential backoff. Default: 60
+- `max_retry_time` (Number) Time in seconds before the queue gives up calling a failed handler for a batch. Default: 60
 
 
 

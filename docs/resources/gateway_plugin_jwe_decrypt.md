@@ -73,7 +73,7 @@ resource "konnect_gateway_plugin_jwe_decrypt" "my_gatewaypluginjwedecrypt" {
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -92,10 +92,10 @@ resource "konnect_gateway_plugin_jwe_decrypt" "my_gatewaypluginjwedecrypt" {
 
 Optional:
 
-- `forward_header_name` (String) The name of the header that is used to set the decrypted value.
+- `forward_header_name` (String) The name of the header that is used to set the decrypted value. Default: "Authorization"
 - `key_sets` (List of String) Denote the name or names of all Key Sets that should be inspected when trying to find a suitable key to decrypt the JWE token.
-- `lookup_header_name` (String) The name of the header to look for the JWE token.
-- `strict` (Boolean) Defines how the plugin behaves in cases where no token was found in the request. When using `strict` mode, the request requires a token to be present and subsequently raise an error if none could be found.
+- `lookup_header_name` (String) The name of the header to look for the JWE token. Default: "Authorization"
+- `strict` (Boolean) Defines how the plugin behaves in cases where no token was found in the request. When using `strict` mode, the request requires a token to be present and subsequently raise an error if none could be found. Default: true
 
 
 <a id="nestedatt--ordering"></a>

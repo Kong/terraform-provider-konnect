@@ -12,8 +12,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -89,7 +92,8 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 			"connect_timeout": schema.Int64Attribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The timeout in milliseconds for establishing a connection to the upstream server.`,
+				Default:     int64default.StaticInt64(60000),
+				Description: `The timeout in milliseconds for establishing a connection to the upstream server. Default: 60000`,
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required: true,
@@ -106,7 +110,8 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the Service is active. If set to ` + "`" + `false` + "`" + `, the proxy behavior will be as if any routes attached to it do not exist (404). Default: ` + "`" + `true` + "`" + `.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the Service is active. If set to ` + "`" + `false` + "`" + `, the proxy behavior will be as if any routes attached to it do not exist (404). Default: ` + "`" + `true` + "`" + `. Default: true`,
 			},
 			"host": schema.StringAttribute{
 				Required:    true,
@@ -129,12 +134,14 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 			"port": schema.Int64Attribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The upstream server port.`,
+				Default:     int64default.StaticInt64(80),
+				Description: `The upstream server port. Default: 80`,
 			},
 			"protocol": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The protocol used to communicate with the upstream. must be one of ["grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss"]`,
+				Default:     stringdefault.StaticString(`http`),
+				Description: `The protocol used to communicate with the upstream. Default: "http"; must be one of ["grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"grpc",
@@ -153,12 +160,14 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 			"read_timeout": schema.Int64Attribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server.`,
+				Default:     int64default.StaticInt64(60000),
+				Description: `The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server. Default: 60000`,
 			},
 			"retries": schema.Int64Attribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The number of retries to execute upon failure to proxy.`,
+				Default:     int64default.StaticInt64(5),
+				Description: `The number of retries to execute upon failure to proxy. Default: 5`,
 			},
 			"tags": schema.ListAttribute{
 				Computed:    true,
@@ -184,7 +193,8 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 			"write_timeout": schema.Int64Attribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server.`,
+				Default:     int64default.StaticInt64(60000),
+				Description: `The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server. Default: 60000`,
 			},
 		},
 	}

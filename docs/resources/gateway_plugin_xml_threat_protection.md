@@ -98,7 +98,7 @@ resource "konnect_gateway_plugin_xml_threat_protection" "my_gatewaypluginxmlthre
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -117,29 +117,29 @@ resource "konnect_gateway_plugin_xml_threat_protection" "my_gatewaypluginxmlthre
 
 Optional:
 
-- `allow_dtd` (Boolean) Indicates whether an XML Document Type Definition (DTD) section is allowed.
+- `allow_dtd` (Boolean) Indicates whether an XML Document Type Definition (DTD) section is allowed. Default: false
 - `allowed_content_types` (List of String) A list of Content-Type values with payloads that are allowed, but aren't validated.
-- `attribute` (Number) Maximum size of the attribute value.
-- `bla_max_amplification` (Number) Sets the maximum allowed amplification. This protects against the Billion Laughs Attack.
-- `bla_threshold` (Number) Sets the threshold after which the protection starts. This protects against the Billion Laughs Attack.
-- `buffer` (Number) Maximum size of the unparsed buffer (see below).
+- `attribute` (Number) Maximum size of the attribute value. Default: 1048576
+- `bla_max_amplification` (Number) Sets the maximum allowed amplification. This protects against the Billion Laughs Attack. Default: 100
+- `bla_threshold` (Number) Sets the threshold after which the protection starts. This protects against the Billion Laughs Attack. Default: 8388608
+- `buffer` (Number) Maximum size of the unparsed buffer (see below). Default: 1048576
 - `checked_content_types` (List of String) A list of Content-Type values with payloads that must be validated.
-- `comment` (Number) Maximum size of comments.
-- `document` (Number) Maximum size of the entire document.
-- `entity` (Number) Maximum size of entity values in EntityDecl.
-- `entityname` (Number) Maximum size of entity names in EntityDecl.
-- `entityproperty` (Number) Maximum size of systemId, publicId, or notationName in EntityDecl.
-- `localname` (Number) Maximum size of the localname. This applies to tags and attributes.
-- `max_attributes` (Number) Maximum number of attributes allowed on a tag, including default ones. Note: If namespace-aware parsing is disabled, then the namespaces definitions are counted as attributes.
-- `max_children` (Number) Maximum number of children allowed (Element, Text, Comment, ProcessingInstruction, CDATASection). Note: Adjacent text and CDATA sections are counted as one. For example, text-cdata-text-cdata is one child.
-- `max_depth` (Number) Maximum depth of tags. Child elements such as Text or Comments are not counted as another level.
-- `max_namespaces` (Number) Maximum number of namespaces defined on a tag. This value is required if parsing is namespace-aware.
-- `namespace_aware` (Boolean) If not parsing namespace aware, all prefixes and namespace attributes will be counted as regular attributes and element names, and validated as such.
-- `namespaceuri` (Number) Maximum size of the namespace URI. This value is required if parsing is namespace-aware.
-- `pidata` (Number) Maximum size of processing instruction data.
-- `pitarget` (Number) Maximum size of processing instruction targets.
-- `prefix` (Number) Maximum size of the prefix. This applies to tags and attributes. This value is required if parsing is namespace-aware.
-- `text` (Number) Maximum text inside tags (counted over all adjacent text/CDATA elements combined).
+- `comment` (Number) Maximum size of comments. Default: 1024
+- `document` (Number) Maximum size of the entire document. Default: 10485760
+- `entity` (Number) Maximum size of entity values in EntityDecl. Default: 1024
+- `entityname` (Number) Maximum size of entity names in EntityDecl. Default: 1024
+- `entityproperty` (Number) Maximum size of systemId, publicId, or notationName in EntityDecl. Default: 1024
+- `localname` (Number) Maximum size of the localname. This applies to tags and attributes. Default: 1024
+- `max_attributes` (Number) Maximum number of attributes allowed on a tag, including default ones. Note: If namespace-aware parsing is disabled, then the namespaces definitions are counted as attributes. Default: 100
+- `max_children` (Number) Maximum number of children allowed (Element, Text, Comment, ProcessingInstruction, CDATASection). Note: Adjacent text and CDATA sections are counted as one. For example, text-cdata-text-cdata is one child. Default: 100
+- `max_depth` (Number) Maximum depth of tags. Child elements such as Text or Comments are not counted as another level. Default: 50
+- `max_namespaces` (Number) Maximum number of namespaces defined on a tag. This value is required if parsing is namespace-aware. Default: 20
+- `namespace_aware` (Boolean) If not parsing namespace aware, all prefixes and namespace attributes will be counted as regular attributes and element names, and validated as such. Default: true
+- `namespaceuri` (Number) Maximum size of the namespace URI. This value is required if parsing is namespace-aware. Default: 1024
+- `pidata` (Number) Maximum size of processing instruction data. Default: 1024
+- `pitarget` (Number) Maximum size of processing instruction targets. Default: 1024
+- `prefix` (Number) Maximum size of the prefix. This applies to tags and attributes. This value is required if parsing is namespace-aware. Default: 1024
+- `text` (Number) Maximum text inside tags (counted over all adjacent text/CDATA elements combined). Default: 1048576
 
 
 <a id="nestedatt--consumer"></a>

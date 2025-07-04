@@ -84,7 +84,7 @@ resource "konnect_gateway_plugin_ai_prompt_template" "my_gatewaypluginaipromptte
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -103,9 +103,9 @@ resource "konnect_gateway_plugin_ai_prompt_template" "my_gatewaypluginaipromptte
 
 Optional:
 
-- `allow_untemplated_requests` (Boolean) Set true to allow requests that don't call or match any template.
-- `log_original_request` (Boolean) Set true to add the original request to the Kong log plugin(s) output.
-- `max_request_body_size` (Number) max allowed body size allowed to be introspected
+- `allow_untemplated_requests` (Boolean) Set true to allow requests that don't call or match any template. Default: true
+- `log_original_request` (Boolean) Set true to add the original request to the Kong log plugin(s) output. Default: false
+- `max_request_body_size` (Number) max allowed body size allowed to be introspected. Default: 8192
 - `templates` (Attributes List) Array of templates available to the request context. (see [below for nested schema](#nestedatt--config--templates))
 
 <a id="nestedatt--config--templates"></a>

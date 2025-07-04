@@ -80,9 +80,20 @@ type BasicAuthPluginConfig struct {
 	// An optional string (Consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`. Please note that this value must refer to the Consumer `id` or `username` attribute, and **not** its `custom_id`.
 	Anonymous *string `json:"anonymous,omitempty"`
 	// An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin will strip the credential from the request (i.e. the `Authorization` header) before proxying it.
-	HideCredentials *bool `json:"hide_credentials,omitempty"`
+	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
-	Realm *string `json:"realm,omitempty"`
+	Realm *string `default:"service" json:"realm"`
+}
+
+func (b BasicAuthPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BasicAuthPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *BasicAuthPluginConfig) GetAnonymous() *string {
@@ -173,7 +184,7 @@ type BasicAuthPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                     `json:"enabled,omitempty"`
+	Enabled      *bool                     `default:"true" json:"enabled"`
 	ID           *string                   `json:"id,omitempty"`
 	InstanceName *string                   `json:"instance_name,omitempty"`
 	name         string                    `const:"basic-auth" json:"name"`
@@ -185,7 +196,7 @@ type BasicAuthPlugin struct {
 	UpdatedAt *int64                 `json:"updated_at,omitempty"`
 	Config    *BasicAuthPluginConfig `json:"config,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
-	Protocols []BasicAuthPluginProtocols `json:"protocols,omitempty"`
+	Protocols []BasicAuthPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *BasicAuthPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

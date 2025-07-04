@@ -14,8 +14,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -72,7 +76,8 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 					"connect_timeout": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+						Default:     int64default.StaticInt64(2000),
+						Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(2147483646),
 						},
@@ -80,7 +85,8 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 					"default_header_type": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Allows specifying the type of header to be added to requests with no pre-existing tracing headers and when ` + "`" + `config.header_type` + "`" + ` is set to ` + "`" + `"preserve"` + "`" + `. When ` + "`" + `header_type` + "`" + ` is set to any other value, ` + "`" + `default_header_type` + "`" + ` is ignored. must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c"]`,
+						Default:     stringdefault.StaticString(`b3`),
+						Description: `Allows specifying the type of header to be added to requests with no pre-existing tracing headers and when ` + "`" + `config.header_type` + "`" + ` is set to ` + "`" + `"preserve"` + "`" + `. When ` + "`" + `header_type` + "`" + ` is set to any other value, ` + "`" + `default_header_type` + "`" + ` is ignored. Default: "b3"; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"aws",
@@ -103,7 +109,8 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 					"header_type": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `All HTTP requests going through the plugin are tagged with a tracing HTTP request. This property codifies what kind of tracing header the plugin expects on incoming requests. must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "ignore", "instana", "jaeger", "ot", "preserve", "w3c"]`,
+						Default:     stringdefault.StaticString(`preserve`),
+						Description: `All HTTP requests going through the plugin are tagged with a tracing HTTP request. This property codifies what kind of tracing header the plugin expects on incoming requests. Default: "preserve"; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "ignore", "instana", "jaeger", "ot", "preserve", "w3c"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"aws",
@@ -132,7 +139,8 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 					"http_span_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Specify whether to include the HTTP path in the span name. must be one of ["method", "method_path"]`,
+						Default:     stringdefault.StaticString(`method`),
+						Description: `Specify whether to include the HTTP path in the span name. Default: "method"; must be one of ["method", "method_path"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"method",
@@ -143,17 +151,20 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 					"include_credential": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Specify whether the credential of the currently authenticated consumer should be included in metadata sent to the Zipkin server.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `Specify whether the credential of the currently authenticated consumer should be included in metadata sent to the Zipkin server. Default: true`,
 					},
 					"local_service_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The name of the service as displayed in Zipkin.`,
+						Default:     stringdefault.StaticString(`kong`),
+						Description: `The name of the service as displayed in Zipkin. Default: "kong"`,
 					},
 					"phase_duration_flavor": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Specify whether to include the duration of each phase as an annotation or a tag. must be one of ["annotations", "tags"]`,
+						Default:     stringdefault.StaticString(`annotations`),
+						Description: `Specify whether to include the duration of each phase as an annotation or a tag. Default: "annotations"; must be one of ["annotations", "tags"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"annotations",
@@ -211,7 +222,8 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 							"concurrency_limit": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The number of of queue delivery timers. -1 indicates unlimited. must be one of ["-1", "1"]`,
+								Default:     int64default.StaticInt64(1),
+								Description: `The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of ["-1", "1"]`,
 								Validators: []validator.Int64{
 									int64validator.OneOf(-1, 1),
 								},
@@ -219,7 +231,8 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 							"initial_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Time in seconds before the initial retry is made for a failing batch.`,
+								Default:     float64default.StaticFloat64(0.01),
+								Description: `Time in seconds before the initial retry is made for a failing batch. Default: 0.01`,
 								Validators: []validator.Float64{
 									float64validator.AtMost(1000000),
 								},
@@ -227,7 +240,8 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 							"max_batch_size": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Maximum number of entries that can be processed at a time.`,
+								Default:     int64default.StaticInt64(1),
+								Description: `Maximum number of entries that can be processed at a time. Default: 1`,
 								Validators: []validator.Int64{
 									int64validator.Between(1, 1000000),
 								},
@@ -240,7 +254,8 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 							"max_coalescing_delay": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.`,
+								Default:     float64default.StaticFloat64(1),
+								Description: `Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler. Default: 1`,
 								Validators: []validator.Float64{
 									float64validator.AtMost(3600),
 								},
@@ -248,7 +263,8 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 							"max_entries": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Maximum number of entries that can be waiting on the queue.`,
+								Default:     int64default.StaticInt64(10000),
+								Description: `Maximum number of entries that can be waiting on the queue. Default: 10000`,
 								Validators: []validator.Int64{
 									int64validator.Between(1, 1000000),
 								},
@@ -256,7 +272,8 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 							"max_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Maximum time in seconds between retries, caps exponential backoff.`,
+								Default:     float64default.StaticFloat64(60),
+								Description: `Maximum time in seconds between retries, caps exponential backoff. Default: 60`,
 								Validators: []validator.Float64{
 									float64validator.AtMost(1000000),
 								},
@@ -264,14 +281,16 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 							"max_retry_time": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Time in seconds before the queue gives up calling a failed handler for a batch.`,
+								Default:     float64default.StaticFloat64(60),
+								Description: `Time in seconds before the queue gives up calling a failed handler for a batch. Default: 60`,
 							},
 						},
 					},
 					"read_timeout": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+						Default:     int64default.StaticInt64(5000),
+						Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 5000`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(2147483646),
 						},
@@ -279,7 +298,8 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 					"sample_ratio": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `How often to sample requests that do not contain trace IDs. Set to ` + "`" + `0` + "`" + ` to turn sampling off, or to ` + "`" + `1` + "`" + ` to sample **all** requests.`,
+						Default:     float64default.StaticFloat64(0.001),
+						Description: `How often to sample requests that do not contain trace IDs. Set to ` + "`" + `0` + "`" + ` to turn sampling off, or to ` + "`" + `1` + "`" + ` to sample **all** requests. Default: 0.001`,
 						Validators: []validator.Float64{
 							float64validator.AtMost(1),
 						},
@@ -287,7 +307,8 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 					"send_timeout": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+						Default:     int64default.StaticInt64(5000),
+						Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 5000`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(2147483646),
 						},
@@ -323,12 +344,14 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 					"tags_header": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The Zipkin plugin will add extra headers to the tags associated with any HTTP requests that come with a header named as configured by this property.`,
+						Default:     stringdefault.StaticString(`Zipkin-Tags`),
+						Description: `The Zipkin plugin will add extra headers to the tags associated with any HTTP requests that come with a header named as configured by this property. Default: "Zipkin-Tags"`,
 					},
 					"traceid_byte_count": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The length in bytes of each request's Trace ID. must be one of ["8", "16"]`,
+						Default:     int64default.StaticInt64(16),
+						Description: `The length in bytes of each request's Trace ID. Default: 16; must be one of ["8", "16"]`,
 						Validators: []validator.Int64{
 							int64validator.OneOf(8, 16),
 						},
@@ -364,7 +387,8 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

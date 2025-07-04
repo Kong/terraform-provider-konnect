@@ -54,29 +54,29 @@ func (o *PartialRedisEESentinelNodes) GetPort() *int64 {
 // PartialRedisEEConfig - Redis-EE configuration
 type PartialRedisEEConfig struct {
 	// Maximum retry attempts for redirection.
-	ClusterMaxRedirections *int64 `json:"cluster_max_redirections,omitempty"`
+	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses for Redis connections using the `redis` strategy.
 	ClusterNodes []PartialRedisEEClusterNodes `json:"cluster_nodes,omitempty"`
 	// Connect timeout.
-	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
+	ConnectTimeout *int64 `default:"1000" json:"connect_timeout"`
 	// If the connection to Redis is proxied, e.g., Envoy.
-	ConnectionIsProxied *bool `json:"connection_is_proxied,omitempty"`
+	ConnectionIsProxied *bool `default:"false" json:"connection_is_proxied"`
 	// Database index.
-	Database *int64 `json:"database,omitempty"`
+	Database *int64 `default:"0" json:"database"`
 	// Redis host.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// Limits the total number of opened connections for a pool.
 	KeepaliveBacklog *int64 `json:"keepalive_backlog,omitempty"`
 	// Size limit for cosocket connection pool per worker process.
-	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
+	KeepalivePoolSize *int64 `default:"256" json:"keepalive_pool_size"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `json:"password,omitempty"`
 	// The port is only used when the host is set.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
 	// Read timeout.
-	ReadTimeout *int64 `json:"read_timeout,omitempty"`
+	ReadTimeout *int64 `default:"1000" json:"read_timeout"`
 	// Send timeout.
-	SendTimeout *int64 `json:"send_timeout,omitempty"`
+	SendTimeout *int64 `default:"1000" json:"send_timeout"`
 	// Sentinel master to use for Redis connections. Defining this implies using Redis Sentinel.
 	SentinelMaster *string `json:"sentinel_master,omitempty"`
 	// Sentinel addresses for Redis connections using the `redis` strategy. Array must have at least 1 element.
@@ -90,11 +90,22 @@ type PartialRedisEEConfig struct {
 	// Server name for SSL verification.
 	ServerName *string `json:"server_name,omitempty"`
 	// If set to true, uses SSL to connect to Redis.
-	Ssl *bool `json:"ssl,omitempty"`
+	Ssl *bool `default:"false" json:"ssl"`
 	// If set to true, verifies the validity of the server SSL certificate.
-	SslVerify *bool `json:"ssl_verify,omitempty"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. Requires Redis v6.0.0+.
 	Username *string `json:"username,omitempty"`
+}
+
+func (p PartialRedisEEConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PartialRedisEEConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *PartialRedisEEConfig) GetClusterMaxRedirections() *int64 {
@@ -317,23 +328,34 @@ func (o *PartialRedisEE) GetUpdatedAt() *int64 {
 // PartialRedisCEConfig - Redis-CE configuration
 type PartialRedisCEConfig struct {
 	// Database to use for the Redis connection when using the `redis` strategy
-	Database *int64 `json:"database,omitempty"`
+	Database *int64 `default:"0" json:"database"`
 	// Redis host.
 	Host *string `json:"host,omitempty"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `json:"password,omitempty"`
 	// Redis port.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
 	// Server name for SSL verification.
 	ServerName *string `json:"server_name,omitempty"`
 	// If set to true, uses SSL to connect to Redis.
-	Ssl *bool `json:"ssl,omitempty"`
+	Ssl *bool `default:"false" json:"ssl"`
 	// If set to true, verifies the validity of the server SSL certificate.
-	SslVerify *bool `json:"ssl_verify,omitempty"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Connection timeout.
-	Timeout *int64 `json:"timeout,omitempty"`
+	Timeout *int64 `default:"1000" json:"timeout"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. Requires Redis v6.0.0+.
 	Username *string `json:"username,omitempty"`
+}
+
+func (p PartialRedisCEConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PartialRedisCEConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *PartialRedisCEConfig) GetDatabase() *int64 {

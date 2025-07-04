@@ -14,6 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -95,7 +96,9 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 									Description: `The Application Auth Strategy ID.`,
 								},
 								"name": schema.StringAttribute{
-									Computed: true,
+									Computed:    true,
+									Default:     stringdefault.StaticString(`name`),
+									Description: `Default: "name"`,
 								},
 							},
 							Description: `Client Credential Auth strategy that the application uses.`,
@@ -124,7 +127,9 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 									ElementType: types.StringType,
 								},
 								"name": schema.StringAttribute{
-									Computed: true,
+									Computed:    true,
+									Default:     stringdefault.StaticString(`name`),
+									Description: `Default: "name"`,
 								},
 							},
 							Description: `KeyAuth Auth strategy that the application uses.`,

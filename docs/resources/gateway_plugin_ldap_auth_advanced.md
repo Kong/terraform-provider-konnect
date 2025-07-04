@@ -94,7 +94,7 @@ resource "konnect_gateway_plugin_ldap_auth_advanced" "my_gatewaypluginldapauthad
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -113,29 +113,29 @@ resource "konnect_gateway_plugin_ldap_auth_advanced" "my_gatewaypluginldapauthad
 
 Optional:
 
-- `anonymous` (String) An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`. Note that this value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
+- `anonymous` (String) An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`. Note that this value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`. Default: ""
 - `attribute` (String) Attribute to be used to search the user; e.g., "cn".
 - `base_dn` (String) Base DN as the starting point for the search; e.g., 'dc=example,dc=com'.
 - `bind_dn` (String) The DN to bind to. Used to perform LDAP search of user. This `bind_dn` should have permissions to search for the user being authenticated.
-- `cache_ttl` (Number) Cache expiry time in seconds.
+- `cache_ttl` (Number) Cache expiry time in seconds. Default: 60
 - `consumer_by` (List of String) Whether to authenticate consumers based on `username`, `custom_id`, or both.
-- `consumer_optional` (Boolean) Whether consumer mapping is optional. If `consumer_optional=true`, the plugin will not attempt to associate a consumer with the LDAP authenticated user.
+- `consumer_optional` (Boolean) Whether consumer mapping is optional. If `consumer_optional=true`, the plugin will not attempt to associate a consumer with the LDAP authenticated user. Default: false
 - `group_base_dn` (String) Sets a distinguished name (DN) for the entry where LDAP searches for groups begin. This field is case-insensitive.',dc=com'.
-- `group_member_attribute` (String) Sets the attribute holding the members of the LDAP group. This field is case-sensitive.
+- `group_member_attribute` (String) Sets the attribute holding the members of the LDAP group. This field is case-sensitive. Default: "memberOf"
 - `group_name_attribute` (String) Sets the attribute holding the name of a group, typically called `name` (in Active Directory) or `cn` (in OpenLDAP). This field is case-insensitive.
 - `groups_required` (List of String) The groups required to be present in the LDAP search result for successful authorization. This config parameter works in both **AND** / **OR** cases. - When `["group1 group2"]` are in the same array indices, both `group1` AND `group2` need to be present in the LDAP search result. - When `["group1", "group2"]` are in different array indices, either `group1` OR `group2` need to be present in the LDAP search result.
-- `header_type` (String) An optional string to use as part of the Authorization header. By default, a valid Authorization header looks like this: `Authorization: ldap base64(username:password)`. If `header_type` is set to "basic", then the Authorization header would be `Authorization: basic base64(username:password)`. Note that `header_type` can take any string, not just `'ldap'` and `'basic'`.
-- `hide_credentials` (Boolean) An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request.
-- `keepalive` (Number) An optional value in milliseconds that defines how long an idle connection to LDAP server will live before being closed.
+- `header_type` (String) An optional string to use as part of the Authorization header. By default, a valid Authorization header looks like this: `Authorization: ldap base64(username:password)`. If `header_type` is set to "basic", then the Authorization header would be `Authorization: basic base64(username:password)`. Note that `header_type` can take any string, not just `'ldap'` and `'basic'`. Default: "ldap"
+- `hide_credentials` (Boolean) An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request. Default: false
+- `keepalive` (Number) An optional value in milliseconds that defines how long an idle connection to LDAP server will live before being closed. Default: 60000
 - `ldap_host` (String) Host on which the LDAP server is running.
 - `ldap_password` (String) The password to the LDAP server.
-- `ldap_port` (Number) TCP port where the LDAP server is listening. 389 is the default port for non-SSL LDAP and AD. 636 is the port required for SSL LDAP and AD. If `ldaps` is configured, you must use port 636.
-- `ldaps` (Boolean) Set it to `true` to use `ldaps`, a secure protocol (that can be configured to TLS) to connect to the LDAP server. When `ldaps` is configured, you must use port 636. If the `ldap` setting is enabled, ensure the `start_tls` setting is disabled.
-- `log_search_results` (Boolean) Displays all the LDAP search results received from the LDAP server for debugging purposes. Not recommended to be enabled in a production environment.
+- `ldap_port` (Number) TCP port where the LDAP server is listening. 389 is the default port for non-SSL LDAP and AD. 636 is the port required for SSL LDAP and AD. If `ldaps` is configured, you must use port 636. Default: 389
+- `ldaps` (Boolean) Set it to `true` to use `ldaps`, a secure protocol (that can be configured to TLS) to connect to the LDAP server. When `ldaps` is configured, you must use port 636. If the `ldap` setting is enabled, ensure the `start_tls` setting is disabled. Default: false
+- `log_search_results` (Boolean) Displays all the LDAP search results received from the LDAP server for debugging purposes. Not recommended to be enabled in a production environment. Default: false
 - `realm` (String) When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
-- `start_tls` (Boolean) Set it to `true` to issue StartTLS (Transport Layer Security) extended operation over `ldap` connection. If the `start_tls` setting is enabled, ensure the `ldaps` setting is disabled.
-- `timeout` (Number) An optional timeout in milliseconds when waiting for connection with LDAP server.
-- `verify_ldap_host` (Boolean) Set to `true` to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the `lua_ssl_trusted_certificate` directive.
+- `start_tls` (Boolean) Set it to `true` to issue StartTLS (Transport Layer Security) extended operation over `ldap` connection. If the `start_tls` setting is enabled, ensure the `ldaps` setting is disabled. Default: false
+- `timeout` (Number) An optional timeout in milliseconds when waiting for connection with LDAP server. Default: 10000
+- `verify_ldap_host` (Boolean) Set to `true` to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the `lua_ssl_trusted_certificate` directive. Default: false
 
 
 <a id="nestedatt--ordering"></a>

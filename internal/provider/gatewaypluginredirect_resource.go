@@ -12,6 +12,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -70,7 +72,8 @@ func (r *GatewayPluginRedirectResource) Schema(ctx context.Context, req resource
 					"keep_incoming_path": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Use the incoming request's path and query string in the redirect URL`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Use the incoming request's path and query string in the redirect URL. Default: false`,
 					},
 					"location": schema.StringAttribute{
 						Computed:    true,
@@ -80,7 +83,8 @@ func (r *GatewayPluginRedirectResource) Schema(ctx context.Context, req resource
 					"status_code": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The response code to send. Must be an integer between 100 and 599.`,
+						Default:     int64default.StaticInt64(301),
+						Description: `The response code to send. Must be an integer between 100 and 599. Default: 301`,
 						Validators: []validator.Int64{
 							int64validator.Between(100, 599),
 						},
@@ -130,7 +134,8 @@ func (r *GatewayPluginRedirectResource) Schema(ctx context.Context, req resource
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

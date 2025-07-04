@@ -37,6 +37,7 @@ resource "konnect_audit_log_destination" "my_auditlogdestination" {
 - `skip_ssl_verification` (Boolean) Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
 We strongly recommend not setting this to 'true' as you are subject to man-in-the-middle and other attacks.
 This option should be considered only for self-signed SSL certificates used in a non-production environment.
+Default: false
 
 ### Read-Only
 

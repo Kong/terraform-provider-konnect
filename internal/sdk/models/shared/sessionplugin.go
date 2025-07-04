@@ -249,54 +249,65 @@ func (e *SessionPluginStorage) UnmarshalJSON(data []byte) error {
 
 type SessionPluginConfig struct {
 	// The session cookie absolute timeout, in seconds. Specifies how long the session can be used until it is no longer valid.
-	AbsoluteTimeout *float64 `json:"absolute_timeout,omitempty"`
+	AbsoluteTimeout *float64 `default:"86400" json:"absolute_timeout"`
 	// The session audience, which is the intended target application. For example `"my-application"`.
-	Audience *string `json:"audience,omitempty"`
+	Audience *string `default:"default" json:"audience"`
 	// The domain with which the cookie is intended to be exchanged.
 	CookieDomain *string `json:"cookie_domain,omitempty"`
 	// Applies the `HttpOnly` tag so that the cookie is sent only to a server.
-	CookieHTTPOnly *bool `json:"cookie_http_only,omitempty"`
+	CookieHTTPOnly *bool `default:"true" json:"cookie_http_only"`
 	// The name of the cookie.
-	CookieName *string `json:"cookie_name,omitempty"`
+	CookieName *string `default:"session" json:"cookie_name"`
 	// The resource in the host where the cookie is available.
-	CookiePath *string `json:"cookie_path,omitempty"`
+	CookiePath *string `default:"/" json:"cookie_path"`
 	// Determines whether and how a cookie may be sent with cross-site requests.
-	CookieSameSite *CookieSameSite `json:"cookie_same_site,omitempty"`
+	CookieSameSite *CookieSameSite `default:"Strict" json:"cookie_same_site"`
 	// Applies the Secure directive so that the cookie may be sent to the server only with an encrypted request over the HTTPS protocol.
-	CookieSecure *bool `json:"cookie_secure,omitempty"`
+	CookieSecure *bool `default:"true" json:"cookie_secure"`
 	// Whether to hash or not the subject when store_metadata is enabled.
-	HashSubject *bool `json:"hash_subject,omitempty"`
+	HashSubject *bool `default:"false" json:"hash_subject"`
 	// The session cookie idle time, in seconds.
-	IdlingTimeout *float64 `json:"idling_timeout,omitempty"`
+	IdlingTimeout *float64 `default:"900" json:"idling_timeout"`
 	// A set of HTTP methods that the plugin will respond to.
 	LogoutMethods []SessionPluginLogoutMethods `json:"logout_methods,omitempty"`
 	// The POST argument passed to logout requests. Do not change this property.
-	LogoutPostArg *string `json:"logout_post_arg,omitempty"`
+	LogoutPostArg *string `default:"session_logout" json:"logout_post_arg"`
 	// The query argument passed to logout requests.
-	LogoutQueryArg    *string `json:"logout_query_arg,omitempty"`
-	ReadBodyForLogout *bool   `json:"read_body_for_logout,omitempty"`
+	LogoutQueryArg    *string `default:"session_logout" json:"logout_query_arg"`
+	ReadBodyForLogout *bool   `default:"false" json:"read_body_for_logout"`
 	// Enables or disables persistent sessions.
-	Remember *bool `json:"remember,omitempty"`
+	Remember *bool `default:"false" json:"remember"`
 	// The persistent session absolute timeout limit, in seconds.
-	RememberAbsoluteTimeout *float64 `json:"remember_absolute_timeout,omitempty"`
+	RememberAbsoluteTimeout *float64 `default:"2592000" json:"remember_absolute_timeout"`
 	// Persistent session cookie name. Use with the `remember` configuration parameter.
-	RememberCookieName *string `json:"remember_cookie_name,omitempty"`
+	RememberCookieName *string `default:"remember" json:"remember_cookie_name"`
 	// The persistent session rolling timeout window, in seconds.
-	RememberRollingTimeout *float64 `json:"remember_rolling_timeout,omitempty"`
+	RememberRollingTimeout *float64 `default:"604800" json:"remember_rolling_timeout"`
 	// List of information to include, as headers, in the response to the downstream.
 	RequestHeaders []RequestHeaders `json:"request_headers,omitempty"`
 	// List of information to include, as headers, in the response to the downstream.
 	ResponseHeaders []SessionPluginResponseHeaders `json:"response_headers,omitempty"`
 	// The session cookie rolling timeout, in seconds. Specifies how long the session can be used until it needs to be renewed.
-	RollingTimeout *float64 `json:"rolling_timeout,omitempty"`
+	RollingTimeout *float64 `default:"3600" json:"rolling_timeout"`
 	// The secret that is used in keyed HMAC generation.
-	Secret *string `json:"secret,omitempty"`
+	Secret *string `default:"WKzHLADIGTA9J6nV29ppiqFxmLWstNnPGEtEJ2gQA70z" json:"secret"`
 	// The duration, in seconds, after which an old cookie is discarded, starting from the moment when the session becomes outdated and is replaced by a new one.
-	StaleTTL *float64 `json:"stale_ttl,omitempty"`
+	StaleTTL *float64 `default:"10" json:"stale_ttl"`
 	// Determines where the session data is stored. `kong`: Stores encrypted session data into Kong's current database strategy; the cookie will not contain any session data. `cookie`: Stores encrypted session data within the cookie itself.
-	Storage *SessionPluginStorage `json:"storage,omitempty"`
+	Storage *SessionPluginStorage `default:"cookie" json:"storage"`
 	// Whether to also store metadata of sessions, such as collecting data of sessions for a specific audience belonging to a specific subject.
-	StoreMetadata *bool `json:"store_metadata,omitempty"`
+	StoreMetadata *bool `default:"false" json:"store_metadata"`
+}
+
+func (s SessionPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SessionPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *SessionPluginConfig) GetAbsoluteTimeout() *float64 {
@@ -554,7 +565,7 @@ type SessionPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                   `json:"enabled,omitempty"`
+	Enabled      *bool                   `default:"true" json:"enabled"`
 	ID           *string                 `json:"id,omitempty"`
 	InstanceName *string                 `json:"instance_name,omitempty"`
 	name         string                  `const:"session" json:"name"`
@@ -566,7 +577,7 @@ type SessionPlugin struct {
 	UpdatedAt *int64               `json:"updated_at,omitempty"`
 	Config    *SessionPluginConfig `json:"config,omitempty"`
 	// A set of strings representing protocols.
-	Protocols []SessionPluginProtocols `json:"protocols,omitempty"`
+	Protocols []SessionPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *SessionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

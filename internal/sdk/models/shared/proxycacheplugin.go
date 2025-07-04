@@ -78,7 +78,18 @@ func (o *ProxyCachePluginPartials) GetPath() *string {
 
 type ProxyCachePluginMemory struct {
 	// The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. Note that this dictionary currently must be defined manually in the Kong Nginx template.
-	DictionaryName *string `json:"dictionary_name,omitempty"`
+	DictionaryName *string `default:"kong_db_cache" json:"dictionary_name"`
+}
+
+func (p ProxyCachePluginMemory) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ProxyCachePluginMemory) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ProxyCachePluginMemory) GetDictionaryName() *string {
@@ -125,9 +136,20 @@ func (e *RequestMethod) UnmarshalJSON(data []byte) error {
 
 // ResponseHeaders - Caching related diagnostic headers that should be included in cached responses
 type ResponseHeaders struct {
-	XCacheKey    *bool `json:"X-Cache-Key,omitempty"`
-	XCacheStatus *bool `json:"X-Cache-Status,omitempty"`
-	Age          *bool `json:"age,omitempty"`
+	XCacheKey    *bool `default:"true" json:"X-Cache-Key"`
+	XCacheStatus *bool `default:"true" json:"X-Cache-Status"`
+	Age          *bool `default:"true" json:"age"`
+}
+
+func (r ResponseHeaders) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseHeaders) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ResponseHeaders) GetXCacheKey() *bool {
@@ -177,12 +199,12 @@ func (e *ProxyCachePluginStrategy) UnmarshalJSON(data []byte) error {
 
 type ProxyCachePluginConfig struct {
 	// When enabled, respect the Cache-Control behaviors defined in RFC7234.
-	CacheControl *bool `json:"cache_control,omitempty"`
+	CacheControl *bool `default:"false" json:"cache_control"`
 	// TTL, in seconds, of cache entities.
-	CacheTTL *int64 `json:"cache_ttl,omitempty"`
+	CacheTTL *int64 `default:"300" json:"cache_ttl"`
 	// Upstream response content types considered cacheable. The plugin performs an **exact match** against each specified value.
 	ContentType   []string                `json:"content_type,omitempty"`
-	IgnoreURICase *bool                   `json:"ignore_uri_case,omitempty"`
+	IgnoreURICase *bool                   `default:"false" json:"ignore_uri_case"`
 	Memory        *ProxyCachePluginMemory `json:"memory,omitempty"`
 	// Downstream request methods considered cacheable.
 	RequestMethod []RequestMethod `json:"request_method,omitempty"`
@@ -198,6 +220,17 @@ type ProxyCachePluginConfig struct {
 	VaryHeaders []string `json:"vary_headers,omitempty"`
 	// Relevant query parameters considered for the cache key. If undefined, all params are taken into consideration.
 	VaryQueryParams []string `json:"vary_query_params,omitempty"`
+}
+
+func (p ProxyCachePluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ProxyCachePluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ProxyCachePluginConfig) GetCacheControl() *bool {
@@ -388,7 +421,7 @@ type ProxyCachePlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                      `json:"enabled,omitempty"`
+	Enabled      *bool                      `default:"true" json:"enabled"`
 	ID           *string                    `json:"id,omitempty"`
 	InstanceName *string                    `json:"instance_name,omitempty"`
 	name         string                     `const:"proxy-cache" json:"name"`
@@ -404,7 +437,7 @@ type ProxyCachePlugin struct {
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *ProxyCachePluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing protocols.
-	Protocols []ProxyCachePluginProtocols `json:"protocols,omitempty"`
+	Protocols []ProxyCachePluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *ProxyCachePluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

@@ -46,7 +46,7 @@ resource "konnect_gateway_target" "my_gatewaytarget" {
 - `target` (String) The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record. Requires replacement if changed.
 - `updated_at` (Number) Unix epoch when the resource was last updated. Requires replacement if changed.
 - `upstream` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--upstream))
-- `weight` (Number) The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record. Requires replacement if changed.
+- `weight` (Number) The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record. Default: 100; Requires replacement if changed.
 
 <a id="nestedatt--upstream"></a>
 ### Nested Schema for `upstream`

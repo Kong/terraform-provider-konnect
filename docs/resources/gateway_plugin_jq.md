@@ -96,7 +96,7 @@ resource "konnect_gateway_plugin_jq" "my_gatewaypluginjq" {
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -128,11 +128,11 @@ Optional:
 
 Optional:
 
-- `ascii_output` (Boolean)
-- `compact_output` (Boolean)
-- `join_output` (Boolean)
-- `raw_output` (Boolean)
-- `sort_keys` (Boolean)
+- `ascii_output` (Boolean) Default: false
+- `compact_output` (Boolean) Default: true
+- `join_output` (Boolean) Default: false
+- `raw_output` (Boolean) Default: false
+- `sort_keys` (Boolean) Default: false
 
 
 <a id="nestedatt--config--response_jq_program_options"></a>
@@ -140,11 +140,11 @@ Optional:
 
 Optional:
 
-- `ascii_output` (Boolean)
-- `compact_output` (Boolean)
-- `join_output` (Boolean)
-- `raw_output` (Boolean)
-- `sort_keys` (Boolean)
+- `ascii_output` (Boolean) Default: false
+- `compact_output` (Boolean) Default: true
+- `join_output` (Boolean) Default: false
+- `raw_output` (Boolean) Default: false
+- `sort_keys` (Boolean) Default: false
 
 
 

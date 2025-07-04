@@ -134,21 +134,32 @@ type KeyAuthPluginConfig struct {
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`.
 	Anonymous *string `json:"anonymous,omitempty"`
 	// An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin strips the credential from the request.
-	HideCredentials *bool `json:"hide_credentials,omitempty"`
+	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// A configuration of Konnect Identity Realms that indicate where to source a consumer from.
 	IdentityRealms []IdentityRealms `json:"identity_realms,omitempty"`
 	// If enabled, the plugin reads the request body. Supported MIME types: `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`.
-	KeyInBody *bool `json:"key_in_body,omitempty"`
+	KeyInBody *bool `default:"false" json:"key_in_body"`
 	// If enabled (default), the plugin reads the request header and tries to find the key in it.
-	KeyInHeader *bool `json:"key_in_header,omitempty"`
+	KeyInHeader *bool `default:"true" json:"key_in_header"`
 	// If enabled (default), the plugin reads the query parameter in the request and tries to find the key in it.
-	KeyInQuery *bool `json:"key_in_query,omitempty"`
+	KeyInQuery *bool `default:"true" json:"key_in_query"`
 	// Describes an array of parameter names where the plugin will look for a key. The key names may only contain [a-z], [A-Z], [0-9], [_] underscore, and [-] hyphen.
 	KeyNames []string `json:"key_names,omitempty"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
 	Realm *string `json:"realm,omitempty"`
 	// A boolean value that indicates whether the plugin should run (and try to authenticate) on `OPTIONS` preflight requests. If set to `false`, then `OPTIONS` requests are always allowed.
-	RunOnPreflight *bool `json:"run_on_preflight,omitempty"`
+	RunOnPreflight *bool `default:"true" json:"run_on_preflight"`
+}
+
+func (k KeyAuthPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KeyAuthPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KeyAuthPluginConfig) GetAnonymous() *string {
@@ -281,7 +292,7 @@ type KeyAuthPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                   `json:"enabled,omitempty"`
+	Enabled      *bool                   `default:"true" json:"enabled"`
 	ID           *string                 `json:"id,omitempty"`
 	InstanceName *string                 `json:"instance_name,omitempty"`
 	name         string                  `const:"key-auth" json:"name"`
@@ -293,7 +304,7 @@ type KeyAuthPlugin struct {
 	UpdatedAt *int64               `json:"updated_at,omitempty"`
 	Config    *KeyAuthPluginConfig `json:"config,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
-	Protocols []KeyAuthPluginProtocols `json:"protocols,omitempty"`
+	Protocols []KeyAuthPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *KeyAuthPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

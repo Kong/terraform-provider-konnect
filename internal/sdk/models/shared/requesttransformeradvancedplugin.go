@@ -346,12 +346,23 @@ type RequestTransformerAdvancedPluginConfig struct {
 	Allow  *Allow                                  `json:"allow,omitempty"`
 	Append *RequestTransformerAdvancedPluginAppend `json:"append,omitempty"`
 	// Specify whether dots (for example, `customers.info.phone`) should be treated as part of a property name or used to descend into nested JSON objects.  See [Arrays and nested objects](#arrays-and-nested-objects).
-	DotsInKeys *bool `json:"dots_in_keys,omitempty"`
+	DotsInKeys *bool `default:"true" json:"dots_in_keys"`
 	// A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters.
 	HTTPMethod *string                                  `json:"http_method,omitempty"`
 	Remove     *RequestTransformerAdvancedPluginRemove  `json:"remove,omitempty"`
 	Rename     *RequestTransformerAdvancedPluginRename  `json:"rename,omitempty"`
 	Replace    *RequestTransformerAdvancedPluginReplace `json:"replace,omitempty"`
+}
+
+func (r RequestTransformerAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestTransformerAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestTransformerAdvancedPluginConfig) GetAdd() *RequestTransformerAdvancedPluginAdd {
@@ -495,7 +506,7 @@ type RequestTransformerAdvancedPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                                      `json:"enabled,omitempty"`
+	Enabled      *bool                                      `default:"true" json:"enabled"`
 	ID           *string                                    `json:"id,omitempty"`
 	InstanceName *string                                    `json:"instance_name,omitempty"`
 	name         string                                     `const:"request-transformer-advanced" json:"name"`
@@ -511,7 +522,7 @@ type RequestTransformerAdvancedPlugin struct {
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *RequestTransformerAdvancedPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
-	Protocols []RequestTransformerAdvancedPluginProtocols `json:"protocols,omitempty"`
+	Protocols []RequestTransformerAdvancedPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *RequestTransformerAdvancedPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

@@ -82,7 +82,18 @@ type FileLogPluginConfig struct {
 	// The file path of the output log file. The plugin creates the log file if it doesn't exist yet.
 	Path *string `json:"path,omitempty"`
 	// Determines whether the log file is closed and reopened on every request.
-	Reopen *bool `json:"reopen,omitempty"`
+	Reopen *bool `default:"false" json:"reopen"`
+}
+
+func (f FileLogPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *FileLogPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *FileLogPluginConfig) GetCustomFieldsByLua() map[string]any {
@@ -198,7 +209,7 @@ type FileLogPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                   `json:"enabled,omitempty"`
+	Enabled      *bool                   `default:"true" json:"enabled"`
 	ID           *string                 `json:"id,omitempty"`
 	InstanceName *string                 `json:"instance_name,omitempty"`
 	name         string                  `const:"file-log" json:"name"`
@@ -212,7 +223,7 @@ type FileLogPlugin struct {
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *FileLogPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
-	Protocols []FileLogPluginProtocols `json:"protocols,omitempty"`
+	Protocols []FileLogPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *FileLogPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

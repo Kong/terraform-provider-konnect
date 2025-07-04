@@ -126,7 +126,7 @@ type CanaryPluginConfig struct {
 	// A string representing an HTTP header name.
 	CanaryByHeaderName *string `json:"canary_by_header_name,omitempty"`
 	// The duration of the canary release in seconds.
-	Duration *float64 `json:"duration,omitempty"`
+	Duration *float64 `default:"3600" json:"duration"`
 	// The groups allowed to access the canary release.
 	Groups []string `json:"groups,omitempty"`
 	// Hash algorithm to be used for canary release.
@@ -137,7 +137,7 @@ type CanaryPluginConfig struct {
 	// * `allow`: Allows the specified groups to access the canary release.
 	// * `deny`: Denies the specified groups from accessing the canary release.
 	// * `header`: The hash will be based on the specified header value.
-	Hash *Hash `json:"hash,omitempty"`
+	Hash *Hash `default:"consumer" json:"hash"`
 	// A string representing an HTTP header name.
 	HashHeader *string `json:"hash_header,omitempty"`
 	// The percentage of traffic to be routed to the canary release.
@@ -145,15 +145,26 @@ type CanaryPluginConfig struct {
 	// Future time in seconds since epoch, when the canary release will start. Ignored when `percentage` is set, or when using `allow` or `deny` in `hash`.
 	Start *float64 `json:"start,omitempty"`
 	// The number of steps for the canary release.
-	Steps *float64 `json:"steps,omitempty"`
+	Steps *float64 `default:"1000" json:"steps"`
 	// Specifies whether to fallback to the upstream server if the canary release fails.
-	UpstreamFallback *bool `json:"upstream_fallback,omitempty"`
+	UpstreamFallback *bool `default:"false" json:"upstream_fallback"`
 	// A string representing a host name, such as example.com.
 	UpstreamHost *string `json:"upstream_host,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	UpstreamPort *int64 `json:"upstream_port,omitempty"`
 	// The URI of the upstream server to be used for the canary release.
 	UpstreamURI *string `json:"upstream_uri,omitempty"`
+}
+
+func (c CanaryPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CanaryPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CanaryPluginConfig) GetCanaryByHeaderName() *string {
@@ -301,7 +312,7 @@ type CanaryPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                  `json:"enabled,omitempty"`
+	Enabled      *bool                  `default:"true" json:"enabled"`
 	ID           *string                `json:"id,omitempty"`
 	InstanceName *string                `json:"instance_name,omitempty"`
 	name         string                 `const:"canary" json:"name"`
@@ -313,7 +324,7 @@ type CanaryPlugin struct {
 	UpdatedAt *int64              `json:"updated_at,omitempty"`
 	Config    *CanaryPluginConfig `json:"config,omitempty"`
 	// A set of strings representing HTTP protocols.
-	Protocols []CanaryPluginProtocols `json:"protocols,omitempty"`
+	Protocols []CanaryPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *CanaryPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

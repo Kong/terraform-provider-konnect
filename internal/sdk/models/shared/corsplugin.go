@@ -125,9 +125,9 @@ func (e *Methods) UnmarshalJSON(data []byte) error {
 
 type CorsPluginConfig struct {
 	// A boolean value that skip cors response headers when origin header of request is empty
-	AllowOriginAbsent *bool `json:"allow_origin_absent,omitempty"`
+	AllowOriginAbsent *bool `default:"true" json:"allow_origin_absent"`
 	// Flag to determine whether the `Access-Control-Allow-Credentials` header should be sent with `true` as the value.
-	Credentials *bool `json:"credentials,omitempty"`
+	Credentials *bool `default:"false" json:"credentials"`
 	// Value for the `Access-Control-Expose-Headers` header. If not specified, no custom headers are exposed.
 	ExposedHeaders []string `json:"exposed_headers,omitempty"`
 	// Value for the `Access-Control-Allow-Headers` header.
@@ -139,9 +139,20 @@ type CorsPluginConfig struct {
 	// List of allowed domains for the `Access-Control-Allow-Origin` header. If you want to allow all origins, add `*` as a single value to this configuration field. The accepted values can either be flat strings or PCRE regexes.
 	Origins []string `json:"origins,omitempty"`
 	// A boolean value that instructs the plugin to proxy the `OPTIONS` preflight request to the Upstream service.
-	PreflightContinue *bool `json:"preflight_continue,omitempty"`
+	PreflightContinue *bool `default:"false" json:"preflight_continue"`
 	// Flag to determine whether the `Access-Control-Allow-Private-Network` header should be sent with `true` as the value.
-	PrivateNetwork *bool `json:"private_network,omitempty"`
+	PrivateNetwork *bool `default:"false" json:"private_network"`
+}
+
+func (c CorsPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CorsPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CorsPluginConfig) GetAllowOriginAbsent() *bool {
@@ -268,7 +279,7 @@ type CorsPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                `json:"enabled,omitempty"`
+	Enabled      *bool                `default:"true" json:"enabled"`
 	ID           *string              `json:"id,omitempty"`
 	InstanceName *string              `json:"instance_name,omitempty"`
 	name         string               `const:"cors" json:"name"`
@@ -280,7 +291,7 @@ type CorsPlugin struct {
 	UpdatedAt *int64            `json:"updated_at,omitempty"`
 	Config    *CorsPluginConfig `json:"config,omitempty"`
 	// A set of strings representing HTTP protocols.
-	Protocols []CorsPluginProtocols `json:"protocols,omitempty"`
+	Protocols []CorsPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *CorsPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

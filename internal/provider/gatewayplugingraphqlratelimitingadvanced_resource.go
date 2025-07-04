@@ -13,8 +13,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -70,7 +74,8 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 					"cost_strategy": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Strategy to use to evaluate query costs. Either ` + "`" + `default` + "`" + ` or ` + "`" + `node_quantifier` + "`" + `. must be one of ["default", "node_quantifier"]`,
+						Default:     stringdefault.StaticString(`default`),
+						Description: `Strategy to use to evaluate query costs. Either ` + "`" + `default` + "`" + ` or ` + "`" + `node_quantifier` + "`" + `. Default: "default"; must be one of ["default", "node_quantifier"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"default",
@@ -81,17 +86,20 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 					"dictionary_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The shared dictionary where counters will be stored until the next sync cycle.`,
+						Default:     stringdefault.StaticString(`kong_rate_limiting_counters`),
+						Description: `The shared dictionary where counters will be stored until the next sync cycle. Default: "kong_rate_limiting_counters"`,
 					},
 					"hide_client_headers": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Optionally hide informative response headers. Available options: ` + "`" + `true` + "`" + ` or ` + "`" + `false` + "`" + `.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Optionally hide informative response headers. Available options: ` + "`" + `true` + "`" + ` or ` + "`" + `false` + "`" + `. Default: false`,
 					},
 					"identifier": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `How to define the rate limit key. Can be ` + "`" + `ip` + "`" + `, ` + "`" + `credential` + "`" + `, ` + "`" + `consumer` + "`" + `. must be one of ["consumer", "credential", "ip"]`,
+						Default:     stringdefault.StaticString(`consumer`),
+						Description: `How to define the rate limit key. Can be ` + "`" + `ip` + "`" + `, ` + "`" + `credential` + "`" + `, ` + "`" + `consumer` + "`" + `. Default: "consumer"; must be one of ["consumer", "credential", "ip"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"consumer",
@@ -109,7 +117,8 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 					"max_cost": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A defined maximum cost per query. 0 means unlimited.`,
+						Default:     float64default.StaticFloat64(0),
+						Description: `A defined maximum cost per query. 0 means unlimited. Default: 0`,
 					},
 					"namespace": schema.StringAttribute{
 						Computed:    true,
@@ -123,7 +132,8 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 							"cluster_max_redirections": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Maximum retry attempts for redirection.`,
+								Default:     int64default.StaticInt64(5),
+								Description: `Maximum retry attempts for redirection. Default: 5`,
 							},
 							"cluster_nodes": schema.ListNestedAttribute{
 								Computed: true,
@@ -136,12 +146,14 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 										"ip": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `A string representing a host name, such as example.com.`,
+											Default:     stringdefault.StaticString(`127.0.0.1`),
+											Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 										},
 										"port": schema.Int64Attribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+											Default:     int64default.StaticInt64(6379),
+											Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 											Validators: []validator.Int64{
 												int64validator.AtMost(65535),
 											},
@@ -153,7 +165,8 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 							"connect_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+								Default:     int64default.StaticInt64(2000),
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 								Validators: []validator.Int64{
 									int64validator.AtMost(2147483646),
 								},
@@ -161,17 +174,20 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 							"connection_is_proxied": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
 							},
 							"database": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy`,
+								Default:     int64default.StaticInt64(0),
+								Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
 							},
 							"host": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `A string representing a host name, such as example.com.`,
+								Default:     stringdefault.StaticString(`127.0.0.1`),
+								Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 							},
 							"keepalive_backlog": schema.Int64Attribute{
 								Computed:    true,
@@ -184,7 +200,8 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 							"keepalive_pool_size": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `keepalive_pool_size` + "`" + ` nor ` + "`" + `keepalive_backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `keepalive_pool_size` + "`" + ` isn't specified but ` + "`" + `keepalive_backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.`,
+								Default:     int64default.StaticInt64(256),
+								Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `keepalive_pool_size` + "`" + ` nor ` + "`" + `keepalive_backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `keepalive_pool_size` + "`" + ` isn't specified but ` + "`" + `keepalive_backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
 								Validators: []validator.Int64{
 									int64validator.Between(1, 2147483646),
 								},
@@ -197,7 +214,8 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 							"port": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+								Default:     int64default.StaticInt64(6379),
+								Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 								Validators: []validator.Int64{
 									int64validator.AtMost(65535),
 								},
@@ -205,7 +223,8 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 							"read_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+								Default:     int64default.StaticInt64(2000),
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 								Validators: []validator.Int64{
 									int64validator.AtMost(2147483646),
 								},
@@ -213,7 +232,8 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 							"send_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+								Default:     int64default.StaticInt64(2000),
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 								Validators: []validator.Int64{
 									int64validator.AtMost(2147483646),
 								},
@@ -234,12 +254,14 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 										"host": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `A string representing a host name, such as example.com.`,
+											Default:     stringdefault.StaticString(`127.0.0.1`),
+											Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 										},
 										"port": schema.Int64Attribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+											Default:     int64default.StaticInt64(6379),
+											Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 											Validators: []validator.Int64{
 												int64validator.AtMost(65535),
 											},
@@ -278,12 +300,14 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 							"ssl": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If set to true, uses SSL to connect to Redis.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `If set to true, uses SSL to connect to Redis. Default: false`,
 							},
 							"ssl_verify": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: false`,
 							},
 							"username": schema.StringAttribute{
 								Computed:    true,
@@ -295,12 +319,14 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 					"score_factor": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A scoring factor to multiply (or divide) the cost. The ` + "`" + `score_factor` + "`" + ` must always be greater than 0.`,
+						Default:     float64default.StaticFloat64(1),
+						Description: `A scoring factor to multiply (or divide) the cost. The ` + "`" + `score_factor` + "`" + ` must always be greater than 0. Default: 1`,
 					},
 					"strategy": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The rate-limiting strategy to use for retrieving and incrementing the limits. must be one of ["cluster", "redis"]`,
+						Default:     stringdefault.StaticString(`cluster`),
+						Description: `The rate-limiting strategy to use for retrieving and incrementing the limits. Default: "cluster"; must be one of ["cluster", "redis"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"cluster",
@@ -322,7 +348,8 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 					"window_type": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Sets the time window to either ` + "`" + `sliding` + "`" + ` or ` + "`" + `fixed` + "`" + `. must be one of ["fixed", "sliding"]`,
+						Default:     stringdefault.StaticString(`sliding`),
+						Description: `Sets the time window to either ` + "`" + `sliding` + "`" + ` or ` + "`" + `fixed` + "`" + `. Default: "sliding"; must be one of ["fixed", "sliding"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"fixed",
@@ -361,7 +388,8 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

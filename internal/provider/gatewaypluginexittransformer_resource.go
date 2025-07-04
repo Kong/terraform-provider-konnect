@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -73,12 +74,14 @@ func (r *GatewayPluginExitTransformerResource) Schema(ctx context.Context, req r
 					"handle_unexpected": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Determines whether to handle unexpected errors by transforming their responses.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Determines whether to handle unexpected errors by transforming their responses. Default: false`,
 					},
 					"handle_unknown": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Determines whether to handle unknown status codes by transforming their responses.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Determines whether to handle unknown status codes by transforming their responses. Default: false`,
 					},
 				},
 			},
@@ -111,7 +114,8 @@ func (r *GatewayPluginExitTransformerResource) Schema(ctx context.Context, req r
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

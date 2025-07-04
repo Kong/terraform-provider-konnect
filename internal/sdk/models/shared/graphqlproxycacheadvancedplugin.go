@@ -78,7 +78,18 @@ func (o *GraphqlProxyCacheAdvancedPluginPartials) GetPath() *string {
 
 type Memory struct {
 	// The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. This dictionary currently must be defined manually in the Kong Nginx template.
-	DictionaryName *string `json:"dictionary_name,omitempty"`
+	DictionaryName *string `default:"kong_db_cache" json:"dictionary_name"`
+}
+
+func (m Memory) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *Memory) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Memory) GetDictionaryName() *string {
@@ -90,9 +101,20 @@ func (o *Memory) GetDictionaryName() *string {
 
 type GraphqlProxyCacheAdvancedPluginClusterNodes struct {
 	// A string representing a host name, such as example.com.
-	IP *string `json:"ip,omitempty"`
+	IP *string `default:"127.0.0.1" json:"ip"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (g GraphqlProxyCacheAdvancedPluginClusterNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginClusterNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *GraphqlProxyCacheAdvancedPluginClusterNodes) GetIP() *string {
@@ -111,9 +133,20 @@ func (o *GraphqlProxyCacheAdvancedPluginClusterNodes) GetPort() *int64 {
 
 type GraphqlProxyCacheAdvancedPluginSentinelNodes struct {
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (g GraphqlProxyCacheAdvancedPluginSentinelNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginSentinelNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *GraphqlProxyCacheAdvancedPluginSentinelNodes) GetHost() *string {
@@ -162,29 +195,29 @@ func (e *GraphqlProxyCacheAdvancedPluginSentinelRole) UnmarshalJSON(data []byte)
 
 type GraphqlProxyCacheAdvancedPluginRedis struct {
 	// Maximum retry attempts for redirection.
-	ClusterMaxRedirections *int64 `json:"cluster_max_redirections,omitempty"`
+	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
 	ClusterNodes []GraphqlProxyCacheAdvancedPluginClusterNodes `json:"cluster_nodes,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
+	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
-	ConnectionIsProxied *bool `json:"connection_is_proxied,omitempty"`
+	ConnectionIsProxied *bool `default:"false" json:"connection_is_proxied"`
 	// Database to use for the Redis connection when using the `redis` strategy
-	Database *int64 `json:"database,omitempty"`
+	Database *int64 `default:"0" json:"database"`
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
 	KeepaliveBacklog *int64 `json:"keepalive_backlog,omitempty"`
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
-	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
+	KeepalivePoolSize *int64 `default:"256" json:"keepalive_pool_size"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ReadTimeout *int64 `json:"read_timeout,omitempty"`
+	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	SendTimeout *int64 `json:"send_timeout,omitempty"`
+	SendTimeout *int64 `default:"2000" json:"send_timeout"`
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `json:"sentinel_master,omitempty"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
@@ -198,11 +231,22 @@ type GraphqlProxyCacheAdvancedPluginRedis struct {
 	// A string representing an SNI (server name indication) value for TLS.
 	ServerName *string `json:"server_name,omitempty"`
 	// If set to true, uses SSL to connect to Redis.
-	Ssl *bool `json:"ssl,omitempty"`
+	Ssl *bool `default:"false" json:"ssl"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-	SslVerify *bool `json:"ssl_verify,omitempty"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 	Username *string `json:"username,omitempty"`
+}
+
+func (g GraphqlProxyCacheAdvancedPluginRedis) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginRedis) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *GraphqlProxyCacheAdvancedPluginRedis) GetClusterMaxRedirections() *int64 {
@@ -381,15 +425,26 @@ func (e *GraphqlProxyCacheAdvancedPluginStrategy) UnmarshalJSON(data []byte) err
 
 type GraphqlProxyCacheAdvancedPluginConfig struct {
 	// Unhandled errors while trying to retrieve a cache entry (such as redis down) are resolved with `Bypass`, with the request going upstream.
-	BypassOnErr *bool `json:"bypass_on_err,omitempty"`
+	BypassOnErr *bool `default:"false" json:"bypass_on_err"`
 	// TTL in seconds of cache entities. Must be a value greater than 0.
-	CacheTTL *int64                                `json:"cache_ttl,omitempty"`
+	CacheTTL *int64                                `default:"300" json:"cache_ttl"`
 	Memory   *Memory                               `json:"memory,omitempty"`
 	Redis    *GraphqlProxyCacheAdvancedPluginRedis `json:"redis,omitempty"`
 	// The backing data store in which to hold cached entities. Accepted value is `memory`.
-	Strategy *GraphqlProxyCacheAdvancedPluginStrategy `json:"strategy,omitempty"`
+	Strategy *GraphqlProxyCacheAdvancedPluginStrategy `default:"memory" json:"strategy"`
 	// Relevant headers considered for the cache key. If undefined, none of the headers are taken into consideration.
 	VaryHeaders []string `json:"vary_headers,omitempty"`
+}
+
+func (g GraphqlProxyCacheAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *GraphqlProxyCacheAdvancedPluginConfig) GetBypassOnErr() *bool {
@@ -507,7 +562,7 @@ type GraphqlProxyCacheAdvancedPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                                     `json:"enabled,omitempty"`
+	Enabled      *bool                                     `default:"true" json:"enabled"`
 	ID           *string                                   `json:"id,omitempty"`
 	InstanceName *string                                   `json:"instance_name,omitempty"`
 	name         string                                    `const:"graphql-proxy-cache-advanced" json:"name"`
@@ -521,7 +576,7 @@ type GraphqlProxyCacheAdvancedPlugin struct {
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *GraphqlProxyCacheAdvancedPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
-	Protocols []GraphqlProxyCacheAdvancedPluginProtocols `json:"protocols,omitempty"`
+	Protocols []GraphqlProxyCacheAdvancedPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *GraphqlProxyCacheAdvancedPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

@@ -84,7 +84,7 @@ resource "konnect_gateway_plugin_cors" "my_gatewayplugincors" {
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -103,15 +103,15 @@ resource "konnect_gateway_plugin_cors" "my_gatewayplugincors" {
 
 Optional:
 
-- `allow_origin_absent` (Boolean) A boolean value that skip cors response headers when origin header of request is empty
-- `credentials` (Boolean) Flag to determine whether the `Access-Control-Allow-Credentials` header should be sent with `true` as the value.
+- `allow_origin_absent` (Boolean) A boolean value that skip cors response headers when origin header of request is empty. Default: true
+- `credentials` (Boolean) Flag to determine whether the `Access-Control-Allow-Credentials` header should be sent with `true` as the value. Default: false
 - `exposed_headers` (List of String) Value for the `Access-Control-Expose-Headers` header. If not specified, no custom headers are exposed.
 - `headers` (List of String) Value for the `Access-Control-Allow-Headers` header.
 - `max_age` (Number) Indicates how long the results of the preflight request can be cached, in `seconds`.
 - `methods` (List of String) 'Value for the `Access-Control-Allow-Methods` header. Available options include `GET`, `HEAD`, `PUT`, `PATCH`, `POST`, `DELETE`, `OPTIONS`, `TRACE`, `CONNECT`. By default, all options are allowed.'
 - `origins` (List of String) List of allowed domains for the `Access-Control-Allow-Origin` header. If you want to allow all origins, add `*` as a single value to this configuration field. The accepted values can either be flat strings or PCRE regexes.
-- `preflight_continue` (Boolean) A boolean value that instructs the plugin to proxy the `OPTIONS` preflight request to the Upstream service.
-- `private_network` (Boolean) Flag to determine whether the `Access-Control-Allow-Private-Network` header should be sent with `true` as the value.
+- `preflight_continue` (Boolean) A boolean value that instructs the plugin to proxy the `OPTIONS` preflight request to the Upstream service. Default: false
+- `private_network` (Boolean) Flag to determine whether the `Access-Control-Allow-Private-Network` header should be sent with `true` as the value. Default: false
 
 
 <a id="nestedatt--ordering"></a>

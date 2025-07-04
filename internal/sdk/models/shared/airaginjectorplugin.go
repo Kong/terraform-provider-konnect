@@ -105,7 +105,7 @@ func (e *AiRagInjectorPluginParamLocation) UnmarshalJSON(data []byte) error {
 
 type AiRagInjectorPluginAuth struct {
 	// If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
-	AllowOverride *bool `json:"allow_override,omitempty"`
+	AllowOverride *bool `default:"false" json:"allow_override"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
 	AwsAccessKeyID *string `json:"aws_access_key_id,omitempty"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
@@ -117,11 +117,11 @@ type AiRagInjectorPluginAuth struct {
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
 	AzureTenantID *string `json:"azure_tenant_id,omitempty"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
-	AzureUseManagedIdentity *bool `json:"azure_use_managed_identity,omitempty"`
+	AzureUseManagedIdentity *bool `default:"false" json:"azure_use_managed_identity"`
 	// Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
 	GcpServiceAccountJSON *string `json:"gcp_service_account_json,omitempty"`
 	// Use service account auth for GCP-based providers and models.
-	GcpUseServiceAccount *bool `json:"gcp_use_service_account,omitempty"`
+	GcpUseServiceAccount *bool `default:"false" json:"gcp_use_service_account"`
 	// If AI model requires authentication via Authorization or API key header, specify its name here.
 	HeaderName *string `json:"header_name,omitempty"`
 	// Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
@@ -132,6 +132,17 @@ type AiRagInjectorPluginAuth struct {
 	ParamName *string `json:"param_name,omitempty"`
 	// Specify the full parameter value for 'param_name'.
 	ParamValue *string `json:"param_value,omitempty"`
+}
+
+func (a AiRagInjectorPluginAuth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRagInjectorPluginAuth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiRagInjectorPluginAuth) GetAllowOverride() *bool {
@@ -234,11 +245,22 @@ func (o *AiRagInjectorPluginAuth) GetParamValue() *string {
 
 type AiRagInjectorPluginAzure struct {
 	// 'api-version' for Azure OpenAI instances.
-	APIVersion *string `json:"api_version,omitempty"`
+	APIVersion *string `default:"2023-05-15" json:"api_version"`
 	// Deployment ID for Azure OpenAI instances.
 	DeploymentID *string `json:"deployment_id,omitempty"`
 	// Instance name for Azure OpenAI hosted models.
 	Instance *string `json:"instance,omitempty"`
+}
+
+func (a AiRagInjectorPluginAzure) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRagInjectorPluginAzure) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiRagInjectorPluginAzure) GetAPIVersion() *string {
@@ -573,29 +595,40 @@ func (e *AiRagInjectorPluginSslVersion) UnmarshalJSON(data []byte) error {
 
 type AiRagInjectorPluginPgvector struct {
 	// the database of the pgvector database
-	Database *string `json:"database,omitempty"`
+	Database *string `default:"kong-pgvector" json:"database"`
 	// the host of the pgvector database
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// the password of the pgvector database
 	Password *string `json:"password,omitempty"`
 	// the port of the pgvector database
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"5432" json:"port"`
 	// whether to use ssl for the pgvector database
-	Ssl *bool `json:"ssl,omitempty"`
+	Ssl *bool `default:"false" json:"ssl"`
 	// the path of ssl cert to use for the pgvector database
 	SslCert *string `json:"ssl_cert,omitempty"`
 	// the path of ssl cert key to use for the pgvector database
 	SslCertKey *string `json:"ssl_cert_key,omitempty"`
 	// whether ssl is required for the pgvector database
-	SslRequired *bool `json:"ssl_required,omitempty"`
+	SslRequired *bool `default:"false" json:"ssl_required"`
 	// whether to verify ssl for the pgvector database
-	SslVerify *bool `json:"ssl_verify,omitempty"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// the ssl version to use for the pgvector database
-	SslVersion *AiRagInjectorPluginSslVersion `json:"ssl_version,omitempty"`
+	SslVersion *AiRagInjectorPluginSslVersion `default:"tlsv1_2" json:"ssl_version"`
 	// the timeout of the pgvector database
-	Timeout *float64 `json:"timeout,omitempty"`
+	Timeout *float64 `default:"5000" json:"timeout"`
 	// the user of the pgvector database
-	User *string `json:"user,omitempty"`
+	User *string `default:"postgres" json:"user"`
+}
+
+func (a AiRagInjectorPluginPgvector) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRagInjectorPluginPgvector) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiRagInjectorPluginPgvector) GetDatabase() *string {
@@ -684,9 +717,20 @@ func (o *AiRagInjectorPluginPgvector) GetUser() *string {
 
 type AiRagInjectorPluginClusterNodes struct {
 	// A string representing a host name, such as example.com.
-	IP *string `json:"ip,omitempty"`
+	IP *string `default:"127.0.0.1" json:"ip"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (a AiRagInjectorPluginClusterNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRagInjectorPluginClusterNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiRagInjectorPluginClusterNodes) GetIP() *string {
@@ -705,9 +749,20 @@ func (o *AiRagInjectorPluginClusterNodes) GetPort() *int64 {
 
 type AiRagInjectorPluginSentinelNodes struct {
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (a AiRagInjectorPluginSentinelNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRagInjectorPluginSentinelNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiRagInjectorPluginSentinelNodes) GetHost() *string {
@@ -756,29 +811,29 @@ func (e *AiRagInjectorPluginSentinelRole) UnmarshalJSON(data []byte) error {
 
 type AiRagInjectorPluginRedis struct {
 	// Maximum retry attempts for redirection.
-	ClusterMaxRedirections *int64 `json:"cluster_max_redirections,omitempty"`
+	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
 	ClusterNodes []AiRagInjectorPluginClusterNodes `json:"cluster_nodes,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
+	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
-	ConnectionIsProxied *bool `json:"connection_is_proxied,omitempty"`
+	ConnectionIsProxied *bool `default:"false" json:"connection_is_proxied"`
 	// Database to use for the Redis connection when using the `redis` strategy
-	Database *int64 `json:"database,omitempty"`
+	Database *int64 `default:"0" json:"database"`
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
 	KeepaliveBacklog *int64 `json:"keepalive_backlog,omitempty"`
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
-	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
+	KeepalivePoolSize *int64 `default:"256" json:"keepalive_pool_size"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ReadTimeout *int64 `json:"read_timeout,omitempty"`
+	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	SendTimeout *int64 `json:"send_timeout,omitempty"`
+	SendTimeout *int64 `default:"2000" json:"send_timeout"`
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `json:"sentinel_master,omitempty"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
@@ -792,11 +847,22 @@ type AiRagInjectorPluginRedis struct {
 	// A string representing an SNI (server name indication) value for TLS.
 	ServerName *string `json:"server_name,omitempty"`
 	// If set to true, uses SSL to connect to Redis.
-	Ssl *bool `json:"ssl,omitempty"`
+	Ssl *bool `default:"false" json:"ssl"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-	SslVerify *bool `json:"ssl_verify,omitempty"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 	Username *string `json:"username,omitempty"`
+}
+
+func (a AiRagInjectorPluginRedis) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRagInjectorPluginRedis) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiRagInjectorPluginRedis) GetClusterMaxRedirections() *int64 {
@@ -1022,14 +1088,25 @@ func (o *AiRagInjectorPluginVectordb) GetStrategy() *AiRagInjectorPluginStrategy
 type AiRagInjectorPluginConfig struct {
 	Embeddings *AiRagInjectorPluginEmbeddings `json:"embeddings,omitempty"`
 	// The maximum number of chunks to fetch from vectordb
-	FetchChunksCount *float64      `json:"fetch_chunks_count,omitempty"`
-	InjectAsRole     *InjectAsRole `json:"inject_as_role,omitempty"`
-	InjectTemplate   *string       `json:"inject_template,omitempty"`
+	FetchChunksCount *float64      `default:"5" json:"fetch_chunks_count"`
+	InjectAsRole     *InjectAsRole `default:"user" json:"inject_as_role"`
+	InjectTemplate   *string       `default:"<CONTEXT>\n<PROMPT>" json:"inject_template"`
 	// Halt the LLM request process in case of a vectordb or embeddings service failure
-	StopOnFailure *bool                        `json:"stop_on_failure,omitempty"`
+	StopOnFailure *bool                        `default:"false" json:"stop_on_failure"`
 	Vectordb      *AiRagInjectorPluginVectordb `json:"vectordb,omitempty"`
 	// The namespace of the vectordb to use for embeddings lookup
-	VectordbNamespace *string `json:"vectordb_namespace,omitempty"`
+	VectordbNamespace *string `default:"kong_rag_injector" json:"vectordb_namespace"`
+}
+
+func (a AiRagInjectorPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRagInjectorPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiRagInjectorPluginConfig) GetEmbeddings() *AiRagInjectorPluginEmbeddings {
@@ -1166,7 +1243,7 @@ type AiRagInjectorPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                         `json:"enabled,omitempty"`
+	Enabled      *bool                         `default:"true" json:"enabled"`
 	ID           *string                       `json:"id,omitempty"`
 	InstanceName *string                       `json:"instance_name,omitempty"`
 	name         string                        `const:"ai-rag-injector" json:"name"`
@@ -1182,7 +1259,7 @@ type AiRagInjectorPlugin struct {
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *AiRagInjectorPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
-	Protocols []AiRagInjectorPluginProtocols `json:"protocols,omitempty"`
+	Protocols []AiRagInjectorPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *AiRagInjectorPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

@@ -31,12 +31,12 @@ resource "konnect_centralized_consumer_key" "my_centralizedconsumerkey" {
 
 - `consumer_id` (String) ID of the of the consumer. Requires replacement if changed.
 - `realm_id` (String) ID of the realm. Requires replacement if changed.
-- `type` (String) must be one of ["new", "legacy"]; Requires replacement if changed.
 
 ### Optional
 
 - `secret` (String, Sensitive) secret to be created. Must be unique within the realm. If not specified a secret will be automatically generated. Requires replacement if changed.
 - `tags` (List of String) Requires replacement if changed.
+- `type` (String) Default: "legacy"; must be one of ["new", "legacy"]; Requires replacement if changed.
 
 ### Read-Only
 

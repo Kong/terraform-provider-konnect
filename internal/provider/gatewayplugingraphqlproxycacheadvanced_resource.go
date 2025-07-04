@@ -13,8 +13,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -70,12 +73,14 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 					"bypass_on_err": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Unhandled errors while trying to retrieve a cache entry (such as redis down) are resolved with ` + "`" + `Bypass` + "`" + `, with the request going upstream.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Unhandled errors while trying to retrieve a cache entry (such as redis down) are resolved with ` + "`" + `Bypass` + "`" + `, with the request going upstream. Default: false`,
 					},
 					"cache_ttl": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `TTL in seconds of cache entities. Must be a value greater than 0.`,
+						Default:     int64default.StaticInt64(300),
+						Description: `TTL in seconds of cache entities. Must be a value greater than 0. Default: 300`,
 					},
 					"memory": schema.SingleNestedAttribute{
 						Computed: true,
@@ -84,7 +89,8 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 							"dictionary_name": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. This dictionary currently must be defined manually in the Kong Nginx template.`,
+								Default:     stringdefault.StaticString(`kong_db_cache`),
+								Description: `The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. This dictionary currently must be defined manually in the Kong Nginx template. Default: "kong_db_cache"`,
 							},
 						},
 					},
@@ -95,7 +101,8 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 							"cluster_max_redirections": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Maximum retry attempts for redirection.`,
+								Default:     int64default.StaticInt64(5),
+								Description: `Maximum retry attempts for redirection. Default: 5`,
 							},
 							"cluster_nodes": schema.ListNestedAttribute{
 								Computed: true,
@@ -108,12 +115,14 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 										"ip": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `A string representing a host name, such as example.com.`,
+											Default:     stringdefault.StaticString(`127.0.0.1`),
+											Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 										},
 										"port": schema.Int64Attribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+											Default:     int64default.StaticInt64(6379),
+											Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 											Validators: []validator.Int64{
 												int64validator.AtMost(65535),
 											},
@@ -125,7 +134,8 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 							"connect_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+								Default:     int64default.StaticInt64(2000),
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 								Validators: []validator.Int64{
 									int64validator.AtMost(2147483646),
 								},
@@ -133,17 +143,20 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 							"connection_is_proxied": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
 							},
 							"database": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy`,
+								Default:     int64default.StaticInt64(0),
+								Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
 							},
 							"host": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `A string representing a host name, such as example.com.`,
+								Default:     stringdefault.StaticString(`127.0.0.1`),
+								Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 							},
 							"keepalive_backlog": schema.Int64Attribute{
 								Computed:    true,
@@ -156,7 +169,8 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 							"keepalive_pool_size": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `keepalive_pool_size` + "`" + ` nor ` + "`" + `keepalive_backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `keepalive_pool_size` + "`" + ` isn't specified but ` + "`" + `keepalive_backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.`,
+								Default:     int64default.StaticInt64(256),
+								Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `keepalive_pool_size` + "`" + ` nor ` + "`" + `keepalive_backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `keepalive_pool_size` + "`" + ` isn't specified but ` + "`" + `keepalive_backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
 								Validators: []validator.Int64{
 									int64validator.Between(1, 2147483646),
 								},
@@ -169,7 +183,8 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 							"port": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+								Default:     int64default.StaticInt64(6379),
+								Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 								Validators: []validator.Int64{
 									int64validator.AtMost(65535),
 								},
@@ -177,7 +192,8 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 							"read_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+								Default:     int64default.StaticInt64(2000),
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 								Validators: []validator.Int64{
 									int64validator.AtMost(2147483646),
 								},
@@ -185,7 +201,8 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 							"send_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+								Default:     int64default.StaticInt64(2000),
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 								Validators: []validator.Int64{
 									int64validator.AtMost(2147483646),
 								},
@@ -206,12 +223,14 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 										"host": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `A string representing a host name, such as example.com.`,
+											Default:     stringdefault.StaticString(`127.0.0.1`),
+											Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 										},
 										"port": schema.Int64Attribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+											Default:     int64default.StaticInt64(6379),
+											Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 											Validators: []validator.Int64{
 												int64validator.AtMost(65535),
 											},
@@ -250,12 +269,14 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 							"ssl": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If set to true, uses SSL to connect to Redis.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `If set to true, uses SSL to connect to Redis. Default: false`,
 							},
 							"ssl_verify": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: false`,
 							},
 							"username": schema.StringAttribute{
 								Computed:    true,
@@ -267,7 +288,8 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 					"strategy": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The backing data store in which to hold cached entities. Accepted value is ` + "`" + `memory` + "`" + `. must be one of ["memory", "redis"]`,
+						Default:     stringdefault.StaticString(`memory`),
+						Description: `The backing data store in which to hold cached entities. Accepted value is ` + "`" + `memory` + "`" + `. Default: "memory"; must be one of ["memory", "redis"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"memory",
@@ -312,7 +334,8 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

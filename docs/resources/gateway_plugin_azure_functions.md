@@ -81,7 +81,7 @@ resource "konnect_gateway_plugin_azure_functions" "my_gatewaypluginazurefunction
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -104,12 +104,12 @@ Optional:
 - `appname` (String) The Azure app name.
 - `clientid` (String) The `clientid` to access the Azure resources. If provided, it is injected as the `x-functions-clientid` header.
 - `functionname` (String) Name of the Azure function to invoke.
-- `hostdomain` (String) The domain where the function resides.
-- `https` (Boolean) Use of HTTPS to connect with the Azure Functions server.
-- `https_verify` (Boolean) Set to `true` to authenticate the Azure Functions server.
-- `keepalive` (Number) Time in milliseconds during which an idle connection to the Azure Functions server lives before being closed.
-- `routeprefix` (String) Route prefix to use.
-- `timeout` (Number) Timeout in milliseconds before closing a connection to the Azure Functions server.
+- `hostdomain` (String) The domain where the function resides. Default: "azurewebsites.net"
+- `https` (Boolean) Use of HTTPS to connect with the Azure Functions server. Default: true
+- `https_verify` (Boolean) Set to `true` to authenticate the Azure Functions server. Default: false
+- `keepalive` (Number) Time in milliseconds during which an idle connection to the Azure Functions server lives before being closed. Default: 60000
+- `routeprefix` (String) Route prefix to use. Default: "api"
+- `timeout` (Number) Timeout in milliseconds before closing a connection to the Azure Functions server. Default: 600000
 
 
 <a id="nestedatt--consumer"></a>

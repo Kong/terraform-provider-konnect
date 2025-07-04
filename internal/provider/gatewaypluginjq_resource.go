@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -79,24 +80,34 @@ func (r *GatewayPluginJqResource) Schema(ctx context.Context, req resource.Schem
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"ascii_output": schema.BoolAttribute{
-								Computed: true,
-								Optional: true,
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Default: false`,
 							},
 							"compact_output": schema.BoolAttribute{
-								Computed: true,
-								Optional: true,
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Default: true`,
 							},
 							"join_output": schema.BoolAttribute{
-								Computed: true,
-								Optional: true,
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Default: false`,
 							},
 							"raw_output": schema.BoolAttribute{
-								Computed: true,
-								Optional: true,
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Default: false`,
 							},
 							"sort_keys": schema.BoolAttribute{
-								Computed: true,
-								Optional: true,
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Default: false`,
 							},
 						},
 					},
@@ -119,24 +130,34 @@ func (r *GatewayPluginJqResource) Schema(ctx context.Context, req resource.Schem
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"ascii_output": schema.BoolAttribute{
-								Computed: true,
-								Optional: true,
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Default: false`,
 							},
 							"compact_output": schema.BoolAttribute{
-								Computed: true,
-								Optional: true,
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Default: true`,
 							},
 							"join_output": schema.BoolAttribute{
-								Computed: true,
-								Optional: true,
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Default: false`,
 							},
 							"raw_output": schema.BoolAttribute{
-								Computed: true,
-								Optional: true,
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Default: false`,
 							},
 							"sort_keys": schema.BoolAttribute{
-								Computed: true,
-								Optional: true,
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Default: false`,
 							},
 						},
 					},
@@ -171,7 +192,8 @@ func (r *GatewayPluginJqResource) Schema(ctx context.Context, req resource.Schem
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

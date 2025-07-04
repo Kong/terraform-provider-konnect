@@ -19,7 +19,7 @@ type Portal struct {
 	// The display name of the portal. This value will be the portal's `name` in Portal API.
 	DisplayName string `json:"display_name"`
 	// The description of the portal.
-	Description *string `json:"description"`
+	Description *string `default:"null" json:"description"`
 	// The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
 	DefaultDomain string `json:"default_domain"`
 	// Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.

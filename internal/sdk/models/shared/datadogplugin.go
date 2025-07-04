@@ -264,21 +264,32 @@ func (e *ConcurrencyLimit) UnmarshalJSON(data []byte) error {
 
 type Queue struct {
 	// The number of of queue delivery timers. -1 indicates unlimited.
-	ConcurrencyLimit *ConcurrencyLimit `json:"concurrency_limit,omitempty"`
+	ConcurrencyLimit *ConcurrencyLimit `default:"1" json:"concurrency_limit"`
 	// Time in seconds before the initial retry is made for a failing batch.
-	InitialRetryDelay *float64 `json:"initial_retry_delay,omitempty"`
+	InitialRetryDelay *float64 `default:"0.01" json:"initial_retry_delay"`
 	// Maximum number of entries that can be processed at a time.
-	MaxBatchSize *int64 `json:"max_batch_size,omitempty"`
+	MaxBatchSize *int64 `default:"1" json:"max_batch_size"`
 	// Maximum number of bytes that can be waiting on a queue, requires string content.
 	MaxBytes *int64 `json:"max_bytes,omitempty"`
 	// Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.
-	MaxCoalescingDelay *float64 `json:"max_coalescing_delay,omitempty"`
+	MaxCoalescingDelay *float64 `default:"1" json:"max_coalescing_delay"`
 	// Maximum number of entries that can be waiting on the queue.
-	MaxEntries *int64 `json:"max_entries,omitempty"`
+	MaxEntries *int64 `default:"10000" json:"max_entries"`
 	// Maximum time in seconds between retries, caps exponential backoff.
-	MaxRetryDelay *float64 `json:"max_retry_delay,omitempty"`
+	MaxRetryDelay *float64 `default:"60" json:"max_retry_delay"`
 	// Time in seconds before the queue gives up calling a failed handler for a batch.
-	MaxRetryTime *float64 `json:"max_retry_time,omitempty"`
+	MaxRetryTime *float64 `default:"60" json:"max_retry_time"`
+}
+
+func (q Queue) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(q, "", false)
+}
+
+func (q *Queue) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &q, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Queue) GetConcurrencyLimit() *ConcurrencyLimit {
@@ -339,26 +350,37 @@ func (o *Queue) GetMaxRetryTime() *float64 {
 
 type DatadogPluginConfig struct {
 	// String to be attached as tag of the consumer.
-	ConsumerTag *string `json:"consumer_tag,omitempty"`
+	ConsumerTag *string `default:"consumer" json:"consumer_tag"`
 	// Optional time in seconds. If `queue_size` > 1, this is the max idle time before sending a log with less than `queue_size` records.
 	FlushTimeout *float64 `json:"flush_timeout,omitempty"`
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"localhost" json:"host"`
 	// List of metrics to be logged.
 	Metrics []Metrics `json:"metrics,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"8125" json:"port"`
 	// String to be attached as a prefix to a metric's name.
-	Prefix *string `json:"prefix,omitempty"`
+	Prefix *string `default:"kong" json:"prefix"`
 	Queue  *Queue  `json:"queue,omitempty"`
 	// Maximum number of log entries to be sent on each message to the upstream server.
 	QueueSize *int64 `json:"queue_size,omitempty"`
 	// Number of times to retry when sending data to the upstream server.
 	RetryCount *int64 `json:"retry_count,omitempty"`
 	// String to be attached as the name of the service.
-	ServiceNameTag *string `json:"service_name_tag,omitempty"`
+	ServiceNameTag *string `default:"name" json:"service_name_tag"`
 	// String to be attached as the tag of the HTTP status.
-	StatusTag *string `json:"status_tag,omitempty"`
+	StatusTag *string `default:"status" json:"status_tag"`
+}
+
+func (d DatadogPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatadogPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *DatadogPluginConfig) GetConsumerTag() *string {
@@ -530,7 +552,7 @@ type DatadogPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                   `json:"enabled,omitempty"`
+	Enabled      *bool                   `default:"true" json:"enabled"`
 	ID           *string                 `json:"id,omitempty"`
 	InstanceName *string                 `json:"instance_name,omitempty"`
 	name         string                  `const:"datadog" json:"name"`
@@ -544,7 +566,7 @@ type DatadogPlugin struct {
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *DatadogPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
-	Protocols []DatadogPluginProtocols `json:"protocols,omitempty"`
+	Protocols []DatadogPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *DatadogPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

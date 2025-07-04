@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -73,7 +74,8 @@ func (r *GatewayPluginACLResource) Schema(ctx context.Context, req resource.Sche
 					"always_use_authenticated_groups": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If enabled (` + "`" + `true` + "`" + `), the authenticated groups will always be used even when an authenticated consumer already exists. If the authenticated groups don't exist, it will fallback to use the groups associated with the consumer. By default the authenticated groups will only be used when there is no consumer or the consumer is anonymous.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If enabled (` + "`" + `true` + "`" + `), the authenticated groups will always be used even when an authenticated consumer already exists. If the authenticated groups don't exist, it will fallback to use the groups associated with the consumer. By default the authenticated groups will only be used when there is no consumer or the consumer is anonymous. Default: false`,
 					},
 					"deny": schema.ListAttribute{
 						Computed:    true,
@@ -84,12 +86,14 @@ func (r *GatewayPluginACLResource) Schema(ctx context.Context, req resource.Sche
 					"hide_groups_header": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If enabled (` + "`" + `true` + "`" + `), prevents the ` + "`" + `X-Consumer-Groups` + "`" + ` header from being sent in the request to the upstream service.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If enabled (` + "`" + `true` + "`" + `), prevents the ` + "`" + `X-Consumer-Groups` + "`" + ` header from being sent in the request to the upstream service. Default: false`,
 					},
 					"include_consumer_groups": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If enabled (` + "`" + `true` + "`" + `), allows the consumer-groups to be used in the ` + "`" + `allow|deny` + "`" + ` fields`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If enabled (` + "`" + `true` + "`" + `), allows the consumer-groups to be used in the ` + "`" + `allow|deny` + "`" + ` fields. Default: false`,
 					},
 				},
 			},
@@ -108,7 +112,8 @@ func (r *GatewayPluginACLResource) Schema(ctx context.Context, req resource.Sche
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

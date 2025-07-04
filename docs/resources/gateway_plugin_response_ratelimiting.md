@@ -91,7 +91,7 @@ resource "konnect_gateway_plugin_response_ratelimiting" "my_gatewaypluginrespons
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -110,13 +110,13 @@ resource "konnect_gateway_plugin_response_ratelimiting" "my_gatewaypluginrespons
 
 Optional:
 
-- `block_on_first_violation` (Boolean) A boolean value that determines if the requests should be blocked as soon as one limit is being exceeded. This will block requests that are supposed to consume other limits too.
-- `fault_tolerant` (Boolean) A boolean value that determines if the requests should be proxied even if Kong has troubles connecting a third-party datastore. If `true`, requests will be proxied anyway, effectively disabling the rate-limiting function until the datastore is working again. If `false`, then the clients will see `500` errors.
-- `header_name` (String) The name of the response header used to increment the counters.
-- `hide_client_headers` (Boolean) Optionally hide informative response headers.
-- `limit_by` (String) The entity that will be used when aggregating the limits: `consumer`, `credential`, `ip`. If the `consumer` or the `credential` cannot be determined, the system will always fallback to `ip`. must be one of ["consumer", "credential", "ip"]
+- `block_on_first_violation` (Boolean) A boolean value that determines if the requests should be blocked as soon as one limit is being exceeded. This will block requests that are supposed to consume other limits too. Default: false
+- `fault_tolerant` (Boolean) A boolean value that determines if the requests should be proxied even if Kong has troubles connecting a third-party datastore. If `true`, requests will be proxied anyway, effectively disabling the rate-limiting function until the datastore is working again. If `false`, then the clients will see `500` errors. Default: true
+- `header_name` (String) The name of the response header used to increment the counters. Default: "x-kong-limit"
+- `hide_client_headers` (Boolean) Optionally hide informative response headers. Default: false
+- `limit_by` (String) The entity that will be used when aggregating the limits: `consumer`, `credential`, `ip`. If the `consumer` or the `credential` cannot be determined, the system will always fallback to `ip`. Default: "consumer"; must be one of ["consumer", "credential", "ip"]
 - `limits` (Map of String) A map that defines rate limits for the plugin.
-- `policy` (String) The rate-limiting policies to use for retrieving and incrementing the limits. must be one of ["cluster", "local", "redis"]
+- `policy` (String) The rate-limiting policies to use for retrieving and incrementing the limits. Default: "local"; must be one of ["cluster", "local", "redis"]
 - `redis` (Attributes) Redis configuration (see [below for nested schema](#nestedatt--config--redis))
 
 <a id="nestedatt--config--redis"></a>
@@ -124,14 +124,14 @@ Optional:
 
 Optional:
 
-- `database` (Number) Database to use for the Redis connection when using the `redis` strategy
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
 - `host` (String) A string representing a host name, such as example.com.
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
-- `ssl` (Boolean) If set to true, uses SSL to connect to Redis.
-- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-- `timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: false
+- `timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
 - `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 
 

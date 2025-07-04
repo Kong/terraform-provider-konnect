@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+)
+
 // UpdatePortalRequest - Update a portal's settings.
 type UpdatePortalRequest struct {
 	// The name of the portal, used to distinguish it from other portals. Name must be unique.
@@ -9,7 +13,7 @@ type UpdatePortalRequest struct {
 	// The display name of the portal. This value will be the portal's `name` in Portal API.
 	DisplayName *string `json:"display_name,omitempty"`
 	// The description of the portal.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"null" json:"description"`
 	// Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.
 	IsPublic *bool `json:"is_public,omitempty"`
 	// Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for products until unless assigned to teams with access to view and consume specific products.
@@ -31,6 +35,17 @@ type UpdatePortalRequest struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
+}
+
+func (u UpdatePortalRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdatePortalRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpdatePortalRequest) GetName() *string {

@@ -91,7 +91,7 @@ resource "konnect_gateway_plugin_ai_prompt_decorator" "my_gatewaypluginaipromptd
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -110,8 +110,8 @@ resource "konnect_gateway_plugin_ai_prompt_decorator" "my_gatewaypluginaipromptd
 
 Optional:
 
-- `llm_format` (String) LLM input and output format and schema to use. must be one of ["bedrock", "gemini", "openai"]
-- `max_request_body_size` (Number) max allowed body size allowed to be introspected
+- `llm_format` (String) LLM input and output format and schema to use. Default: "openai"; must be one of ["bedrock", "gemini", "openai"]
+- `max_request_body_size` (Number) max allowed body size allowed to be introspected. Default: 8192
 - `prompts` (Attributes) (see [below for nested schema](#nestedatt--config--prompts))
 
 <a id="nestedatt--config--prompts"></a>
@@ -128,7 +128,7 @@ Optional:
 Optional:
 
 - `content` (String) Not Null
-- `role` (String) must be one of ["assistant", "system", "user"]
+- `role` (String) Default: "system"; must be one of ["assistant", "system", "user"]
 
 
 <a id="nestedatt--config--prompts--prepend"></a>
@@ -137,7 +137,7 @@ Optional:
 Optional:
 
 - `content` (String) Not Null
-- `role` (String) must be one of ["assistant", "system", "user"]
+- `role` (String) Default: "system"; must be one of ["assistant", "system", "user"]
 
 
 

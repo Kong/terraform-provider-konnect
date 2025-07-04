@@ -12,8 +12,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -82,7 +84,8 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 					"content_type_parameter_validation": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Determines whether to enable parameters validation of request content-type.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `Determines whether to enable parameters validation of request content-type. Default: true`,
 					},
 					"parameter_schema": schema.ListNestedAttribute{
 						Computed: true,
@@ -154,12 +157,14 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 					"verbose_response": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If enabled, the plugin returns more verbose and detailed validation errors.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If enabled, the plugin returns more verbose and detailed validation errors. Default: false`,
 					},
 					"version": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Which validator to use. Supported values are ` + "`" + `kong` + "`" + ` (default) for using Kong's own schema validator, or ` + "`" + `draft4` + "`" + ` for using a JSON Schema Draft 4-compliant validator. must be one of ["draft4", "kong"]`,
+						Default:     stringdefault.StaticString(`kong`),
+						Description: `Which validator to use. Supported values are ` + "`" + `kong` + "`" + ` (default) for using Kong's own schema validator, or ` + "`" + `draft4` + "`" + ` for using a JSON Schema Draft 4-compliant validator. Default: "kong"; must be one of ["draft4", "kong"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"draft4",
@@ -198,7 +203,8 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

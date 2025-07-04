@@ -143,42 +143,53 @@ type ConfluentPluginConfig struct {
 	// The corresponding secret for the Confluent Cloud API key.
 	ConfluentCloudAPISecret *string `json:"confluent_cloud_api_secret,omitempty"`
 	// Include the request body in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.
-	ForwardBody *bool `json:"forward_body,omitempty"`
+	ForwardBody *bool `default:"true" json:"forward_body"`
 	// Include the request headers in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.
-	ForwardHeaders *bool `json:"forward_headers,omitempty"`
+	ForwardHeaders *bool `default:"false" json:"forward_headers"`
 	// Include the request method in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.
-	ForwardMethod *bool `json:"forward_method,omitempty"`
+	ForwardMethod *bool `default:"false" json:"forward_method"`
 	// Include the request URI and URI arguments (as in, query arguments) in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.
-	ForwardURI *bool `json:"forward_uri,omitempty"`
+	ForwardURI *bool `default:"false" json:"forward_uri"`
 	// Keepalive timeout in milliseconds.
-	Keepalive        *int64 `json:"keepalive,omitempty"`
-	KeepaliveEnabled *bool  `json:"keepalive_enabled,omitempty"`
+	Keepalive        *int64 `default:"60000" json:"keepalive"`
+	KeepaliveEnabled *bool  `default:"false" json:"keepalive_enabled"`
 	// The Lua functions that manipulates the message being sent to the Kafka topic.
 	MessageByLuaFunctions []string `json:"message_by_lua_functions,omitempty"`
 	// Flag to enable asynchronous mode.
-	ProducerAsync *bool `json:"producer_async,omitempty"`
+	ProducerAsync *bool `default:"true" json:"producer_async"`
 	// Maximum number of messages that can be buffered in memory in asynchronous mode.
-	ProducerAsyncBufferingLimitsMessagesInMemory *int64 `json:"producer_async_buffering_limits_messages_in_memory,omitempty"`
+	ProducerAsyncBufferingLimitsMessagesInMemory *int64 `default:"50000" json:"producer_async_buffering_limits_messages_in_memory"`
 	// Maximum time interval in milliseconds between buffer flushes in asynchronous mode.
-	ProducerAsyncFlushTimeout *int64 `json:"producer_async_flush_timeout,omitempty"`
+	ProducerAsyncFlushTimeout *int64 `default:"1000" json:"producer_async_flush_timeout"`
 	// The number of acknowledgments the producer requires the leader to have received before considering a request complete. Allowed values: 0 for no acknowledgments; 1 for only the leader; and -1 for the full ISR (In-Sync Replica set).
-	ProducerRequestAcks *ProducerRequestAcks `json:"producer_request_acks,omitempty"`
+	ProducerRequestAcks *ProducerRequestAcks `default:"1" json:"producer_request_acks"`
 	// Maximum size of a Produce request in bytes.
-	ProducerRequestLimitsBytesPerRequest *int64 `json:"producer_request_limits_bytes_per_request,omitempty"`
+	ProducerRequestLimitsBytesPerRequest *int64 `default:"1048576" json:"producer_request_limits_bytes_per_request"`
 	// Maximum number of messages to include into a single producer request.
-	ProducerRequestLimitsMessagesPerRequest *int64 `json:"producer_request_limits_messages_per_request,omitempty"`
+	ProducerRequestLimitsMessagesPerRequest *int64 `default:"200" json:"producer_request_limits_messages_per_request"`
 	// Backoff interval between retry attempts in milliseconds.
-	ProducerRequestRetriesBackoffTimeout *int64 `json:"producer_request_retries_backoff_timeout,omitempty"`
+	ProducerRequestRetriesBackoffTimeout *int64 `default:"100" json:"producer_request_retries_backoff_timeout"`
 	// Maximum number of retry attempts per single Produce request.
-	ProducerRequestRetriesMaxAttempts *int64 `json:"producer_request_retries_max_attempts,omitempty"`
+	ProducerRequestRetriesMaxAttempts *int64 `default:"10" json:"producer_request_retries_max_attempts"`
 	// Time to wait for a Produce response in milliseconds.
-	ProducerRequestTimeout *int64 `json:"producer_request_timeout,omitempty"`
+	ProducerRequestTimeout *int64 `default:"2000" json:"producer_request_timeout"`
 	// Socket timeout in milliseconds.
-	Timeout *int64 `json:"timeout,omitempty"`
+	Timeout *int64 `default:"10000" json:"timeout"`
 	// The default Kafka topic to publish to if the query parameter defined in the `topics_query_arg` does not exist in the request
 	Topic *string `json:"topic,omitempty"`
 	// The request query parameter name that contains the topics to publish to
 	TopicsQueryArg *string `json:"topics_query_arg,omitempty"`
+}
+
+func (c ConfluentPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ConfluentPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ConfluentPluginConfig) GetAllowedTopics() []string {
@@ -436,7 +447,7 @@ type ConfluentPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                     `json:"enabled,omitempty"`
+	Enabled      *bool                     `default:"true" json:"enabled"`
 	ID           *string                   `json:"id,omitempty"`
 	InstanceName *string                   `json:"instance_name,omitempty"`
 	name         string                    `const:"confluent" json:"name"`
@@ -450,7 +461,7 @@ type ConfluentPlugin struct {
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *ConfluentPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
-	Protocols []ConfluentPluginProtocols `json:"protocols,omitempty"`
+	Protocols []ConfluentPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *ConfluentPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

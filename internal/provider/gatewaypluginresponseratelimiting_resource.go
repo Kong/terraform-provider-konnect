@@ -14,8 +14,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -72,27 +75,32 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 					"block_on_first_violation": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A boolean value that determines if the requests should be blocked as soon as one limit is being exceeded. This will block requests that are supposed to consume other limits too.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `A boolean value that determines if the requests should be blocked as soon as one limit is being exceeded. This will block requests that are supposed to consume other limits too. Default: false`,
 					},
 					"fault_tolerant": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A boolean value that determines if the requests should be proxied even if Kong has troubles connecting a third-party datastore. If ` + "`" + `true` + "`" + `, requests will be proxied anyway, effectively disabling the rate-limiting function until the datastore is working again. If ` + "`" + `false` + "`" + `, then the clients will see ` + "`" + `500` + "`" + ` errors.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `A boolean value that determines if the requests should be proxied even if Kong has troubles connecting a third-party datastore. If ` + "`" + `true` + "`" + `, requests will be proxied anyway, effectively disabling the rate-limiting function until the datastore is working again. If ` + "`" + `false` + "`" + `, then the clients will see ` + "`" + `500` + "`" + ` errors. Default: true`,
 					},
 					"header_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The name of the response header used to increment the counters.`,
+						Default:     stringdefault.StaticString(`x-kong-limit`),
+						Description: `The name of the response header used to increment the counters. Default: "x-kong-limit"`,
 					},
 					"hide_client_headers": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Optionally hide informative response headers.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Optionally hide informative response headers. Default: false`,
 					},
 					"limit_by": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The entity that will be used when aggregating the limits: ` + "`" + `consumer` + "`" + `, ` + "`" + `credential` + "`" + `, ` + "`" + `ip` + "`" + `. If the ` + "`" + `consumer` + "`" + ` or the ` + "`" + `credential` + "`" + ` cannot be determined, the system will always fallback to ` + "`" + `ip` + "`" + `. must be one of ["consumer", "credential", "ip"]`,
+						Default:     stringdefault.StaticString(`consumer`),
+						Description: `The entity that will be used when aggregating the limits: ` + "`" + `consumer` + "`" + `, ` + "`" + `credential` + "`" + `, ` + "`" + `ip` + "`" + `. If the ` + "`" + `consumer` + "`" + ` or the ` + "`" + `credential` + "`" + ` cannot be determined, the system will always fallback to ` + "`" + `ip` + "`" + `. Default: "consumer"; must be one of ["consumer", "credential", "ip"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"consumer",
@@ -113,7 +121,8 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 					"policy": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The rate-limiting policies to use for retrieving and incrementing the limits. must be one of ["cluster", "local", "redis"]`,
+						Default:     stringdefault.StaticString(`local`),
+						Description: `The rate-limiting policies to use for retrieving and incrementing the limits. Default: "local"; must be one of ["cluster", "local", "redis"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"cluster",
@@ -129,7 +138,8 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 							"database": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy`,
+								Default:     int64default.StaticInt64(0),
+								Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
 							},
 							"host": schema.StringAttribute{
 								Computed:    true,
@@ -144,7 +154,8 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 							"port": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+								Default:     int64default.StaticInt64(6379),
+								Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 								Validators: []validator.Int64{
 									int64validator.AtMost(65535),
 								},
@@ -157,17 +168,20 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 							"ssl": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If set to true, uses SSL to connect to Redis.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `If set to true, uses SSL to connect to Redis. Default: false`,
 							},
 							"ssl_verify": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: false`,
 							},
 							"timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+								Default:     int64default.StaticInt64(2000),
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 								Validators: []validator.Int64{
 									int64validator.AtMost(2147483646),
 								},
@@ -211,7 +225,8 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

@@ -13,6 +13,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -85,7 +87,8 @@ func (r *GatewayPluginTCPLogResource) Schema(ctx context.Context, req resource.S
 					"keepalive": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional value in milliseconds that defines how long an idle connection lives before being closed.`,
+						Default:     float64default.StaticFloat64(60000),
+						Description: `An optional value in milliseconds that defines how long an idle connection lives before being closed. Default: 60000`,
 					},
 					"port": schema.Int64Attribute{
 						Computed:    true,
@@ -98,12 +101,14 @@ func (r *GatewayPluginTCPLogResource) Schema(ctx context.Context, req resource.S
 					"timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional timeout in milliseconds when sending data to the upstream server.`,
+						Default:     float64default.StaticFloat64(10000),
+						Description: `An optional timeout in milliseconds when sending data to the upstream server. Default: 10000`,
 					},
 					"tls": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Indicates whether to perform a TLS handshake against the remote server.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Indicates whether to perform a TLS handshake against the remote server. Default: false`,
 					},
 					"tls_sni": schema.StringAttribute{
 						Computed:    true,
@@ -141,7 +146,8 @@ func (r *GatewayPluginTCPLogResource) Schema(ctx context.Context, req resource.S
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

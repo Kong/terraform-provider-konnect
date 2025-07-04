@@ -37,7 +37,7 @@ resource "konnect_api_product_version" "my_apiproductversion" {
 
 ### Optional
 
-- `deprecated` (Boolean, Deprecated) Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead.
+- `deprecated` (Boolean, Deprecated) Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead. Default: false
 - `gateway_service` (Attributes) (see [below for nested schema](#nestedatt--gateway_service))
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 

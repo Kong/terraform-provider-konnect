@@ -78,7 +78,18 @@ func (o *DegraphqlPluginPartials) GetPath() *string {
 
 type DegraphqlPluginConfig struct {
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
-	GraphqlServerPath *string `json:"graphql_server_path,omitempty"`
+	GraphqlServerPath *string `default:"/graphql" json:"graphql_server_path"`
+}
+
+func (d DegraphqlPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DegraphqlPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *DegraphqlPluginConfig) GetGraphqlServerPath() *string {
@@ -149,7 +160,7 @@ type DegraphqlPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                     `json:"enabled,omitempty"`
+	Enabled      *bool                     `default:"true" json:"enabled"`
 	ID           *string                   `json:"id,omitempty"`
 	InstanceName *string                   `json:"instance_name,omitempty"`
 	name         string                    `const:"degraphql" json:"name"`
@@ -161,7 +172,7 @@ type DegraphqlPlugin struct {
 	UpdatedAt *int64                 `json:"updated_at,omitempty"`
 	Config    *DegraphqlPluginConfig `json:"config,omitempty"`
 	// A set of strings representing HTTP protocols.
-	Protocols []DegraphqlPluginProtocols `json:"protocols,omitempty"`
+	Protocols []DegraphqlPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *DegraphqlPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

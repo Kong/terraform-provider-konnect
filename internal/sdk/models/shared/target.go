@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+)
+
 type TargetUpstream struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -26,7 +30,18 @@ type Target struct {
 	UpdatedAt *float64        `json:"updated_at,omitempty"`
 	Upstream  *TargetUpstream `json:"upstream"`
 	// The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record.
-	Weight *int64 `json:"weight,omitempty"`
+	Weight *int64 `default:"100" json:"weight"`
+}
+
+func (t Target) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *Target) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Target) GetCreatedAt() *float64 {

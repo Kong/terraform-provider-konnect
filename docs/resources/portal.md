@@ -63,3 +63,11 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `id` (String) Contains a unique identifier used for this resource.
 - `published_product_count` (Number) Number of api products published to the portal
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
+
+## Import
+
+Import is supported using the following syntax:
+
+```shell
+terraform import konnect_portal.my_konnect_portal "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
+```

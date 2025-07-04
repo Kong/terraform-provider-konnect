@@ -88,7 +88,7 @@ resource "konnect_gateway_plugin_request_validator" "my_gatewaypluginrequestvali
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -109,10 +109,10 @@ Optional:
 
 - `allowed_content_types` (List of String) List of allowed content types. The value can be configured with the `charset` parameter. For example, `application/json; charset=UTF-8`.
 - `body_schema` (String) The request body schema specification. One of `body_schema` or `parameter_schema` must be specified.
-- `content_type_parameter_validation` (Boolean) Determines whether to enable parameters validation of request content-type.
+- `content_type_parameter_validation` (Boolean) Determines whether to enable parameters validation of request content-type. Default: true
 - `parameter_schema` (Attributes List) Array of parameter validator specification. One of `body_schema` or `parameter_schema` must be specified. (see [below for nested schema](#nestedatt--config--parameter_schema))
-- `verbose_response` (Boolean) If enabled, the plugin returns more verbose and detailed validation errors.
-- `version` (String) Which validator to use. Supported values are `kong` (default) for using Kong's own schema validator, or `draft4` for using a JSON Schema Draft 4-compliant validator. must be one of ["draft4", "kong"]
+- `verbose_response` (Boolean) If enabled, the plugin returns more verbose and detailed validation errors. Default: false
+- `version` (String) Which validator to use. Supported values are `kong` (default) for using Kong's own schema validator, or `draft4` for using a JSON Schema Draft 4-compliant validator. Default: "kong"; must be one of ["draft4", "kong"]
 
 <a id="nestedatt--config--parameter_schema"></a>
 ### Nested Schema for `config.parameter_schema`

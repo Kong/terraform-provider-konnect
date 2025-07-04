@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
 // ClientCertificate - Certificate to be used as client certificate while TLS handshaking to the upstream server.
@@ -77,11 +78,11 @@ type Service struct {
 	// Certificate to be used as client certificate while TLS handshaking to the upstream server.
 	ClientCertificate *ClientCertificate `json:"client_certificate"`
 	// The timeout in milliseconds for establishing a connection to the upstream server.
-	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
+	ConnectTimeout *int64 `default:"60000" json:"connect_timeout"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the Service is active. If set to `false`, the proxy behavior will be as if any routes attached to it do not exist (404). Default: `true`.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// The host of the upstream server. Note that the host value is case sensitive.
 	Host string  `json:"host"`
 	ID   *string `json:"id,omitempty"`
@@ -90,13 +91,13 @@ type Service struct {
 	// The path to be used in requests to the upstream server.
 	Path *string `json:"path,omitempty"`
 	// The upstream server port.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"80" json:"port"`
 	// The protocol used to communicate with the upstream.
-	Protocol *Protocol `json:"protocol,omitempty"`
+	Protocol *Protocol `default:"http" json:"protocol"`
 	// The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server.
-	ReadTimeout *int64 `json:"read_timeout,omitempty"`
+	ReadTimeout *int64 `default:"60000" json:"read_timeout"`
 	// The number of retries to execute upon failure to proxy.
-	Retries *int64 `json:"retries,omitempty"`
+	Retries *int64 `default:"5" json:"retries"`
 	// An optional set of strings associated with the Service for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Whether to enable verification of upstream server TLS certificate. If set to `null`, then the Nginx default is respected.
@@ -106,7 +107,18 @@ type Service struct {
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
 	// The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server.
-	WriteTimeout *int64 `json:"write_timeout,omitempty"`
+	WriteTimeout *int64 `default:"60000" json:"write_timeout"`
+}
+
+func (s Service) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *Service) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Service) GetCaCertificates() []string {

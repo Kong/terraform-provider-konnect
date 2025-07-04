@@ -80,13 +80,24 @@ type ACLPluginConfig struct {
 	// Arbitrary group names that are allowed to consume the service or route. One of `config.allow` or `config.deny` must be specified.
 	Allow []string `json:"allow,omitempty"`
 	// If enabled (`true`), the authenticated groups will always be used even when an authenticated consumer already exists. If the authenticated groups don't exist, it will fallback to use the groups associated with the consumer. By default the authenticated groups will only be used when there is no consumer or the consumer is anonymous.
-	AlwaysUseAuthenticatedGroups *bool `json:"always_use_authenticated_groups,omitempty"`
+	AlwaysUseAuthenticatedGroups *bool `default:"false" json:"always_use_authenticated_groups"`
 	// Arbitrary group names that are not allowed to consume the service or route. One of `config.allow` or `config.deny` must be specified.
 	Deny []string `json:"deny,omitempty"`
 	// If enabled (`true`), prevents the `X-Consumer-Groups` header from being sent in the request to the upstream service.
-	HideGroupsHeader *bool `json:"hide_groups_header,omitempty"`
+	HideGroupsHeader *bool `default:"false" json:"hide_groups_header"`
 	// If enabled (`true`), allows the consumer-groups to be used in the `allow|deny` fields
-	IncludeConsumerGroups *bool `json:"include_consumer_groups,omitempty"`
+	IncludeConsumerGroups *bool `default:"false" json:"include_consumer_groups"`
+}
+
+func (a ACLPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *ACLPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ACLPluginConfig) GetAllow() []string {
@@ -185,7 +196,7 @@ type ACLPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool              `json:"enabled,omitempty"`
+	Enabled      *bool              `default:"true" json:"enabled"`
 	ID           *string            `json:"id,omitempty"`
 	InstanceName *string            `json:"instance_name,omitempty"`
 	name         string             `const:"acl" json:"name"`
@@ -197,7 +208,7 @@ type ACLPlugin struct {
 	UpdatedAt *int64           `json:"updated_at,omitempty"`
 	Config    *ACLPluginConfig `json:"config,omitempty"`
 	// A set of strings representing HTTP protocols.
-	Protocols []ACLPluginProtocols `json:"protocols,omitempty"`
+	Protocols []ACLPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *ACLPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

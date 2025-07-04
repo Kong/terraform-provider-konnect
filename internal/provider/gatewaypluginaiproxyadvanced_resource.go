@@ -14,8 +14,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -79,7 +83,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 							"algorithm": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Which load balancing algorithm to use. must be one of ["consistent-hashing", "lowest-latency", "lowest-usage", "priority", "round-robin", "semantic"]`,
+								Default:     stringdefault.StaticString(`round-robin`),
+								Description: `Which load balancing algorithm to use. Default: "round-robin"; must be one of ["consistent-hashing", "lowest-latency", "lowest-usage", "priority", "round-robin", "semantic"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
 										"consistent-hashing",
@@ -92,8 +97,10 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 								},
 							},
 							"connect_timeout": schema.Int64Attribute{
-								Computed: true,
-								Optional: true,
+								Computed:    true,
+								Optional:    true,
+								Default:     int64default.StaticInt64(60000),
+								Description: `Default: 60000`,
 								Validators: []validator.Int64{
 									int64validator.Between(1, 2147483646),
 								},
@@ -107,12 +114,14 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 							"hash_on_header": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The header to use for consistent-hashing.`,
+								Default:     stringdefault.StaticString(`X-Kong-LLM-Request-ID`),
+								Description: `The header to use for consistent-hashing. Default: "X-Kong-LLM-Request-ID"`,
 							},
 							"latency_strategy": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `What metrics to use for latency. Available values are: ` + "`" + `tpot` + "`" + ` (time-per-output-token) and ` + "`" + `e2e` + "`" + `. must be one of ["e2e", "tpot"]`,
+								Default:     stringdefault.StaticString(`tpot`),
+								Description: `What metrics to use for latency. Available values are: ` + "`" + `tpot` + "`" + ` (time-per-output-token) and ` + "`" + `e2e` + "`" + `. Default: "tpot"; must be one of ["e2e", "tpot"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
 										"e2e",
@@ -121,8 +130,10 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 								},
 							},
 							"read_timeout": schema.Int64Attribute{
-								Computed: true,
-								Optional: true,
+								Computed:    true,
+								Optional:    true,
+								Default:     int64default.StaticInt64(60000),
+								Description: `Default: 60000`,
 								Validators: []validator.Int64{
 									int64validator.Between(1, 2147483646),
 								},
@@ -130,7 +141,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 							"retries": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The number of retries to execute upon failure to proxy.`,
+								Default:     int64default.StaticInt64(5),
+								Description: `The number of retries to execute upon failure to proxy. Default: 5`,
 								Validators: []validator.Int64{
 									int64validator.AtMost(32767),
 								},
@@ -138,7 +150,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 							"slots": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The number of slots in the load balancer algorithm.`,
+								Default:     int64default.StaticInt64(10000),
+								Description: `The number of slots in the load balancer algorithm. Default: 10000`,
 								Validators: []validator.Int64{
 									int64validator.Between(10, 65536),
 								},
@@ -146,7 +159,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 							"tokens_count_strategy": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `What tokens to use for usage calculation. Available values are: ` + "`" + `total_tokens` + "`" + ` ` + "`" + `prompt_tokens` + "`" + `, ` + "`" + `completion_tokens` + "`" + ` and ` + "`" + `cost` + "`" + `. must be one of ["completion-tokens", "cost", "prompt-tokens", "total-tokens"]`,
+								Default:     stringdefault.StaticString(`total-tokens`),
+								Description: `What tokens to use for usage calculation. Available values are: ` + "`" + `total_tokens` + "`" + ` ` + "`" + `prompt_tokens` + "`" + `, ` + "`" + `completion_tokens` + "`" + ` and ` + "`" + `cost` + "`" + `. Default: "total-tokens"; must be one of ["completion-tokens", "cost", "prompt-tokens", "total-tokens"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
 										"completion-tokens",
@@ -157,8 +171,10 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 								},
 							},
 							"write_timeout": schema.Int64Attribute{
-								Computed: true,
-								Optional: true,
+								Computed:    true,
+								Optional:    true,
+								Default:     int64default.StaticInt64(60000),
+								Description: `Default: 60000`,
 								Validators: []validator.Int64{
 									int64validator.Between(1, 2147483646),
 								},
@@ -176,7 +192,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 									"allow_override": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.`,
+										Default:     booldefault.StaticBool(false),
+										Description: `If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin. Default: false`,
 									},
 									"aws_access_key_id": schema.StringAttribute{
 										Computed:    true,
@@ -206,7 +223,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 									"azure_use_managed_identity": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.`,
+										Default:     booldefault.StaticBool(false),
+										Description: `Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models. Default: false`,
 									},
 									"gcp_service_account_json": schema.StringAttribute{
 										Computed:    true,
@@ -216,7 +234,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 									"gcp_use_service_account": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Use service account auth for GCP-based providers and models.`,
+										Default:     booldefault.StaticBool(false),
+										Description: `Use service account auth for GCP-based providers and models. Default: false`,
 									},
 									"header_name": schema.StringAttribute{
 										Computed:    true,
@@ -274,7 +293,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 													"api_version": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
-														Description: `'api-version' for Azure OpenAI instances.`,
+														Default:     stringdefault.StaticString(`2023-05-15`),
+														Description: `'api-version' for Azure OpenAI instances. Default: "2023-05-15"`,
 													},
 													"deployment_id": schema.StringAttribute{
 														Computed:    true,
@@ -390,7 +410,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 					"llm_format": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `LLM input and output format and schema to use. must be one of ["bedrock", "gemini", "openai"]`,
+						Default:     stringdefault.StaticString(`openai`),
+						Description: `LLM input and output format and schema to use. Default: "openai"; must be one of ["bedrock", "gemini", "openai"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"bedrock",
@@ -402,17 +423,20 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 					"max_request_body_size": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `max allowed body size allowed to be introspected`,
+						Default:     int64default.StaticInt64(8192),
+						Description: `max allowed body size allowed to be introspected. Default: 8192`,
 					},
 					"model_name_header": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Display the model name selected in the X-Kong-LLM-Model response header`,
+						Default:     booldefault.StaticBool(true),
+						Description: `Display the model name selected in the X-Kong-LLM-Model response header. Default: true`,
 					},
 					"response_streaming": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events. must be one of ["allow", "always", "deny"]`,
+						Default:     stringdefault.StaticString(`allow`),
+						Description: `Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events. Default: "allow"; must be one of ["allow", "always", "deny"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"allow",
@@ -436,7 +460,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 										"allow_override": schema.BoolAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.`,
+											Default:     booldefault.StaticBool(false),
+											Description: `If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin. Default: false`,
 										},
 										"aws_access_key_id": schema.StringAttribute{
 											Computed:    true,
@@ -466,7 +491,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 										"azure_use_managed_identity": schema.BoolAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.`,
+											Default:     booldefault.StaticBool(false),
+											Description: `Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models. Default: false`,
 										},
 										"gcp_service_account_json": schema.StringAttribute{
 											Computed:    true,
@@ -476,7 +502,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 										"gcp_use_service_account": schema.BoolAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `Use service account auth for GCP-based providers and models.`,
+											Default:     booldefault.StaticBool(false),
+											Description: `Use service account auth for GCP-based providers and models. Default: false`,
 										},
 										"header_name": schema.StringAttribute{
 											Computed:    true,
@@ -523,12 +550,14 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 										"log_payloads": schema.BoolAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `If enabled, will log the request and response body into the Kong log plugin(s) output.`,
+											Default:     booldefault.StaticBool(false),
+											Description: `If enabled, will log the request and response body into the Kong log plugin(s) output. Default: false`,
 										},
 										"log_statistics": schema.BoolAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.`,
+											Default:     booldefault.StaticBool(false),
+											Description: `If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output. Default: false`,
 										},
 									},
 									Description: `Not Null`,
@@ -557,7 +586,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 												"azure_api_version": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `'api-version' for Azure OpenAI instances.`,
+													Default:     stringdefault.StaticString(`2023-05-15`),
+													Description: `'api-version' for Azure OpenAI instances. Default: "2023-05-15"`,
 												},
 												"azure_deployment_id": schema.StringAttribute{
 													Computed:    true,
@@ -748,7 +778,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 								"weight": schema.Int64Attribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The weight this target gets within the upstream loadbalancer (1-65535).`,
+									Default:     int64default.StaticInt64(100),
+									Description: `The weight this target gets within the upstream loadbalancer (1-65535). Default: 100`,
 									Validators: []validator.Int64{
 										int64validator.Between(1, 65535),
 									},
@@ -787,12 +818,14 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 									"database": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `the database of the pgvector database`,
+										Default:     stringdefault.StaticString(`kong-pgvector`),
+										Description: `the database of the pgvector database. Default: "kong-pgvector"`,
 									},
 									"host": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `the host of the pgvector database`,
+										Default:     stringdefault.StaticString(`127.0.0.1`),
+										Description: `the host of the pgvector database. Default: "127.0.0.1"`,
 									},
 									"password": schema.StringAttribute{
 										Computed:    true,
@@ -802,12 +835,14 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 									"port": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `the port of the pgvector database`,
+										Default:     int64default.StaticInt64(5432),
+										Description: `the port of the pgvector database. Default: 5432`,
 									},
 									"ssl": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `whether to use ssl for the pgvector database`,
+										Default:     booldefault.StaticBool(false),
+										Description: `whether to use ssl for the pgvector database. Default: false`,
 									},
 									"ssl_cert": schema.StringAttribute{
 										Computed:    true,
@@ -822,17 +857,20 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 									"ssl_required": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `whether ssl is required for the pgvector database`,
+										Default:     booldefault.StaticBool(false),
+										Description: `whether ssl is required for the pgvector database. Default: false`,
 									},
 									"ssl_verify": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `whether to verify ssl for the pgvector database`,
+										Default:     booldefault.StaticBool(false),
+										Description: `whether to verify ssl for the pgvector database. Default: false`,
 									},
 									"ssl_version": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `the ssl version to use for the pgvector database. must be one of ["any", "tlsv1_2", "tlsv1_3"]`,
+										Default:     stringdefault.StaticString(`tlsv1_2`),
+										Description: `the ssl version to use for the pgvector database. Default: "tlsv1_2"; must be one of ["any", "tlsv1_2", "tlsv1_3"]`,
 										Validators: []validator.String{
 											stringvalidator.OneOf(
 												"any",
@@ -844,12 +882,14 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 									"timeout": schema.Float64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `the timeout of the pgvector database`,
+										Default:     float64default.StaticFloat64(5000),
+										Description: `the timeout of the pgvector database. Default: 5000`,
 									},
 									"user": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `the user of the pgvector database`,
+										Default:     stringdefault.StaticString(`postgres`),
+										Description: `the user of the pgvector database. Default: "postgres"`,
 									},
 								},
 								Description: `Not Null`,
@@ -864,7 +904,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 									"cluster_max_redirections": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Maximum retry attempts for redirection.`,
+										Default:     int64default.StaticInt64(5),
+										Description: `Maximum retry attempts for redirection. Default: 5`,
 									},
 									"cluster_nodes": schema.ListNestedAttribute{
 										Computed: true,
@@ -877,12 +918,14 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 												"ip": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `A string representing a host name, such as example.com.`,
+													Default:     stringdefault.StaticString(`127.0.0.1`),
+													Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 												},
 												"port": schema.Int64Attribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+													Default:     int64default.StaticInt64(6379),
+													Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 													Validators: []validator.Int64{
 														int64validator.AtMost(65535),
 													},
@@ -894,7 +937,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 									"connect_timeout": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+										Default:     int64default.StaticInt64(2000),
+										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 										Validators: []validator.Int64{
 											int64validator.AtMost(2147483646),
 										},
@@ -902,17 +946,20 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 									"connection_is_proxied": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address.`,
+										Default:     booldefault.StaticBool(false),
+										Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
 									},
 									"database": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy`,
+										Default:     int64default.StaticInt64(0),
+										Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
 									},
 									"host": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `A string representing a host name, such as example.com.`,
+										Default:     stringdefault.StaticString(`127.0.0.1`),
+										Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 									},
 									"keepalive_backlog": schema.Int64Attribute{
 										Computed:    true,
@@ -925,7 +972,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 									"keepalive_pool_size": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `keepalive_pool_size` + "`" + ` nor ` + "`" + `keepalive_backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `keepalive_pool_size` + "`" + ` isn't specified but ` + "`" + `keepalive_backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.`,
+										Default:     int64default.StaticInt64(256),
+										Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `keepalive_pool_size` + "`" + ` nor ` + "`" + `keepalive_backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `keepalive_pool_size` + "`" + ` isn't specified but ` + "`" + `keepalive_backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
 										Validators: []validator.Int64{
 											int64validator.Between(1, 2147483646),
 										},
@@ -938,7 +986,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 									"port": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+										Default:     int64default.StaticInt64(6379),
+										Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 										Validators: []validator.Int64{
 											int64validator.AtMost(65535),
 										},
@@ -946,7 +995,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 									"read_timeout": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+										Default:     int64default.StaticInt64(2000),
+										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 										Validators: []validator.Int64{
 											int64validator.AtMost(2147483646),
 										},
@@ -954,7 +1004,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 									"send_timeout": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+										Default:     int64default.StaticInt64(2000),
+										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 										Validators: []validator.Int64{
 											int64validator.AtMost(2147483646),
 										},
@@ -975,12 +1026,14 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 												"host": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `A string representing a host name, such as example.com.`,
+													Default:     stringdefault.StaticString(`127.0.0.1`),
+													Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 												},
 												"port": schema.Int64Attribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+													Default:     int64default.StaticInt64(6379),
+													Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 													Validators: []validator.Int64{
 														int64validator.AtMost(65535),
 													},
@@ -1019,12 +1072,14 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 									"ssl": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `If set to true, uses SSL to connect to Redis.`,
+										Default:     booldefault.StaticBool(false),
+										Description: `If set to true, uses SSL to connect to Redis. Default: false`,
 									},
 									"ssl_verify": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
+										Default:     booldefault.StaticBool(false),
+										Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: false`,
 									},
 									"username": schema.StringAttribute{
 										Computed:    true,
@@ -1104,7 +1159,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

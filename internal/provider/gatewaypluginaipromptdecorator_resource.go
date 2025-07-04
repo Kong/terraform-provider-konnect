@@ -12,8 +12,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -71,7 +74,8 @@ func (r *GatewayPluginAiPromptDecoratorResource) Schema(ctx context.Context, req
 					"llm_format": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `LLM input and output format and schema to use. must be one of ["bedrock", "gemini", "openai"]`,
+						Default:     stringdefault.StaticString(`openai`),
+						Description: `LLM input and output format and schema to use. Default: "openai"; must be one of ["bedrock", "gemini", "openai"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"bedrock",
@@ -83,7 +87,8 @@ func (r *GatewayPluginAiPromptDecoratorResource) Schema(ctx context.Context, req
 					"max_request_body_size": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `max allowed body size allowed to be introspected`,
+						Default:     int64default.StaticInt64(8192),
+						Description: `max allowed body size allowed to be introspected. Default: 8192`,
 					},
 					"prompts": schema.SingleNestedAttribute{
 						Computed: true,
@@ -109,7 +114,8 @@ func (r *GatewayPluginAiPromptDecoratorResource) Schema(ctx context.Context, req
 										"role": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `must be one of ["assistant", "system", "user"]`,
+											Default:     stringdefault.StaticString(`system`),
+											Description: `Default: "system"; must be one of ["assistant", "system", "user"]`,
 											Validators: []validator.String{
 												stringvalidator.OneOf(
 													"assistant",
@@ -142,7 +148,8 @@ func (r *GatewayPluginAiPromptDecoratorResource) Schema(ctx context.Context, req
 										"role": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `must be one of ["assistant", "system", "user"]`,
+											Default:     stringdefault.StaticString(`system`),
+											Description: `Default: "system"; must be one of ["assistant", "system", "user"]`,
 											Validators: []validator.String{
 												stringvalidator.OneOf(
 													"assistant",
@@ -202,7 +209,8 @@ func (r *GatewayPluginAiPromptDecoratorResource) Schema(ctx context.Context, req
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

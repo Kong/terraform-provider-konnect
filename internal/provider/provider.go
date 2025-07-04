@@ -297,6 +297,7 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewCloudGatewayProviderAccountListDataSource,
 		NewGatewayControlPlaneListDataSource,
 		NewMeshControlPlanesDataSource,
+		NewPortalDataSource,
 		NewPortalListDataSource,
 	}
 }

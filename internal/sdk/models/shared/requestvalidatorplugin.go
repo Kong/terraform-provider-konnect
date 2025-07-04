@@ -238,13 +238,24 @@ type RequestValidatorPluginConfig struct {
 	// The request body schema specification. One of `body_schema` or `parameter_schema` must be specified.
 	BodySchema *string `json:"body_schema,omitempty"`
 	// Determines whether to enable parameters validation of request content-type.
-	ContentTypeParameterValidation *bool `json:"content_type_parameter_validation,omitempty"`
+	ContentTypeParameterValidation *bool `default:"true" json:"content_type_parameter_validation"`
 	// Array of parameter validator specification. One of `body_schema` or `parameter_schema` must be specified.
 	ParameterSchema []ParameterSchema `json:"parameter_schema,omitempty"`
 	// If enabled, the plugin returns more verbose and detailed validation errors.
-	VerboseResponse *bool `json:"verbose_response,omitempty"`
+	VerboseResponse *bool `default:"false" json:"verbose_response"`
 	// Which validator to use. Supported values are `kong` (default) for using Kong's own schema validator, or `draft4` for using a JSON Schema Draft 4-compliant validator.
-	Version *Version `json:"version,omitempty"`
+	Version *Version `default:"kong" json:"version"`
+}
+
+func (r RequestValidatorPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestValidatorPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestValidatorPluginConfig) GetAllowedContentTypes() []string {
@@ -362,7 +373,7 @@ type RequestValidatorPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                            `json:"enabled,omitempty"`
+	Enabled      *bool                            `default:"true" json:"enabled"`
 	ID           *string                          `json:"id,omitempty"`
 	InstanceName *string                          `json:"instance_name,omitempty"`
 	name         string                           `const:"request-validator" json:"name"`
@@ -376,7 +387,7 @@ type RequestValidatorPlugin struct {
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *RequestValidatorPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
-	Protocols []RequestValidatorPluginProtocols `json:"protocols,omitempty"`
+	Protocols []RequestValidatorPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *RequestValidatorPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

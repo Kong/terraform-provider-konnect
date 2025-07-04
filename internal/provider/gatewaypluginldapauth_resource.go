@@ -12,8 +12,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -83,22 +87,26 @@ func (r *GatewayPluginLdapAuthResource) Schema(ctx context.Context, req resource
 					"cache_ttl": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Cache expiry time in seconds.`,
+						Default:     float64default.StaticFloat64(60),
+						Description: `Cache expiry time in seconds. Default: 60`,
 					},
 					"header_type": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional string to use as part of the Authorization header`,
+						Default:     stringdefault.StaticString(`ldap`),
+						Description: `An optional string to use as part of the Authorization header. Default: "ldap"`,
 					},
 					"hide_credentials": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request. Default: false`,
 					},
 					"keepalive": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional value in milliseconds that defines how long an idle connection to LDAP server will live before being closed.`,
+						Default:     float64default.StaticFloat64(60000),
+						Description: `An optional value in milliseconds that defines how long an idle connection to LDAP server will live before being closed. Default: 60000`,
 					},
 					"ldap_host": schema.StringAttribute{
 						Computed:    true,
@@ -108,7 +116,8 @@ func (r *GatewayPluginLdapAuthResource) Schema(ctx context.Context, req resource
 					"ldap_port": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+						Default:     int64default.StaticInt64(389),
+						Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 389`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(65535),
 						},
@@ -116,7 +125,8 @@ func (r *GatewayPluginLdapAuthResource) Schema(ctx context.Context, req resource
 					"ldaps": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Set to ` + "`" + `true` + "`" + ` to connect using the LDAPS protocol (LDAP over TLS).  When ` + "`" + `ldaps` + "`" + ` is configured, you must use port 636. If the ` + "`" + `ldap` + "`" + ` setting is enabled, ensure the ` + "`" + `start_tls` + "`" + ` setting is disabled.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Set to ` + "`" + `true` + "`" + ` to connect using the LDAPS protocol (LDAP over TLS).  When ` + "`" + `ldaps` + "`" + ` is configured, you must use port 636. If the ` + "`" + `ldap` + "`" + ` setting is enabled, ensure the ` + "`" + `start_tls` + "`" + ` setting is disabled. Default: false`,
 					},
 					"realm": schema.StringAttribute{
 						Computed:    true,
@@ -126,17 +136,20 @@ func (r *GatewayPluginLdapAuthResource) Schema(ctx context.Context, req resource
 					"start_tls": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Set it to ` + "`" + `true` + "`" + ` to issue StartTLS (Transport Layer Security) extended operation over ` + "`" + `ldap` + "`" + ` connection. If the ` + "`" + `start_tls` + "`" + ` setting is enabled, ensure the ` + "`" + `ldaps` + "`" + ` setting is disabled.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Set it to ` + "`" + `true` + "`" + ` to issue StartTLS (Transport Layer Security) extended operation over ` + "`" + `ldap` + "`" + ` connection. If the ` + "`" + `start_tls` + "`" + ` setting is enabled, ensure the ` + "`" + `ldaps` + "`" + ` setting is disabled. Default: false`,
 					},
 					"timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional timeout in milliseconds when waiting for connection with LDAP server.`,
+						Default:     float64default.StaticFloat64(10000),
+						Description: `An optional timeout in milliseconds when waiting for connection with LDAP server. Default: 10000`,
 					},
 					"verify_ldap_host": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Set to ` + "`" + `true` + "`" + ` to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` directive.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Set to ` + "`" + `true` + "`" + ` to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` directive. Default: false`,
 					},
 				},
 			},
@@ -155,7 +168,8 @@ func (r *GatewayPluginLdapAuthResource) Schema(ctx context.Context, req resource
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

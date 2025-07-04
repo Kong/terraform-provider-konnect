@@ -78,7 +78,7 @@ resource "konnect_gateway_plugin_redirect" "my_gatewaypluginredirect" {
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -97,9 +97,9 @@ resource "konnect_gateway_plugin_redirect" "my_gatewaypluginredirect" {
 
 Optional:
 
-- `keep_incoming_path` (Boolean) Use the incoming request's path and query string in the redirect URL
+- `keep_incoming_path` (Boolean) Use the incoming request's path and query string in the redirect URL. Default: false
 - `location` (String) The URL to redirect to
-- `status_code` (Number) The response code to send. Must be an integer between 100 and 599.
+- `status_code` (Number) The response code to send. Must be an integer between 100 and 599. Default: 301
 
 
 <a id="nestedatt--consumer"></a>

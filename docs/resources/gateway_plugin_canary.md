@@ -81,7 +81,7 @@ resource "konnect_gateway_plugin_canary" "my_gatewayplugincanary" {
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -101,7 +101,7 @@ resource "konnect_gateway_plugin_canary" "my_gatewayplugincanary" {
 Optional:
 
 - `canary_by_header_name` (String) A string representing an HTTP header name.
-- `duration` (Number) The duration of the canary release in seconds.
+- `duration` (Number) The duration of the canary release in seconds. Default: 3600
 - `groups` (List of String) The groups allowed to access the canary release.
 - `hash` (String) Hash algorithm to be used for canary release.
 
@@ -111,12 +111,12 @@ Optional:
 * `allow`: Allows the specified groups to access the canary release.
 * `deny`: Denies the specified groups from accessing the canary release.
 * `header`: The hash will be based on the specified header value.
-must be one of ["allow", "consumer", "deny", "header", "ip", "none"]
+Default: "consumer"; must be one of ["allow", "consumer", "deny", "header", "ip", "none"]
 - `hash_header` (String) A string representing an HTTP header name.
 - `percentage` (Number) The percentage of traffic to be routed to the canary release.
 - `start` (Number) Future time in seconds since epoch, when the canary release will start. Ignored when `percentage` is set, or when using `allow` or `deny` in `hash`.
-- `steps` (Number) The number of steps for the canary release.
-- `upstream_fallback` (Boolean) Specifies whether to fallback to the upstream server if the canary release fails.
+- `steps` (Number) The number of steps for the canary release. Default: 1000
+- `upstream_fallback` (Boolean) Specifies whether to fallback to the upstream server if the canary release fails. Default: false
 - `upstream_host` (String) A string representing a host name, such as example.com.
 - `upstream_port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `upstream_uri` (String) The URI of the upstream server to be used for the canary release.

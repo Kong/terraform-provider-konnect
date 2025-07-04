@@ -11,8 +11,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -67,32 +69,38 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Schema(ctx context.Context, re
 					"client_cert_fingerprint_header_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Define the HTTP header name used for the SHA1 fingerprint of the client certificate.`,
+						Default:     stringdefault.StaticString(`X-Client-Cert-Fingerprint`),
+						Description: `Define the HTTP header name used for the SHA1 fingerprint of the client certificate. Default: "X-Client-Cert-Fingerprint"`,
 					},
 					"client_cert_header_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Define the HTTP header name used for the PEM format URL encoded client certificate.`,
+						Default:     stringdefault.StaticString(`X-Client-Cert`),
+						Description: `Define the HTTP header name used for the PEM format URL encoded client certificate. Default: "X-Client-Cert"`,
 					},
 					"client_cert_issuer_dn_header_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Define the HTTP header name used for the issuer DN of the client certificate.`,
+						Default:     stringdefault.StaticString(`X-Client-Cert-Issuer-DN`),
+						Description: `Define the HTTP header name used for the issuer DN of the client certificate. Default: "X-Client-Cert-Issuer-DN"`,
 					},
 					"client_cert_subject_dn_header_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Define the HTTP header name used for the subject DN of the client certificate.`,
+						Default:     stringdefault.StaticString(`X-Client-Cert-Subject-DN`),
+						Description: `Define the HTTP header name used for the subject DN of the client certificate. Default: "X-Client-Cert-Subject-DN"`,
 					},
 					"client_serial_header_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Define the HTTP header name used for the serial number of the client certificate.`,
+						Default:     stringdefault.StaticString(`X-Client-Cert-Serial`),
+						Description: `Define the HTTP header name used for the serial number of the client certificate. Default: "X-Client-Cert-Serial"`,
 					},
 					"inject_client_cert_details": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Enables TLS client certificate metadata values to be injected into HTTP headers.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Enables TLS client certificate metadata values to be injected into HTTP headers. Default: false`,
 					},
 				},
 			},
@@ -111,7 +119,8 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Schema(ctx context.Context, re
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

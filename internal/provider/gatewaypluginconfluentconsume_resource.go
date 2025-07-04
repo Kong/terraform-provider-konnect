@@ -13,8 +13,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -72,7 +75,8 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 					"auto_offset_reset": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The offset to start from when there is no initial offset in the consumer group. must be one of ["earliest", "latest"]`,
+						Default:     stringdefault.StaticString(`latest`),
+						Description: `The offset to start from when there is no initial offset in the consumer group. Default: "latest"; must be one of ["earliest", "latest"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"earliest",
@@ -127,7 +131,8 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 					"commit_strategy": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The strategy to use for committing offsets. must be one of ["auto", "off"]`,
+						Default:     stringdefault.StaticString(`auto`),
+						Description: `The strategy to use for committing offsets. Default: "auto"; must be one of ["auto", "off"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"auto",
@@ -148,16 +153,20 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 					"keepalive": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Keepalive timeout in milliseconds.`,
+						Default:     int64default.StaticInt64(60000),
+						Description: `Keepalive timeout in milliseconds. Default: 60000`,
 					},
 					"keepalive_enabled": schema.BoolAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Default: false`,
 					},
 					"message_deserializer": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The deserializer to use for the consumed messages. must be one of ["json", "noop"]`,
+						Default:     stringdefault.StaticString(`noop`),
+						Description: `The deserializer to use for the consumed messages. Default: "noop"; must be one of ["json", "noop"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"json",
@@ -168,7 +177,8 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 					"mode": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The mode of operation for the plugin. must be one of ["http-get", "server-sent-events"]`,
+						Default:     stringdefault.StaticString(`http-get`),
+						Description: `The mode of operation for the plugin. Default: "http-get"; must be one of ["http-get", "server-sent-events"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"http-get",
@@ -179,7 +189,8 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 					"timeout": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Socket timeout in milliseconds.`,
+						Default:     int64default.StaticInt64(10000),
+						Description: `Socket timeout in milliseconds. Default: 10000`,
 					},
 					"topics": schema.ListNestedAttribute{
 						Computed: true,
@@ -232,7 +243,8 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

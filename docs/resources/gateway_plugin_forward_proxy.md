@@ -80,7 +80,7 @@ resource "konnect_gateway_plugin_forward_proxy" "my_gatewaypluginforwardproxy" {
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -107,9 +107,9 @@ by basic authentication.
 - `http_proxy_port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `https_proxy_host` (String) A string representing a host name, such as example.com.
 - `https_proxy_port` (Number) An integer representing a port number between 0 and 65535, inclusive.
-- `https_verify` (Boolean) Whether the server certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate.
-- `proxy_scheme` (String) The proxy scheme to use when connecting. Only `http` is supported. must be "http"
-- `x_headers` (String) Determines how to handle headers when forwarding the request. must be one of ["append", "delete", "transparent"]
+- `https_verify` (Boolean) Whether the server certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate. Default: false
+- `proxy_scheme` (String) The proxy scheme to use when connecting. Only `http` is supported. Default: "http"; must be "http"
+- `x_headers` (String) Determines how to handle headers when forwarding the request. Default: "append"; must be one of ["append", "delete", "transparent"]
 
 
 <a id="nestedatt--consumer"></a>

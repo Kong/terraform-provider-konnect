@@ -12,8 +12,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -67,16 +70,22 @@ func (r *GatewayPluginDatadogTracingResource) Schema(ctx context.Context, req re
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"batch_flush_delay": schema.Int64Attribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     int64default.StaticInt64(3),
+						Description: `Default: 3`,
 					},
 					"batch_span_count": schema.Int64Attribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     int64default.StaticInt64(200),
+						Description: `Default: 200`,
 					},
 					"connect_timeout": schema.Int64Attribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     int64default.StaticInt64(1000),
+						Description: `Default: 1000`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(2147483646),
 						},
@@ -86,26 +95,34 @@ func (r *GatewayPluginDatadogTracingResource) Schema(ctx context.Context, req re
 						Optional: true,
 					},
 					"environment": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     stringdefault.StaticString(`none`),
+						Description: `Default: "none"`,
 					},
 					"read_timeout": schema.Int64Attribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     int64default.StaticInt64(5000),
+						Description: `Default: 5000`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(2147483646),
 						},
 					},
 					"send_timeout": schema.Int64Attribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     int64default.StaticInt64(5000),
+						Description: `Default: 5000`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(2147483646),
 						},
 					},
 					"service_name": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     stringdefault.StaticString(`kong`),
+						Description: `Default: "kong"`,
 					},
 				},
 			},
@@ -138,7 +155,8 @@ func (r *GatewayPluginDatadogTracingResource) Schema(ctx context.Context, req re
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

@@ -12,8 +12,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -70,7 +72,8 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 					"azure_api_version": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Sets the ?api-version URL parameter, used for defining the Azure Content Services interchange format.`,
+						Default:     stringdefault.StaticString(`2023-10-01`),
+						Description: `Sets the ?api-version URL parameter, used for defining the Azure Content Services interchange format. Default: "2023-10-01"`,
 						Validators: []validator.String{
 							stringvalidator.UTF8LengthAtLeast(1),
 						},
@@ -93,7 +96,8 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 					"azure_use_managed_identity": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If checked, uses (if set) ` + "`" + `azure_client_id` + "`" + `, ` + "`" + `azure_client_secret` + "`" + `, and/or ` + "`" + `azure_tenant_id` + "`" + ` for Azure authentication, via Managed or User-assigned identity`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If checked, uses (if set) ` + "`" + `azure_client_id` + "`" + `, ` + "`" + `azure_client_secret` + "`" + `, and/or ` + "`" + `azure_tenant_id` + "`" + ` for Azure authentication, via Managed or User-assigned identity. Default: false`,
 					},
 					"blocklist_names": schema.ListAttribute{
 						Computed:    true,
@@ -142,12 +146,14 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 					"halt_on_blocklist_hit": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Tells Azure to reject the request if any blocklist filter is hit.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `Tells Azure to reject the request if any blocklist filter is hit. Default: true`,
 					},
 					"output_type": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `See https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/content-filter#content-filtering-categories. must be one of ["EightSeverityLevels", "FourSeverityLevels"]`,
+						Default:     stringdefault.StaticString(`FourSeverityLevels`),
+						Description: `See https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/content-filter#content-filtering-categories. Default: "FourSeverityLevels"; must be one of ["EightSeverityLevels", "FourSeverityLevels"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"EightSeverityLevels",
@@ -158,12 +164,14 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 					"reveal_failure_reason": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Set true to tell the caller why their request was rejected, if so.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `Set true to tell the caller why their request was rejected, if so. Default: true`,
 					},
 					"text_source": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Select where to pick the 'text' for the Azure Content Services request. must be one of ["concatenate_all_content", "concatenate_user_content"]`,
+						Default:     stringdefault.StaticString(`concatenate_all_content`),
+						Description: `Select where to pick the 'text' for the Azure Content Services request. Default: "concatenate_all_content"; must be one of ["concatenate_all_content", "concatenate_user_content"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"concatenate_all_content",
@@ -188,7 +196,8 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

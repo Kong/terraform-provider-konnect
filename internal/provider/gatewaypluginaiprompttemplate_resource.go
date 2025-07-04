@@ -11,6 +11,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -70,17 +72,20 @@ func (r *GatewayPluginAiPromptTemplateResource) Schema(ctx context.Context, req 
 					"allow_untemplated_requests": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Set true to allow requests that don't call or match any template.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `Set true to allow requests that don't call or match any template. Default: true`,
 					},
 					"log_original_request": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Set true to add the original request to the Kong log plugin(s) output.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Set true to add the original request to the Kong log plugin(s) output. Default: false`,
 					},
 					"max_request_body_size": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `max allowed body size allowed to be introspected`,
+						Default:     int64default.StaticInt64(8192),
+						Description: `max allowed body size allowed to be introspected. Default: 8192`,
 					},
 					"templates": schema.ListNestedAttribute{
 						Computed: true,
@@ -155,7 +160,8 @@ func (r *GatewayPluginAiPromptTemplateResource) Schema(ctx context.Context, req 
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

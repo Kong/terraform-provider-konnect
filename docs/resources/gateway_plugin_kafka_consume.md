@@ -98,7 +98,7 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -118,12 +118,12 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
 Optional:
 
 - `authentication` (Attributes) (see [below for nested schema](#nestedatt--config--authentication))
-- `auto_offset_reset` (String) The offset to start from when there is no initial offset in the consumer group. must be one of ["earliest", "latest"]
+- `auto_offset_reset` (String) The offset to start from when there is no initial offset in the consumer group. Default: "latest"; must be one of ["earliest", "latest"]
 - `bootstrap_servers` (Attributes List) Set of bootstrap brokers in a `{host: host, port: port}` list format. (see [below for nested schema](#nestedatt--config--bootstrap_servers))
 - `cluster_name` (String) An identifier for the Kafka cluster.
-- `commit_strategy` (String) The strategy to use for committing offsets. must be one of ["auto", "off"]
-- `message_deserializer` (String) The deserializer to use for the consumed messages. must be one of ["json", "noop"]
-- `mode` (String) The mode of operation for the plugin. must be one of ["http-get", "server-sent-events"]
+- `commit_strategy` (String) The strategy to use for committing offsets. Default: "auto"; must be one of ["auto", "off"]
+- `message_deserializer` (String) The deserializer to use for the consumed messages. Default: "noop"; must be one of ["json", "noop"]
+- `mode` (String) The mode of operation for the plugin. Default: "http-get"; must be one of ["http-get", "server-sent-events"]
 - `security` (Attributes) (see [below for nested schema](#nestedatt--config--security))
 - `topics` (Attributes List) The Kafka topics and their configuration you want to consume from. (see [below for nested schema](#nestedatt--config--topics))
 

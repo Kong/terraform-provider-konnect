@@ -105,25 +105,36 @@ func (e *JSONThreatProtectionPluginEnforcementMode) UnmarshalJSON(data []byte) e
 
 type JSONThreatProtectionPluginConfig struct {
 	// Allow or disallow duplicate object entry name.
-	AllowDuplicateObjectEntryName *bool `json:"allow_duplicate_object_entry_name,omitempty"`
+	AllowDuplicateObjectEntryName *bool `default:"true" json:"allow_duplicate_object_entry_name"`
 	// Enforcement mode of the security policy.
-	EnforcementMode *JSONThreatProtectionPluginEnforcementMode `json:"enforcement_mode,omitempty"`
+	EnforcementMode *JSONThreatProtectionPluginEnforcementMode `default:"block" json:"enforcement_mode"`
 	// The response message when validation fails
-	ErrorMessage *string `json:"error_message,omitempty"`
+	ErrorMessage *string `default:"Bad Request" json:"error_message"`
 	// The response status code when validation fails.
-	ErrorStatusCode *int64 `json:"error_status_code,omitempty"`
+	ErrorStatusCode *int64 `default:"400" json:"error_status_code"`
 	// Max number of elements in an array. -1 means unlimited.
-	MaxArrayElementCount *int64 `json:"max_array_element_count,omitempty"`
+	MaxArrayElementCount *int64 `default:"-1" json:"max_array_element_count"`
 	// Max size of the request body. -1 means unlimited.
-	MaxBodySize *int64 `json:"max_body_size,omitempty"`
+	MaxBodySize *int64 `default:"8192" json:"max_body_size"`
 	// Max nested depth of objects and arrays. -1 means unlimited.
-	MaxContainerDepth *int64 `json:"max_container_depth,omitempty"`
+	MaxContainerDepth *int64 `default:"-1" json:"max_container_depth"`
 	// Max number of entries in an object. -1 means unlimited.
-	MaxObjectEntryCount *int64 `json:"max_object_entry_count,omitempty"`
+	MaxObjectEntryCount *int64 `default:"-1" json:"max_object_entry_count"`
 	// Max string length of object name. -1 means unlimited.
-	MaxObjectEntryNameLength *int64 `json:"max_object_entry_name_length,omitempty"`
+	MaxObjectEntryNameLength *int64 `default:"-1" json:"max_object_entry_name_length"`
 	// Max string value length. -1 means unlimited.
-	MaxStringValueLength *int64 `json:"max_string_value_length,omitempty"`
+	MaxStringValueLength *int64 `default:"-1" json:"max_string_value_length"`
+}
+
+func (j JSONThreatProtectionPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JSONThreatProtectionPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *JSONThreatProtectionPluginConfig) GetAllowDuplicateObjectEntryName() *bool {
@@ -257,7 +268,7 @@ type JSONThreatProtectionPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                                `json:"enabled,omitempty"`
+	Enabled      *bool                                `default:"true" json:"enabled"`
 	ID           *string                              `json:"id,omitempty"`
 	InstanceName *string                              `json:"instance_name,omitempty"`
 	name         string                               `const:"json-threat-protection" json:"name"`
@@ -269,7 +280,7 @@ type JSONThreatProtectionPlugin struct {
 	UpdatedAt *int64                            `json:"updated_at,omitempty"`
 	Config    *JSONThreatProtectionPluginConfig `json:"config,omitempty"`
 	// A set of strings representing HTTP protocols.
-	Protocols []JSONThreatProtectionPluginProtocols `json:"protocols,omitempty"`
+	Protocols []JSONThreatProtectionPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *JSONThreatProtectionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

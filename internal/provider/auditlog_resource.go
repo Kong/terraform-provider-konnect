@@ -8,6 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -54,7 +55,8 @@ func (r *AuditLogResource) Schema(ctx context.Context, req resource.SchemaReques
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Indicates if the data should be sent to the webhook.`,
+				Default:     booldefault.StaticBool(false),
+				Description: `Indicates if the data should be sent to the webhook. Default: false`,
 			},
 			"endpoint": schema.StringAttribute{
 				Computed:    true,
@@ -77,9 +79,11 @@ func (r *AuditLogResource) Schema(ctx context.Context, req resource.SchemaReques
 			"skip_ssl_verification": schema.BoolAttribute{
 				Computed: true,
 				Optional: true,
+				Default:  booldefault.StaticBool(false),
 				MarkdownDescription: `Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.` + "\n" +
 					`We strongly recommend not setting this to 'true' as you are subject to man-in-the-middle and other attacks.` + "\n" +
-					`This option should be considered only for self-signed SSL certificates used in a non-production environment.`,
+					`This option should be considered only for self-signed SSL certificates used in a non-production environment.` + "\n" +
+					`Default: false`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed:    true,

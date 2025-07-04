@@ -195,7 +195,7 @@ type Consul struct {
 	// A string representing a host name, such as example.com.
 	Host *string `json:"host,omitempty"`
 	// Boolean representation of https.
-	HTTPS *bool `json:"https,omitempty"`
+	HTTPS *bool `default:"false" json:"https"`
 	// KV prefix path.
 	KvPath *string `json:"kv_path,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
@@ -204,6 +204,17 @@ type Consul struct {
 	Timeout *float64 `json:"timeout,omitempty"`
 	// Consul ACL token.
 	Token *string `json:"token,omitempty"`
+}
+
+func (c Consul) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *Consul) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Consul) GetHost() *string {
@@ -251,9 +262,20 @@ func (o *Consul) GetToken() *string {
 // ExtraOptions - Custom ACME Redis options
 type ExtraOptions struct {
 	// A namespace to prepend to all keys stored in Redis.
-	Namespace *string `json:"namespace,omitempty"`
+	Namespace *string `default:"" json:"namespace"`
 	// The number of keys to return in Redis SCAN calls.
-	ScanCount *float64 `json:"scan_count,omitempty"`
+	ScanCount *float64 `default:"10" json:"scan_count"`
+}
+
+func (e ExtraOptions) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *ExtraOptions) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ExtraOptions) GetNamespace() *string {
@@ -272,7 +294,7 @@ func (o *ExtraOptions) GetScanCount() *float64 {
 
 type AcmePluginRedis struct {
 	// Database to use for the Redis connection when using the `redis` strategy
-	Database *int64 `json:"database,omitempty"`
+	Database *int64 `default:"0" json:"database"`
 	// Custom ACME Redis options
 	ExtraOptions *ExtraOptions `json:"extra_options,omitempty"`
 	// A string representing a host name, such as example.com.
@@ -280,17 +302,28 @@ type AcmePluginRedis struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
 	// A string representing an SNI (server name indication) value for TLS.
 	ServerName *string `json:"server_name,omitempty"`
 	// If set to true, uses SSL to connect to Redis.
-	Ssl *bool `json:"ssl,omitempty"`
+	Ssl *bool `default:"false" json:"ssl"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-	SslVerify *bool `json:"ssl_verify,omitempty"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	Timeout *int64 `json:"timeout,omitempty"`
+	Timeout *int64 `default:"2000" json:"timeout"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 	Username *string `json:"username,omitempty"`
+}
+
+func (a AcmePluginRedis) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AcmePluginRedis) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AcmePluginRedis) GetDatabase() *int64 {
@@ -365,7 +398,18 @@ func (o *AcmePluginRedis) GetUsername() *string {
 
 type Shm struct {
 	// Name of shared memory zone used for Kong API gateway storage
-	ShmName *string `json:"shm_name,omitempty"`
+	ShmName *string `default:"kong" json:"shm_name"`
+}
+
+func (s Shm) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *Shm) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Shm) GetShmName() *string {
@@ -404,7 +448,7 @@ func (e *AcmePluginAuthMethod) UnmarshalJSON(data []byte) error {
 
 type AcmePluginVault struct {
 	// Auth Method, default to token, can be 'token' or 'kubernetes'.
-	AuthMethod *AcmePluginAuthMethod `json:"auth_method,omitempty"`
+	AuthMethod *AcmePluginAuthMethod `default:"token" json:"auth_method"`
 	// Vault's authentication path to use.
 	AuthPath *string `json:"auth_path,omitempty"`
 	// The role to try and assign.
@@ -412,7 +456,7 @@ type AcmePluginVault struct {
 	// A string representing a host name, such as example.com.
 	Host *string `json:"host,omitempty"`
 	// Boolean representation of https.
-	HTTPS *bool `json:"https,omitempty"`
+	HTTPS *bool `default:"false" json:"https"`
 	// The path to the JWT.
 	JwtPath *string `json:"jwt_path,omitempty"`
 	// KV prefix path.
@@ -424,9 +468,20 @@ type AcmePluginVault struct {
 	// SNI used in request, default to host if omitted.
 	TLSServerName *string `json:"tls_server_name,omitempty"`
 	// Turn on TLS verification.
-	TLSVerify *bool `json:"tls_verify,omitempty"`
+	TLSVerify *bool `default:"true" json:"tls_verify"`
 	// Consul ACL token.
 	Token *string `json:"token,omitempty"`
+}
+
+func (a AcmePluginVault) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AcmePluginVault) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AcmePluginVault) GetAuthMethod() *AcmePluginAuthMethod {
@@ -562,11 +617,11 @@ type AcmePluginConfig struct {
 	// The private key associated with the account.
 	AccountKey *AccountKey `json:"account_key,omitempty"`
 	// If set to `true`, the plugin allows all domains and ignores any values in the `domains` list.
-	AllowAnyDomain *bool `json:"allow_any_domain,omitempty"`
+	AllowAnyDomain *bool `default:"false" json:"allow_any_domain"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
-	APIURI *string `json:"api_uri,omitempty"`
+	APIURI *string `default:"https://acme-v02.api.letsencrypt.org/directory" json:"api_uri"`
 	// The certificate type to create. The possible values are `rsa` for RSA certificate or `ecc` for EC certificate.
-	CertType *CertType `json:"cert_type,omitempty"`
+	CertType *CertType `default:"rsa" json:"cert_type"`
 	// An array of strings representing hosts. A valid host is a string containing one or more labels separated by periods, with at most one wildcard label ('*')
 	Domains []string `json:"domains,omitempty"`
 	// External account binding (EAB) base64-encoded URL string of the HMAC key. You usually don't need to set this unless it is explicitly required by the CA.
@@ -574,21 +629,32 @@ type AcmePluginConfig struct {
 	// External account binding (EAB) key id. You usually don't need to set this unless it is explicitly required by the CA.
 	EabKid *string `json:"eab_kid,omitempty"`
 	// A boolean value that controls whether to include the IPv4 address in the common name field of generated certificates.
-	EnableIpv4CommonName *bool `json:"enable_ipv4_common_name,omitempty"`
+	EnableIpv4CommonName *bool `default:"true" json:"enable_ipv4_common_name"`
 	// Minutes to wait for each domain that fails to create a certificate. This applies to both a
 	// new certificate and a renewal certificate.
-	FailBackoffMinutes *float64 `json:"fail_backoff_minutes,omitempty"`
+	FailBackoffMinutes *float64 `default:"5" json:"fail_backoff_minutes"`
 	// A string value that specifies the preferred certificate chain to use when generating certificates.
 	PreferredChain *string `json:"preferred_chain,omitempty"`
 	// Days remaining to renew the certificate before it expires.
-	RenewThresholdDays *float64 `json:"renew_threshold_days,omitempty"`
+	RenewThresholdDays *float64 `default:"14" json:"renew_threshold_days"`
 	// RSA private key size for the certificate. The possible values are 2048, 3072, or 4096.
-	RsaKeySize *RsaKeySize `json:"rsa_key_size,omitempty"`
+	RsaKeySize *RsaKeySize `default:"4096" json:"rsa_key_size"`
 	// The backend storage type to use. In DB-less mode and Konnect, `kong` storage is unavailable. In hybrid mode and Konnect, `shm` storage is unavailable. `shm` storage does not persist during Kong restarts and does not work for Kong running on different machines, so consider using one of `kong`, `redis`, `consul`, or `vault` in production.
-	Storage       *Storage       `json:"storage,omitempty"`
+	Storage       *Storage       `default:"shm" json:"storage"`
 	StorageConfig *StorageConfig `json:"storage_config,omitempty"`
 	// If you are using Let's Encrypt, you must set this to `true` to agree the terms of service.
-	TosAccepted *bool `json:"tos_accepted,omitempty"`
+	TosAccepted *bool `default:"false" json:"tos_accepted"`
+}
+
+func (a AcmePluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AcmePluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AcmePluginConfig) GetAccountEmail() *string {
@@ -740,7 +806,7 @@ type AcmePlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                `json:"enabled,omitempty"`
+	Enabled      *bool                `default:"true" json:"enabled"`
 	ID           *string              `json:"id,omitempty"`
 	InstanceName *string              `json:"instance_name,omitempty"`
 	name         string               `const:"acme" json:"name"`
@@ -752,7 +818,7 @@ type AcmePlugin struct {
 	UpdatedAt *int64            `json:"updated_at,omitempty"`
 	Config    *AcmePluginConfig `json:"config,omitempty"`
 	// A set of strings representing HTTP protocols.
-	Protocols []AcmePluginProtocols `json:"protocols,omitempty"`
+	Protocols []AcmePluginProtocols `json:"protocols"`
 }
 
 func (a AcmePlugin) MarshalJSON() ([]byte, error) {

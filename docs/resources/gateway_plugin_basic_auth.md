@@ -70,7 +70,7 @@ resource "konnect_gateway_plugin_basic_auth" "my_gatewaypluginbasicauth" {
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -90,8 +90,8 @@ resource "konnect_gateway_plugin_basic_auth" "my_gatewaypluginbasicauth" {
 Optional:
 
 - `anonymous` (String) An optional string (Consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`. Please note that this value must refer to the Consumer `id` or `username` attribute, and **not** its `custom_id`.
-- `hide_credentials` (Boolean) An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin will strip the credential from the request (i.e. the `Authorization` header) before proxying it.
-- `realm` (String) When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
+- `hide_credentials` (Boolean) An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin will strip the credential from the request (i.e. the `Authorization` header) before proxying it. Default: false
+- `realm` (String) When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value. Default: "service"
 
 
 <a id="nestedatt--ordering"></a>
