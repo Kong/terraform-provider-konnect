@@ -10,7 +10,7 @@ import (
 )
 
 type ForeignKeyWithId struct {
-	ID *string `json:"id,omitempty"`
+	ID *string `json:"id,omitempty" tfsdk:"id"`
 }
 
 type CustomPluginResourceModel struct {

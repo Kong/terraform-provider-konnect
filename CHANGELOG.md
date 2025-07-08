@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.12.0  
+> Released on ?
+
+### Bug fixes
+
+* Fixed error while running `terraform apply` for `konnect_gateway_custom_plugin` resource nested under service / route
+
+
 ## 2.11.0  
 > Released on 2025/06/27
 
