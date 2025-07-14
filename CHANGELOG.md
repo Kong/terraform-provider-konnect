@@ -6,7 +6,7 @@
 ### Bug fixes
 
 * Fixed error while running `terraform apply` for `konnect_gateway_custom_plugin` resource nested under service / route
-
+* Fixed false diff in the output of `terraform plan` for `konnect_basic_auth` resource
 
 ## 2.11.0  
 > Released on 2025/06/27

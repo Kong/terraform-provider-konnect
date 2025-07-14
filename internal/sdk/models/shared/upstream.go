@@ -15,6 +15,7 @@ const (
 	UpstreamAlgorithmLeastConnections  UpstreamAlgorithm = "least-connections"
 	UpstreamAlgorithmRoundRobin        UpstreamAlgorithm = "round-robin"
 	UpstreamAlgorithmLatency           UpstreamAlgorithm = "latency"
+	UpstreamAlgorithmStickySessions    UpstreamAlgorithm = "sticky-sessions"
 )
 
 func (e UpstreamAlgorithm) ToPointer() *UpstreamAlgorithm {
@@ -33,6 +34,8 @@ func (e *UpstreamAlgorithm) UnmarshalJSON(data []byte) error {
 	case "round-robin":
 		fallthrough
 	case "latency":
+		fallthrough
+	case "sticky-sessions":
 		*e = UpstreamAlgorithm(v)
 		return nil
 	default:
@@ -500,7 +503,9 @@ type Upstream struct {
 	// This is a hostname, which must be equal to the `host` of a Service.
 	Name string `json:"name"`
 	// The number of slots in the load balancer algorithm. If `algorithm` is set to `round-robin`, this setting determines the maximum number of slots. If `algorithm` is set to `consistent-hashing`, this setting determines the actual number of slots in the algorithm. Accepts an integer in the range `10`-`65536`.
-	Slots *int64 `json:"slots,omitempty"`
+	Slots                    *int64  `json:"slots,omitempty"`
+	StickySessionsCookie     *string `json:"sticky_sessions_cookie,omitempty"`
+	StickySessionsCookiePath *string `json:"sticky_sessions_cookie_path,omitempty"`
 	// An optional set of strings associated with the Upstream for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -633,6 +638,20 @@ func (o *Upstream) GetSlots() *int64 {
 		return nil
 	}
 	return o.Slots
+}
+
+func (o *Upstream) GetStickySessionsCookie() *string {
+	if o == nil {
+		return nil
+	}
+	return o.StickySessionsCookie
+}
+
+func (o *Upstream) GetStickySessionsCookiePath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.StickySessionsCookiePath
 }
 
 func (o *Upstream) GetTags() []string {

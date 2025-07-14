@@ -100,6 +100,21 @@ func (r *GatewayServiceResourceModel) ToSharedService(ctx context.Context) (*sha
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
+	var tlsSans *shared.TLSSans
+	if r.TLSSans != nil {
+		dnsnames := make([]string, 0, len(r.TLSSans.Dnsnames))
+		for _, dnsnamesItem := range r.TLSSans.Dnsnames {
+			dnsnames = append(dnsnames, dnsnamesItem.ValueString())
+		}
+		uris := make([]string, 0, len(r.TLSSans.Uris))
+		for _, urisItem := range r.TLSSans.Uris {
+			uris = append(uris, urisItem.ValueString())
+		}
+		tlsSans = &shared.TLSSans{
+			Dnsnames: dnsnames,
+			Uris:     uris,
+		}
+	}
 	tlsVerify := new(bool)
 	if !r.TLSVerify.IsUnknown() && !r.TLSVerify.IsNull() {
 		*tlsVerify = r.TLSVerify.ValueBool()
@@ -139,6 +154,7 @@ func (r *GatewayServiceResourceModel) ToSharedService(ctx context.Context) (*sha
 		ReadTimeout:       readTimeout,
 		Retries:           retries,
 		Tags:              tags,
+		TLSSans:           tlsSans,
 		TLSVerify:         tlsVerify,
 		TLSVerifyDepth:    tlsVerifyDepth,
 		UpdatedAt:         updatedAt,
@@ -262,6 +278,19 @@ func (r *GatewayServiceResourceModel) RefreshFromSharedService(ctx context.Conte
 		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
+		}
+		if resp.TLSSans == nil {
+			r.TLSSans = nil
+		} else {
+			r.TLSSans = &tfTypes.TLSSans{}
+			r.TLSSans.Dnsnames = make([]types.String, 0, len(resp.TLSSans.Dnsnames))
+			for _, v := range resp.TLSSans.Dnsnames {
+				r.TLSSans.Dnsnames = append(r.TLSSans.Dnsnames, types.StringValue(v))
+			}
+			r.TLSSans.Uris = make([]types.String, 0, len(resp.TLSSans.Uris))
+			for _, v := range resp.TLSSans.Uris {
+				r.TLSSans.Uris = append(r.TLSSans.Uris, types.StringValue(v))
+			}
 		}
 		r.TLSVerify = types.BoolPointerValue(resp.TLSVerify)
 		r.TLSVerifyDepth = types.Int64PointerValue(resp.TLSVerifyDepth)

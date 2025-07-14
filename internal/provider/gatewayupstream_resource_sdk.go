@@ -314,6 +314,18 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstream(ctx context.Context) (*s
 	} else {
 		slots = nil
 	}
+	stickySessionsCookie := new(string)
+	if !r.StickySessionsCookie.IsUnknown() && !r.StickySessionsCookie.IsNull() {
+		*stickySessionsCookie = r.StickySessionsCookie.ValueString()
+	} else {
+		stickySessionsCookie = nil
+	}
+	stickySessionsCookiePath := new(string)
+	if !r.StickySessionsCookiePath.IsUnknown() && !r.StickySessionsCookiePath.IsNull() {
+		*stickySessionsCookiePath = r.StickySessionsCookiePath.ValueString()
+	} else {
+		stickySessionsCookiePath = nil
+	}
 	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
@@ -331,27 +343,29 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstream(ctx context.Context) (*s
 		useSrvName = nil
 	}
 	out := shared.Upstream{
-		Algorithm:              algorithm,
-		ClientCertificate:      clientCertificate,
-		CreatedAt:              createdAt,
-		HashFallback:           hashFallback,
-		HashFallbackHeader:     hashFallbackHeader,
-		HashFallbackQueryArg:   hashFallbackQueryArg,
-		HashFallbackURICapture: hashFallbackURICapture,
-		HashOn:                 hashOn,
-		HashOnCookie:           hashOnCookie,
-		HashOnCookiePath:       hashOnCookiePath,
-		HashOnHeader:           hashOnHeader,
-		HashOnQueryArg:         hashOnQueryArg,
-		HashOnURICapture:       hashOnURICapture,
-		Healthchecks:           healthchecks,
-		HostHeader:             hostHeader,
-		ID:                     id1,
-		Name:                   name,
-		Slots:                  slots,
-		Tags:                   tags,
-		UpdatedAt:              updatedAt,
-		UseSrvName:             useSrvName,
+		Algorithm:                algorithm,
+		ClientCertificate:        clientCertificate,
+		CreatedAt:                createdAt,
+		HashFallback:             hashFallback,
+		HashFallbackHeader:       hashFallbackHeader,
+		HashFallbackQueryArg:     hashFallbackQueryArg,
+		HashFallbackURICapture:   hashFallbackURICapture,
+		HashOn:                   hashOn,
+		HashOnCookie:             hashOnCookie,
+		HashOnCookiePath:         hashOnCookiePath,
+		HashOnHeader:             hashOnHeader,
+		HashOnQueryArg:           hashOnQueryArg,
+		HashOnURICapture:         hashOnURICapture,
+		Healthchecks:             healthchecks,
+		HostHeader:               hostHeader,
+		ID:                       id1,
+		Name:                     name,
+		Slots:                    slots,
+		StickySessionsCookie:     stickySessionsCookie,
+		StickySessionsCookiePath: stickySessionsCookiePath,
+		Tags:                     tags,
+		UpdatedAt:                updatedAt,
+		UseSrvName:               useSrvName,
 	}
 
 	return &out, diags
@@ -558,6 +572,8 @@ func (r *GatewayUpstreamResourceModel) RefreshFromSharedUpstream(ctx context.Con
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Name = types.StringValue(resp.Name)
 		r.Slots = types.Int64PointerValue(resp.Slots)
+		r.StickySessionsCookie = types.StringPointerValue(resp.StickySessionsCookie)
+		r.StickySessionsCookiePath = types.StringPointerValue(resp.StickySessionsCookiePath)
 		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))

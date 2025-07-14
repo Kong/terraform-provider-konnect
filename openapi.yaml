@@ -12892,9 +12892,6 @@ paths:
       tags:
         - Portals
   '/v2/portals/{portalId}':
-    x-speakeasy-entity-operation:
-      terraform-resource: Portal#read
-      terraform-datasource: null
     parameters:
       - name: portalId
         in: path
@@ -12904,6 +12901,24 @@ paths:
           type: string
           format: uuid
         x-speakeasy-match: id
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: Portal#read
+        terraform-datasource: null
+      operationId: get-portal
+      summary: Get Portal
+      description: 'Returns the configuration for a single developer portal. This allows you to understand the current visibility, access, and domain settings.'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortal'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portals
     patch:
       x-speakeasy-entity-operation:
         terraform-resource: Portal#update
@@ -17437,6 +17452,8 @@ components:
         - created_at
         - updated_at
       title: PortalProductVersion
+    GetPortalResponse:
+      $ref: '#/components/schemas/Portal'
     UpdatePortalResponse:
       $ref: '#/components/schemas/Portal'
     CreatePortalResponse:
@@ -19107,9 +19124,21 @@ components:
         username:
           $ref: '#/components/schemas/ConsumerUsername'
         custom_id:
-          $ref: '#/components/schemas/ConsumerCustomID'
+          description: Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database.
+          type: string
+          minLength: 1
+          nullable: true
         consumer_groups:
-          $ref: '#/components/schemas/ConsumerGroups'
+          description: |
+            A list of consumer groups that the Consumer is in.
+            If `consumer_groups` are provided on the Consumer object _and_ on the Realm, the Consumer will be placed in all defined consumer groups.
+          type: array
+          items:
+            type: string
+            uniqueItems: true
+          nullable: true
+          title: ConsumerGroups
+          x-speakeasy-param-suppress-computed-diff: true
         type:
           $ref: '#/components/schemas/ConsumerType'
         tags:
@@ -23483,6 +23512,8 @@ components:
           nullable: true
         password:
           type: string
+          writeOnly: true
+          x-speakeasy-param-sensitive: true
         tags:
           type: array
           items:
@@ -26106,13 +26137,23 @@ components:
             - RS256
             - RS384
             - RS512
-            - ES256
-            - ES384
-            - ES512
             - PS256
             - PS384
             - PS512
+            - ES256
+            - ES384
+            - ES512
+            - ESP256
+            - ESP384
+            - ESP512
+            - ESB256
+            - ESB320
+            - ESB384
+            - ESB512
+            - ES256K
             - EdDSA
+            - Ed25519
+            - Ed448
           nullable: true
         consumer:
           type: object
@@ -26165,13 +26206,23 @@ components:
             - RS256
             - RS384
             - RS512
-            - ES256
-            - ES384
-            - ES512
             - PS256
             - PS384
             - PS512
+            - ES256
+            - ES384
+            - ES512
+            - ESP256
+            - ESP384
+            - ESP512
+            - ESB256
+            - ESB320
+            - ESB384
+            - ESB512
+            - ES256K
             - EdDSA
+            - Ed25519
+            - Ed448
           nullable: true
         consumer:
           type: object
@@ -34452,6 +34503,18 @@ components:
           type: array
           items:
             type: string
+        tls_sans:
+          type: object
+          nullable: true
+          properties:
+            dnsnames:
+              type: array
+              items:
+                type: string
+            uris:
+              type: array
+              items:
+                type: string
         tls_verify:
           description: 'Whether to enable verification of upstream server TLS certificate. If set to `null`, then the Nginx default is respected.'
           type: boolean
@@ -35853,6 +35916,7 @@ components:
             - least-connections
             - round-robin
             - latency
+            - sticky-sessions
           nullable: true
         client_certificate:
           description: 'If set, the certificate to be used as client certificate while TLS handshaking to the upstream server.'
@@ -36029,6 +36093,12 @@ components:
         slots:
           description: 'The number of slots in the load balancer algorithm. If `algorithm` is set to `round-robin`, this setting determines the maximum number of slots. If `algorithm` is set to `consistent-hashing`, this setting determines the actual number of slots in the algorithm. Accepts an integer in the range `10`-`65536`.'
           type: integer
+          nullable: true
+        sticky_sessions_cookie:
+          type: string
+          nullable: true
+        sticky_sessions_cookie_path:
+          type: string
           nullable: true
         tags:
           description: An optional set of strings associated with the Upstream for grouping and filtering.
@@ -38248,6 +38318,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalProductVersion'
+    GetPortal:
+      description: Details about a portal and its current settings.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetPortalResponse'
     UpdatePortal:
       description: Details about the portal being updated.
       content:
@@ -38732,9 +38808,9 @@ tags:
       To disable a target, post a new one with `weight=0`, or use the `DELETE` method to accomplish the same.
     name: Targets
   - description: |-
-      The upstream object represents a virtual hostname and can be used to load balance incoming requests over multiple services (targets). 
+      The upstream object represents a virtual hostname and can be used to load balance incoming requests over multiple services (targets).
       <br><br>
-      An upstream also includes a [health checker](https://developer.konghq.com/gateway/traffic-control/health-checks-circuit-breakers/), which can enable and disable targets based on their ability or inability to serve requests. 
+      An upstream also includes a [health checker](https://developer.konghq.com/gateway/traffic-control/health-checks-circuit-breakers/), which can enable and disable targets based on their ability or inability to serve requests.
       The configuration for the health checker is stored in the upstream object, and applies to all of its targets.
     name: Upstreams
   - description: |
