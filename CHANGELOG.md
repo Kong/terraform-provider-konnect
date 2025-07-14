@@ -1,7 +1,7 @@
 # Changelog
 
-## 2.12.0  
-> Released on ?
+## 2.11.1
+> Released on 2025/07/14
 
 ### Bug fixes
 
