@@ -9,16 +9,17 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *SystemAccountTeamResourceModel) ToSharedAddSystemAccountToTeam(ctx context.Context) (*shared.AddSystemAccountToTeam, diag.Diagnostics) {
+func (r *SystemAccountTeamResourceModel) ToOperationsDeleteTeamsTeamIDSystemAccountsAccountIDRequest(ctx context.Context) (*operations.DeleteTeamsTeamIDSystemAccountsAccountIDRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	accountID := new(string)
-	if !r.AccountID.IsUnknown() && !r.AccountID.IsNull() {
-		*accountID = r.AccountID.ValueString()
-	} else {
-		accountID = nil
-	}
-	out := shared.AddSystemAccountToTeam{
+	var teamID string
+	teamID = r.TeamID.ValueString()
+
+	var accountID string
+	accountID = r.AccountID.ValueString()
+
+	out := operations.DeleteTeamsTeamIDSystemAccountsAccountIDRequest{
+		TeamID:    teamID,
 		AccountID: accountID,
 	}
 
@@ -46,17 +47,16 @@ func (r *SystemAccountTeamResourceModel) ToOperationsPostTeamsTeamIDSystemAccoun
 	return &out, diags
 }
 
-func (r *SystemAccountTeamResourceModel) ToOperationsDeleteTeamsTeamIDSystemAccountsAccountIDRequest(ctx context.Context) (*operations.DeleteTeamsTeamIDSystemAccountsAccountIDRequest, diag.Diagnostics) {
+func (r *SystemAccountTeamResourceModel) ToSharedAddSystemAccountToTeam(ctx context.Context) (*shared.AddSystemAccountToTeam, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var teamID string
-	teamID = r.TeamID.ValueString()
-
-	var accountID string
-	accountID = r.AccountID.ValueString()
-
-	out := operations.DeleteTeamsTeamIDSystemAccountsAccountIDRequest{
-		TeamID:    teamID,
+	accountID := new(string)
+	if !r.AccountID.IsUnknown() && !r.AccountID.IsNull() {
+		*accountID = r.AccountID.ValueString()
+	} else {
+		accountID = nil
+	}
+	out := shared.AddSystemAccountToTeam{
 		AccountID: accountID,
 	}
 

@@ -10,6 +10,104 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *GatewayCACertificateResourceModel) RefreshFromSharedCACertificate(ctx context.Context, resp *shared.CACertificate) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.Cert = types.StringValue(resp.Cert)
+		r.CertDigest = types.StringPointerValue(resp.CertDigest)
+		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.Tags = make([]types.String, 0, len(resp.Tags))
+		for _, v := range resp.Tags {
+			r.Tags = append(r.Tags, types.StringValue(v))
+		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
+	}
+
+	return diags
+}
+
+func (r *GatewayCACertificateResourceModel) ToOperationsCreateCaCertificateRequest(ctx context.Context) (*operations.CreateCaCertificateRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	caCertificate, caCertificateDiags := r.ToSharedCACertificate(ctx)
+	diags.Append(caCertificateDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateCaCertificateRequest{
+		ControlPlaneID: controlPlaneID,
+		CACertificate:  *caCertificate,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayCACertificateResourceModel) ToOperationsDeleteCaCertificateRequest(ctx context.Context) (*operations.DeleteCaCertificateRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var caCertificateID string
+	caCertificateID = r.ID.ValueString()
+
+	out := operations.DeleteCaCertificateRequest{
+		ControlPlaneID:  controlPlaneID,
+		CACertificateID: caCertificateID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayCACertificateResourceModel) ToOperationsGetCaCertificateRequest(ctx context.Context) (*operations.GetCaCertificateRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var caCertificateID string
+	caCertificateID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetCaCertificateRequest{
+		CACertificateID: caCertificateID,
+		ControlPlaneID:  controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayCACertificateResourceModel) ToOperationsUpsertCaCertificateRequest(ctx context.Context) (*operations.UpsertCaCertificateRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var caCertificateID string
+	caCertificateID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	caCertificate, caCertificateDiags := r.ToSharedCACertificate(ctx)
+	diags.Append(caCertificateDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpsertCaCertificateRequest{
+		CACertificateID: caCertificateID,
+		ControlPlaneID:  controlPlaneID,
+		CACertificate:   *caCertificate,
+	}
+
+	return &out, diags
+}
+
 func (r *GatewayCACertificateResourceModel) ToSharedCACertificate(ctx context.Context) (*shared.CACertificate, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -54,102 +152,4 @@ func (r *GatewayCACertificateResourceModel) ToSharedCACertificate(ctx context.Co
 	}
 
 	return &out, diags
-}
-
-func (r *GatewayCACertificateResourceModel) ToOperationsCreateCaCertificateRequest(ctx context.Context) (*operations.CreateCaCertificateRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	caCertificate, caCertificateDiags := r.ToSharedCACertificate(ctx)
-	diags.Append(caCertificateDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateCaCertificateRequest{
-		ControlPlaneID: controlPlaneID,
-		CACertificate:  *caCertificate,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayCACertificateResourceModel) ToOperationsUpsertCaCertificateRequest(ctx context.Context) (*operations.UpsertCaCertificateRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var caCertificateID string
-	caCertificateID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	caCertificate, caCertificateDiags := r.ToSharedCACertificate(ctx)
-	diags.Append(caCertificateDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpsertCaCertificateRequest{
-		CACertificateID: caCertificateID,
-		ControlPlaneID:  controlPlaneID,
-		CACertificate:   *caCertificate,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayCACertificateResourceModel) ToOperationsGetCaCertificateRequest(ctx context.Context) (*operations.GetCaCertificateRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var caCertificateID string
-	caCertificateID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.GetCaCertificateRequest{
-		CACertificateID: caCertificateID,
-		ControlPlaneID:  controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayCACertificateResourceModel) ToOperationsDeleteCaCertificateRequest(ctx context.Context) (*operations.DeleteCaCertificateRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	var caCertificateID string
-	caCertificateID = r.ID.ValueString()
-
-	out := operations.DeleteCaCertificateRequest{
-		ControlPlaneID:  controlPlaneID,
-		CACertificateID: caCertificateID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayCACertificateResourceModel) RefreshFromSharedCACertificate(ctx context.Context, resp *shared.CACertificate) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.Cert = types.StringValue(resp.Cert)
-		r.CertDigest = types.StringPointerValue(resp.CertDigest)
-		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
-		}
-		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
-	}
-
-	return diags
 }

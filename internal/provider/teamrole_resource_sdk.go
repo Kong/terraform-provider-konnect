@@ -10,41 +10,30 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *TeamRoleResourceModel) ToSharedAssignRole(ctx context.Context) (*shared.AssignRole, diag.Diagnostics) {
+func (r *TeamRoleResourceModel) RefreshFromSharedAssignedRole(ctx context.Context, resp *shared.AssignedRole) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	roleName := new(shared.RoleName)
-	if !r.RoleName.IsUnknown() && !r.RoleName.IsNull() {
-		*roleName = shared.RoleName(r.RoleName.ValueString())
-	} else {
-		roleName = nil
-	}
-	entityID := new(string)
-	if !r.EntityID.IsUnknown() && !r.EntityID.IsNull() {
-		*entityID = r.EntityID.ValueString()
-	} else {
-		entityID = nil
-	}
-	entityTypeName := new(shared.EntityTypeName)
-	if !r.EntityTypeName.IsUnknown() && !r.EntityTypeName.IsNull() {
-		*entityTypeName = shared.EntityTypeName(r.EntityTypeName.ValueString())
-	} else {
-		entityTypeName = nil
-	}
-	entityRegion := new(shared.EntityRegion)
-	if !r.EntityRegion.IsUnknown() && !r.EntityRegion.IsNull() {
-		*entityRegion = shared.EntityRegion(r.EntityRegion.ValueString())
-	} else {
-		entityRegion = nil
-	}
-	out := shared.AssignRole{
-		RoleName:       roleName,
-		EntityID:       entityID,
-		EntityTypeName: entityTypeName,
-		EntityRegion:   entityRegion,
+	if resp != nil {
+		r.EntityID = types.StringPointerValue(resp.EntityID)
+		if resp.EntityRegion != nil {
+			r.EntityRegion = types.StringValue(string(*resp.EntityRegion))
+		} else {
+			r.EntityRegion = types.StringNull()
+		}
+		if resp.EntityTypeName != nil {
+			r.EntityTypeName = types.StringValue(string(*resp.EntityTypeName))
+		} else {
+			r.EntityTypeName = types.StringNull()
+		}
+		r.ID = types.StringPointerValue(resp.ID)
+		if resp.RoleName != nil {
+			r.RoleName = types.StringValue(string(*resp.RoleName))
+		} else {
+			r.RoleName = types.StringNull()
+		}
 	}
 
-	return &out, diags
+	return diags
 }
 
 func (r *TeamRoleResourceModel) ToOperationsTeamsAssignRoleRequest(ctx context.Context) (*operations.TeamsAssignRoleRequest, diag.Diagnostics) {
@@ -85,28 +74,39 @@ func (r *TeamRoleResourceModel) ToOperationsTeamsRemoveRoleRequest(ctx context.C
 	return &out, diags
 }
 
-func (r *TeamRoleResourceModel) RefreshFromSharedAssignedRole(ctx context.Context, resp *shared.AssignedRole) diag.Diagnostics {
+func (r *TeamRoleResourceModel) ToSharedAssignRole(ctx context.Context) (*shared.AssignRole, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	if resp != nil {
-		r.EntityID = types.StringPointerValue(resp.EntityID)
-		if resp.EntityRegion != nil {
-			r.EntityRegion = types.StringValue(string(*resp.EntityRegion))
-		} else {
-			r.EntityRegion = types.StringNull()
-		}
-		if resp.EntityTypeName != nil {
-			r.EntityTypeName = types.StringValue(string(*resp.EntityTypeName))
-		} else {
-			r.EntityTypeName = types.StringNull()
-		}
-		r.ID = types.StringPointerValue(resp.ID)
-		if resp.RoleName != nil {
-			r.RoleName = types.StringValue(string(*resp.RoleName))
-		} else {
-			r.RoleName = types.StringNull()
-		}
+	roleName := new(shared.RoleName)
+	if !r.RoleName.IsUnknown() && !r.RoleName.IsNull() {
+		*roleName = shared.RoleName(r.RoleName.ValueString())
+	} else {
+		roleName = nil
+	}
+	entityID := new(string)
+	if !r.EntityID.IsUnknown() && !r.EntityID.IsNull() {
+		*entityID = r.EntityID.ValueString()
+	} else {
+		entityID = nil
+	}
+	entityTypeName := new(shared.EntityTypeName)
+	if !r.EntityTypeName.IsUnknown() && !r.EntityTypeName.IsNull() {
+		*entityTypeName = shared.EntityTypeName(r.EntityTypeName.ValueString())
+	} else {
+		entityTypeName = nil
+	}
+	entityRegion := new(shared.EntityRegion)
+	if !r.EntityRegion.IsUnknown() && !r.EntityRegion.IsNull() {
+		*entityRegion = shared.EntityRegion(r.EntityRegion.ValueString())
+	} else {
+		entityRegion = nil
+	}
+	out := shared.AssignRole{
+		RoleName:       roleName,
+		EntityID:       entityID,
+		EntityTypeName: entityTypeName,
+		EntityRegion:   entityRegion,
 	}
 
-	return diags
+	return &out, diags
 }

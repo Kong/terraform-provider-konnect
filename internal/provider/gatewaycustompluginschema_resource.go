@@ -27,6 +27,7 @@ func NewGatewayCustomPluginSchemaResource() resource.Resource {
 
 // GatewayCustomPluginSchemaResource defines the resource implementation.
 type GatewayCustomPluginSchemaResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
@@ -320,7 +321,7 @@ func (r *GatewayCustomPluginSchemaResource) ImportState(ctx context.Context, req
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "name": "myplugin"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "name": "myplugin"}': `+err.Error())
 		return
 	}
 
@@ -334,5 +335,4 @@ func (r *GatewayCustomPluginSchemaResource) ImportState(ctx context.Context, req
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), data.Name)...)
-
 }

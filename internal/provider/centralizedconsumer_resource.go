@@ -33,6 +33,7 @@ func NewCentralizedConsumerResource() resource.Resource {
 
 // CentralizedConsumerResource defines the resource implementation.
 type CentralizedConsumerResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
@@ -388,7 +389,7 @@ func (r *CentralizedConsumerResource) ImportState(ctx context.Context, req resou
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "id": "",  "realm_id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"id": "", "realm_id": ""}': `+err.Error())
 		return
 	}
 
@@ -402,5 +403,4 @@ func (r *CentralizedConsumerResource) ImportState(ctx context.Context, req resou
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("realm_id"), data.RealmID)...)
-
 }

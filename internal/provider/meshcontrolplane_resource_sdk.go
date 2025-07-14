@@ -12,6 +12,100 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *MeshControlPlaneResourceModel) RefreshFromSharedMeshControlPlane(ctx context.Context, resp *shared.MeshControlPlane) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.Description = types.StringPointerValue(resp.Description)
+		r.Features = []tfTypes.MeshControlPlaneFeature{}
+		if len(r.Features) > len(resp.Features) {
+			r.Features = r.Features[:len(resp.Features)]
+		}
+		for featuresCount, featuresItem := range resp.Features {
+			var features tfTypes.MeshControlPlaneFeature
+			if featuresItem.HostnameGeneratorCreation == nil {
+				features.HostnameGeneratorCreation = nil
+			} else {
+				features.HostnameGeneratorCreation = &tfTypes.MeshControlPlaneFeatureHostnameGenerationCreation{}
+				features.HostnameGeneratorCreation.Enabled = types.BoolValue(featuresItem.HostnameGeneratorCreation.Enabled)
+			}
+			if featuresItem.MeshCreation == nil {
+				features.MeshCreation = nil
+			} else {
+				features.MeshCreation = &tfTypes.MeshControlPlaneFeatureHostnameGenerationCreation{}
+				features.MeshCreation.Enabled = types.BoolValue(featuresItem.MeshCreation.Enabled)
+			}
+			features.Type = types.StringValue(string(featuresItem.Type))
+			if featuresCount+1 > len(r.Features) {
+				r.Features = append(r.Features, features)
+			} else {
+				r.Features[featuresCount].HostnameGeneratorCreation = features.HostnameGeneratorCreation
+				r.Features[featuresCount].MeshCreation = features.MeshCreation
+				r.Features[featuresCount].Type = features.Type
+			}
+		}
+		r.ID = types.StringValue(resp.ID)
+		if resp.Labels != nil {
+			r.Labels = make(map[string]types.String, len(resp.Labels))
+			for key, value := range resp.Labels {
+				r.Labels[key] = types.StringPointerValue(value)
+			}
+		}
+		r.Name = types.StringValue(resp.Name)
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+	}
+
+	return diags
+}
+
+func (r *MeshControlPlaneResourceModel) ToOperationsDeleteMeshControlPlaneRequest(ctx context.Context) (*operations.DeleteMeshControlPlaneRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.ID.ValueString()
+
+	out := operations.DeleteMeshControlPlaneRequest{
+		CpID: cpID,
+	}
+
+	return &out, diags
+}
+
+func (r *MeshControlPlaneResourceModel) ToOperationsGetMeshControlPlaneRequest(ctx context.Context) (*operations.GetMeshControlPlaneRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.ID.ValueString()
+
+	out := operations.GetMeshControlPlaneRequest{
+		CpID: cpID,
+	}
+
+	return &out, diags
+}
+
+func (r *MeshControlPlaneResourceModel) ToOperationsUpdateCpRequest(ctx context.Context) (*operations.UpdateCpRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.ID.ValueString()
+
+	putMeshControlPlaneRequest, putMeshControlPlaneRequestDiags := r.ToSharedPutMeshControlPlaneRequest(ctx)
+	diags.Append(putMeshControlPlaneRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateCpRequest{
+		CpID:                       cpID,
+		PutMeshControlPlaneRequest: *putMeshControlPlaneRequest,
+	}
+
+	return &out, diags
+}
+
 func (r *MeshControlPlaneResourceModel) ToSharedCreateMeshControlPlaneRequest(ctx context.Context) (*shared.CreateMeshControlPlaneRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -97,98 +191,4 @@ func (r *MeshControlPlaneResourceModel) ToSharedPutMeshControlPlaneRequest(ctx c
 	}
 
 	return &out, diags
-}
-
-func (r *MeshControlPlaneResourceModel) ToOperationsUpdateCpRequest(ctx context.Context) (*operations.UpdateCpRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.ID.ValueString()
-
-	putMeshControlPlaneRequest, putMeshControlPlaneRequestDiags := r.ToSharedPutMeshControlPlaneRequest(ctx)
-	diags.Append(putMeshControlPlaneRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateCpRequest{
-		CpID:                       cpID,
-		PutMeshControlPlaneRequest: *putMeshControlPlaneRequest,
-	}
-
-	return &out, diags
-}
-
-func (r *MeshControlPlaneResourceModel) ToOperationsGetMeshControlPlaneRequest(ctx context.Context) (*operations.GetMeshControlPlaneRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.ID.ValueString()
-
-	out := operations.GetMeshControlPlaneRequest{
-		CpID: cpID,
-	}
-
-	return &out, diags
-}
-
-func (r *MeshControlPlaneResourceModel) ToOperationsDeleteMeshControlPlaneRequest(ctx context.Context) (*operations.DeleteMeshControlPlaneRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.ID.ValueString()
-
-	out := operations.DeleteMeshControlPlaneRequest{
-		CpID: cpID,
-	}
-
-	return &out, diags
-}
-
-func (r *MeshControlPlaneResourceModel) RefreshFromSharedMeshControlPlane(ctx context.Context, resp *shared.MeshControlPlane) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.Description = types.StringPointerValue(resp.Description)
-		r.Features = []tfTypes.MeshControlPlaneFeature{}
-		if len(r.Features) > len(resp.Features) {
-			r.Features = r.Features[:len(resp.Features)]
-		}
-		for featuresCount, featuresItem := range resp.Features {
-			var features tfTypes.MeshControlPlaneFeature
-			if featuresItem.HostnameGeneratorCreation == nil {
-				features.HostnameGeneratorCreation = nil
-			} else {
-				features.HostnameGeneratorCreation = &tfTypes.MeshControlPlaneFeatureHostnameGenerationCreation{}
-				features.HostnameGeneratorCreation.Enabled = types.BoolValue(featuresItem.HostnameGeneratorCreation.Enabled)
-			}
-			if featuresItem.MeshCreation == nil {
-				features.MeshCreation = nil
-			} else {
-				features.MeshCreation = &tfTypes.MeshControlPlaneFeatureHostnameGenerationCreation{}
-				features.MeshCreation.Enabled = types.BoolValue(featuresItem.MeshCreation.Enabled)
-			}
-			features.Type = types.StringValue(string(featuresItem.Type))
-			if featuresCount+1 > len(r.Features) {
-				r.Features = append(r.Features, features)
-			} else {
-				r.Features[featuresCount].HostnameGeneratorCreation = features.HostnameGeneratorCreation
-				r.Features[featuresCount].MeshCreation = features.MeshCreation
-				r.Features[featuresCount].Type = features.Type
-			}
-		}
-		r.ID = types.StringValue(resp.ID)
-		if resp.Labels != nil {
-			r.Labels = make(map[string]types.String, len(resp.Labels))
-			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringPointerValue(value)
-			}
-		}
-		r.Name = types.StringValue(resp.Name)
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-	}
-
-	return diags
 }

@@ -11,6 +11,197 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *GatewayPluginInjectionProtectionResourceModel) RefreshFromSharedInjectionProtectionPlugin(ctx context.Context, resp *shared.InjectionProtectionPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.InjectionProtectionPluginConfig{}
+			r.Config.CustomInjections = []tfTypes.CustomInjections{}
+			if len(r.Config.CustomInjections) > len(resp.Config.CustomInjections) {
+				r.Config.CustomInjections = r.Config.CustomInjections[:len(resp.Config.CustomInjections)]
+			}
+			for customInjectionsCount, customInjectionsItem := range resp.Config.CustomInjections {
+				var customInjections tfTypes.CustomInjections
+				customInjections.Name = types.StringValue(customInjectionsItem.Name)
+				customInjections.Regex = types.StringValue(customInjectionsItem.Regex)
+				if customInjectionsCount+1 > len(r.Config.CustomInjections) {
+					r.Config.CustomInjections = append(r.Config.CustomInjections, customInjections)
+				} else {
+					r.Config.CustomInjections[customInjectionsCount].Name = customInjections.Name
+					r.Config.CustomInjections[customInjectionsCount].Regex = customInjections.Regex
+				}
+			}
+			if resp.Config.EnforcementMode != nil {
+				r.Config.EnforcementMode = types.StringValue(string(*resp.Config.EnforcementMode))
+			} else {
+				r.Config.EnforcementMode = types.StringNull()
+			}
+			r.Config.ErrorMessage = types.StringPointerValue(resp.Config.ErrorMessage)
+			r.Config.ErrorStatusCode = types.Int64PointerValue(resp.Config.ErrorStatusCode)
+			r.Config.InjectionTypes = make([]types.String, 0, len(resp.Config.InjectionTypes))
+			for _, v := range resp.Config.InjectionTypes {
+				r.Config.InjectionTypes = append(r.Config.InjectionTypes, types.StringValue(string(v)))
+			}
+			r.Config.Locations = make([]types.String, 0, len(resp.Config.Locations))
+			for _, v := range resp.Config.Locations {
+				r.Config.Locations = append(r.Config.Locations, types.StringValue(string(v)))
+			}
+		}
+		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.Enabled = types.BoolPointerValue(resp.Enabled)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
+		if resp.Partials != nil {
+			r.Partials = []tfTypes.Partials{}
+			if len(r.Partials) > len(resp.Partials) {
+				r.Partials = r.Partials[:len(resp.Partials)]
+			}
+			for partialsCount, partialsItem := range resp.Partials {
+				var partials tfTypes.Partials
+				partials.ID = types.StringPointerValue(partialsItem.ID)
+				partials.Name = types.StringPointerValue(partialsItem.Name)
+				partials.Path = types.StringPointerValue(partialsItem.Path)
+				if partialsCount+1 > len(r.Partials) {
+					r.Partials = append(r.Partials, partials)
+				} else {
+					r.Partials[partialsCount].ID = partials.ID
+					r.Partials[partialsCount].Name = partials.Name
+					r.Partials[partialsCount].Path = partials.Path
+				}
+			}
+		}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
+		for _, v := range resp.Protocols {
+			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
+		}
+		if resp.Route == nil {
+			r.Route = nil
+		} else {
+			r.Route = &tfTypes.Set{}
+			r.Route.ID = types.StringPointerValue(resp.Route.ID)
+		}
+		if resp.Service == nil {
+			r.Service = nil
+		} else {
+			r.Service = &tfTypes.Set{}
+			r.Service.ID = types.StringPointerValue(resp.Service.ID)
+		}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
+		for _, v := range resp.Tags {
+			r.Tags = append(r.Tags, types.StringValue(v))
+		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
+	}
+
+	return diags
+}
+
+func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsCreateInjectionprotectionPluginRequest(ctx context.Context) (*operations.CreateInjectionprotectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	injectionProtectionPlugin, injectionProtectionPluginDiags := r.ToSharedInjectionProtectionPlugin(ctx)
+	diags.Append(injectionProtectionPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateInjectionprotectionPluginRequest{
+		ControlPlaneID:            controlPlaneID,
+		InjectionProtectionPlugin: *injectionProtectionPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsDeleteInjectionprotectionPluginRequest(ctx context.Context) (*operations.DeleteInjectionprotectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteInjectionprotectionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsGetInjectionprotectionPluginRequest(ctx context.Context) (*operations.GetInjectionprotectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetInjectionprotectionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsUpdateInjectionprotectionPluginRequest(ctx context.Context) (*operations.UpdateInjectionprotectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	injectionProtectionPlugin, injectionProtectionPluginDiags := r.ToSharedInjectionProtectionPlugin(ctx)
+	diags.Append(injectionProtectionPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateInjectionprotectionPluginRequest{
+		PluginID:                  pluginID,
+		ControlPlaneID:            controlPlaneID,
+		InjectionProtectionPlugin: *injectionProtectionPlugin,
+	}
+
+	return &out, diags
+}
+
 func (r *GatewayPluginInjectionProtectionResourceModel) ToSharedInjectionProtectionPlugin(ctx context.Context) (*shared.InjectionProtectionPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -198,195 +389,4 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToSharedInjectionProtect
 	}
 
 	return &out, diags
-}
-
-func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsCreateInjectionprotectionPluginRequest(ctx context.Context) (*operations.CreateInjectionprotectionPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	injectionProtectionPlugin, injectionProtectionPluginDiags := r.ToSharedInjectionProtectionPlugin(ctx)
-	diags.Append(injectionProtectionPluginDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateInjectionprotectionPluginRequest{
-		ControlPlaneID:            controlPlaneID,
-		InjectionProtectionPlugin: *injectionProtectionPlugin,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsUpdateInjectionprotectionPluginRequest(ctx context.Context) (*operations.UpdateInjectionprotectionPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	injectionProtectionPlugin, injectionProtectionPluginDiags := r.ToSharedInjectionProtectionPlugin(ctx)
-	diags.Append(injectionProtectionPluginDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateInjectionprotectionPluginRequest{
-		PluginID:                  pluginID,
-		ControlPlaneID:            controlPlaneID,
-		InjectionProtectionPlugin: *injectionProtectionPlugin,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsGetInjectionprotectionPluginRequest(ctx context.Context) (*operations.GetInjectionprotectionPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.GetInjectionprotectionPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginInjectionProtectionResourceModel) ToOperationsDeleteInjectionprotectionPluginRequest(ctx context.Context) (*operations.DeleteInjectionprotectionPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.DeleteInjectionprotectionPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginInjectionProtectionResourceModel) RefreshFromSharedInjectionProtectionPlugin(ctx context.Context, resp *shared.InjectionProtectionPlugin) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.InjectionProtectionPluginConfig{}
-			r.Config.CustomInjections = []tfTypes.CustomInjections{}
-			if len(r.Config.CustomInjections) > len(resp.Config.CustomInjections) {
-				r.Config.CustomInjections = r.Config.CustomInjections[:len(resp.Config.CustomInjections)]
-			}
-			for customInjectionsCount, customInjectionsItem := range resp.Config.CustomInjections {
-				var customInjections tfTypes.CustomInjections
-				customInjections.Name = types.StringValue(customInjectionsItem.Name)
-				customInjections.Regex = types.StringValue(customInjectionsItem.Regex)
-				if customInjectionsCount+1 > len(r.Config.CustomInjections) {
-					r.Config.CustomInjections = append(r.Config.CustomInjections, customInjections)
-				} else {
-					r.Config.CustomInjections[customInjectionsCount].Name = customInjections.Name
-					r.Config.CustomInjections[customInjectionsCount].Regex = customInjections.Regex
-				}
-			}
-			if resp.Config.EnforcementMode != nil {
-				r.Config.EnforcementMode = types.StringValue(string(*resp.Config.EnforcementMode))
-			} else {
-				r.Config.EnforcementMode = types.StringNull()
-			}
-			r.Config.ErrorMessage = types.StringPointerValue(resp.Config.ErrorMessage)
-			r.Config.ErrorStatusCode = types.Int64PointerValue(resp.Config.ErrorStatusCode)
-			r.Config.InjectionTypes = make([]types.String, 0, len(resp.Config.InjectionTypes))
-			for _, v := range resp.Config.InjectionTypes {
-				r.Config.InjectionTypes = append(r.Config.InjectionTypes, types.StringValue(string(v)))
-			}
-			r.Config.Locations = make([]types.String, 0, len(resp.Config.Locations))
-			for _, v := range resp.Config.Locations {
-				r.Config.Locations = append(r.Config.Locations, types.StringValue(string(v)))
-			}
-		}
-		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.Enabled = types.BoolPointerValue(resp.Enabled)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.InstanceName = types.StringPointerValue(resp.InstanceName)
-		if resp.Ordering == nil {
-			r.Ordering = nil
-		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
-			if resp.Ordering.After == nil {
-				r.Ordering.After = nil
-			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
-				}
-			}
-			if resp.Ordering.Before == nil {
-				r.Ordering.Before = nil
-			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
-				}
-			}
-		}
-		if resp.Partials != nil {
-			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
-				var partials tfTypes.Partials
-				partials.ID = types.StringPointerValue(partialsItem.ID)
-				partials.Name = types.StringPointerValue(partialsItem.Name)
-				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
-			}
-		}
-		r.Protocols = make([]types.String, 0, len(resp.Protocols))
-		for _, v := range resp.Protocols {
-			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
-		}
-		if resp.Route == nil {
-			r.Route = nil
-		} else {
-			r.Route = &tfTypes.Set{}
-			r.Route.ID = types.StringPointerValue(resp.Route.ID)
-		}
-		if resp.Service == nil {
-			r.Service = nil
-		} else {
-			r.Service = &tfTypes.Set{}
-			r.Service.ID = types.StringPointerValue(resp.Service.ID)
-		}
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
-		}
-		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
-	}
-
-	return diags
 }

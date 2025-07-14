@@ -30,6 +30,7 @@ func NewGatewayControlPlaneResource() resource.Resource {
 
 // GatewayControlPlaneResource defines the resource implementation.
 type GatewayControlPlaneResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 

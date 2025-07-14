@@ -34,6 +34,7 @@ func NewCloudGatewayNetworkResource() resource.Resource {
 
 // CloudGatewayNetworkResource defines the resource implementation.
 type CloudGatewayNetworkResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 

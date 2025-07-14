@@ -30,6 +30,7 @@ func NewAPIProductResource() resource.Resource {
 
 // APIProductResource defines the resource implementation.
 type APIProductResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 

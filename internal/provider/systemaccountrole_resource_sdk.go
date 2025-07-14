@@ -10,6 +10,70 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *SystemAccountRoleResourceModel) RefreshFromSharedAssignedRole(ctx context.Context, resp *shared.AssignedRole) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.EntityID = types.StringPointerValue(resp.EntityID)
+		if resp.EntityRegion != nil {
+			r.EntityRegion = types.StringValue(string(*resp.EntityRegion))
+		} else {
+			r.EntityRegion = types.StringNull()
+		}
+		if resp.EntityTypeName != nil {
+			r.EntityTypeName = types.StringValue(string(*resp.EntityTypeName))
+		} else {
+			r.EntityTypeName = types.StringNull()
+		}
+		r.ID = types.StringPointerValue(resp.ID)
+		if resp.RoleName != nil {
+			r.RoleName = types.StringValue(string(*resp.RoleName))
+		} else {
+			r.RoleName = types.StringNull()
+		}
+	}
+
+	return diags
+}
+
+func (r *SystemAccountRoleResourceModel) ToOperationsDeleteSystemAccountsAccountIDAssignedRolesRoleIDRequest(ctx context.Context) (*operations.DeleteSystemAccountsAccountIDAssignedRolesRoleIDRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var accountID string
+	accountID = r.AccountID.ValueString()
+
+	var roleID string
+	roleID = r.ID.ValueString()
+
+	out := operations.DeleteSystemAccountsAccountIDAssignedRolesRoleIDRequest{
+		AccountID: accountID,
+		RoleID:    roleID,
+	}
+
+	return &out, diags
+}
+
+func (r *SystemAccountRoleResourceModel) ToOperationsPostSystemAccountsAccountIDAssignedRolesRequest(ctx context.Context) (*operations.PostSystemAccountsAccountIDAssignedRolesRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var accountID string
+	accountID = r.AccountID.ValueString()
+
+	assignRole, assignRoleDiags := r.ToSharedAssignRole(ctx)
+	diags.Append(assignRoleDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PostSystemAccountsAccountIDAssignedRolesRequest{
+		AccountID:  accountID,
+		AssignRole: assignRole,
+	}
+
+	return &out, diags
+}
+
 func (r *SystemAccountRoleResourceModel) ToSharedAssignRole(ctx context.Context) (*shared.AssignRole, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -45,68 +109,4 @@ func (r *SystemAccountRoleResourceModel) ToSharedAssignRole(ctx context.Context)
 	}
 
 	return &out, diags
-}
-
-func (r *SystemAccountRoleResourceModel) ToOperationsPostSystemAccountsAccountIDAssignedRolesRequest(ctx context.Context) (*operations.PostSystemAccountsAccountIDAssignedRolesRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var accountID string
-	accountID = r.AccountID.ValueString()
-
-	assignRole, assignRoleDiags := r.ToSharedAssignRole(ctx)
-	diags.Append(assignRoleDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.PostSystemAccountsAccountIDAssignedRolesRequest{
-		AccountID:  accountID,
-		AssignRole: assignRole,
-	}
-
-	return &out, diags
-}
-
-func (r *SystemAccountRoleResourceModel) ToOperationsDeleteSystemAccountsAccountIDAssignedRolesRoleIDRequest(ctx context.Context) (*operations.DeleteSystemAccountsAccountIDAssignedRolesRoleIDRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var accountID string
-	accountID = r.AccountID.ValueString()
-
-	var roleID string
-	roleID = r.ID.ValueString()
-
-	out := operations.DeleteSystemAccountsAccountIDAssignedRolesRoleIDRequest{
-		AccountID: accountID,
-		RoleID:    roleID,
-	}
-
-	return &out, diags
-}
-
-func (r *SystemAccountRoleResourceModel) RefreshFromSharedAssignedRole(ctx context.Context, resp *shared.AssignedRole) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.EntityID = types.StringPointerValue(resp.EntityID)
-		if resp.EntityRegion != nil {
-			r.EntityRegion = types.StringValue(string(*resp.EntityRegion))
-		} else {
-			r.EntityRegion = types.StringNull()
-		}
-		if resp.EntityTypeName != nil {
-			r.EntityTypeName = types.StringValue(string(*resp.EntityTypeName))
-		} else {
-			r.EntityTypeName = types.StringNull()
-		}
-		r.ID = types.StringPointerValue(resp.ID)
-		if resp.RoleName != nil {
-			r.RoleName = types.StringValue(string(*resp.RoleName))
-		} else {
-			r.RoleName = types.StringNull()
-		}
-	}
-
-	return diags
 }

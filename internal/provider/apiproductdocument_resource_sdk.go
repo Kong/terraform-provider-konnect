@@ -13,6 +13,109 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *APIProductDocumentResourceModel) RefreshFromSharedAPIProductDocument(ctx context.Context, resp *shared.APIProductDocument) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		contentValuable, contentDiags := encodedstring.Base64OrPlainInputType{}.ValueFromString(ctx, types.StringValue(resp.Content))
+		diags.Append(contentDiags...)
+		r.Content = contentValuable.(encodedstring.Base64OrPlainInput)
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.ID = types.StringValue(resp.ID)
+		if r.Metadata == nil {
+			r.Metadata = &tfTypes.Metadata{}
+
+		}
+		r.ParentDocumentID = types.StringPointerValue(resp.ParentDocumentID)
+		r.Slug = types.StringValue(resp.Slug)
+		r.Status = types.StringValue(string(resp.Status))
+		r.Title = types.StringValue(resp.Title)
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+	}
+
+	return diags
+}
+
+func (r *APIProductDocumentResourceModel) ToOperationsCreateAPIProductDocumentRequest(ctx context.Context) (*operations.CreateAPIProductDocumentRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiProductID string
+	apiProductID = r.APIProductID.ValueString()
+
+	createAPIProductDocumentDTO, createAPIProductDocumentDTODiags := r.ToSharedCreateAPIProductDocumentDTO(ctx)
+	diags.Append(createAPIProductDocumentDTODiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateAPIProductDocumentRequest{
+		APIProductID:                apiProductID,
+		CreateAPIProductDocumentDTO: *createAPIProductDocumentDTO,
+	}
+
+	return &out, diags
+}
+
+func (r *APIProductDocumentResourceModel) ToOperationsDeleteAPIProductDocumentRequest(ctx context.Context) (*operations.DeleteAPIProductDocumentRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiProductID string
+	apiProductID = r.APIProductID.ValueString()
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.DeleteAPIProductDocumentRequest{
+		APIProductID: apiProductID,
+		ID:           id,
+	}
+
+	return &out, diags
+}
+
+func (r *APIProductDocumentResourceModel) ToOperationsGetAPIProductDocumentRequest(ctx context.Context) (*operations.GetAPIProductDocumentRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiProductID string
+	apiProductID = r.APIProductID.ValueString()
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.GetAPIProductDocumentRequest{
+		APIProductID: apiProductID,
+		ID:           id,
+	}
+
+	return &out, diags
+}
+
+func (r *APIProductDocumentResourceModel) ToOperationsUpdateAPIProductDocumentRequest(ctx context.Context) (*operations.UpdateAPIProductDocumentRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiProductID string
+	apiProductID = r.APIProductID.ValueString()
+
+	var id string
+	id = r.ID.ValueString()
+
+	updateAPIProductDocumentDTO, updateAPIProductDocumentDTODiags := r.ToSharedUpdateAPIProductDocumentDTO(ctx)
+	diags.Append(updateAPIProductDocumentDTODiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAPIProductDocumentRequest{
+		APIProductID:                apiProductID,
+		ID:                          id,
+		UpdateAPIProductDocumentDTO: *updateAPIProductDocumentDTO,
+	}
+
+	return &out, diags
+}
+
 func (r *APIProductDocumentResourceModel) ToSharedCreateAPIProductDocumentDTO(ctx context.Context) (*shared.CreateAPIProductDocumentDTO, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -46,27 +149,6 @@ func (r *APIProductDocumentResourceModel) ToSharedCreateAPIProductDocumentDTO(ct
 		Title:            title,
 		Content:          content,
 		Metadata:         metadata,
-	}
-
-	return &out, diags
-}
-
-func (r *APIProductDocumentResourceModel) ToOperationsCreateAPIProductDocumentRequest(ctx context.Context) (*operations.CreateAPIProductDocumentRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var apiProductID string
-	apiProductID = r.APIProductID.ValueString()
-
-	createAPIProductDocumentDTO, createAPIProductDocumentDTODiags := r.ToSharedCreateAPIProductDocumentDTO(ctx)
-	diags.Append(createAPIProductDocumentDTODiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateAPIProductDocumentRequest{
-		APIProductID:                apiProductID,
-		CreateAPIProductDocumentDTO: *createAPIProductDocumentDTO,
 	}
 
 	return &out, diags
@@ -119,86 +201,4 @@ func (r *APIProductDocumentResourceModel) ToSharedUpdateAPIProductDocumentDTO(ct
 	}
 
 	return &out, diags
-}
-
-func (r *APIProductDocumentResourceModel) ToOperationsUpdateAPIProductDocumentRequest(ctx context.Context) (*operations.UpdateAPIProductDocumentRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var apiProductID string
-	apiProductID = r.APIProductID.ValueString()
-
-	var id string
-	id = r.ID.ValueString()
-
-	updateAPIProductDocumentDTO, updateAPIProductDocumentDTODiags := r.ToSharedUpdateAPIProductDocumentDTO(ctx)
-	diags.Append(updateAPIProductDocumentDTODiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateAPIProductDocumentRequest{
-		APIProductID:                apiProductID,
-		ID:                          id,
-		UpdateAPIProductDocumentDTO: *updateAPIProductDocumentDTO,
-	}
-
-	return &out, diags
-}
-
-func (r *APIProductDocumentResourceModel) ToOperationsGetAPIProductDocumentRequest(ctx context.Context) (*operations.GetAPIProductDocumentRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var apiProductID string
-	apiProductID = r.APIProductID.ValueString()
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.GetAPIProductDocumentRequest{
-		APIProductID: apiProductID,
-		ID:           id,
-	}
-
-	return &out, diags
-}
-
-func (r *APIProductDocumentResourceModel) ToOperationsDeleteAPIProductDocumentRequest(ctx context.Context) (*operations.DeleteAPIProductDocumentRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var apiProductID string
-	apiProductID = r.APIProductID.ValueString()
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.DeleteAPIProductDocumentRequest{
-		APIProductID: apiProductID,
-		ID:           id,
-	}
-
-	return &out, diags
-}
-
-func (r *APIProductDocumentResourceModel) RefreshFromSharedAPIProductDocument(ctx context.Context, resp *shared.APIProductDocument) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		contentValuable, contentDiags := encodedstring.Base64OrPlainInputType{}.ValueFromString(ctx, types.StringValue(resp.Content))
-		diags.Append(contentDiags...)
-		r.Content = contentValuable.(encodedstring.Base64OrPlainInput)
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.ID = types.StringValue(resp.ID)
-		if r.Metadata == nil {
-			r.Metadata = &tfTypes.Metadata{}
-
-		}
-		r.ParentDocumentID = types.StringPointerValue(resp.ParentDocumentID)
-		r.Slug = types.StringValue(resp.Slug)
-		r.Status = types.StringValue(string(resp.Status))
-		r.Title = types.StringValue(resp.Title)
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-	}
-
-	return diags
 }

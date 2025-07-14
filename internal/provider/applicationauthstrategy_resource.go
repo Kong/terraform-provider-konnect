@@ -42,6 +42,7 @@ func NewApplicationAuthStrategyResource() resource.Resource {
 
 // ApplicationAuthStrategyResource defines the resource implementation.
 type ApplicationAuthStrategyResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 

@@ -10,6 +10,89 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *GatewayACLResourceModel) RefreshFromSharedACL(ctx context.Context, resp *shared.ACL) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.Group = types.StringValue(resp.Group)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.Tags = make([]types.String, 0, len(resp.Tags))
+		for _, v := range resp.Tags {
+			r.Tags = append(r.Tags, types.StringValue(v))
+		}
+	}
+
+	return diags
+}
+
+func (r *GatewayACLResourceModel) ToOperationsCreateACLWithConsumerRequest(ctx context.Context) (*operations.CreateACLWithConsumerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	aclWithoutParents, aclWithoutParentsDiags := r.ToSharedACLWithoutParents(ctx)
+	diags.Append(aclWithoutParentsDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateACLWithConsumerRequest{
+		ControlPlaneID:    controlPlaneID,
+		ConsumerID:        consumerID,
+		ACLWithoutParents: *aclWithoutParents,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayACLResourceModel) ToOperationsDeleteACLWithConsumerRequest(ctx context.Context) (*operations.DeleteACLWithConsumerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	var aclID string
+	aclID = r.ID.ValueString()
+
+	out := operations.DeleteACLWithConsumerRequest{
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		ACLID:          aclID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayACLResourceModel) ToOperationsGetACLWithConsumerRequest(ctx context.Context) (*operations.GetACLWithConsumerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	var aclID string
+	aclID = r.ID.ValueString()
+
+	out := operations.GetACLWithConsumerRequest{
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		ACLID:          aclID,
+	}
+
+	return &out, diags
+}
+
 func (r *GatewayACLResourceModel) ToSharedACLWithoutParents(ctx context.Context) (*shared.ACLWithoutParents, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -40,87 +123,4 @@ func (r *GatewayACLResourceModel) ToSharedACLWithoutParents(ctx context.Context)
 	}
 
 	return &out, diags
-}
-
-func (r *GatewayACLResourceModel) ToOperationsCreateACLWithConsumerRequest(ctx context.Context) (*operations.CreateACLWithConsumerRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	var consumerID string
-	consumerID = r.ConsumerID.ValueString()
-
-	aclWithoutParents, aclWithoutParentsDiags := r.ToSharedACLWithoutParents(ctx)
-	diags.Append(aclWithoutParentsDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateACLWithConsumerRequest{
-		ControlPlaneID:    controlPlaneID,
-		ConsumerID:        consumerID,
-		ACLWithoutParents: *aclWithoutParents,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayACLResourceModel) ToOperationsGetACLWithConsumerRequest(ctx context.Context) (*operations.GetACLWithConsumerRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	var consumerID string
-	consumerID = r.ConsumerID.ValueString()
-
-	var aclID string
-	aclID = r.ID.ValueString()
-
-	out := operations.GetACLWithConsumerRequest{
-		ControlPlaneID: controlPlaneID,
-		ConsumerID:     consumerID,
-		ACLID:          aclID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayACLResourceModel) ToOperationsDeleteACLWithConsumerRequest(ctx context.Context) (*operations.DeleteACLWithConsumerRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	var consumerID string
-	consumerID = r.ConsumerID.ValueString()
-
-	var aclID string
-	aclID = r.ID.ValueString()
-
-	out := operations.DeleteACLWithConsumerRequest{
-		ControlPlaneID: controlPlaneID,
-		ConsumerID:     consumerID,
-		ACLID:          aclID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayACLResourceModel) RefreshFromSharedACL(ctx context.Context, resp *shared.ACL) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.Group = types.StringValue(resp.Group)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
-		}
-	}
-
-	return diags
 }

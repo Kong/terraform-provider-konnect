@@ -27,6 +27,7 @@ func NewAuditLogDestinationResource() resource.Resource {
 
 // AuditLogDestinationResource defines the resource implementation.
 type AuditLogDestinationResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 

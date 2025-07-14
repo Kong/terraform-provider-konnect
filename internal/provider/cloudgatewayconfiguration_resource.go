@@ -34,6 +34,7 @@ func NewCloudGatewayConfigurationResource() resource.Resource {
 
 // CloudGatewayConfigurationResource defines the resource implementation.
 type CloudGatewayConfigurationResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 

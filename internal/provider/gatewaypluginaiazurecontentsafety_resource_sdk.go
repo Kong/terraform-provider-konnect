@@ -11,6 +11,205 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *GatewayPluginAiAzureContentSafetyResourceModel) RefreshFromSharedAiAzureContentSafetyPlugin(ctx context.Context, resp *shared.AiAzureContentSafetyPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.AiAzureContentSafetyPluginConfig{}
+			r.Config.AzureAPIVersion = types.StringPointerValue(resp.Config.AzureAPIVersion)
+			r.Config.AzureClientID = types.StringPointerValue(resp.Config.AzureClientID)
+			r.Config.AzureClientSecret = types.StringPointerValue(resp.Config.AzureClientSecret)
+			r.Config.AzureTenantID = types.StringPointerValue(resp.Config.AzureTenantID)
+			r.Config.AzureUseManagedIdentity = types.BoolPointerValue(resp.Config.AzureUseManagedIdentity)
+			r.Config.BlocklistNames = make([]types.String, 0, len(resp.Config.BlocklistNames))
+			for _, v := range resp.Config.BlocklistNames {
+				r.Config.BlocklistNames = append(r.Config.BlocklistNames, types.StringValue(v))
+			}
+			r.Config.Categories = []tfTypes.Categories{}
+			if len(r.Config.Categories) > len(resp.Config.Categories) {
+				r.Config.Categories = r.Config.Categories[:len(resp.Config.Categories)]
+			}
+			for categoriesCount, categoriesItem := range resp.Config.Categories {
+				var categories tfTypes.Categories
+				categories.Name = types.StringValue(categoriesItem.Name)
+				categories.RejectionLevel = types.Int64Value(categoriesItem.RejectionLevel)
+				if categoriesCount+1 > len(r.Config.Categories) {
+					r.Config.Categories = append(r.Config.Categories, categories)
+				} else {
+					r.Config.Categories[categoriesCount].Name = categories.Name
+					r.Config.Categories[categoriesCount].RejectionLevel = categories.RejectionLevel
+				}
+			}
+			r.Config.ContentSafetyKey = types.StringPointerValue(resp.Config.ContentSafetyKey)
+			r.Config.ContentSafetyURL = types.StringPointerValue(resp.Config.ContentSafetyURL)
+			r.Config.HaltOnBlocklistHit = types.BoolPointerValue(resp.Config.HaltOnBlocklistHit)
+			if resp.Config.OutputType != nil {
+				r.Config.OutputType = types.StringValue(string(*resp.Config.OutputType))
+			} else {
+				r.Config.OutputType = types.StringNull()
+			}
+			r.Config.RevealFailureReason = types.BoolPointerValue(resp.Config.RevealFailureReason)
+			if resp.Config.TextSource != nil {
+				r.Config.TextSource = types.StringValue(string(*resp.Config.TextSource))
+			} else {
+				r.Config.TextSource = types.StringNull()
+			}
+		}
+		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.Enabled = types.BoolPointerValue(resp.Enabled)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
+		if resp.Partials != nil {
+			r.Partials = []tfTypes.Partials{}
+			if len(r.Partials) > len(resp.Partials) {
+				r.Partials = r.Partials[:len(resp.Partials)]
+			}
+			for partialsCount, partialsItem := range resp.Partials {
+				var partials tfTypes.Partials
+				partials.ID = types.StringPointerValue(partialsItem.ID)
+				partials.Name = types.StringPointerValue(partialsItem.Name)
+				partials.Path = types.StringPointerValue(partialsItem.Path)
+				if partialsCount+1 > len(r.Partials) {
+					r.Partials = append(r.Partials, partials)
+				} else {
+					r.Partials[partialsCount].ID = partials.ID
+					r.Partials[partialsCount].Name = partials.Name
+					r.Partials[partialsCount].Path = partials.Path
+				}
+			}
+		}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
+		for _, v := range resp.Protocols {
+			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
+		}
+		if resp.Route == nil {
+			r.Route = nil
+		} else {
+			r.Route = &tfTypes.Set{}
+			r.Route.ID = types.StringPointerValue(resp.Route.ID)
+		}
+		if resp.Service == nil {
+			r.Service = nil
+		} else {
+			r.Service = &tfTypes.Set{}
+			r.Service.ID = types.StringPointerValue(resp.Service.ID)
+		}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
+		for _, v := range resp.Tags {
+			r.Tags = append(r.Tags, types.StringValue(v))
+		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
+	}
+
+	return diags
+}
+
+func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsCreateAiazurecontentsafetyPluginRequest(ctx context.Context) (*operations.CreateAiazurecontentsafetyPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiAzureContentSafetyPlugin, aiAzureContentSafetyPluginDiags := r.ToSharedAiAzureContentSafetyPlugin(ctx)
+	diags.Append(aiAzureContentSafetyPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateAiazurecontentsafetyPluginRequest{
+		ControlPlaneID:             controlPlaneID,
+		AiAzureContentSafetyPlugin: *aiAzureContentSafetyPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsDeleteAiazurecontentsafetyPluginRequest(ctx context.Context) (*operations.DeleteAiazurecontentsafetyPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteAiazurecontentsafetyPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsGetAiazurecontentsafetyPluginRequest(ctx context.Context) (*operations.GetAiazurecontentsafetyPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetAiazurecontentsafetyPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsUpdateAiazurecontentsafetyPluginRequest(ctx context.Context) (*operations.UpdateAiazurecontentsafetyPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiAzureContentSafetyPlugin, aiAzureContentSafetyPluginDiags := r.ToSharedAiAzureContentSafetyPlugin(ctx)
+	diags.Append(aiAzureContentSafetyPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAiazurecontentsafetyPluginRequest{
+		PluginID:                   pluginID,
+		ControlPlaneID:             controlPlaneID,
+		AiAzureContentSafetyPlugin: *aiAzureContentSafetyPlugin,
+	}
+
+	return &out, diags
+}
+
 func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentSafetyPlugin(ctx context.Context) (*shared.AiAzureContentSafetyPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -249,203 +448,4 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentS
 	}
 
 	return &out, diags
-}
-
-func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsCreateAiazurecontentsafetyPluginRequest(ctx context.Context) (*operations.CreateAiazurecontentsafetyPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	aiAzureContentSafetyPlugin, aiAzureContentSafetyPluginDiags := r.ToSharedAiAzureContentSafetyPlugin(ctx)
-	diags.Append(aiAzureContentSafetyPluginDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateAiazurecontentsafetyPluginRequest{
-		ControlPlaneID:             controlPlaneID,
-		AiAzureContentSafetyPlugin: *aiAzureContentSafetyPlugin,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsUpdateAiazurecontentsafetyPluginRequest(ctx context.Context) (*operations.UpdateAiazurecontentsafetyPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	aiAzureContentSafetyPlugin, aiAzureContentSafetyPluginDiags := r.ToSharedAiAzureContentSafetyPlugin(ctx)
-	diags.Append(aiAzureContentSafetyPluginDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateAiazurecontentsafetyPluginRequest{
-		PluginID:                   pluginID,
-		ControlPlaneID:             controlPlaneID,
-		AiAzureContentSafetyPlugin: *aiAzureContentSafetyPlugin,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsGetAiazurecontentsafetyPluginRequest(ctx context.Context) (*operations.GetAiazurecontentsafetyPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.GetAiazurecontentsafetyPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsDeleteAiazurecontentsafetyPluginRequest(ctx context.Context) (*operations.DeleteAiazurecontentsafetyPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.DeleteAiazurecontentsafetyPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginAiAzureContentSafetyResourceModel) RefreshFromSharedAiAzureContentSafetyPlugin(ctx context.Context, resp *shared.AiAzureContentSafetyPlugin) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.AiAzureContentSafetyPluginConfig{}
-			r.Config.AzureAPIVersion = types.StringPointerValue(resp.Config.AzureAPIVersion)
-			r.Config.AzureClientID = types.StringPointerValue(resp.Config.AzureClientID)
-			r.Config.AzureClientSecret = types.StringPointerValue(resp.Config.AzureClientSecret)
-			r.Config.AzureTenantID = types.StringPointerValue(resp.Config.AzureTenantID)
-			r.Config.AzureUseManagedIdentity = types.BoolPointerValue(resp.Config.AzureUseManagedIdentity)
-			r.Config.BlocklistNames = make([]types.String, 0, len(resp.Config.BlocklistNames))
-			for _, v := range resp.Config.BlocklistNames {
-				r.Config.BlocklistNames = append(r.Config.BlocklistNames, types.StringValue(v))
-			}
-			r.Config.Categories = []tfTypes.Categories{}
-			if len(r.Config.Categories) > len(resp.Config.Categories) {
-				r.Config.Categories = r.Config.Categories[:len(resp.Config.Categories)]
-			}
-			for categoriesCount, categoriesItem := range resp.Config.Categories {
-				var categories tfTypes.Categories
-				categories.Name = types.StringValue(categoriesItem.Name)
-				categories.RejectionLevel = types.Int64Value(categoriesItem.RejectionLevel)
-				if categoriesCount+1 > len(r.Config.Categories) {
-					r.Config.Categories = append(r.Config.Categories, categories)
-				} else {
-					r.Config.Categories[categoriesCount].Name = categories.Name
-					r.Config.Categories[categoriesCount].RejectionLevel = categories.RejectionLevel
-				}
-			}
-			r.Config.ContentSafetyKey = types.StringPointerValue(resp.Config.ContentSafetyKey)
-			r.Config.ContentSafetyURL = types.StringPointerValue(resp.Config.ContentSafetyURL)
-			r.Config.HaltOnBlocklistHit = types.BoolPointerValue(resp.Config.HaltOnBlocklistHit)
-			if resp.Config.OutputType != nil {
-				r.Config.OutputType = types.StringValue(string(*resp.Config.OutputType))
-			} else {
-				r.Config.OutputType = types.StringNull()
-			}
-			r.Config.RevealFailureReason = types.BoolPointerValue(resp.Config.RevealFailureReason)
-			if resp.Config.TextSource != nil {
-				r.Config.TextSource = types.StringValue(string(*resp.Config.TextSource))
-			} else {
-				r.Config.TextSource = types.StringNull()
-			}
-		}
-		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.Enabled = types.BoolPointerValue(resp.Enabled)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.InstanceName = types.StringPointerValue(resp.InstanceName)
-		if resp.Ordering == nil {
-			r.Ordering = nil
-		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
-			if resp.Ordering.After == nil {
-				r.Ordering.After = nil
-			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
-				}
-			}
-			if resp.Ordering.Before == nil {
-				r.Ordering.Before = nil
-			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
-				}
-			}
-		}
-		if resp.Partials != nil {
-			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
-				var partials tfTypes.Partials
-				partials.ID = types.StringPointerValue(partialsItem.ID)
-				partials.Name = types.StringPointerValue(partialsItem.Name)
-				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
-			}
-		}
-		r.Protocols = make([]types.String, 0, len(resp.Protocols))
-		for _, v := range resp.Protocols {
-			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
-		}
-		if resp.Route == nil {
-			r.Route = nil
-		} else {
-			r.Route = &tfTypes.Set{}
-			r.Route.ID = types.StringPointerValue(resp.Route.ID)
-		}
-		if resp.Service == nil {
-			r.Service = nil
-		} else {
-			r.Service = &tfTypes.Set{}
-			r.Service.ID = types.StringPointerValue(resp.Service.ID)
-		}
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
-		}
-		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
-	}
-
-	return diags
 }

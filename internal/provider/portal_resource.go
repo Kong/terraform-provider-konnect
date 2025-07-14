@@ -29,6 +29,7 @@ func NewPortalResource() resource.Resource {
 
 // PortalResource defines the resource implementation.
 type PortalResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 

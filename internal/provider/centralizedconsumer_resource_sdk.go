@@ -11,6 +11,113 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *CentralizedConsumerResourceModel) RefreshFromSharedCentralizedConsumer(ctx context.Context, resp *shared.CentralizedConsumer) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.ConsumerGroups = make([]types.String, 0, len(resp.ConsumerGroups))
+		for _, v := range resp.ConsumerGroups {
+			r.ConsumerGroups = append(r.ConsumerGroups, types.StringValue(v))
+		}
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.CustomID = types.StringPointerValue(resp.CustomID)
+		r.ID = types.StringValue(resp.ID)
+		r.Tags = make([]types.String, 0, len(resp.Tags))
+		for _, v := range resp.Tags {
+			r.Tags = append(r.Tags, types.StringValue(v))
+		}
+		if resp.Type != nil {
+			r.Type = types.StringValue(string(*resp.Type))
+		} else {
+			r.Type = types.StringNull()
+		}
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+		r.Username = types.StringPointerValue(resp.Username)
+	}
+
+	return diags
+}
+
+func (r *CentralizedConsumerResourceModel) ToOperationsCreateConsumerInRealmRequest(ctx context.Context) (*operations.CreateConsumerInRealmRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var realmID string
+	realmID = r.RealmID.ValueString()
+
+	consumerCreateRequest, consumerCreateRequestDiags := r.ToSharedConsumerCreateRequest(ctx)
+	diags.Append(consumerCreateRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateConsumerInRealmRequest{
+		RealmID:               realmID,
+		ConsumerCreateRequest: *consumerCreateRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *CentralizedConsumerResourceModel) ToOperationsDeleteConsumerInRealmRequest(ctx context.Context) (*operations.DeleteConsumerInRealmRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var realmID string
+	realmID = r.RealmID.ValueString()
+
+	var consumerID string
+	consumerID = r.ID.ValueString()
+
+	out := operations.DeleteConsumerInRealmRequest{
+		RealmID:    realmID,
+		ConsumerID: consumerID,
+	}
+
+	return &out, diags
+}
+
+func (r *CentralizedConsumerResourceModel) ToOperationsGetConsumerFromRealmRequest(ctx context.Context) (*operations.GetConsumerFromRealmRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var realmID string
+	realmID = r.RealmID.ValueString()
+
+	var consumerID string
+	consumerID = r.ID.ValueString()
+
+	out := operations.GetConsumerFromRealmRequest{
+		RealmID:    realmID,
+		ConsumerID: consumerID,
+	}
+
+	return &out, diags
+}
+
+func (r *CentralizedConsumerResourceModel) ToOperationsUpdateConsumerInRealmRequest(ctx context.Context) (*operations.UpdateConsumerInRealmRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var realmID string
+	realmID = r.RealmID.ValueString()
+
+	var consumerID string
+	consumerID = r.ID.ValueString()
+
+	updateConsumerPayload, updateConsumerPayloadDiags := r.ToSharedUpdateConsumerPayload(ctx)
+	diags.Append(updateConsumerPayloadDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateConsumerInRealmRequest{
+		RealmID:               realmID,
+		ConsumerID:            consumerID,
+		UpdateConsumerPayload: *updateConsumerPayload,
+	}
+
+	return &out, diags
+}
+
 func (r *CentralizedConsumerResourceModel) ToSharedConsumerCreateRequest(ctx context.Context) (*shared.ConsumerCreateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -43,27 +150,6 @@ func (r *CentralizedConsumerResourceModel) ToSharedConsumerCreateRequest(ctx con
 		ConsumerGroups: consumerGroups,
 		Type:           typeVar,
 		Tags:           tags,
-	}
-
-	return &out, diags
-}
-
-func (r *CentralizedConsumerResourceModel) ToOperationsCreateConsumerInRealmRequest(ctx context.Context) (*operations.CreateConsumerInRealmRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var realmID string
-	realmID = r.RealmID.ValueString()
-
-	consumerCreateRequest, consumerCreateRequestDiags := r.ToSharedConsumerCreateRequest(ctx)
-	diags.Append(consumerCreateRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateConsumerInRealmRequest{
-		RealmID:               realmID,
-		ConsumerCreateRequest: *consumerCreateRequest,
 	}
 
 	return &out, diags
@@ -110,90 +196,4 @@ func (r *CentralizedConsumerResourceModel) ToSharedUpdateConsumerPayload(ctx con
 	}
 
 	return &out, diags
-}
-
-func (r *CentralizedConsumerResourceModel) ToOperationsUpdateConsumerInRealmRequest(ctx context.Context) (*operations.UpdateConsumerInRealmRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var realmID string
-	realmID = r.RealmID.ValueString()
-
-	var consumerID string
-	consumerID = r.ID.ValueString()
-
-	updateConsumerPayload, updateConsumerPayloadDiags := r.ToSharedUpdateConsumerPayload(ctx)
-	diags.Append(updateConsumerPayloadDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateConsumerInRealmRequest{
-		RealmID:               realmID,
-		ConsumerID:            consumerID,
-		UpdateConsumerPayload: *updateConsumerPayload,
-	}
-
-	return &out, diags
-}
-
-func (r *CentralizedConsumerResourceModel) ToOperationsGetConsumerFromRealmRequest(ctx context.Context) (*operations.GetConsumerFromRealmRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var realmID string
-	realmID = r.RealmID.ValueString()
-
-	var consumerID string
-	consumerID = r.ID.ValueString()
-
-	out := operations.GetConsumerFromRealmRequest{
-		RealmID:    realmID,
-		ConsumerID: consumerID,
-	}
-
-	return &out, diags
-}
-
-func (r *CentralizedConsumerResourceModel) ToOperationsDeleteConsumerInRealmRequest(ctx context.Context) (*operations.DeleteConsumerInRealmRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var realmID string
-	realmID = r.RealmID.ValueString()
-
-	var consumerID string
-	consumerID = r.ID.ValueString()
-
-	out := operations.DeleteConsumerInRealmRequest{
-		RealmID:    realmID,
-		ConsumerID: consumerID,
-	}
-
-	return &out, diags
-}
-
-func (r *CentralizedConsumerResourceModel) RefreshFromSharedCentralizedConsumer(ctx context.Context, resp *shared.CentralizedConsumer) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.ConsumerGroups = make([]types.String, 0, len(resp.ConsumerGroups))
-		for _, v := range resp.ConsumerGroups {
-			r.ConsumerGroups = append(r.ConsumerGroups, types.StringValue(v))
-		}
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.CustomID = types.StringPointerValue(resp.CustomID)
-		r.ID = types.StringValue(resp.ID)
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
-		}
-		if resp.Type != nil {
-			r.Type = types.StringValue(string(*resp.Type))
-		} else {
-			r.Type = types.StringNull()
-		}
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-		r.Username = types.StringPointerValue(resp.Username)
-	}
-
-	return diags
 }

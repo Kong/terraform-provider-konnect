@@ -11,6 +11,212 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *GatewayPluginRequestValidatorResourceModel) RefreshFromSharedRequestValidatorPlugin(ctx context.Context, resp *shared.RequestValidatorPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.RequestValidatorPluginConfig{}
+			r.Config.AllowedContentTypes = make([]types.String, 0, len(resp.Config.AllowedContentTypes))
+			for _, v := range resp.Config.AllowedContentTypes {
+				r.Config.AllowedContentTypes = append(r.Config.AllowedContentTypes, types.StringValue(v))
+			}
+			r.Config.BodySchema = types.StringPointerValue(resp.Config.BodySchema)
+			r.Config.ContentTypeParameterValidation = types.BoolPointerValue(resp.Config.ContentTypeParameterValidation)
+			r.Config.ParameterSchema = []tfTypes.ParameterSchema{}
+			if len(r.Config.ParameterSchema) > len(resp.Config.ParameterSchema) {
+				r.Config.ParameterSchema = r.Config.ParameterSchema[:len(resp.Config.ParameterSchema)]
+			}
+			for parameterSchemaCount, parameterSchemaItem := range resp.Config.ParameterSchema {
+				var parameterSchema tfTypes.ParameterSchema
+				parameterSchema.Explode = types.BoolPointerValue(parameterSchemaItem.Explode)
+				parameterSchema.In = types.StringValue(string(parameterSchemaItem.In))
+				parameterSchema.Name = types.StringValue(parameterSchemaItem.Name)
+				parameterSchema.Required = types.BoolValue(parameterSchemaItem.Required)
+				parameterSchema.Schema = types.StringPointerValue(parameterSchemaItem.Schema)
+				if parameterSchemaItem.Style != nil {
+					parameterSchema.Style = types.StringValue(string(*parameterSchemaItem.Style))
+				} else {
+					parameterSchema.Style = types.StringNull()
+				}
+				if parameterSchemaCount+1 > len(r.Config.ParameterSchema) {
+					r.Config.ParameterSchema = append(r.Config.ParameterSchema, parameterSchema)
+				} else {
+					r.Config.ParameterSchema[parameterSchemaCount].Explode = parameterSchema.Explode
+					r.Config.ParameterSchema[parameterSchemaCount].In = parameterSchema.In
+					r.Config.ParameterSchema[parameterSchemaCount].Name = parameterSchema.Name
+					r.Config.ParameterSchema[parameterSchemaCount].Required = parameterSchema.Required
+					r.Config.ParameterSchema[parameterSchemaCount].Schema = parameterSchema.Schema
+					r.Config.ParameterSchema[parameterSchemaCount].Style = parameterSchema.Style
+				}
+			}
+			r.Config.VerboseResponse = types.BoolPointerValue(resp.Config.VerboseResponse)
+			if resp.Config.Version != nil {
+				r.Config.Version = types.StringValue(string(*resp.Config.Version))
+			} else {
+				r.Config.Version = types.StringNull()
+			}
+		}
+		if resp.Consumer == nil {
+			r.Consumer = nil
+		} else {
+			r.Consumer = &tfTypes.Set{}
+			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
+		}
+		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.Enabled = types.BoolPointerValue(resp.Enabled)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
+		if resp.Partials != nil {
+			r.Partials = []tfTypes.Partials{}
+			if len(r.Partials) > len(resp.Partials) {
+				r.Partials = r.Partials[:len(resp.Partials)]
+			}
+			for partialsCount, partialsItem := range resp.Partials {
+				var partials tfTypes.Partials
+				partials.ID = types.StringPointerValue(partialsItem.ID)
+				partials.Name = types.StringPointerValue(partialsItem.Name)
+				partials.Path = types.StringPointerValue(partialsItem.Path)
+				if partialsCount+1 > len(r.Partials) {
+					r.Partials = append(r.Partials, partials)
+				} else {
+					r.Partials[partialsCount].ID = partials.ID
+					r.Partials[partialsCount].Name = partials.Name
+					r.Partials[partialsCount].Path = partials.Path
+				}
+			}
+		}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
+		for _, v := range resp.Protocols {
+			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
+		}
+		if resp.Route == nil {
+			r.Route = nil
+		} else {
+			r.Route = &tfTypes.Set{}
+			r.Route.ID = types.StringPointerValue(resp.Route.ID)
+		}
+		if resp.Service == nil {
+			r.Service = nil
+		} else {
+			r.Service = &tfTypes.Set{}
+			r.Service.ID = types.StringPointerValue(resp.Service.ID)
+		}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
+		for _, v := range resp.Tags {
+			r.Tags = append(r.Tags, types.StringValue(v))
+		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
+	}
+
+	return diags
+}
+
+func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsCreateRequestvalidatorPluginRequest(ctx context.Context) (*operations.CreateRequestvalidatorPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	requestValidatorPlugin, requestValidatorPluginDiags := r.ToSharedRequestValidatorPlugin(ctx)
+	diags.Append(requestValidatorPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateRequestvalidatorPluginRequest{
+		ControlPlaneID:         controlPlaneID,
+		RequestValidatorPlugin: *requestValidatorPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsDeleteRequestvalidatorPluginRequest(ctx context.Context) (*operations.DeleteRequestvalidatorPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteRequestvalidatorPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsGetRequestvalidatorPluginRequest(ctx context.Context) (*operations.GetRequestvalidatorPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetRequestvalidatorPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsUpdateRequestvalidatorPluginRequest(ctx context.Context) (*operations.UpdateRequestvalidatorPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	requestValidatorPlugin, requestValidatorPluginDiags := r.ToSharedRequestValidatorPlugin(ctx)
+	diags.Append(requestValidatorPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateRequestvalidatorPluginRequest{
+		PluginID:               pluginID,
+		ControlPlaneID:         controlPlaneID,
+		RequestValidatorPlugin: *requestValidatorPlugin,
+	}
+
+	return &out, diags
+}
+
 func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlugin(ctx context.Context) (*shared.RequestValidatorPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -236,210 +442,4 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlu
 	}
 
 	return &out, diags
-}
-
-func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsCreateRequestvalidatorPluginRequest(ctx context.Context) (*operations.CreateRequestvalidatorPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	requestValidatorPlugin, requestValidatorPluginDiags := r.ToSharedRequestValidatorPlugin(ctx)
-	diags.Append(requestValidatorPluginDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateRequestvalidatorPluginRequest{
-		ControlPlaneID:         controlPlaneID,
-		RequestValidatorPlugin: *requestValidatorPlugin,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsUpdateRequestvalidatorPluginRequest(ctx context.Context) (*operations.UpdateRequestvalidatorPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	requestValidatorPlugin, requestValidatorPluginDiags := r.ToSharedRequestValidatorPlugin(ctx)
-	diags.Append(requestValidatorPluginDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateRequestvalidatorPluginRequest{
-		PluginID:               pluginID,
-		ControlPlaneID:         controlPlaneID,
-		RequestValidatorPlugin: *requestValidatorPlugin,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsGetRequestvalidatorPluginRequest(ctx context.Context) (*operations.GetRequestvalidatorPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.GetRequestvalidatorPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginRequestValidatorResourceModel) ToOperationsDeleteRequestvalidatorPluginRequest(ctx context.Context) (*operations.DeleteRequestvalidatorPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.DeleteRequestvalidatorPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginRequestValidatorResourceModel) RefreshFromSharedRequestValidatorPlugin(ctx context.Context, resp *shared.RequestValidatorPlugin) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.RequestValidatorPluginConfig{}
-			r.Config.AllowedContentTypes = make([]types.String, 0, len(resp.Config.AllowedContentTypes))
-			for _, v := range resp.Config.AllowedContentTypes {
-				r.Config.AllowedContentTypes = append(r.Config.AllowedContentTypes, types.StringValue(v))
-			}
-			r.Config.BodySchema = types.StringPointerValue(resp.Config.BodySchema)
-			r.Config.ContentTypeParameterValidation = types.BoolPointerValue(resp.Config.ContentTypeParameterValidation)
-			r.Config.ParameterSchema = []tfTypes.ParameterSchema{}
-			if len(r.Config.ParameterSchema) > len(resp.Config.ParameterSchema) {
-				r.Config.ParameterSchema = r.Config.ParameterSchema[:len(resp.Config.ParameterSchema)]
-			}
-			for parameterSchemaCount, parameterSchemaItem := range resp.Config.ParameterSchema {
-				var parameterSchema tfTypes.ParameterSchema
-				parameterSchema.Explode = types.BoolPointerValue(parameterSchemaItem.Explode)
-				parameterSchema.In = types.StringValue(string(parameterSchemaItem.In))
-				parameterSchema.Name = types.StringValue(parameterSchemaItem.Name)
-				parameterSchema.Required = types.BoolValue(parameterSchemaItem.Required)
-				parameterSchema.Schema = types.StringPointerValue(parameterSchemaItem.Schema)
-				if parameterSchemaItem.Style != nil {
-					parameterSchema.Style = types.StringValue(string(*parameterSchemaItem.Style))
-				} else {
-					parameterSchema.Style = types.StringNull()
-				}
-				if parameterSchemaCount+1 > len(r.Config.ParameterSchema) {
-					r.Config.ParameterSchema = append(r.Config.ParameterSchema, parameterSchema)
-				} else {
-					r.Config.ParameterSchema[parameterSchemaCount].Explode = parameterSchema.Explode
-					r.Config.ParameterSchema[parameterSchemaCount].In = parameterSchema.In
-					r.Config.ParameterSchema[parameterSchemaCount].Name = parameterSchema.Name
-					r.Config.ParameterSchema[parameterSchemaCount].Required = parameterSchema.Required
-					r.Config.ParameterSchema[parameterSchemaCount].Schema = parameterSchema.Schema
-					r.Config.ParameterSchema[parameterSchemaCount].Style = parameterSchema.Style
-				}
-			}
-			r.Config.VerboseResponse = types.BoolPointerValue(resp.Config.VerboseResponse)
-			if resp.Config.Version != nil {
-				r.Config.Version = types.StringValue(string(*resp.Config.Version))
-			} else {
-				r.Config.Version = types.StringNull()
-			}
-		}
-		if resp.Consumer == nil {
-			r.Consumer = nil
-		} else {
-			r.Consumer = &tfTypes.Set{}
-			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.Enabled = types.BoolPointerValue(resp.Enabled)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.InstanceName = types.StringPointerValue(resp.InstanceName)
-		if resp.Ordering == nil {
-			r.Ordering = nil
-		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
-			if resp.Ordering.After == nil {
-				r.Ordering.After = nil
-			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
-				}
-			}
-			if resp.Ordering.Before == nil {
-				r.Ordering.Before = nil
-			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
-				}
-			}
-		}
-		if resp.Partials != nil {
-			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
-				var partials tfTypes.Partials
-				partials.ID = types.StringPointerValue(partialsItem.ID)
-				partials.Name = types.StringPointerValue(partialsItem.Name)
-				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
-			}
-		}
-		r.Protocols = make([]types.String, 0, len(resp.Protocols))
-		for _, v := range resp.Protocols {
-			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
-		}
-		if resp.Route == nil {
-			r.Route = nil
-		} else {
-			r.Route = &tfTypes.Set{}
-			r.Route.ID = types.StringPointerValue(resp.Route.ID)
-		}
-		if resp.Service == nil {
-			r.Service = nil
-		} else {
-			r.Service = &tfTypes.Set{}
-			r.Service.ID = types.StringPointerValue(resp.Service.ID)
-		}
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
-		}
-		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
-	}
-
-	return diags
 }

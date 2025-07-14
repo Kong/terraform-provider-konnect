@@ -11,6 +11,62 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *GatewayControlPlaneListDataSourceModel) RefreshFromSharedListControlPlanesResponse(ctx context.Context, resp *shared.ListControlPlanesResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.Data = []tfTypes.ControlPlane{}
+		if len(r.Data) > len(resp.Data) {
+			r.Data = r.Data[:len(resp.Data)]
+		}
+		for dataCount, dataItem := range resp.Data {
+			var data tfTypes.ControlPlane
+			data.Config.AuthType = types.StringValue(string(dataItem.Config.AuthType))
+			data.Config.CloudGateway = types.BoolValue(dataItem.Config.CloudGateway)
+			data.Config.ClusterType = types.StringValue(string(dataItem.Config.ClusterType))
+			data.Config.ControlPlaneEndpoint = types.StringValue(dataItem.Config.ControlPlaneEndpoint)
+			data.Config.ProxyUrls = []tfTypes.ProxyURL{}
+			for proxyUrlsCount, proxyUrlsItem := range dataItem.Config.ProxyUrls {
+				var proxyUrls tfTypes.ProxyURL
+				proxyUrls.Host = types.StringValue(proxyUrlsItem.Host)
+				proxyUrls.Port = types.Int64Value(proxyUrlsItem.Port)
+				proxyUrls.Protocol = types.StringValue(proxyUrlsItem.Protocol)
+				if proxyUrlsCount+1 > len(data.Config.ProxyUrls) {
+					data.Config.ProxyUrls = append(data.Config.ProxyUrls, proxyUrls)
+				} else {
+					data.Config.ProxyUrls[proxyUrlsCount].Host = proxyUrls.Host
+					data.Config.ProxyUrls[proxyUrlsCount].Port = proxyUrls.Port
+					data.Config.ProxyUrls[proxyUrlsCount].Protocol = proxyUrls.Protocol
+				}
+			}
+			data.Config.TelemetryEndpoint = types.StringValue(dataItem.Config.TelemetryEndpoint)
+			data.Description = types.StringPointerValue(dataItem.Description)
+			data.ID = types.StringValue(dataItem.ID)
+			if len(dataItem.Labels) > 0 {
+				data.Labels = make(map[string]types.String, len(dataItem.Labels))
+				for key, value := range dataItem.Labels {
+					data.Labels[key] = types.StringPointerValue(value)
+				}
+			}
+			data.Name = types.StringValue(dataItem.Name)
+			if dataCount+1 > len(r.Data) {
+				r.Data = append(r.Data, data)
+			} else {
+				r.Data[dataCount].Config = data.Config
+				r.Data[dataCount].Description = data.Description
+				r.Data[dataCount].ID = data.ID
+				r.Data[dataCount].Labels = data.Labels
+				r.Data[dataCount].Name = data.Name
+			}
+		}
+		r.Meta.Page.Number = types.Float64Value(resp.Meta.Page.Number)
+		r.Meta.Page.Size = types.Float64Value(resp.Meta.Page.Size)
+		r.Meta.Page.Total = types.Float64Value(resp.Meta.Page.Total)
+	}
+
+	return diags
+}
+
 func (r *GatewayControlPlaneListDataSourceModel) ToOperationsListControlPlanesRequest(ctx context.Context) (*operations.ListControlPlanesRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -126,60 +182,4 @@ func (r *GatewayControlPlaneListDataSourceModel) ToOperationsListControlPlanesRe
 	}
 
 	return &out, diags
-}
-
-func (r *GatewayControlPlaneListDataSourceModel) RefreshFromSharedListControlPlanesResponse(ctx context.Context, resp *shared.ListControlPlanesResponse) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.Data = []tfTypes.ControlPlane{}
-		if len(r.Data) > len(resp.Data) {
-			r.Data = r.Data[:len(resp.Data)]
-		}
-		for dataCount, dataItem := range resp.Data {
-			var data tfTypes.ControlPlane
-			data.Config.AuthType = types.StringValue(string(dataItem.Config.AuthType))
-			data.Config.CloudGateway = types.BoolValue(dataItem.Config.CloudGateway)
-			data.Config.ClusterType = types.StringValue(string(dataItem.Config.ClusterType))
-			data.Config.ControlPlaneEndpoint = types.StringValue(dataItem.Config.ControlPlaneEndpoint)
-			data.Config.ProxyUrls = []tfTypes.ProxyURL{}
-			for proxyUrlsCount, proxyUrlsItem := range dataItem.Config.ProxyUrls {
-				var proxyUrls tfTypes.ProxyURL
-				proxyUrls.Host = types.StringValue(proxyUrlsItem.Host)
-				proxyUrls.Port = types.Int64Value(proxyUrlsItem.Port)
-				proxyUrls.Protocol = types.StringValue(proxyUrlsItem.Protocol)
-				if proxyUrlsCount+1 > len(data.Config.ProxyUrls) {
-					data.Config.ProxyUrls = append(data.Config.ProxyUrls, proxyUrls)
-				} else {
-					data.Config.ProxyUrls[proxyUrlsCount].Host = proxyUrls.Host
-					data.Config.ProxyUrls[proxyUrlsCount].Port = proxyUrls.Port
-					data.Config.ProxyUrls[proxyUrlsCount].Protocol = proxyUrls.Protocol
-				}
-			}
-			data.Config.TelemetryEndpoint = types.StringValue(dataItem.Config.TelemetryEndpoint)
-			data.Description = types.StringPointerValue(dataItem.Description)
-			data.ID = types.StringValue(dataItem.ID)
-			if len(dataItem.Labels) > 0 {
-				data.Labels = make(map[string]types.String, len(dataItem.Labels))
-				for key, value := range dataItem.Labels {
-					data.Labels[key] = types.StringPointerValue(value)
-				}
-			}
-			data.Name = types.StringValue(dataItem.Name)
-			if dataCount+1 > len(r.Data) {
-				r.Data = append(r.Data, data)
-			} else {
-				r.Data[dataCount].Config = data.Config
-				r.Data[dataCount].Description = data.Description
-				r.Data[dataCount].ID = data.ID
-				r.Data[dataCount].Labels = data.Labels
-				r.Data[dataCount].Name = data.Name
-			}
-		}
-		r.Meta.Page.Number = types.Float64Value(resp.Meta.Page.Number)
-		r.Meta.Page.Size = types.Float64Value(resp.Meta.Page.Size)
-		r.Meta.Page.Total = types.Float64Value(resp.Meta.Page.Total)
-	}
-
-	return diags
 }

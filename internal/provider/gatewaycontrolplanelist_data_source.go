@@ -23,6 +23,7 @@ func NewGatewayControlPlaneListDataSource() datasource.DataSource {
 
 // GatewayControlPlaneListDataSource is the data source implementation.
 type GatewayControlPlaneListDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 

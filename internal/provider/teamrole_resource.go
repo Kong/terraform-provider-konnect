@@ -27,6 +27,7 @@ func NewTeamRoleResource() resource.Resource {
 
 // TeamRoleResource defines the resource implementation.
 type TeamRoleResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 

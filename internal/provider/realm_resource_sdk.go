@@ -11,6 +11,84 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *RealmResourceModel) RefreshFromSharedConsumerRealm(ctx context.Context, resp *shared.ConsumerRealm) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.AllowAllControlPlanes = types.BoolValue(resp.AllowAllControlPlanes)
+		r.AllowedControlPlanes = make([]types.String, 0, len(resp.AllowedControlPlanes))
+		for _, v := range resp.AllowedControlPlanes {
+			r.AllowedControlPlanes = append(r.AllowedControlPlanes, types.StringValue(v))
+		}
+		r.ConsumerGroups = make([]types.String, 0, len(resp.ConsumerGroups))
+		for _, v := range resp.ConsumerGroups {
+			r.ConsumerGroups = append(r.ConsumerGroups, types.StringValue(v))
+		}
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.ID = types.StringValue(resp.ID)
+		r.Name = types.StringValue(resp.Name)
+		r.NegativeTTL = types.Int64PointerValue(resp.NegativeTTL)
+		r.TTL = types.Int64PointerValue(resp.TTL)
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+	}
+
+	return diags
+}
+
+func (r *RealmResourceModel) ToOperationsDeleteRealmRequest(ctx context.Context) (*operations.DeleteRealmRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var realmID string
+	realmID = r.ID.ValueString()
+
+	forceDestroy := new(operations.Force)
+	if !r.ForceDestroy.IsUnknown() && !r.ForceDestroy.IsNull() {
+		*forceDestroy = operations.Force(r.ForceDestroy.ValueString())
+	} else {
+		forceDestroy = nil
+	}
+	out := operations.DeleteRealmRequest{
+		RealmID:      realmID,
+		ForceDestroy: forceDestroy,
+	}
+
+	return &out, diags
+}
+
+func (r *RealmResourceModel) ToOperationsGetRealmRequest(ctx context.Context) (*operations.GetRealmRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var realmID string
+	realmID = r.ID.ValueString()
+
+	out := operations.GetRealmRequest{
+		RealmID: realmID,
+	}
+
+	return &out, diags
+}
+
+func (r *RealmResourceModel) ToOperationsUpdateRealmRequest(ctx context.Context) (*operations.UpdateRealmRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var realmID string
+	realmID = r.ID.ValueString()
+
+	consumerRealmUpdateRequest, consumerRealmUpdateRequestDiags := r.ToSharedConsumerRealmUpdateRequest(ctx)
+	diags.Append(consumerRealmUpdateRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateRealmRequest{
+		RealmID:                    realmID,
+		ConsumerRealmUpdateRequest: *consumerRealmUpdateRequest,
+	}
+
+	return &out, diags
+}
+
 func (r *RealmResourceModel) ToSharedConsumerRealmCreateRequest(ctx context.Context) (*shared.ConsumerRealmCreateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -100,82 +178,4 @@ func (r *RealmResourceModel) ToSharedConsumerRealmUpdateRequest(ctx context.Cont
 	}
 
 	return &out, diags
-}
-
-func (r *RealmResourceModel) ToOperationsUpdateRealmRequest(ctx context.Context) (*operations.UpdateRealmRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var realmID string
-	realmID = r.ID.ValueString()
-
-	consumerRealmUpdateRequest, consumerRealmUpdateRequestDiags := r.ToSharedConsumerRealmUpdateRequest(ctx)
-	diags.Append(consumerRealmUpdateRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateRealmRequest{
-		RealmID:                    realmID,
-		ConsumerRealmUpdateRequest: *consumerRealmUpdateRequest,
-	}
-
-	return &out, diags
-}
-
-func (r *RealmResourceModel) ToOperationsGetRealmRequest(ctx context.Context) (*operations.GetRealmRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var realmID string
-	realmID = r.ID.ValueString()
-
-	out := operations.GetRealmRequest{
-		RealmID: realmID,
-	}
-
-	return &out, diags
-}
-
-func (r *RealmResourceModel) ToOperationsDeleteRealmRequest(ctx context.Context) (*operations.DeleteRealmRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var realmID string
-	realmID = r.ID.ValueString()
-
-	forceDestroy := new(operations.Force)
-	if !r.ForceDestroy.IsUnknown() && !r.ForceDestroy.IsNull() {
-		*forceDestroy = operations.Force(r.ForceDestroy.ValueString())
-	} else {
-		forceDestroy = nil
-	}
-	out := operations.DeleteRealmRequest{
-		RealmID:      realmID,
-		ForceDestroy: forceDestroy,
-	}
-
-	return &out, diags
-}
-
-func (r *RealmResourceModel) RefreshFromSharedConsumerRealm(ctx context.Context, resp *shared.ConsumerRealm) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.AllowAllControlPlanes = types.BoolValue(resp.AllowAllControlPlanes)
-		r.AllowedControlPlanes = make([]types.String, 0, len(resp.AllowedControlPlanes))
-		for _, v := range resp.AllowedControlPlanes {
-			r.AllowedControlPlanes = append(r.AllowedControlPlanes, types.StringValue(v))
-		}
-		r.ConsumerGroups = make([]types.String, 0, len(resp.ConsumerGroups))
-		for _, v := range resp.ConsumerGroups {
-			r.ConsumerGroups = append(r.ConsumerGroups, types.StringValue(v))
-		}
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.ID = types.StringValue(resp.ID)
-		r.Name = types.StringValue(resp.Name)
-		r.NegativeTTL = types.Int64PointerValue(resp.NegativeTTL)
-		r.TTL = types.Int64PointerValue(resp.TTL)
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-	}
-
-	return diags
 }

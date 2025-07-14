@@ -11,6 +11,74 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *PortalAuthResourceModel) RefreshFromSharedPortalAuthenticationSettingsResponse(ctx context.Context, resp *shared.PortalAuthenticationSettingsResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.BasicAuthEnabled = types.BoolValue(resp.BasicAuthEnabled)
+		r.IdpMappingEnabled = types.BoolPointerValue(resp.IdpMappingEnabled)
+		r.KonnectMappingEnabled = types.BoolValue(resp.KonnectMappingEnabled)
+		r.OidcAuthEnabled = types.BoolValue(resp.OidcAuthEnabled)
+		if resp.OidcConfig == nil {
+			r.OidcConfig = nil
+		} else {
+			r.OidcConfig = &tfTypes.PortalOIDCConfig{}
+			if resp.OidcConfig.ClaimMappings == nil {
+				r.OidcConfig.ClaimMappings = nil
+			} else {
+				r.OidcConfig.ClaimMappings = &tfTypes.PortalClaimMappings{}
+				r.OidcConfig.ClaimMappings.Email = types.StringPointerValue(resp.OidcConfig.ClaimMappings.Email)
+				r.OidcConfig.ClaimMappings.Groups = types.StringPointerValue(resp.OidcConfig.ClaimMappings.Groups)
+				r.OidcConfig.ClaimMappings.Name = types.StringPointerValue(resp.OidcConfig.ClaimMappings.Name)
+			}
+			r.OidcConfig.ClientID = types.StringValue(resp.OidcConfig.ClientID)
+			r.OidcConfig.Issuer = types.StringValue(resp.OidcConfig.Issuer)
+			r.OidcConfig.Scopes = make([]types.String, 0, len(resp.OidcConfig.Scopes))
+			for _, v := range resp.OidcConfig.Scopes {
+				r.OidcConfig.Scopes = append(r.OidcConfig.Scopes, types.StringValue(v))
+			}
+		}
+		r.OidcTeamMappingEnabled = types.BoolValue(resp.OidcTeamMappingEnabled)
+		r.SamlAuthEnabled = types.BoolPointerValue(resp.SamlAuthEnabled)
+	}
+
+	return diags
+}
+
+func (r *PortalAuthResourceModel) ToOperationsGetPortalAuthenticationSettingsRequest(ctx context.Context) (*operations.GetPortalAuthenticationSettingsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.GetPortalAuthenticationSettingsRequest{
+		PortalID: portalID,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalAuthResourceModel) ToOperationsUpdatePortalAuthenticationSettingsRequest(ctx context.Context) (*operations.UpdatePortalAuthenticationSettingsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	portalAuthenticationSettingsUpdateRequest, portalAuthenticationSettingsUpdateRequestDiags := r.ToSharedPortalAuthenticationSettingsUpdateRequest(ctx)
+	diags.Append(portalAuthenticationSettingsUpdateRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdatePortalAuthenticationSettingsRequest{
+		PortalID: portalID,
+		PortalAuthenticationSettingsUpdateRequest: portalAuthenticationSettingsUpdateRequest,
+	}
+
+	return &out, diags
+}
+
 func (r *PortalAuthResourceModel) ToSharedPortalAuthenticationSettingsUpdateRequest(ctx context.Context) (*shared.PortalAuthenticationSettingsUpdateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -113,72 +181,4 @@ func (r *PortalAuthResourceModel) ToSharedPortalAuthenticationSettingsUpdateRequ
 	}
 
 	return &out, diags
-}
-
-func (r *PortalAuthResourceModel) ToOperationsUpdatePortalAuthenticationSettingsRequest(ctx context.Context) (*operations.UpdatePortalAuthenticationSettingsRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var portalID string
-	portalID = r.PortalID.ValueString()
-
-	portalAuthenticationSettingsUpdateRequest, portalAuthenticationSettingsUpdateRequestDiags := r.ToSharedPortalAuthenticationSettingsUpdateRequest(ctx)
-	diags.Append(portalAuthenticationSettingsUpdateRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdatePortalAuthenticationSettingsRequest{
-		PortalID: portalID,
-		PortalAuthenticationSettingsUpdateRequest: portalAuthenticationSettingsUpdateRequest,
-	}
-
-	return &out, diags
-}
-
-func (r *PortalAuthResourceModel) ToOperationsGetPortalAuthenticationSettingsRequest(ctx context.Context) (*operations.GetPortalAuthenticationSettingsRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var portalID string
-	portalID = r.PortalID.ValueString()
-
-	out := operations.GetPortalAuthenticationSettingsRequest{
-		PortalID: portalID,
-	}
-
-	return &out, diags
-}
-
-func (r *PortalAuthResourceModel) RefreshFromSharedPortalAuthenticationSettingsResponse(ctx context.Context, resp *shared.PortalAuthenticationSettingsResponse) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.BasicAuthEnabled = types.BoolValue(resp.BasicAuthEnabled)
-		r.IdpMappingEnabled = types.BoolPointerValue(resp.IdpMappingEnabled)
-		r.KonnectMappingEnabled = types.BoolValue(resp.KonnectMappingEnabled)
-		r.OidcAuthEnabled = types.BoolValue(resp.OidcAuthEnabled)
-		if resp.OidcConfig == nil {
-			r.OidcConfig = nil
-		} else {
-			r.OidcConfig = &tfTypes.PortalOIDCConfig{}
-			if resp.OidcConfig.ClaimMappings == nil {
-				r.OidcConfig.ClaimMappings = nil
-			} else {
-				r.OidcConfig.ClaimMappings = &tfTypes.PortalClaimMappings{}
-				r.OidcConfig.ClaimMappings.Email = types.StringPointerValue(resp.OidcConfig.ClaimMappings.Email)
-				r.OidcConfig.ClaimMappings.Groups = types.StringPointerValue(resp.OidcConfig.ClaimMappings.Groups)
-				r.OidcConfig.ClaimMappings.Name = types.StringPointerValue(resp.OidcConfig.ClaimMappings.Name)
-			}
-			r.OidcConfig.ClientID = types.StringValue(resp.OidcConfig.ClientID)
-			r.OidcConfig.Issuer = types.StringValue(resp.OidcConfig.Issuer)
-			r.OidcConfig.Scopes = make([]types.String, 0, len(resp.OidcConfig.Scopes))
-			for _, v := range resp.OidcConfig.Scopes {
-				r.OidcConfig.Scopes = append(r.OidcConfig.Scopes, types.StringValue(v))
-			}
-		}
-		r.OidcTeamMappingEnabled = types.BoolValue(resp.OidcTeamMappingEnabled)
-		r.SamlAuthEnabled = types.BoolPointerValue(resp.SamlAuthEnabled)
-	}
-
-	return diags
 }

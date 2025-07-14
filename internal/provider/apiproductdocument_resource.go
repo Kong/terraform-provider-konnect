@@ -33,6 +33,7 @@ func NewAPIProductDocumentResource() resource.Resource {
 
 // APIProductDocumentResource defines the resource implementation.
 type APIProductDocumentResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
@@ -377,7 +378,7 @@ func (r *APIProductDocumentResource) ImportState(ctx context.Context, req resour
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "api_product_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a",  "id": "de5c9818-be5c-42e6-b514-e3d4bc30ddeb"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"api_product_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "id": "de5c9818-be5c-42e6-b514-e3d4bc30ddeb"}': `+err.Error())
 		return
 	}
 
@@ -391,5 +392,4 @@ func (r *APIProductDocumentResource) ImportState(ctx context.Context, req resour
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
-
 }
