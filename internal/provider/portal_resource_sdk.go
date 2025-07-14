@@ -209,6 +209,19 @@ func (r *PortalResourceModel) ToOperationsUpdatePortalRequest(ctx context.Contex
 	return &out, diags
 }
 
+func (r *PortalResourceModel) ToOperationsGetPortalRequest(ctx context.Context) (*operations.GetPortalRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.ID.ValueString()
+
+	out := operations.GetPortalRequest{
+		PortalID: portalID,
+	}
+
+	return &out, diags
+}
+
 func (r *PortalResourceModel) ToOperationsDeletePortalRequest(ctx context.Context) (*operations.DeletePortalRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

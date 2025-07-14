@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 023bd64b34be6fb7dcdd477b069acd84
+  docChecksum: 282f7ddc6753e79a1ca0eaa634d8d68e
   docVersion: 2.0.0
   speakeasyVersion: 1.567.3
   generationVersion: 2.632.2
@@ -19,6 +19,7 @@ features:
     globalServerURLs: 2.82.2
     groups: 2.81.2
     ignores: 2.81.1
+    inputOutputModels: 2.83.0
     methodServerURLs: 2.82.1
     nameOverrides: 2.81.3
     nullables: 0.0.0
@@ -310,6 +311,7 @@ generatedFiles:
   - examples/resources/konnect_gateway_vault/resource.tf
   - examples/resources/konnect_mesh_control_plane/import.sh
   - examples/resources/konnect_mesh_control_plane/resource.tf
+  - examples/resources/konnect_portal/import.sh
   - examples/resources/konnect_portal/resource.tf
   - examples/resources/konnect_portal_appearance/import.sh
   - examples/resources/konnect_portal_appearance/resource.tf
@@ -930,6 +932,7 @@ generatedFiles:
   - internal/provider/types/timeouts.go
   - internal/provider/types/tls_handshake_modifier_plugin_config.go
   - internal/provider/types/tls_metadata_headers_plugin_config.go
+  - internal/provider/types/tls_sans.go
   - internal/provider/types/topics.go
   - internal/provider/types/transform.go
   - internal/provider/types/transit_gateway_dns_config.go
@@ -1376,6 +1379,7 @@ generatedFiles:
   - internal/sdk/models/operations/getpartial.go
   - internal/sdk/models/operations/getplugin.go
   - internal/sdk/models/operations/getpluginschema.go
+  - internal/sdk/models/operations/getportal.go
   - internal/sdk/models/operations/getportalappearance.go
   - internal/sdk/models/operations/getportalauthenticationsettings.go
   - internal/sdk/models/operations/getportalproductversion.go
@@ -3303,7 +3307,7 @@ examples:
         application/json: {"consumer": null, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "password": "hashedsoopersecretvalue", "username": "darius"}
       responses:
         "201":
-          application/json: {"consumer": {"id": "84a73fb8-50fc-44a7-a4d5-aa17728ee83f"}, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "password": "hashedsoopersecretvalue", "username": "darius"}
+          application/json: {"consumer": {"id": "84a73fb8-50fc-44a7-a4d5-aa17728ee83f"}, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "username": "darius"}
   delete-basic-auth-with-consumer:
     "":
       parameters:
@@ -3335,7 +3339,7 @@ examples:
           BasicAuthId: "80db1b58-ca7c-4d21-b92a-64eb07725872"
       responses:
         "200":
-          application/json: {"consumer": {"id": "84a73fb8-50fc-44a7-a4d5-aa17728ee83f"}, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "password": "hashedsoopersecretvalue", "username": "darius"}
+          application/json: {"consumer": {"id": "84a73fb8-50fc-44a7-a4d5-aa17728ee83f"}, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "username": "darius"}
   create-hmac-auth-with-consumer:
     "":
       parameters:
@@ -12564,5 +12568,19 @@ examples:
           realmId: "0767d501-b2f3-4c34-865c-fe41cb3cbb84"
           consumerId: "<id>"
           keyId: "<id>"
+  get-portal:
+    speakeasy-default-get-portal:
+      parameters:
+        path:
+          portalId: "1672e313-9f8e-4485-a62b-716aad351889"
+      responses:
+        "200":
+          application/json: {"id": "9f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-02-07T17:46:57.52Z", "updated_at": "2022-10-08T17:00:00.52Z", "name": "Portal A", "display_name": "Developer Portal A", "description": "The Portal A", "default_domain": "123455678abcd.us.portal.konghq.com", "is_public": false, "rbac_enabled": true, "auto_approve_applications": false, "auto_approve_developers": true, "custom_domain": "api.example.com", "custom_client_domain": "portal.example.com", "application_count": 0, "developer_count": 0, "published_product_count": 0}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
 examplesVersion: 1.0.2
 generatedTests: {}

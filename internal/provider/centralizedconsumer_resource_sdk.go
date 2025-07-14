@@ -84,9 +84,12 @@ func (r *CentralizedConsumerResourceModel) ToSharedUpdateConsumerPayload(ctx con
 	} else {
 		customID = nil
 	}
-	consumerGroups := make([]string, 0, len(r.ConsumerGroups))
-	for _, consumerGroupsItem := range r.ConsumerGroups {
-		consumerGroups = append(consumerGroups, consumerGroupsItem.ValueString())
+	var consumerGroups []string
+	if r.ConsumerGroups != nil {
+		consumerGroups = make([]string, 0, len(r.ConsumerGroups))
+		for _, consumerGroupsItem := range r.ConsumerGroups {
+			consumerGroups = append(consumerGroups, consumerGroupsItem.ValueString())
+		}
 	}
 	typeVar := new(shared.ConsumerType)
 	if !r.Type.IsUnknown() && !r.Type.IsNull() {
