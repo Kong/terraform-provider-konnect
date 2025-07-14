@@ -11,6 +11,82 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *CloudGatewayNetworkResourceModel) RefreshFromSharedNetwork(ctx context.Context, resp *shared.Network) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.AvailabilityZones = make([]types.String, 0, len(resp.AvailabilityZones))
+		for _, v := range resp.AvailabilityZones {
+			r.AvailabilityZones = append(r.AvailabilityZones, types.StringValue(v))
+		}
+		r.CidrBlock = types.StringValue(resp.CidrBlock)
+		r.CloudGatewayProviderAccountID = types.StringValue(resp.CloudGatewayProviderAccountID)
+		r.ConfigurationReferenceCount = types.Int64Value(resp.ConfigurationReferenceCount)
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.Default = types.BoolValue(resp.Default)
+		r.EntityVersion = types.Int64Value(resp.EntityVersion)
+		r.ID = types.StringValue(resp.ID)
+		r.Name = types.StringValue(resp.Name)
+		r.ProviderMetadata.SubnetIds = make([]types.String, 0, len(resp.ProviderMetadata.SubnetIds))
+		for _, v := range resp.ProviderMetadata.SubnetIds {
+			r.ProviderMetadata.SubnetIds = append(r.ProviderMetadata.SubnetIds, types.StringValue(v))
+		}
+		r.ProviderMetadata.VpcID = types.StringPointerValue(resp.ProviderMetadata.VpcID)
+		r.Region = types.StringValue(resp.Region)
+		r.TransitGatewayCount = types.Int64Value(resp.TransitGatewayCount)
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+	}
+
+	return diags
+}
+
+func (r *CloudGatewayNetworkResourceModel) ToOperationsDeleteNetworkRequest(ctx context.Context) (*operations.DeleteNetworkRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var networkID string
+	networkID = r.ID.ValueString()
+
+	out := operations.DeleteNetworkRequest{
+		NetworkID: networkID,
+	}
+
+	return &out, diags
+}
+
+func (r *CloudGatewayNetworkResourceModel) ToOperationsGetNetworkRequest(ctx context.Context) (*operations.GetNetworkRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var networkID string
+	networkID = r.ID.ValueString()
+
+	out := operations.GetNetworkRequest{
+		NetworkID: networkID,
+	}
+
+	return &out, diags
+}
+
+func (r *CloudGatewayNetworkResourceModel) ToOperationsUpdateNetworkRequest(ctx context.Context) (*operations.UpdateNetworkRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var networkID string
+	networkID = r.ID.ValueString()
+
+	patchNetworkRequest, patchNetworkRequestDiags := r.ToSharedPatchNetworkRequest(ctx)
+	diags.Append(patchNetworkRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateNetworkRequest{
+		NetworkID:           networkID,
+		PatchNetworkRequest: *patchNetworkRequest,
+	}
+
+	return &out, diags
+}
+
 func (r *CloudGatewayNetworkResourceModel) ToSharedCreateNetworkRequest(ctx context.Context) (*shared.CreateNetworkRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -55,80 +131,4 @@ func (r *CloudGatewayNetworkResourceModel) ToSharedPatchNetworkRequest(ctx conte
 	}
 
 	return &out, diags
-}
-
-func (r *CloudGatewayNetworkResourceModel) ToOperationsUpdateNetworkRequest(ctx context.Context) (*operations.UpdateNetworkRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var networkID string
-	networkID = r.ID.ValueString()
-
-	patchNetworkRequest, patchNetworkRequestDiags := r.ToSharedPatchNetworkRequest(ctx)
-	diags.Append(patchNetworkRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateNetworkRequest{
-		NetworkID:           networkID,
-		PatchNetworkRequest: *patchNetworkRequest,
-	}
-
-	return &out, diags
-}
-
-func (r *CloudGatewayNetworkResourceModel) ToOperationsGetNetworkRequest(ctx context.Context) (*operations.GetNetworkRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var networkID string
-	networkID = r.ID.ValueString()
-
-	out := operations.GetNetworkRequest{
-		NetworkID: networkID,
-	}
-
-	return &out, diags
-}
-
-func (r *CloudGatewayNetworkResourceModel) ToOperationsDeleteNetworkRequest(ctx context.Context) (*operations.DeleteNetworkRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var networkID string
-	networkID = r.ID.ValueString()
-
-	out := operations.DeleteNetworkRequest{
-		NetworkID: networkID,
-	}
-
-	return &out, diags
-}
-
-func (r *CloudGatewayNetworkResourceModel) RefreshFromSharedNetwork(ctx context.Context, resp *shared.Network) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.AvailabilityZones = make([]types.String, 0, len(resp.AvailabilityZones))
-		for _, v := range resp.AvailabilityZones {
-			r.AvailabilityZones = append(r.AvailabilityZones, types.StringValue(v))
-		}
-		r.CidrBlock = types.StringValue(resp.CidrBlock)
-		r.CloudGatewayProviderAccountID = types.StringValue(resp.CloudGatewayProviderAccountID)
-		r.ConfigurationReferenceCount = types.Int64Value(resp.ConfigurationReferenceCount)
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.Default = types.BoolValue(resp.Default)
-		r.EntityVersion = types.Int64Value(resp.EntityVersion)
-		r.ID = types.StringValue(resp.ID)
-		r.Name = types.StringValue(resp.Name)
-		r.ProviderMetadata.SubnetIds = make([]types.String, 0, len(resp.ProviderMetadata.SubnetIds))
-		for _, v := range resp.ProviderMetadata.SubnetIds {
-			r.ProviderMetadata.SubnetIds = append(r.ProviderMetadata.SubnetIds, types.StringValue(v))
-		}
-		r.ProviderMetadata.VpcID = types.StringPointerValue(resp.ProviderMetadata.VpcID)
-		r.Region = types.StringValue(resp.Region)
-		r.TransitGatewayCount = types.Int64Value(resp.TransitGatewayCount)
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-	}
-
-	return diags
 }

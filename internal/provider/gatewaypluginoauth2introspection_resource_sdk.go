@@ -12,6 +12,193 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *GatewayPluginOauth2IntrospectionResourceModel) RefreshFromSharedOauth2IntrospectionPlugin(ctx context.Context, resp *shared.Oauth2IntrospectionPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.Oauth2IntrospectionPluginConfig{}
+			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
+			r.Config.AuthorizationValue = types.StringPointerValue(resp.Config.AuthorizationValue)
+			if resp.Config.ConsumerBy != nil {
+				r.Config.ConsumerBy = types.StringValue(string(*resp.Config.ConsumerBy))
+			} else {
+				r.Config.ConsumerBy = types.StringNull()
+			}
+			r.Config.CustomClaimsForward = make([]types.String, 0, len(resp.Config.CustomClaimsForward))
+			for _, v := range resp.Config.CustomClaimsForward {
+				r.Config.CustomClaimsForward = append(r.Config.CustomClaimsForward, types.StringValue(v))
+			}
+			if len(resp.Config.CustomIntrospectionHeaders) > 0 {
+				r.Config.CustomIntrospectionHeaders = make(map[string]types.String, len(resp.Config.CustomIntrospectionHeaders))
+				for key, value := range resp.Config.CustomIntrospectionHeaders {
+					result, _ := json.Marshal(value)
+					r.Config.CustomIntrospectionHeaders[key] = types.StringValue(string(result))
+				}
+			}
+			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
+			r.Config.IntrospectRequest = types.BoolPointerValue(resp.Config.IntrospectRequest)
+			r.Config.IntrospectionURL = types.StringPointerValue(resp.Config.IntrospectionURL)
+			r.Config.Keepalive = types.Int64PointerValue(resp.Config.Keepalive)
+			r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
+			r.Config.Timeout = types.Int64PointerValue(resp.Config.Timeout)
+			r.Config.TokenTypeHint = types.StringPointerValue(resp.Config.TokenTypeHint)
+			r.Config.TTL = types.Float64PointerValue(resp.Config.TTL)
+		}
+		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.Enabled = types.BoolPointerValue(resp.Enabled)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
+		if resp.Partials != nil {
+			r.Partials = []tfTypes.Partials{}
+			if len(r.Partials) > len(resp.Partials) {
+				r.Partials = r.Partials[:len(resp.Partials)]
+			}
+			for partialsCount, partialsItem := range resp.Partials {
+				var partials tfTypes.Partials
+				partials.ID = types.StringPointerValue(partialsItem.ID)
+				partials.Name = types.StringPointerValue(partialsItem.Name)
+				partials.Path = types.StringPointerValue(partialsItem.Path)
+				if partialsCount+1 > len(r.Partials) {
+					r.Partials = append(r.Partials, partials)
+				} else {
+					r.Partials[partialsCount].ID = partials.ID
+					r.Partials[partialsCount].Name = partials.Name
+					r.Partials[partialsCount].Path = partials.Path
+				}
+			}
+		}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
+		for _, v := range resp.Protocols {
+			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
+		}
+		if resp.Route == nil {
+			r.Route = nil
+		} else {
+			r.Route = &tfTypes.Set{}
+			r.Route.ID = types.StringPointerValue(resp.Route.ID)
+		}
+		if resp.Service == nil {
+			r.Service = nil
+		} else {
+			r.Service = &tfTypes.Set{}
+			r.Service.ID = types.StringPointerValue(resp.Service.ID)
+		}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
+		for _, v := range resp.Tags {
+			r.Tags = append(r.Tags, types.StringValue(v))
+		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
+	}
+
+	return diags
+}
+
+func (r *GatewayPluginOauth2IntrospectionResourceModel) ToOperationsCreateOauth2introspectionPluginRequest(ctx context.Context) (*operations.CreateOauth2introspectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	oauth2IntrospectionPlugin, oauth2IntrospectionPluginDiags := r.ToSharedOauth2IntrospectionPlugin(ctx)
+	diags.Append(oauth2IntrospectionPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateOauth2introspectionPluginRequest{
+		ControlPlaneID:            controlPlaneID,
+		Oauth2IntrospectionPlugin: *oauth2IntrospectionPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginOauth2IntrospectionResourceModel) ToOperationsDeleteOauth2introspectionPluginRequest(ctx context.Context) (*operations.DeleteOauth2introspectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteOauth2introspectionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginOauth2IntrospectionResourceModel) ToOperationsGetOauth2introspectionPluginRequest(ctx context.Context) (*operations.GetOauth2introspectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetOauth2introspectionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginOauth2IntrospectionResourceModel) ToOperationsUpdateOauth2introspectionPluginRequest(ctx context.Context) (*operations.UpdateOauth2introspectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	oauth2IntrospectionPlugin, oauth2IntrospectionPluginDiags := r.ToSharedOauth2IntrospectionPlugin(ctx)
+	diags.Append(oauth2IntrospectionPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateOauth2introspectionPluginRequest{
+		PluginID:                  pluginID,
+		ControlPlaneID:            controlPlaneID,
+		Oauth2IntrospectionPlugin: *oauth2IntrospectionPlugin,
+	}
+
+	return &out, diags
+}
+
 func (r *GatewayPluginOauth2IntrospectionResourceModel) ToSharedOauth2IntrospectionPlugin(ctx context.Context) (*shared.Oauth2IntrospectionPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -243,191 +430,4 @@ func (r *GatewayPluginOauth2IntrospectionResourceModel) ToSharedOauth2Introspect
 	}
 
 	return &out, diags
-}
-
-func (r *GatewayPluginOauth2IntrospectionResourceModel) ToOperationsCreateOauth2introspectionPluginRequest(ctx context.Context) (*operations.CreateOauth2introspectionPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	oauth2IntrospectionPlugin, oauth2IntrospectionPluginDiags := r.ToSharedOauth2IntrospectionPlugin(ctx)
-	diags.Append(oauth2IntrospectionPluginDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateOauth2introspectionPluginRequest{
-		ControlPlaneID:            controlPlaneID,
-		Oauth2IntrospectionPlugin: *oauth2IntrospectionPlugin,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginOauth2IntrospectionResourceModel) ToOperationsUpdateOauth2introspectionPluginRequest(ctx context.Context) (*operations.UpdateOauth2introspectionPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	oauth2IntrospectionPlugin, oauth2IntrospectionPluginDiags := r.ToSharedOauth2IntrospectionPlugin(ctx)
-	diags.Append(oauth2IntrospectionPluginDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateOauth2introspectionPluginRequest{
-		PluginID:                  pluginID,
-		ControlPlaneID:            controlPlaneID,
-		Oauth2IntrospectionPlugin: *oauth2IntrospectionPlugin,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginOauth2IntrospectionResourceModel) ToOperationsGetOauth2introspectionPluginRequest(ctx context.Context) (*operations.GetOauth2introspectionPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.GetOauth2introspectionPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginOauth2IntrospectionResourceModel) ToOperationsDeleteOauth2introspectionPluginRequest(ctx context.Context) (*operations.DeleteOauth2introspectionPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.DeleteOauth2introspectionPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginOauth2IntrospectionResourceModel) RefreshFromSharedOauth2IntrospectionPlugin(ctx context.Context, resp *shared.Oauth2IntrospectionPlugin) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.Oauth2IntrospectionPluginConfig{}
-			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-			r.Config.AuthorizationValue = types.StringPointerValue(resp.Config.AuthorizationValue)
-			if resp.Config.ConsumerBy != nil {
-				r.Config.ConsumerBy = types.StringValue(string(*resp.Config.ConsumerBy))
-			} else {
-				r.Config.ConsumerBy = types.StringNull()
-			}
-			r.Config.CustomClaimsForward = make([]types.String, 0, len(resp.Config.CustomClaimsForward))
-			for _, v := range resp.Config.CustomClaimsForward {
-				r.Config.CustomClaimsForward = append(r.Config.CustomClaimsForward, types.StringValue(v))
-			}
-			if len(resp.Config.CustomIntrospectionHeaders) > 0 {
-				r.Config.CustomIntrospectionHeaders = make(map[string]types.String, len(resp.Config.CustomIntrospectionHeaders))
-				for key, value := range resp.Config.CustomIntrospectionHeaders {
-					result, _ := json.Marshal(value)
-					r.Config.CustomIntrospectionHeaders[key] = types.StringValue(string(result))
-				}
-			}
-			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
-			r.Config.IntrospectRequest = types.BoolPointerValue(resp.Config.IntrospectRequest)
-			r.Config.IntrospectionURL = types.StringPointerValue(resp.Config.IntrospectionURL)
-			r.Config.Keepalive = types.Int64PointerValue(resp.Config.Keepalive)
-			r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
-			r.Config.Timeout = types.Int64PointerValue(resp.Config.Timeout)
-			r.Config.TokenTypeHint = types.StringPointerValue(resp.Config.TokenTypeHint)
-			r.Config.TTL = types.Float64PointerValue(resp.Config.TTL)
-		}
-		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.Enabled = types.BoolPointerValue(resp.Enabled)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.InstanceName = types.StringPointerValue(resp.InstanceName)
-		if resp.Ordering == nil {
-			r.Ordering = nil
-		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
-			if resp.Ordering.After == nil {
-				r.Ordering.After = nil
-			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
-				}
-			}
-			if resp.Ordering.Before == nil {
-				r.Ordering.Before = nil
-			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
-				}
-			}
-		}
-		if resp.Partials != nil {
-			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
-				var partials tfTypes.Partials
-				partials.ID = types.StringPointerValue(partialsItem.ID)
-				partials.Name = types.StringPointerValue(partialsItem.Name)
-				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
-			}
-		}
-		r.Protocols = make([]types.String, 0, len(resp.Protocols))
-		for _, v := range resp.Protocols {
-			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
-		}
-		if resp.Route == nil {
-			r.Route = nil
-		} else {
-			r.Route = &tfTypes.Set{}
-			r.Route.ID = types.StringPointerValue(resp.Route.ID)
-		}
-		if resp.Service == nil {
-			r.Service = nil
-		} else {
-			r.Service = &tfTypes.Set{}
-			r.Service.ID = types.StringPointerValue(resp.Service.ID)
-		}
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
-		}
-		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
-	}
-
-	return diags
 }

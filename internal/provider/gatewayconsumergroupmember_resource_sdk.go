@@ -8,22 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
-func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroupRequestBody(ctx context.Context) (*operations.AddConsumerToGroupRequestBody, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	consumerID := new(string)
-	if !r.ConsumerID.IsUnknown() && !r.ConsumerID.IsNull() {
-		*consumerID = r.ConsumerID.ValueString()
-	} else {
-		consumerID = nil
-	}
-	out := operations.AddConsumerToGroupRequestBody{
-		ConsumerID: consumerID,
-	}
-
-	return &out, diags
-}
-
 func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroupRequest(ctx context.Context) (*operations.AddConsumerToGroupRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -44,6 +28,22 @@ func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroup
 		ConsumerGroupID: consumerGroupID,
 		ControlPlaneID:  controlPlaneID,
 		RequestBody:     requestBody,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroupRequestBody(ctx context.Context) (*operations.AddConsumerToGroupRequestBody, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	consumerID := new(string)
+	if !r.ConsumerID.IsUnknown() && !r.ConsumerID.IsNull() {
+		*consumerID = r.ConsumerID.ValueString()
+	} else {
+		consumerID = nil
+	}
+	out := operations.AddConsumerToGroupRequestBody{
+		ConsumerID: consumerID,
 	}
 
 	return &out, diags

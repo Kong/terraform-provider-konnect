@@ -24,6 +24,7 @@ func NewTeamUserResource() resource.Resource {
 
 // TeamUserResource defines the resource implementation.
 type TeamUserResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 

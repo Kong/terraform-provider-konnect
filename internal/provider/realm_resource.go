@@ -33,6 +33,7 @@ func NewRealmResource() resource.Resource {
 
 // RealmResource defines the resource implementation.
 type RealmResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 

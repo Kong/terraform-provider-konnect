@@ -11,6 +11,209 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(ctx context.Context, resp *shared.SessionPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.SessionPluginConfig{}
+			r.Config.AbsoluteTimeout = types.Float64PointerValue(resp.Config.AbsoluteTimeout)
+			r.Config.Audience = types.StringPointerValue(resp.Config.Audience)
+			r.Config.CookieDomain = types.StringPointerValue(resp.Config.CookieDomain)
+			r.Config.CookieHTTPOnly = types.BoolPointerValue(resp.Config.CookieHTTPOnly)
+			r.Config.CookieName = types.StringPointerValue(resp.Config.CookieName)
+			r.Config.CookiePath = types.StringPointerValue(resp.Config.CookiePath)
+			if resp.Config.CookieSameSite != nil {
+				r.Config.CookieSameSite = types.StringValue(string(*resp.Config.CookieSameSite))
+			} else {
+				r.Config.CookieSameSite = types.StringNull()
+			}
+			r.Config.CookieSecure = types.BoolPointerValue(resp.Config.CookieSecure)
+			r.Config.HashSubject = types.BoolPointerValue(resp.Config.HashSubject)
+			r.Config.IdlingTimeout = types.Float64PointerValue(resp.Config.IdlingTimeout)
+			r.Config.LogoutMethods = make([]types.String, 0, len(resp.Config.LogoutMethods))
+			for _, v := range resp.Config.LogoutMethods {
+				r.Config.LogoutMethods = append(r.Config.LogoutMethods, types.StringValue(string(v)))
+			}
+			r.Config.LogoutPostArg = types.StringPointerValue(resp.Config.LogoutPostArg)
+			r.Config.LogoutQueryArg = types.StringPointerValue(resp.Config.LogoutQueryArg)
+			r.Config.ReadBodyForLogout = types.BoolPointerValue(resp.Config.ReadBodyForLogout)
+			r.Config.Remember = types.BoolPointerValue(resp.Config.Remember)
+			r.Config.RememberAbsoluteTimeout = types.Float64PointerValue(resp.Config.RememberAbsoluteTimeout)
+			r.Config.RememberCookieName = types.StringPointerValue(resp.Config.RememberCookieName)
+			r.Config.RememberRollingTimeout = types.Float64PointerValue(resp.Config.RememberRollingTimeout)
+			r.Config.RequestHeaders = make([]types.String, 0, len(resp.Config.RequestHeaders))
+			for _, v := range resp.Config.RequestHeaders {
+				r.Config.RequestHeaders = append(r.Config.RequestHeaders, types.StringValue(string(v)))
+			}
+			r.Config.ResponseHeaders = make([]types.String, 0, len(resp.Config.ResponseHeaders))
+			for _, v := range resp.Config.ResponseHeaders {
+				r.Config.ResponseHeaders = append(r.Config.ResponseHeaders, types.StringValue(string(v)))
+			}
+			r.Config.RollingTimeout = types.Float64PointerValue(resp.Config.RollingTimeout)
+			r.Config.Secret = types.StringPointerValue(resp.Config.Secret)
+			r.Config.StaleTTL = types.Float64PointerValue(resp.Config.StaleTTL)
+			if resp.Config.Storage != nil {
+				r.Config.Storage = types.StringValue(string(*resp.Config.Storage))
+			} else {
+				r.Config.Storage = types.StringNull()
+			}
+			r.Config.StoreMetadata = types.BoolPointerValue(resp.Config.StoreMetadata)
+		}
+		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.Enabled = types.BoolPointerValue(resp.Enabled)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
+		if resp.Partials != nil {
+			r.Partials = []tfTypes.Partials{}
+			if len(r.Partials) > len(resp.Partials) {
+				r.Partials = r.Partials[:len(resp.Partials)]
+			}
+			for partialsCount, partialsItem := range resp.Partials {
+				var partials tfTypes.Partials
+				partials.ID = types.StringPointerValue(partialsItem.ID)
+				partials.Name = types.StringPointerValue(partialsItem.Name)
+				partials.Path = types.StringPointerValue(partialsItem.Path)
+				if partialsCount+1 > len(r.Partials) {
+					r.Partials = append(r.Partials, partials)
+				} else {
+					r.Partials[partialsCount].ID = partials.ID
+					r.Partials[partialsCount].Name = partials.Name
+					r.Partials[partialsCount].Path = partials.Path
+				}
+			}
+		}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
+		for _, v := range resp.Protocols {
+			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
+		}
+		if resp.Route == nil {
+			r.Route = nil
+		} else {
+			r.Route = &tfTypes.Set{}
+			r.Route.ID = types.StringPointerValue(resp.Route.ID)
+		}
+		if resp.Service == nil {
+			r.Service = nil
+		} else {
+			r.Service = &tfTypes.Set{}
+			r.Service.ID = types.StringPointerValue(resp.Service.ID)
+		}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
+		for _, v := range resp.Tags {
+			r.Tags = append(r.Tags, types.StringValue(v))
+		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
+	}
+
+	return diags
+}
+
+func (r *GatewayPluginSessionResourceModel) ToOperationsCreateSessionPluginRequest(ctx context.Context) (*operations.CreateSessionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	sessionPlugin, sessionPluginDiags := r.ToSharedSessionPlugin(ctx)
+	diags.Append(sessionPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateSessionPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		SessionPlugin:  *sessionPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginSessionResourceModel) ToOperationsDeleteSessionPluginRequest(ctx context.Context) (*operations.DeleteSessionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteSessionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginSessionResourceModel) ToOperationsGetSessionPluginRequest(ctx context.Context) (*operations.GetSessionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetSessionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginSessionResourceModel) ToOperationsUpdateSessionPluginRequest(ctx context.Context) (*operations.UpdateSessionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	sessionPlugin, sessionPluginDiags := r.ToSharedSessionPlugin(ctx)
+	diags.Append(sessionPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateSessionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		SessionPlugin:  *sessionPlugin,
+	}
+
+	return &out, diags
+}
+
 func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin(ctx context.Context) (*shared.SessionPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -322,207 +525,4 @@ func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin(ctx context.Co
 	}
 
 	return &out, diags
-}
-
-func (r *GatewayPluginSessionResourceModel) ToOperationsCreateSessionPluginRequest(ctx context.Context) (*operations.CreateSessionPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	sessionPlugin, sessionPluginDiags := r.ToSharedSessionPlugin(ctx)
-	diags.Append(sessionPluginDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateSessionPluginRequest{
-		ControlPlaneID: controlPlaneID,
-		SessionPlugin:  *sessionPlugin,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginSessionResourceModel) ToOperationsUpdateSessionPluginRequest(ctx context.Context) (*operations.UpdateSessionPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	sessionPlugin, sessionPluginDiags := r.ToSharedSessionPlugin(ctx)
-	diags.Append(sessionPluginDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateSessionPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-		SessionPlugin:  *sessionPlugin,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginSessionResourceModel) ToOperationsGetSessionPluginRequest(ctx context.Context) (*operations.GetSessionPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.GetSessionPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginSessionResourceModel) ToOperationsDeleteSessionPluginRequest(ctx context.Context) (*operations.DeleteSessionPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.DeleteSessionPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(ctx context.Context, resp *shared.SessionPlugin) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.SessionPluginConfig{}
-			r.Config.AbsoluteTimeout = types.Float64PointerValue(resp.Config.AbsoluteTimeout)
-			r.Config.Audience = types.StringPointerValue(resp.Config.Audience)
-			r.Config.CookieDomain = types.StringPointerValue(resp.Config.CookieDomain)
-			r.Config.CookieHTTPOnly = types.BoolPointerValue(resp.Config.CookieHTTPOnly)
-			r.Config.CookieName = types.StringPointerValue(resp.Config.CookieName)
-			r.Config.CookiePath = types.StringPointerValue(resp.Config.CookiePath)
-			if resp.Config.CookieSameSite != nil {
-				r.Config.CookieSameSite = types.StringValue(string(*resp.Config.CookieSameSite))
-			} else {
-				r.Config.CookieSameSite = types.StringNull()
-			}
-			r.Config.CookieSecure = types.BoolPointerValue(resp.Config.CookieSecure)
-			r.Config.HashSubject = types.BoolPointerValue(resp.Config.HashSubject)
-			r.Config.IdlingTimeout = types.Float64PointerValue(resp.Config.IdlingTimeout)
-			r.Config.LogoutMethods = make([]types.String, 0, len(resp.Config.LogoutMethods))
-			for _, v := range resp.Config.LogoutMethods {
-				r.Config.LogoutMethods = append(r.Config.LogoutMethods, types.StringValue(string(v)))
-			}
-			r.Config.LogoutPostArg = types.StringPointerValue(resp.Config.LogoutPostArg)
-			r.Config.LogoutQueryArg = types.StringPointerValue(resp.Config.LogoutQueryArg)
-			r.Config.ReadBodyForLogout = types.BoolPointerValue(resp.Config.ReadBodyForLogout)
-			r.Config.Remember = types.BoolPointerValue(resp.Config.Remember)
-			r.Config.RememberAbsoluteTimeout = types.Float64PointerValue(resp.Config.RememberAbsoluteTimeout)
-			r.Config.RememberCookieName = types.StringPointerValue(resp.Config.RememberCookieName)
-			r.Config.RememberRollingTimeout = types.Float64PointerValue(resp.Config.RememberRollingTimeout)
-			r.Config.RequestHeaders = make([]types.String, 0, len(resp.Config.RequestHeaders))
-			for _, v := range resp.Config.RequestHeaders {
-				r.Config.RequestHeaders = append(r.Config.RequestHeaders, types.StringValue(string(v)))
-			}
-			r.Config.ResponseHeaders = make([]types.String, 0, len(resp.Config.ResponseHeaders))
-			for _, v := range resp.Config.ResponseHeaders {
-				r.Config.ResponseHeaders = append(r.Config.ResponseHeaders, types.StringValue(string(v)))
-			}
-			r.Config.RollingTimeout = types.Float64PointerValue(resp.Config.RollingTimeout)
-			r.Config.Secret = types.StringPointerValue(resp.Config.Secret)
-			r.Config.StaleTTL = types.Float64PointerValue(resp.Config.StaleTTL)
-			if resp.Config.Storage != nil {
-				r.Config.Storage = types.StringValue(string(*resp.Config.Storage))
-			} else {
-				r.Config.Storage = types.StringNull()
-			}
-			r.Config.StoreMetadata = types.BoolPointerValue(resp.Config.StoreMetadata)
-		}
-		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.Enabled = types.BoolPointerValue(resp.Enabled)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.InstanceName = types.StringPointerValue(resp.InstanceName)
-		if resp.Ordering == nil {
-			r.Ordering = nil
-		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
-			if resp.Ordering.After == nil {
-				r.Ordering.After = nil
-			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
-				}
-			}
-			if resp.Ordering.Before == nil {
-				r.Ordering.Before = nil
-			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
-				}
-			}
-		}
-		if resp.Partials != nil {
-			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
-				var partials tfTypes.Partials
-				partials.ID = types.StringPointerValue(partialsItem.ID)
-				partials.Name = types.StringPointerValue(partialsItem.Name)
-				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
-			}
-		}
-		r.Protocols = make([]types.String, 0, len(resp.Protocols))
-		for _, v := range resp.Protocols {
-			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
-		}
-		if resp.Route == nil {
-			r.Route = nil
-		} else {
-			r.Route = &tfTypes.Set{}
-			r.Route.ID = types.StringPointerValue(resp.Route.ID)
-		}
-		if resp.Service == nil {
-			r.Service = nil
-		} else {
-			r.Service = &tfTypes.Set{}
-			r.Service.ID = types.StringPointerValue(resp.Service.ID)
-		}
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
-		}
-		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
-	}
-
-	return diags
 }

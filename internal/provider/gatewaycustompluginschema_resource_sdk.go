@@ -10,17 +10,17 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayCustomPluginSchemaResourceModel) ToSharedCreatePluginSchemas(ctx context.Context) (*shared.CreatePluginSchemas, diag.Diagnostics) {
+func (r *GatewayCustomPluginSchemaResourceModel) RefreshFromSharedItem(ctx context.Context, resp *shared.Item) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	var luaSchema string
-	luaSchema = r.LuaSchema.ValueString()
-
-	out := shared.CreatePluginSchemas{
-		LuaSchema: luaSchema,
+	if resp != nil {
+		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.LuaSchema = types.StringPointerValue(resp.LuaSchema)
+		r.Name = types.StringPointerValue(resp.Name)
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
 
-	return &out, diags
+	return diags
 }
 
 func (r *GatewayCustomPluginSchemaResourceModel) ToOperationsCreatePluginSchemasRequest(ctx context.Context) (*operations.CreatePluginSchemasRequest, diag.Diagnostics) {
@@ -39,6 +39,40 @@ func (r *GatewayCustomPluginSchemaResourceModel) ToOperationsCreatePluginSchemas
 	out := operations.CreatePluginSchemasRequest{
 		ControlPlaneID:      controlPlaneID,
 		CreatePluginSchemas: createPluginSchemas,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayCustomPluginSchemaResourceModel) ToOperationsDeletePluginSchemasRequest(ctx context.Context) (*operations.DeletePluginSchemasRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.DeletePluginSchemasRequest{
+		ControlPlaneID: controlPlaneID,
+		Name:           name,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayCustomPluginSchemaResourceModel) ToOperationsGetPluginSchemaRequest(ctx context.Context) (*operations.GetPluginSchemaRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.GetPluginSchemaRequest{
+		ControlPlaneID: controlPlaneID,
+		Name:           name,
 	}
 
 	return &out, diags
@@ -69,49 +103,15 @@ func (r *GatewayCustomPluginSchemaResourceModel) ToOperationsUpdatePluginSchemas
 	return &out, diags
 }
 
-func (r *GatewayCustomPluginSchemaResourceModel) ToOperationsGetPluginSchemaRequest(ctx context.Context) (*operations.GetPluginSchemaRequest, diag.Diagnostics) {
+func (r *GatewayCustomPluginSchemaResourceModel) ToSharedCreatePluginSchemas(ctx context.Context) (*shared.CreatePluginSchemas, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
+	var luaSchema string
+	luaSchema = r.LuaSchema.ValueString()
 
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.GetPluginSchemaRequest{
-		ControlPlaneID: controlPlaneID,
-		Name:           name,
+	out := shared.CreatePluginSchemas{
+		LuaSchema: luaSchema,
 	}
 
 	return &out, diags
-}
-
-func (r *GatewayCustomPluginSchemaResourceModel) ToOperationsDeletePluginSchemasRequest(ctx context.Context) (*operations.DeletePluginSchemasRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.DeletePluginSchemasRequest{
-		ControlPlaneID: controlPlaneID,
-		Name:           name,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayCustomPluginSchemaResourceModel) RefreshFromSharedItem(ctx context.Context, resp *shared.Item) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.LuaSchema = types.StringPointerValue(resp.LuaSchema)
-		r.Name = types.StringPointerValue(resp.Name)
-		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
-	}
-
-	return diags
 }

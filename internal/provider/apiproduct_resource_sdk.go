@@ -12,6 +12,99 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *APIProductResourceModel) RefreshFromSharedAPIProduct(ctx context.Context, resp *shared.APIProduct) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.Description = types.StringPointerValue(resp.Description)
+		r.ID = types.StringValue(resp.ID)
+		if len(resp.Labels) > 0 {
+			r.Labels = make(map[string]types.String, len(resp.Labels))
+			for key, value := range resp.Labels {
+				r.Labels[key] = types.StringPointerValue(value)
+			}
+		}
+		r.Name = types.StringValue(resp.Name)
+		r.PortalIds = make([]types.String, 0, len(resp.PortalIds))
+		for _, v := range resp.PortalIds {
+			r.PortalIds = append(r.PortalIds, types.StringValue(v))
+		}
+		r.Portals = []tfTypes.APIProductPortal{}
+		if len(r.Portals) > len(resp.Portals) {
+			r.Portals = r.Portals[:len(resp.Portals)]
+		}
+		for portalsCount, portalsItem := range resp.Portals {
+			var portals tfTypes.APIProductPortal
+			portals.PortalID = types.StringValue(portalsItem.PortalID)
+			portals.PortalName = types.StringValue(portalsItem.PortalName)
+			if portalsCount+1 > len(r.Portals) {
+				r.Portals = append(r.Portals, portals)
+			} else {
+				r.Portals[portalsCount].PortalID = portals.PortalID
+				r.Portals[portalsCount].PortalName = portals.PortalName
+			}
+		}
+		if len(resp.PublicLabels) > 0 {
+			r.PublicLabels = make(map[string]types.String, len(resp.PublicLabels))
+			for key1, value1 := range resp.PublicLabels {
+				r.PublicLabels[key1] = types.StringValue(value1)
+			}
+		}
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+		r.VersionCount = types.Float64Value(resp.VersionCount)
+	}
+
+	return diags
+}
+
+func (r *APIProductResourceModel) ToOperationsDeleteAPIProductRequest(ctx context.Context) (*operations.DeleteAPIProductRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.DeleteAPIProductRequest{
+		ID: id,
+	}
+
+	return &out, diags
+}
+
+func (r *APIProductResourceModel) ToOperationsGetAPIProductRequest(ctx context.Context) (*operations.GetAPIProductRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.GetAPIProductRequest{
+		ID: id,
+	}
+
+	return &out, diags
+}
+
+func (r *APIProductResourceModel) ToOperationsUpdateAPIProductRequest(ctx context.Context) (*operations.UpdateAPIProductRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	updateAPIProductDTO, updateAPIProductDTODiags := r.ToSharedUpdateAPIProductDTO(ctx)
+	diags.Append(updateAPIProductDTODiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAPIProductRequest{
+		ID:                  id,
+		UpdateAPIProductDTO: *updateAPIProductDTO,
+	}
+
+	return &out, diags
+}
+
 func (r *APIProductResourceModel) ToSharedCreateAPIProductDTO(ctx context.Context) (*shared.CreateAPIProductDTO, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -104,97 +197,4 @@ func (r *APIProductResourceModel) ToSharedUpdateAPIProductDTO(ctx context.Contex
 	}
 
 	return &out, diags
-}
-
-func (r *APIProductResourceModel) ToOperationsUpdateAPIProductRequest(ctx context.Context) (*operations.UpdateAPIProductRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	updateAPIProductDTO, updateAPIProductDTODiags := r.ToSharedUpdateAPIProductDTO(ctx)
-	diags.Append(updateAPIProductDTODiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateAPIProductRequest{
-		ID:                  id,
-		UpdateAPIProductDTO: *updateAPIProductDTO,
-	}
-
-	return &out, diags
-}
-
-func (r *APIProductResourceModel) ToOperationsGetAPIProductRequest(ctx context.Context) (*operations.GetAPIProductRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.GetAPIProductRequest{
-		ID: id,
-	}
-
-	return &out, diags
-}
-
-func (r *APIProductResourceModel) ToOperationsDeleteAPIProductRequest(ctx context.Context) (*operations.DeleteAPIProductRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.DeleteAPIProductRequest{
-		ID: id,
-	}
-
-	return &out, diags
-}
-
-func (r *APIProductResourceModel) RefreshFromSharedAPIProduct(ctx context.Context, resp *shared.APIProduct) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.Description = types.StringPointerValue(resp.Description)
-		r.ID = types.StringValue(resp.ID)
-		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String, len(resp.Labels))
-			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringPointerValue(value)
-			}
-		}
-		r.Name = types.StringValue(resp.Name)
-		r.PortalIds = make([]types.String, 0, len(resp.PortalIds))
-		for _, v := range resp.PortalIds {
-			r.PortalIds = append(r.PortalIds, types.StringValue(v))
-		}
-		r.Portals = []tfTypes.APIProductPortal{}
-		if len(r.Portals) > len(resp.Portals) {
-			r.Portals = r.Portals[:len(resp.Portals)]
-		}
-		for portalsCount, portalsItem := range resp.Portals {
-			var portals tfTypes.APIProductPortal
-			portals.PortalID = types.StringValue(portalsItem.PortalID)
-			portals.PortalName = types.StringValue(portalsItem.PortalName)
-			if portalsCount+1 > len(r.Portals) {
-				r.Portals = append(r.Portals, portals)
-			} else {
-				r.Portals[portalsCount].PortalID = portals.PortalID
-				r.Portals[portalsCount].PortalName = portals.PortalName
-			}
-		}
-		if len(resp.PublicLabels) > 0 {
-			r.PublicLabels = make(map[string]types.String, len(resp.PublicLabels))
-			for key1, value1 := range resp.PublicLabels {
-				r.PublicLabels[key1] = types.StringValue(value1)
-			}
-		}
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-		r.VersionCount = types.Float64Value(resp.VersionCount)
-	}
-
-	return diags
 }

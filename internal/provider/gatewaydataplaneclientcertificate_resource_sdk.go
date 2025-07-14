@@ -10,17 +10,17 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayDataPlaneClientCertificateResourceModel) ToSharedDataPlaneClientCertificateRequest(ctx context.Context) (*shared.DataPlaneClientCertificateRequest, diag.Diagnostics) {
+func (r *GatewayDataPlaneClientCertificateResourceModel) RefreshFromSharedDataPlaneClientCertificate(ctx context.Context, resp *shared.DataPlaneClientCertificate) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	var cert string
-	cert = r.Cert.ValueString()
-
-	out := shared.DataPlaneClientCertificateRequest{
-		Cert: cert,
+	if resp != nil {
+		r.Cert = types.StringPointerValue(resp.Cert)
+		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
 
-	return &out, diags
+	return diags
 }
 
 func (r *GatewayDataPlaneClientCertificateResourceModel) ToOperationsCreateDataplaneCertificateRequest(ctx context.Context) (*operations.CreateDataplaneCertificateRequest, diag.Diagnostics) {
@@ -44,23 +44,6 @@ func (r *GatewayDataPlaneClientCertificateResourceModel) ToOperationsCreateDatap
 	return &out, diags
 }
 
-func (r *GatewayDataPlaneClientCertificateResourceModel) ToOperationsGetDataplaneCertificateRequest(ctx context.Context) (*operations.GetDataplaneCertificateRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	var certificateID string
-	certificateID = r.ID.ValueString()
-
-	out := operations.GetDataplaneCertificateRequest{
-		ControlPlaneID: controlPlaneID,
-		CertificateID:  certificateID,
-	}
-
-	return &out, diags
-}
-
 func (r *GatewayDataPlaneClientCertificateResourceModel) ToOperationsDeleteDataplaneCertificateRequest(ctx context.Context) (*operations.DeleteDataplaneCertificateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -78,15 +61,32 @@ func (r *GatewayDataPlaneClientCertificateResourceModel) ToOperationsDeleteDatap
 	return &out, diags
 }
 
-func (r *GatewayDataPlaneClientCertificateResourceModel) RefreshFromSharedDataPlaneClientCertificate(ctx context.Context, resp *shared.DataPlaneClientCertificate) diag.Diagnostics {
+func (r *GatewayDataPlaneClientCertificateResourceModel) ToOperationsGetDataplaneCertificateRequest(ctx context.Context) (*operations.GetDataplaneCertificateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	if resp != nil {
-		r.Cert = types.StringPointerValue(resp.Cert)
-		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var certificateID string
+	certificateID = r.ID.ValueString()
+
+	out := operations.GetDataplaneCertificateRequest{
+		ControlPlaneID: controlPlaneID,
+		CertificateID:  certificateID,
 	}
 
-	return diags
+	return &out, diags
+}
+
+func (r *GatewayDataPlaneClientCertificateResourceModel) ToSharedDataPlaneClientCertificateRequest(ctx context.Context) (*shared.DataPlaneClientCertificateRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cert string
+	cert = r.Cert.ValueString()
+
+	out := shared.DataPlaneClientCertificateRequest{
+		Cert: cert,
+	}
+
+	return &out, diags
 }

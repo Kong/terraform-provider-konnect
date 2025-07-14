@@ -11,6 +11,181 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *GatewayPluginLdapAuthResourceModel) RefreshFromSharedLdapAuthPlugin(ctx context.Context, resp *shared.LdapAuthPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.LdapAuthPluginConfig{}
+			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
+			r.Config.Attribute = types.StringPointerValue(resp.Config.Attribute)
+			r.Config.BaseDn = types.StringPointerValue(resp.Config.BaseDn)
+			r.Config.CacheTTL = types.Float64PointerValue(resp.Config.CacheTTL)
+			r.Config.HeaderType = types.StringPointerValue(resp.Config.HeaderType)
+			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
+			r.Config.Keepalive = types.Float64PointerValue(resp.Config.Keepalive)
+			r.Config.LdapHost = types.StringPointerValue(resp.Config.LdapHost)
+			r.Config.LdapPort = types.Int64PointerValue(resp.Config.LdapPort)
+			r.Config.Ldaps = types.BoolPointerValue(resp.Config.Ldaps)
+			r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
+			r.Config.StartTLS = types.BoolPointerValue(resp.Config.StartTLS)
+			r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
+			r.Config.VerifyLdapHost = types.BoolPointerValue(resp.Config.VerifyLdapHost)
+		}
+		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.Enabled = types.BoolPointerValue(resp.Enabled)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
+		if resp.Partials != nil {
+			r.Partials = []tfTypes.Partials{}
+			if len(r.Partials) > len(resp.Partials) {
+				r.Partials = r.Partials[:len(resp.Partials)]
+			}
+			for partialsCount, partialsItem := range resp.Partials {
+				var partials tfTypes.Partials
+				partials.ID = types.StringPointerValue(partialsItem.ID)
+				partials.Name = types.StringPointerValue(partialsItem.Name)
+				partials.Path = types.StringPointerValue(partialsItem.Path)
+				if partialsCount+1 > len(r.Partials) {
+					r.Partials = append(r.Partials, partials)
+				} else {
+					r.Partials[partialsCount].ID = partials.ID
+					r.Partials[partialsCount].Name = partials.Name
+					r.Partials[partialsCount].Path = partials.Path
+				}
+			}
+		}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
+		for _, v := range resp.Protocols {
+			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
+		}
+		if resp.Route == nil {
+			r.Route = nil
+		} else {
+			r.Route = &tfTypes.Set{}
+			r.Route.ID = types.StringPointerValue(resp.Route.ID)
+		}
+		if resp.Service == nil {
+			r.Service = nil
+		} else {
+			r.Service = &tfTypes.Set{}
+			r.Service.ID = types.StringPointerValue(resp.Service.ID)
+		}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
+		for _, v := range resp.Tags {
+			r.Tags = append(r.Tags, types.StringValue(v))
+		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
+	}
+
+	return diags
+}
+
+func (r *GatewayPluginLdapAuthResourceModel) ToOperationsCreateLdapauthPluginRequest(ctx context.Context) (*operations.CreateLdapauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	ldapAuthPlugin, ldapAuthPluginDiags := r.ToSharedLdapAuthPlugin(ctx)
+	diags.Append(ldapAuthPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateLdapauthPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		LdapAuthPlugin: *ldapAuthPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginLdapAuthResourceModel) ToOperationsDeleteLdapauthPluginRequest(ctx context.Context) (*operations.DeleteLdapauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteLdapauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginLdapAuthResourceModel) ToOperationsGetLdapauthPluginRequest(ctx context.Context) (*operations.GetLdapauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetLdapauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginLdapAuthResourceModel) ToOperationsUpdateLdapauthPluginRequest(ctx context.Context) (*operations.UpdateLdapauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	ldapAuthPlugin, ldapAuthPluginDiags := r.ToSharedLdapAuthPlugin(ctx)
+	diags.Append(ldapAuthPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateLdapauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		LdapAuthPlugin: *ldapAuthPlugin,
+	}
+
+	return &out, diags
+}
+
 func (r *GatewayPluginLdapAuthResourceModel) ToSharedLdapAuthPlugin(ctx context.Context) (*shared.LdapAuthPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -251,179 +426,4 @@ func (r *GatewayPluginLdapAuthResourceModel) ToSharedLdapAuthPlugin(ctx context.
 	}
 
 	return &out, diags
-}
-
-func (r *GatewayPluginLdapAuthResourceModel) ToOperationsCreateLdapauthPluginRequest(ctx context.Context) (*operations.CreateLdapauthPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	ldapAuthPlugin, ldapAuthPluginDiags := r.ToSharedLdapAuthPlugin(ctx)
-	diags.Append(ldapAuthPluginDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateLdapauthPluginRequest{
-		ControlPlaneID: controlPlaneID,
-		LdapAuthPlugin: *ldapAuthPlugin,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginLdapAuthResourceModel) ToOperationsUpdateLdapauthPluginRequest(ctx context.Context) (*operations.UpdateLdapauthPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	ldapAuthPlugin, ldapAuthPluginDiags := r.ToSharedLdapAuthPlugin(ctx)
-	diags.Append(ldapAuthPluginDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateLdapauthPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-		LdapAuthPlugin: *ldapAuthPlugin,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginLdapAuthResourceModel) ToOperationsGetLdapauthPluginRequest(ctx context.Context) (*operations.GetLdapauthPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.GetLdapauthPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginLdapAuthResourceModel) ToOperationsDeleteLdapauthPluginRequest(ctx context.Context) (*operations.DeleteLdapauthPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.DeleteLdapauthPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginLdapAuthResourceModel) RefreshFromSharedLdapAuthPlugin(ctx context.Context, resp *shared.LdapAuthPlugin) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.LdapAuthPluginConfig{}
-			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-			r.Config.Attribute = types.StringPointerValue(resp.Config.Attribute)
-			r.Config.BaseDn = types.StringPointerValue(resp.Config.BaseDn)
-			r.Config.CacheTTL = types.Float64PointerValue(resp.Config.CacheTTL)
-			r.Config.HeaderType = types.StringPointerValue(resp.Config.HeaderType)
-			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
-			r.Config.Keepalive = types.Float64PointerValue(resp.Config.Keepalive)
-			r.Config.LdapHost = types.StringPointerValue(resp.Config.LdapHost)
-			r.Config.LdapPort = types.Int64PointerValue(resp.Config.LdapPort)
-			r.Config.Ldaps = types.BoolPointerValue(resp.Config.Ldaps)
-			r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
-			r.Config.StartTLS = types.BoolPointerValue(resp.Config.StartTLS)
-			r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
-			r.Config.VerifyLdapHost = types.BoolPointerValue(resp.Config.VerifyLdapHost)
-		}
-		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.Enabled = types.BoolPointerValue(resp.Enabled)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.InstanceName = types.StringPointerValue(resp.InstanceName)
-		if resp.Ordering == nil {
-			r.Ordering = nil
-		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
-			if resp.Ordering.After == nil {
-				r.Ordering.After = nil
-			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
-				}
-			}
-			if resp.Ordering.Before == nil {
-				r.Ordering.Before = nil
-			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
-				}
-			}
-		}
-		if resp.Partials != nil {
-			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
-				var partials tfTypes.Partials
-				partials.ID = types.StringPointerValue(partialsItem.ID)
-				partials.Name = types.StringPointerValue(partialsItem.Name)
-				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
-			}
-		}
-		r.Protocols = make([]types.String, 0, len(resp.Protocols))
-		for _, v := range resp.Protocols {
-			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
-		}
-		if resp.Route == nil {
-			r.Route = nil
-		} else {
-			r.Route = &tfTypes.Set{}
-			r.Route.ID = types.StringPointerValue(resp.Route.ID)
-		}
-		if resp.Service == nil {
-			r.Service = nil
-		} else {
-			r.Service = &tfTypes.Set{}
-			r.Service.ID = types.StringPointerValue(resp.Service.ID)
-		}
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
-		}
-		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
-	}
-
-	return diags
 }

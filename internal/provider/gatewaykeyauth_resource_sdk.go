@@ -10,6 +10,90 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *GatewayKeyAuthResourceModel) RefreshFromSharedKeyAuth(ctx context.Context, resp *shared.KeyAuth) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.Key = types.StringPointerValue(resp.Key)
+		r.Tags = make([]types.String, 0, len(resp.Tags))
+		for _, v := range resp.Tags {
+			r.Tags = append(r.Tags, types.StringValue(v))
+		}
+		r.TTL = types.Int64PointerValue(resp.TTL)
+	}
+
+	return diags
+}
+
+func (r *GatewayKeyAuthResourceModel) ToOperationsCreateKeyAuthWithConsumerRequest(ctx context.Context) (*operations.CreateKeyAuthWithConsumerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	keyAuthWithoutParents, keyAuthWithoutParentsDiags := r.ToSharedKeyAuthWithoutParents(ctx)
+	diags.Append(keyAuthWithoutParentsDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateKeyAuthWithConsumerRequest{
+		ControlPlaneID:        controlPlaneID,
+		ConsumerID:            consumerID,
+		KeyAuthWithoutParents: keyAuthWithoutParents,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayKeyAuthResourceModel) ToOperationsDeleteKeyAuthWithConsumerRequest(ctx context.Context) (*operations.DeleteKeyAuthWithConsumerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	var keyAuthID string
+	keyAuthID = r.ID.ValueString()
+
+	out := operations.DeleteKeyAuthWithConsumerRequest{
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		KeyAuthID:      keyAuthID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayKeyAuthResourceModel) ToOperationsGetKeyAuthWithConsumerRequest(ctx context.Context) (*operations.GetKeyAuthWithConsumerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	var keyAuthID string
+	keyAuthID = r.ID.ValueString()
+
+	out := operations.GetKeyAuthWithConsumerRequest{
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		KeyAuthID:      keyAuthID,
+	}
+
+	return &out, diags
+}
+
 func (r *GatewayKeyAuthResourceModel) ToSharedKeyAuthWithoutParents(ctx context.Context) (*shared.KeyAuthWithoutParents, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -50,88 +134,4 @@ func (r *GatewayKeyAuthResourceModel) ToSharedKeyAuthWithoutParents(ctx context.
 	}
 
 	return &out, diags
-}
-
-func (r *GatewayKeyAuthResourceModel) ToOperationsCreateKeyAuthWithConsumerRequest(ctx context.Context) (*operations.CreateKeyAuthWithConsumerRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	var consumerID string
-	consumerID = r.ConsumerID.ValueString()
-
-	keyAuthWithoutParents, keyAuthWithoutParentsDiags := r.ToSharedKeyAuthWithoutParents(ctx)
-	diags.Append(keyAuthWithoutParentsDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateKeyAuthWithConsumerRequest{
-		ControlPlaneID:        controlPlaneID,
-		ConsumerID:            consumerID,
-		KeyAuthWithoutParents: keyAuthWithoutParents,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayKeyAuthResourceModel) ToOperationsGetKeyAuthWithConsumerRequest(ctx context.Context) (*operations.GetKeyAuthWithConsumerRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	var consumerID string
-	consumerID = r.ConsumerID.ValueString()
-
-	var keyAuthID string
-	keyAuthID = r.ID.ValueString()
-
-	out := operations.GetKeyAuthWithConsumerRequest{
-		ControlPlaneID: controlPlaneID,
-		ConsumerID:     consumerID,
-		KeyAuthID:      keyAuthID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayKeyAuthResourceModel) ToOperationsDeleteKeyAuthWithConsumerRequest(ctx context.Context) (*operations.DeleteKeyAuthWithConsumerRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	var consumerID string
-	consumerID = r.ConsumerID.ValueString()
-
-	var keyAuthID string
-	keyAuthID = r.ID.ValueString()
-
-	out := operations.DeleteKeyAuthWithConsumerRequest{
-		ControlPlaneID: controlPlaneID,
-		ConsumerID:     consumerID,
-		KeyAuthID:      keyAuthID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayKeyAuthResourceModel) RefreshFromSharedKeyAuth(ctx context.Context, resp *shared.KeyAuth) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.Key = types.StringPointerValue(resp.Key)
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
-		}
-		r.TTL = types.Int64PointerValue(resp.TTL)
-	}
-
-	return diags
 }

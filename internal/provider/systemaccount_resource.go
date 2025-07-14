@@ -28,6 +28,7 @@ func NewSystemAccountResource() resource.Resource {
 
 // SystemAccountResource defines the resource implementation.
 type SystemAccountResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 

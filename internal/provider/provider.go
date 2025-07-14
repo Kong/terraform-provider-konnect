@@ -126,8 +126,8 @@ func (p *KonnectProvider) Configure(ctx context.Context, req provider.ConfigureR
 		sdk.WithSecurity(security),
 		sdk.WithClient(httpClient),
 	}
-	client := sdk.New(opts...)
 
+	client := sdk.New(opts...)
 	resp.DataSourceData = client
 	resp.EphemeralResourceData = client
 	resp.ResourceData = client

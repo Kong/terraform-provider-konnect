@@ -11,6 +11,143 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *GatewayServiceResourceModel) RefreshFromSharedService(ctx context.Context, resp *shared.Service) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.CaCertificates != nil {
+			r.CaCertificates = make([]types.String, 0, len(resp.CaCertificates))
+			for _, v := range resp.CaCertificates {
+				r.CaCertificates = append(r.CaCertificates, types.StringValue(v))
+			}
+		}
+		if resp.ClientCertificate == nil {
+			r.ClientCertificate = nil
+		} else {
+			r.ClientCertificate = &tfTypes.Set{}
+			r.ClientCertificate.ID = types.StringPointerValue(resp.ClientCertificate.ID)
+		}
+		r.ConnectTimeout = types.Int64PointerValue(resp.ConnectTimeout)
+		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.Enabled = types.BoolPointerValue(resp.Enabled)
+		r.Host = types.StringValue(resp.Host)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.Name = types.StringPointerValue(resp.Name)
+		r.Path = types.StringPointerValue(resp.Path)
+		r.Port = types.Int64PointerValue(resp.Port)
+		if resp.Protocol != nil {
+			r.Protocol = types.StringValue(string(*resp.Protocol))
+		} else {
+			r.Protocol = types.StringNull()
+		}
+		r.ReadTimeout = types.Int64PointerValue(resp.ReadTimeout)
+		r.Retries = types.Int64PointerValue(resp.Retries)
+		r.Tags = make([]types.String, 0, len(resp.Tags))
+		for _, v := range resp.Tags {
+			r.Tags = append(r.Tags, types.StringValue(v))
+		}
+		if resp.TLSSans == nil {
+			r.TLSSans = nil
+		} else {
+			r.TLSSans = &tfTypes.TLSSans{}
+			r.TLSSans.Dnsnames = make([]types.String, 0, len(resp.TLSSans.Dnsnames))
+			for _, v := range resp.TLSSans.Dnsnames {
+				r.TLSSans.Dnsnames = append(r.TLSSans.Dnsnames, types.StringValue(v))
+			}
+			r.TLSSans.Uris = make([]types.String, 0, len(resp.TLSSans.Uris))
+			for _, v := range resp.TLSSans.Uris {
+				r.TLSSans.Uris = append(r.TLSSans.Uris, types.StringValue(v))
+			}
+		}
+		r.TLSVerify = types.BoolPointerValue(resp.TLSVerify)
+		r.TLSVerifyDepth = types.Int64PointerValue(resp.TLSVerifyDepth)
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
+		r.WriteTimeout = types.Int64PointerValue(resp.WriteTimeout)
+	}
+
+	return diags
+}
+
+func (r *GatewayServiceResourceModel) ToOperationsCreateServiceRequest(ctx context.Context) (*operations.CreateServiceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	service, serviceDiags := r.ToSharedService(ctx)
+	diags.Append(serviceDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateServiceRequest{
+		ControlPlaneID: controlPlaneID,
+		Service:        *service,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayServiceResourceModel) ToOperationsDeleteServiceRequest(ctx context.Context) (*operations.DeleteServiceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var serviceID string
+	serviceID = r.ID.ValueString()
+
+	out := operations.DeleteServiceRequest{
+		ControlPlaneID: controlPlaneID,
+		ServiceID:      serviceID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayServiceResourceModel) ToOperationsGetServiceRequest(ctx context.Context) (*operations.GetServiceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var serviceID string
+	serviceID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetServiceRequest{
+		ServiceID:      serviceID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayServiceResourceModel) ToOperationsUpsertServiceRequest(ctx context.Context) (*operations.UpsertServiceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var serviceID string
+	serviceID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	service, serviceDiags := r.ToSharedService(ctx)
+	diags.Append(serviceDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpsertServiceRequest{
+		ServiceID:      serviceID,
+		ControlPlaneID: controlPlaneID,
+		Service:        *service,
+	}
+
+	return &out, diags
+}
+
 func (r *GatewayServiceResourceModel) ToSharedService(ctx context.Context) (*shared.Service, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -162,141 +299,4 @@ func (r *GatewayServiceResourceModel) ToSharedService(ctx context.Context) (*sha
 	}
 
 	return &out, diags
-}
-
-func (r *GatewayServiceResourceModel) ToOperationsCreateServiceRequest(ctx context.Context) (*operations.CreateServiceRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	service, serviceDiags := r.ToSharedService(ctx)
-	diags.Append(serviceDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateServiceRequest{
-		ControlPlaneID: controlPlaneID,
-		Service:        *service,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayServiceResourceModel) ToOperationsUpsertServiceRequest(ctx context.Context) (*operations.UpsertServiceRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var serviceID string
-	serviceID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	service, serviceDiags := r.ToSharedService(ctx)
-	diags.Append(serviceDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpsertServiceRequest{
-		ServiceID:      serviceID,
-		ControlPlaneID: controlPlaneID,
-		Service:        *service,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayServiceResourceModel) ToOperationsGetServiceRequest(ctx context.Context) (*operations.GetServiceRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var serviceID string
-	serviceID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.GetServiceRequest{
-		ServiceID:      serviceID,
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayServiceResourceModel) ToOperationsDeleteServiceRequest(ctx context.Context) (*operations.DeleteServiceRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	var serviceID string
-	serviceID = r.ID.ValueString()
-
-	out := operations.DeleteServiceRequest{
-		ControlPlaneID: controlPlaneID,
-		ServiceID:      serviceID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayServiceResourceModel) RefreshFromSharedService(ctx context.Context, resp *shared.Service) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		if resp.CaCertificates != nil {
-			r.CaCertificates = make([]types.String, 0, len(resp.CaCertificates))
-			for _, v := range resp.CaCertificates {
-				r.CaCertificates = append(r.CaCertificates, types.StringValue(v))
-			}
-		}
-		if resp.ClientCertificate == nil {
-			r.ClientCertificate = nil
-		} else {
-			r.ClientCertificate = &tfTypes.Set{}
-			r.ClientCertificate.ID = types.StringPointerValue(resp.ClientCertificate.ID)
-		}
-		r.ConnectTimeout = types.Int64PointerValue(resp.ConnectTimeout)
-		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.Enabled = types.BoolPointerValue(resp.Enabled)
-		r.Host = types.StringValue(resp.Host)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.Name = types.StringPointerValue(resp.Name)
-		r.Path = types.StringPointerValue(resp.Path)
-		r.Port = types.Int64PointerValue(resp.Port)
-		if resp.Protocol != nil {
-			r.Protocol = types.StringValue(string(*resp.Protocol))
-		} else {
-			r.Protocol = types.StringNull()
-		}
-		r.ReadTimeout = types.Int64PointerValue(resp.ReadTimeout)
-		r.Retries = types.Int64PointerValue(resp.Retries)
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
-		}
-		if resp.TLSSans == nil {
-			r.TLSSans = nil
-		} else {
-			r.TLSSans = &tfTypes.TLSSans{}
-			r.TLSSans.Dnsnames = make([]types.String, 0, len(resp.TLSSans.Dnsnames))
-			for _, v := range resp.TLSSans.Dnsnames {
-				r.TLSSans.Dnsnames = append(r.TLSSans.Dnsnames, types.StringValue(v))
-			}
-			r.TLSSans.Uris = make([]types.String, 0, len(resp.TLSSans.Uris))
-			for _, v := range resp.TLSSans.Uris {
-				r.TLSSans.Uris = append(r.TLSSans.Uris, types.StringValue(v))
-			}
-		}
-		r.TLSVerify = types.BoolPointerValue(resp.TLSVerify)
-		r.TLSVerifyDepth = types.Int64PointerValue(resp.TLSVerifyDepth)
-		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
-		r.WriteTimeout = types.Int64PointerValue(resp.WriteTimeout)
-	}
-
-	return diags
 }

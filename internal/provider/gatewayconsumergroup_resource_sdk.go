@@ -10,6 +10,103 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *GatewayConsumerGroupResourceModel) RefreshFromSharedConsumerGroup(ctx context.Context, resp *shared.ConsumerGroup) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.Name = types.StringValue(resp.Name)
+		r.Tags = make([]types.String, 0, len(resp.Tags))
+		for _, v := range resp.Tags {
+			r.Tags = append(r.Tags, types.StringValue(v))
+		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
+	}
+
+	return diags
+}
+
+func (r *GatewayConsumerGroupResourceModel) ToOperationsCreateConsumerGroupRequest(ctx context.Context) (*operations.CreateConsumerGroupRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	consumerGroup, consumerGroupDiags := r.ToSharedConsumerGroup(ctx)
+	diags.Append(consumerGroupDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateConsumerGroupRequest{
+		ControlPlaneID: controlPlaneID,
+		ConsumerGroup:  *consumerGroup,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayConsumerGroupResourceModel) ToOperationsDeleteConsumerGroupRequest(ctx context.Context) (*operations.DeleteConsumerGroupRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerGroupID string
+	consumerGroupID = r.ID.ValueString()
+
+	out := operations.DeleteConsumerGroupRequest{
+		ControlPlaneID:  controlPlaneID,
+		ConsumerGroupID: consumerGroupID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayConsumerGroupResourceModel) ToOperationsGetConsumerGroupRequest(ctx context.Context) (*operations.GetConsumerGroupRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var consumerGroupID string
+	consumerGroupID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetConsumerGroupRequest{
+		ConsumerGroupID: consumerGroupID,
+		ControlPlaneID:  controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayConsumerGroupResourceModel) ToOperationsUpsertConsumerGroupRequest(ctx context.Context) (*operations.UpsertConsumerGroupRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var consumerGroupID string
+	consumerGroupID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	consumerGroup, consumerGroupDiags := r.ToSharedConsumerGroup(ctx)
+	diags.Append(consumerGroupDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpsertConsumerGroupRequest{
+		ConsumerGroupID: consumerGroupID,
+		ControlPlaneID:  controlPlaneID,
+		ConsumerGroup:   *consumerGroup,
+	}
+
+	return &out, diags
+}
+
 func (r *GatewayConsumerGroupResourceModel) ToSharedConsumerGroup(ctx context.Context) (*shared.ConsumerGroup, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -47,101 +144,4 @@ func (r *GatewayConsumerGroupResourceModel) ToSharedConsumerGroup(ctx context.Co
 	}
 
 	return &out, diags
-}
-
-func (r *GatewayConsumerGroupResourceModel) ToOperationsCreateConsumerGroupRequest(ctx context.Context) (*operations.CreateConsumerGroupRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	consumerGroup, consumerGroupDiags := r.ToSharedConsumerGroup(ctx)
-	diags.Append(consumerGroupDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateConsumerGroupRequest{
-		ControlPlaneID: controlPlaneID,
-		ConsumerGroup:  *consumerGroup,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayConsumerGroupResourceModel) ToOperationsUpsertConsumerGroupRequest(ctx context.Context) (*operations.UpsertConsumerGroupRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var consumerGroupID string
-	consumerGroupID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	consumerGroup, consumerGroupDiags := r.ToSharedConsumerGroup(ctx)
-	diags.Append(consumerGroupDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpsertConsumerGroupRequest{
-		ConsumerGroupID: consumerGroupID,
-		ControlPlaneID:  controlPlaneID,
-		ConsumerGroup:   *consumerGroup,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayConsumerGroupResourceModel) ToOperationsGetConsumerGroupRequest(ctx context.Context) (*operations.GetConsumerGroupRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var consumerGroupID string
-	consumerGroupID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.GetConsumerGroupRequest{
-		ConsumerGroupID: consumerGroupID,
-		ControlPlaneID:  controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayConsumerGroupResourceModel) ToOperationsDeleteConsumerGroupRequest(ctx context.Context) (*operations.DeleteConsumerGroupRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	var consumerGroupID string
-	consumerGroupID = r.ID.ValueString()
-
-	out := operations.DeleteConsumerGroupRequest{
-		ControlPlaneID:  controlPlaneID,
-		ConsumerGroupID: consumerGroupID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayConsumerGroupResourceModel) RefreshFromSharedConsumerGroup(ctx context.Context, resp *shared.ConsumerGroup) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.Name = types.StringValue(resp.Name)
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
-		}
-		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
-	}
-
-	return diags
 }

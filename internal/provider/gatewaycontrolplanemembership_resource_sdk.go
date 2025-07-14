@@ -9,25 +9,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayControlPlaneMembershipResourceModel) ToSharedGroupMembership(ctx context.Context) (*shared.GroupMembership, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	members := make([]shared.Members, 0, len(r.Members))
-	for _, membersItem := range r.Members {
-		var id string
-		id = membersItem.ID.ValueString()
-
-		members = append(members, shared.Members{
-			ID: id,
-		})
-	}
-	out := shared.GroupMembership{
-		Members: members,
-	}
-
-	return &out, diags
-}
-
 func (r *GatewayControlPlaneMembershipResourceModel) ToOperationsPostControlPlanesIDGroupMembershipsAddRequest(ctx context.Context) (*operations.PostControlPlanesIDGroupMembershipsAddRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -65,6 +46,25 @@ func (r *GatewayControlPlaneMembershipResourceModel) ToOperationsPostControlPlan
 	out := operations.PostControlPlanesIDGroupMembershipsRemoveRequest{
 		ID:              id,
 		GroupMembership: groupMembership,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayControlPlaneMembershipResourceModel) ToSharedGroupMembership(ctx context.Context) (*shared.GroupMembership, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	members := make([]shared.Members, 0, len(r.Members))
+	for _, membersItem := range r.Members {
+		var id string
+		id = membersItem.ID.ValueString()
+
+		members = append(members, shared.Members{
+			ID: id,
+		})
+	}
+	out := shared.GroupMembership{
+		Members: members,
 	}
 
 	return &out, diags

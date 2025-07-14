@@ -9,19 +9,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *TeamUserResourceModel) ToSharedAddUserToTeam(ctx context.Context) (*shared.AddUserToTeam, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var userID string
-	userID = r.UserID.ValueString()
-
-	out := shared.AddUserToTeam{
-		UserID: userID,
-	}
-
-	return &out, diags
-}
-
 func (r *TeamUserResourceModel) ToOperationsAddUserToTeamRequest(ctx context.Context) (*operations.AddUserToTeamRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -55,6 +42,19 @@ func (r *TeamUserResourceModel) ToOperationsRemoveUserFromTeamRequest(ctx contex
 	out := operations.RemoveUserFromTeamRequest{
 		UserID: userID,
 		TeamID: teamID,
+	}
+
+	return &out, diags
+}
+
+func (r *TeamUserResourceModel) ToSharedAddUserToTeam(ctx context.Context) (*shared.AddUserToTeam, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var userID string
+	userID = r.UserID.ValueString()
+
+	out := shared.AddUserToTeam{
+		UserID: userID,
 	}
 
 	return &out, diags

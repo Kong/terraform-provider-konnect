@@ -28,6 +28,7 @@ func NewGatewayDataPlaneClientCertificateResource() resource.Resource {
 
 // GatewayDataPlaneClientCertificateResource defines the resource implementation.
 type GatewayDataPlaneClientCertificateResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
@@ -289,7 +290,7 @@ func (r *GatewayDataPlaneClientCertificateResource) ImportState(ctx context.Cont
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "id": "",  "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}': `+err.Error())
 		return
 	}
 
@@ -303,5 +304,4 @@ func (r *GatewayDataPlaneClientCertificateResource) ImportState(ctx context.Cont
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
-
 }

@@ -29,6 +29,7 @@ func NewPortalAppearanceResource() resource.Resource {
 
 // PortalAppearanceResource defines the resource implementation.
 type PortalAppearanceResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 

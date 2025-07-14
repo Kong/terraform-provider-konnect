@@ -29,6 +29,7 @@ func NewPortalTeamResource() resource.Resource {
 
 // PortalTeamResource defines the resource implementation.
 type PortalTeamResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
@@ -333,7 +334,7 @@ func (r *PortalTeamResource) ImportState(ctx context.Context, req resource.Impor
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "portal_id": "",  "id": "d32d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "portal_id": ""}': `+err.Error())
 		return
 	}
 
@@ -347,5 +348,4 @@ func (r *PortalTeamResource) ImportState(ctx context.Context, req resource.Impor
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
-
 }

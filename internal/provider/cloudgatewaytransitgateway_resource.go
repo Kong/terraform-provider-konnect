@@ -34,6 +34,7 @@ func NewCloudGatewayTransitGatewayResource() resource.Resource {
 
 // CloudGatewayTransitGatewayResource defines the resource implementation.
 type CloudGatewayTransitGatewayResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
@@ -987,7 +988,7 @@ func (r *CloudGatewayTransitGatewayResource) ImportState(ctx context.Context, re
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695",  "id": "0850820b-d153-4a2a-b9be-7d2204779139"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"id": "0850820b-d153-4a2a-b9be-7d2204779139", "network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695"}': `+err.Error())
 		return
 	}
 
@@ -1001,5 +1002,4 @@ func (r *CloudGatewayTransitGatewayResource) ImportState(ctx context.Context, re
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
-
 }

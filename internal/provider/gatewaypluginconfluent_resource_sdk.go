@@ -11,6 +11,223 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(ctx context.Context, resp *shared.ConfluentPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.ConfluentPluginConfig{}
+			r.Config.AllowedTopics = make([]types.String, 0, len(resp.Config.AllowedTopics))
+			for _, v := range resp.Config.AllowedTopics {
+				r.Config.AllowedTopics = append(r.Config.AllowedTopics, types.StringValue(v))
+			}
+			r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
+			if len(r.Config.BootstrapServers) > len(resp.Config.BootstrapServers) {
+				r.Config.BootstrapServers = r.Config.BootstrapServers[:len(resp.Config.BootstrapServers)]
+			}
+			for bootstrapServersCount, bootstrapServersItem := range resp.Config.BootstrapServers {
+				var bootstrapServers tfTypes.BootstrapServers
+				bootstrapServers.Host = types.StringValue(bootstrapServersItem.Host)
+				bootstrapServers.Port = types.Int64Value(bootstrapServersItem.Port)
+				if bootstrapServersCount+1 > len(r.Config.BootstrapServers) {
+					r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
+				} else {
+					r.Config.BootstrapServers[bootstrapServersCount].Host = bootstrapServers.Host
+					r.Config.BootstrapServers[bootstrapServersCount].Port = bootstrapServers.Port
+				}
+			}
+			r.Config.ClusterAPIKey = types.StringPointerValue(resp.Config.ClusterAPIKey)
+			r.Config.ClusterAPISecret = types.StringPointerValue(resp.Config.ClusterAPISecret)
+			r.Config.ClusterName = types.StringPointerValue(resp.Config.ClusterName)
+			r.Config.ConfluentCloudAPIKey = types.StringPointerValue(resp.Config.ConfluentCloudAPIKey)
+			r.Config.ConfluentCloudAPISecret = types.StringPointerValue(resp.Config.ConfluentCloudAPISecret)
+			r.Config.ForwardBody = types.BoolPointerValue(resp.Config.ForwardBody)
+			r.Config.ForwardHeaders = types.BoolPointerValue(resp.Config.ForwardHeaders)
+			r.Config.ForwardMethod = types.BoolPointerValue(resp.Config.ForwardMethod)
+			r.Config.ForwardURI = types.BoolPointerValue(resp.Config.ForwardURI)
+			r.Config.Keepalive = types.Int64PointerValue(resp.Config.Keepalive)
+			r.Config.KeepaliveEnabled = types.BoolPointerValue(resp.Config.KeepaliveEnabled)
+			r.Config.MessageByLuaFunctions = make([]types.String, 0, len(resp.Config.MessageByLuaFunctions))
+			for _, v := range resp.Config.MessageByLuaFunctions {
+				r.Config.MessageByLuaFunctions = append(r.Config.MessageByLuaFunctions, types.StringValue(v))
+			}
+			r.Config.ProducerAsync = types.BoolPointerValue(resp.Config.ProducerAsync)
+			r.Config.ProducerAsyncBufferingLimitsMessagesInMemory = types.Int64PointerValue(resp.Config.ProducerAsyncBufferingLimitsMessagesInMemory)
+			r.Config.ProducerAsyncFlushTimeout = types.Int64PointerValue(resp.Config.ProducerAsyncFlushTimeout)
+			if resp.Config.ProducerRequestAcks != nil {
+				r.Config.ProducerRequestAcks = types.Int64Value(int64(*resp.Config.ProducerRequestAcks))
+			} else {
+				r.Config.ProducerRequestAcks = types.Int64Null()
+			}
+			r.Config.ProducerRequestLimitsBytesPerRequest = types.Int64PointerValue(resp.Config.ProducerRequestLimitsBytesPerRequest)
+			r.Config.ProducerRequestLimitsMessagesPerRequest = types.Int64PointerValue(resp.Config.ProducerRequestLimitsMessagesPerRequest)
+			r.Config.ProducerRequestRetriesBackoffTimeout = types.Int64PointerValue(resp.Config.ProducerRequestRetriesBackoffTimeout)
+			r.Config.ProducerRequestRetriesMaxAttempts = types.Int64PointerValue(resp.Config.ProducerRequestRetriesMaxAttempts)
+			r.Config.ProducerRequestTimeout = types.Int64PointerValue(resp.Config.ProducerRequestTimeout)
+			r.Config.Timeout = types.Int64PointerValue(resp.Config.Timeout)
+			r.Config.Topic = types.StringPointerValue(resp.Config.Topic)
+			r.Config.TopicsQueryArg = types.StringPointerValue(resp.Config.TopicsQueryArg)
+		}
+		if resp.Consumer == nil {
+			r.Consumer = nil
+		} else {
+			r.Consumer = &tfTypes.Set{}
+			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
+		}
+		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.Enabled = types.BoolPointerValue(resp.Enabled)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
+		if resp.Partials != nil {
+			r.Partials = []tfTypes.Partials{}
+			if len(r.Partials) > len(resp.Partials) {
+				r.Partials = r.Partials[:len(resp.Partials)]
+			}
+			for partialsCount, partialsItem := range resp.Partials {
+				var partials tfTypes.Partials
+				partials.ID = types.StringPointerValue(partialsItem.ID)
+				partials.Name = types.StringPointerValue(partialsItem.Name)
+				partials.Path = types.StringPointerValue(partialsItem.Path)
+				if partialsCount+1 > len(r.Partials) {
+					r.Partials = append(r.Partials, partials)
+				} else {
+					r.Partials[partialsCount].ID = partials.ID
+					r.Partials[partialsCount].Name = partials.Name
+					r.Partials[partialsCount].Path = partials.Path
+				}
+			}
+		}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
+		for _, v := range resp.Protocols {
+			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
+		}
+		if resp.Route == nil {
+			r.Route = nil
+		} else {
+			r.Route = &tfTypes.Set{}
+			r.Route.ID = types.StringPointerValue(resp.Route.ID)
+		}
+		if resp.Service == nil {
+			r.Service = nil
+		} else {
+			r.Service = &tfTypes.Set{}
+			r.Service.ID = types.StringPointerValue(resp.Service.ID)
+		}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
+		for _, v := range resp.Tags {
+			r.Tags = append(r.Tags, types.StringValue(v))
+		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
+	}
+
+	return diags
+}
+
+func (r *GatewayPluginConfluentResourceModel) ToOperationsCreateConfluentPluginRequest(ctx context.Context) (*operations.CreateConfluentPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	confluentPlugin, confluentPluginDiags := r.ToSharedConfluentPlugin(ctx)
+	diags.Append(confluentPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateConfluentPluginRequest{
+		ControlPlaneID:  controlPlaneID,
+		ConfluentPlugin: *confluentPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginConfluentResourceModel) ToOperationsDeleteConfluentPluginRequest(ctx context.Context) (*operations.DeleteConfluentPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteConfluentPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginConfluentResourceModel) ToOperationsGetConfluentPluginRequest(ctx context.Context) (*operations.GetConfluentPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetConfluentPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginConfluentResourceModel) ToOperationsUpdateConfluentPluginRequest(ctx context.Context) (*operations.UpdateConfluentPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	confluentPlugin, confluentPluginDiags := r.ToSharedConfluentPlugin(ctx)
+	diags.Append(confluentPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateConfluentPluginRequest{
+		PluginID:        pluginID,
+		ControlPlaneID:  controlPlaneID,
+		ConfluentPlugin: *confluentPlugin,
+	}
+
+	return &out, diags
+}
+
 func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx context.Context) (*shared.ConfluentPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -351,221 +568,4 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 	}
 
 	return &out, diags
-}
-
-func (r *GatewayPluginConfluentResourceModel) ToOperationsCreateConfluentPluginRequest(ctx context.Context) (*operations.CreateConfluentPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	confluentPlugin, confluentPluginDiags := r.ToSharedConfluentPlugin(ctx)
-	diags.Append(confluentPluginDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateConfluentPluginRequest{
-		ControlPlaneID:  controlPlaneID,
-		ConfluentPlugin: *confluentPlugin,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginConfluentResourceModel) ToOperationsUpdateConfluentPluginRequest(ctx context.Context) (*operations.UpdateConfluentPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	confluentPlugin, confluentPluginDiags := r.ToSharedConfluentPlugin(ctx)
-	diags.Append(confluentPluginDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateConfluentPluginRequest{
-		PluginID:        pluginID,
-		ControlPlaneID:  controlPlaneID,
-		ConfluentPlugin: *confluentPlugin,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginConfluentResourceModel) ToOperationsGetConfluentPluginRequest(ctx context.Context) (*operations.GetConfluentPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.GetConfluentPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginConfluentResourceModel) ToOperationsDeleteConfluentPluginRequest(ctx context.Context) (*operations.DeleteConfluentPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.DeleteConfluentPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(ctx context.Context, resp *shared.ConfluentPlugin) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.ConfluentPluginConfig{}
-			r.Config.AllowedTopics = make([]types.String, 0, len(resp.Config.AllowedTopics))
-			for _, v := range resp.Config.AllowedTopics {
-				r.Config.AllowedTopics = append(r.Config.AllowedTopics, types.StringValue(v))
-			}
-			r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
-			if len(r.Config.BootstrapServers) > len(resp.Config.BootstrapServers) {
-				r.Config.BootstrapServers = r.Config.BootstrapServers[:len(resp.Config.BootstrapServers)]
-			}
-			for bootstrapServersCount, bootstrapServersItem := range resp.Config.BootstrapServers {
-				var bootstrapServers tfTypes.BootstrapServers
-				bootstrapServers.Host = types.StringValue(bootstrapServersItem.Host)
-				bootstrapServers.Port = types.Int64Value(bootstrapServersItem.Port)
-				if bootstrapServersCount+1 > len(r.Config.BootstrapServers) {
-					r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
-				} else {
-					r.Config.BootstrapServers[bootstrapServersCount].Host = bootstrapServers.Host
-					r.Config.BootstrapServers[bootstrapServersCount].Port = bootstrapServers.Port
-				}
-			}
-			r.Config.ClusterAPIKey = types.StringPointerValue(resp.Config.ClusterAPIKey)
-			r.Config.ClusterAPISecret = types.StringPointerValue(resp.Config.ClusterAPISecret)
-			r.Config.ClusterName = types.StringPointerValue(resp.Config.ClusterName)
-			r.Config.ConfluentCloudAPIKey = types.StringPointerValue(resp.Config.ConfluentCloudAPIKey)
-			r.Config.ConfluentCloudAPISecret = types.StringPointerValue(resp.Config.ConfluentCloudAPISecret)
-			r.Config.ForwardBody = types.BoolPointerValue(resp.Config.ForwardBody)
-			r.Config.ForwardHeaders = types.BoolPointerValue(resp.Config.ForwardHeaders)
-			r.Config.ForwardMethod = types.BoolPointerValue(resp.Config.ForwardMethod)
-			r.Config.ForwardURI = types.BoolPointerValue(resp.Config.ForwardURI)
-			r.Config.Keepalive = types.Int64PointerValue(resp.Config.Keepalive)
-			r.Config.KeepaliveEnabled = types.BoolPointerValue(resp.Config.KeepaliveEnabled)
-			r.Config.MessageByLuaFunctions = make([]types.String, 0, len(resp.Config.MessageByLuaFunctions))
-			for _, v := range resp.Config.MessageByLuaFunctions {
-				r.Config.MessageByLuaFunctions = append(r.Config.MessageByLuaFunctions, types.StringValue(v))
-			}
-			r.Config.ProducerAsync = types.BoolPointerValue(resp.Config.ProducerAsync)
-			r.Config.ProducerAsyncBufferingLimitsMessagesInMemory = types.Int64PointerValue(resp.Config.ProducerAsyncBufferingLimitsMessagesInMemory)
-			r.Config.ProducerAsyncFlushTimeout = types.Int64PointerValue(resp.Config.ProducerAsyncFlushTimeout)
-			if resp.Config.ProducerRequestAcks != nil {
-				r.Config.ProducerRequestAcks = types.Int64Value(int64(*resp.Config.ProducerRequestAcks))
-			} else {
-				r.Config.ProducerRequestAcks = types.Int64Null()
-			}
-			r.Config.ProducerRequestLimitsBytesPerRequest = types.Int64PointerValue(resp.Config.ProducerRequestLimitsBytesPerRequest)
-			r.Config.ProducerRequestLimitsMessagesPerRequest = types.Int64PointerValue(resp.Config.ProducerRequestLimitsMessagesPerRequest)
-			r.Config.ProducerRequestRetriesBackoffTimeout = types.Int64PointerValue(resp.Config.ProducerRequestRetriesBackoffTimeout)
-			r.Config.ProducerRequestRetriesMaxAttempts = types.Int64PointerValue(resp.Config.ProducerRequestRetriesMaxAttempts)
-			r.Config.ProducerRequestTimeout = types.Int64PointerValue(resp.Config.ProducerRequestTimeout)
-			r.Config.Timeout = types.Int64PointerValue(resp.Config.Timeout)
-			r.Config.Topic = types.StringPointerValue(resp.Config.Topic)
-			r.Config.TopicsQueryArg = types.StringPointerValue(resp.Config.TopicsQueryArg)
-		}
-		if resp.Consumer == nil {
-			r.Consumer = nil
-		} else {
-			r.Consumer = &tfTypes.Set{}
-			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.Enabled = types.BoolPointerValue(resp.Enabled)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.InstanceName = types.StringPointerValue(resp.InstanceName)
-		if resp.Ordering == nil {
-			r.Ordering = nil
-		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
-			if resp.Ordering.After == nil {
-				r.Ordering.After = nil
-			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
-				}
-			}
-			if resp.Ordering.Before == nil {
-				r.Ordering.Before = nil
-			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
-				}
-			}
-		}
-		if resp.Partials != nil {
-			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
-				var partials tfTypes.Partials
-				partials.ID = types.StringPointerValue(partialsItem.ID)
-				partials.Name = types.StringPointerValue(partialsItem.Name)
-				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
-			}
-		}
-		r.Protocols = make([]types.String, 0, len(resp.Protocols))
-		for _, v := range resp.Protocols {
-			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
-		}
-		if resp.Route == nil {
-			r.Route = nil
-		} else {
-			r.Route = &tfTypes.Set{}
-			r.Route.ID = types.StringPointerValue(resp.Route.ID)
-		}
-		if resp.Service == nil {
-			r.Service = nil
-		} else {
-			r.Service = &tfTypes.Set{}
-			r.Service.ID = types.StringPointerValue(resp.Service.ID)
-		}
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
-		}
-		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
-	}
-
-	return diags
 }

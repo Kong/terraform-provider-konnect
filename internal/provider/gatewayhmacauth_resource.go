@@ -32,6 +32,7 @@ func NewGatewayHMACAuthResource() resource.Resource {
 
 // GatewayHMACAuthResource defines the resource implementation.
 type GatewayHMACAuthResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
@@ -328,7 +329,7 @@ func (r *GatewayHMACAuthResource) ImportState(ctx context.Context, req resource.
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "consumer_id": "f28acbfa-c866-4587-b688-0208ac24df21",  "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "70e7b00b-72f2-471b-a5ce-9c4171775360"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"consumer_id": "f28acbfa-c866-4587-b688-0208ac24df21", "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "70e7b00b-72f2-471b-a5ce-9c4171775360"}': `+err.Error())
 		return
 	}
 
@@ -347,5 +348,4 @@ func (r *GatewayHMACAuthResource) ImportState(ctx context.Context, req resource.
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
-
 }

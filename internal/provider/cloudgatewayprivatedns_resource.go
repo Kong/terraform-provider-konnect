@@ -36,6 +36,7 @@ func NewCloudGatewayPrivateDNSResource() resource.Resource {
 
 // CloudGatewayPrivateDNSResource defines the resource implementation.
 type CloudGatewayPrivateDNSResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
@@ -647,7 +648,7 @@ func (r *CloudGatewayPrivateDNSResource) ImportState(ctx context.Context, req re
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695",  "id": "1850820b-c69f-4a2a-b9be-bbcdbc5cd618"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"id": "1850820b-c69f-4a2a-b9be-bbcdbc5cd618", "network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695"}': `+err.Error())
 		return
 	}
 
@@ -661,5 +662,4 @@ func (r *CloudGatewayPrivateDNSResource) ImportState(ctx context.Context, req re
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
-
 }

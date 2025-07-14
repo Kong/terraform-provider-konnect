@@ -11,6 +11,95 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *GatewayMTLSAuthResourceModel) RefreshFromSharedMTLSAuth(ctx context.Context, resp *shared.MTLSAuth) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.CaCertificate == nil {
+			r.CaCertificate = nil
+		} else {
+			r.CaCertificate = &tfTypes.Set{}
+			r.CaCertificate.ID = types.StringPointerValue(resp.CaCertificate.ID)
+		}
+		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.SubjectName = types.StringValue(resp.SubjectName)
+		r.Tags = make([]types.String, 0, len(resp.Tags))
+		for _, v := range resp.Tags {
+			r.Tags = append(r.Tags, types.StringValue(v))
+		}
+	}
+
+	return diags
+}
+
+func (r *GatewayMTLSAuthResourceModel) ToOperationsCreateMtlsAuthWithConsumerRequest(ctx context.Context) (*operations.CreateMtlsAuthWithConsumerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	mtlsAuthWithoutParents, mtlsAuthWithoutParentsDiags := r.ToSharedMTLSAuthWithoutParents(ctx)
+	diags.Append(mtlsAuthWithoutParentsDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateMtlsAuthWithConsumerRequest{
+		ControlPlaneID:         controlPlaneID,
+		ConsumerID:             consumerID,
+		MTLSAuthWithoutParents: *mtlsAuthWithoutParents,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayMTLSAuthResourceModel) ToOperationsDeleteMtlsAuthWithConsumerRequest(ctx context.Context) (*operations.DeleteMtlsAuthWithConsumerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	var mtlsAuthID string
+	mtlsAuthID = r.ID.ValueString()
+
+	out := operations.DeleteMtlsAuthWithConsumerRequest{
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		MTLSAuthID:     mtlsAuthID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayMTLSAuthResourceModel) ToOperationsGetMtlsAuthWithConsumerRequest(ctx context.Context) (*operations.GetMtlsAuthWithConsumerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	var mtlsAuthID string
+	mtlsAuthID = r.ID.ValueString()
+
+	out := operations.GetMtlsAuthWithConsumerRequest{
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		MTLSAuthID:     mtlsAuthID,
+	}
+
+	return &out, diags
+}
+
 func (r *GatewayMTLSAuthResourceModel) ToSharedMTLSAuthWithoutParents(ctx context.Context) (*shared.MTLSAuthWithoutParents, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -54,93 +143,4 @@ func (r *GatewayMTLSAuthResourceModel) ToSharedMTLSAuthWithoutParents(ctx contex
 	}
 
 	return &out, diags
-}
-
-func (r *GatewayMTLSAuthResourceModel) ToOperationsCreateMtlsAuthWithConsumerRequest(ctx context.Context) (*operations.CreateMtlsAuthWithConsumerRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	var consumerID string
-	consumerID = r.ConsumerID.ValueString()
-
-	mtlsAuthWithoutParents, mtlsAuthWithoutParentsDiags := r.ToSharedMTLSAuthWithoutParents(ctx)
-	diags.Append(mtlsAuthWithoutParentsDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateMtlsAuthWithConsumerRequest{
-		ControlPlaneID:         controlPlaneID,
-		ConsumerID:             consumerID,
-		MTLSAuthWithoutParents: *mtlsAuthWithoutParents,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayMTLSAuthResourceModel) ToOperationsGetMtlsAuthWithConsumerRequest(ctx context.Context) (*operations.GetMtlsAuthWithConsumerRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	var consumerID string
-	consumerID = r.ConsumerID.ValueString()
-
-	var mtlsAuthID string
-	mtlsAuthID = r.ID.ValueString()
-
-	out := operations.GetMtlsAuthWithConsumerRequest{
-		ControlPlaneID: controlPlaneID,
-		ConsumerID:     consumerID,
-		MTLSAuthID:     mtlsAuthID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayMTLSAuthResourceModel) ToOperationsDeleteMtlsAuthWithConsumerRequest(ctx context.Context) (*operations.DeleteMtlsAuthWithConsumerRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	var consumerID string
-	consumerID = r.ConsumerID.ValueString()
-
-	var mtlsAuthID string
-	mtlsAuthID = r.ID.ValueString()
-
-	out := operations.DeleteMtlsAuthWithConsumerRequest{
-		ControlPlaneID: controlPlaneID,
-		ConsumerID:     consumerID,
-		MTLSAuthID:     mtlsAuthID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayMTLSAuthResourceModel) RefreshFromSharedMTLSAuth(ctx context.Context, resp *shared.MTLSAuth) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		if resp.CaCertificate == nil {
-			r.CaCertificate = nil
-		} else {
-			r.CaCertificate = &tfTypes.Set{}
-			r.CaCertificate.ID = types.StringPointerValue(resp.CaCertificate.ID)
-		}
-		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.SubjectName = types.StringValue(resp.SubjectName)
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
-		}
-	}
-
-	return diags
 }

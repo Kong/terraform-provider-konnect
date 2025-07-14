@@ -11,27 +11,38 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *CentralizedConsumerKeyResourceModel) ToSharedCreateAPIKeyPayload(ctx context.Context) (*shared.CreateAPIKeyPayload, diag.Diagnostics) {
+func (r *CentralizedConsumerKeyResourceModel) RefreshFromSharedAPIKey(ctx context.Context, resp *shared.APIKey) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	typeVar := shared.CreateAPIKeyPayloadType(r.Type.ValueString())
-	secret := new(string)
-	if !r.Secret.IsUnknown() && !r.Secret.IsNull() {
-		*secret = r.Secret.ValueString()
-	} else {
-		secret = nil
-	}
-	tags := make([]string, 0, len(r.Tags))
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
-	}
-	out := shared.CreateAPIKeyPayload{
-		Type:   typeVar,
-		Secret: secret,
-		Tags:   tags,
+	if resp != nil {
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.ID = types.StringValue(resp.ID)
+		r.Tags = make([]types.String, 0, len(resp.Tags))
+		for _, v := range resp.Tags {
+			r.Tags = append(r.Tags, types.StringValue(v))
+		}
+		r.Type = types.StringValue(string(resp.Type))
 	}
 
-	return &out, diags
+	return diags
+}
+
+func (r *CentralizedConsumerKeyResourceModel) RefreshFromSharedCreateAPIKeyResult(ctx context.Context, resp *shared.CreateAPIKeyResult) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.ID = types.StringValue(resp.ID)
+		r.Secret = types.StringValue(resp.Secret)
+		r.Tags = make([]types.String, 0, len(resp.Tags))
+		for _, v := range resp.Tags {
+			r.Tags = append(r.Tags, types.StringValue(v))
+		}
+		r.Type = types.StringValue(string(resp.Type))
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+	}
+
+	return diags
 }
 
 func (r *CentralizedConsumerKeyResourceModel) ToOperationsCreateConsumerKeyRequest(ctx context.Context) (*operations.CreateConsumerKeyRequest, diag.Diagnostics) {
@@ -59,27 +70,6 @@ func (r *CentralizedConsumerKeyResourceModel) ToOperationsCreateConsumerKeyReque
 	return &out, diags
 }
 
-func (r *CentralizedConsumerKeyResourceModel) ToOperationsGetConsumerKeyRequest(ctx context.Context) (*operations.GetConsumerKeyRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var realmID string
-	realmID = r.RealmID.ValueString()
-
-	var consumerID string
-	consumerID = r.ConsumerID.ValueString()
-
-	var keyID string
-	keyID = r.ID.ValueString()
-
-	out := operations.GetConsumerKeyRequest{
-		RealmID:    realmID,
-		ConsumerID: consumerID,
-		KeyID:      keyID,
-	}
-
-	return &out, diags
-}
-
 func (r *CentralizedConsumerKeyResourceModel) ToOperationsDeleteConsumerKeyRequest(ctx context.Context) (*operations.DeleteConsumerKeyRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -101,36 +91,46 @@ func (r *CentralizedConsumerKeyResourceModel) ToOperationsDeleteConsumerKeyReque
 	return &out, diags
 }
 
-func (r *CentralizedConsumerKeyResourceModel) RefreshFromSharedCreateAPIKeyResult(ctx context.Context, resp *shared.CreateAPIKeyResult) diag.Diagnostics {
+func (r *CentralizedConsumerKeyResourceModel) ToOperationsGetConsumerKeyRequest(ctx context.Context) (*operations.GetConsumerKeyRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	if resp != nil {
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.ID = types.StringValue(resp.ID)
-		r.Secret = types.StringValue(resp.Secret)
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
-		}
-		r.Type = types.StringValue(string(resp.Type))
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+	var realmID string
+	realmID = r.RealmID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	var keyID string
+	keyID = r.ID.ValueString()
+
+	out := operations.GetConsumerKeyRequest{
+		RealmID:    realmID,
+		ConsumerID: consumerID,
+		KeyID:      keyID,
 	}
 
-	return diags
+	return &out, diags
 }
 
-func (r *CentralizedConsumerKeyResourceModel) RefreshFromSharedAPIKey(ctx context.Context, resp *shared.APIKey) diag.Diagnostics {
+func (r *CentralizedConsumerKeyResourceModel) ToSharedCreateAPIKeyPayload(ctx context.Context) (*shared.CreateAPIKeyPayload, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	if resp != nil {
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.ID = types.StringValue(resp.ID)
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
-		}
-		r.Type = types.StringValue(string(resp.Type))
+	typeVar := shared.CreateAPIKeyPayloadType(r.Type.ValueString())
+	secret := new(string)
+	if !r.Secret.IsUnknown() && !r.Secret.IsNull() {
+		*secret = r.Secret.ValueString()
+	} else {
+		secret = nil
+	}
+	tags := make([]string, 0, len(r.Tags))
+	for _, tagsItem := range r.Tags {
+		tags = append(tags, tagsItem.ValueString())
+	}
+	out := shared.CreateAPIKeyPayload{
+		Type:   typeVar,
+		Secret: secret,
+		Tags:   tags,
 	}
 
-	return diags
+	return &out, diags
 }

@@ -31,6 +31,7 @@ func NewGatewayConfigStoreResource() resource.Resource {
 
 // GatewayConfigStoreResource defines the resource implementation.
 type GatewayConfigStoreResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
@@ -339,7 +340,7 @@ func (r *GatewayConfigStoreResource) ImportState(ctx context.Context, req resour
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "id": "d32d905a-ed33-46a3-a093-d8f536af9a8a",  "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "d32d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
 		return
 	}
 
@@ -353,5 +354,4 @@ func (r *GatewayConfigStoreResource) ImportState(ctx context.Context, req resour
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
-
 }

@@ -23,6 +23,7 @@ func NewCloudGatewayProviderAccountListDataSource() datasource.DataSource {
 
 // CloudGatewayProviderAccountListDataSource is the data source implementation.
 type CloudGatewayProviderAccountListDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 

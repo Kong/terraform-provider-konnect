@@ -11,6 +11,200 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *GatewayRouteResourceModel) RefreshFromSharedRouteJSON(ctx context.Context, resp *shared.RouteJSON) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		if resp.Destinations != nil {
+			r.Destinations = []tfTypes.PartialRedisEEClusterNodes{}
+			if len(r.Destinations) > len(resp.Destinations) {
+				r.Destinations = r.Destinations[:len(resp.Destinations)]
+			}
+			for destinationsCount, destinationsItem := range resp.Destinations {
+				var destinations tfTypes.PartialRedisEEClusterNodes
+				destinations.IP = types.StringPointerValue(destinationsItem.IP)
+				destinations.Port = types.Int64PointerValue(destinationsItem.Port)
+				if destinationsCount+1 > len(r.Destinations) {
+					r.Destinations = append(r.Destinations, destinations)
+				} else {
+					r.Destinations[destinationsCount].IP = destinations.IP
+					r.Destinations[destinationsCount].Port = destinations.Port
+				}
+			}
+		}
+		if resp.Headers != nil {
+			r.Headers = make(map[string][]types.String, len(resp.Headers))
+			for headersKey, headersValue := range resp.Headers {
+				var headersResult []types.String
+				headersResult = make([]types.String, 0, len(headersValue))
+				for _, v := range headersValue {
+					headersResult = append(headersResult, types.StringValue(v))
+				}
+
+				r.Headers[headersKey] = headersResult
+			}
+		}
+		if resp.Hosts != nil {
+			r.Hosts = make([]types.String, 0, len(resp.Hosts))
+			for _, v := range resp.Hosts {
+				r.Hosts = append(r.Hosts, types.StringValue(v))
+			}
+		}
+		if resp.HTTPSRedirectStatusCode != nil {
+			r.HTTPSRedirectStatusCode = types.Int64Value(int64(*resp.HTTPSRedirectStatusCode))
+		} else {
+			r.HTTPSRedirectStatusCode = types.Int64Null()
+		}
+		r.ID = types.StringPointerValue(resp.ID)
+		if resp.Methods != nil {
+			r.Methods = make([]types.String, 0, len(resp.Methods))
+			for _, v := range resp.Methods {
+				r.Methods = append(r.Methods, types.StringValue(v))
+			}
+		}
+		r.Name = types.StringPointerValue(resp.Name)
+		if resp.PathHandling != nil {
+			r.PathHandling = types.StringValue(string(*resp.PathHandling))
+		} else {
+			r.PathHandling = types.StringNull()
+		}
+		if resp.Paths != nil {
+			r.Paths = make([]types.String, 0, len(resp.Paths))
+			for _, v := range resp.Paths {
+				r.Paths = append(r.Paths, types.StringValue(v))
+			}
+		}
+		r.PreserveHost = types.BoolPointerValue(resp.PreserveHost)
+		if resp.Protocols != nil {
+			r.Protocols = make([]types.String, 0, len(resp.Protocols))
+			for _, v := range resp.Protocols {
+				r.Protocols = append(r.Protocols, types.StringValue(string(v)))
+			}
+		}
+		r.RegexPriority = types.Int64PointerValue(resp.RegexPriority)
+		r.RequestBuffering = types.BoolPointerValue(resp.RequestBuffering)
+		r.ResponseBuffering = types.BoolPointerValue(resp.ResponseBuffering)
+		if resp.Service == nil {
+			r.Service = nil
+		} else {
+			r.Service = &tfTypes.Set{}
+			r.Service.ID = types.StringPointerValue(resp.Service.ID)
+		}
+		if resp.Snis != nil {
+			r.Snis = make([]types.String, 0, len(resp.Snis))
+			for _, v := range resp.Snis {
+				r.Snis = append(r.Snis, types.StringValue(v))
+			}
+		}
+		if resp.Sources != nil {
+			r.Sources = []tfTypes.PartialRedisEEClusterNodes{}
+			if len(r.Sources) > len(resp.Sources) {
+				r.Sources = r.Sources[:len(resp.Sources)]
+			}
+			for sourcesCount, sourcesItem := range resp.Sources {
+				var sources tfTypes.PartialRedisEEClusterNodes
+				sources.IP = types.StringPointerValue(sourcesItem.IP)
+				sources.Port = types.Int64PointerValue(sourcesItem.Port)
+				if sourcesCount+1 > len(r.Sources) {
+					r.Sources = append(r.Sources, sources)
+				} else {
+					r.Sources[sourcesCount].IP = sources.IP
+					r.Sources[sourcesCount].Port = sources.Port
+				}
+			}
+		}
+		r.StripPath = types.BoolPointerValue(resp.StripPath)
+		r.Tags = make([]types.String, 0, len(resp.Tags))
+		for _, v := range resp.Tags {
+			r.Tags = append(r.Tags, types.StringValue(v))
+		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
+	}
+
+	return diags
+}
+
+func (r *GatewayRouteResourceModel) ToOperationsCreateRouteRequest(ctx context.Context) (*operations.CreateRouteRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	routeJSON, routeJSONDiags := r.ToSharedRouteJSON(ctx)
+	diags.Append(routeJSONDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateRouteRequest{
+		ControlPlaneID: controlPlaneID,
+		RouteJSON:      *routeJSON,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayRouteResourceModel) ToOperationsDeleteRouteRequest(ctx context.Context) (*operations.DeleteRouteRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var routeID string
+	routeID = r.ID.ValueString()
+
+	out := operations.DeleteRouteRequest{
+		ControlPlaneID: controlPlaneID,
+		RouteID:        routeID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayRouteResourceModel) ToOperationsGetRouteRequest(ctx context.Context) (*operations.GetRouteRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var routeID string
+	routeID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetRouteRequest{
+		RouteID:        routeID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayRouteResourceModel) ToOperationsUpsertRouteRequest(ctx context.Context) (*operations.UpsertRouteRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var routeID string
+	routeID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	routeJSON, routeJSONDiags := r.ToSharedRouteJSON(ctx)
+	diags.Append(routeJSONDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpsertRouteRequest{
+		RouteID:        routeID,
+		ControlPlaneID: controlPlaneID,
+		RouteJSON:      *routeJSON,
+	}
+
+	return &out, diags
+}
+
 func (r *GatewayRouteResourceModel) ToSharedRouteJSON(ctx context.Context) (*shared.RouteJSON, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -208,198 +402,4 @@ func (r *GatewayRouteResourceModel) ToSharedRouteJSON(ctx context.Context) (*sha
 	}
 
 	return &out, diags
-}
-
-func (r *GatewayRouteResourceModel) ToOperationsCreateRouteRequest(ctx context.Context) (*operations.CreateRouteRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	routeJSON, routeJSONDiags := r.ToSharedRouteJSON(ctx)
-	diags.Append(routeJSONDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateRouteRequest{
-		ControlPlaneID: controlPlaneID,
-		RouteJSON:      *routeJSON,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayRouteResourceModel) ToOperationsUpsertRouteRequest(ctx context.Context) (*operations.UpsertRouteRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var routeID string
-	routeID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	routeJSON, routeJSONDiags := r.ToSharedRouteJSON(ctx)
-	diags.Append(routeJSONDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpsertRouteRequest{
-		RouteID:        routeID,
-		ControlPlaneID: controlPlaneID,
-		RouteJSON:      *routeJSON,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayRouteResourceModel) ToOperationsGetRouteRequest(ctx context.Context) (*operations.GetRouteRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var routeID string
-	routeID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.GetRouteRequest{
-		RouteID:        routeID,
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayRouteResourceModel) ToOperationsDeleteRouteRequest(ctx context.Context) (*operations.DeleteRouteRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	var routeID string
-	routeID = r.ID.ValueString()
-
-	out := operations.DeleteRouteRequest{
-		ControlPlaneID: controlPlaneID,
-		RouteID:        routeID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayRouteResourceModel) RefreshFromSharedRouteJSON(ctx context.Context, resp *shared.RouteJSON) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		if resp.Destinations != nil {
-			r.Destinations = []tfTypes.PartialRedisEEClusterNodes{}
-			if len(r.Destinations) > len(resp.Destinations) {
-				r.Destinations = r.Destinations[:len(resp.Destinations)]
-			}
-			for destinationsCount, destinationsItem := range resp.Destinations {
-				var destinations tfTypes.PartialRedisEEClusterNodes
-				destinations.IP = types.StringPointerValue(destinationsItem.IP)
-				destinations.Port = types.Int64PointerValue(destinationsItem.Port)
-				if destinationsCount+1 > len(r.Destinations) {
-					r.Destinations = append(r.Destinations, destinations)
-				} else {
-					r.Destinations[destinationsCount].IP = destinations.IP
-					r.Destinations[destinationsCount].Port = destinations.Port
-				}
-			}
-		}
-		if resp.Headers != nil {
-			r.Headers = make(map[string][]types.String, len(resp.Headers))
-			for headersKey, headersValue := range resp.Headers {
-				var headersResult []types.String
-				headersResult = make([]types.String, 0, len(headersValue))
-				for _, v := range headersValue {
-					headersResult = append(headersResult, types.StringValue(v))
-				}
-
-				r.Headers[headersKey] = headersResult
-			}
-		}
-		if resp.Hosts != nil {
-			r.Hosts = make([]types.String, 0, len(resp.Hosts))
-			for _, v := range resp.Hosts {
-				r.Hosts = append(r.Hosts, types.StringValue(v))
-			}
-		}
-		if resp.HTTPSRedirectStatusCode != nil {
-			r.HTTPSRedirectStatusCode = types.Int64Value(int64(*resp.HTTPSRedirectStatusCode))
-		} else {
-			r.HTTPSRedirectStatusCode = types.Int64Null()
-		}
-		r.ID = types.StringPointerValue(resp.ID)
-		if resp.Methods != nil {
-			r.Methods = make([]types.String, 0, len(resp.Methods))
-			for _, v := range resp.Methods {
-				r.Methods = append(r.Methods, types.StringValue(v))
-			}
-		}
-		r.Name = types.StringPointerValue(resp.Name)
-		if resp.PathHandling != nil {
-			r.PathHandling = types.StringValue(string(*resp.PathHandling))
-		} else {
-			r.PathHandling = types.StringNull()
-		}
-		if resp.Paths != nil {
-			r.Paths = make([]types.String, 0, len(resp.Paths))
-			for _, v := range resp.Paths {
-				r.Paths = append(r.Paths, types.StringValue(v))
-			}
-		}
-		r.PreserveHost = types.BoolPointerValue(resp.PreserveHost)
-		if resp.Protocols != nil {
-			r.Protocols = make([]types.String, 0, len(resp.Protocols))
-			for _, v := range resp.Protocols {
-				r.Protocols = append(r.Protocols, types.StringValue(string(v)))
-			}
-		}
-		r.RegexPriority = types.Int64PointerValue(resp.RegexPriority)
-		r.RequestBuffering = types.BoolPointerValue(resp.RequestBuffering)
-		r.ResponseBuffering = types.BoolPointerValue(resp.ResponseBuffering)
-		if resp.Service == nil {
-			r.Service = nil
-		} else {
-			r.Service = &tfTypes.Set{}
-			r.Service.ID = types.StringPointerValue(resp.Service.ID)
-		}
-		if resp.Snis != nil {
-			r.Snis = make([]types.String, 0, len(resp.Snis))
-			for _, v := range resp.Snis {
-				r.Snis = append(r.Snis, types.StringValue(v))
-			}
-		}
-		if resp.Sources != nil {
-			r.Sources = []tfTypes.PartialRedisEEClusterNodes{}
-			if len(r.Sources) > len(resp.Sources) {
-				r.Sources = r.Sources[:len(resp.Sources)]
-			}
-			for sourcesCount, sourcesItem := range resp.Sources {
-				var sources tfTypes.PartialRedisEEClusterNodes
-				sources.IP = types.StringPointerValue(sourcesItem.IP)
-				sources.Port = types.Int64PointerValue(sourcesItem.Port)
-				if sourcesCount+1 > len(r.Sources) {
-					r.Sources = append(r.Sources, sources)
-				} else {
-					r.Sources[sourcesCount].IP = sources.IP
-					r.Sources[sourcesCount].Port = sources.Port
-				}
-			}
-		}
-		r.StripPath = types.BoolPointerValue(resp.StripPath)
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
-		}
-		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
-	}
-
-	return diags
 }

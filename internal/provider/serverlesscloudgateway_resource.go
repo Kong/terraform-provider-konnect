@@ -34,6 +34,7 @@ func NewServerlessCloudGatewayResource() resource.Resource {
 
 // ServerlessCloudGatewayResource defines the resource implementation.
 type ServerlessCloudGatewayResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 

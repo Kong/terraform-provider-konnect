@@ -23,6 +23,7 @@ func NewMeshControlPlanesDataSource() datasource.DataSource {
 
 // MeshControlPlanesDataSource is the data source implementation.
 type MeshControlPlanesDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
