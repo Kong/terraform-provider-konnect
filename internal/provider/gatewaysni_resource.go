@@ -30,6 +30,7 @@ func NewGatewaySNIResource() resource.Resource {
 
 // GatewaySNIResource defines the resource implementation.
 type GatewaySNIResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
@@ -347,7 +348,7 @@ func (r *GatewaySNIResource) ImportState(ctx context.Context, req resource.Impor
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "64c17a1a-b7d7-4a65-a5a4-42e4a7016e7f"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "64c17a1a-b7d7-4a65-a5a4-42e4a7016e7f"}': `+err.Error())
 		return
 	}
 
@@ -361,5 +362,4 @@ func (r *GatewaySNIResource) ImportState(ctx context.Context, req resource.Impor
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
-
 }

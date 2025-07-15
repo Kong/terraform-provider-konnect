@@ -14,7 +14,7 @@ GatewayUpstream Resource
 
 ```terraform
 resource "konnect_gateway_upstream" "my_gatewayupstream" {
-  algorithm = "latency"
+  algorithm = "sticky-sessions"
   client_certificate = {
     id = "...my_id..."
   }
@@ -77,10 +77,12 @@ resource "konnect_gateway_upstream" "my_gatewayupstream" {
     }
     threshold = 3.63
   }
-  host_header = "...my_host_header..."
-  id          = "...my_id..."
-  name        = "...my_name..."
-  slots       = 0
+  host_header                 = "...my_host_header..."
+  id                          = "...my_id..."
+  name                        = "...my_name..."
+  slots                       = 0
+  sticky_sessions_cookie      = "...my_sticky_sessions_cookie..."
+  sticky_sessions_cookie_path = "...my_sticky_sessions_cookie_path..."
   tags = [
     "..."
   ]
@@ -99,7 +101,7 @@ resource "konnect_gateway_upstream" "my_gatewayupstream" {
 
 ### Optional
 
-- `algorithm` (String) Which load balancing algorithm to use. must be one of ["consistent-hashing", "least-connections", "round-robin", "latency"]
+- `algorithm` (String) Which load balancing algorithm to use. must be one of ["consistent-hashing", "least-connections", "round-robin", "latency", "sticky-sessions"]
 - `client_certificate` (Attributes) If set, the certificate to be used as client certificate while TLS handshaking to the upstream server. (see [below for nested schema](#nestedatt--client_certificate))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `hash_fallback` (String) What to use as hashing input if the primary `hash_on` does not return a hash (eg. header is missing, or no Consumer identified). Not available if `hash_on` is set to `cookie`. must be one of ["none", "consumer", "ip", "header", "cookie", "path", "query_arg", "uri_capture"]
@@ -115,6 +117,8 @@ resource "konnect_gateway_upstream" "my_gatewayupstream" {
 - `healthchecks` (Attributes) (see [below for nested schema](#nestedatt--healthchecks))
 - `host_header` (String) The hostname to be used as `Host` header when proxying requests through Kong.
 - `slots` (Number) The number of slots in the load balancer algorithm. If `algorithm` is set to `round-robin`, this setting determines the maximum number of slots. If `algorithm` is set to `consistent-hashing`, this setting determines the actual number of slots in the algorithm. Accepts an integer in the range `10`-`65536`.
+- `sticky_sessions_cookie` (String)
+- `sticky_sessions_cookie_path` (String)
 - `tags` (List of String) An optional set of strings associated with the Upstream for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
 - `use_srv_name` (Boolean) If set, the balancer will use SRV hostname(if DNS Answer has SRV record) as the proxy upstream `Host`.
@@ -211,5 +215,5 @@ Optional:
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_gateway_upstream.my_konnect_gateway_upstream "{ \"control_plane_id\": \"9524ec7d-36d9-465d-a8c5-83a3c9390458\",  \"id\": \"426d620c-7058-4ae6-aacc-f85a3204a2c5\"}"
+terraform import konnect_gateway_upstream.my_konnect_gateway_upstream '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "426d620c-7058-4ae6-aacc-f85a3204a2c5"}'
 ```

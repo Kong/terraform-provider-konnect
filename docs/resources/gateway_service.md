@@ -35,6 +35,14 @@ resource "konnect_gateway_service" "my_gatewayservice" {
   tags = [
     "..."
   ]
+  tls_sans = {
+    dnsnames = [
+      "..."
+    ]
+    uris = [
+      "..."
+    ]
+  }
   tls_verify       = true
   tls_verify_depth = 8
   updated_at       = 8
@@ -64,6 +72,7 @@ resource "konnect_gateway_service" "my_gatewayservice" {
 - `read_timeout` (Number) The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server.
 - `retries` (Number) The number of retries to execute upon failure to proxy.
 - `tags` (List of String) An optional set of strings associated with the Service for grouping and filtering.
+- `tls_sans` (Attributes) (see [below for nested schema](#nestedatt--tls_sans))
 - `tls_verify` (Boolean) Whether to enable verification of upstream server TLS certificate. If set to `null`, then the Nginx default is respected.
 - `tls_verify_depth` (Number) Maximum depth of chain while verifying Upstream server's TLS certificate. If set to `null`, then the Nginx default is respected.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
@@ -80,10 +89,19 @@ Optional:
 
 - `id` (String)
 
+
+<a id="nestedatt--tls_sans"></a>
+### Nested Schema for `tls_sans`
+
+Optional:
+
+- `dnsnames` (List of String)
+- `uris` (List of String)
+
 ## Import
 
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_gateway_service.my_konnect_gateway_service "{ \"control_plane_id\": \"9524ec7d-36d9-465d-a8c5-83a3c9390458\",  \"id\": \"7fca84d6-7d37-4a74-a7b0-93e576089a41\"}"
+terraform import konnect_gateway_service.my_konnect_gateway_service '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "7fca84d6-7d37-4a74-a7b0-93e576089a41"}'
 ```

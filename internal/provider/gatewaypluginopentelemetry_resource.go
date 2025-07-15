@@ -38,6 +38,7 @@ func NewGatewayPluginOpentelemetryResource() resource.Resource {
 
 // GatewayPluginOpentelemetryResource defines the resource implementation.
 type GatewayPluginOpentelemetryResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
@@ -658,7 +659,7 @@ func (r *GatewayPluginOpentelemetryResource) ImportState(ctx context.Context, re
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 
@@ -672,5 +673,4 @@ func (r *GatewayPluginOpentelemetryResource) ImportState(ctx context.Context, re
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
-
 }

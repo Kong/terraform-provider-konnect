@@ -11,6 +11,288 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx context.Context, resp *shared.AiProxyPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.AiProxyPluginConfig{}
+			if resp.Config.Auth == nil {
+				r.Config.Auth = nil
+			} else {
+				r.Config.Auth = &tfTypes.Auth{}
+				r.Config.Auth.AllowOverride = types.BoolPointerValue(resp.Config.Auth.AllowOverride)
+				r.Config.Auth.AwsAccessKeyID = types.StringPointerValue(resp.Config.Auth.AwsAccessKeyID)
+				r.Config.Auth.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Auth.AwsSecretAccessKey)
+				r.Config.Auth.AzureClientID = types.StringPointerValue(resp.Config.Auth.AzureClientID)
+				r.Config.Auth.AzureClientSecret = types.StringPointerValue(resp.Config.Auth.AzureClientSecret)
+				r.Config.Auth.AzureTenantID = types.StringPointerValue(resp.Config.Auth.AzureTenantID)
+				r.Config.Auth.AzureUseManagedIdentity = types.BoolPointerValue(resp.Config.Auth.AzureUseManagedIdentity)
+				r.Config.Auth.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.Auth.GcpServiceAccountJSON)
+				r.Config.Auth.GcpUseServiceAccount = types.BoolPointerValue(resp.Config.Auth.GcpUseServiceAccount)
+				r.Config.Auth.HeaderName = types.StringPointerValue(resp.Config.Auth.HeaderName)
+				r.Config.Auth.HeaderValue = types.StringPointerValue(resp.Config.Auth.HeaderValue)
+				if resp.Config.Auth.ParamLocation != nil {
+					r.Config.Auth.ParamLocation = types.StringValue(string(*resp.Config.Auth.ParamLocation))
+				} else {
+					r.Config.Auth.ParamLocation = types.StringNull()
+				}
+				r.Config.Auth.ParamName = types.StringPointerValue(resp.Config.Auth.ParamName)
+				r.Config.Auth.ParamValue = types.StringPointerValue(resp.Config.Auth.ParamValue)
+			}
+			if resp.Config.LlmFormat != nil {
+				r.Config.LlmFormat = types.StringValue(string(*resp.Config.LlmFormat))
+			} else {
+				r.Config.LlmFormat = types.StringNull()
+			}
+			if resp.Config.Logging == nil {
+				r.Config.Logging = nil
+			} else {
+				r.Config.Logging = &tfTypes.Logging{}
+				r.Config.Logging.LogPayloads = types.BoolPointerValue(resp.Config.Logging.LogPayloads)
+				r.Config.Logging.LogStatistics = types.BoolPointerValue(resp.Config.Logging.LogStatistics)
+			}
+			r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
+			if resp.Config.Model == nil {
+				r.Config.Model = nil
+			} else {
+				r.Config.Model = &tfTypes.Model{}
+				r.Config.Model.Name = types.StringPointerValue(resp.Config.Model.Name)
+				if resp.Config.Model.Options == nil {
+					r.Config.Model.Options = nil
+				} else {
+					r.Config.Model.Options = &tfTypes.OptionsObj{}
+					r.Config.Model.Options.AnthropicVersion = types.StringPointerValue(resp.Config.Model.Options.AnthropicVersion)
+					r.Config.Model.Options.AzureAPIVersion = types.StringPointerValue(resp.Config.Model.Options.AzureAPIVersion)
+					r.Config.Model.Options.AzureDeploymentID = types.StringPointerValue(resp.Config.Model.Options.AzureDeploymentID)
+					r.Config.Model.Options.AzureInstance = types.StringPointerValue(resp.Config.Model.Options.AzureInstance)
+					if resp.Config.Model.Options.Bedrock == nil {
+						r.Config.Model.Options.Bedrock = nil
+					} else {
+						r.Config.Model.Options.Bedrock = &tfTypes.Bedrock{}
+						r.Config.Model.Options.Bedrock.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsAssumeRoleArn)
+						r.Config.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsRegion)
+						r.Config.Model.Options.Bedrock.AwsRoleSessionName = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsRoleSessionName)
+						r.Config.Model.Options.Bedrock.AwsStsEndpointURL = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsStsEndpointURL)
+					}
+					if resp.Config.Model.Options.Gemini == nil {
+						r.Config.Model.Options.Gemini = nil
+					} else {
+						r.Config.Model.Options.Gemini = &tfTypes.Gemini{}
+						r.Config.Model.Options.Gemini.APIEndpoint = types.StringPointerValue(resp.Config.Model.Options.Gemini.APIEndpoint)
+						r.Config.Model.Options.Gemini.LocationID = types.StringPointerValue(resp.Config.Model.Options.Gemini.LocationID)
+						r.Config.Model.Options.Gemini.ProjectID = types.StringPointerValue(resp.Config.Model.Options.Gemini.ProjectID)
+					}
+					if resp.Config.Model.Options.Huggingface == nil {
+						r.Config.Model.Options.Huggingface = nil
+					} else {
+						r.Config.Model.Options.Huggingface = &tfTypes.Huggingface{}
+						r.Config.Model.Options.Huggingface.UseCache = types.BoolPointerValue(resp.Config.Model.Options.Huggingface.UseCache)
+						r.Config.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(resp.Config.Model.Options.Huggingface.WaitForModel)
+					}
+					r.Config.Model.Options.InputCost = types.Float64PointerValue(resp.Config.Model.Options.InputCost)
+					if resp.Config.Model.Options.Llama2Format != nil {
+						r.Config.Model.Options.Llama2Format = types.StringValue(string(*resp.Config.Model.Options.Llama2Format))
+					} else {
+						r.Config.Model.Options.Llama2Format = types.StringNull()
+					}
+					r.Config.Model.Options.MaxTokens = types.Int64PointerValue(resp.Config.Model.Options.MaxTokens)
+					if resp.Config.Model.Options.MistralFormat != nil {
+						r.Config.Model.Options.MistralFormat = types.StringValue(string(*resp.Config.Model.Options.MistralFormat))
+					} else {
+						r.Config.Model.Options.MistralFormat = types.StringNull()
+					}
+					r.Config.Model.Options.OutputCost = types.Float64PointerValue(resp.Config.Model.Options.OutputCost)
+					r.Config.Model.Options.Temperature = types.Float64PointerValue(resp.Config.Model.Options.Temperature)
+					r.Config.Model.Options.TopK = types.Int64PointerValue(resp.Config.Model.Options.TopK)
+					r.Config.Model.Options.TopP = types.Float64PointerValue(resp.Config.Model.Options.TopP)
+					r.Config.Model.Options.UpstreamPath = types.StringPointerValue(resp.Config.Model.Options.UpstreamPath)
+					r.Config.Model.Options.UpstreamURL = types.StringPointerValue(resp.Config.Model.Options.UpstreamURL)
+				}
+				if resp.Config.Model.Provider != nil {
+					r.Config.Model.Provider = types.StringValue(string(*resp.Config.Model.Provider))
+				} else {
+					r.Config.Model.Provider = types.StringNull()
+				}
+			}
+			r.Config.ModelNameHeader = types.BoolPointerValue(resp.Config.ModelNameHeader)
+			if resp.Config.ResponseStreaming != nil {
+				r.Config.ResponseStreaming = types.StringValue(string(*resp.Config.ResponseStreaming))
+			} else {
+				r.Config.ResponseStreaming = types.StringNull()
+			}
+			if resp.Config.RouteType != nil {
+				r.Config.RouteType = types.StringValue(string(*resp.Config.RouteType))
+			} else {
+				r.Config.RouteType = types.StringNull()
+			}
+		}
+		if resp.Consumer == nil {
+			r.Consumer = nil
+		} else {
+			r.Consumer = &tfTypes.Set{}
+			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
+		}
+		if resp.ConsumerGroup == nil {
+			r.ConsumerGroup = nil
+		} else {
+			r.ConsumerGroup = &tfTypes.Set{}
+			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
+		}
+		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.Enabled = types.BoolPointerValue(resp.Enabled)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
+		if resp.Partials != nil {
+			r.Partials = []tfTypes.Partials{}
+			if len(r.Partials) > len(resp.Partials) {
+				r.Partials = r.Partials[:len(resp.Partials)]
+			}
+			for partialsCount, partialsItem := range resp.Partials {
+				var partials tfTypes.Partials
+				partials.ID = types.StringPointerValue(partialsItem.ID)
+				partials.Name = types.StringPointerValue(partialsItem.Name)
+				partials.Path = types.StringPointerValue(partialsItem.Path)
+				if partialsCount+1 > len(r.Partials) {
+					r.Partials = append(r.Partials, partials)
+				} else {
+					r.Partials[partialsCount].ID = partials.ID
+					r.Partials[partialsCount].Name = partials.Name
+					r.Partials[partialsCount].Path = partials.Path
+				}
+			}
+		}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
+		for _, v := range resp.Protocols {
+			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
+		}
+		if resp.Route == nil {
+			r.Route = nil
+		} else {
+			r.Route = &tfTypes.Set{}
+			r.Route.ID = types.StringPointerValue(resp.Route.ID)
+		}
+		if resp.Service == nil {
+			r.Service = nil
+		} else {
+			r.Service = &tfTypes.Set{}
+			r.Service.ID = types.StringPointerValue(resp.Service.ID)
+		}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
+		for _, v := range resp.Tags {
+			r.Tags = append(r.Tags, types.StringValue(v))
+		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
+	}
+
+	return diags
+}
+
+func (r *GatewayPluginAiProxyResourceModel) ToOperationsCreateAiproxyPluginRequest(ctx context.Context) (*operations.CreateAiproxyPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiProxyPlugin, aiProxyPluginDiags := r.ToSharedAiProxyPlugin(ctx)
+	diags.Append(aiProxyPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateAiproxyPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		AiProxyPlugin:  *aiProxyPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiProxyResourceModel) ToOperationsDeleteAiproxyPluginRequest(ctx context.Context) (*operations.DeleteAiproxyPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteAiproxyPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiProxyResourceModel) ToOperationsGetAiproxyPluginRequest(ctx context.Context) (*operations.GetAiproxyPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetAiproxyPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiProxyResourceModel) ToOperationsUpdateAiproxyPluginRequest(ctx context.Context) (*operations.UpdateAiproxyPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiProxyPlugin, aiProxyPluginDiags := r.ToSharedAiProxyPlugin(ctx)
+	diags.Append(aiProxyPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAiproxyPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		AiProxyPlugin:  *aiProxyPlugin,
+	}
+
+	return &out, diags
+}
+
 func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Context) (*shared.AiProxyPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -543,286 +825,4 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 	}
 
 	return &out, diags
-}
-
-func (r *GatewayPluginAiProxyResourceModel) ToOperationsCreateAiproxyPluginRequest(ctx context.Context) (*operations.CreateAiproxyPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	aiProxyPlugin, aiProxyPluginDiags := r.ToSharedAiProxyPlugin(ctx)
-	diags.Append(aiProxyPluginDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateAiproxyPluginRequest{
-		ControlPlaneID: controlPlaneID,
-		AiProxyPlugin:  *aiProxyPlugin,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginAiProxyResourceModel) ToOperationsUpdateAiproxyPluginRequest(ctx context.Context) (*operations.UpdateAiproxyPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	aiProxyPlugin, aiProxyPluginDiags := r.ToSharedAiProxyPlugin(ctx)
-	diags.Append(aiProxyPluginDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateAiproxyPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-		AiProxyPlugin:  *aiProxyPlugin,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginAiProxyResourceModel) ToOperationsGetAiproxyPluginRequest(ctx context.Context) (*operations.GetAiproxyPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.GetAiproxyPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginAiProxyResourceModel) ToOperationsDeleteAiproxyPluginRequest(ctx context.Context) (*operations.DeleteAiproxyPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.DeleteAiproxyPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx context.Context, resp *shared.AiProxyPlugin) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.AiProxyPluginConfig{}
-			if resp.Config.Auth == nil {
-				r.Config.Auth = nil
-			} else {
-				r.Config.Auth = &tfTypes.Auth{}
-				r.Config.Auth.AllowOverride = types.BoolPointerValue(resp.Config.Auth.AllowOverride)
-				r.Config.Auth.AwsAccessKeyID = types.StringPointerValue(resp.Config.Auth.AwsAccessKeyID)
-				r.Config.Auth.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Auth.AwsSecretAccessKey)
-				r.Config.Auth.AzureClientID = types.StringPointerValue(resp.Config.Auth.AzureClientID)
-				r.Config.Auth.AzureClientSecret = types.StringPointerValue(resp.Config.Auth.AzureClientSecret)
-				r.Config.Auth.AzureTenantID = types.StringPointerValue(resp.Config.Auth.AzureTenantID)
-				r.Config.Auth.AzureUseManagedIdentity = types.BoolPointerValue(resp.Config.Auth.AzureUseManagedIdentity)
-				r.Config.Auth.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.Auth.GcpServiceAccountJSON)
-				r.Config.Auth.GcpUseServiceAccount = types.BoolPointerValue(resp.Config.Auth.GcpUseServiceAccount)
-				r.Config.Auth.HeaderName = types.StringPointerValue(resp.Config.Auth.HeaderName)
-				r.Config.Auth.HeaderValue = types.StringPointerValue(resp.Config.Auth.HeaderValue)
-				if resp.Config.Auth.ParamLocation != nil {
-					r.Config.Auth.ParamLocation = types.StringValue(string(*resp.Config.Auth.ParamLocation))
-				} else {
-					r.Config.Auth.ParamLocation = types.StringNull()
-				}
-				r.Config.Auth.ParamName = types.StringPointerValue(resp.Config.Auth.ParamName)
-				r.Config.Auth.ParamValue = types.StringPointerValue(resp.Config.Auth.ParamValue)
-			}
-			if resp.Config.LlmFormat != nil {
-				r.Config.LlmFormat = types.StringValue(string(*resp.Config.LlmFormat))
-			} else {
-				r.Config.LlmFormat = types.StringNull()
-			}
-			if resp.Config.Logging == nil {
-				r.Config.Logging = nil
-			} else {
-				r.Config.Logging = &tfTypes.Logging{}
-				r.Config.Logging.LogPayloads = types.BoolPointerValue(resp.Config.Logging.LogPayloads)
-				r.Config.Logging.LogStatistics = types.BoolPointerValue(resp.Config.Logging.LogStatistics)
-			}
-			r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
-			if resp.Config.Model == nil {
-				r.Config.Model = nil
-			} else {
-				r.Config.Model = &tfTypes.Model{}
-				r.Config.Model.Name = types.StringPointerValue(resp.Config.Model.Name)
-				if resp.Config.Model.Options == nil {
-					r.Config.Model.Options = nil
-				} else {
-					r.Config.Model.Options = &tfTypes.OptionsObj{}
-					r.Config.Model.Options.AnthropicVersion = types.StringPointerValue(resp.Config.Model.Options.AnthropicVersion)
-					r.Config.Model.Options.AzureAPIVersion = types.StringPointerValue(resp.Config.Model.Options.AzureAPIVersion)
-					r.Config.Model.Options.AzureDeploymentID = types.StringPointerValue(resp.Config.Model.Options.AzureDeploymentID)
-					r.Config.Model.Options.AzureInstance = types.StringPointerValue(resp.Config.Model.Options.AzureInstance)
-					if resp.Config.Model.Options.Bedrock == nil {
-						r.Config.Model.Options.Bedrock = nil
-					} else {
-						r.Config.Model.Options.Bedrock = &tfTypes.Bedrock{}
-						r.Config.Model.Options.Bedrock.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsAssumeRoleArn)
-						r.Config.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsRegion)
-						r.Config.Model.Options.Bedrock.AwsRoleSessionName = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsRoleSessionName)
-						r.Config.Model.Options.Bedrock.AwsStsEndpointURL = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsStsEndpointURL)
-					}
-					if resp.Config.Model.Options.Gemini == nil {
-						r.Config.Model.Options.Gemini = nil
-					} else {
-						r.Config.Model.Options.Gemini = &tfTypes.Gemini{}
-						r.Config.Model.Options.Gemini.APIEndpoint = types.StringPointerValue(resp.Config.Model.Options.Gemini.APIEndpoint)
-						r.Config.Model.Options.Gemini.LocationID = types.StringPointerValue(resp.Config.Model.Options.Gemini.LocationID)
-						r.Config.Model.Options.Gemini.ProjectID = types.StringPointerValue(resp.Config.Model.Options.Gemini.ProjectID)
-					}
-					if resp.Config.Model.Options.Huggingface == nil {
-						r.Config.Model.Options.Huggingface = nil
-					} else {
-						r.Config.Model.Options.Huggingface = &tfTypes.Huggingface{}
-						r.Config.Model.Options.Huggingface.UseCache = types.BoolPointerValue(resp.Config.Model.Options.Huggingface.UseCache)
-						r.Config.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(resp.Config.Model.Options.Huggingface.WaitForModel)
-					}
-					r.Config.Model.Options.InputCost = types.Float64PointerValue(resp.Config.Model.Options.InputCost)
-					if resp.Config.Model.Options.Llama2Format != nil {
-						r.Config.Model.Options.Llama2Format = types.StringValue(string(*resp.Config.Model.Options.Llama2Format))
-					} else {
-						r.Config.Model.Options.Llama2Format = types.StringNull()
-					}
-					r.Config.Model.Options.MaxTokens = types.Int64PointerValue(resp.Config.Model.Options.MaxTokens)
-					if resp.Config.Model.Options.MistralFormat != nil {
-						r.Config.Model.Options.MistralFormat = types.StringValue(string(*resp.Config.Model.Options.MistralFormat))
-					} else {
-						r.Config.Model.Options.MistralFormat = types.StringNull()
-					}
-					r.Config.Model.Options.OutputCost = types.Float64PointerValue(resp.Config.Model.Options.OutputCost)
-					r.Config.Model.Options.Temperature = types.Float64PointerValue(resp.Config.Model.Options.Temperature)
-					r.Config.Model.Options.TopK = types.Int64PointerValue(resp.Config.Model.Options.TopK)
-					r.Config.Model.Options.TopP = types.Float64PointerValue(resp.Config.Model.Options.TopP)
-					r.Config.Model.Options.UpstreamPath = types.StringPointerValue(resp.Config.Model.Options.UpstreamPath)
-					r.Config.Model.Options.UpstreamURL = types.StringPointerValue(resp.Config.Model.Options.UpstreamURL)
-				}
-				if resp.Config.Model.Provider != nil {
-					r.Config.Model.Provider = types.StringValue(string(*resp.Config.Model.Provider))
-				} else {
-					r.Config.Model.Provider = types.StringNull()
-				}
-			}
-			r.Config.ModelNameHeader = types.BoolPointerValue(resp.Config.ModelNameHeader)
-			if resp.Config.ResponseStreaming != nil {
-				r.Config.ResponseStreaming = types.StringValue(string(*resp.Config.ResponseStreaming))
-			} else {
-				r.Config.ResponseStreaming = types.StringNull()
-			}
-			if resp.Config.RouteType != nil {
-				r.Config.RouteType = types.StringValue(string(*resp.Config.RouteType))
-			} else {
-				r.Config.RouteType = types.StringNull()
-			}
-		}
-		if resp.Consumer == nil {
-			r.Consumer = nil
-		} else {
-			r.Consumer = &tfTypes.Set{}
-			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		if resp.ConsumerGroup == nil {
-			r.ConsumerGroup = nil
-		} else {
-			r.ConsumerGroup = &tfTypes.Set{}
-			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
-		}
-		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.Enabled = types.BoolPointerValue(resp.Enabled)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.InstanceName = types.StringPointerValue(resp.InstanceName)
-		if resp.Ordering == nil {
-			r.Ordering = nil
-		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
-			if resp.Ordering.After == nil {
-				r.Ordering.After = nil
-			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
-				}
-			}
-			if resp.Ordering.Before == nil {
-				r.Ordering.Before = nil
-			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
-				}
-			}
-		}
-		if resp.Partials != nil {
-			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
-				var partials tfTypes.Partials
-				partials.ID = types.StringPointerValue(partialsItem.ID)
-				partials.Name = types.StringPointerValue(partialsItem.Name)
-				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
-			}
-		}
-		r.Protocols = make([]types.String, 0, len(resp.Protocols))
-		for _, v := range resp.Protocols {
-			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
-		}
-		if resp.Route == nil {
-			r.Route = nil
-		} else {
-			r.Route = &tfTypes.Set{}
-			r.Route.ID = types.StringPointerValue(resp.Route.ID)
-		}
-		if resp.Service == nil {
-			r.Service = nil
-		} else {
-			r.Service = &tfTypes.Set{}
-			r.Service.ID = types.StringPointerValue(resp.Service.ID)
-		}
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
-		}
-		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
-	}
-
-	return diags
 }

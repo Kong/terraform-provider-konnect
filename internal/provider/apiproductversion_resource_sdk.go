@@ -12,179 +12,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *APIProductVersionResourceModel) ToSharedCreateAPIProductVersionDTO(ctx context.Context) (*shared.CreateAPIProductVersionDTO, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var name string
-	name = r.Name.ValueString()
-
-	deprecated := new(bool)
-	if !r.Deprecated.IsUnknown() && !r.Deprecated.IsNull() {
-		*deprecated = r.Deprecated.ValueBool()
-	} else {
-		deprecated = nil
-	}
-	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
-		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
-		} else {
-			labelsInst = nil
-		}
-		labels[labelsKey] = labelsInst
-	}
-	var gatewayService *shared.GatewayServicePayload
-	if r.GatewayService != nil {
-		var id string
-		id = r.GatewayService.ID.ValueString()
-
-		var controlPlaneID string
-		controlPlaneID = r.GatewayService.ControlPlaneID.ValueString()
-
-		gatewayService = &shared.GatewayServicePayload{
-			ID:             id,
-			ControlPlaneID: controlPlaneID,
-		}
-	}
-	out := shared.CreateAPIProductVersionDTO{
-		Name:           name,
-		Deprecated:     deprecated,
-		Labels:         labels,
-		GatewayService: gatewayService,
-	}
-
-	return &out, diags
-}
-
-func (r *APIProductVersionResourceModel) ToOperationsCreateAPIProductVersionRequest(ctx context.Context) (*operations.CreateAPIProductVersionRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var apiProductID string
-	apiProductID = r.APIProductID.ValueString()
-
-	createAPIProductVersionDTO, createAPIProductVersionDTODiags := r.ToSharedCreateAPIProductVersionDTO(ctx)
-	diags.Append(createAPIProductVersionDTODiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateAPIProductVersionRequest{
-		APIProductID:               apiProductID,
-		CreateAPIProductVersionDTO: *createAPIProductVersionDTO,
-	}
-
-	return &out, diags
-}
-
-func (r *APIProductVersionResourceModel) ToSharedUpdateAPIProductVersionDTO(ctx context.Context) (*shared.UpdateAPIProductVersionDTO, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
-	}
-	deprecated := new(bool)
-	if !r.Deprecated.IsUnknown() && !r.Deprecated.IsNull() {
-		*deprecated = r.Deprecated.ValueBool()
-	} else {
-		deprecated = nil
-	}
-	var gatewayService *shared.GatewayServicePayload
-	if r.GatewayService != nil {
-		var id string
-		id = r.GatewayService.ID.ValueString()
-
-		var controlPlaneID string
-		controlPlaneID = r.GatewayService.ControlPlaneID.ValueString()
-
-		gatewayService = &shared.GatewayServicePayload{
-			ID:             id,
-			ControlPlaneID: controlPlaneID,
-		}
-	}
-	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
-		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
-		} else {
-			labelsInst = nil
-		}
-		labels[labelsKey] = labelsInst
-	}
-	out := shared.UpdateAPIProductVersionDTO{
-		Name:           name,
-		Deprecated:     deprecated,
-		GatewayService: gatewayService,
-		Labels:         labels,
-	}
-
-	return &out, diags
-}
-
-func (r *APIProductVersionResourceModel) ToOperationsUpdateAPIProductVersionRequest(ctx context.Context) (*operations.UpdateAPIProductVersionRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var apiProductID string
-	apiProductID = r.APIProductID.ValueString()
-
-	var id string
-	id = r.ID.ValueString()
-
-	updateAPIProductVersionDTO, updateAPIProductVersionDTODiags := r.ToSharedUpdateAPIProductVersionDTO(ctx)
-	diags.Append(updateAPIProductVersionDTODiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateAPIProductVersionRequest{
-		APIProductID:               apiProductID,
-		ID:                         id,
-		UpdateAPIProductVersionDTO: *updateAPIProductVersionDTO,
-	}
-
-	return &out, diags
-}
-
-func (r *APIProductVersionResourceModel) ToOperationsGetAPIProductVersionRequest(ctx context.Context) (*operations.GetAPIProductVersionRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var apiProductID string
-	apiProductID = r.APIProductID.ValueString()
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.GetAPIProductVersionRequest{
-		APIProductID: apiProductID,
-		ID:           id,
-	}
-
-	return &out, diags
-}
-
-func (r *APIProductVersionResourceModel) ToOperationsDeleteAPIProductVersionRequest(ctx context.Context) (*operations.DeleteAPIProductVersionRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var apiProductID string
-	apiProductID = r.APIProductID.ValueString()
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.DeleteAPIProductVersionRequest{
-		APIProductID: apiProductID,
-		ID:           id,
-	}
-
-	return &out, diags
-}
-
 func (r *APIProductVersionResourceModel) RefreshFromSharedAPIProductVersion(ctx context.Context, resp *shared.APIProductVersion) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -249,4 +76,177 @@ func (r *APIProductVersionResourceModel) RefreshFromSharedAPIProductVersion(ctx 
 	}
 
 	return diags
+}
+
+func (r *APIProductVersionResourceModel) ToOperationsCreateAPIProductVersionRequest(ctx context.Context) (*operations.CreateAPIProductVersionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiProductID string
+	apiProductID = r.APIProductID.ValueString()
+
+	createAPIProductVersionDTO, createAPIProductVersionDTODiags := r.ToSharedCreateAPIProductVersionDTO(ctx)
+	diags.Append(createAPIProductVersionDTODiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateAPIProductVersionRequest{
+		APIProductID:               apiProductID,
+		CreateAPIProductVersionDTO: *createAPIProductVersionDTO,
+	}
+
+	return &out, diags
+}
+
+func (r *APIProductVersionResourceModel) ToOperationsDeleteAPIProductVersionRequest(ctx context.Context) (*operations.DeleteAPIProductVersionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiProductID string
+	apiProductID = r.APIProductID.ValueString()
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.DeleteAPIProductVersionRequest{
+		APIProductID: apiProductID,
+		ID:           id,
+	}
+
+	return &out, diags
+}
+
+func (r *APIProductVersionResourceModel) ToOperationsGetAPIProductVersionRequest(ctx context.Context) (*operations.GetAPIProductVersionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiProductID string
+	apiProductID = r.APIProductID.ValueString()
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.GetAPIProductVersionRequest{
+		APIProductID: apiProductID,
+		ID:           id,
+	}
+
+	return &out, diags
+}
+
+func (r *APIProductVersionResourceModel) ToOperationsUpdateAPIProductVersionRequest(ctx context.Context) (*operations.UpdateAPIProductVersionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiProductID string
+	apiProductID = r.APIProductID.ValueString()
+
+	var id string
+	id = r.ID.ValueString()
+
+	updateAPIProductVersionDTO, updateAPIProductVersionDTODiags := r.ToSharedUpdateAPIProductVersionDTO(ctx)
+	diags.Append(updateAPIProductVersionDTODiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAPIProductVersionRequest{
+		APIProductID:               apiProductID,
+		ID:                         id,
+		UpdateAPIProductVersionDTO: *updateAPIProductVersionDTO,
+	}
+
+	return &out, diags
+}
+
+func (r *APIProductVersionResourceModel) ToSharedCreateAPIProductVersionDTO(ctx context.Context) (*shared.CreateAPIProductVersionDTO, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var name string
+	name = r.Name.ValueString()
+
+	deprecated := new(bool)
+	if !r.Deprecated.IsUnknown() && !r.Deprecated.IsNull() {
+		*deprecated = r.Deprecated.ValueBool()
+	} else {
+		deprecated = nil
+	}
+	labels := make(map[string]*string)
+	for labelsKey, labelsValue := range r.Labels {
+		labelsInst := new(string)
+		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
+			*labelsInst = labelsValue.ValueString()
+		} else {
+			labelsInst = nil
+		}
+		labels[labelsKey] = labelsInst
+	}
+	var gatewayService *shared.GatewayServicePayload
+	if r.GatewayService != nil {
+		var id string
+		id = r.GatewayService.ID.ValueString()
+
+		var controlPlaneID string
+		controlPlaneID = r.GatewayService.ControlPlaneID.ValueString()
+
+		gatewayService = &shared.GatewayServicePayload{
+			ID:             id,
+			ControlPlaneID: controlPlaneID,
+		}
+	}
+	out := shared.CreateAPIProductVersionDTO{
+		Name:           name,
+		Deprecated:     deprecated,
+		Labels:         labels,
+		GatewayService: gatewayService,
+	}
+
+	return &out, diags
+}
+
+func (r *APIProductVersionResourceModel) ToSharedUpdateAPIProductVersionDTO(ctx context.Context) (*shared.UpdateAPIProductVersionDTO, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
+	deprecated := new(bool)
+	if !r.Deprecated.IsUnknown() && !r.Deprecated.IsNull() {
+		*deprecated = r.Deprecated.ValueBool()
+	} else {
+		deprecated = nil
+	}
+	var gatewayService *shared.GatewayServicePayload
+	if r.GatewayService != nil {
+		var id string
+		id = r.GatewayService.ID.ValueString()
+
+		var controlPlaneID string
+		controlPlaneID = r.GatewayService.ControlPlaneID.ValueString()
+
+		gatewayService = &shared.GatewayServicePayload{
+			ID:             id,
+			ControlPlaneID: controlPlaneID,
+		}
+	}
+	labels := make(map[string]*string)
+	for labelsKey, labelsValue := range r.Labels {
+		labelsInst := new(string)
+		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
+			*labelsInst = labelsValue.ValueString()
+		} else {
+			labelsInst = nil
+		}
+		labels[labelsKey] = labelsInst
+	}
+	out := shared.UpdateAPIProductVersionDTO{
+		Name:           name,
+		Deprecated:     deprecated,
+		GatewayService: gatewayService,
+		Labels:         labels,
+	}
+
+	return &out, diags
 }

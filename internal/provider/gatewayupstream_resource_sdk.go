@@ -11,6 +11,220 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *GatewayUpstreamResourceModel) RefreshFromSharedUpstream(ctx context.Context, resp *shared.Upstream) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.Algorithm != nil {
+			r.Algorithm = types.StringValue(string(*resp.Algorithm))
+		} else {
+			r.Algorithm = types.StringNull()
+		}
+		if resp.ClientCertificate == nil {
+			r.ClientCertificate = nil
+		} else {
+			r.ClientCertificate = &tfTypes.Set{}
+			r.ClientCertificate.ID = types.StringPointerValue(resp.ClientCertificate.ID)
+		}
+		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		if resp.HashFallback != nil {
+			r.HashFallback = types.StringValue(string(*resp.HashFallback))
+		} else {
+			r.HashFallback = types.StringNull()
+		}
+		r.HashFallbackHeader = types.StringPointerValue(resp.HashFallbackHeader)
+		r.HashFallbackQueryArg = types.StringPointerValue(resp.HashFallbackQueryArg)
+		r.HashFallbackURICapture = types.StringPointerValue(resp.HashFallbackURICapture)
+		if resp.HashOn != nil {
+			r.HashOn = types.StringValue(string(*resp.HashOn))
+		} else {
+			r.HashOn = types.StringNull()
+		}
+		r.HashOnCookie = types.StringPointerValue(resp.HashOnCookie)
+		r.HashOnCookiePath = types.StringPointerValue(resp.HashOnCookiePath)
+		r.HashOnHeader = types.StringPointerValue(resp.HashOnHeader)
+		r.HashOnQueryArg = types.StringPointerValue(resp.HashOnQueryArg)
+		r.HashOnURICapture = types.StringPointerValue(resp.HashOnURICapture)
+		if resp.Healthchecks == nil {
+			r.Healthchecks = nil
+		} else {
+			r.Healthchecks = &tfTypes.Healthchecks{}
+			if resp.Healthchecks.Active == nil {
+				r.Healthchecks.Active = nil
+			} else {
+				r.Healthchecks.Active = &tfTypes.Active{}
+				r.Healthchecks.Active.Concurrency = types.Int64PointerValue(resp.Healthchecks.Active.Concurrency)
+				if len(resp.Healthchecks.Active.Headers) > 0 {
+					r.Healthchecks.Active.Headers = make(map[string]types.String, len(resp.Healthchecks.Active.Headers))
+					for key, value := range resp.Healthchecks.Active.Headers {
+						r.Healthchecks.Active.Headers[key] = types.StringValue(value)
+					}
+				}
+				if resp.Healthchecks.Active.Healthy == nil {
+					r.Healthchecks.Active.Healthy = nil
+				} else {
+					r.Healthchecks.Active.Healthy = &tfTypes.Healthy{}
+					r.Healthchecks.Active.Healthy.HTTPStatuses = make([]types.Int64, 0, len(resp.Healthchecks.Active.Healthy.HTTPStatuses))
+					for _, v := range resp.Healthchecks.Active.Healthy.HTTPStatuses {
+						r.Healthchecks.Active.Healthy.HTTPStatuses = append(r.Healthchecks.Active.Healthy.HTTPStatuses, types.Int64Value(v))
+					}
+					r.Healthchecks.Active.Healthy.Interval = types.Float64PointerValue(resp.Healthchecks.Active.Healthy.Interval)
+					r.Healthchecks.Active.Healthy.Successes = types.Int64PointerValue(resp.Healthchecks.Active.Healthy.Successes)
+				}
+				r.Healthchecks.Active.HTTPPath = types.StringPointerValue(resp.Healthchecks.Active.HTTPPath)
+				r.Healthchecks.Active.HTTPSSni = types.StringPointerValue(resp.Healthchecks.Active.HTTPSSni)
+				r.Healthchecks.Active.HTTPSVerifyCertificate = types.BoolPointerValue(resp.Healthchecks.Active.HTTPSVerifyCertificate)
+				r.Healthchecks.Active.Timeout = types.Float64PointerValue(resp.Healthchecks.Active.Timeout)
+				if resp.Healthchecks.Active.Type != nil {
+					r.Healthchecks.Active.Type = types.StringValue(string(*resp.Healthchecks.Active.Type))
+				} else {
+					r.Healthchecks.Active.Type = types.StringNull()
+				}
+				if resp.Healthchecks.Active.Unhealthy == nil {
+					r.Healthchecks.Active.Unhealthy = nil
+				} else {
+					r.Healthchecks.Active.Unhealthy = &tfTypes.Unhealthy{}
+					r.Healthchecks.Active.Unhealthy.HTTPFailures = types.Int64PointerValue(resp.Healthchecks.Active.Unhealthy.HTTPFailures)
+					r.Healthchecks.Active.Unhealthy.HTTPStatuses = make([]types.Int64, 0, len(resp.Healthchecks.Active.Unhealthy.HTTPStatuses))
+					for _, v := range resp.Healthchecks.Active.Unhealthy.HTTPStatuses {
+						r.Healthchecks.Active.Unhealthy.HTTPStatuses = append(r.Healthchecks.Active.Unhealthy.HTTPStatuses, types.Int64Value(v))
+					}
+					r.Healthchecks.Active.Unhealthy.Interval = types.Float64PointerValue(resp.Healthchecks.Active.Unhealthy.Interval)
+					r.Healthchecks.Active.Unhealthy.TCPFailures = types.Int64PointerValue(resp.Healthchecks.Active.Unhealthy.TCPFailures)
+					r.Healthchecks.Active.Unhealthy.Timeouts = types.Int64PointerValue(resp.Healthchecks.Active.Unhealthy.Timeouts)
+				}
+			}
+			if resp.Healthchecks.Passive == nil {
+				r.Healthchecks.Passive = nil
+			} else {
+				r.Healthchecks.Passive = &tfTypes.Passive{}
+				if resp.Healthchecks.Passive.Healthy == nil {
+					r.Healthchecks.Passive.Healthy = nil
+				} else {
+					r.Healthchecks.Passive.Healthy = &tfTypes.UpstreamHealthy{}
+					r.Healthchecks.Passive.Healthy.HTTPStatuses = make([]types.Int64, 0, len(resp.Healthchecks.Passive.Healthy.HTTPStatuses))
+					for _, v := range resp.Healthchecks.Passive.Healthy.HTTPStatuses {
+						r.Healthchecks.Passive.Healthy.HTTPStatuses = append(r.Healthchecks.Passive.Healthy.HTTPStatuses, types.Int64Value(v))
+					}
+					r.Healthchecks.Passive.Healthy.Successes = types.Int64PointerValue(resp.Healthchecks.Passive.Healthy.Successes)
+				}
+				if resp.Healthchecks.Passive.Type != nil {
+					r.Healthchecks.Passive.Type = types.StringValue(string(*resp.Healthchecks.Passive.Type))
+				} else {
+					r.Healthchecks.Passive.Type = types.StringNull()
+				}
+				if resp.Healthchecks.Passive.Unhealthy == nil {
+					r.Healthchecks.Passive.Unhealthy = nil
+				} else {
+					r.Healthchecks.Passive.Unhealthy = &tfTypes.UpstreamUnhealthy{}
+					r.Healthchecks.Passive.Unhealthy.HTTPFailures = types.Int64PointerValue(resp.Healthchecks.Passive.Unhealthy.HTTPFailures)
+					r.Healthchecks.Passive.Unhealthy.HTTPStatuses = make([]types.Int64, 0, len(resp.Healthchecks.Passive.Unhealthy.HTTPStatuses))
+					for _, v := range resp.Healthchecks.Passive.Unhealthy.HTTPStatuses {
+						r.Healthchecks.Passive.Unhealthy.HTTPStatuses = append(r.Healthchecks.Passive.Unhealthy.HTTPStatuses, types.Int64Value(v))
+					}
+					r.Healthchecks.Passive.Unhealthy.TCPFailures = types.Int64PointerValue(resp.Healthchecks.Passive.Unhealthy.TCPFailures)
+					r.Healthchecks.Passive.Unhealthy.Timeouts = types.Int64PointerValue(resp.Healthchecks.Passive.Unhealthy.Timeouts)
+				}
+			}
+			r.Healthchecks.Threshold = types.Float64PointerValue(resp.Healthchecks.Threshold)
+		}
+		r.HostHeader = types.StringPointerValue(resp.HostHeader)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.Name = types.StringValue(resp.Name)
+		r.Slots = types.Int64PointerValue(resp.Slots)
+		r.StickySessionsCookie = types.StringPointerValue(resp.StickySessionsCookie)
+		r.StickySessionsCookiePath = types.StringPointerValue(resp.StickySessionsCookiePath)
+		r.Tags = make([]types.String, 0, len(resp.Tags))
+		for _, v := range resp.Tags {
+			r.Tags = append(r.Tags, types.StringValue(v))
+		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
+		r.UseSrvName = types.BoolPointerValue(resp.UseSrvName)
+	}
+
+	return diags
+}
+
+func (r *GatewayUpstreamResourceModel) ToOperationsCreateUpstreamRequest(ctx context.Context) (*operations.CreateUpstreamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	upstream, upstreamDiags := r.ToSharedUpstream(ctx)
+	diags.Append(upstreamDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateUpstreamRequest{
+		ControlPlaneID: controlPlaneID,
+		Upstream:       *upstream,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayUpstreamResourceModel) ToOperationsDeleteUpstreamRequest(ctx context.Context) (*operations.DeleteUpstreamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var upstreamID string
+	upstreamID = r.ID.ValueString()
+
+	out := operations.DeleteUpstreamRequest{
+		ControlPlaneID: controlPlaneID,
+		UpstreamID:     upstreamID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayUpstreamResourceModel) ToOperationsGetUpstreamRequest(ctx context.Context) (*operations.GetUpstreamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var upstreamID string
+	upstreamID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetUpstreamRequest{
+		UpstreamID:     upstreamID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayUpstreamResourceModel) ToOperationsUpsertUpstreamRequest(ctx context.Context) (*operations.UpsertUpstreamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var upstreamID string
+	upstreamID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	upstream, upstreamDiags := r.ToSharedUpstream(ctx)
+	diags.Append(upstreamDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpsertUpstreamRequest{
+		UpstreamID:     upstreamID,
+		ControlPlaneID: controlPlaneID,
+		Upstream:       *upstream,
+	}
+
+	return &out, diags
+}
+
 func (r *GatewayUpstreamResourceModel) ToSharedUpstream(ctx context.Context) (*shared.Upstream, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -314,6 +528,18 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstream(ctx context.Context) (*s
 	} else {
 		slots = nil
 	}
+	stickySessionsCookie := new(string)
+	if !r.StickySessionsCookie.IsUnknown() && !r.StickySessionsCookie.IsNull() {
+		*stickySessionsCookie = r.StickySessionsCookie.ValueString()
+	} else {
+		stickySessionsCookie = nil
+	}
+	stickySessionsCookiePath := new(string)
+	if !r.StickySessionsCookiePath.IsUnknown() && !r.StickySessionsCookiePath.IsNull() {
+		*stickySessionsCookiePath = r.StickySessionsCookiePath.ValueString()
+	} else {
+		stickySessionsCookiePath = nil
+	}
 	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
@@ -331,240 +557,30 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstream(ctx context.Context) (*s
 		useSrvName = nil
 	}
 	out := shared.Upstream{
-		Algorithm:              algorithm,
-		ClientCertificate:      clientCertificate,
-		CreatedAt:              createdAt,
-		HashFallback:           hashFallback,
-		HashFallbackHeader:     hashFallbackHeader,
-		HashFallbackQueryArg:   hashFallbackQueryArg,
-		HashFallbackURICapture: hashFallbackURICapture,
-		HashOn:                 hashOn,
-		HashOnCookie:           hashOnCookie,
-		HashOnCookiePath:       hashOnCookiePath,
-		HashOnHeader:           hashOnHeader,
-		HashOnQueryArg:         hashOnQueryArg,
-		HashOnURICapture:       hashOnURICapture,
-		Healthchecks:           healthchecks,
-		HostHeader:             hostHeader,
-		ID:                     id1,
-		Name:                   name,
-		Slots:                  slots,
-		Tags:                   tags,
-		UpdatedAt:              updatedAt,
-		UseSrvName:             useSrvName,
+		Algorithm:                algorithm,
+		ClientCertificate:        clientCertificate,
+		CreatedAt:                createdAt,
+		HashFallback:             hashFallback,
+		HashFallbackHeader:       hashFallbackHeader,
+		HashFallbackQueryArg:     hashFallbackQueryArg,
+		HashFallbackURICapture:   hashFallbackURICapture,
+		HashOn:                   hashOn,
+		HashOnCookie:             hashOnCookie,
+		HashOnCookiePath:         hashOnCookiePath,
+		HashOnHeader:             hashOnHeader,
+		HashOnQueryArg:           hashOnQueryArg,
+		HashOnURICapture:         hashOnURICapture,
+		Healthchecks:             healthchecks,
+		HostHeader:               hostHeader,
+		ID:                       id1,
+		Name:                     name,
+		Slots:                    slots,
+		StickySessionsCookie:     stickySessionsCookie,
+		StickySessionsCookiePath: stickySessionsCookiePath,
+		Tags:                     tags,
+		UpdatedAt:                updatedAt,
+		UseSrvName:               useSrvName,
 	}
 
 	return &out, diags
-}
-
-func (r *GatewayUpstreamResourceModel) ToOperationsCreateUpstreamRequest(ctx context.Context) (*operations.CreateUpstreamRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	upstream, upstreamDiags := r.ToSharedUpstream(ctx)
-	diags.Append(upstreamDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateUpstreamRequest{
-		ControlPlaneID: controlPlaneID,
-		Upstream:       *upstream,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayUpstreamResourceModel) ToOperationsUpsertUpstreamRequest(ctx context.Context) (*operations.UpsertUpstreamRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var upstreamID string
-	upstreamID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	upstream, upstreamDiags := r.ToSharedUpstream(ctx)
-	diags.Append(upstreamDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpsertUpstreamRequest{
-		UpstreamID:     upstreamID,
-		ControlPlaneID: controlPlaneID,
-		Upstream:       *upstream,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayUpstreamResourceModel) ToOperationsGetUpstreamRequest(ctx context.Context) (*operations.GetUpstreamRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var upstreamID string
-	upstreamID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.GetUpstreamRequest{
-		UpstreamID:     upstreamID,
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayUpstreamResourceModel) ToOperationsDeleteUpstreamRequest(ctx context.Context) (*operations.DeleteUpstreamRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	var upstreamID string
-	upstreamID = r.ID.ValueString()
-
-	out := operations.DeleteUpstreamRequest{
-		ControlPlaneID: controlPlaneID,
-		UpstreamID:     upstreamID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayUpstreamResourceModel) RefreshFromSharedUpstream(ctx context.Context, resp *shared.Upstream) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		if resp.Algorithm != nil {
-			r.Algorithm = types.StringValue(string(*resp.Algorithm))
-		} else {
-			r.Algorithm = types.StringNull()
-		}
-		if resp.ClientCertificate == nil {
-			r.ClientCertificate = nil
-		} else {
-			r.ClientCertificate = &tfTypes.Set{}
-			r.ClientCertificate.ID = types.StringPointerValue(resp.ClientCertificate.ID)
-		}
-		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		if resp.HashFallback != nil {
-			r.HashFallback = types.StringValue(string(*resp.HashFallback))
-		} else {
-			r.HashFallback = types.StringNull()
-		}
-		r.HashFallbackHeader = types.StringPointerValue(resp.HashFallbackHeader)
-		r.HashFallbackQueryArg = types.StringPointerValue(resp.HashFallbackQueryArg)
-		r.HashFallbackURICapture = types.StringPointerValue(resp.HashFallbackURICapture)
-		if resp.HashOn != nil {
-			r.HashOn = types.StringValue(string(*resp.HashOn))
-		} else {
-			r.HashOn = types.StringNull()
-		}
-		r.HashOnCookie = types.StringPointerValue(resp.HashOnCookie)
-		r.HashOnCookiePath = types.StringPointerValue(resp.HashOnCookiePath)
-		r.HashOnHeader = types.StringPointerValue(resp.HashOnHeader)
-		r.HashOnQueryArg = types.StringPointerValue(resp.HashOnQueryArg)
-		r.HashOnURICapture = types.StringPointerValue(resp.HashOnURICapture)
-		if resp.Healthchecks == nil {
-			r.Healthchecks = nil
-		} else {
-			r.Healthchecks = &tfTypes.Healthchecks{}
-			if resp.Healthchecks.Active == nil {
-				r.Healthchecks.Active = nil
-			} else {
-				r.Healthchecks.Active = &tfTypes.Active{}
-				r.Healthchecks.Active.Concurrency = types.Int64PointerValue(resp.Healthchecks.Active.Concurrency)
-				if len(resp.Healthchecks.Active.Headers) > 0 {
-					r.Healthchecks.Active.Headers = make(map[string]types.String, len(resp.Healthchecks.Active.Headers))
-					for key, value := range resp.Healthchecks.Active.Headers {
-						r.Healthchecks.Active.Headers[key] = types.StringValue(value)
-					}
-				}
-				if resp.Healthchecks.Active.Healthy == nil {
-					r.Healthchecks.Active.Healthy = nil
-				} else {
-					r.Healthchecks.Active.Healthy = &tfTypes.Healthy{}
-					r.Healthchecks.Active.Healthy.HTTPStatuses = make([]types.Int64, 0, len(resp.Healthchecks.Active.Healthy.HTTPStatuses))
-					for _, v := range resp.Healthchecks.Active.Healthy.HTTPStatuses {
-						r.Healthchecks.Active.Healthy.HTTPStatuses = append(r.Healthchecks.Active.Healthy.HTTPStatuses, types.Int64Value(v))
-					}
-					r.Healthchecks.Active.Healthy.Interval = types.Float64PointerValue(resp.Healthchecks.Active.Healthy.Interval)
-					r.Healthchecks.Active.Healthy.Successes = types.Int64PointerValue(resp.Healthchecks.Active.Healthy.Successes)
-				}
-				r.Healthchecks.Active.HTTPPath = types.StringPointerValue(resp.Healthchecks.Active.HTTPPath)
-				r.Healthchecks.Active.HTTPSSni = types.StringPointerValue(resp.Healthchecks.Active.HTTPSSni)
-				r.Healthchecks.Active.HTTPSVerifyCertificate = types.BoolPointerValue(resp.Healthchecks.Active.HTTPSVerifyCertificate)
-				r.Healthchecks.Active.Timeout = types.Float64PointerValue(resp.Healthchecks.Active.Timeout)
-				if resp.Healthchecks.Active.Type != nil {
-					r.Healthchecks.Active.Type = types.StringValue(string(*resp.Healthchecks.Active.Type))
-				} else {
-					r.Healthchecks.Active.Type = types.StringNull()
-				}
-				if resp.Healthchecks.Active.Unhealthy == nil {
-					r.Healthchecks.Active.Unhealthy = nil
-				} else {
-					r.Healthchecks.Active.Unhealthy = &tfTypes.Unhealthy{}
-					r.Healthchecks.Active.Unhealthy.HTTPFailures = types.Int64PointerValue(resp.Healthchecks.Active.Unhealthy.HTTPFailures)
-					r.Healthchecks.Active.Unhealthy.HTTPStatuses = make([]types.Int64, 0, len(resp.Healthchecks.Active.Unhealthy.HTTPStatuses))
-					for _, v := range resp.Healthchecks.Active.Unhealthy.HTTPStatuses {
-						r.Healthchecks.Active.Unhealthy.HTTPStatuses = append(r.Healthchecks.Active.Unhealthy.HTTPStatuses, types.Int64Value(v))
-					}
-					r.Healthchecks.Active.Unhealthy.Interval = types.Float64PointerValue(resp.Healthchecks.Active.Unhealthy.Interval)
-					r.Healthchecks.Active.Unhealthy.TCPFailures = types.Int64PointerValue(resp.Healthchecks.Active.Unhealthy.TCPFailures)
-					r.Healthchecks.Active.Unhealthy.Timeouts = types.Int64PointerValue(resp.Healthchecks.Active.Unhealthy.Timeouts)
-				}
-			}
-			if resp.Healthchecks.Passive == nil {
-				r.Healthchecks.Passive = nil
-			} else {
-				r.Healthchecks.Passive = &tfTypes.Passive{}
-				if resp.Healthchecks.Passive.Healthy == nil {
-					r.Healthchecks.Passive.Healthy = nil
-				} else {
-					r.Healthchecks.Passive.Healthy = &tfTypes.UpstreamHealthy{}
-					r.Healthchecks.Passive.Healthy.HTTPStatuses = make([]types.Int64, 0, len(resp.Healthchecks.Passive.Healthy.HTTPStatuses))
-					for _, v := range resp.Healthchecks.Passive.Healthy.HTTPStatuses {
-						r.Healthchecks.Passive.Healthy.HTTPStatuses = append(r.Healthchecks.Passive.Healthy.HTTPStatuses, types.Int64Value(v))
-					}
-					r.Healthchecks.Passive.Healthy.Successes = types.Int64PointerValue(resp.Healthchecks.Passive.Healthy.Successes)
-				}
-				if resp.Healthchecks.Passive.Type != nil {
-					r.Healthchecks.Passive.Type = types.StringValue(string(*resp.Healthchecks.Passive.Type))
-				} else {
-					r.Healthchecks.Passive.Type = types.StringNull()
-				}
-				if resp.Healthchecks.Passive.Unhealthy == nil {
-					r.Healthchecks.Passive.Unhealthy = nil
-				} else {
-					r.Healthchecks.Passive.Unhealthy = &tfTypes.UpstreamUnhealthy{}
-					r.Healthchecks.Passive.Unhealthy.HTTPFailures = types.Int64PointerValue(resp.Healthchecks.Passive.Unhealthy.HTTPFailures)
-					r.Healthchecks.Passive.Unhealthy.HTTPStatuses = make([]types.Int64, 0, len(resp.Healthchecks.Passive.Unhealthy.HTTPStatuses))
-					for _, v := range resp.Healthchecks.Passive.Unhealthy.HTTPStatuses {
-						r.Healthchecks.Passive.Unhealthy.HTTPStatuses = append(r.Healthchecks.Passive.Unhealthy.HTTPStatuses, types.Int64Value(v))
-					}
-					r.Healthchecks.Passive.Unhealthy.TCPFailures = types.Int64PointerValue(resp.Healthchecks.Passive.Unhealthy.TCPFailures)
-					r.Healthchecks.Passive.Unhealthy.Timeouts = types.Int64PointerValue(resp.Healthchecks.Passive.Unhealthy.Timeouts)
-				}
-			}
-			r.Healthchecks.Threshold = types.Float64PointerValue(resp.Healthchecks.Threshold)
-		}
-		r.HostHeader = types.StringPointerValue(resp.HostHeader)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.Name = types.StringValue(resp.Name)
-		r.Slots = types.Int64PointerValue(resp.Slots)
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
-		}
-		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
-		r.UseSrvName = types.BoolPointerValue(resp.UseSrvName)
-	}
-
-	return diags
 }

@@ -32,30 +32,32 @@ func NewGatewayServiceResource() resource.Resource {
 
 // GatewayServiceResource defines the resource implementation.
 type GatewayServiceResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
 // GatewayServiceResourceModel describes the resource data model.
 type GatewayServiceResourceModel struct {
-	CaCertificates    []types.String `tfsdk:"ca_certificates"`
-	ClientCertificate *tfTypes.Set   `tfsdk:"client_certificate"`
-	ConnectTimeout    types.Int64    `tfsdk:"connect_timeout"`
-	ControlPlaneID    types.String   `tfsdk:"control_plane_id"`
-	CreatedAt         types.Int64    `tfsdk:"created_at"`
-	Enabled           types.Bool     `tfsdk:"enabled"`
-	Host              types.String   `tfsdk:"host"`
-	ID                types.String   `tfsdk:"id"`
-	Name              types.String   `tfsdk:"name"`
-	Path              types.String   `tfsdk:"path"`
-	Port              types.Int64    `tfsdk:"port"`
-	Protocol          types.String   `tfsdk:"protocol"`
-	ReadTimeout       types.Int64    `tfsdk:"read_timeout"`
-	Retries           types.Int64    `tfsdk:"retries"`
-	Tags              []types.String `tfsdk:"tags"`
-	TLSVerify         types.Bool     `tfsdk:"tls_verify"`
-	TLSVerifyDepth    types.Int64    `tfsdk:"tls_verify_depth"`
-	UpdatedAt         types.Int64    `tfsdk:"updated_at"`
-	WriteTimeout      types.Int64    `tfsdk:"write_timeout"`
+	CaCertificates    []types.String   `tfsdk:"ca_certificates"`
+	ClientCertificate *tfTypes.Set     `tfsdk:"client_certificate"`
+	ConnectTimeout    types.Int64      `tfsdk:"connect_timeout"`
+	ControlPlaneID    types.String     `tfsdk:"control_plane_id"`
+	CreatedAt         types.Int64      `tfsdk:"created_at"`
+	Enabled           types.Bool       `tfsdk:"enabled"`
+	Host              types.String     `tfsdk:"host"`
+	ID                types.String     `tfsdk:"id"`
+	Name              types.String     `tfsdk:"name"`
+	Path              types.String     `tfsdk:"path"`
+	Port              types.Int64      `tfsdk:"port"`
+	Protocol          types.String     `tfsdk:"protocol"`
+	ReadTimeout       types.Int64      `tfsdk:"read_timeout"`
+	Retries           types.Int64      `tfsdk:"retries"`
+	Tags              []types.String   `tfsdk:"tags"`
+	TLSSans           *tfTypes.TLSSans `tfsdk:"tls_sans"`
+	TLSVerify         types.Bool       `tfsdk:"tls_verify"`
+	TLSVerifyDepth    types.Int64      `tfsdk:"tls_verify_depth"`
+	UpdatedAt         types.Int64      `tfsdk:"updated_at"`
+	WriteTimeout      types.Int64      `tfsdk:"write_timeout"`
 }
 
 func (r *GatewayServiceResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -165,6 +167,22 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Service for grouping and filtering.`,
+			},
+			"tls_sans": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"dnsnames": schema.ListAttribute{
+						Computed:    true,
+						Optional:    true,
+						ElementType: types.StringType,
+					},
+					"uris": schema.ListAttribute{
+						Computed:    true,
+						Optional:    true,
+						ElementType: types.StringType,
+					},
+				},
 			},
 			"tls_verify": schema.BoolAttribute{
 				Computed:    true,
@@ -436,7 +454,7 @@ func (r *GatewayServiceResource) ImportState(ctx context.Context, req resource.I
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "7fca84d6-7d37-4a74-a7b0-93e576089a41"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "7fca84d6-7d37-4a74-a7b0-93e576089a41"}': `+err.Error())
 		return
 	}
 
@@ -450,5 +468,4 @@ func (r *GatewayServiceResource) ImportState(ctx context.Context, req resource.I
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
-
 }

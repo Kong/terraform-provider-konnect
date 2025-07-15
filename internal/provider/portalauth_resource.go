@@ -24,6 +24,7 @@ func NewPortalAuthResource() resource.Resource {
 
 // PortalAuthResource defines the resource implementation.
 type PortalAuthResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 

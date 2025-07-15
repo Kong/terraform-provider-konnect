@@ -12,6 +12,332 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauthPlugin(ctx context.Context, resp *shared.UpstreamOauthPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.UpstreamOauthPluginConfig{}
+			if resp.Config.Behavior == nil {
+				r.Config.Behavior = nil
+			} else {
+				r.Config.Behavior = &tfTypes.Behavior{}
+				r.Config.Behavior.IdpErrorResponseBodyTemplate = types.StringPointerValue(resp.Config.Behavior.IdpErrorResponseBodyTemplate)
+				r.Config.Behavior.IdpErrorResponseContentType = types.StringPointerValue(resp.Config.Behavior.IdpErrorResponseContentType)
+				r.Config.Behavior.IdpErrorResponseMessage = types.StringPointerValue(resp.Config.Behavior.IdpErrorResponseMessage)
+				r.Config.Behavior.IdpErrorResponseStatusCode = types.Int64PointerValue(resp.Config.Behavior.IdpErrorResponseStatusCode)
+				r.Config.Behavior.PurgeTokenOnUpstreamStatusCodes = make([]types.Int64, 0, len(resp.Config.Behavior.PurgeTokenOnUpstreamStatusCodes))
+				for _, v := range resp.Config.Behavior.PurgeTokenOnUpstreamStatusCodes {
+					r.Config.Behavior.PurgeTokenOnUpstreamStatusCodes = append(r.Config.Behavior.PurgeTokenOnUpstreamStatusCodes, types.Int64Value(v))
+				}
+				r.Config.Behavior.UpstreamAccessTokenHeaderName = types.StringPointerValue(resp.Config.Behavior.UpstreamAccessTokenHeaderName)
+			}
+			if resp.Config.Cache == nil {
+				r.Config.Cache = nil
+			} else {
+				r.Config.Cache = &tfTypes.UpstreamOauthPluginCache{}
+				r.Config.Cache.DefaultTTL = types.Float64PointerValue(resp.Config.Cache.DefaultTTL)
+				r.Config.Cache.EagerlyExpire = types.Int64PointerValue(resp.Config.Cache.EagerlyExpire)
+				if resp.Config.Cache.Memory == nil {
+					r.Config.Cache.Memory = nil
+				} else {
+					r.Config.Cache.Memory = &tfTypes.Memory{}
+					r.Config.Cache.Memory.DictionaryName = types.StringPointerValue(resp.Config.Cache.Memory.DictionaryName)
+				}
+				if resp.Config.Cache.Redis == nil {
+					r.Config.Cache.Redis = nil
+				} else {
+					r.Config.Cache.Redis = &tfTypes.PartialRedisEEConfig{}
+					r.Config.Cache.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Cache.Redis.ClusterMaxRedirections)
+					r.Config.Cache.Redis.ClusterNodes = []tfTypes.PartialRedisEEClusterNodes{}
+					if len(r.Config.Cache.Redis.ClusterNodes) > len(resp.Config.Cache.Redis.ClusterNodes) {
+						r.Config.Cache.Redis.ClusterNodes = r.Config.Cache.Redis.ClusterNodes[:len(resp.Config.Cache.Redis.ClusterNodes)]
+					}
+					for clusterNodesCount, clusterNodesItem := range resp.Config.Cache.Redis.ClusterNodes {
+						var clusterNodes tfTypes.PartialRedisEEClusterNodes
+						clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
+						clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
+						if clusterNodesCount+1 > len(r.Config.Cache.Redis.ClusterNodes) {
+							r.Config.Cache.Redis.ClusterNodes = append(r.Config.Cache.Redis.ClusterNodes, clusterNodes)
+						} else {
+							r.Config.Cache.Redis.ClusterNodes[clusterNodesCount].IP = clusterNodes.IP
+							r.Config.Cache.Redis.ClusterNodes[clusterNodesCount].Port = clusterNodes.Port
+						}
+					}
+					r.Config.Cache.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ConnectTimeout)
+					r.Config.Cache.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Cache.Redis.ConnectionIsProxied)
+					r.Config.Cache.Redis.Database = types.Int64PointerValue(resp.Config.Cache.Redis.Database)
+					r.Config.Cache.Redis.Host = types.StringPointerValue(resp.Config.Cache.Redis.Host)
+					r.Config.Cache.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Cache.Redis.KeepaliveBacklog)
+					r.Config.Cache.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Cache.Redis.KeepalivePoolSize)
+					r.Config.Cache.Redis.Password = types.StringPointerValue(resp.Config.Cache.Redis.Password)
+					r.Config.Cache.Redis.Port = types.Int64PointerValue(resp.Config.Cache.Redis.Port)
+					r.Config.Cache.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ReadTimeout)
+					r.Config.Cache.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.SendTimeout)
+					r.Config.Cache.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Cache.Redis.SentinelMaster)
+					r.Config.Cache.Redis.SentinelNodes = []tfTypes.PartialRedisEESentinelNodes{}
+					if len(r.Config.Cache.Redis.SentinelNodes) > len(resp.Config.Cache.Redis.SentinelNodes) {
+						r.Config.Cache.Redis.SentinelNodes = r.Config.Cache.Redis.SentinelNodes[:len(resp.Config.Cache.Redis.SentinelNodes)]
+					}
+					for sentinelNodesCount, sentinelNodesItem := range resp.Config.Cache.Redis.SentinelNodes {
+						var sentinelNodes tfTypes.PartialRedisEESentinelNodes
+						sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
+						sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+						if sentinelNodesCount+1 > len(r.Config.Cache.Redis.SentinelNodes) {
+							r.Config.Cache.Redis.SentinelNodes = append(r.Config.Cache.Redis.SentinelNodes, sentinelNodes)
+						} else {
+							r.Config.Cache.Redis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes.Host
+							r.Config.Cache.Redis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes.Port
+						}
+					}
+					r.Config.Cache.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Cache.Redis.SentinelPassword)
+					if resp.Config.Cache.Redis.SentinelRole != nil {
+						r.Config.Cache.Redis.SentinelRole = types.StringValue(string(*resp.Config.Cache.Redis.SentinelRole))
+					} else {
+						r.Config.Cache.Redis.SentinelRole = types.StringNull()
+					}
+					r.Config.Cache.Redis.SentinelUsername = types.StringPointerValue(resp.Config.Cache.Redis.SentinelUsername)
+					r.Config.Cache.Redis.ServerName = types.StringPointerValue(resp.Config.Cache.Redis.ServerName)
+					r.Config.Cache.Redis.Ssl = types.BoolPointerValue(resp.Config.Cache.Redis.Ssl)
+					r.Config.Cache.Redis.SslVerify = types.BoolPointerValue(resp.Config.Cache.Redis.SslVerify)
+					r.Config.Cache.Redis.Username = types.StringPointerValue(resp.Config.Cache.Redis.Username)
+				}
+				if resp.Config.Cache.Strategy != nil {
+					r.Config.Cache.Strategy = types.StringValue(string(*resp.Config.Cache.Strategy))
+				} else {
+					r.Config.Cache.Strategy = types.StringNull()
+				}
+			}
+			if resp.Config.Client == nil {
+				r.Config.Client = nil
+			} else {
+				r.Config.Client = &tfTypes.Client{}
+				if resp.Config.Client.AuthMethod != nil {
+					r.Config.Client.AuthMethod = types.StringValue(string(*resp.Config.Client.AuthMethod))
+				} else {
+					r.Config.Client.AuthMethod = types.StringNull()
+				}
+				if resp.Config.Client.ClientSecretJwtAlg != nil {
+					r.Config.Client.ClientSecretJwtAlg = types.StringValue(string(*resp.Config.Client.ClientSecretJwtAlg))
+				} else {
+					r.Config.Client.ClientSecretJwtAlg = types.StringNull()
+				}
+				r.Config.Client.HTTPProxy = types.StringPointerValue(resp.Config.Client.HTTPProxy)
+				r.Config.Client.HTTPProxyAuthorization = types.StringPointerValue(resp.Config.Client.HTTPProxyAuthorization)
+				r.Config.Client.HTTPVersion = types.Float64PointerValue(resp.Config.Client.HTTPVersion)
+				r.Config.Client.HTTPSProxy = types.StringPointerValue(resp.Config.Client.HTTPSProxy)
+				r.Config.Client.HTTPSProxyAuthorization = types.StringPointerValue(resp.Config.Client.HTTPSProxyAuthorization)
+				r.Config.Client.KeepAlive = types.BoolPointerValue(resp.Config.Client.KeepAlive)
+				r.Config.Client.NoProxy = types.StringPointerValue(resp.Config.Client.NoProxy)
+				r.Config.Client.SslVerify = types.BoolPointerValue(resp.Config.Client.SslVerify)
+				r.Config.Client.Timeout = types.Int64PointerValue(resp.Config.Client.Timeout)
+			}
+			if resp.Config.Oauth == nil {
+				r.Config.Oauth = nil
+			} else {
+				r.Config.Oauth = &tfTypes.Oauth{}
+				r.Config.Oauth.Audience = make([]types.String, 0, len(resp.Config.Oauth.Audience))
+				for _, v := range resp.Config.Oauth.Audience {
+					r.Config.Oauth.Audience = append(r.Config.Oauth.Audience, types.StringValue(v))
+				}
+				r.Config.Oauth.ClientID = types.StringPointerValue(resp.Config.Oauth.ClientID)
+				r.Config.Oauth.ClientSecret = types.StringPointerValue(resp.Config.Oauth.ClientSecret)
+				if resp.Config.Oauth.GrantType != nil {
+					r.Config.Oauth.GrantType = types.StringValue(string(*resp.Config.Oauth.GrantType))
+				} else {
+					r.Config.Oauth.GrantType = types.StringNull()
+				}
+				r.Config.Oauth.Password = types.StringPointerValue(resp.Config.Oauth.Password)
+				if resp.Config.Oauth.Scopes != nil {
+					r.Config.Oauth.Scopes = make([]types.String, 0, len(resp.Config.Oauth.Scopes))
+					for _, v := range resp.Config.Oauth.Scopes {
+						r.Config.Oauth.Scopes = append(r.Config.Oauth.Scopes, types.StringValue(v))
+					}
+				}
+				r.Config.Oauth.TokenEndpoint = types.StringPointerValue(resp.Config.Oauth.TokenEndpoint)
+				if len(resp.Config.Oauth.TokenHeaders) > 0 {
+					r.Config.Oauth.TokenHeaders = make(map[string]types.String, len(resp.Config.Oauth.TokenHeaders))
+					for key, value := range resp.Config.Oauth.TokenHeaders {
+						result, _ := json.Marshal(value)
+						r.Config.Oauth.TokenHeaders[key] = types.StringValue(string(result))
+					}
+				}
+				if len(resp.Config.Oauth.TokenPostArgs) > 0 {
+					r.Config.Oauth.TokenPostArgs = make(map[string]types.String, len(resp.Config.Oauth.TokenPostArgs))
+					for key1, value1 := range resp.Config.Oauth.TokenPostArgs {
+						result1, _ := json.Marshal(value1)
+						r.Config.Oauth.TokenPostArgs[key1] = types.StringValue(string(result1))
+					}
+				}
+				r.Config.Oauth.Username = types.StringPointerValue(resp.Config.Oauth.Username)
+			}
+		}
+		if resp.Consumer == nil {
+			r.Consumer = nil
+		} else {
+			r.Consumer = &tfTypes.Set{}
+			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
+		}
+		if resp.ConsumerGroup == nil {
+			r.ConsumerGroup = nil
+		} else {
+			r.ConsumerGroup = &tfTypes.Set{}
+			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
+		}
+		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.Enabled = types.BoolPointerValue(resp.Enabled)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
+		if resp.Partials != nil {
+			r.Partials = []tfTypes.Partials{}
+			if len(r.Partials) > len(resp.Partials) {
+				r.Partials = r.Partials[:len(resp.Partials)]
+			}
+			for partialsCount, partialsItem := range resp.Partials {
+				var partials tfTypes.Partials
+				partials.ID = types.StringPointerValue(partialsItem.ID)
+				partials.Name = types.StringPointerValue(partialsItem.Name)
+				partials.Path = types.StringPointerValue(partialsItem.Path)
+				if partialsCount+1 > len(r.Partials) {
+					r.Partials = append(r.Partials, partials)
+				} else {
+					r.Partials[partialsCount].ID = partials.ID
+					r.Partials[partialsCount].Name = partials.Name
+					r.Partials[partialsCount].Path = partials.Path
+				}
+			}
+		}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
+		for _, v := range resp.Protocols {
+			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
+		}
+		if resp.Route == nil {
+			r.Route = nil
+		} else {
+			r.Route = &tfTypes.Set{}
+			r.Route.ID = types.StringPointerValue(resp.Route.ID)
+		}
+		if resp.Service == nil {
+			r.Service = nil
+		} else {
+			r.Service = &tfTypes.Set{}
+			r.Service.ID = types.StringPointerValue(resp.Service.ID)
+		}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
+		for _, v := range resp.Tags {
+			r.Tags = append(r.Tags, types.StringValue(v))
+		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
+	}
+
+	return diags
+}
+
+func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsCreateUpstreamoauthPluginRequest(ctx context.Context) (*operations.CreateUpstreamoauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	upstreamOauthPlugin, upstreamOauthPluginDiags := r.ToSharedUpstreamOauthPlugin(ctx)
+	diags.Append(upstreamOauthPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateUpstreamoauthPluginRequest{
+		ControlPlaneID:      controlPlaneID,
+		UpstreamOauthPlugin: *upstreamOauthPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsDeleteUpstreamoauthPluginRequest(ctx context.Context) (*operations.DeleteUpstreamoauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteUpstreamoauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsGetUpstreamoauthPluginRequest(ctx context.Context) (*operations.GetUpstreamoauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetUpstreamoauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsUpdateUpstreamoauthPluginRequest(ctx context.Context) (*operations.UpdateUpstreamoauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	upstreamOauthPlugin, upstreamOauthPluginDiags := r.ToSharedUpstreamOauthPlugin(ctx)
+	diags.Append(upstreamOauthPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateUpstreamoauthPluginRequest{
+		PluginID:            pluginID,
+		ControlPlaneID:      controlPlaneID,
+		UpstreamOauthPlugin: *upstreamOauthPlugin,
+	}
+
+	return &out, diags
+}
+
 func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ctx context.Context) (*shared.UpstreamOauthPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -603,330 +929,4 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 	}
 
 	return &out, diags
-}
-
-func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsCreateUpstreamoauthPluginRequest(ctx context.Context) (*operations.CreateUpstreamoauthPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	upstreamOauthPlugin, upstreamOauthPluginDiags := r.ToSharedUpstreamOauthPlugin(ctx)
-	diags.Append(upstreamOauthPluginDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateUpstreamoauthPluginRequest{
-		ControlPlaneID:      controlPlaneID,
-		UpstreamOauthPlugin: *upstreamOauthPlugin,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsUpdateUpstreamoauthPluginRequest(ctx context.Context) (*operations.UpdateUpstreamoauthPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	upstreamOauthPlugin, upstreamOauthPluginDiags := r.ToSharedUpstreamOauthPlugin(ctx)
-	diags.Append(upstreamOauthPluginDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateUpstreamoauthPluginRequest{
-		PluginID:            pluginID,
-		ControlPlaneID:      controlPlaneID,
-		UpstreamOauthPlugin: *upstreamOauthPlugin,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsGetUpstreamoauthPluginRequest(ctx context.Context) (*operations.GetUpstreamoauthPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.GetUpstreamoauthPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsDeleteUpstreamoauthPluginRequest(ctx context.Context) (*operations.DeleteUpstreamoauthPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.DeleteUpstreamoauthPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauthPlugin(ctx context.Context, resp *shared.UpstreamOauthPlugin) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.UpstreamOauthPluginConfig{}
-			if resp.Config.Behavior == nil {
-				r.Config.Behavior = nil
-			} else {
-				r.Config.Behavior = &tfTypes.Behavior{}
-				r.Config.Behavior.IdpErrorResponseBodyTemplate = types.StringPointerValue(resp.Config.Behavior.IdpErrorResponseBodyTemplate)
-				r.Config.Behavior.IdpErrorResponseContentType = types.StringPointerValue(resp.Config.Behavior.IdpErrorResponseContentType)
-				r.Config.Behavior.IdpErrorResponseMessage = types.StringPointerValue(resp.Config.Behavior.IdpErrorResponseMessage)
-				r.Config.Behavior.IdpErrorResponseStatusCode = types.Int64PointerValue(resp.Config.Behavior.IdpErrorResponseStatusCode)
-				r.Config.Behavior.PurgeTokenOnUpstreamStatusCodes = make([]types.Int64, 0, len(resp.Config.Behavior.PurgeTokenOnUpstreamStatusCodes))
-				for _, v := range resp.Config.Behavior.PurgeTokenOnUpstreamStatusCodes {
-					r.Config.Behavior.PurgeTokenOnUpstreamStatusCodes = append(r.Config.Behavior.PurgeTokenOnUpstreamStatusCodes, types.Int64Value(v))
-				}
-				r.Config.Behavior.UpstreamAccessTokenHeaderName = types.StringPointerValue(resp.Config.Behavior.UpstreamAccessTokenHeaderName)
-			}
-			if resp.Config.Cache == nil {
-				r.Config.Cache = nil
-			} else {
-				r.Config.Cache = &tfTypes.UpstreamOauthPluginCache{}
-				r.Config.Cache.DefaultTTL = types.Float64PointerValue(resp.Config.Cache.DefaultTTL)
-				r.Config.Cache.EagerlyExpire = types.Int64PointerValue(resp.Config.Cache.EagerlyExpire)
-				if resp.Config.Cache.Memory == nil {
-					r.Config.Cache.Memory = nil
-				} else {
-					r.Config.Cache.Memory = &tfTypes.Memory{}
-					r.Config.Cache.Memory.DictionaryName = types.StringPointerValue(resp.Config.Cache.Memory.DictionaryName)
-				}
-				if resp.Config.Cache.Redis == nil {
-					r.Config.Cache.Redis = nil
-				} else {
-					r.Config.Cache.Redis = &tfTypes.PartialRedisEEConfig{}
-					r.Config.Cache.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Cache.Redis.ClusterMaxRedirections)
-					r.Config.Cache.Redis.ClusterNodes = []tfTypes.PartialRedisEEClusterNodes{}
-					if len(r.Config.Cache.Redis.ClusterNodes) > len(resp.Config.Cache.Redis.ClusterNodes) {
-						r.Config.Cache.Redis.ClusterNodes = r.Config.Cache.Redis.ClusterNodes[:len(resp.Config.Cache.Redis.ClusterNodes)]
-					}
-					for clusterNodesCount, clusterNodesItem := range resp.Config.Cache.Redis.ClusterNodes {
-						var clusterNodes tfTypes.PartialRedisEEClusterNodes
-						clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
-						clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
-						if clusterNodesCount+1 > len(r.Config.Cache.Redis.ClusterNodes) {
-							r.Config.Cache.Redis.ClusterNodes = append(r.Config.Cache.Redis.ClusterNodes, clusterNodes)
-						} else {
-							r.Config.Cache.Redis.ClusterNodes[clusterNodesCount].IP = clusterNodes.IP
-							r.Config.Cache.Redis.ClusterNodes[clusterNodesCount].Port = clusterNodes.Port
-						}
-					}
-					r.Config.Cache.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ConnectTimeout)
-					r.Config.Cache.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Cache.Redis.ConnectionIsProxied)
-					r.Config.Cache.Redis.Database = types.Int64PointerValue(resp.Config.Cache.Redis.Database)
-					r.Config.Cache.Redis.Host = types.StringPointerValue(resp.Config.Cache.Redis.Host)
-					r.Config.Cache.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Cache.Redis.KeepaliveBacklog)
-					r.Config.Cache.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Cache.Redis.KeepalivePoolSize)
-					r.Config.Cache.Redis.Password = types.StringPointerValue(resp.Config.Cache.Redis.Password)
-					r.Config.Cache.Redis.Port = types.Int64PointerValue(resp.Config.Cache.Redis.Port)
-					r.Config.Cache.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ReadTimeout)
-					r.Config.Cache.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.SendTimeout)
-					r.Config.Cache.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Cache.Redis.SentinelMaster)
-					r.Config.Cache.Redis.SentinelNodes = []tfTypes.PartialRedisEESentinelNodes{}
-					if len(r.Config.Cache.Redis.SentinelNodes) > len(resp.Config.Cache.Redis.SentinelNodes) {
-						r.Config.Cache.Redis.SentinelNodes = r.Config.Cache.Redis.SentinelNodes[:len(resp.Config.Cache.Redis.SentinelNodes)]
-					}
-					for sentinelNodesCount, sentinelNodesItem := range resp.Config.Cache.Redis.SentinelNodes {
-						var sentinelNodes tfTypes.PartialRedisEESentinelNodes
-						sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
-						sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
-						if sentinelNodesCount+1 > len(r.Config.Cache.Redis.SentinelNodes) {
-							r.Config.Cache.Redis.SentinelNodes = append(r.Config.Cache.Redis.SentinelNodes, sentinelNodes)
-						} else {
-							r.Config.Cache.Redis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes.Host
-							r.Config.Cache.Redis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes.Port
-						}
-					}
-					r.Config.Cache.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Cache.Redis.SentinelPassword)
-					if resp.Config.Cache.Redis.SentinelRole != nil {
-						r.Config.Cache.Redis.SentinelRole = types.StringValue(string(*resp.Config.Cache.Redis.SentinelRole))
-					} else {
-						r.Config.Cache.Redis.SentinelRole = types.StringNull()
-					}
-					r.Config.Cache.Redis.SentinelUsername = types.StringPointerValue(resp.Config.Cache.Redis.SentinelUsername)
-					r.Config.Cache.Redis.ServerName = types.StringPointerValue(resp.Config.Cache.Redis.ServerName)
-					r.Config.Cache.Redis.Ssl = types.BoolPointerValue(resp.Config.Cache.Redis.Ssl)
-					r.Config.Cache.Redis.SslVerify = types.BoolPointerValue(resp.Config.Cache.Redis.SslVerify)
-					r.Config.Cache.Redis.Username = types.StringPointerValue(resp.Config.Cache.Redis.Username)
-				}
-				if resp.Config.Cache.Strategy != nil {
-					r.Config.Cache.Strategy = types.StringValue(string(*resp.Config.Cache.Strategy))
-				} else {
-					r.Config.Cache.Strategy = types.StringNull()
-				}
-			}
-			if resp.Config.Client == nil {
-				r.Config.Client = nil
-			} else {
-				r.Config.Client = &tfTypes.Client{}
-				if resp.Config.Client.AuthMethod != nil {
-					r.Config.Client.AuthMethod = types.StringValue(string(*resp.Config.Client.AuthMethod))
-				} else {
-					r.Config.Client.AuthMethod = types.StringNull()
-				}
-				if resp.Config.Client.ClientSecretJwtAlg != nil {
-					r.Config.Client.ClientSecretJwtAlg = types.StringValue(string(*resp.Config.Client.ClientSecretJwtAlg))
-				} else {
-					r.Config.Client.ClientSecretJwtAlg = types.StringNull()
-				}
-				r.Config.Client.HTTPProxy = types.StringPointerValue(resp.Config.Client.HTTPProxy)
-				r.Config.Client.HTTPProxyAuthorization = types.StringPointerValue(resp.Config.Client.HTTPProxyAuthorization)
-				r.Config.Client.HTTPVersion = types.Float64PointerValue(resp.Config.Client.HTTPVersion)
-				r.Config.Client.HTTPSProxy = types.StringPointerValue(resp.Config.Client.HTTPSProxy)
-				r.Config.Client.HTTPSProxyAuthorization = types.StringPointerValue(resp.Config.Client.HTTPSProxyAuthorization)
-				r.Config.Client.KeepAlive = types.BoolPointerValue(resp.Config.Client.KeepAlive)
-				r.Config.Client.NoProxy = types.StringPointerValue(resp.Config.Client.NoProxy)
-				r.Config.Client.SslVerify = types.BoolPointerValue(resp.Config.Client.SslVerify)
-				r.Config.Client.Timeout = types.Int64PointerValue(resp.Config.Client.Timeout)
-			}
-			if resp.Config.Oauth == nil {
-				r.Config.Oauth = nil
-			} else {
-				r.Config.Oauth = &tfTypes.Oauth{}
-				r.Config.Oauth.Audience = make([]types.String, 0, len(resp.Config.Oauth.Audience))
-				for _, v := range resp.Config.Oauth.Audience {
-					r.Config.Oauth.Audience = append(r.Config.Oauth.Audience, types.StringValue(v))
-				}
-				r.Config.Oauth.ClientID = types.StringPointerValue(resp.Config.Oauth.ClientID)
-				r.Config.Oauth.ClientSecret = types.StringPointerValue(resp.Config.Oauth.ClientSecret)
-				if resp.Config.Oauth.GrantType != nil {
-					r.Config.Oauth.GrantType = types.StringValue(string(*resp.Config.Oauth.GrantType))
-				} else {
-					r.Config.Oauth.GrantType = types.StringNull()
-				}
-				r.Config.Oauth.Password = types.StringPointerValue(resp.Config.Oauth.Password)
-				if resp.Config.Oauth.Scopes != nil {
-					r.Config.Oauth.Scopes = make([]types.String, 0, len(resp.Config.Oauth.Scopes))
-					for _, v := range resp.Config.Oauth.Scopes {
-						r.Config.Oauth.Scopes = append(r.Config.Oauth.Scopes, types.StringValue(v))
-					}
-				}
-				r.Config.Oauth.TokenEndpoint = types.StringPointerValue(resp.Config.Oauth.TokenEndpoint)
-				if len(resp.Config.Oauth.TokenHeaders) > 0 {
-					r.Config.Oauth.TokenHeaders = make(map[string]types.String, len(resp.Config.Oauth.TokenHeaders))
-					for key, value := range resp.Config.Oauth.TokenHeaders {
-						result, _ := json.Marshal(value)
-						r.Config.Oauth.TokenHeaders[key] = types.StringValue(string(result))
-					}
-				}
-				if len(resp.Config.Oauth.TokenPostArgs) > 0 {
-					r.Config.Oauth.TokenPostArgs = make(map[string]types.String, len(resp.Config.Oauth.TokenPostArgs))
-					for key1, value1 := range resp.Config.Oauth.TokenPostArgs {
-						result1, _ := json.Marshal(value1)
-						r.Config.Oauth.TokenPostArgs[key1] = types.StringValue(string(result1))
-					}
-				}
-				r.Config.Oauth.Username = types.StringPointerValue(resp.Config.Oauth.Username)
-			}
-		}
-		if resp.Consumer == nil {
-			r.Consumer = nil
-		} else {
-			r.Consumer = &tfTypes.Set{}
-			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		if resp.ConsumerGroup == nil {
-			r.ConsumerGroup = nil
-		} else {
-			r.ConsumerGroup = &tfTypes.Set{}
-			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
-		}
-		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.Enabled = types.BoolPointerValue(resp.Enabled)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.InstanceName = types.StringPointerValue(resp.InstanceName)
-		if resp.Ordering == nil {
-			r.Ordering = nil
-		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
-			if resp.Ordering.After == nil {
-				r.Ordering.After = nil
-			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
-				}
-			}
-			if resp.Ordering.Before == nil {
-				r.Ordering.Before = nil
-			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
-				}
-			}
-		}
-		if resp.Partials != nil {
-			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
-				var partials tfTypes.Partials
-				partials.ID = types.StringPointerValue(partialsItem.ID)
-				partials.Name = types.StringPointerValue(partialsItem.Name)
-				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
-			}
-		}
-		r.Protocols = make([]types.String, 0, len(resp.Protocols))
-		for _, v := range resp.Protocols {
-			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
-		}
-		if resp.Route == nil {
-			r.Route = nil
-		} else {
-			r.Route = &tfTypes.Set{}
-			r.Route.ID = types.StringPointerValue(resp.Route.ID)
-		}
-		if resp.Service == nil {
-			r.Service = nil
-		} else {
-			r.Service = &tfTypes.Set{}
-			r.Service.ID = types.StringPointerValue(resp.Service.ID)
-		}
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
-		}
-		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
-	}
-
-	return diags
 }

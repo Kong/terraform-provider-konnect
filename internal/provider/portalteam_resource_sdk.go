@@ -11,24 +11,18 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *PortalTeamResourceModel) ToSharedPortalCreateTeamRequest(ctx context.Context) (*shared.PortalCreateTeamRequest, diag.Diagnostics) {
+func (r *PortalTeamResourceModel) RefreshFromSharedPortalTeamResponse(ctx context.Context, resp *shared.PortalTeamResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	var name string
-	name = r.Name.ValueString()
-
-	description := new(string)
-	if !r.Description.IsUnknown() && !r.Description.IsNull() {
-		*description = r.Description.ValueString()
-	} else {
-		description = nil
-	}
-	out := shared.PortalCreateTeamRequest{
-		Name:        name,
-		Description: description,
+	if resp != nil {
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.Description = types.StringPointerValue(resp.Description)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.Name = types.StringPointerValue(resp.Name)
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
 
-	return &out, diags
+	return diags
 }
 
 func (r *PortalTeamResourceModel) ToOperationsCreatePortalTeamRequest(ctx context.Context) (*operations.CreatePortalTeamRequest, diag.Diagnostics) {
@@ -52,24 +46,35 @@ func (r *PortalTeamResourceModel) ToOperationsCreatePortalTeamRequest(ctx contex
 	return &out, diags
 }
 
-func (r *PortalTeamResourceModel) ToSharedPortalUpdateTeamRequest(ctx context.Context) (*shared.PortalUpdateTeamRequest, diag.Diagnostics) {
+func (r *PortalTeamResourceModel) ToOperationsDeletePortalTeamRequest(ctx context.Context) (*operations.DeletePortalTeamRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
+	var teamID string
+	teamID = r.ID.ValueString()
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.DeletePortalTeamRequest{
+		TeamID:   teamID,
+		PortalID: portalID,
 	}
-	description := new(string)
-	if !r.Description.IsUnknown() && !r.Description.IsNull() {
-		*description = r.Description.ValueString()
-	} else {
-		description = nil
-	}
-	out := shared.PortalUpdateTeamRequest{
-		Name:        name,
-		Description: description,
+
+	return &out, diags
+}
+
+func (r *PortalTeamResourceModel) ToOperationsGetPortalTeamRequest(ctx context.Context) (*operations.GetPortalTeamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var teamID string
+	teamID = r.ID.ValueString()
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.GetPortalTeamRequest{
+		TeamID:   teamID,
+		PortalID: portalID,
 	}
 
 	return &out, diags
@@ -100,50 +105,45 @@ func (r *PortalTeamResourceModel) ToOperationsUpdatePortalTeamRequest(ctx contex
 	return &out, diags
 }
 
-func (r *PortalTeamResourceModel) ToOperationsGetPortalTeamRequest(ctx context.Context) (*operations.GetPortalTeamRequest, diag.Diagnostics) {
+func (r *PortalTeamResourceModel) ToSharedPortalCreateTeamRequest(ctx context.Context) (*shared.PortalCreateTeamRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var teamID string
-	teamID = r.ID.ValueString()
+	var name string
+	name = r.Name.ValueString()
 
-	var portalID string
-	portalID = r.PortalID.ValueString()
-
-	out := operations.GetPortalTeamRequest{
-		TeamID:   teamID,
-		PortalID: portalID,
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
+	out := shared.PortalCreateTeamRequest{
+		Name:        name,
+		Description: description,
 	}
 
 	return &out, diags
 }
 
-func (r *PortalTeamResourceModel) ToOperationsDeletePortalTeamRequest(ctx context.Context) (*operations.DeletePortalTeamRequest, diag.Diagnostics) {
+func (r *PortalTeamResourceModel) ToSharedPortalUpdateTeamRequest(ctx context.Context) (*shared.PortalUpdateTeamRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var teamID string
-	teamID = r.ID.ValueString()
-
-	var portalID string
-	portalID = r.PortalID.ValueString()
-
-	out := operations.DeletePortalTeamRequest{
-		TeamID:   teamID,
-		PortalID: portalID,
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
+	out := shared.PortalUpdateTeamRequest{
+		Name:        name,
+		Description: description,
 	}
 
 	return &out, diags
-}
-
-func (r *PortalTeamResourceModel) RefreshFromSharedPortalTeamResponse(ctx context.Context, resp *shared.PortalTeamResponse) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.Description = types.StringPointerValue(resp.Description)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.Name = types.StringPointerValue(resp.Name)
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
-	}
-
-	return diags
 }

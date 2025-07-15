@@ -11,6 +11,188 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *GatewayPluginCorsResourceModel) RefreshFromSharedCorsPlugin(ctx context.Context, resp *shared.CorsPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.CorsPluginConfig{}
+			r.Config.AllowOriginAbsent = types.BoolPointerValue(resp.Config.AllowOriginAbsent)
+			r.Config.Credentials = types.BoolPointerValue(resp.Config.Credentials)
+			r.Config.ExposedHeaders = make([]types.String, 0, len(resp.Config.ExposedHeaders))
+			for _, v := range resp.Config.ExposedHeaders {
+				r.Config.ExposedHeaders = append(r.Config.ExposedHeaders, types.StringValue(v))
+			}
+			r.Config.Headers = make([]types.String, 0, len(resp.Config.Headers))
+			for _, v := range resp.Config.Headers {
+				r.Config.Headers = append(r.Config.Headers, types.StringValue(v))
+			}
+			r.Config.MaxAge = types.Float64PointerValue(resp.Config.MaxAge)
+			r.Config.Methods = make([]types.String, 0, len(resp.Config.Methods))
+			for _, v := range resp.Config.Methods {
+				r.Config.Methods = append(r.Config.Methods, types.StringValue(string(v)))
+			}
+			r.Config.Origins = make([]types.String, 0, len(resp.Config.Origins))
+			for _, v := range resp.Config.Origins {
+				r.Config.Origins = append(r.Config.Origins, types.StringValue(v))
+			}
+			r.Config.PreflightContinue = types.BoolPointerValue(resp.Config.PreflightContinue)
+			r.Config.PrivateNetwork = types.BoolPointerValue(resp.Config.PrivateNetwork)
+		}
+		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.Enabled = types.BoolPointerValue(resp.Enabled)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.InstanceName = types.StringPointerValue(resp.InstanceName)
+		if resp.Ordering == nil {
+			r.Ordering = nil
+		} else {
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			if resp.Ordering.After == nil {
+				r.Ordering.After = nil
+			} else {
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				}
+			}
+			if resp.Ordering.Before == nil {
+				r.Ordering.Before = nil
+			} else {
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				}
+			}
+		}
+		if resp.Partials != nil {
+			r.Partials = []tfTypes.Partials{}
+			if len(r.Partials) > len(resp.Partials) {
+				r.Partials = r.Partials[:len(resp.Partials)]
+			}
+			for partialsCount, partialsItem := range resp.Partials {
+				var partials tfTypes.Partials
+				partials.ID = types.StringPointerValue(partialsItem.ID)
+				partials.Name = types.StringPointerValue(partialsItem.Name)
+				partials.Path = types.StringPointerValue(partialsItem.Path)
+				if partialsCount+1 > len(r.Partials) {
+					r.Partials = append(r.Partials, partials)
+				} else {
+					r.Partials[partialsCount].ID = partials.ID
+					r.Partials[partialsCount].Name = partials.Name
+					r.Partials[partialsCount].Path = partials.Path
+				}
+			}
+		}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
+		for _, v := range resp.Protocols {
+			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
+		}
+		if resp.Route == nil {
+			r.Route = nil
+		} else {
+			r.Route = &tfTypes.Set{}
+			r.Route.ID = types.StringPointerValue(resp.Route.ID)
+		}
+		if resp.Service == nil {
+			r.Service = nil
+		} else {
+			r.Service = &tfTypes.Set{}
+			r.Service.ID = types.StringPointerValue(resp.Service.ID)
+		}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
+		for _, v := range resp.Tags {
+			r.Tags = append(r.Tags, types.StringValue(v))
+		}
+		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
+	}
+
+	return diags
+}
+
+func (r *GatewayPluginCorsResourceModel) ToOperationsCreateCorsPluginRequest(ctx context.Context) (*operations.CreateCorsPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	corsPlugin, corsPluginDiags := r.ToSharedCorsPlugin(ctx)
+	diags.Append(corsPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateCorsPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		CorsPlugin:     *corsPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginCorsResourceModel) ToOperationsDeleteCorsPluginRequest(ctx context.Context) (*operations.DeleteCorsPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteCorsPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginCorsResourceModel) ToOperationsGetCorsPluginRequest(ctx context.Context) (*operations.GetCorsPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetCorsPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginCorsResourceModel) ToOperationsUpdateCorsPluginRequest(ctx context.Context) (*operations.UpdateCorsPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	corsPlugin, corsPluginDiags := r.ToSharedCorsPlugin(ctx)
+	diags.Append(corsPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateCorsPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		CorsPlugin:     *corsPlugin,
+	}
+
+	return &out, diags
+}
+
 func (r *GatewayPluginCorsResourceModel) ToSharedCorsPlugin(ctx context.Context) (*shared.CorsPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -208,186 +390,4 @@ func (r *GatewayPluginCorsResourceModel) ToSharedCorsPlugin(ctx context.Context)
 	}
 
 	return &out, diags
-}
-
-func (r *GatewayPluginCorsResourceModel) ToOperationsCreateCorsPluginRequest(ctx context.Context) (*operations.CreateCorsPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	corsPlugin, corsPluginDiags := r.ToSharedCorsPlugin(ctx)
-	diags.Append(corsPluginDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateCorsPluginRequest{
-		ControlPlaneID: controlPlaneID,
-		CorsPlugin:     *corsPlugin,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginCorsResourceModel) ToOperationsUpdateCorsPluginRequest(ctx context.Context) (*operations.UpdateCorsPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	corsPlugin, corsPluginDiags := r.ToSharedCorsPlugin(ctx)
-	diags.Append(corsPluginDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateCorsPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-		CorsPlugin:     *corsPlugin,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginCorsResourceModel) ToOperationsGetCorsPluginRequest(ctx context.Context) (*operations.GetCorsPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.GetCorsPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginCorsResourceModel) ToOperationsDeleteCorsPluginRequest(ctx context.Context) (*operations.DeleteCorsPluginRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var pluginID string
-	pluginID = r.ID.ValueString()
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	out := operations.DeleteCorsPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayPluginCorsResourceModel) RefreshFromSharedCorsPlugin(ctx context.Context, resp *shared.CorsPlugin) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.CorsPluginConfig{}
-			r.Config.AllowOriginAbsent = types.BoolPointerValue(resp.Config.AllowOriginAbsent)
-			r.Config.Credentials = types.BoolPointerValue(resp.Config.Credentials)
-			r.Config.ExposedHeaders = make([]types.String, 0, len(resp.Config.ExposedHeaders))
-			for _, v := range resp.Config.ExposedHeaders {
-				r.Config.ExposedHeaders = append(r.Config.ExposedHeaders, types.StringValue(v))
-			}
-			r.Config.Headers = make([]types.String, 0, len(resp.Config.Headers))
-			for _, v := range resp.Config.Headers {
-				r.Config.Headers = append(r.Config.Headers, types.StringValue(v))
-			}
-			r.Config.MaxAge = types.Float64PointerValue(resp.Config.MaxAge)
-			r.Config.Methods = make([]types.String, 0, len(resp.Config.Methods))
-			for _, v := range resp.Config.Methods {
-				r.Config.Methods = append(r.Config.Methods, types.StringValue(string(v)))
-			}
-			r.Config.Origins = make([]types.String, 0, len(resp.Config.Origins))
-			for _, v := range resp.Config.Origins {
-				r.Config.Origins = append(r.Config.Origins, types.StringValue(v))
-			}
-			r.Config.PreflightContinue = types.BoolPointerValue(resp.Config.PreflightContinue)
-			r.Config.PrivateNetwork = types.BoolPointerValue(resp.Config.PrivateNetwork)
-		}
-		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.Enabled = types.BoolPointerValue(resp.Enabled)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.InstanceName = types.StringPointerValue(resp.InstanceName)
-		if resp.Ordering == nil {
-			r.Ordering = nil
-		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
-			if resp.Ordering.After == nil {
-				r.Ordering.After = nil
-			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
-				}
-			}
-			if resp.Ordering.Before == nil {
-				r.Ordering.Before = nil
-			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
-				}
-			}
-		}
-		if resp.Partials != nil {
-			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
-				var partials tfTypes.Partials
-				partials.ID = types.StringPointerValue(partialsItem.ID)
-				partials.Name = types.StringPointerValue(partialsItem.Name)
-				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
-			}
-		}
-		r.Protocols = make([]types.String, 0, len(resp.Protocols))
-		for _, v := range resp.Protocols {
-			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
-		}
-		if resp.Route == nil {
-			r.Route = nil
-		} else {
-			r.Route = &tfTypes.Set{}
-			r.Route.ID = types.StringPointerValue(resp.Route.ID)
-		}
-		if resp.Service == nil {
-			r.Service = nil
-		} else {
-			r.Service = &tfTypes.Set{}
-			r.Service.ID = types.StringPointerValue(resp.Service.ID)
-		}
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
-		}
-		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
-	}
-
-	return diags
 }

@@ -11,51 +11,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *CloudGatewayCustomDomainResourceModel) ToSharedCreateCustomDomainRequest(ctx context.Context) (*shared.CreateCustomDomainRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	controlPlaneGeo := shared.ControlPlaneGeo(r.ControlPlaneGeo.ValueString())
-	var domain string
-	domain = r.Domain.ValueString()
-
-	out := shared.CreateCustomDomainRequest{
-		ControlPlaneID:  controlPlaneID,
-		ControlPlaneGeo: controlPlaneGeo,
-		Domain:          domain,
-	}
-
-	return &out, diags
-}
-
-func (r *CloudGatewayCustomDomainResourceModel) ToOperationsGetCustomDomainRequest(ctx context.Context) (*operations.GetCustomDomainRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var customDomainID string
-	customDomainID = r.ID.ValueString()
-
-	out := operations.GetCustomDomainRequest{
-		CustomDomainID: customDomainID,
-	}
-
-	return &out, diags
-}
-
-func (r *CloudGatewayCustomDomainResourceModel) ToOperationsDeleteCustomDomainRequest(ctx context.Context) (*operations.DeleteCustomDomainRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var customDomainID string
-	customDomainID = r.ID.ValueString()
-
-	out := operations.DeleteCustomDomainRequest{
-		CustomDomainID: customDomainID,
-	}
-
-	return &out, diags
-}
-
 func (r *CloudGatewayCustomDomainResourceModel) RefreshFromSharedCustomDomain(ctx context.Context, resp *shared.CustomDomain) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -75,4 +30,49 @@ func (r *CloudGatewayCustomDomainResourceModel) RefreshFromSharedCustomDomain(ct
 	}
 
 	return diags
+}
+
+func (r *CloudGatewayCustomDomainResourceModel) ToOperationsDeleteCustomDomainRequest(ctx context.Context) (*operations.DeleteCustomDomainRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var customDomainID string
+	customDomainID = r.ID.ValueString()
+
+	out := operations.DeleteCustomDomainRequest{
+		CustomDomainID: customDomainID,
+	}
+
+	return &out, diags
+}
+
+func (r *CloudGatewayCustomDomainResourceModel) ToOperationsGetCustomDomainRequest(ctx context.Context) (*operations.GetCustomDomainRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var customDomainID string
+	customDomainID = r.ID.ValueString()
+
+	out := operations.GetCustomDomainRequest{
+		CustomDomainID: customDomainID,
+	}
+
+	return &out, diags
+}
+
+func (r *CloudGatewayCustomDomainResourceModel) ToSharedCreateCustomDomainRequest(ctx context.Context) (*shared.CreateCustomDomainRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	controlPlaneGeo := shared.ControlPlaneGeo(r.ControlPlaneGeo.ValueString())
+	var domain string
+	domain = r.Domain.ValueString()
+
+	out := shared.CreateCustomDomainRequest{
+		ControlPlaneID:  controlPlaneID,
+		ControlPlaneGeo: controlPlaneGeo,
+		Domain:          domain,
+	}
+
+	return &out, diags
 }

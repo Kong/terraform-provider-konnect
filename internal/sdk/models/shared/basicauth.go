@@ -18,7 +18,6 @@ type BasicAuth struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64   `json:"created_at,omitempty"`
 	ID        *string  `json:"id,omitempty"`
-	Password  string   `json:"password"`
 	Tags      []string `json:"tags,omitempty"`
 	Username  string   `json:"username"`
 }
@@ -42,13 +41,6 @@ func (o *BasicAuth) GetID() *string {
 		return nil
 	}
 	return o.ID
-}
-
-func (o *BasicAuth) GetPassword() string {
-	if o == nil {
-		return ""
-	}
-	return o.Password
 }
 
 func (o *BasicAuth) GetTags() []string {

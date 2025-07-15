@@ -52,5 +52,5 @@ resource "konnect_gateway_custom_plugin_streaming" "my_gatewaycustompluginstream
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_gateway_custom_plugin_streaming.my_konnect_gateway_custom_plugin_streaming "{ \"control_plane_id\": \"9524ec7d-36d9-465d-a8c5-83a3c9390458\",  \"id\": \"\"}"
+terraform import konnect_gateway_custom_plugin_streaming.my_konnect_gateway_custom_plugin_streaming '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}'
 ```

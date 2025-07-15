@@ -12,100 +12,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *PortalProductVersionResourceModel) ToSharedReplacePortalProductVersionPayload(ctx context.Context) (*shared.ReplacePortalProductVersionPayload, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	publishStatus := shared.PortalProductVersionPublishStatus(r.PublishStatus.ValueString())
-	authStrategyIds := make([]string, 0, len(r.AuthStrategyIds))
-	for _, authStrategyIdsItem := range r.AuthStrategyIds {
-		authStrategyIds = append(authStrategyIds, authStrategyIdsItem.ValueString())
-	}
-	var applicationRegistrationEnabled bool
-	applicationRegistrationEnabled = r.ApplicationRegistrationEnabled.ValueBool()
-
-	var autoApproveRegistration bool
-	autoApproveRegistration = r.AutoApproveRegistration.ValueBool()
-
-	var deprecated bool
-	deprecated = r.Deprecated.ValueBool()
-
-	notifyDevelopers := new(bool)
-	if !r.NotifyDevelopers.IsUnknown() && !r.NotifyDevelopers.IsNull() {
-		*notifyDevelopers = r.NotifyDevelopers.ValueBool()
-	} else {
-		notifyDevelopers = nil
-	}
-	out := shared.ReplacePortalProductVersionPayload{
-		PublishStatus:                  publishStatus,
-		AuthStrategyIds:                authStrategyIds,
-		ApplicationRegistrationEnabled: applicationRegistrationEnabled,
-		AutoApproveRegistration:        autoApproveRegistration,
-		Deprecated:                     deprecated,
-		NotifyDevelopers:               notifyDevelopers,
-	}
-
-	return &out, diags
-}
-
-func (r *PortalProductVersionResourceModel) ToOperationsReplacePortalProductVersionRequest(ctx context.Context) (*operations.ReplacePortalProductVersionRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var productVersionID string
-	productVersionID = r.ProductVersionID.ValueString()
-
-	var portalID string
-	portalID = r.PortalID.ValueString()
-
-	replacePortalProductVersionPayload, replacePortalProductVersionPayloadDiags := r.ToSharedReplacePortalProductVersionPayload(ctx)
-	diags.Append(replacePortalProductVersionPayloadDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.ReplacePortalProductVersionRequest{
-		ProductVersionID:                   productVersionID,
-		PortalID:                           portalID,
-		ReplacePortalProductVersionPayload: *replacePortalProductVersionPayload,
-	}
-
-	return &out, diags
-}
-
-func (r *PortalProductVersionResourceModel) ToOperationsGetPortalProductVersionRequest(ctx context.Context) (*operations.GetPortalProductVersionRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var productVersionID string
-	productVersionID = r.ProductVersionID.ValueString()
-
-	var portalID string
-	portalID = r.PortalID.ValueString()
-
-	out := operations.GetPortalProductVersionRequest{
-		ProductVersionID: productVersionID,
-		PortalID:         portalID,
-	}
-
-	return &out, diags
-}
-
-func (r *PortalProductVersionResourceModel) ToOperationsDeletePortalProductVersionRequest(ctx context.Context) (*operations.DeletePortalProductVersionRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var productVersionID string
-	productVersionID = r.ProductVersionID.ValueString()
-
-	var portalID string
-	portalID = r.PortalID.ValueString()
-
-	out := operations.DeletePortalProductVersionRequest{
-		ProductVersionID: productVersionID,
-		PortalID:         portalID,
-	}
-
-	return &out, diags
-}
-
 func (r *PortalProductVersionResourceModel) RefreshFromSharedPortalProductVersion(ctx context.Context, resp *shared.PortalProductVersion) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -158,4 +64,98 @@ func (r *PortalProductVersionResourceModel) RefreshFromSharedPortalProductVersio
 	}
 
 	return diags
+}
+
+func (r *PortalProductVersionResourceModel) ToOperationsDeletePortalProductVersionRequest(ctx context.Context) (*operations.DeletePortalProductVersionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var productVersionID string
+	productVersionID = r.ProductVersionID.ValueString()
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.DeletePortalProductVersionRequest{
+		ProductVersionID: productVersionID,
+		PortalID:         portalID,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalProductVersionResourceModel) ToOperationsGetPortalProductVersionRequest(ctx context.Context) (*operations.GetPortalProductVersionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var productVersionID string
+	productVersionID = r.ProductVersionID.ValueString()
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.GetPortalProductVersionRequest{
+		ProductVersionID: productVersionID,
+		PortalID:         portalID,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalProductVersionResourceModel) ToOperationsReplacePortalProductVersionRequest(ctx context.Context) (*operations.ReplacePortalProductVersionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var productVersionID string
+	productVersionID = r.ProductVersionID.ValueString()
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	replacePortalProductVersionPayload, replacePortalProductVersionPayloadDiags := r.ToSharedReplacePortalProductVersionPayload(ctx)
+	diags.Append(replacePortalProductVersionPayloadDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.ReplacePortalProductVersionRequest{
+		ProductVersionID:                   productVersionID,
+		PortalID:                           portalID,
+		ReplacePortalProductVersionPayload: *replacePortalProductVersionPayload,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalProductVersionResourceModel) ToSharedReplacePortalProductVersionPayload(ctx context.Context) (*shared.ReplacePortalProductVersionPayload, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	publishStatus := shared.PortalProductVersionPublishStatus(r.PublishStatus.ValueString())
+	authStrategyIds := make([]string, 0, len(r.AuthStrategyIds))
+	for _, authStrategyIdsItem := range r.AuthStrategyIds {
+		authStrategyIds = append(authStrategyIds, authStrategyIdsItem.ValueString())
+	}
+	var applicationRegistrationEnabled bool
+	applicationRegistrationEnabled = r.ApplicationRegistrationEnabled.ValueBool()
+
+	var autoApproveRegistration bool
+	autoApproveRegistration = r.AutoApproveRegistration.ValueBool()
+
+	var deprecated bool
+	deprecated = r.Deprecated.ValueBool()
+
+	notifyDevelopers := new(bool)
+	if !r.NotifyDevelopers.IsUnknown() && !r.NotifyDevelopers.IsNull() {
+		*notifyDevelopers = r.NotifyDevelopers.ValueBool()
+	} else {
+		notifyDevelopers = nil
+	}
+	out := shared.ReplacePortalProductVersionPayload{
+		PublishStatus:                  publishStatus,
+		AuthStrategyIds:                authStrategyIds,
+		ApplicationRegistrationEnabled: applicationRegistrationEnabled,
+		AutoApproveRegistration:        autoApproveRegistration,
+		Deprecated:                     deprecated,
+		NotifyDevelopers:               notifyDevelopers,
+	}
+
+	return &out, diags
 }

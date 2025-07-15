@@ -11,6 +11,53 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *ServerlessCloudGatewayResourceModel) RefreshFromSharedServerlessCloudGateway(ctx context.Context, resp *shared.ServerlessCloudGateway) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.ControlPlane.ID = types.StringValue(resp.ControlPlane.ID)
+		r.ControlPlane.Prefix = types.StringValue(resp.ControlPlane.Prefix)
+		r.ControlPlane.Region = types.StringValue(string(resp.ControlPlane.Region))
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.GatewayEndpoint = types.StringValue(resp.GatewayEndpoint)
+		if len(resp.Labels) > 0 {
+			r.Labels = make(map[string]types.String, len(resp.Labels))
+			for key, value := range resp.Labels {
+				r.Labels[key] = types.StringValue(value)
+			}
+		}
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+	}
+
+	return diags
+}
+
+func (r *ServerlessCloudGatewayResourceModel) ToOperationsDeleteServerlessCloudGatewayRequest(ctx context.Context) (*operations.DeleteServerlessCloudGatewayRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlane.ID.ValueString()
+
+	out := operations.DeleteServerlessCloudGatewayRequest{
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *ServerlessCloudGatewayResourceModel) ToOperationsGetServerlessCloudGatewayRequest(ctx context.Context) (*operations.GetServerlessCloudGatewayRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlane.ID.ValueString()
+
+	out := operations.GetServerlessCloudGatewayRequest{
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
 func (r *ServerlessCloudGatewayResourceModel) ToSharedCreateServerlessCloudGatewayRequest(ctx context.Context) (*shared.CreateServerlessCloudGatewayRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -47,51 +94,4 @@ func (r *ServerlessCloudGatewayResourceModel) ToSharedCreateServerlessCloudGatew
 	}
 
 	return &out, diags
-}
-
-func (r *ServerlessCloudGatewayResourceModel) ToOperationsGetServerlessCloudGatewayRequest(ctx context.Context) (*operations.GetServerlessCloudGatewayRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlane.ID.ValueString()
-
-	out := operations.GetServerlessCloudGatewayRequest{
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *ServerlessCloudGatewayResourceModel) ToOperationsDeleteServerlessCloudGatewayRequest(ctx context.Context) (*operations.DeleteServerlessCloudGatewayRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlane.ID.ValueString()
-
-	out := operations.DeleteServerlessCloudGatewayRequest{
-		ControlPlaneID: controlPlaneID,
-	}
-
-	return &out, diags
-}
-
-func (r *ServerlessCloudGatewayResourceModel) RefreshFromSharedServerlessCloudGateway(ctx context.Context, resp *shared.ServerlessCloudGateway) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.ControlPlane.ID = types.StringValue(resp.ControlPlane.ID)
-		r.ControlPlane.Prefix = types.StringValue(resp.ControlPlane.Prefix)
-		r.ControlPlane.Region = types.StringValue(string(resp.ControlPlane.Region))
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.GatewayEndpoint = types.StringValue(resp.GatewayEndpoint)
-		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String, len(resp.Labels))
-			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringValue(value)
-			}
-		}
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-	}
-
-	return diags
 }

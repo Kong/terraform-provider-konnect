@@ -30,6 +30,7 @@ func NewCloudGatewayCustomDomainResource() resource.Resource {
 
 // CloudGatewayCustomDomainResource defines the resource implementation.
 type CloudGatewayCustomDomainResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 

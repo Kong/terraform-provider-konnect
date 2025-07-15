@@ -32,33 +32,36 @@ func NewGatewayUpstreamResource() resource.Resource {
 
 // GatewayUpstreamResource defines the resource implementation.
 type GatewayUpstreamResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
 // GatewayUpstreamResourceModel describes the resource data model.
 type GatewayUpstreamResourceModel struct {
-	Algorithm              types.String          `tfsdk:"algorithm"`
-	ClientCertificate      *tfTypes.Set          `tfsdk:"client_certificate"`
-	ControlPlaneID         types.String          `tfsdk:"control_plane_id"`
-	CreatedAt              types.Int64           `tfsdk:"created_at"`
-	HashFallback           types.String          `tfsdk:"hash_fallback"`
-	HashFallbackHeader     types.String          `tfsdk:"hash_fallback_header"`
-	HashFallbackQueryArg   types.String          `tfsdk:"hash_fallback_query_arg"`
-	HashFallbackURICapture types.String          `tfsdk:"hash_fallback_uri_capture"`
-	HashOn                 types.String          `tfsdk:"hash_on"`
-	HashOnCookie           types.String          `tfsdk:"hash_on_cookie"`
-	HashOnCookiePath       types.String          `tfsdk:"hash_on_cookie_path"`
-	HashOnHeader           types.String          `tfsdk:"hash_on_header"`
-	HashOnQueryArg         types.String          `tfsdk:"hash_on_query_arg"`
-	HashOnURICapture       types.String          `tfsdk:"hash_on_uri_capture"`
-	Healthchecks           *tfTypes.Healthchecks `tfsdk:"healthchecks"`
-	HostHeader             types.String          `tfsdk:"host_header"`
-	ID                     types.String          `tfsdk:"id"`
-	Name                   types.String          `tfsdk:"name"`
-	Slots                  types.Int64           `tfsdk:"slots"`
-	Tags                   []types.String        `tfsdk:"tags"`
-	UpdatedAt              types.Int64           `tfsdk:"updated_at"`
-	UseSrvName             types.Bool            `tfsdk:"use_srv_name"`
+	Algorithm                types.String          `tfsdk:"algorithm"`
+	ClientCertificate        *tfTypes.Set          `tfsdk:"client_certificate"`
+	ControlPlaneID           types.String          `tfsdk:"control_plane_id"`
+	CreatedAt                types.Int64           `tfsdk:"created_at"`
+	HashFallback             types.String          `tfsdk:"hash_fallback"`
+	HashFallbackHeader       types.String          `tfsdk:"hash_fallback_header"`
+	HashFallbackQueryArg     types.String          `tfsdk:"hash_fallback_query_arg"`
+	HashFallbackURICapture   types.String          `tfsdk:"hash_fallback_uri_capture"`
+	HashOn                   types.String          `tfsdk:"hash_on"`
+	HashOnCookie             types.String          `tfsdk:"hash_on_cookie"`
+	HashOnCookiePath         types.String          `tfsdk:"hash_on_cookie_path"`
+	HashOnHeader             types.String          `tfsdk:"hash_on_header"`
+	HashOnQueryArg           types.String          `tfsdk:"hash_on_query_arg"`
+	HashOnURICapture         types.String          `tfsdk:"hash_on_uri_capture"`
+	Healthchecks             *tfTypes.Healthchecks `tfsdk:"healthchecks"`
+	HostHeader               types.String          `tfsdk:"host_header"`
+	ID                       types.String          `tfsdk:"id"`
+	Name                     types.String          `tfsdk:"name"`
+	Slots                    types.Int64           `tfsdk:"slots"`
+	StickySessionsCookie     types.String          `tfsdk:"sticky_sessions_cookie"`
+	StickySessionsCookiePath types.String          `tfsdk:"sticky_sessions_cookie_path"`
+	Tags                     []types.String        `tfsdk:"tags"`
+	UpdatedAt                types.Int64           `tfsdk:"updated_at"`
+	UseSrvName               types.Bool            `tfsdk:"use_srv_name"`
 }
 
 func (r *GatewayUpstreamResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -72,13 +75,14 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 			"algorithm": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Which load balancing algorithm to use. must be one of ["consistent-hashing", "least-connections", "round-robin", "latency"]`,
+				Description: `Which load balancing algorithm to use. must be one of ["consistent-hashing", "least-connections", "round-robin", "latency", "sticky-sessions"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"consistent-hashing",
 						"least-connections",
 						"round-robin",
 						"latency",
+						"sticky-sessions",
 					),
 				},
 			},
@@ -359,6 +363,14 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 				Optional:    true,
 				Description: `The number of slots in the load balancer algorithm. If ` + "`" + `algorithm` + "`" + ` is set to ` + "`" + `round-robin` + "`" + `, this setting determines the maximum number of slots. If ` + "`" + `algorithm` + "`" + ` is set to ` + "`" + `consistent-hashing` + "`" + `, this setting determines the actual number of slots in the algorithm. Accepts an integer in the range ` + "`" + `10` + "`" + `-` + "`" + `65536` + "`" + `.`,
 			},
+			"sticky_sessions_cookie": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+			},
+			"sticky_sessions_cookie_path": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+			},
 			"tags": schema.ListAttribute{
 				Computed:    true,
 				Optional:    true,
@@ -625,7 +637,7 @@ func (r *GatewayUpstreamResource) ImportState(ctx context.Context, req resource.
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "426d620c-7058-4ae6-aacc-f85a3204a2c5"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "426d620c-7058-4ae6-aacc-f85a3204a2c5"}': `+err.Error())
 		return
 	}
 
@@ -639,5 +651,4 @@ func (r *GatewayUpstreamResource) ImportState(ctx context.Context, req resource.
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
-
 }

@@ -40,6 +40,7 @@ func NewMeshControlPlaneResource() resource.Resource {
 
 // MeshControlPlaneResource defines the resource implementation.
 type MeshControlPlaneResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 

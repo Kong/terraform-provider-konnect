@@ -11,6 +11,97 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *GatewayTargetResourceModel) RefreshFromSharedTarget(ctx context.Context, resp *shared.Target) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CreatedAt = types.Float64PointerValue(resp.CreatedAt)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.Tags = make([]types.String, 0, len(resp.Tags))
+		for _, v := range resp.Tags {
+			r.Tags = append(r.Tags, types.StringValue(v))
+		}
+		r.Target = types.StringPointerValue(resp.Target)
+		r.UpdatedAt = types.Float64PointerValue(resp.UpdatedAt)
+		if resp.Upstream == nil {
+			r.Upstream = nil
+		} else {
+			r.Upstream = &tfTypes.Set{}
+			r.Upstream.ID = types.StringPointerValue(resp.Upstream.ID)
+		}
+		r.Weight = types.Int64PointerValue(resp.Weight)
+	}
+
+	return diags
+}
+
+func (r *GatewayTargetResourceModel) ToOperationsCreateTargetWithUpstreamRequest(ctx context.Context) (*operations.CreateTargetWithUpstreamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var upstreamID string
+	upstreamID = r.UpstreamID.ValueString()
+
+	targetWithoutParents, targetWithoutParentsDiags := r.ToSharedTargetWithoutParents(ctx)
+	diags.Append(targetWithoutParentsDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateTargetWithUpstreamRequest{
+		ControlPlaneID:       controlPlaneID,
+		UpstreamID:           upstreamID,
+		TargetWithoutParents: *targetWithoutParents,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayTargetResourceModel) ToOperationsDeleteTargetWithUpstreamRequest(ctx context.Context) (*operations.DeleteTargetWithUpstreamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var upstreamID string
+	upstreamID = r.UpstreamID.ValueString()
+
+	var targetID string
+	targetID = r.ID.ValueString()
+
+	out := operations.DeleteTargetWithUpstreamRequest{
+		ControlPlaneID: controlPlaneID,
+		UpstreamID:     upstreamID,
+		TargetID:       targetID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayTargetResourceModel) ToOperationsGetTargetWithUpstreamRequest(ctx context.Context) (*operations.GetTargetWithUpstreamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var upstreamID string
+	upstreamID = r.UpstreamID.ValueString()
+
+	var targetID string
+	targetID = r.ID.ValueString()
+
+	out := operations.GetTargetWithUpstreamRequest{
+		ControlPlaneID: controlPlaneID,
+		UpstreamID:     upstreamID,
+		TargetID:       targetID,
+	}
+
+	return &out, diags
+}
+
 func (r *GatewayTargetResourceModel) ToSharedTargetWithoutParents(ctx context.Context) (*shared.TargetWithoutParents, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -71,95 +162,4 @@ func (r *GatewayTargetResourceModel) ToSharedTargetWithoutParents(ctx context.Co
 	}
 
 	return &out, diags
-}
-
-func (r *GatewayTargetResourceModel) ToOperationsCreateTargetWithUpstreamRequest(ctx context.Context) (*operations.CreateTargetWithUpstreamRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	var upstreamID string
-	upstreamID = r.UpstreamID.ValueString()
-
-	targetWithoutParents, targetWithoutParentsDiags := r.ToSharedTargetWithoutParents(ctx)
-	diags.Append(targetWithoutParentsDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateTargetWithUpstreamRequest{
-		ControlPlaneID:       controlPlaneID,
-		UpstreamID:           upstreamID,
-		TargetWithoutParents: *targetWithoutParents,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayTargetResourceModel) ToOperationsGetTargetWithUpstreamRequest(ctx context.Context) (*operations.GetTargetWithUpstreamRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	var upstreamID string
-	upstreamID = r.UpstreamID.ValueString()
-
-	var targetID string
-	targetID = r.ID.ValueString()
-
-	out := operations.GetTargetWithUpstreamRequest{
-		ControlPlaneID: controlPlaneID,
-		UpstreamID:     upstreamID,
-		TargetID:       targetID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayTargetResourceModel) ToOperationsDeleteTargetWithUpstreamRequest(ctx context.Context) (*operations.DeleteTargetWithUpstreamRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var controlPlaneID string
-	controlPlaneID = r.ControlPlaneID.ValueString()
-
-	var upstreamID string
-	upstreamID = r.UpstreamID.ValueString()
-
-	var targetID string
-	targetID = r.ID.ValueString()
-
-	out := operations.DeleteTargetWithUpstreamRequest{
-		ControlPlaneID: controlPlaneID,
-		UpstreamID:     upstreamID,
-		TargetID:       targetID,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayTargetResourceModel) RefreshFromSharedTarget(ctx context.Context, resp *shared.Target) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.CreatedAt = types.Float64PointerValue(resp.CreatedAt)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
-		}
-		r.Target = types.StringPointerValue(resp.Target)
-		r.UpdatedAt = types.Float64PointerValue(resp.UpdatedAt)
-		if resp.Upstream == nil {
-			r.Upstream = nil
-		} else {
-			r.Upstream = &tfTypes.Set{}
-			r.Upstream.ID = types.StringPointerValue(resp.Upstream.ID)
-		}
-		r.Weight = types.Int64PointerValue(resp.Weight)
-	}
-
-	return diags
 }

@@ -12,61 +12,66 @@ import (
 	"time"
 )
 
-func (r *SystemAccountAccessTokenResourceModel) ToSharedCreateSystemAccountAccessToken(ctx context.Context) (*shared.CreateSystemAccountAccessToken, diag.Diagnostics) {
+func (r *SystemAccountAccessTokenResourceModel) RefreshFromSharedSystemAccountAccessToken(ctx context.Context, resp *shared.SystemAccountAccessToken) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
-	}
-	expiresAt := new(time.Time)
-	if !r.ExpiresAt.IsUnknown() && !r.ExpiresAt.IsNull() {
-		*expiresAt, _ = time.Parse(time.RFC3339Nano, r.ExpiresAt.ValueString())
-	} else {
-		expiresAt = nil
-	}
-	out := shared.CreateSystemAccountAccessToken{
-		Name:      name,
-		ExpiresAt: expiresAt,
+	if resp != nil {
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ExpiresAt))
+		r.ID = types.StringPointerValue(resp.ID)
+		r.LastUsedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.LastUsedAt))
+		r.Name = types.StringPointerValue(resp.Name)
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
 
-	return &out, diags
+	return diags
 }
 
-func (r *SystemAccountAccessTokenResourceModel) ToOperationsPostSystemAccountsIDAccessTokensRequest(ctx context.Context) (*operations.PostSystemAccountsIDAccessTokensRequest, diag.Diagnostics) {
+func (r *SystemAccountAccessTokenResourceModel) RefreshFromSharedSystemAccountAccessTokenCreated(ctx context.Context, resp *shared.SystemAccountAccessTokenCreated) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ExpiresAt))
+		r.ID = types.StringPointerValue(resp.ID)
+		r.LastUsedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.LastUsedAt))
+		r.Name = types.StringPointerValue(resp.Name)
+		r.Token = types.StringPointerValue(resp.Token)
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+	}
+
+	return diags
+}
+
+func (r *SystemAccountAccessTokenResourceModel) ToOperationsDeleteSystemAccountsIDAccessTokensIDRequest(ctx context.Context) (*operations.DeleteSystemAccountsIDAccessTokensIDRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var accountID string
 	accountID = r.AccountID.ValueString()
 
-	createSystemAccountAccessToken, createSystemAccountAccessTokenDiags := r.ToSharedCreateSystemAccountAccessToken(ctx)
-	diags.Append(createSystemAccountAccessTokenDiags...)
+	var tokenID string
+	tokenID = r.ID.ValueString()
 
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.PostSystemAccountsIDAccessTokensRequest{
-		AccountID:                      accountID,
-		CreateSystemAccountAccessToken: createSystemAccountAccessToken,
+	out := operations.DeleteSystemAccountsIDAccessTokensIDRequest{
+		AccountID: accountID,
+		TokenID:   tokenID,
 	}
 
 	return &out, diags
 }
 
-func (r *SystemAccountAccessTokenResourceModel) ToSharedUpdateSystemAccountAccessToken(ctx context.Context) (*shared.UpdateSystemAccountAccessToken, diag.Diagnostics) {
+func (r *SystemAccountAccessTokenResourceModel) ToOperationsGetSystemAccountsIDAccessTokensIDRequest(ctx context.Context) (*operations.GetSystemAccountsIDAccessTokensIDRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
-	}
-	out := shared.UpdateSystemAccountAccessToken{
-		Name: name,
+	var accountID string
+	accountID = r.AccountID.ValueString()
+
+	var tokenID string
+	tokenID = r.ID.ValueString()
+
+	out := operations.GetSystemAccountsIDAccessTokensIDRequest{
+		AccountID: accountID,
+		TokenID:   tokenID,
 	}
 
 	return &out, diags
@@ -97,67 +102,62 @@ func (r *SystemAccountAccessTokenResourceModel) ToOperationsPatchSystemAccountsI
 	return &out, diags
 }
 
-func (r *SystemAccountAccessTokenResourceModel) ToOperationsGetSystemAccountsIDAccessTokensIDRequest(ctx context.Context) (*operations.GetSystemAccountsIDAccessTokensIDRequest, diag.Diagnostics) {
+func (r *SystemAccountAccessTokenResourceModel) ToOperationsPostSystemAccountsIDAccessTokensRequest(ctx context.Context) (*operations.PostSystemAccountsIDAccessTokensRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var accountID string
 	accountID = r.AccountID.ValueString()
 
-	var tokenID string
-	tokenID = r.ID.ValueString()
+	createSystemAccountAccessToken, createSystemAccountAccessTokenDiags := r.ToSharedCreateSystemAccountAccessToken(ctx)
+	diags.Append(createSystemAccountAccessTokenDiags...)
 
-	out := operations.GetSystemAccountsIDAccessTokensIDRequest{
-		AccountID: accountID,
-		TokenID:   tokenID,
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PostSystemAccountsIDAccessTokensRequest{
+		AccountID:                      accountID,
+		CreateSystemAccountAccessToken: createSystemAccountAccessToken,
 	}
 
 	return &out, diags
 }
 
-func (r *SystemAccountAccessTokenResourceModel) ToOperationsDeleteSystemAccountsIDAccessTokensIDRequest(ctx context.Context) (*operations.DeleteSystemAccountsIDAccessTokensIDRequest, diag.Diagnostics) {
+func (r *SystemAccountAccessTokenResourceModel) ToSharedCreateSystemAccountAccessToken(ctx context.Context) (*shared.CreateSystemAccountAccessToken, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var accountID string
-	accountID = r.AccountID.ValueString()
-
-	var tokenID string
-	tokenID = r.ID.ValueString()
-
-	out := operations.DeleteSystemAccountsIDAccessTokensIDRequest{
-		AccountID: accountID,
-		TokenID:   tokenID,
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
+	expiresAt := new(time.Time)
+	if !r.ExpiresAt.IsUnknown() && !r.ExpiresAt.IsNull() {
+		*expiresAt, _ = time.Parse(time.RFC3339Nano, r.ExpiresAt.ValueString())
+	} else {
+		expiresAt = nil
+	}
+	out := shared.CreateSystemAccountAccessToken{
+		Name:      name,
+		ExpiresAt: expiresAt,
 	}
 
 	return &out, diags
 }
 
-func (r *SystemAccountAccessTokenResourceModel) RefreshFromSharedSystemAccountAccessTokenCreated(ctx context.Context, resp *shared.SystemAccountAccessTokenCreated) diag.Diagnostics {
+func (r *SystemAccountAccessTokenResourceModel) ToSharedUpdateSystemAccountAccessToken(ctx context.Context) (*shared.UpdateSystemAccountAccessToken, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	if resp != nil {
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ExpiresAt))
-		r.ID = types.StringPointerValue(resp.ID)
-		r.LastUsedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.LastUsedAt))
-		r.Name = types.StringPointerValue(resp.Name)
-		r.Token = types.StringPointerValue(resp.Token)
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
+	out := shared.UpdateSystemAccountAccessToken{
+		Name: name,
 	}
 
-	return diags
-}
-
-func (r *SystemAccountAccessTokenResourceModel) RefreshFromSharedSystemAccountAccessToken(ctx context.Context, resp *shared.SystemAccountAccessToken) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ExpiresAt))
-		r.ID = types.StringPointerValue(resp.ID)
-		r.LastUsedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.LastUsedAt))
-		r.Name = types.StringPointerValue(resp.Name)
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
-	}
-
-	return diags
+	return &out, diags
 }

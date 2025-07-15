@@ -54,5 +54,5 @@ If `consumer_groups` are provided on the Consumer object _and_ on the Realm, the
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_centralized_consumer.my_konnect_centralized_consumer "{ \"id\": \"\",  \"realm_id\": \"\"}"
+terraform import konnect_centralized_consumer.my_konnect_centralized_consumer '{"id": "", "realm_id": ""}'
 ```

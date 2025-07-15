@@ -12,21 +12,20 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *APIProductSpecificationResourceModel) ToSharedCreateAPIProductVersionSpecDTO(ctx context.Context) (*shared.CreateAPIProductVersionSpecDTO, diag.Diagnostics) {
+func (r *APIProductSpecificationResourceModel) RefreshFromSharedAPIProductVersionSpec(ctx context.Context, resp *shared.APIProductVersionSpec) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	var name string
-	name = r.Name.ValueString()
-
-	var content string
-	content = r.Content.ValueString()
-
-	out := shared.CreateAPIProductVersionSpecDTO{
-		Name:    name,
-		Content: content,
+	if resp != nil {
+		contentValuable, contentDiags := encodedstring.Base64InputType{}.ValueFromString(ctx, types.StringValue(resp.Content))
+		diags.Append(contentDiags...)
+		r.Content = contentValuable.(encodedstring.Base64Input)
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.ID = types.StringValue(resp.ID)
+		r.Name = types.StringValue(resp.Name)
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
 
-	return &out, diags
+	return diags
 }
 
 func (r *APIProductSpecificationResourceModel) ToOperationsCreateAPIProductVersionSpecRequest(ctx context.Context) (*operations.CreateAPIProductVersionSpecRequest, diag.Diagnostics) {
@@ -54,24 +53,43 @@ func (r *APIProductSpecificationResourceModel) ToOperationsCreateAPIProductVersi
 	return &out, diags
 }
 
-func (r *APIProductSpecificationResourceModel) ToSharedUpdateAPIProductVersionSpecDTO(ctx context.Context) (*shared.UpdateAPIProductVersionSpecDTO, diag.Diagnostics) {
+func (r *APIProductSpecificationResourceModel) ToOperationsDeleteAPIProductVersionSpecRequest(ctx context.Context) (*operations.DeleteAPIProductVersionSpecRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
+	var apiProductID string
+	apiProductID = r.APIProductID.ValueString()
+
+	var apiProductVersionID string
+	apiProductVersionID = r.APIProductVersionID.ValueString()
+
+	var specificationID string
+	specificationID = r.ID.ValueString()
+
+	out := operations.DeleteAPIProductVersionSpecRequest{
+		APIProductID:        apiProductID,
+		APIProductVersionID: apiProductVersionID,
+		SpecificationID:     specificationID,
 	}
-	content := new(string)
-	if !r.Content.IsUnknown() && !r.Content.IsNull() {
-		*content = r.Content.ValueString()
-	} else {
-		content = nil
-	}
-	out := shared.UpdateAPIProductVersionSpecDTO{
-		Name:    name,
-		Content: content,
+
+	return &out, diags
+}
+
+func (r *APIProductSpecificationResourceModel) ToOperationsGetAPIProductVersionSpecRequest(ctx context.Context) (*operations.GetAPIProductVersionSpecRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiProductID string
+	apiProductID = r.APIProductID.ValueString()
+
+	var apiProductVersionID string
+	apiProductVersionID = r.APIProductVersionID.ValueString()
+
+	var specificationID string
+	specificationID = r.ID.ValueString()
+
+	out := operations.GetAPIProductVersionSpecRequest{
+		APIProductID:        apiProductID,
+		APIProductVersionID: apiProductVersionID,
+		SpecificationID:     specificationID,
 	}
 
 	return &out, diags
@@ -106,60 +124,42 @@ func (r *APIProductSpecificationResourceModel) ToOperationsUpdateAPIProductVersi
 	return &out, diags
 }
 
-func (r *APIProductSpecificationResourceModel) ToOperationsGetAPIProductVersionSpecRequest(ctx context.Context) (*operations.GetAPIProductVersionSpecRequest, diag.Diagnostics) {
+func (r *APIProductSpecificationResourceModel) ToSharedCreateAPIProductVersionSpecDTO(ctx context.Context) (*shared.CreateAPIProductVersionSpecDTO, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var apiProductID string
-	apiProductID = r.APIProductID.ValueString()
+	var name string
+	name = r.Name.ValueString()
 
-	var apiProductVersionID string
-	apiProductVersionID = r.APIProductVersionID.ValueString()
+	var content string
+	content = r.Content.ValueString()
 
-	var specificationID string
-	specificationID = r.ID.ValueString()
-
-	out := operations.GetAPIProductVersionSpecRequest{
-		APIProductID:        apiProductID,
-		APIProductVersionID: apiProductVersionID,
-		SpecificationID:     specificationID,
+	out := shared.CreateAPIProductVersionSpecDTO{
+		Name:    name,
+		Content: content,
 	}
 
 	return &out, diags
 }
 
-func (r *APIProductSpecificationResourceModel) ToOperationsDeleteAPIProductVersionSpecRequest(ctx context.Context) (*operations.DeleteAPIProductVersionSpecRequest, diag.Diagnostics) {
+func (r *APIProductSpecificationResourceModel) ToSharedUpdateAPIProductVersionSpecDTO(ctx context.Context) (*shared.UpdateAPIProductVersionSpecDTO, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var apiProductID string
-	apiProductID = r.APIProductID.ValueString()
-
-	var apiProductVersionID string
-	apiProductVersionID = r.APIProductVersionID.ValueString()
-
-	var specificationID string
-	specificationID = r.ID.ValueString()
-
-	out := operations.DeleteAPIProductVersionSpecRequest{
-		APIProductID:        apiProductID,
-		APIProductVersionID: apiProductVersionID,
-		SpecificationID:     specificationID,
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
+	content := new(string)
+	if !r.Content.IsUnknown() && !r.Content.IsNull() {
+		*content = r.Content.ValueString()
+	} else {
+		content = nil
+	}
+	out := shared.UpdateAPIProductVersionSpecDTO{
+		Name:    name,
+		Content: content,
 	}
 
 	return &out, diags
-}
-
-func (r *APIProductSpecificationResourceModel) RefreshFromSharedAPIProductVersionSpec(ctx context.Context, resp *shared.APIProductVersionSpec) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		contentValuable, contentDiags := encodedstring.Base64InputType{}.ValueFromString(ctx, types.StringValue(resp.Content))
-		diags.Append(contentDiags...)
-		r.Content = contentValuable.(encodedstring.Base64Input)
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.ID = types.StringValue(resp.ID)
-		r.Name = types.StringValue(resp.Name)
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-	}
-
-	return diags
 }

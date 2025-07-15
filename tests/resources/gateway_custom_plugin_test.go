@@ -21,6 +21,7 @@ func TestGatewayCustomPlugin(t *testing.T) {
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_custom_plugin.custom_basic_auth", "instance_name", "custom-plugin-test"),
+						resource.TestCheckResourceAttr("konnect_gateway_custom_plugin.custom_basic_auth_nested", "instance_name", "custom-nested-plugin-test"),
 					),
 				},
 			},

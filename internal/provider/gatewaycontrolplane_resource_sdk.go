@@ -11,6 +11,93 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
+func (r *GatewayControlPlaneResourceModel) RefreshFromSharedControlPlane(ctx context.Context, resp *shared.ControlPlane) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.Config.AuthType = types.StringValue(string(resp.Config.AuthType))
+		r.Config.CloudGateway = types.BoolValue(resp.Config.CloudGateway)
+		r.Config.ClusterType = types.StringValue(string(resp.Config.ClusterType))
+		r.Config.ControlPlaneEndpoint = types.StringValue(resp.Config.ControlPlaneEndpoint)
+		r.Config.ProxyUrls = []tfTypes.ProxyURL{}
+		if len(r.Config.ProxyUrls) > len(resp.Config.ProxyUrls) {
+			r.Config.ProxyUrls = r.Config.ProxyUrls[:len(resp.Config.ProxyUrls)]
+		}
+		for proxyUrlsCount, proxyUrlsItem := range resp.Config.ProxyUrls {
+			var proxyUrls tfTypes.ProxyURL
+			proxyUrls.Host = types.StringValue(proxyUrlsItem.Host)
+			proxyUrls.Port = types.Int64Value(proxyUrlsItem.Port)
+			proxyUrls.Protocol = types.StringValue(proxyUrlsItem.Protocol)
+			if proxyUrlsCount+1 > len(r.Config.ProxyUrls) {
+				r.Config.ProxyUrls = append(r.Config.ProxyUrls, proxyUrls)
+			} else {
+				r.Config.ProxyUrls[proxyUrlsCount].Host = proxyUrls.Host
+				r.Config.ProxyUrls[proxyUrlsCount].Port = proxyUrls.Port
+				r.Config.ProxyUrls[proxyUrlsCount].Protocol = proxyUrls.Protocol
+			}
+		}
+		r.Config.TelemetryEndpoint = types.StringValue(resp.Config.TelemetryEndpoint)
+		r.Description = types.StringPointerValue(resp.Description)
+		r.ID = types.StringValue(resp.ID)
+		if len(resp.Labels) > 0 {
+			r.Labels = make(map[string]types.String, len(resp.Labels))
+			for key, value := range resp.Labels {
+				r.Labels[key] = types.StringPointerValue(value)
+			}
+		}
+		r.Name = types.StringValue(resp.Name)
+	}
+
+	return diags
+}
+
+func (r *GatewayControlPlaneResourceModel) ToOperationsDeleteControlPlaneRequest(ctx context.Context) (*operations.DeleteControlPlaneRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.DeleteControlPlaneRequest{
+		ID: id,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayControlPlaneResourceModel) ToOperationsGetControlPlaneRequest(ctx context.Context) (*operations.GetControlPlaneRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.GetControlPlaneRequest{
+		ID: id,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayControlPlaneResourceModel) ToOperationsUpdateControlPlaneRequest(ctx context.Context) (*operations.UpdateControlPlaneRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	updateControlPlaneRequest, updateControlPlaneRequestDiags := r.ToSharedUpdateControlPlaneRequest(ctx)
+	diags.Append(updateControlPlaneRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateControlPlaneRequest{
+		ID:                        id,
+		UpdateControlPlaneRequest: *updateControlPlaneRequest,
+	}
+
+	return &out, diags
+}
+
 func (r *GatewayControlPlaneResourceModel) ToSharedCreateControlPlaneRequest(ctx context.Context) (*shared.CreateControlPlaneRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -138,91 +225,4 @@ func (r *GatewayControlPlaneResourceModel) ToSharedUpdateControlPlaneRequest(ctx
 	}
 
 	return &out, diags
-}
-
-func (r *GatewayControlPlaneResourceModel) ToOperationsUpdateControlPlaneRequest(ctx context.Context) (*operations.UpdateControlPlaneRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	updateControlPlaneRequest, updateControlPlaneRequestDiags := r.ToSharedUpdateControlPlaneRequest(ctx)
-	diags.Append(updateControlPlaneRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateControlPlaneRequest{
-		ID:                        id,
-		UpdateControlPlaneRequest: *updateControlPlaneRequest,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayControlPlaneResourceModel) ToOperationsGetControlPlaneRequest(ctx context.Context) (*operations.GetControlPlaneRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.GetControlPlaneRequest{
-		ID: id,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayControlPlaneResourceModel) ToOperationsDeleteControlPlaneRequest(ctx context.Context) (*operations.DeleteControlPlaneRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.DeleteControlPlaneRequest{
-		ID: id,
-	}
-
-	return &out, diags
-}
-
-func (r *GatewayControlPlaneResourceModel) RefreshFromSharedControlPlane(ctx context.Context, resp *shared.ControlPlane) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.Config.AuthType = types.StringValue(string(resp.Config.AuthType))
-		r.Config.CloudGateway = types.BoolValue(resp.Config.CloudGateway)
-		r.Config.ClusterType = types.StringValue(string(resp.Config.ClusterType))
-		r.Config.ControlPlaneEndpoint = types.StringValue(resp.Config.ControlPlaneEndpoint)
-		r.Config.ProxyUrls = []tfTypes.ProxyURL{}
-		if len(r.Config.ProxyUrls) > len(resp.Config.ProxyUrls) {
-			r.Config.ProxyUrls = r.Config.ProxyUrls[:len(resp.Config.ProxyUrls)]
-		}
-		for proxyUrlsCount, proxyUrlsItem := range resp.Config.ProxyUrls {
-			var proxyUrls tfTypes.ProxyURL
-			proxyUrls.Host = types.StringValue(proxyUrlsItem.Host)
-			proxyUrls.Port = types.Int64Value(proxyUrlsItem.Port)
-			proxyUrls.Protocol = types.StringValue(proxyUrlsItem.Protocol)
-			if proxyUrlsCount+1 > len(r.Config.ProxyUrls) {
-				r.Config.ProxyUrls = append(r.Config.ProxyUrls, proxyUrls)
-			} else {
-				r.Config.ProxyUrls[proxyUrlsCount].Host = proxyUrls.Host
-				r.Config.ProxyUrls[proxyUrlsCount].Port = proxyUrls.Port
-				r.Config.ProxyUrls[proxyUrlsCount].Protocol = proxyUrls.Protocol
-			}
-		}
-		r.Config.TelemetryEndpoint = types.StringValue(resp.Config.TelemetryEndpoint)
-		r.Description = types.StringPointerValue(resp.Description)
-		r.ID = types.StringValue(resp.ID)
-		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String, len(resp.Labels))
-			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringPointerValue(value)
-			}
-		}
-		r.Name = types.StringValue(resp.Name)
-	}
-
-	return diags
 }

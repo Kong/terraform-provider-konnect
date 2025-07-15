@@ -2,7 +2,7 @@
 
 package sdk
 
-// Generated from OpenAPI doc version 2.0.0 and generator version 2.632.2
+// Generated from OpenAPI doc version 2.0.0 and generator version 2.656.9
 
 import (
 	"context"
@@ -137,15 +137,6 @@ type Konnect struct {
 	// - `grpcs`: At least one of `hosts`, `headers`, `paths`, or `snis`
 	// - `ws`: At least one of `hosts`, `headers`, or `paths`
 	// - `wss`: At least one of `hosts`, `headers`, `paths`, or `snis`
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
 	//
 	//   <br>
 	//   A route can't have both `tls` and `tls_passthrough` protocols at same time.
@@ -287,9 +278,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *Konnect {
 	sdk := &Konnect{
-		SDKVersion: "2.11.0",
+		SDKVersion: "2.11.1",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 2.11.0 2.632.2 2.0.0 github.com/kong/terraform-provider-konnect/v2/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 2.11.1 2.656.9 2.0.0 github.com/kong/terraform-provider-konnect/v2/internal/sdk",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),

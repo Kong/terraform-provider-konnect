@@ -30,6 +30,7 @@ func NewSystemAccountAccessTokenResource() resource.Resource {
 
 // SystemAccountAccessTokenResource defines the resource implementation.
 type SystemAccountAccessTokenResource struct {
+	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
@@ -390,7 +391,7 @@ func (r *SystemAccountAccessTokenResource) ImportState(ctx context.Context, req 
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "account_id": "",  "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"account_id": "", "id": ""}': `+err.Error())
 		return
 	}
 
@@ -404,5 +405,4 @@ func (r *SystemAccountAccessTokenResource) ImportState(ctx context.Context, req 
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
-
 }
