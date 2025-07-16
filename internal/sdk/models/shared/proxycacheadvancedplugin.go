@@ -78,7 +78,18 @@ func (o *ProxyCacheAdvancedPluginPartials) GetPath() *string {
 
 type ProxyCacheAdvancedPluginMemory struct {
 	// The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. Note that this dictionary currently must be defined manually in the Kong Nginx template.
-	DictionaryName *string `json:"dictionary_name,omitempty"`
+	DictionaryName *string `default:"kong_db_cache" json:"dictionary_name"`
+}
+
+func (p ProxyCacheAdvancedPluginMemory) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ProxyCacheAdvancedPluginMemory) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ProxyCacheAdvancedPluginMemory) GetDictionaryName() *string {
@@ -90,9 +101,20 @@ func (o *ProxyCacheAdvancedPluginMemory) GetDictionaryName() *string {
 
 type ProxyCacheAdvancedPluginClusterNodes struct {
 	// A string representing a host name, such as example.com.
-	IP *string `json:"ip,omitempty"`
+	IP *string `default:"127.0.0.1" json:"ip"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (p ProxyCacheAdvancedPluginClusterNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ProxyCacheAdvancedPluginClusterNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ProxyCacheAdvancedPluginClusterNodes) GetIP() *string {
@@ -111,9 +133,20 @@ func (o *ProxyCacheAdvancedPluginClusterNodes) GetPort() *int64 {
 
 type ProxyCacheAdvancedPluginSentinelNodes struct {
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (p ProxyCacheAdvancedPluginSentinelNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ProxyCacheAdvancedPluginSentinelNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ProxyCacheAdvancedPluginSentinelNodes) GetHost() *string {
@@ -162,29 +195,29 @@ func (e *ProxyCacheAdvancedPluginSentinelRole) UnmarshalJSON(data []byte) error 
 
 type ProxyCacheAdvancedPluginRedis struct {
 	// Maximum retry attempts for redirection.
-	ClusterMaxRedirections *int64 `json:"cluster_max_redirections,omitempty"`
+	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
 	ClusterNodes []ProxyCacheAdvancedPluginClusterNodes `json:"cluster_nodes,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
+	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
-	ConnectionIsProxied *bool `json:"connection_is_proxied,omitempty"`
+	ConnectionIsProxied *bool `default:"false" json:"connection_is_proxied"`
 	// Database to use for the Redis connection when using the `redis` strategy
-	Database *int64 `json:"database,omitempty"`
+	Database *int64 `default:"0" json:"database"`
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
 	KeepaliveBacklog *int64 `json:"keepalive_backlog,omitempty"`
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
-	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
+	KeepalivePoolSize *int64 `default:"256" json:"keepalive_pool_size"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ReadTimeout *int64 `json:"read_timeout,omitempty"`
+	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	SendTimeout *int64 `json:"send_timeout,omitempty"`
+	SendTimeout *int64 `default:"2000" json:"send_timeout"`
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `json:"sentinel_master,omitempty"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
@@ -198,11 +231,22 @@ type ProxyCacheAdvancedPluginRedis struct {
 	// A string representing an SNI (server name indication) value for TLS.
 	ServerName *string `json:"server_name,omitempty"`
 	// If set to true, uses SSL to connect to Redis.
-	Ssl *bool `json:"ssl,omitempty"`
+	Ssl *bool `default:"false" json:"ssl"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-	SslVerify *bool `json:"ssl_verify,omitempty"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 	Username *string `json:"username,omitempty"`
+}
+
+func (p ProxyCacheAdvancedPluginRedis) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ProxyCacheAdvancedPluginRedis) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ProxyCacheAdvancedPluginRedis) GetClusterMaxRedirections() *int64 {
@@ -389,9 +433,20 @@ func (e *ProxyCacheAdvancedPluginRequestMethod) UnmarshalJSON(data []byte) error
 
 // ProxyCacheAdvancedPluginResponseHeaders - Caching related diagnostic headers that should be included in cached responses
 type ProxyCacheAdvancedPluginResponseHeaders struct {
-	XCacheKey    *bool `json:"X-Cache-Key,omitempty"`
-	XCacheStatus *bool `json:"X-Cache-Status,omitempty"`
-	Age          *bool `json:"age,omitempty"`
+	XCacheKey    *bool `default:"true" json:"X-Cache-Key"`
+	XCacheStatus *bool `default:"true" json:"X-Cache-Status"`
+	Age          *bool `default:"true" json:"age"`
+}
+
+func (p ProxyCacheAdvancedPluginResponseHeaders) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ProxyCacheAdvancedPluginResponseHeaders) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ProxyCacheAdvancedPluginResponseHeaders) GetXCacheKey() *bool {
@@ -444,15 +499,15 @@ func (e *ProxyCacheAdvancedPluginStrategy) UnmarshalJSON(data []byte) error {
 
 type ProxyCacheAdvancedPluginConfig struct {
 	// Unhandled errors while trying to retrieve a cache entry (such as redis down) are resolved with `Bypass`, with the request going upstream.
-	BypassOnErr *bool `json:"bypass_on_err,omitempty"`
+	BypassOnErr *bool `default:"false" json:"bypass_on_err"`
 	// When enabled, respect the Cache-Control behaviors defined in RFC7234.
-	CacheControl *bool `json:"cache_control,omitempty"`
+	CacheControl *bool `default:"false" json:"cache_control"`
 	// TTL in seconds of cache entities.
-	CacheTTL *int64 `json:"cache_ttl,omitempty"`
+	CacheTTL *int64 `default:"300" json:"cache_ttl"`
 	// Upstream response content types considered cacheable. The plugin performs an **exact match** against each specified value; for example, if the upstream is expected to respond with a `application/json; charset=utf-8` content-type, the plugin configuration must contain said value or a `Bypass` cache status is returned.
 	ContentType []string `json:"content_type,omitempty"`
 	// Determines whether to treat URIs as case sensitive. By default, case sensitivity is enabled. If set to true, requests are cached while ignoring case sensitivity in the URI.
-	IgnoreURICase *bool                           `json:"ignore_uri_case,omitempty"`
+	IgnoreURICase *bool                           `default:"false" json:"ignore_uri_case"`
 	Memory        *ProxyCacheAdvancedPluginMemory `json:"memory,omitempty"`
 	Redis         *ProxyCacheAdvancedPluginRedis  `json:"redis,omitempty"`
 	// Downstream request methods considered cacheable. Available options: `HEAD`, `GET`, `POST`, `PATCH`, `PUT`.
@@ -469,6 +524,17 @@ type ProxyCacheAdvancedPluginConfig struct {
 	VaryHeaders []string `json:"vary_headers,omitempty"`
 	// Relevant query parameters considered for the cache key. If undefined, all params are taken into consideration. By default, the max number of params accepted is 100. You can change this value via the `lua_max_post_args` in `kong.conf`.
 	VaryQueryParams []string `json:"vary_query_params,omitempty"`
+}
+
+func (p ProxyCacheAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ProxyCacheAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ProxyCacheAdvancedPluginConfig) GetBypassOnErr() *bool {
@@ -654,12 +720,12 @@ type ProxyCacheAdvancedPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                              `json:"enabled,omitempty"`
+	Enabled      *bool                              `default:"true" json:"enabled"`
 	ID           *string                            `json:"id,omitempty"`
-	InstanceName *string                            `json:"instance_name,omitempty"`
+	InstanceName *string                            `default:"null" json:"instance_name"`
 	name         string                             `const:"proxy-cache-advanced" json:"name"`
 	Ordering     *ProxyCacheAdvancedPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []ProxyCacheAdvancedPluginPartials `json:"partials,omitempty"`
+	Partials     []ProxyCacheAdvancedPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -670,7 +736,7 @@ type ProxyCacheAdvancedPlugin struct {
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *ProxyCacheAdvancedPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
-	Protocols []ProxyCacheAdvancedPluginProtocols `json:"protocols,omitempty"`
+	Protocols []ProxyCacheAdvancedPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *ProxyCacheAdvancedPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

@@ -13,8 +13,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -72,7 +74,8 @@ func (r *GatewayPluginSyslogResource) Schema(ctx context.Context, req resource.S
 					"client_errors_severity": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]`,
+						Default:     stringdefault.StaticString(`info`),
+						Description: `Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"alert",
@@ -98,7 +101,8 @@ func (r *GatewayPluginSyslogResource) Schema(ctx context.Context, req resource.S
 					"facility": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The facility is used by the operating system to decide how to handle each log message. must be one of ["auth", "authpriv", "cron", "daemon", "ftp", "kern", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7", "lpr", "mail", "news", "syslog", "user", "uucp"]`,
+						Default:     stringdefault.StaticString(`user`),
+						Description: `The facility is used by the operating system to decide how to handle each log message. Default: "user"; must be one of ["auth", "authpriv", "cron", "daemon", "ftp", "kern", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7", "lpr", "mail", "news", "syslog", "user", "uucp"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"auth",
@@ -127,7 +131,8 @@ func (r *GatewayPluginSyslogResource) Schema(ctx context.Context, req resource.S
 					"log_level": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]`,
+						Default:     stringdefault.StaticString(`info`),
+						Description: `Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"alert",
@@ -144,7 +149,8 @@ func (r *GatewayPluginSyslogResource) Schema(ctx context.Context, req resource.S
 					"server_errors_severity": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]`,
+						Default:     stringdefault.StaticString(`info`),
+						Description: `Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"alert",
@@ -161,7 +167,8 @@ func (r *GatewayPluginSyslogResource) Schema(ctx context.Context, req resource.S
 					"successful_severity": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]`,
+						Default:     stringdefault.StaticString(`info`),
+						Description: `Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"alert",
@@ -206,14 +213,14 @@ func (r *GatewayPluginSyslogResource) Schema(ctx context.Context, req resource.S
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 			},
 			"ordering": schema.SingleNestedAttribute{
@@ -245,7 +252,6 @@ func (r *GatewayPluginSyslogResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{

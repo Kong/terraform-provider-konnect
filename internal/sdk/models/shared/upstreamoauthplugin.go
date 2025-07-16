@@ -78,17 +78,28 @@ func (o *UpstreamOauthPluginPartials) GetPath() *string {
 
 type Behavior struct {
 	// The template to use to create the body of the response to return to the consumer if Kong fails to obtain a token from the IdP.
-	IdpErrorResponseBodyTemplate *string `json:"idp_error_response_body_template,omitempty"`
+	IdpErrorResponseBodyTemplate *string `default:"{ \"code\": \"{{status}}\", \"message\": \"{{message}}\" }" json:"idp_error_response_body_template"`
 	// The Content-Type of the response to return to the consumer if Kong fails to obtain a token from the IdP.
-	IdpErrorResponseContentType *string `json:"idp_error_response_content_type,omitempty"`
+	IdpErrorResponseContentType *string `default:"application/json; charset=utf-8" json:"idp_error_response_content_type"`
 	// The message to embed in the body of the response to return to the consumer if Kong fails to obtain a token from the IdP.
-	IdpErrorResponseMessage *string `json:"idp_error_response_message,omitempty"`
+	IdpErrorResponseMessage *string `default:"Failed to authenticate request to upstream" json:"idp_error_response_message"`
 	// The response code to return to the consumer if Kong fails to obtain a token from the IdP.
-	IdpErrorResponseStatusCode *int64 `json:"idp_error_response_status_code,omitempty"`
+	IdpErrorResponseStatusCode *int64 `default:"502" json:"idp_error_response_status_code"`
 	// An array of status codes which will force an access token to be purged when returned by the upstream. An empty array will disable this functionality.
 	PurgeTokenOnUpstreamStatusCodes []int64 `json:"purge_token_on_upstream_status_codes,omitempty"`
 	// The name of the header used to send the access token (obtained from the IdP) to the upstream service.
-	UpstreamAccessTokenHeaderName *string `json:"upstream_access_token_header_name,omitempty"`
+	UpstreamAccessTokenHeaderName *string `default:"Authorization" json:"upstream_access_token_header_name"`
+}
+
+func (b Behavior) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *Behavior) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Behavior) GetIdpErrorResponseBodyTemplate() *string {
@@ -135,7 +146,18 @@ func (o *Behavior) GetUpstreamAccessTokenHeaderName() *string {
 
 type UpstreamOauthPluginMemory struct {
 	// The shared dictionary used by the plugin to cache tokens if `config.cache.strategy` is set to `memory`.
-	DictionaryName *string `json:"dictionary_name,omitempty"`
+	DictionaryName *string `default:"kong_db_cache" json:"dictionary_name"`
+}
+
+func (u UpstreamOauthPluginMemory) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamOauthPluginMemory) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpstreamOauthPluginMemory) GetDictionaryName() *string {
@@ -147,9 +169,20 @@ func (o *UpstreamOauthPluginMemory) GetDictionaryName() *string {
 
 type UpstreamOauthPluginClusterNodes struct {
 	// A string representing a host name, such as example.com.
-	IP *string `json:"ip,omitempty"`
+	IP *string `default:"127.0.0.1" json:"ip"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (u UpstreamOauthPluginClusterNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamOauthPluginClusterNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpstreamOauthPluginClusterNodes) GetIP() *string {
@@ -168,9 +201,20 @@ func (o *UpstreamOauthPluginClusterNodes) GetPort() *int64 {
 
 type UpstreamOauthPluginSentinelNodes struct {
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (u UpstreamOauthPluginSentinelNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamOauthPluginSentinelNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpstreamOauthPluginSentinelNodes) GetHost() *string {
@@ -219,29 +263,29 @@ func (e *UpstreamOauthPluginSentinelRole) UnmarshalJSON(data []byte) error {
 
 type UpstreamOauthPluginRedis struct {
 	// Maximum retry attempts for redirection.
-	ClusterMaxRedirections *int64 `json:"cluster_max_redirections,omitempty"`
+	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
 	ClusterNodes []UpstreamOauthPluginClusterNodes `json:"cluster_nodes,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
+	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
-	ConnectionIsProxied *bool `json:"connection_is_proxied,omitempty"`
+	ConnectionIsProxied *bool `default:"false" json:"connection_is_proxied"`
 	// Database to use for the Redis connection when using the `redis` strategy
-	Database *int64 `json:"database,omitempty"`
+	Database *int64 `default:"0" json:"database"`
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
 	KeepaliveBacklog *int64 `json:"keepalive_backlog,omitempty"`
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
-	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
+	KeepalivePoolSize *int64 `default:"256" json:"keepalive_pool_size"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ReadTimeout *int64 `json:"read_timeout,omitempty"`
+	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	SendTimeout *int64 `json:"send_timeout,omitempty"`
+	SendTimeout *int64 `default:"2000" json:"send_timeout"`
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `json:"sentinel_master,omitempty"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
@@ -255,11 +299,22 @@ type UpstreamOauthPluginRedis struct {
 	// A string representing an SNI (server name indication) value for TLS.
 	ServerName *string `json:"server_name,omitempty"`
 	// If set to true, uses SSL to connect to Redis.
-	Ssl *bool `json:"ssl,omitempty"`
+	Ssl *bool `default:"false" json:"ssl"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-	SslVerify *bool `json:"ssl_verify,omitempty"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 	Username *string `json:"username,omitempty"`
+}
+
+func (u UpstreamOauthPluginRedis) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamOauthPluginRedis) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpstreamOauthPluginRedis) GetClusterMaxRedirections() *int64 {
@@ -438,13 +493,24 @@ func (e *UpstreamOauthPluginStrategy) UnmarshalJSON(data []byte) error {
 
 type UpstreamOauthPluginCache struct {
 	// The lifetime of a token without an explicit `expires_in` value.
-	DefaultTTL *float64 `json:"default_ttl,omitempty"`
+	DefaultTTL *float64 `default:"3600" json:"default_ttl"`
 	// The number of seconds to eagerly expire a cached token. By default, a cached token expires 5 seconds before its lifetime as defined in `expires_in`.
-	EagerlyExpire *int64                     `json:"eagerly_expire,omitempty"`
+	EagerlyExpire *int64                     `default:"5" json:"eagerly_expire"`
 	Memory        *UpstreamOauthPluginMemory `json:"memory,omitempty"`
 	Redis         *UpstreamOauthPluginRedis  `json:"redis,omitempty"`
 	// The method Kong should use to cache tokens issued by the IdP.
-	Strategy *UpstreamOauthPluginStrategy `json:"strategy,omitempty"`
+	Strategy *UpstreamOauthPluginStrategy `default:"memory" json:"strategy"`
+}
+
+func (u UpstreamOauthPluginCache) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamOauthPluginCache) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpstreamOauthPluginCache) GetDefaultTTL() *float64 {
@@ -544,27 +610,38 @@ func (e *ClientSecretJwtAlg) UnmarshalJSON(data []byte) error {
 
 type Client struct {
 	// The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body.
-	AuthMethod *AuthMethod `json:"auth_method,omitempty"`
+	AuthMethod *AuthMethod `default:"client_secret_post" json:"auth_method"`
 	// The algorithm to use with JWT when using `client_secret_jwt` authentication.
-	ClientSecretJwtAlg *ClientSecretJwtAlg `json:"client_secret_jwt_alg,omitempty"`
+	ClientSecretJwtAlg *ClientSecretJwtAlg `default:"HS512" json:"client_secret_jwt_alg"`
 	// The proxy to use when making HTTP requests to the IdP.
 	HTTPProxy *string `json:"http_proxy,omitempty"`
 	// The `Proxy-Authorization` header value to be used with `http_proxy`.
 	HTTPProxyAuthorization *string `json:"http_proxy_authorization,omitempty"`
 	// The HTTP version used for requests made by this plugin. Supported values: `1.1` for HTTP 1.1 and `1.0` for HTTP 1.0.
-	HTTPVersion *float64 `json:"http_version,omitempty"`
+	HTTPVersion *float64 `default:"1.1" json:"http_version"`
 	// The proxy to use when making HTTPS requests to the IdP.
 	HTTPSProxy *string `json:"https_proxy,omitempty"`
 	// The `Proxy-Authorization` header value to be used with `https_proxy`.
 	HTTPSProxyAuthorization *string `json:"https_proxy_authorization,omitempty"`
 	// Whether to use keepalive connections to the IdP.
-	KeepAlive *bool `json:"keep_alive,omitempty"`
+	KeepAlive *bool `default:"true" json:"keep_alive"`
 	// A comma-separated list of hosts that should not be proxied.
 	NoProxy *string `json:"no_proxy,omitempty"`
 	// Whether to verify the certificate presented by the IdP when using HTTPS.
-	SslVerify *bool `json:"ssl_verify,omitempty"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Network I/O timeout for requests to the IdP in milliseconds.
-	Timeout *int64 `json:"timeout,omitempty"`
+	Timeout *int64 `default:"10000" json:"timeout"`
+}
+
+func (c Client) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *Client) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Client) GetAuthMethod() *AuthMethod {
@@ -679,7 +756,7 @@ type Oauth struct {
 	// The client secret for the application registration in the IdP.
 	ClientSecret *string `json:"client_secret,omitempty"`
 	// The OAuth grant type to be used.
-	GrantType *GrantType `json:"grant_type,omitempty"`
+	GrantType *GrantType `default:"client_credentials" json:"grant_type"`
 	// The password to use if `config.oauth.grant_type` is set to `password`.
 	Password *string `json:"password,omitempty"`
 	// List of scopes to request from the IdP when obtaining a new token.
@@ -692,6 +769,17 @@ type Oauth struct {
 	TokenPostArgs map[string]any `json:"token_post_args,omitempty"`
 	// The username to use if `config.oauth.grant_type` is set to `password`.
 	Username *string `json:"username,omitempty"`
+}
+
+func (o Oauth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *Oauth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Oauth) GetAudience() []string {
@@ -884,12 +972,12 @@ type UpstreamOauthPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                         `json:"enabled,omitempty"`
+	Enabled      *bool                         `default:"true" json:"enabled"`
 	ID           *string                       `json:"id,omitempty"`
-	InstanceName *string                       `json:"instance_name,omitempty"`
+	InstanceName *string                       `default:"null" json:"instance_name"`
 	name         string                        `const:"upstream-oauth" json:"name"`
 	Ordering     *UpstreamOauthPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []UpstreamOauthPluginPartials `json:"partials,omitempty"`
+	Partials     []UpstreamOauthPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -900,7 +988,7 @@ type UpstreamOauthPlugin struct {
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *UpstreamOauthPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
-	Protocols []UpstreamOauthPluginProtocols `json:"protocols,omitempty"`
+	Protocols []UpstreamOauthPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *UpstreamOauthPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

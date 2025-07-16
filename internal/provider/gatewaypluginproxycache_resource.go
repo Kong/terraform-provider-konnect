@@ -12,8 +12,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -71,12 +74,14 @@ func (r *GatewayPluginProxyCacheResource) Schema(ctx context.Context, req resour
 					"cache_control": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `When enabled, respect the Cache-Control behaviors defined in RFC7234.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `When enabled, respect the Cache-Control behaviors defined in RFC7234. Default: false`,
 					},
 					"cache_ttl": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `TTL, in seconds, of cache entities.`,
+						Default:     int64default.StaticInt64(300),
+						Description: `TTL, in seconds, of cache entities. Default: 300`,
 					},
 					"content_type": schema.ListAttribute{
 						Computed:    true,
@@ -85,8 +90,10 @@ func (r *GatewayPluginProxyCacheResource) Schema(ctx context.Context, req resour
 						Description: `Upstream response content types considered cacheable. The plugin performs an **exact match** against each specified value.`,
 					},
 					"ignore_uri_case": schema.BoolAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Default: false`,
 					},
 					"memory": schema.SingleNestedAttribute{
 						Computed: true,
@@ -95,7 +102,8 @@ func (r *GatewayPluginProxyCacheResource) Schema(ctx context.Context, req resour
 							"dictionary_name": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. Note that this dictionary currently must be defined manually in the Kong Nginx template.`,
+								Default:     stringdefault.StaticString(`kong_db_cache`),
+								Description: `The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. Note that this dictionary currently must be defined manually in the Kong Nginx template. Default: "kong_db_cache"`,
 							},
 						},
 					},
@@ -116,16 +124,22 @@ func (r *GatewayPluginProxyCacheResource) Schema(ctx context.Context, req resour
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"age": schema.BoolAttribute{
-								Computed: true,
-								Optional: true,
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Default: true`,
 							},
 							"x_cache_key": schema.BoolAttribute{
-								Computed: true,
-								Optional: true,
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Default: true`,
 							},
 							"x_cache_status": schema.BoolAttribute{
-								Computed: true,
-								Optional: true,
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Default: true`,
 							},
 						},
 						Description: `Caching related diagnostic headers that should be included in cached responses`,
@@ -200,14 +214,14 @@ func (r *GatewayPluginProxyCacheResource) Schema(ctx context.Context, req resour
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 			},
 			"ordering": schema.SingleNestedAttribute{
@@ -239,7 +253,6 @@ func (r *GatewayPluginProxyCacheResource) Schema(ctx context.Context, req resour
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{

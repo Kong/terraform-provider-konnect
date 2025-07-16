@@ -126,7 +126,7 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -145,21 +145,22 @@ Optional:
 
 - `account_email` (String) The account identifier. Can be reused in a different plugin instance.
 - `account_key` (Attributes) The private key associated with the account. (see [below for nested schema](#nestedatt--config--account_key))
-- `allow_any_domain` (Boolean) If set to `true`, the plugin allows all domains and ignores any values in the `domains` list.
-- `api_uri` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
-- `cert_type` (String) The certificate type to create. The possible values are `rsa` for RSA certificate or `ecc` for EC certificate. must be one of ["ecc", "rsa"]
+- `allow_any_domain` (Boolean) If set to `true`, the plugin allows all domains and ignores any values in the `domains` list. Default: false
+- `api_uri` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search. Default: "https://acme-v02.api.letsencrypt.org/directory"
+- `cert_type` (String) The certificate type to create. The possible values are `rsa` for RSA certificate or `ecc` for EC certificate. Default: "rsa"; must be one of ["ecc", "rsa"]
 - `domains` (List of String) An array of strings representing hosts. A valid host is a string containing one or more labels separated by periods, with at most one wildcard label ('*')
 - `eab_hmac_key` (String) External account binding (EAB) base64-encoded URL string of the HMAC key. You usually don't need to set this unless it is explicitly required by the CA.
 - `eab_kid` (String) External account binding (EAB) key id. You usually don't need to set this unless it is explicitly required by the CA.
-- `enable_ipv4_common_name` (Boolean) A boolean value that controls whether to include the IPv4 address in the common name field of generated certificates.
+- `enable_ipv4_common_name` (Boolean) A boolean value that controls whether to include the IPv4 address in the common name field of generated certificates. Default: true
 - `fail_backoff_minutes` (Number) Minutes to wait for each domain that fails to create a certificate. This applies to both a
 new certificate and a renewal certificate.
+Default: 5
 - `preferred_chain` (String) A string value that specifies the preferred certificate chain to use when generating certificates.
-- `renew_threshold_days` (Number) Days remaining to renew the certificate before it expires.
-- `rsa_key_size` (Number) RSA private key size for the certificate. The possible values are 2048, 3072, or 4096. must be one of ["2048", "3072", "4096"]
-- `storage` (String) The backend storage type to use. In DB-less mode and Konnect, `kong` storage is unavailable. In hybrid mode and Konnect, `shm` storage is unavailable. `shm` storage does not persist during Kong restarts and does not work for Kong running on different machines, so consider using one of `kong`, `redis`, `consul`, or `vault` in production. must be one of ["consul", "kong", "redis", "shm", "vault"]
+- `renew_threshold_days` (Number) Days remaining to renew the certificate before it expires. Default: 14
+- `rsa_key_size` (Number) RSA private key size for the certificate. The possible values are 2048, 3072, or 4096. Default: 4096; must be one of ["2048", "3072", "4096"]
+- `storage` (String) The backend storage type to use. In DB-less mode and Konnect, `kong` storage is unavailable. In hybrid mode and Konnect, `shm` storage is unavailable. `shm` storage does not persist during Kong restarts and does not work for Kong running on different machines, so consider using one of `kong`, `redis`, `consul`, or `vault` in production. Default: "shm"; must be one of ["consul", "kong", "redis", "shm", "vault"]
 - `storage_config` (Attributes) (see [below for nested schema](#nestedatt--config--storage_config))
-- `tos_accepted` (Boolean) If you are using Let's Encrypt, you must set this to `true` to agree the terms of service.
+- `tos_accepted` (Boolean) If you are using Let's Encrypt, you must set this to `true` to agree the terms of service. Default: false
 
 <a id="nestedatt--config--account_key"></a>
 ### Nested Schema for `config.account_key`
@@ -187,7 +188,7 @@ Optional:
 Optional:
 
 - `host` (String) A string representing a host name, such as example.com.
-- `https` (Boolean) Boolean representation of https.
+- `https` (Boolean) Boolean representation of https. Default: false
 - `kv_path` (String) KV prefix path.
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `timeout` (Number) Timeout in milliseconds.
@@ -199,15 +200,15 @@ Optional:
 
 Optional:
 
-- `database` (Number) Database to use for the Redis connection when using the `redis` strategy
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
 - `extra_options` (Attributes) Custom ACME Redis options (see [below for nested schema](#nestedatt--config--storage_config--redis--extra_options))
 - `host` (String) A string representing a host name, such as example.com.
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
-- `ssl` (Boolean) If set to true, uses SSL to connect to Redis.
-- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-- `timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: false
+- `timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
 - `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 
 <a id="nestedatt--config--storage_config--redis--extra_options"></a>
@@ -215,8 +216,8 @@ Optional:
 
 Optional:
 
-- `namespace` (String) A namespace to prepend to all keys stored in Redis.
-- `scan_count` (Number) The number of keys to return in Redis SCAN calls.
+- `namespace` (String) A namespace to prepend to all keys stored in Redis. Default: ""
+- `scan_count` (Number) The number of keys to return in Redis SCAN calls. Default: 10
 
 
 
@@ -225,7 +226,7 @@ Optional:
 
 Optional:
 
-- `shm_name` (String) Name of shared memory zone used for Kong API gateway storage
+- `shm_name` (String) Name of shared memory zone used for Kong API gateway storage. Default: "kong"
 
 
 <a id="nestedatt--config--storage_config--vault"></a>
@@ -233,17 +234,17 @@ Optional:
 
 Optional:
 
-- `auth_method` (String) Auth Method, default to token, can be 'token' or 'kubernetes'. must be one of ["kubernetes", "token"]
+- `auth_method` (String) Auth Method, default to token, can be 'token' or 'kubernetes'. Default: "token"; must be one of ["kubernetes", "token"]
 - `auth_path` (String) Vault's authentication path to use.
 - `auth_role` (String) The role to try and assign.
 - `host` (String) A string representing a host name, such as example.com.
-- `https` (Boolean) Boolean representation of https.
+- `https` (Boolean) Boolean representation of https. Default: false
 - `jwt_path` (String) The path to the JWT.
 - `kv_path` (String) KV prefix path.
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `timeout` (Number) Timeout in milliseconds.
 - `tls_server_name` (String) SNI used in request, default to host if omitted.
-- `tls_verify` (Boolean) Turn on TLS verification.
+- `tls_verify` (Boolean) Turn on TLS verification. Default: true
 - `token` (String) Consul ACL token.
 
 

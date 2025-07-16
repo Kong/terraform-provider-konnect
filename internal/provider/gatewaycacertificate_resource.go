@@ -55,7 +55,6 @@ func (r *GatewayCACertificateResource) Schema(ctx context.Context, req resource.
 				Description: `PEM-encoded public certificate of the CA.`,
 			},
 			"cert_digest": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `SHA256 hex digest of the public certificate. This field is read-only and it cannot be set by the caller, the value is automatically computed.`,
 			},

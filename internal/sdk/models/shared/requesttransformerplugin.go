@@ -375,12 +375,12 @@ type RequestTransformerPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                              `json:"enabled,omitempty"`
+	Enabled      *bool                              `default:"true" json:"enabled"`
 	ID           *string                            `json:"id,omitempty"`
-	InstanceName *string                            `json:"instance_name,omitempty"`
+	InstanceName *string                            `default:"null" json:"instance_name"`
 	name         string                             `const:"request-transformer" json:"name"`
 	Ordering     *RequestTransformerPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []RequestTransformerPluginPartials `json:"partials,omitempty"`
+	Partials     []RequestTransformerPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -391,7 +391,7 @@ type RequestTransformerPlugin struct {
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *RequestTransformerPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing protocols.
-	Protocols []RequestTransformerPluginProtocols `json:"protocols,omitempty"`
+	Protocols []RequestTransformerPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *RequestTransformerPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

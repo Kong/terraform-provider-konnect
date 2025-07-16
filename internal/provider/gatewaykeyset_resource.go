@@ -66,7 +66,6 @@ func (r *GatewayKeySetResource) Schema(ctx context.Context, req resource.SchemaR
 				Optional: true,
 			},
 			"name": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 			},
 			"tags": schema.ListAttribute{

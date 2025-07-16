@@ -13,8 +13,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -114,7 +116,8 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 					"auto_offset_reset": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The offset to start from when there is no initial offset in the consumer group. must be one of ["earliest", "latest"]`,
+						Default:     stringdefault.StaticString(`latest`),
+						Description: `The offset to start from when there is no initial offset in the consumer group. Default: "latest"; must be one of ["earliest", "latest"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"earliest",
@@ -159,7 +162,8 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 					"commit_strategy": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The strategy to use for committing offsets. must be one of ["auto", "off"]`,
+						Default:     stringdefault.StaticString(`auto`),
+						Description: `The strategy to use for committing offsets. Default: "auto"; must be one of ["auto", "off"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"auto",
@@ -170,7 +174,8 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 					"message_deserializer": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The deserializer to use for the consumed messages. must be one of ["json", "noop"]`,
+						Default:     stringdefault.StaticString(`noop`),
+						Description: `The deserializer to use for the consumed messages. Default: "noop"; must be one of ["json", "noop"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"json",
@@ -181,7 +186,8 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 					"mode": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The mode of operation for the plugin. must be one of ["http-get", "server-sent-events"]`,
+						Default:     stringdefault.StaticString(`http-get`),
+						Description: `The mode of operation for the plugin. Default: "http-get"; must be one of ["http-get", "server-sent-events"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"http-get",
@@ -256,14 +262,14 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 			},
 			"ordering": schema.SingleNestedAttribute{
@@ -295,7 +301,6 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{

@@ -78,11 +78,22 @@ func (o *GrpcWebPluginPartials) GetPath() *string {
 
 type GrpcWebPluginConfig struct {
 	// The value of the `Access-Control-Allow-Origin` header in the response to the gRPC-Web client.
-	AllowOriginHeader *string `json:"allow_origin_header,omitempty"`
+	AllowOriginHeader *string `default:"*" json:"allow_origin_header"`
 	// If set to `true` causes the plugin to pass the stripped request path to the upstream gRPC service.
 	PassStrippedPath *bool `json:"pass_stripped_path,omitempty"`
 	// If present, describes the gRPC types and methods. Required to support payload transcoding. When absent, the web client must use application/grpw-web+proto content.
 	Proto *string `json:"proto,omitempty"`
+}
+
+func (g GrpcWebPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GrpcWebPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *GrpcWebPluginConfig) GetAllowOriginHeader() *string {
@@ -198,12 +209,12 @@ type GrpcWebPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                   `json:"enabled,omitempty"`
+	Enabled      *bool                   `default:"true" json:"enabled"`
 	ID           *string                 `json:"id,omitempty"`
-	InstanceName *string                 `json:"instance_name,omitempty"`
+	InstanceName *string                 `default:"null" json:"instance_name"`
 	name         string                  `const:"grpc-web" json:"name"`
 	Ordering     *GrpcWebPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []GrpcWebPluginPartials `json:"partials,omitempty"`
+	Partials     []GrpcWebPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -212,7 +223,7 @@ type GrpcWebPlugin struct {
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *GrpcWebPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
-	Protocols []GrpcWebPluginProtocols `json:"protocols,omitempty"`
+	Protocols []GrpcWebPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *GrpcWebPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

@@ -12,8 +12,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -70,12 +72,14 @@ func (r *GatewayPluginCorrelationIDResource) Schema(ctx context.Context, req res
 					"echo_downstream": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Whether to echo the header back to downstream (the client).`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Whether to echo the header back to downstream (the client). Default: false`,
 					},
 					"generator": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The generator to use for the correlation ID. Accepted values are ` + "`" + `uuid` + "`" + `, ` + "`" + `uuid#counter` + "`" + `, and ` + "`" + `tracker` + "`" + `. See [Generators](#generators). must be one of ["tracker", "uuid", "uuid#counter"]`,
+						Default:     stringdefault.StaticString(`uuid#counter`),
+						Description: `The generator to use for the correlation ID. Accepted values are ` + "`" + `uuid` + "`" + `, ` + "`" + `uuid#counter` + "`" + `, and ` + "`" + `tracker` + "`" + `. See [Generators](#generators). Default: "uuid#counter"; must be one of ["tracker", "uuid", "uuid#counter"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"tracker",
@@ -87,7 +91,8 @@ func (r *GatewayPluginCorrelationIDResource) Schema(ctx context.Context, req res
 					"header_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The HTTP header name to use for the correlation ID.`,
+						Default:     stringdefault.StaticString(`Kong-Request-ID`),
+						Description: `The HTTP header name to use for the correlation ID. Default: "Kong-Request-ID"`,
 					},
 				},
 			},
@@ -120,14 +125,14 @@ func (r *GatewayPluginCorrelationIDResource) Schema(ctx context.Context, req res
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 			},
 			"ordering": schema.SingleNestedAttribute{
@@ -159,7 +164,6 @@ func (r *GatewayPluginCorrelationIDResource) Schema(ctx context.Context, req res
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{

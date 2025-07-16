@@ -78,7 +78,7 @@ resource "konnect_gateway_plugin_hmac_auth" "my_gatewaypluginhmacauth" {
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -99,11 +99,11 @@ Optional:
 
 - `algorithms` (List of String) A list of HMAC digest algorithms that the user wants to support. Allowed values are `hmac-sha1`, `hmac-sha256`, `hmac-sha384`, and `hmac-sha512`
 - `anonymous` (String) An optional string (Consumer UUID or username) value to use as an “anonymous” consumer if authentication fails.
-- `clock_skew` (Number) Clock skew in seconds to prevent replay attacks.
+- `clock_skew` (Number) Clock skew in seconds to prevent replay attacks. Default: 300
 - `enforce_headers` (List of String) A list of headers that the client should at least use for HTTP signature creation.
-- `hide_credentials` (Boolean) An optional boolean value telling the plugin to show or hide the credential from the upstream service.
+- `hide_credentials` (Boolean) An optional boolean value telling the plugin to show or hide the credential from the upstream service. Default: false
 - `realm` (String) When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
-- `validate_request_body` (Boolean) A boolean value telling the plugin to enable body validation.
+- `validate_request_body` (Boolean) A boolean value telling the plugin to enable body validation. Default: false
 
 
 <a id="nestedatt--ordering"></a>

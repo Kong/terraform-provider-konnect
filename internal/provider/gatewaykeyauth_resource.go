@@ -88,11 +88,9 @@ func (r *GatewayKeyAuthResource) Schema(ctx context.Context, req resource.Schema
 				Description: `Requires replacement if changed.`,
 			},
 			"key": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `Requires replacement if changed.`,
 			},
@@ -107,11 +105,9 @@ func (r *GatewayKeyAuthResource) Schema(ctx context.Context, req resource.Schema
 				Description: `Requires replacement if changed.`,
 			},
 			"ttl": schema.Int64Attribute{
-				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.Int64{
 					int64planmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
 				},
 				Description: `key-auth ttl in seconds. Requires replacement if changed.`,
 			},

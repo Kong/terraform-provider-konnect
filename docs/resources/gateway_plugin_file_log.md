@@ -76,7 +76,7 @@ resource "konnect_gateway_plugin_file_log" "my_gatewaypluginfilelog" {
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -97,7 +97,7 @@ Optional:
 
 - `custom_fields_by_lua` (Map of String) Lua code as a key-value map
 - `path` (String) The file path of the output log file. The plugin creates the log file if it doesn't exist yet.
-- `reopen` (Boolean) Determines whether the log file is closed and reopened on every request.
+- `reopen` (Boolean) Determines whether the log file is closed and reopened on every request. Default: false
 
 
 <a id="nestedatt--consumer"></a>

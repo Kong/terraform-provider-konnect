@@ -78,11 +78,22 @@ func (o *RedirectPluginPartials) GetPath() *string {
 
 type RedirectPluginConfig struct {
 	// Use the incoming request's path and query string in the redirect URL
-	KeepIncomingPath *bool `json:"keep_incoming_path,omitempty"`
+	KeepIncomingPath *bool `default:"false" json:"keep_incoming_path"`
 	// The URL to redirect to
 	Location *string `json:"location,omitempty"`
 	// The response code to send. Must be an integer between 100 and 599.
-	StatusCode *int64 `json:"status_code,omitempty"`
+	StatusCode *int64 `default:"301" json:"status_code"`
+}
+
+func (r RedirectPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RedirectPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RedirectPluginConfig) GetKeepIncomingPath() *bool {
@@ -191,12 +202,12 @@ type RedirectPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                    `json:"enabled,omitempty"`
+	Enabled      *bool                    `default:"true" json:"enabled"`
 	ID           *string                  `json:"id,omitempty"`
-	InstanceName *string                  `json:"instance_name,omitempty"`
+	InstanceName *string                  `default:"null" json:"instance_name"`
 	name         string                   `const:"redirect" json:"name"`
 	Ordering     *RedirectPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []RedirectPluginPartials `json:"partials,omitempty"`
+	Partials     []RedirectPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -207,7 +218,7 @@ type RedirectPlugin struct {
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *RedirectPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
-	Protocols []RedirectPluginProtocols `json:"protocols,omitempty"`
+	Protocols []RedirectPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *RedirectPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

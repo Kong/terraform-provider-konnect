@@ -19442,9 +19442,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         group:
           type: string
         id:
@@ -19550,9 +19548,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         group:
           type: string
         id:
@@ -23948,9 +23944,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         id:
           type: string
           nullable: true
@@ -24055,9 +24049,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         id:
           type: string
           nullable: true
@@ -24159,9 +24151,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         id:
           type: string
           nullable: true
@@ -24173,9 +24163,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
       example:
         cert: |-
           -----BEGIN CERTIFICATE-----
@@ -24324,9 +24312,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         id:
           type: string
           nullable: true
@@ -24354,9 +24340,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
       example:
         cert: |-
           -----BEGIN CERTIFICATE-----
@@ -24694,9 +24678,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         custom_id:
           description: Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database. You must send either this field or `username` with the request.
           type: string
@@ -24714,9 +24696,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         username:
           description: The unique username of the Consumer. You must send either this field or `custom_id` with the request.
           type: string
@@ -24737,9 +24717,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         id:
           type: string
           nullable: true
@@ -24752,9 +24730,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
       additionalProperties: false
       required:
         - name
@@ -24954,9 +24930,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         handler:
           type: string
         id:
@@ -24973,9 +24947,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
       example:
         handler: 'return { VERSION = ''1.0,0'', PRIORITY = 500, access = function(self, config) kong.service.request.set_header(config.name, config.value) end }'
         id: 868346aa-1105-4b77-8346-aa1105fb77c4
@@ -26234,9 +26206,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         id:
           type: string
           nullable: true
@@ -26277,9 +26247,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         id:
           type: string
           nullable: true
@@ -26934,9 +26902,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         id:
           type: string
           nullable: true
@@ -27012,9 +26978,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         id:
           type: string
           nullable: true
@@ -28451,9 +28415,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         id:
           type: string
           nullable: true
@@ -28499,9 +28461,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         x5t:
           type: string
           default: null
@@ -28537,9 +28497,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         id:
           type: string
           nullable: true
@@ -28772,9 +28730,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         id:
           type: string
           nullable: true
@@ -28804,9 +28760,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         id:
           type: string
           nullable: true
@@ -28822,9 +28776,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
       example:
         id: b58c7d9d-e54f-444c-b24d-cdfc4159f61e
         name: example-key-set
@@ -29247,9 +29199,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         id:
           type: string
           nullable: true
@@ -29295,9 +29245,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         id:
           type: string
           nullable: true
@@ -31870,9 +31818,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         id:
           type: string
           nullable: true
@@ -31891,9 +31837,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
       additionalProperties: false
       required:
         - type
@@ -32020,9 +31964,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         id:
           type: string
           nullable: true
@@ -32041,9 +31983,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
       additionalProperties: false
       required:
         - type
@@ -32079,9 +32019,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         enabled:
           description: Whether the plugin is applied.
           type: boolean
@@ -32166,9 +32104,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
       example:
         config:
           anonymous: null
@@ -32197,9 +32133,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         enabled:
           description: Whether the plugin is applied.
           type: boolean
@@ -32256,9 +32190,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
       example:
         config:
           anonymous: null
@@ -35398,9 +35330,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         expression:
           description: Use Router Expression to perform route match. This option is only available when `router_flavor` is set to `expressions`.
           type: string
@@ -35497,9 +35427,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
       additionalProperties: false
     RouteJson:
       x-speakeasy-entity: GatewayRoute
@@ -35509,9 +35437,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         destinations:
           description: A list of IP destinations of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".
           type: array
@@ -35669,9 +35595,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
       example:
         hosts:
           - foo.example.com
@@ -35770,9 +35694,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         id:
           type: string
           nullable: true
@@ -35787,9 +35709,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
       example:
         certificate:
           id: bd380f99-659d-415e-b0e7-72ea05df3218
@@ -36286,9 +36206,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         enabled:
           description: 'Whether the Service is active. If set to `false`, the proxy behavior will be as if any routes attached to it do not exist (404). Default: `true`.'
           type: boolean
@@ -36375,9 +36293,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         url:
           description: 'Helper field to set `protocol`, `host`, `port` and `path` using a URL. This field is write-only and is not returned in responses.'
           type: string
@@ -37525,9 +37441,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: number
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         id:
           type: string
           nullable: true
@@ -37545,9 +37459,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: number
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         upstream:
           type: object
           default: null
@@ -37577,9 +37489,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: number
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         id:
           type: string
           nullable: true
@@ -37597,9 +37507,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: number
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         upstream:
           type: object
           default: null
@@ -37945,9 +37853,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         hash_fallback:
           description: 'What to use as hashing input if the primary `hash_on` does not return a hash (eg. header is missing, or no Consumer identified). Not available if `hash_on` is set to `cookie`.'
           type: string
@@ -38200,9 +38106,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         use_srv_name:
           description: 'If set, the balancer will use SRV hostname(if DNS Answer has SRV record) as the proxy upstream `Host`.'
           type: boolean
@@ -38729,9 +38633,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
         description:
           description: The description of the Vault entity.
           type: string
@@ -38755,9 +38657,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
       example:
         config:
           prefix: ENV_PREFIX

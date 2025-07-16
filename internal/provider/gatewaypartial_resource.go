@@ -11,7 +11,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -82,7 +85,8 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 							"database": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy`,
+								Default:     int64default.StaticInt64(0),
+								Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
 							},
 							"host": schema.StringAttribute{
 								Computed:    true,
@@ -97,7 +101,8 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 							"port": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Redis port.`,
+								Default:     int64default.StaticInt64(6379),
+								Description: `Redis port. Default: 6379`,
 							},
 							"server_name": schema.StringAttribute{
 								Computed:    true,
@@ -107,17 +112,20 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 							"ssl": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If set to true, uses SSL to connect to Redis.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `If set to true, uses SSL to connect to Redis. Default: false`,
 							},
 							"ssl_verify": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If set to true, verifies the validity of the server SSL certificate.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `If set to true, verifies the validity of the server SSL certificate. Default: false`,
 							},
 							"timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Connection timeout.`,
+								Default:     int64default.StaticInt64(1000),
+								Description: `Connection timeout. Default: 1000`,
 							},
 							"username": schema.StringAttribute{
 								Computed:    true,
@@ -140,7 +148,6 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 						Optional: true,
 					},
 					"name": schema.StringAttribute{
-						Computed: true,
 						Optional: true,
 					},
 					"tags": schema.ListAttribute{
@@ -171,7 +178,8 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 							"cluster_max_redirections": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Maximum retry attempts for redirection.`,
+								Default:     int64default.StaticInt64(5),
+								Description: `Maximum retry attempts for redirection. Default: 5`,
 							},
 							"cluster_nodes": schema.ListNestedAttribute{
 								Computed: true,
@@ -198,22 +206,26 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 							"connect_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Connect timeout.`,
+								Default:     int64default.StaticInt64(1000),
+								Description: `Connect timeout. Default: 1000`,
 							},
 							"connection_is_proxied": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If the connection to Redis is proxied, e.g., Envoy.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `If the connection to Redis is proxied, e.g., Envoy. Default: false`,
 							},
 							"database": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Database index.`,
+								Default:     int64default.StaticInt64(0),
+								Description: `Database index. Default: 0`,
 							},
 							"host": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Redis host.`,
+								Default:     stringdefault.StaticString(`127.0.0.1`),
+								Description: `Redis host. Default: "127.0.0.1"`,
 							},
 							"keepalive_backlog": schema.Int64Attribute{
 								Computed:    true,
@@ -223,7 +235,8 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 							"keepalive_pool_size": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Size limit for cosocket connection pool per worker process.`,
+								Default:     int64default.StaticInt64(256),
+								Description: `Size limit for cosocket connection pool per worker process. Default: 256`,
 							},
 							"password": schema.StringAttribute{
 								Computed:    true,
@@ -233,17 +246,20 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 							"port": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The port is only used when the host is set.`,
+								Default:     int64default.StaticInt64(6379),
+								Description: `The port is only used when the host is set. Default: 6379`,
 							},
 							"read_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Read timeout.`,
+								Default:     int64default.StaticInt64(1000),
+								Description: `Read timeout. Default: 1000`,
 							},
 							"send_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Send timeout.`,
+								Default:     int64default.StaticInt64(1000),
+								Description: `Send timeout. Default: 1000`,
 							},
 							"sentinel_master": schema.StringAttribute{
 								Computed:    true,
@@ -295,12 +311,14 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 							"ssl": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If set to true, uses SSL to connect to Redis.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `If set to true, uses SSL to connect to Redis. Default: false`,
 							},
 							"ssl_verify": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If set to true, verifies the validity of the server SSL certificate.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `If set to true, verifies the validity of the server SSL certificate. Default: false`,
 							},
 							"username": schema.StringAttribute{
 								Computed:    true,
@@ -323,7 +341,6 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 						Optional: true,
 					},
 					"name": schema.StringAttribute{
-						Computed: true,
 						Optional: true,
 					},
 					"tags": schema.ListAttribute{

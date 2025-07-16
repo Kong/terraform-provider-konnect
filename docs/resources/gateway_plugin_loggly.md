@@ -85,7 +85,7 @@ resource "konnect_gateway_plugin_loggly" "my_gatewaypluginloggly" {
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -104,16 +104,16 @@ resource "konnect_gateway_plugin_loggly" "my_gatewaypluginloggly" {
 
 Optional:
 
-- `client_errors_severity` (String) must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
+- `client_errors_severity` (String) Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
 - `custom_fields_by_lua` (Map of String) Lua code as a key-value map
-- `host` (String) A string representing a host name, such as example.com.
+- `host` (String) A string representing a host name, such as example.com. Default: "logs-01.loggly.com"
 - `key` (String)
-- `log_level` (String) must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
-- `server_errors_severity` (String) must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
-- `successful_severity` (String) must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
+- `log_level` (String) Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 514
+- `server_errors_severity` (String) Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
+- `successful_severity` (String) Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
 - `tags` (List of String)
-- `timeout` (Number)
+- `timeout` (Number) Default: 10000
 
 
 <a id="nestedatt--consumer"></a>

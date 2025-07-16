@@ -13,8 +13,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -68,38 +71,46 @@ func (r *GatewayPluginOpaResource) Schema(ctx context.Context, req resource.Sche
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"include_body_in_opa_input": schema.BoolAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Default: false`,
 					},
 					"include_consumer_in_opa_input": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If set to true, the Kong Gateway Consumer object in use for the current request (if any) is included as input to OPA.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If set to true, the Kong Gateway Consumer object in use for the current request (if any) is included as input to OPA. Default: false`,
 					},
 					"include_parsed_json_body_in_opa_input": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If set to true and the ` + "`" + `Content-Type` + "`" + ` header of the current request is ` + "`" + `application/json` + "`" + `, the request body will be JSON decoded and the decoded struct is included as input to OPA.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If set to true and the ` + "`" + `Content-Type` + "`" + ` header of the current request is ` + "`" + `application/json` + "`" + `, the request body will be JSON decoded and the decoded struct is included as input to OPA. Default: false`,
 					},
 					"include_route_in_opa_input": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If set to true, the Kong Gateway Route object in use for the current request is included as input to OPA.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If set to true, the Kong Gateway Route object in use for the current request is included as input to OPA. Default: false`,
 					},
 					"include_service_in_opa_input": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If set to true, the Kong Gateway Service object in use for the current request is included as input to OPA.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If set to true, the Kong Gateway Service object in use for the current request is included as input to OPA. Default: false`,
 					},
 					"include_uri_captures_in_opa_input": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If set to true, the regex capture groups captured on the Kong Gateway Route's path field in the current request (if any) are included as input to OPA.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If set to true, the regex capture groups captured on the Kong Gateway Route's path field in the current request (if any) are included as input to OPA. Default: false`,
 					},
 					"opa_host": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A string representing a host name, such as example.com.`,
+						Default:     stringdefault.StaticString(`localhost`),
+						Description: `A string representing a host name, such as example.com. Default: "localhost"`,
 					},
 					"opa_path": schema.StringAttribute{
 						Computed:    true,
@@ -109,7 +120,8 @@ func (r *GatewayPluginOpaResource) Schema(ctx context.Context, req resource.Sche
 					"opa_port": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+						Default:     int64default.StaticInt64(8181),
+						Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 8181`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(65535),
 						},
@@ -117,7 +129,8 @@ func (r *GatewayPluginOpaResource) Schema(ctx context.Context, req resource.Sche
 					"opa_protocol": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The protocol to use when talking to Open Policy Agent (OPA) server. Allowed protocols are ` + "`" + `http` + "`" + ` and ` + "`" + `https` + "`" + `. must be one of ["http", "https"]`,
+						Default:     stringdefault.StaticString(`http`),
+						Description: `The protocol to use when talking to Open Policy Agent (OPA) server. Allowed protocols are ` + "`" + `http` + "`" + ` and ` + "`" + `https` + "`" + `. Default: "http"; must be one of ["http", "https"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"http",
@@ -128,7 +141,8 @@ func (r *GatewayPluginOpaResource) Schema(ctx context.Context, req resource.Sche
 					"ssl_verify": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If set to true, the OPA certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `If set to true, the OPA certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate. Default: true`,
 					},
 				},
 			},
@@ -147,14 +161,14 @@ func (r *GatewayPluginOpaResource) Schema(ctx context.Context, req resource.Sche
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 			},
 			"ordering": schema.SingleNestedAttribute{
@@ -186,7 +200,6 @@ func (r *GatewayPluginOpaResource) Schema(ctx context.Context, req resource.Sche
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{

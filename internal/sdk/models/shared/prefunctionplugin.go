@@ -239,19 +239,19 @@ type PreFunctionPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                       `json:"enabled,omitempty"`
+	Enabled      *bool                       `default:"true" json:"enabled"`
 	ID           *string                     `json:"id,omitempty"`
-	InstanceName *string                     `json:"instance_name,omitempty"`
+	InstanceName *string                     `default:"null" json:"instance_name"`
 	name         string                      `const:"pre-function" json:"name"`
 	Ordering     *PreFunctionPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []PreFunctionPluginPartials `json:"partials,omitempty"`
+	Partials     []PreFunctionPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                   `json:"updated_at,omitempty"`
 	Config    *PreFunctionPluginConfig `json:"config,omitempty"`
 	// A set of strings representing protocols.
-	Protocols []PreFunctionPluginProtocols `json:"protocols,omitempty"`
+	Protocols []PreFunctionPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *PreFunctionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

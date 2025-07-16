@@ -191,56 +191,67 @@ type AwsLambdaPluginConfig struct {
 	// The target AWS IAM role ARN used to invoke the Lambda function.
 	AwsAssumeRoleArn *string `json:"aws_assume_role_arn,omitempty"`
 	// Identifier to select the IMDS protocol version to use: `v1` or `v2`.
-	AwsImdsProtocolVersion *AwsImdsProtocolVersion `json:"aws_imds_protocol_version,omitempty"`
+	AwsImdsProtocolVersion *AwsImdsProtocolVersion `default:"v1" json:"aws_imds_protocol_version"`
 	// The AWS key credential to be used when invoking the function.
 	AwsKey *string `json:"aws_key,omitempty"`
 	// A string representing a host name, such as example.com.
 	AwsRegion *string `json:"aws_region,omitempty"`
 	// The identifier of the assumed role session.
-	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
+	AwsRoleSessionName *string `default:"kong" json:"aws_role_session_name"`
 	// The AWS secret credential to be used when invoking the function.
 	AwsSecret *string `json:"aws_secret,omitempty"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
 	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
 	// An optional value that defines whether the plugin should wrap requests into the Amazon API gateway.
-	AwsgatewayCompatible *bool `json:"awsgateway_compatible,omitempty"`
+	AwsgatewayCompatible *bool `default:"false" json:"awsgateway_compatible"`
 	// An optional value that Base64-encodes the request body.
-	Base64EncodeBody *bool `json:"base64_encode_body,omitempty"`
-	DisableHTTPS     *bool `json:"disable_https,omitempty"`
+	Base64EncodeBody *bool `default:"true" json:"base64_encode_body"`
+	DisableHTTPS     *bool `default:"false" json:"disable_https"`
 	// An optional value that defines whether Kong should send empty arrays (returned by Lambda function) as `[]` arrays or `{}` objects in JSON responses. The value `legacy` means Kong will send empty arrays as `{}` objects in response
-	EmptyArraysMode *EmptyArraysMode `json:"empty_arrays_mode,omitempty"`
+	EmptyArraysMode *EmptyArraysMode `default:"legacy" json:"empty_arrays_mode"`
 	// An optional value that defines whether the request body is sent in the request_body field of the JSON-encoded request. If the body arguments can be parsed, they are sent in the separate request_body_args field of the request.
-	ForwardRequestBody *bool `json:"forward_request_body,omitempty"`
+	ForwardRequestBody *bool `default:"false" json:"forward_request_body"`
 	// An optional value that defines whether the original HTTP request headers are sent as a map in the request_headers field of the JSON-encoded request.
-	ForwardRequestHeaders *bool `json:"forward_request_headers,omitempty"`
+	ForwardRequestHeaders *bool `default:"false" json:"forward_request_headers"`
 	// An optional value that defines whether the original HTTP request method verb is sent in the request_method field of the JSON-encoded request.
-	ForwardRequestMethod *bool `json:"forward_request_method,omitempty"`
+	ForwardRequestMethod *bool `default:"false" json:"forward_request_method"`
 	// An optional value that defines whether the original HTTP request URI is sent in the request_uri field of the JSON-encoded request.
-	ForwardRequestURI *bool `json:"forward_request_uri,omitempty"`
+	ForwardRequestURI *bool `default:"false" json:"forward_request_uri"`
 	// The AWS Lambda function to invoke. Both function name and function ARN (including partial) are supported.
 	FunctionName *string `json:"function_name,omitempty"`
 	// A string representing a host name, such as example.com.
 	Host *string `json:"host,omitempty"`
 	// The InvocationType to use when invoking the function. Available types are RequestResponse, Event, DryRun.
-	InvocationType *InvocationType `json:"invocation_type,omitempty"`
+	InvocationType *InvocationType `default:"RequestResponse" json:"invocation_type"`
 	// An optional value that defines whether the response format to receive from the Lambda to this format.
-	IsProxyIntegration *bool `json:"is_proxy_integration,omitempty"`
+	IsProxyIntegration *bool `default:"false" json:"is_proxy_integration"`
 	// An optional value in milliseconds that defines how long an idle connection lives before being closed.
-	Keepalive *float64 `json:"keepalive,omitempty"`
+	Keepalive *float64 `default:"60000" json:"keepalive"`
 	// The LogType to use when invoking the function. By default, None and Tail are supported.
-	LogType *LogType `json:"log_type,omitempty"`
+	LogType *LogType `default:"Tail" json:"log_type"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"443" json:"port"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
 	ProxyURL *string `json:"proxy_url,omitempty"`
 	// The qualifier to use when invoking the function.
 	Qualifier *string `json:"qualifier,omitempty"`
 	// An optional value that defines whether Kong should send large bodies that are buffered to disk
-	SkipLargeBodies *bool `json:"skip_large_bodies,omitempty"`
+	SkipLargeBodies *bool `default:"true" json:"skip_large_bodies"`
 	// An optional timeout in milliseconds when invoking the function.
-	Timeout *float64 `json:"timeout,omitempty"`
+	Timeout *float64 `default:"60000" json:"timeout"`
 	// The response status code to use (instead of the default 200, 202, or 204) in the case of an Unhandled Function Error.
 	UnhandledStatus *int64 `json:"unhandled_status,omitempty"`
+}
+
+func (a AwsLambdaPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AwsLambdaPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AwsLambdaPluginConfig) GetAwsAssumeRoleArn() *string {
@@ -505,12 +516,12 @@ type AwsLambdaPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                     `json:"enabled,omitempty"`
+	Enabled      *bool                     `default:"true" json:"enabled"`
 	ID           *string                   `json:"id,omitempty"`
-	InstanceName *string                   `json:"instance_name,omitempty"`
+	InstanceName *string                   `default:"null" json:"instance_name"`
 	name         string                    `const:"aws-lambda" json:"name"`
 	Ordering     *AwsLambdaPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []AwsLambdaPluginPartials `json:"partials,omitempty"`
+	Partials     []AwsLambdaPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -519,7 +530,7 @@ type AwsLambdaPlugin struct {
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *AwsLambdaPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
-	Protocols []AwsLambdaPluginProtocols `json:"protocols,omitempty"`
+	Protocols []AwsLambdaPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *AwsLambdaPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

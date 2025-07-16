@@ -342,20 +342,31 @@ func (o *KafkaConsumePluginTopics) GetName() string {
 type KafkaConsumePluginConfig struct {
 	Authentication *Authentication `json:"authentication,omitempty"`
 	// The offset to start from when there is no initial offset in the consumer group.
-	AutoOffsetReset *KafkaConsumePluginAutoOffsetReset `json:"auto_offset_reset,omitempty"`
+	AutoOffsetReset *KafkaConsumePluginAutoOffsetReset `default:"latest" json:"auto_offset_reset"`
 	// Set of bootstrap brokers in a `{host: host, port: port}` list format.
 	BootstrapServers []KafkaConsumePluginBootstrapServers `json:"bootstrap_servers,omitempty"`
 	// An identifier for the Kafka cluster.
 	ClusterName *string `json:"cluster_name,omitempty"`
 	// The strategy to use for committing offsets.
-	CommitStrategy *KafkaConsumePluginCommitStrategy `json:"commit_strategy,omitempty"`
+	CommitStrategy *KafkaConsumePluginCommitStrategy `default:"auto" json:"commit_strategy"`
 	// The deserializer to use for the consumed messages.
-	MessageDeserializer *KafkaConsumePluginMessageDeserializer `json:"message_deserializer,omitempty"`
+	MessageDeserializer *KafkaConsumePluginMessageDeserializer `default:"noop" json:"message_deserializer"`
 	// The mode of operation for the plugin.
-	Mode     *KafkaConsumePluginMode     `json:"mode,omitempty"`
+	Mode     *KafkaConsumePluginMode     `default:"http-get" json:"mode"`
 	Security *KafkaConsumePluginSecurity `json:"security,omitempty"`
 	// The Kafka topics and their configuration you want to consume from.
 	Topics []KafkaConsumePluginTopics `json:"topics,omitempty"`
+}
+
+func (k KafkaConsumePluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaConsumePluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaConsumePluginConfig) GetAuthentication() *Authentication {
@@ -500,12 +511,12 @@ type KafkaConsumePlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                        `json:"enabled,omitempty"`
+	Enabled      *bool                        `default:"true" json:"enabled"`
 	ID           *string                      `json:"id,omitempty"`
-	InstanceName *string                      `json:"instance_name,omitempty"`
+	InstanceName *string                      `default:"null" json:"instance_name"`
 	name         string                       `const:"kafka-consume" json:"name"`
 	Ordering     *KafkaConsumePluginOrdering  `json:"ordering,omitempty"`
-	Partials     []KafkaConsumePluginPartials `json:"partials,omitempty"`
+	Partials     []KafkaConsumePluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -514,7 +525,7 @@ type KafkaConsumePlugin struct {
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *KafkaConsumePluginConsumer `json:"consumer"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
-	Protocols []KafkaConsumePluginProtocols `json:"protocols,omitempty"`
+	Protocols []KafkaConsumePluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *KafkaConsumePluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

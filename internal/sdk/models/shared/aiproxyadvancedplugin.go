@@ -230,22 +230,33 @@ func (e *AiProxyAdvancedPluginTokensCountStrategy) UnmarshalJSON(data []byte) er
 
 type Balancer struct {
 	// Which load balancing algorithm to use.
-	Algorithm      *AiProxyAdvancedPluginAlgorithm `json:"algorithm,omitempty"`
-	ConnectTimeout *int64                          `json:"connect_timeout,omitempty"`
+	Algorithm      *AiProxyAdvancedPluginAlgorithm `default:"round-robin" json:"algorithm"`
+	ConnectTimeout *int64                          `default:"60000" json:"connect_timeout"`
 	// Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream
 	FailoverCriteria []FailoverCriteria `json:"failover_criteria,omitempty"`
 	// The header to use for consistent-hashing.
-	HashOnHeader *string `json:"hash_on_header,omitempty"`
+	HashOnHeader *string `default:"X-Kong-LLM-Request-ID" json:"hash_on_header"`
 	// What metrics to use for latency. Available values are: `tpot` (time-per-output-token) and `e2e`.
-	LatencyStrategy *LatencyStrategy `json:"latency_strategy,omitempty"`
-	ReadTimeout     *int64           `json:"read_timeout,omitempty"`
+	LatencyStrategy *LatencyStrategy `default:"tpot" json:"latency_strategy"`
+	ReadTimeout     *int64           `default:"60000" json:"read_timeout"`
 	// The number of retries to execute upon failure to proxy.
-	Retries *int64 `json:"retries,omitempty"`
+	Retries *int64 `default:"5" json:"retries"`
 	// The number of slots in the load balancer algorithm.
-	Slots *int64 `json:"slots,omitempty"`
+	Slots *int64 `default:"10000" json:"slots"`
 	// What tokens to use for usage calculation. Available values are: `total_tokens` `prompt_tokens`, `completion_tokens` and `cost`.
-	TokensCountStrategy *AiProxyAdvancedPluginTokensCountStrategy `json:"tokens_count_strategy,omitempty"`
-	WriteTimeout        *int64                                    `json:"write_timeout,omitempty"`
+	TokensCountStrategy *AiProxyAdvancedPluginTokensCountStrategy `default:"total-tokens" json:"tokens_count_strategy"`
+	WriteTimeout        *int64                                    `default:"60000" json:"write_timeout"`
+}
+
+func (b Balancer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *Balancer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Balancer) GetAlgorithm() *AiProxyAdvancedPluginAlgorithm {
@@ -347,7 +358,7 @@ func (e *AiProxyAdvancedPluginParamLocation) UnmarshalJSON(data []byte) error {
 
 type AiProxyAdvancedPluginAuth struct {
 	// If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
-	AllowOverride *bool `json:"allow_override,omitempty"`
+	AllowOverride *bool `default:"false" json:"allow_override"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
 	AwsAccessKeyID *string `json:"aws_access_key_id,omitempty"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
@@ -359,11 +370,11 @@ type AiProxyAdvancedPluginAuth struct {
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
 	AzureTenantID *string `json:"azure_tenant_id,omitempty"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
-	AzureUseManagedIdentity *bool `json:"azure_use_managed_identity,omitempty"`
+	AzureUseManagedIdentity *bool `default:"false" json:"azure_use_managed_identity"`
 	// Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
 	GcpServiceAccountJSON *string `json:"gcp_service_account_json,omitempty"`
 	// Use service account auth for GCP-based providers and models.
-	GcpUseServiceAccount *bool `json:"gcp_use_service_account,omitempty"`
+	GcpUseServiceAccount *bool `default:"false" json:"gcp_use_service_account"`
 	// If AI model requires authentication via Authorization or API key header, specify its name here.
 	HeaderName *string `json:"header_name,omitempty"`
 	// Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
@@ -374,6 +385,17 @@ type AiProxyAdvancedPluginAuth struct {
 	ParamName *string `json:"param_name,omitempty"`
 	// Specify the full parameter value for 'param_name'.
 	ParamValue *string `json:"param_value,omitempty"`
+}
+
+func (a AiProxyAdvancedPluginAuth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginAuth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiProxyAdvancedPluginAuth) GetAllowOverride() *bool {
@@ -476,11 +498,22 @@ func (o *AiProxyAdvancedPluginAuth) GetParamValue() *string {
 
 type Azure struct {
 	// 'api-version' for Azure OpenAI instances.
-	APIVersion *string `json:"api_version,omitempty"`
+	APIVersion *string `default:"2023-05-15" json:"api_version"`
 	// Deployment ID for Azure OpenAI instances.
 	DeploymentID *string `json:"deployment_id,omitempty"`
 	// Instance name for Azure OpenAI hosted models.
 	Instance *string `json:"instance,omitempty"`
+}
+
+func (a Azure) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *Azure) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Azure) GetAPIVersion() *string {
@@ -816,7 +849,7 @@ func (e *AiProxyAdvancedPluginConfigParamLocation) UnmarshalJSON(data []byte) er
 
 type AiProxyAdvancedPluginConfigAuth struct {
 	// If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
-	AllowOverride *bool `json:"allow_override,omitempty"`
+	AllowOverride *bool `default:"false" json:"allow_override"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
 	AwsAccessKeyID *string `json:"aws_access_key_id,omitempty"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
@@ -828,11 +861,11 @@ type AiProxyAdvancedPluginConfigAuth struct {
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
 	AzureTenantID *string `json:"azure_tenant_id,omitempty"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
-	AzureUseManagedIdentity *bool `json:"azure_use_managed_identity,omitempty"`
+	AzureUseManagedIdentity *bool `default:"false" json:"azure_use_managed_identity"`
 	// Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
 	GcpServiceAccountJSON *string `json:"gcp_service_account_json,omitempty"`
 	// Use service account auth for GCP-based providers and models.
-	GcpUseServiceAccount *bool `json:"gcp_use_service_account,omitempty"`
+	GcpUseServiceAccount *bool `default:"false" json:"gcp_use_service_account"`
 	// If AI model requires authentication via Authorization or API key header, specify its name here.
 	HeaderName *string `json:"header_name,omitempty"`
 	// Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
@@ -843,6 +876,17 @@ type AiProxyAdvancedPluginConfigAuth struct {
 	ParamName *string `json:"param_name,omitempty"`
 	// Specify the full parameter value for 'param_name'.
 	ParamValue *string `json:"param_value,omitempty"`
+}
+
+func (a AiProxyAdvancedPluginConfigAuth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginConfigAuth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiProxyAdvancedPluginConfigAuth) GetAllowOverride() *bool {
@@ -945,9 +989,20 @@ func (o *AiProxyAdvancedPluginConfigAuth) GetParamValue() *string {
 
 type AiProxyAdvancedPluginLogging struct {
 	// If enabled, will log the request and response body into the Kong log plugin(s) output.
-	LogPayloads *bool `json:"log_payloads,omitempty"`
+	LogPayloads *bool `default:"false" json:"log_payloads"`
 	// If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.
-	LogStatistics *bool `json:"log_statistics,omitempty"`
+	LogStatistics *bool `default:"false" json:"log_statistics"`
+}
+
+func (a AiProxyAdvancedPluginLogging) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginLogging) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiProxyAdvancedPluginLogging) GetLogPayloads() *bool {
@@ -1116,7 +1171,7 @@ type AiProxyAdvancedPluginConfigOptions struct {
 	// Defines the schema/API version, if using Anthropic provider.
 	AnthropicVersion *string `json:"anthropic_version,omitempty"`
 	// 'api-version' for Azure OpenAI instances.
-	AzureAPIVersion *string `json:"azure_api_version,omitempty"`
+	AzureAPIVersion *string `default:"2023-05-15" json:"azure_api_version"`
 	// Deployment ID for Azure OpenAI instances.
 	AzureDeploymentID *string `json:"azure_deployment_id,omitempty"`
 	// Instance name for Azure OpenAI hosted models.
@@ -1144,6 +1199,17 @@ type AiProxyAdvancedPluginConfigOptions struct {
 	UpstreamPath *string `json:"upstream_path,omitempty"`
 	// Manually specify or override the full URL to the AI operation endpoints, when calling (self-)hosted models, or for running via a private endpoint.
 	UpstreamURL *string `json:"upstream_url,omitempty"`
+}
+
+func (a AiProxyAdvancedPluginConfigOptions) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginConfigOptions) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiProxyAdvancedPluginConfigOptions) GetAnthropicVersion() *string {
@@ -1382,7 +1448,18 @@ type Targets struct {
 	// The model's operation implementation, for this provider. Set to `preserve` to pass through without transformation.
 	RouteType AiProxyAdvancedPluginRouteType `json:"route_type"`
 	// The weight this target gets within the upstream loadbalancer (1-65535).
-	Weight *int64 `json:"weight,omitempty"`
+	Weight *int64 `default:"100" json:"weight"`
+}
+
+func (t Targets) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *Targets) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Targets) GetAuth() *AiProxyAdvancedPluginConfigAuth {
@@ -1486,29 +1563,40 @@ func (e *SslVersion) UnmarshalJSON(data []byte) error {
 
 type Pgvector struct {
 	// the database of the pgvector database
-	Database *string `json:"database,omitempty"`
+	Database *string `default:"kong-pgvector" json:"database"`
 	// the host of the pgvector database
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// the password of the pgvector database
 	Password *string `json:"password,omitempty"`
 	// the port of the pgvector database
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"5432" json:"port"`
 	// whether to use ssl for the pgvector database
-	Ssl *bool `json:"ssl,omitempty"`
+	Ssl *bool `default:"false" json:"ssl"`
 	// the path of ssl cert to use for the pgvector database
 	SslCert *string `json:"ssl_cert,omitempty"`
 	// the path of ssl cert key to use for the pgvector database
 	SslCertKey *string `json:"ssl_cert_key,omitempty"`
 	// whether ssl is required for the pgvector database
-	SslRequired *bool `json:"ssl_required,omitempty"`
+	SslRequired *bool `default:"false" json:"ssl_required"`
 	// whether to verify ssl for the pgvector database
-	SslVerify *bool `json:"ssl_verify,omitempty"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// the ssl version to use for the pgvector database
-	SslVersion *SslVersion `json:"ssl_version,omitempty"`
+	SslVersion *SslVersion `default:"tlsv1_2" json:"ssl_version"`
 	// the timeout of the pgvector database
-	Timeout *float64 `json:"timeout,omitempty"`
+	Timeout *float64 `default:"5000" json:"timeout"`
 	// the user of the pgvector database
-	User *string `json:"user,omitempty"`
+	User *string `default:"postgres" json:"user"`
+}
+
+func (p Pgvector) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *Pgvector) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Pgvector) GetDatabase() *string {
@@ -1597,9 +1685,20 @@ func (o *Pgvector) GetUser() *string {
 
 type AiProxyAdvancedPluginClusterNodes struct {
 	// A string representing a host name, such as example.com.
-	IP *string `json:"ip,omitempty"`
+	IP *string `default:"127.0.0.1" json:"ip"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (a AiProxyAdvancedPluginClusterNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginClusterNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiProxyAdvancedPluginClusterNodes) GetIP() *string {
@@ -1618,9 +1717,20 @@ func (o *AiProxyAdvancedPluginClusterNodes) GetPort() *int64 {
 
 type AiProxyAdvancedPluginSentinelNodes struct {
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (a AiProxyAdvancedPluginSentinelNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginSentinelNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiProxyAdvancedPluginSentinelNodes) GetHost() *string {
@@ -1669,29 +1779,29 @@ func (e *AiProxyAdvancedPluginSentinelRole) UnmarshalJSON(data []byte) error {
 
 type AiProxyAdvancedPluginRedis struct {
 	// Maximum retry attempts for redirection.
-	ClusterMaxRedirections *int64 `json:"cluster_max_redirections,omitempty"`
+	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
 	ClusterNodes []AiProxyAdvancedPluginClusterNodes `json:"cluster_nodes,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
+	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
-	ConnectionIsProxied *bool `json:"connection_is_proxied,omitempty"`
+	ConnectionIsProxied *bool `default:"false" json:"connection_is_proxied"`
 	// Database to use for the Redis connection when using the `redis` strategy
-	Database *int64 `json:"database,omitempty"`
+	Database *int64 `default:"0" json:"database"`
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
 	KeepaliveBacklog *int64 `json:"keepalive_backlog,omitempty"`
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
-	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
+	KeepalivePoolSize *int64 `default:"256" json:"keepalive_pool_size"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ReadTimeout *int64 `json:"read_timeout,omitempty"`
+	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	SendTimeout *int64 `json:"send_timeout,omitempty"`
+	SendTimeout *int64 `default:"2000" json:"send_timeout"`
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `json:"sentinel_master,omitempty"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
@@ -1705,11 +1815,22 @@ type AiProxyAdvancedPluginRedis struct {
 	// A string representing an SNI (server name indication) value for TLS.
 	ServerName *string `json:"server_name,omitempty"`
 	// If set to true, uses SSL to connect to Redis.
-	Ssl *bool `json:"ssl,omitempty"`
+	Ssl *bool `default:"false" json:"ssl"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-	SslVerify *bool `json:"ssl_verify,omitempty"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 	Username *string `json:"username,omitempty"`
+}
+
+func (a AiProxyAdvancedPluginRedis) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginRedis) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiProxyAdvancedPluginRedis) GetClusterMaxRedirections() *int64 {
@@ -1945,15 +2066,26 @@ type AiProxyAdvancedPluginConfig struct {
 	Balancer   *Balancer   `json:"balancer,omitempty"`
 	Embeddings *Embeddings `json:"embeddings,omitempty"`
 	// LLM input and output format and schema to use
-	LlmFormat *AiProxyAdvancedPluginLlmFormat `json:"llm_format,omitempty"`
+	LlmFormat *AiProxyAdvancedPluginLlmFormat `default:"openai" json:"llm_format"`
 	// max allowed body size allowed to be introspected
-	MaxRequestBodySize *int64 `json:"max_request_body_size,omitempty"`
+	MaxRequestBodySize *int64 `default:"8192" json:"max_request_body_size"`
 	// Display the model name selected in the X-Kong-LLM-Model response header
-	ModelNameHeader *bool `json:"model_name_header,omitempty"`
+	ModelNameHeader *bool `default:"true" json:"model_name_header"`
 	// Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events.
-	ResponseStreaming *AiProxyAdvancedPluginResponseStreaming `json:"response_streaming,omitempty"`
+	ResponseStreaming *AiProxyAdvancedPluginResponseStreaming `default:"allow" json:"response_streaming"`
 	Targets           []Targets                               `json:"targets,omitempty"`
 	Vectordb          *Vectordb                               `json:"vectordb,omitempty"`
+}
+
+func (a AiProxyAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiProxyAdvancedPluginConfig) GetBalancer() *Balancer {
@@ -2097,12 +2229,12 @@ type AiProxyAdvancedPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                           `json:"enabled,omitempty"`
+	Enabled      *bool                           `default:"true" json:"enabled"`
 	ID           *string                         `json:"id,omitempty"`
-	InstanceName *string                         `json:"instance_name,omitempty"`
+	InstanceName *string                         `default:"null" json:"instance_name"`
 	name         string                          `const:"ai-proxy-advanced" json:"name"`
 	Ordering     *AiProxyAdvancedPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []AiProxyAdvancedPluginPartials `json:"partials,omitempty"`
+	Partials     []AiProxyAdvancedPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -2113,7 +2245,7 @@ type AiProxyAdvancedPlugin struct {
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *AiProxyAdvancedPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
-	Protocols []AiProxyAdvancedPluginProtocols `json:"protocols,omitempty"`
+	Protocols []AiProxyAdvancedPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *AiProxyAdvancedPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

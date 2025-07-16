@@ -68,7 +68,7 @@ resource "konnect_gateway_plugin_tls_handshake_modifier" "my_gatewayplugintlshan
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -87,7 +87,7 @@ resource "konnect_gateway_plugin_tls_handshake_modifier" "my_gatewayplugintlshan
 
 Optional:
 
-- `tls_client_certificate` (String) TLS Client Certificate. must be "REQUEST"
+- `tls_client_certificate` (String) TLS Client Certificate. Default: "REQUEST"; must be "REQUEST"
 
 
 <a id="nestedatt--ordering"></a>

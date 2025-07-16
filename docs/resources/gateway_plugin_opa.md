@@ -78,7 +78,7 @@ resource "konnect_gateway_plugin_opa" "my_gatewaypluginopa" {
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -97,17 +97,17 @@ resource "konnect_gateway_plugin_opa" "my_gatewaypluginopa" {
 
 Optional:
 
-- `include_body_in_opa_input` (Boolean)
-- `include_consumer_in_opa_input` (Boolean) If set to true, the Kong Gateway Consumer object in use for the current request (if any) is included as input to OPA.
-- `include_parsed_json_body_in_opa_input` (Boolean) If set to true and the `Content-Type` header of the current request is `application/json`, the request body will be JSON decoded and the decoded struct is included as input to OPA.
-- `include_route_in_opa_input` (Boolean) If set to true, the Kong Gateway Route object in use for the current request is included as input to OPA.
-- `include_service_in_opa_input` (Boolean) If set to true, the Kong Gateway Service object in use for the current request is included as input to OPA.
-- `include_uri_captures_in_opa_input` (Boolean) If set to true, the regex capture groups captured on the Kong Gateway Route's path field in the current request (if any) are included as input to OPA.
-- `opa_host` (String) A string representing a host name, such as example.com.
+- `include_body_in_opa_input` (Boolean) Default: false
+- `include_consumer_in_opa_input` (Boolean) If set to true, the Kong Gateway Consumer object in use for the current request (if any) is included as input to OPA. Default: false
+- `include_parsed_json_body_in_opa_input` (Boolean) If set to true and the `Content-Type` header of the current request is `application/json`, the request body will be JSON decoded and the decoded struct is included as input to OPA. Default: false
+- `include_route_in_opa_input` (Boolean) If set to true, the Kong Gateway Route object in use for the current request is included as input to OPA. Default: false
+- `include_service_in_opa_input` (Boolean) If set to true, the Kong Gateway Service object in use for the current request is included as input to OPA. Default: false
+- `include_uri_captures_in_opa_input` (Boolean) If set to true, the regex capture groups captured on the Kong Gateway Route's path field in the current request (if any) are included as input to OPA. Default: false
+- `opa_host` (String) A string representing a host name, such as example.com. Default: "localhost"
 - `opa_path` (String) A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
-- `opa_port` (Number) An integer representing a port number between 0 and 65535, inclusive.
-- `opa_protocol` (String) The protocol to use when talking to Open Policy Agent (OPA) server. Allowed protocols are `http` and `https`. must be one of ["http", "https"]
-- `ssl_verify` (Boolean) If set to true, the OPA certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate.
+- `opa_port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 8181
+- `opa_protocol` (String) The protocol to use when talking to Open Policy Agent (OPA) server. Allowed protocols are `http` and `https`. Default: "http"; must be one of ["http", "https"]
+- `ssl_verify` (Boolean) If set to true, the OPA certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate. Default: true
 
 
 <a id="nestedatt--ordering"></a>

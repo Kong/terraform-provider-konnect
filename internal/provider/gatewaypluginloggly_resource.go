@@ -14,8 +14,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -73,7 +77,8 @@ func (r *GatewayPluginLogglyResource) Schema(ctx context.Context, req resource.S
 					"client_errors_severity": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]`,
+						Default:     stringdefault.StaticString(`info`),
+						Description: `Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"alert",
@@ -99,7 +104,8 @@ func (r *GatewayPluginLogglyResource) Schema(ctx context.Context, req resource.S
 					"host": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A string representing a host name, such as example.com.`,
+						Default:     stringdefault.StaticString(`logs-01.loggly.com`),
+						Description: `A string representing a host name, such as example.com. Default: "logs-01.loggly.com"`,
 					},
 					"key": schema.StringAttribute{
 						Computed: true,
@@ -108,7 +114,8 @@ func (r *GatewayPluginLogglyResource) Schema(ctx context.Context, req resource.S
 					"log_level": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]`,
+						Default:     stringdefault.StaticString(`info`),
+						Description: `Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"alert",
@@ -125,7 +132,8 @@ func (r *GatewayPluginLogglyResource) Schema(ctx context.Context, req resource.S
 					"port": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+						Default:     int64default.StaticInt64(514),
+						Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 514`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(65535),
 						},
@@ -133,7 +141,8 @@ func (r *GatewayPluginLogglyResource) Schema(ctx context.Context, req resource.S
 					"server_errors_severity": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]`,
+						Default:     stringdefault.StaticString(`info`),
+						Description: `Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"alert",
@@ -150,7 +159,8 @@ func (r *GatewayPluginLogglyResource) Schema(ctx context.Context, req resource.S
 					"successful_severity": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]`,
+						Default:     stringdefault.StaticString(`info`),
+						Description: `Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"alert",
@@ -170,8 +180,10 @@ func (r *GatewayPluginLogglyResource) Schema(ctx context.Context, req resource.S
 						ElementType: types.StringType,
 					},
 					"timeout": schema.Float64Attribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     float64default.StaticFloat64(10000),
+						Description: `Default: 10000`,
 					},
 				},
 			},
@@ -204,14 +216,14 @@ func (r *GatewayPluginLogglyResource) Schema(ctx context.Context, req resource.S
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 			},
 			"ordering": schema.SingleNestedAttribute{
@@ -243,7 +255,6 @@ func (r *GatewayPluginLogglyResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{

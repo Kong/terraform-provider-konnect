@@ -77,7 +77,7 @@ resource "konnect_gateway_plugin_udp_log" "my_gatewaypluginudplog" {
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -99,7 +99,7 @@ Optional:
 - `custom_fields_by_lua` (Map of String) Lua code as a key-value map
 - `host` (String) A string representing a host name, such as example.com.
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
-- `timeout` (Number) An optional timeout in milliseconds when sending data to the upstream server.
+- `timeout` (Number) An optional timeout in milliseconds when sending data to the upstream server. Default: 10000
 
 
 <a id="nestedatt--consumer"></a>

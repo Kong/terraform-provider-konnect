@@ -87,7 +87,7 @@ resource "konnect_gateway_plugin_ai_azure_content_safety" "my_gatewaypluginaiazu
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -106,19 +106,19 @@ resource "konnect_gateway_plugin_ai_azure_content_safety" "my_gatewaypluginaiazu
 
 Optional:
 
-- `azure_api_version` (String) Sets the ?api-version URL parameter, used for defining the Azure Content Services interchange format.
+- `azure_api_version` (String) Sets the ?api-version URL parameter, used for defining the Azure Content Services interchange format. Default: "2023-10-01"
 - `azure_client_id` (String) If `azure_use_managed_identity` is true, set the client ID if required.
 - `azure_client_secret` (String) If `azure_use_managed_identity` is true, set the client secret if required.
 - `azure_tenant_id` (String) If `azure_use_managed_identity` is true, set the tenant ID if required.
-- `azure_use_managed_identity` (Boolean) If checked, uses (if set) `azure_client_id`, `azure_client_secret`, and/or `azure_tenant_id` for Azure authentication, via Managed or User-assigned identity
+- `azure_use_managed_identity` (Boolean) If checked, uses (if set) `azure_client_id`, `azure_client_secret`, and/or `azure_tenant_id` for Azure authentication, via Managed or User-assigned identity. Default: false
 - `blocklist_names` (List of String) Use these configured blocklists (in Azure Content Services) when inspecting content.
 - `categories` (Attributes List) Array of categories, and their thresholds, to measure on. (see [below for nested schema](#nestedatt--config--categories))
 - `content_safety_key` (String) If `azure_use_managed_identity` is true, set the API key to call Content Safety.
 - `content_safety_url` (String) Full URL, inc protocol, of the Azure Content Safety instance.
-- `halt_on_blocklist_hit` (Boolean) Tells Azure to reject the request if any blocklist filter is hit.
-- `output_type` (String) See https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/content-filter#content-filtering-categories. must be one of ["EightSeverityLevels", "FourSeverityLevels"]
-- `reveal_failure_reason` (Boolean) Set true to tell the caller why their request was rejected, if so.
-- `text_source` (String) Select where to pick the 'text' for the Azure Content Services request. must be one of ["concatenate_all_content", "concatenate_user_content"]
+- `halt_on_blocklist_hit` (Boolean) Tells Azure to reject the request if any blocklist filter is hit. Default: true
+- `output_type` (String) See https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/content-filter#content-filtering-categories. Default: "FourSeverityLevels"; must be one of ["EightSeverityLevels", "FourSeverityLevels"]
+- `reveal_failure_reason` (Boolean) Set true to tell the caller why their request was rejected, if so. Default: true
+- `text_source` (String) Select where to pick the 'text' for the Azure Content Services request. Default: "concatenate_all_content"; must be one of ["concatenate_all_content", "concatenate_user_content"]
 
 <a id="nestedatt--config--categories"></a>
 ### Nested Schema for `config.categories`

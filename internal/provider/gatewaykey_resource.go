@@ -74,7 +74,6 @@ func (r *GatewayKeyResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Optional: true,
 			},
 			"jwk": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A JSON Web Key represented as a string.`,
 			},
@@ -83,7 +82,6 @@ func (r *GatewayKeyResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `A unique identifier for a key.`,
 			},
 			"name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The name to associate with the given keys.`,
 			},
@@ -128,7 +126,6 @@ func (r *GatewayKeyResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 			"x5t": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 			},
 		},

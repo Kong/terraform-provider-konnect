@@ -77,7 +77,7 @@ resource "konnect_gateway_plugin_json_threat_protection" "my_gatewaypluginjsonth
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -96,16 +96,16 @@ resource "konnect_gateway_plugin_json_threat_protection" "my_gatewaypluginjsonth
 
 Optional:
 
-- `allow_duplicate_object_entry_name` (Boolean) Allow or disallow duplicate object entry name.
-- `enforcement_mode` (String) Enforcement mode of the security policy. must be one of ["block", "log_only"]
-- `error_message` (String) The response message when validation fails
-- `error_status_code` (Number) The response status code when validation fails.
-- `max_array_element_count` (Number) Max number of elements in an array. -1 means unlimited.
-- `max_body_size` (Number) Max size of the request body. -1 means unlimited.
-- `max_container_depth` (Number) Max nested depth of objects and arrays. -1 means unlimited.
-- `max_object_entry_count` (Number) Max number of entries in an object. -1 means unlimited.
-- `max_object_entry_name_length` (Number) Max string length of object name. -1 means unlimited.
-- `max_string_value_length` (Number) Max string value length. -1 means unlimited.
+- `allow_duplicate_object_entry_name` (Boolean) Allow or disallow duplicate object entry name. Default: true
+- `enforcement_mode` (String) Enforcement mode of the security policy. Default: "block"; must be one of ["block", "log_only"]
+- `error_message` (String) The response message when validation fails. Default: "Bad Request"
+- `error_status_code` (Number) The response status code when validation fails. Default: 400
+- `max_array_element_count` (Number) Max number of elements in an array. -1 means unlimited. Default: -1
+- `max_body_size` (Number) Max size of the request body. -1 means unlimited. Default: 8192
+- `max_container_depth` (Number) Max nested depth of objects and arrays. -1 means unlimited. Default: -1
+- `max_object_entry_count` (Number) Max number of entries in an object. -1 means unlimited. Default: -1
+- `max_object_entry_name_length` (Number) Max string length of object name. -1 means unlimited. Default: -1
+- `max_string_value_length` (Number) Max string value length. -1 means unlimited. Default: -1
 
 
 <a id="nestedatt--ordering"></a>

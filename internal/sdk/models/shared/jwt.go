@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
 type JWTAlgorithm string
@@ -108,15 +109,26 @@ func (o *JWTConsumer) GetID() *string {
 }
 
 type Jwt struct {
-	Algorithm *JWTAlgorithm `json:"algorithm,omitempty"`
+	Algorithm *JWTAlgorithm `default:"HS256" json:"algorithm"`
 	Consumer  *JWTConsumer  `json:"consumer"`
 	// Unix epoch when the resource was created.
 	CreatedAt    *int64   `json:"created_at,omitempty"`
 	ID           *string  `json:"id,omitempty"`
-	Key          *string  `json:"key,omitempty"`
-	RsaPublicKey *string  `json:"rsa_public_key,omitempty"`
-	Secret       *string  `json:"secret,omitempty"`
+	Key          *string  `default:"null" json:"key"`
+	RsaPublicKey *string  `default:"null" json:"rsa_public_key"`
+	Secret       *string  `default:"null" json:"secret"`
 	Tags         []string `json:"tags,omitempty"`
+}
+
+func (j Jwt) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *Jwt) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Jwt) GetAlgorithm() *JWTAlgorithm {

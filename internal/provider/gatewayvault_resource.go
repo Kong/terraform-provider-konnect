@@ -75,7 +75,6 @@ func (r *GatewayVaultResource) Schema(ctx context.Context, req resource.SchemaRe
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"description": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The description of the Vault entity.`,
 			},

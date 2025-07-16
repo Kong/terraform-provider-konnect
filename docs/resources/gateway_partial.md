@@ -116,14 +116,14 @@ Optional:
 
 Optional:
 
-- `database` (Number) Database to use for the Redis connection when using the `redis` strategy
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
 - `host` (String) Redis host.
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-- `port` (Number) Redis port.
+- `port` (Number) Redis port. Default: 6379
 - `server_name` (String) Server name for SSL verification.
-- `ssl` (Boolean) If set to true, uses SSL to connect to Redis.
-- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate.
-- `timeout` (Number) Connection timeout.
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. Default: false
+- `timeout` (Number) Connection timeout. Default: 1000
 - `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. Requires Redis v6.0.0+.
 
 
@@ -145,26 +145,26 @@ Optional:
 
 Optional:
 
-- `cluster_max_redirections` (Number) Maximum retry attempts for redirection.
+- `cluster_max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
 - `cluster_nodes` (Attributes List) Cluster addresses for Redis connections using the `redis` strategy. (see [below for nested schema](#nestedatt--redis_ee--config--cluster_nodes))
-- `connect_timeout` (Number) Connect timeout.
-- `connection_is_proxied` (Boolean) If the connection to Redis is proxied, e.g., Envoy.
-- `database` (Number) Database index.
-- `host` (String) Redis host.
+- `connect_timeout` (Number) Connect timeout. Default: 1000
+- `connection_is_proxied` (Boolean) If the connection to Redis is proxied, e.g., Envoy. Default: false
+- `database` (Number) Database index. Default: 0
+- `host` (String) Redis host. Default: "127.0.0.1"
 - `keepalive_backlog` (Number) Limits the total number of opened connections for a pool.
-- `keepalive_pool_size` (Number) Size limit for cosocket connection pool per worker process.
+- `keepalive_pool_size` (Number) Size limit for cosocket connection pool per worker process. Default: 256
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-- `port` (Number) The port is only used when the host is set.
-- `read_timeout` (Number) Read timeout.
-- `send_timeout` (Number) Send timeout.
+- `port` (Number) The port is only used when the host is set. Default: 6379
+- `read_timeout` (Number) Read timeout. Default: 1000
+- `send_timeout` (Number) Send timeout. Default: 1000
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel addresses for Redis connections using the `redis` strategy. Array must have at least 1 element. (see [below for nested schema](#nestedatt--redis_ee--config--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance.
 - `sentinel_role` (String) Sentinel role to use for Redis connections when `redis` strategy is used, implies using Redis Sentinel.
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. Requires Redis v6.2.0+.
 - `server_name` (String) Server name for SSL verification.
-- `ssl` (Boolean) If set to true, uses SSL to connect to Redis.
-- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate.
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. Default: false
 - `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. Requires Redis v6.0.0+.
 
 <a id="nestedatt--redis_ee--config--cluster_nodes"></a>

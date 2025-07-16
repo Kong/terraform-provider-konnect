@@ -18,7 +18,7 @@ type AuditLogDestination struct {
 	// The output format of each log messages.
 	LogFormat *LogFormat `default:"cef" json:"log_format"`
 	// Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
-	SkipSslVerification *bool `json:"skip_ssl_verification,omitempty"`
+	SkipSslVerification *bool `default:"false" json:"skip_ssl_verification"`
 	// Timestamp when this webhook was created.
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	// Timestamp when this webhook was last updated. Initial value is 0001-01-01T00:00:0Z.

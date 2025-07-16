@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+)
+
 // Pem - A keypair in PEM format.
 type Pem struct {
 	PrivateKey *string `json:"private_key,omitempty"`
@@ -40,11 +44,11 @@ type Key struct {
 	CreatedAt *int64  `json:"created_at,omitempty"`
 	ID        *string `json:"id,omitempty"`
 	// A JSON Web Key represented as a string.
-	Jwk *string `json:"jwk,omitempty"`
+	Jwk *string `default:"null" json:"jwk"`
 	// A unique identifier for a key.
 	Kid string `json:"kid"`
 	// The name to associate with the given keys.
-	Name *string `json:"name,omitempty"`
+	Name *string `default:"null" json:"name"`
 	// A keypair in PEM format.
 	Pem *Pem `json:"pem,omitempty"`
 	// The id (an UUID) of the key-set with which to associate the key.
@@ -53,7 +57,18 @@ type Key struct {
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64  `json:"updated_at,omitempty"`
-	X5t       *string `json:"x5t,omitempty"`
+	X5t       *string `default:"null" json:"x5t"`
+}
+
+func (k Key) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *Key) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Key) GetCreatedAt() *int64 {

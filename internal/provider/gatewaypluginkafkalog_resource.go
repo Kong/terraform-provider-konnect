@@ -14,6 +14,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -157,32 +159,40 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 						},
 					},
 					"keepalive": schema.Int64Attribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     int64default.StaticInt64(60000),
+						Description: `Default: 60000`,
 					},
 					"keepalive_enabled": schema.BoolAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Default: false`,
 					},
 					"producer_async": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Flag to enable asynchronous mode.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `Flag to enable asynchronous mode. Default: true`,
 					},
 					"producer_async_buffering_limits_messages_in_memory": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Maximum number of messages that can be buffered in memory in asynchronous mode.`,
+						Default:     int64default.StaticInt64(50000),
+						Description: `Maximum number of messages that can be buffered in memory in asynchronous mode. Default: 50000`,
 					},
 					"producer_async_flush_timeout": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Maximum time interval in milliseconds between buffer flushes in asynchronous mode.`,
+						Default:     int64default.StaticInt64(1000),
+						Description: `Maximum time interval in milliseconds between buffer flushes in asynchronous mode. Default: 1000`,
 					},
 					"producer_request_acks": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The number of acknowledgments the producer requires the leader to have received before considering a request complete. Allowed values: 0 for no acknowledgments; 1 for only the leader; and -1 for the full ISR (In-Sync Replica set). must be one of ["-1", "0", "1"]`,
+						Default:     int64default.StaticInt64(1),
+						Description: `The number of acknowledgments the producer requires the leader to have received before considering a request complete. Allowed values: 0 for no acknowledgments; 1 for only the leader; and -1 for the full ISR (In-Sync Replica set). Default: 1; must be one of ["-1", "0", "1"]`,
 						Validators: []validator.Int64{
 							int64validator.OneOf(-1, 0, 1),
 						},
@@ -190,27 +200,32 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 					"producer_request_limits_bytes_per_request": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Maximum size of a Produce request in bytes.`,
+						Default:     int64default.StaticInt64(1048576),
+						Description: `Maximum size of a Produce request in bytes. Default: 1048576`,
 					},
 					"producer_request_limits_messages_per_request": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Maximum number of messages to include into a single Produce request.`,
+						Default:     int64default.StaticInt64(200),
+						Description: `Maximum number of messages to include into a single Produce request. Default: 200`,
 					},
 					"producer_request_retries_backoff_timeout": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Backoff interval between retry attempts in milliseconds.`,
+						Default:     int64default.StaticInt64(100),
+						Description: `Backoff interval between retry attempts in milliseconds. Default: 100`,
 					},
 					"producer_request_retries_max_attempts": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Maximum number of retry attempts per single Produce request.`,
+						Default:     int64default.StaticInt64(10),
+						Description: `Maximum number of retry attempts per single Produce request. Default: 10`,
 					},
 					"producer_request_timeout": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Time to wait for a Produce response in milliseconds`,
+						Default:     int64default.StaticInt64(2000),
+						Description: `Time to wait for a Produce response in milliseconds. Default: 2000`,
 					},
 					"security": schema.SingleNestedAttribute{
 						Computed: true,
@@ -231,7 +246,8 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 					"timeout": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Socket timeout in milliseconds.`,
+						Default:     int64default.StaticInt64(10000),
+						Description: `Socket timeout in milliseconds. Default: 10000`,
 					},
 					"topic": schema.StringAttribute{
 						Computed:    true,
@@ -269,14 +285,14 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 			},
 			"ordering": schema.SingleNestedAttribute{
@@ -308,7 +324,6 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{

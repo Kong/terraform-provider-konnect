@@ -12,8 +12,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -70,17 +73,20 @@ func (r *GatewayPluginRequestSizeLimitingResource) Schema(ctx context.Context, r
 					"allowed_payload_size": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Allowed request payload size in megabytes. Default is ` + "`" + `128` + "`" + ` megabytes (128000000 bytes).`,
+						Default:     int64default.StaticInt64(128),
+						Description: `Allowed request payload size in megabytes. Default is ` + "`" + `128` + "`" + ` megabytes (128000000 bytes). Default: 128`,
 					},
 					"require_content_length": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Set to ` + "`" + `true` + "`" + ` to ensure a valid ` + "`" + `Content-Length` + "`" + ` header exists before reading the request body.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Set to ` + "`" + `true` + "`" + ` to ensure a valid ` + "`" + `Content-Length` + "`" + ` header exists before reading the request body. Default: false`,
 					},
 					"size_unit": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Size unit can be set either in ` + "`" + `bytes` + "`" + `, ` + "`" + `kilobytes` + "`" + `, or ` + "`" + `megabytes` + "`" + ` (default). This configuration is not available in versions prior to Kong Gateway 1.3 and Kong Gateway (OSS) 2.0. must be one of ["bytes", "kilobytes", "megabytes"]`,
+						Default:     stringdefault.StaticString(`megabytes`),
+						Description: `Size unit can be set either in ` + "`" + `bytes` + "`" + `, ` + "`" + `kilobytes` + "`" + `, or ` + "`" + `megabytes` + "`" + ` (default). This configuration is not available in versions prior to Kong Gateway 1.3 and Kong Gateway (OSS) 2.0. Default: "megabytes"; must be one of ["bytes", "kilobytes", "megabytes"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"bytes",
@@ -120,14 +126,14 @@ func (r *GatewayPluginRequestSizeLimitingResource) Schema(ctx context.Context, r
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 			},
 			"ordering": schema.SingleNestedAttribute{
@@ -159,7 +165,6 @@ func (r *GatewayPluginRequestSizeLimitingResource) Schema(ctx context.Context, r
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{

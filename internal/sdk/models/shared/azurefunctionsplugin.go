@@ -86,17 +86,28 @@ type AzureFunctionsPluginConfig struct {
 	// Name of the Azure function to invoke.
 	Functionname *string `json:"functionname,omitempty"`
 	// The domain where the function resides.
-	Hostdomain *string `json:"hostdomain,omitempty"`
+	Hostdomain *string `default:"azurewebsites.net" json:"hostdomain"`
 	// Use of HTTPS to connect with the Azure Functions server.
-	HTTPS *bool `json:"https,omitempty"`
+	HTTPS *bool `default:"true" json:"https"`
 	// Set to `true` to authenticate the Azure Functions server.
-	HTTPSVerify *bool `json:"https_verify,omitempty"`
+	HTTPSVerify *bool `default:"false" json:"https_verify"`
 	// Time in milliseconds during which an idle connection to the Azure Functions server lives before being closed.
-	Keepalive *float64 `json:"keepalive,omitempty"`
+	Keepalive *float64 `default:"60000" json:"keepalive"`
 	// Route prefix to use.
-	Routeprefix *string `json:"routeprefix,omitempty"`
+	Routeprefix *string `default:"api" json:"routeprefix"`
 	// Timeout in milliseconds before closing a connection to the Azure Functions server.
-	Timeout *float64 `json:"timeout,omitempty"`
+	Timeout *float64 `default:"600000" json:"timeout"`
+}
+
+func (a AzureFunctionsPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AzureFunctionsPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AzureFunctionsPluginConfig) GetApikey() *string {
@@ -261,12 +272,12 @@ type AzureFunctionsPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                          `json:"enabled,omitempty"`
+	Enabled      *bool                          `default:"true" json:"enabled"`
 	ID           *string                        `json:"id,omitempty"`
-	InstanceName *string                        `json:"instance_name,omitempty"`
+	InstanceName *string                        `default:"null" json:"instance_name"`
 	name         string                         `const:"azure-functions" json:"name"`
 	Ordering     *AzureFunctionsPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []AzureFunctionsPluginPartials `json:"partials,omitempty"`
+	Partials     []AzureFunctionsPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -275,7 +286,7 @@ type AzureFunctionsPlugin struct {
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *AzureFunctionsPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
-	Protocols []AzureFunctionsPluginProtocols `json:"protocols,omitempty"`
+	Protocols []AzureFunctionsPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *AzureFunctionsPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

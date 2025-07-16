@@ -162,21 +162,32 @@ func (e *HTTPLogPluginConcurrencyLimit) UnmarshalJSON(data []byte) error {
 
 type HTTPLogPluginQueue struct {
 	// The number of of queue delivery timers. -1 indicates unlimited.
-	ConcurrencyLimit *HTTPLogPluginConcurrencyLimit `json:"concurrency_limit,omitempty"`
+	ConcurrencyLimit *HTTPLogPluginConcurrencyLimit `default:"1" json:"concurrency_limit"`
 	// Time in seconds before the initial retry is made for a failing batch.
-	InitialRetryDelay *float64 `json:"initial_retry_delay,omitempty"`
+	InitialRetryDelay *float64 `default:"0.01" json:"initial_retry_delay"`
 	// Maximum number of entries that can be processed at a time.
-	MaxBatchSize *int64 `json:"max_batch_size,omitempty"`
+	MaxBatchSize *int64 `default:"1" json:"max_batch_size"`
 	// Maximum number of bytes that can be waiting on a queue, requires string content.
 	MaxBytes *int64 `json:"max_bytes,omitempty"`
 	// Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.
-	MaxCoalescingDelay *float64 `json:"max_coalescing_delay,omitempty"`
+	MaxCoalescingDelay *float64 `default:"1" json:"max_coalescing_delay"`
 	// Maximum number of entries that can be waiting on the queue.
-	MaxEntries *int64 `json:"max_entries,omitempty"`
+	MaxEntries *int64 `default:"10000" json:"max_entries"`
 	// Maximum time in seconds between retries, caps exponential backoff.
-	MaxRetryDelay *float64 `json:"max_retry_delay,omitempty"`
+	MaxRetryDelay *float64 `default:"60" json:"max_retry_delay"`
 	// Time in seconds before the queue gives up calling a failed handler for a batch.
-	MaxRetryTime *float64 `json:"max_retry_time,omitempty"`
+	MaxRetryTime *float64 `default:"60" json:"max_retry_time"`
+}
+
+func (h HTTPLogPluginQueue) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HTTPLogPluginQueue) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *HTTPLogPluginQueue) GetConcurrencyLimit() *HTTPLogPluginConcurrencyLimit {
@@ -237,7 +248,7 @@ func (o *HTTPLogPluginQueue) GetMaxRetryTime() *float64 {
 
 type HTTPLogPluginConfig struct {
 	// Indicates the type of data sent. The only available option is `application/json`.
-	ContentType *ContentType `json:"content_type,omitempty"`
+	ContentType *ContentType `default:"application/json" json:"content_type"`
 	// Lua code as a key-value map
 	CustomFieldsByLua map[string]any `json:"custom_fields_by_lua,omitempty"`
 	// Optional time in seconds. If `queue_size` > 1, this is the max idle time before sending a log with less than `queue_size` records.
@@ -247,16 +258,27 @@ type HTTPLogPluginConfig struct {
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
 	HTTPEndpoint *string `json:"http_endpoint,omitempty"`
 	// An optional value in milliseconds that defines how long an idle connection will live before being closed.
-	Keepalive *float64 `json:"keepalive,omitempty"`
+	Keepalive *float64 `default:"60000" json:"keepalive"`
 	// An optional method used to send data to the HTTP server. Supported values are `POST` (default), `PUT`, and `PATCH`.
-	Method *Method             `json:"method,omitempty"`
+	Method *Method             `default:"POST" json:"method"`
 	Queue  *HTTPLogPluginQueue `json:"queue,omitempty"`
 	// Maximum number of log entries to be sent on each message to the upstream server.
 	QueueSize *int64 `json:"queue_size,omitempty"`
 	// Number of times to retry when sending data to the upstream server.
 	RetryCount *int64 `json:"retry_count,omitempty"`
 	// An optional timeout in milliseconds when sending data to the upstream server.
-	Timeout *float64 `json:"timeout,omitempty"`
+	Timeout *float64 `default:"10000" json:"timeout"`
+}
+
+func (h HTTPLogPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HTTPLogPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *HTTPLogPluginConfig) GetContentType() *ContentType {
@@ -428,12 +450,12 @@ type HTTPLogPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                   `json:"enabled,omitempty"`
+	Enabled      *bool                   `default:"true" json:"enabled"`
 	ID           *string                 `json:"id,omitempty"`
-	InstanceName *string                 `json:"instance_name,omitempty"`
+	InstanceName *string                 `default:"null" json:"instance_name"`
 	name         string                  `const:"http-log" json:"name"`
 	Ordering     *HTTPLogPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []HTTPLogPluginPartials `json:"partials,omitempty"`
+	Partials     []HTTPLogPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -442,7 +464,7 @@ type HTTPLogPlugin struct {
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *HTTPLogPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
-	Protocols []HTTPLogPluginProtocols `json:"protocols,omitempty"`
+	Protocols []HTTPLogPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *HTTPLogPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

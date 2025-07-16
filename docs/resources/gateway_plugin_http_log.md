@@ -95,7 +95,7 @@ resource "konnect_gateway_plugin_http_log" "my_gatewaypluginhttplog" {
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -114,31 +114,31 @@ resource "konnect_gateway_plugin_http_log" "my_gatewaypluginhttplog" {
 
 Optional:
 
-- `content_type` (String) Indicates the type of data sent. The only available option is `application/json`. must be one of ["application/json", "application/json; charset=utf-8"]
+- `content_type` (String) Indicates the type of data sent. The only available option is `application/json`. Default: "application/json"; must be one of ["application/json", "application/json; charset=utf-8"]
 - `custom_fields_by_lua` (Map of String) Lua code as a key-value map
 - `flush_timeout` (Number) Optional time in seconds. If `queue_size` > 1, this is the max idle time before sending a log with less than `queue_size` records.
 - `headers` (Map of String) An optional table of headers included in the HTTP message to the upstream server. Values are indexed by header name, and each header name accepts a single string.
 - `http_endpoint` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
-- `keepalive` (Number) An optional value in milliseconds that defines how long an idle connection will live before being closed.
-- `method` (String) An optional method used to send data to the HTTP server. Supported values are `POST` (default), `PUT`, and `PATCH`. must be one of ["PATCH", "POST", "PUT"]
+- `keepalive` (Number) An optional value in milliseconds that defines how long an idle connection will live before being closed. Default: 60000
+- `method` (String) An optional method used to send data to the HTTP server. Supported values are `POST` (default), `PUT`, and `PATCH`. Default: "POST"; must be one of ["PATCH", "POST", "PUT"]
 - `queue` (Attributes) (see [below for nested schema](#nestedatt--config--queue))
 - `queue_size` (Number) Maximum number of log entries to be sent on each message to the upstream server.
 - `retry_count` (Number) Number of times to retry when sending data to the upstream server.
-- `timeout` (Number) An optional timeout in milliseconds when sending data to the upstream server.
+- `timeout` (Number) An optional timeout in milliseconds when sending data to the upstream server. Default: 10000
 
 <a id="nestedatt--config--queue"></a>
 ### Nested Schema for `config.queue`
 
 Optional:
 
-- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. must be one of ["-1", "1"]
-- `initial_retry_delay` (Number) Time in seconds before the initial retry is made for a failing batch.
-- `max_batch_size` (Number) Maximum number of entries that can be processed at a time.
+- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of ["-1", "1"]
+- `initial_retry_delay` (Number) Time in seconds before the initial retry is made for a failing batch. Default: 0.01
+- `max_batch_size` (Number) Maximum number of entries that can be processed at a time. Default: 1
 - `max_bytes` (Number) Maximum number of bytes that can be waiting on a queue, requires string content.
-- `max_coalescing_delay` (Number) Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.
-- `max_entries` (Number) Maximum number of entries that can be waiting on the queue.
-- `max_retry_delay` (Number) Maximum time in seconds between retries, caps exponential backoff.
-- `max_retry_time` (Number) Time in seconds before the queue gives up calling a failed handler for a batch.
+- `max_coalescing_delay` (Number) Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler. Default: 1
+- `max_entries` (Number) Maximum number of entries that can be waiting on the queue. Default: 10000
+- `max_retry_delay` (Number) Maximum time in seconds between retries, caps exponential backoff. Default: 60
+- `max_retry_time` (Number) Time in seconds before the queue gives up calling a failed handler for a batch. Default: 60
 
 
 

@@ -11,8 +11,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -69,7 +71,8 @@ func (r *GatewayPluginOasValidationResource) Schema(ctx context.Context, req res
 					"allowed_header_parameters": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `List of header parameters in the request that will be ignored when performing HTTP header validation. These are additional headers added to an API request beyond those defined in the API specification.  For example, you might include the HTTP header ` + "`" + `User-Agent` + "`" + `, which lets servers and network peers identify the application, operating system, vendor, and/or version of the requesting user agent.`,
+						Default:     stringdefault.StaticString(`Host,Content-Type,User-Agent,Accept,Content-Length`),
+						Description: `List of header parameters in the request that will be ignored when performing HTTP header validation. These are additional headers added to an API request beyond those defined in the API specification.  For example, you might include the HTTP header ` + "`" + `User-Agent` + "`" + `, which lets servers and network peers identify the application, operating system, vendor, and/or version of the requesting user agent. Default: "Host,Content-Type,User-Agent,Accept,Content-Length"`,
 					},
 					"api_spec": schema.StringAttribute{
 						Computed:    true,
@@ -79,7 +82,8 @@ func (r *GatewayPluginOasValidationResource) Schema(ctx context.Context, req res
 					"api_spec_encoded": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Indicates whether the api_spec is URI-Encoded.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `Indicates whether the api_spec is URI-Encoded. Default: true`,
 					},
 					"custom_base_path": schema.StringAttribute{
 						Computed:    true,
@@ -89,57 +93,68 @@ func (r *GatewayPluginOasValidationResource) Schema(ctx context.Context, req res
 					"header_parameter_check": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If set to true, checks if HTTP header parameters in the request exist in the API specification.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If set to true, checks if HTTP header parameters in the request exist in the API specification. Default: false`,
 					},
 					"include_base_path": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Indicates whether to include the base path when performing path match evaluation.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Indicates whether to include the base path when performing path match evaluation. Default: false`,
 					},
 					"notify_only_request_validation_failure": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If set to true, notifications via event hooks are enabled, but request based validation failures don't affect the request flow.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If set to true, notifications via event hooks are enabled, but request based validation failures don't affect the request flow. Default: false`,
 					},
 					"notify_only_response_body_validation_failure": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If set to true, notifications via event hooks are enabled, but response validation failures don't affect the response flow.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If set to true, notifications via event hooks are enabled, but response validation failures don't affect the response flow. Default: false`,
 					},
 					"query_parameter_check": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If set to true, checks if query parameters in the request exist in the API specification.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If set to true, checks if query parameters in the request exist in the API specification. Default: false`,
 					},
 					"validate_request_body": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If set to true, validates the request body content against the API specification.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `If set to true, validates the request body content against the API specification. Default: true`,
 					},
 					"validate_request_header_params": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If set to true, validates HTTP header parameters against the API specification.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `If set to true, validates HTTP header parameters against the API specification. Default: true`,
 					},
 					"validate_request_query_params": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If set to true, validates query parameters against the API specification.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `If set to true, validates query parameters against the API specification. Default: true`,
 					},
 					"validate_request_uri_params": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If set to true, validates URI parameters in the request against the API specification.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `If set to true, validates URI parameters in the request against the API specification. Default: true`,
 					},
 					"validate_response_body": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If set to true, validates the response from the upstream services against the API specification. If validation fails, it results in an ` + "`" + `HTTP 406 Not Acceptable` + "`" + ` status code.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If set to true, validates the response from the upstream services against the API specification. If validation fails, it results in an ` + "`" + `HTTP 406 Not Acceptable` + "`" + ` status code. Default: false`,
 					},
 					"verbose_response": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If set to true, returns a detailed error message for invalid requests & responses. This is useful while testing.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If set to true, returns a detailed error message for invalid requests & responses. This is useful while testing. Default: false`,
 					},
 				},
 			},
@@ -172,14 +187,14 @@ func (r *GatewayPluginOasValidationResource) Schema(ctx context.Context, req res
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 			},
 			"ordering": schema.SingleNestedAttribute{
@@ -211,7 +226,6 @@ func (r *GatewayPluginOasValidationResource) Schema(ctx context.Context, req res
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{

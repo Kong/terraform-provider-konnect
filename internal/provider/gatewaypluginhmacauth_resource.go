@@ -11,6 +11,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -79,18 +82,21 @@ func (r *GatewayPluginHmacAuthResource) Schema(ctx context.Context, req resource
 					"clock_skew": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Clock skew in seconds to prevent replay attacks.`,
+						Default:     float64default.StaticFloat64(300),
+						Description: `Clock skew in seconds to prevent replay attacks. Default: 300`,
 					},
 					"enforce_headers": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 						ElementType: types.StringType,
 						Description: `A list of headers that the client should at least use for HTTP signature creation.`,
 					},
 					"hide_credentials": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional boolean value telling the plugin to show or hide the credential from the upstream service.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `An optional boolean value telling the plugin to show or hide the credential from the upstream service. Default: false`,
 					},
 					"realm": schema.StringAttribute{
 						Computed:    true,
@@ -100,7 +106,8 @@ func (r *GatewayPluginHmacAuthResource) Schema(ctx context.Context, req resource
 					"validate_request_body": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A boolean value telling the plugin to enable body validation.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `A boolean value telling the plugin to enable body validation. Default: false`,
 					},
 				},
 			},
@@ -119,14 +126,14 @@ func (r *GatewayPluginHmacAuthResource) Schema(ctx context.Context, req resource
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 			},
 			"ordering": schema.SingleNestedAttribute{
@@ -158,7 +165,6 @@ func (r *GatewayPluginHmacAuthResource) Schema(ctx context.Context, req resource
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{

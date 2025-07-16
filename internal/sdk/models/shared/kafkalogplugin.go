@@ -258,31 +258,42 @@ type KafkaLogPluginConfig struct {
 	ClusterName *string `json:"cluster_name,omitempty"`
 	// Lua code as a key-value map
 	CustomFieldsByLua map[string]any `json:"custom_fields_by_lua,omitempty"`
-	Keepalive         *int64         `json:"keepalive,omitempty"`
-	KeepaliveEnabled  *bool          `json:"keepalive_enabled,omitempty"`
+	Keepalive         *int64         `default:"60000" json:"keepalive"`
+	KeepaliveEnabled  *bool          `default:"false" json:"keepalive_enabled"`
 	// Flag to enable asynchronous mode.
-	ProducerAsync *bool `json:"producer_async,omitempty"`
+	ProducerAsync *bool `default:"true" json:"producer_async"`
 	// Maximum number of messages that can be buffered in memory in asynchronous mode.
-	ProducerAsyncBufferingLimitsMessagesInMemory *int64 `json:"producer_async_buffering_limits_messages_in_memory,omitempty"`
+	ProducerAsyncBufferingLimitsMessagesInMemory *int64 `default:"50000" json:"producer_async_buffering_limits_messages_in_memory"`
 	// Maximum time interval in milliseconds between buffer flushes in asynchronous mode.
-	ProducerAsyncFlushTimeout *int64 `json:"producer_async_flush_timeout,omitempty"`
+	ProducerAsyncFlushTimeout *int64 `default:"1000" json:"producer_async_flush_timeout"`
 	// The number of acknowledgments the producer requires the leader to have received before considering a request complete. Allowed values: 0 for no acknowledgments; 1 for only the leader; and -1 for the full ISR (In-Sync Replica set).
-	ProducerRequestAcks *KafkaLogPluginProducerRequestAcks `json:"producer_request_acks,omitempty"`
+	ProducerRequestAcks *KafkaLogPluginProducerRequestAcks `default:"1" json:"producer_request_acks"`
 	// Maximum size of a Produce request in bytes.
-	ProducerRequestLimitsBytesPerRequest *int64 `json:"producer_request_limits_bytes_per_request,omitempty"`
+	ProducerRequestLimitsBytesPerRequest *int64 `default:"1048576" json:"producer_request_limits_bytes_per_request"`
 	// Maximum number of messages to include into a single Produce request.
-	ProducerRequestLimitsMessagesPerRequest *int64 `json:"producer_request_limits_messages_per_request,omitempty"`
+	ProducerRequestLimitsMessagesPerRequest *int64 `default:"200" json:"producer_request_limits_messages_per_request"`
 	// Backoff interval between retry attempts in milliseconds.
-	ProducerRequestRetriesBackoffTimeout *int64 `json:"producer_request_retries_backoff_timeout,omitempty"`
+	ProducerRequestRetriesBackoffTimeout *int64 `default:"100" json:"producer_request_retries_backoff_timeout"`
 	// Maximum number of retry attempts per single Produce request.
-	ProducerRequestRetriesMaxAttempts *int64 `json:"producer_request_retries_max_attempts,omitempty"`
+	ProducerRequestRetriesMaxAttempts *int64 `default:"10" json:"producer_request_retries_max_attempts"`
 	// Time to wait for a Produce response in milliseconds
-	ProducerRequestTimeout *int64                  `json:"producer_request_timeout,omitempty"`
+	ProducerRequestTimeout *int64                  `default:"2000" json:"producer_request_timeout"`
 	Security               *KafkaLogPluginSecurity `json:"security,omitempty"`
 	// Socket timeout in milliseconds.
-	Timeout *int64 `json:"timeout,omitempty"`
+	Timeout *int64 `default:"10000" json:"timeout"`
 	// The Kafka topic to publish to.
 	Topic *string `json:"topic,omitempty"`
+}
+
+func (k KafkaLogPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaLogPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaLogPluginConfig) GetAuthentication() *KafkaLogPluginAuthentication {
@@ -490,12 +501,12 @@ type KafkaLogPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                    `json:"enabled,omitempty"`
+	Enabled      *bool                    `default:"true" json:"enabled"`
 	ID           *string                  `json:"id,omitempty"`
-	InstanceName *string                  `json:"instance_name,omitempty"`
+	InstanceName *string                  `default:"null" json:"instance_name"`
 	name         string                   `const:"kafka-log" json:"name"`
 	Ordering     *KafkaLogPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []KafkaLogPluginPartials `json:"partials,omitempty"`
+	Partials     []KafkaLogPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -504,7 +515,7 @@ type KafkaLogPlugin struct {
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *KafkaLogPluginConsumer `json:"consumer"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
-	Protocols []KafkaLogPluginProtocols `json:"protocols,omitempty"`
+	Protocols []KafkaLogPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *KafkaLogPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

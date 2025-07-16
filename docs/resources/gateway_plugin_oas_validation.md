@@ -86,7 +86,7 @@ resource "konnect_gateway_plugin_oas_validation" "my_gatewaypluginoasvalidation"
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
@@ -105,21 +105,21 @@ resource "konnect_gateway_plugin_oas_validation" "my_gatewaypluginoasvalidation"
 
 Optional:
 
-- `allowed_header_parameters` (String) List of header parameters in the request that will be ignored when performing HTTP header validation. These are additional headers added to an API request beyond those defined in the API specification.  For example, you might include the HTTP header `User-Agent`, which lets servers and network peers identify the application, operating system, vendor, and/or version of the requesting user agent.
+- `allowed_header_parameters` (String) List of header parameters in the request that will be ignored when performing HTTP header validation. These are additional headers added to an API request beyond those defined in the API specification.  For example, you might include the HTTP header `User-Agent`, which lets servers and network peers identify the application, operating system, vendor, and/or version of the requesting user agent. Default: "Host,Content-Type,User-Agent,Accept,Content-Length"
 - `api_spec` (String) The API specification defined using either Swagger or the OpenAPI. This can be either a JSON or YAML based file. If using a YAML file, the spec needs to be URI-Encoded to preserve the YAML format.
-- `api_spec_encoded` (Boolean) Indicates whether the api_spec is URI-Encoded.
+- `api_spec_encoded` (Boolean) Indicates whether the api_spec is URI-Encoded. Default: true
 - `custom_base_path` (String) The base path to be used for path match evaluation. This value is ignored if `include_base_path` is set to `false`.
-- `header_parameter_check` (Boolean) If set to true, checks if HTTP header parameters in the request exist in the API specification.
-- `include_base_path` (Boolean) Indicates whether to include the base path when performing path match evaluation.
-- `notify_only_request_validation_failure` (Boolean) If set to true, notifications via event hooks are enabled, but request based validation failures don't affect the request flow.
-- `notify_only_response_body_validation_failure` (Boolean) If set to true, notifications via event hooks are enabled, but response validation failures don't affect the response flow.
-- `query_parameter_check` (Boolean) If set to true, checks if query parameters in the request exist in the API specification.
-- `validate_request_body` (Boolean) If set to true, validates the request body content against the API specification.
-- `validate_request_header_params` (Boolean) If set to true, validates HTTP header parameters against the API specification.
-- `validate_request_query_params` (Boolean) If set to true, validates query parameters against the API specification.
-- `validate_request_uri_params` (Boolean) If set to true, validates URI parameters in the request against the API specification.
-- `validate_response_body` (Boolean) If set to true, validates the response from the upstream services against the API specification. If validation fails, it results in an `HTTP 406 Not Acceptable` status code.
-- `verbose_response` (Boolean) If set to true, returns a detailed error message for invalid requests & responses. This is useful while testing.
+- `header_parameter_check` (Boolean) If set to true, checks if HTTP header parameters in the request exist in the API specification. Default: false
+- `include_base_path` (Boolean) Indicates whether to include the base path when performing path match evaluation. Default: false
+- `notify_only_request_validation_failure` (Boolean) If set to true, notifications via event hooks are enabled, but request based validation failures don't affect the request flow. Default: false
+- `notify_only_response_body_validation_failure` (Boolean) If set to true, notifications via event hooks are enabled, but response validation failures don't affect the response flow. Default: false
+- `query_parameter_check` (Boolean) If set to true, checks if query parameters in the request exist in the API specification. Default: false
+- `validate_request_body` (Boolean) If set to true, validates the request body content against the API specification. Default: true
+- `validate_request_header_params` (Boolean) If set to true, validates HTTP header parameters against the API specification. Default: true
+- `validate_request_query_params` (Boolean) If set to true, validates query parameters against the API specification. Default: true
+- `validate_request_uri_params` (Boolean) If set to true, validates URI parameters in the request against the API specification. Default: true
+- `validate_response_body` (Boolean) If set to true, validates the response from the upstream services against the API specification. If validation fails, it results in an `HTTP 406 Not Acceptable` status code. Default: false
+- `verbose_response` (Boolean) If set to true, returns a detailed error message for invalid requests & responses. This is useful while testing. Default: false
 
 
 <a id="nestedatt--consumer"></a>

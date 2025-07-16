@@ -12,8 +12,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -69,7 +71,8 @@ func (r *GatewayPluginTLSHandshakeModifierResource) Schema(ctx context.Context, 
 					"tls_client_certificate": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `TLS Client Certificate. must be "REQUEST"`,
+						Default:     stringdefault.StaticString(`REQUEST`),
+						Description: `TLS Client Certificate. Default: "REQUEST"; must be "REQUEST"`,
 						Validators: []validator.String{
 							stringvalidator.OneOf("REQUEST"),
 						},
@@ -91,14 +94,14 @@ func (r *GatewayPluginTLSHandshakeModifierResource) Schema(ctx context.Context, 
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 			},
 			"ordering": schema.SingleNestedAttribute{
@@ -130,7 +133,6 @@ func (r *GatewayPluginTLSHandshakeModifierResource) Schema(ctx context.Context, 
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{

@@ -12,8 +12,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -69,12 +72,14 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 					"absolute_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The session cookie absolute timeout, in seconds. Specifies how long the session can be used until it is no longer valid.`,
+						Default:     float64default.StaticFloat64(86400),
+						Description: `The session cookie absolute timeout, in seconds. Specifies how long the session can be used until it is no longer valid. Default: 86400`,
 					},
 					"audience": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The session audience, which is the intended target application. For example ` + "`" + `"my-application"` + "`" + `.`,
+						Default:     stringdefault.StaticString(`default`),
+						Description: `The session audience, which is the intended target application. For example ` + "`" + `"my-application"` + "`" + `. Default: "default"`,
 					},
 					"cookie_domain": schema.StringAttribute{
 						Computed:    true,
@@ -84,22 +89,26 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 					"cookie_http_only": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Applies the ` + "`" + `HttpOnly` + "`" + ` tag so that the cookie is sent only to a server.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `Applies the ` + "`" + `HttpOnly` + "`" + ` tag so that the cookie is sent only to a server. Default: true`,
 					},
 					"cookie_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The name of the cookie.`,
+						Default:     stringdefault.StaticString(`session`),
+						Description: `The name of the cookie. Default: "session"`,
 					},
 					"cookie_path": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The resource in the host where the cookie is available.`,
+						Default:     stringdefault.StaticString(`/`),
+						Description: `The resource in the host where the cookie is available. Default: "/"`,
 					},
 					"cookie_same_site": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Determines whether and how a cookie may be sent with cross-site requests. must be one of ["Default", "Lax", "None", "Strict"]`,
+						Default:     stringdefault.StaticString(`Strict`),
+						Description: `Determines whether and how a cookie may be sent with cross-site requests. Default: "Strict"; must be one of ["Default", "Lax", "None", "Strict"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"Default",
@@ -112,17 +121,20 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 					"cookie_secure": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Applies the Secure directive so that the cookie may be sent to the server only with an encrypted request over the HTTPS protocol.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `Applies the Secure directive so that the cookie may be sent to the server only with an encrypted request over the HTTPS protocol. Default: true`,
 					},
 					"hash_subject": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Whether to hash or not the subject when store_metadata is enabled.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Whether to hash or not the subject when store_metadata is enabled. Default: false`,
 					},
 					"idling_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The session cookie idle time, in seconds.`,
+						Default:     float64default.StaticFloat64(900),
+						Description: `The session cookie idle time, in seconds. Default: 900`,
 					},
 					"logout_methods": schema.ListAttribute{
 						Computed:    true,
@@ -133,36 +145,44 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 					"logout_post_arg": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The POST argument passed to logout requests. Do not change this property.`,
+						Default:     stringdefault.StaticString(`session_logout`),
+						Description: `The POST argument passed to logout requests. Do not change this property. Default: "session_logout"`,
 					},
 					"logout_query_arg": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The query argument passed to logout requests.`,
+						Default:     stringdefault.StaticString(`session_logout`),
+						Description: `The query argument passed to logout requests. Default: "session_logout"`,
 					},
 					"read_body_for_logout": schema.BoolAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Default: false`,
 					},
 					"remember": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Enables or disables persistent sessions.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Enables or disables persistent sessions. Default: false`,
 					},
 					"remember_absolute_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The persistent session absolute timeout limit, in seconds.`,
+						Default:     float64default.StaticFloat64(2592000),
+						Description: `The persistent session absolute timeout limit, in seconds. Default: 2592000`,
 					},
 					"remember_cookie_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Persistent session cookie name. Use with the ` + "`" + `remember` + "`" + ` configuration parameter.`,
+						Default:     stringdefault.StaticString(`remember`),
+						Description: `Persistent session cookie name. Use with the ` + "`" + `remember` + "`" + ` configuration parameter. Default: "remember"`,
 					},
 					"remember_rolling_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The persistent session rolling timeout window, in seconds.`,
+						Default:     float64default.StaticFloat64(604800),
+						Description: `The persistent session rolling timeout window, in seconds. Default: 604800`,
 					},
 					"request_headers": schema.ListAttribute{
 						Computed:    true,
@@ -179,22 +199,26 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 					"rolling_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The session cookie rolling timeout, in seconds. Specifies how long the session can be used until it needs to be renewed.`,
+						Default:     float64default.StaticFloat64(3600),
+						Description: `The session cookie rolling timeout, in seconds. Specifies how long the session can be used until it needs to be renewed. Default: 3600`,
 					},
 					"secret": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The secret that is used in keyed HMAC generation.`,
+						Default:     stringdefault.StaticString(`WKzHLADIGTA9J6nV29ppiqFxmLWstNnPGEtEJ2gQA70z`),
+						Description: `The secret that is used in keyed HMAC generation. Default: "WKzHLADIGTA9J6nV29ppiqFxmLWstNnPGEtEJ2gQA70z"`,
 					},
 					"stale_ttl": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The duration, in seconds, after which an old cookie is discarded, starting from the moment when the session becomes outdated and is replaced by a new one.`,
+						Default:     float64default.StaticFloat64(10),
+						Description: `The duration, in seconds, after which an old cookie is discarded, starting from the moment when the session becomes outdated and is replaced by a new one. Default: 10`,
 					},
 					"storage": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Determines where the session data is stored. ` + "`" + `kong` + "`" + `: Stores encrypted session data into Kong's current database strategy; the cookie will not contain any session data. ` + "`" + `cookie` + "`" + `: Stores encrypted session data within the cookie itself. must be one of ["cookie", "kong"]`,
+						Default:     stringdefault.StaticString(`cookie`),
+						Description: `Determines where the session data is stored. ` + "`" + `kong` + "`" + `: Stores encrypted session data into Kong's current database strategy; the cookie will not contain any session data. ` + "`" + `cookie` + "`" + `: Stores encrypted session data within the cookie itself. Default: "cookie"; must be one of ["cookie", "kong"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"cookie",
@@ -205,7 +229,8 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 					"store_metadata": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Whether to also store metadata of sessions, such as collecting data of sessions for a specific audience belonging to a specific subject.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Whether to also store metadata of sessions, such as collecting data of sessions for a specific audience belonging to a specific subject. Default: false`,
 					},
 				},
 			},
@@ -224,14 +249,14 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 			},
 			"ordering": schema.SingleNestedAttribute{
@@ -263,7 +288,6 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{

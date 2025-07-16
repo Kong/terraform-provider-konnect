@@ -11,8 +11,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -68,7 +70,8 @@ func (r *GatewayPluginJweDecryptResource) Schema(ctx context.Context, req resour
 					"forward_header_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The name of the header that is used to set the decrypted value.`,
+						Default:     stringdefault.StaticString(`Authorization`),
+						Description: `The name of the header that is used to set the decrypted value. Default: "Authorization"`,
 					},
 					"key_sets": schema.ListAttribute{
 						Computed:    true,
@@ -79,12 +82,14 @@ func (r *GatewayPluginJweDecryptResource) Schema(ctx context.Context, req resour
 					"lookup_header_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The name of the header to look for the JWE token.`,
+						Default:     stringdefault.StaticString(`Authorization`),
+						Description: `The name of the header to look for the JWE token. Default: "Authorization"`,
 					},
 					"strict": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Defines how the plugin behaves in cases where no token was found in the request. When using ` + "`" + `strict` + "`" + ` mode, the request requires a token to be present and subsequently raise an error if none could be found.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `Defines how the plugin behaves in cases where no token was found in the request. When using ` + "`" + `strict` + "`" + ` mode, the request requires a token to be present and subsequently raise an error if none could be found. Default: true`,
 					},
 				},
 			},
@@ -103,14 +108,14 @@ func (r *GatewayPluginJweDecryptResource) Schema(ctx context.Context, req resour
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 			},
 			"ordering": schema.SingleNestedAttribute{
@@ -142,7 +147,6 @@ func (r *GatewayPluginJweDecryptResource) Schema(ctx context.Context, req resour
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{

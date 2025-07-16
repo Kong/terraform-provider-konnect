@@ -14,8 +14,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -77,7 +80,8 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 							"allow_override": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin. Default: false`,
 							},
 							"aws_access_key_id": schema.StringAttribute{
 								Computed:    true,
@@ -107,7 +111,8 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 							"azure_use_managed_identity": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models. Default: false`,
 							},
 							"gcp_service_account_json": schema.StringAttribute{
 								Computed:    true,
@@ -117,7 +122,8 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 							"gcp_use_service_account": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Use service account auth for GCP-based providers and models.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `Use service account auth for GCP-based providers and models. Default: false`,
 							},
 							"header_name": schema.StringAttribute{
 								Computed:    true,
@@ -155,7 +161,8 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 					"llm_format": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `LLM input and output format and schema to use. must be one of ["bedrock", "gemini", "openai"]`,
+						Default:     stringdefault.StaticString(`openai`),
+						Description: `LLM input and output format and schema to use. Default: "openai"; must be one of ["bedrock", "gemini", "openai"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"bedrock",
@@ -171,19 +178,22 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 							"log_payloads": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If enabled, will log the request and response body into the Kong log plugin(s) output.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `If enabled, will log the request and response body into the Kong log plugin(s) output. Default: false`,
 							},
 							"log_statistics": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output. Default: false`,
 							},
 						},
 					},
 					"max_request_body_size": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `max allowed body size allowed to be introspected`,
+						Default:     int64default.StaticInt64(8192),
+						Description: `max allowed body size allowed to be introspected. Default: 8192`,
 					},
 					"model": schema.SingleNestedAttribute{
 						Computed: true,
@@ -206,7 +216,8 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 									"azure_api_version": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `'api-version' for Azure OpenAI instances.`,
+										Default:     stringdefault.StaticString(`2023-05-15`),
+										Description: `'api-version' for Azure OpenAI instances. Default: "2023-05-15"`,
 									},
 									"azure_deployment_id": schema.StringAttribute{
 										Computed:    true,
@@ -379,12 +390,14 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 					"model_name_header": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Display the model name selected in the X-Kong-LLM-Model response header`,
+						Default:     booldefault.StaticBool(true),
+						Description: `Display the model name selected in the X-Kong-LLM-Model response header. Default: true`,
 					},
 					"response_streaming": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events. must be one of ["allow", "always", "deny"]`,
+						Default:     stringdefault.StaticString(`allow`),
+						Description: `Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events. Default: "allow"; must be one of ["allow", "always", "deny"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"allow",
@@ -450,14 +463,14 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 			},
 			"ordering": schema.SingleNestedAttribute{
@@ -489,7 +502,6 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{

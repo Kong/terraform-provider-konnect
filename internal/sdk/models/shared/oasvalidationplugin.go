@@ -78,35 +78,46 @@ func (o *OasValidationPluginPartials) GetPath() *string {
 
 type OasValidationPluginConfig struct {
 	// List of header parameters in the request that will be ignored when performing HTTP header validation. These are additional headers added to an API request beyond those defined in the API specification.  For example, you might include the HTTP header `User-Agent`, which lets servers and network peers identify the application, operating system, vendor, and/or version of the requesting user agent.
-	AllowedHeaderParameters *string `json:"allowed_header_parameters,omitempty"`
+	AllowedHeaderParameters *string `default:"Host,Content-Type,User-Agent,Accept,Content-Length" json:"allowed_header_parameters"`
 	// The API specification defined using either Swagger or the OpenAPI. This can be either a JSON or YAML based file. If using a YAML file, the spec needs to be URI-Encoded to preserve the YAML format.
 	APISpec *string `json:"api_spec,omitempty"`
 	// Indicates whether the api_spec is URI-Encoded.
-	APISpecEncoded *bool `json:"api_spec_encoded,omitempty"`
+	APISpecEncoded *bool `default:"true" json:"api_spec_encoded"`
 	// The base path to be used for path match evaluation. This value is ignored if `include_base_path` is set to `false`.
 	CustomBasePath *string `json:"custom_base_path,omitempty"`
 	// If set to true, checks if HTTP header parameters in the request exist in the API specification.
-	HeaderParameterCheck *bool `json:"header_parameter_check,omitempty"`
+	HeaderParameterCheck *bool `default:"false" json:"header_parameter_check"`
 	// Indicates whether to include the base path when performing path match evaluation.
-	IncludeBasePath *bool `json:"include_base_path,omitempty"`
+	IncludeBasePath *bool `default:"false" json:"include_base_path"`
 	// If set to true, notifications via event hooks are enabled, but request based validation failures don't affect the request flow.
-	NotifyOnlyRequestValidationFailure *bool `json:"notify_only_request_validation_failure,omitempty"`
+	NotifyOnlyRequestValidationFailure *bool `default:"false" json:"notify_only_request_validation_failure"`
 	// If set to true, notifications via event hooks are enabled, but response validation failures don't affect the response flow.
-	NotifyOnlyResponseBodyValidationFailure *bool `json:"notify_only_response_body_validation_failure,omitempty"`
+	NotifyOnlyResponseBodyValidationFailure *bool `default:"false" json:"notify_only_response_body_validation_failure"`
 	// If set to true, checks if query parameters in the request exist in the API specification.
-	QueryParameterCheck *bool `json:"query_parameter_check,omitempty"`
+	QueryParameterCheck *bool `default:"false" json:"query_parameter_check"`
 	// If set to true, validates the request body content against the API specification.
-	ValidateRequestBody *bool `json:"validate_request_body,omitempty"`
+	ValidateRequestBody *bool `default:"true" json:"validate_request_body"`
 	// If set to true, validates HTTP header parameters against the API specification.
-	ValidateRequestHeaderParams *bool `json:"validate_request_header_params,omitempty"`
+	ValidateRequestHeaderParams *bool `default:"true" json:"validate_request_header_params"`
 	// If set to true, validates query parameters against the API specification.
-	ValidateRequestQueryParams *bool `json:"validate_request_query_params,omitempty"`
+	ValidateRequestQueryParams *bool `default:"true" json:"validate_request_query_params"`
 	// If set to true, validates URI parameters in the request against the API specification.
-	ValidateRequestURIParams *bool `json:"validate_request_uri_params,omitempty"`
+	ValidateRequestURIParams *bool `default:"true" json:"validate_request_uri_params"`
 	// If set to true, validates the response from the upstream services against the API specification. If validation fails, it results in an `HTTP 406 Not Acceptable` status code.
-	ValidateResponseBody *bool `json:"validate_response_body,omitempty"`
+	ValidateResponseBody *bool `default:"false" json:"validate_response_body"`
 	// If set to true, returns a detailed error message for invalid requests & responses. This is useful while testing.
-	VerboseResponse *bool `json:"verbose_response,omitempty"`
+	VerboseResponse *bool `default:"false" json:"verbose_response"`
+}
+
+func (o OasValidationPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OasValidationPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OasValidationPluginConfig) GetAllowedHeaderParameters() *string {
@@ -287,12 +298,12 @@ type OasValidationPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                         `json:"enabled,omitempty"`
+	Enabled      *bool                         `default:"true" json:"enabled"`
 	ID           *string                       `json:"id,omitempty"`
-	InstanceName *string                       `json:"instance_name,omitempty"`
+	InstanceName *string                       `default:"null" json:"instance_name"`
 	name         string                        `const:"oas-validation" json:"name"`
 	Ordering     *OasValidationPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []OasValidationPluginPartials `json:"partials,omitempty"`
+	Partials     []OasValidationPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -301,7 +312,7 @@ type OasValidationPlugin struct {
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *OasValidationPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
-	Protocols []OasValidationPluginProtocols `json:"protocols,omitempty"`
+	Protocols []OasValidationPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *OasValidationPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
