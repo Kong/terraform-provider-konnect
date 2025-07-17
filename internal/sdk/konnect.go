@@ -7,13 +7,14 @@ package sdk
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"time"
+
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/config"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/hooks"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/retry"
-	"net/http"
-	"time"
 )
 
 // ServerList contains the list of servers available to the SDK
@@ -278,9 +279,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *Konnect {
 	sdk := &Konnect{
-		SDKVersion: "2.11.0",
+		SDKVersion: "2.11.1",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 2.11.0 2.656.9 2.0.0 github.com/kong/terraform-provider-konnect/v2/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 2.11.1 2.656.9 2.0.0 github.com/kong/terraform-provider-konnect/v2/internal/sdk",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),
