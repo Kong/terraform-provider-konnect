@@ -127,20 +127,206 @@ func (e *ProducerRequestAcks) UnmarshalJSON(data []byte) error {
 	}
 }
 
+type Basic struct {
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	// This field is [encrypted](/gateway/keyring/).
+	Password string `json:"password"`
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	// This field is [encrypted](/gateway/keyring/).
+	Username string `json:"username"`
+}
+
+func (o *Basic) GetPassword() string {
+	if o == nil {
+		return ""
+	}
+	return o.Password
+}
+
+func (o *Basic) GetUsername() string {
+	if o == nil {
+		return ""
+	}
+	return o.Username
+}
+
+// ConfluentPluginMode - Authentication mode to use with the schema registry.
+type ConfluentPluginMode string
+
+const (
+	ConfluentPluginModeBasic ConfluentPluginMode = "basic"
+	ConfluentPluginModeNone  ConfluentPluginMode = "none"
+)
+
+func (e ConfluentPluginMode) ToPointer() *ConfluentPluginMode {
+	return &e
+}
+func (e *ConfluentPluginMode) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "basic":
+		fallthrough
+	case "none":
+		*e = ConfluentPluginMode(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ConfluentPluginMode: %v", v)
+	}
+}
+
+type ConfluentPluginAuthentication struct {
+	Basic *Basic `json:"basic,omitempty"`
+	// Authentication mode to use with the schema registry.
+	Mode *ConfluentPluginMode `json:"mode,omitempty"`
+}
+
+func (o *ConfluentPluginAuthentication) GetBasic() *Basic {
+	if o == nil {
+		return nil
+	}
+	return o.Basic
+}
+
+func (o *ConfluentPluginAuthentication) GetMode() *ConfluentPluginMode {
+	if o == nil {
+		return nil
+	}
+	return o.Mode
+}
+
+type KeySchema struct {
+	// The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
+	SchemaVersion *string `json:"schema_version,omitempty"`
+	// The name of the subject
+	SubjectName *string `json:"subject_name,omitempty"`
+}
+
+func (o *KeySchema) GetSchemaVersion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SchemaVersion
+}
+
+func (o *KeySchema) GetSubjectName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SubjectName
+}
+
+type ValueSchema struct {
+	// The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
+	SchemaVersion *string `json:"schema_version,omitempty"`
+	// The name of the subject
+	SubjectName *string `json:"subject_name,omitempty"`
+}
+
+func (o *ValueSchema) GetSchemaVersion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SchemaVersion
+}
+
+func (o *ValueSchema) GetSubjectName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SubjectName
+}
+
+type Confluent struct {
+	Authentication ConfluentPluginAuthentication `json:"authentication"`
+	KeySchema      *KeySchema                    `json:"key_schema,omitempty"`
+	// Set to false to disable SSL certificate verification when connecting to the schema registry.
+	SslVerify *bool `json:"ssl_verify,omitempty"`
+	// The TTL in seconds for the schema registry cache.
+	TTL *float64 `json:"ttl,omitempty"`
+	// The URL of the schema registry.
+	URL         *string      `json:"url,omitempty"`
+	ValueSchema *ValueSchema `json:"value_schema,omitempty"`
+}
+
+func (o *Confluent) GetAuthentication() ConfluentPluginAuthentication {
+	if o == nil {
+		return ConfluentPluginAuthentication{}
+	}
+	return o.Authentication
+}
+
+func (o *Confluent) GetKeySchema() *KeySchema {
+	if o == nil {
+		return nil
+	}
+	return o.KeySchema
+}
+
+func (o *Confluent) GetSslVerify() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SslVerify
+}
+
+func (o *Confluent) GetTTL() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TTL
+}
+
+func (o *Confluent) GetURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.URL
+}
+
+func (o *Confluent) GetValueSchema() *ValueSchema {
+	if o == nil {
+		return nil
+	}
+	return o.ValueSchema
+}
+
+// SchemaRegistry - The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
+type SchemaRegistry struct {
+	Confluent *Confluent `json:"confluent,omitempty"`
+}
+
+func (o *SchemaRegistry) GetConfluent() *Confluent {
+	if o == nil {
+		return nil
+	}
+	return o.Confluent
+}
+
 type ConfluentPluginConfig struct {
 	// The list of allowed topic names to which messages can be sent. The default topic configured in the `topic` field is always allowed, regardless of its inclusion in `allowed_topics`.
 	AllowedTopics []string `json:"allowed_topics,omitempty"`
 	// Set of bootstrap brokers in a `{host: host, port: port}` list format.
 	BootstrapServers []BootstrapServers `json:"bootstrap_servers,omitempty"`
 	// Username/Apikey for SASL authentication.
-	ClusterAPIKey *string `json:"cluster_api_key,omitempty"`
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	ClusterAPIKey string `json:"cluster_api_key"`
 	// Password/ApiSecret for SASL authentication.
-	ClusterAPISecret *string `json:"cluster_api_secret,omitempty"`
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	ClusterAPISecret string `json:"cluster_api_secret"`
 	// An identifier for the Kafka cluster. By default, this field generates a random string. You can also set your own custom cluster identifier.  If more than one Kafka plugin is configured without a `cluster_name` (that is, if the default autogenerated value is removed), these plugins will use the same producer, and by extension, the same cluster. Logs will be sent to the leader of the cluster.
 	ClusterName *string `json:"cluster_name,omitempty"`
 	// Apikey for authentication with Confluent Cloud. This allows for management tasks such as creating topics, ACLs, etc.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	ConfluentCloudAPIKey *string `json:"confluent_cloud_api_key,omitempty"`
 	// The corresponding secret for the Confluent Cloud API key.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	ConfluentCloudAPISecret *string `json:"confluent_cloud_api_secret,omitempty"`
 	// Include the request body in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.
 	ForwardBody *bool `json:"forward_body,omitempty"`
@@ -153,6 +339,8 @@ type ConfluentPluginConfig struct {
 	// Keepalive timeout in milliseconds.
 	Keepalive        *int64 `json:"keepalive,omitempty"`
 	KeepaliveEnabled *bool  `json:"keepalive_enabled,omitempty"`
+	// The request query parameter name that contains the Kafka message key. If specified, messages with the same key will be sent to the same Kafka partition, ensuring consistent ordering.
+	KeyQueryArg *string `json:"key_query_arg,omitempty"`
 	// The Lua functions that manipulates the message being sent to the Kafka topic.
 	MessageByLuaFunctions []string `json:"message_by_lua_functions,omitempty"`
 	// Flag to enable asynchronous mode.
@@ -173,10 +361,12 @@ type ConfluentPluginConfig struct {
 	ProducerRequestRetriesMaxAttempts *int64 `json:"producer_request_retries_max_attempts,omitempty"`
 	// Time to wait for a Produce response in milliseconds.
 	ProducerRequestTimeout *int64 `json:"producer_request_timeout,omitempty"`
+	// The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
+	SchemaRegistry *SchemaRegistry `json:"schema_registry,omitempty"`
 	// Socket timeout in milliseconds.
 	Timeout *int64 `json:"timeout,omitempty"`
 	// The default Kafka topic to publish to if the query parameter defined in the `topics_query_arg` does not exist in the request
-	Topic *string `json:"topic,omitempty"`
+	Topic string `json:"topic"`
 	// The request query parameter name that contains the topics to publish to
 	TopicsQueryArg *string `json:"topics_query_arg,omitempty"`
 }
@@ -195,16 +385,16 @@ func (o *ConfluentPluginConfig) GetBootstrapServers() []BootstrapServers {
 	return o.BootstrapServers
 }
 
-func (o *ConfluentPluginConfig) GetClusterAPIKey() *string {
+func (o *ConfluentPluginConfig) GetClusterAPIKey() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.ClusterAPIKey
 }
 
-func (o *ConfluentPluginConfig) GetClusterAPISecret() *string {
+func (o *ConfluentPluginConfig) GetClusterAPISecret() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.ClusterAPISecret
 }
@@ -270,6 +460,13 @@ func (o *ConfluentPluginConfig) GetKeepaliveEnabled() *bool {
 		return nil
 	}
 	return o.KeepaliveEnabled
+}
+
+func (o *ConfluentPluginConfig) GetKeyQueryArg() *string {
+	if o == nil {
+		return nil
+	}
+	return o.KeyQueryArg
 }
 
 func (o *ConfluentPluginConfig) GetMessageByLuaFunctions() []string {
@@ -342,6 +539,13 @@ func (o *ConfluentPluginConfig) GetProducerRequestTimeout() *int64 {
 	return o.ProducerRequestTimeout
 }
 
+func (o *ConfluentPluginConfig) GetSchemaRegistry() *SchemaRegistry {
+	if o == nil {
+		return nil
+	}
+	return o.SchemaRegistry
+}
+
 func (o *ConfluentPluginConfig) GetTimeout() *int64 {
 	if o == nil {
 		return nil
@@ -349,9 +553,9 @@ func (o *ConfluentPluginConfig) GetTimeout() *int64 {
 	return o.Timeout
 }
 
-func (o *ConfluentPluginConfig) GetTopic() *string {
+func (o *ConfluentPluginConfig) GetTopic() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Topic
 }
@@ -445,8 +649,8 @@ type ConfluentPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                 `json:"updated_at,omitempty"`
-	Config    *ConfluentPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                `json:"updated_at,omitempty"`
+	Config    ConfluentPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *ConfluentPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
@@ -528,9 +732,9 @@ func (o *ConfluentPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *ConfluentPlugin) GetConfig() *ConfluentPluginConfig {
+func (o *ConfluentPlugin) GetConfig() ConfluentPluginConfig {
 	if o == nil {
-		return nil
+		return ConfluentPluginConfig{}
 	}
 	return o.Config
 }

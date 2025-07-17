@@ -138,9 +138,11 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 								Description: `A string representing a host name, such as example.com.`,
 							},
 							"password": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+									`This field is [encrypted](/gateway/keyring/).` + "\n" +
+									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 							},
 							"port": schema.Int64Attribute{
 								Computed:    true,
@@ -174,9 +176,10 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 								},
 							},
 							"username": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 							},
 						},
 						Description: `Redis configuration`,

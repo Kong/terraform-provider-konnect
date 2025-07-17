@@ -81,6 +81,11 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 				}
 			}
 			r.Config.SamplingRate = types.Float64PointerValue(resp.Config.SamplingRate)
+			if resp.Config.SamplingStrategy != nil {
+				r.Config.SamplingStrategy = types.StringValue(string(*resp.Config.SamplingStrategy))
+			} else {
+				r.Config.SamplingStrategy = types.StringNull()
+			}
 			r.Config.SendTimeout = types.Int64PointerValue(resp.Config.SendTimeout)
 			r.Config.TracesEndpoint = types.StringPointerValue(resp.Config.TracesEndpoint)
 		}
@@ -480,6 +485,12 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 		} else {
 			samplingRate = nil
 		}
+		samplingStrategy := new(shared.SamplingStrategy)
+		if !r.Config.SamplingStrategy.IsUnknown() && !r.Config.SamplingStrategy.IsNull() {
+			*samplingStrategy = shared.SamplingStrategy(r.Config.SamplingStrategy.ValueString())
+		} else {
+			samplingStrategy = nil
+		}
 		sendTimeout := new(int64)
 		if !r.Config.SendTimeout.IsUnknown() && !r.Config.SendTimeout.IsNull() {
 			*sendTimeout = r.Config.SendTimeout.ValueInt64()
@@ -505,6 +516,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 			ReadTimeout:                  readTimeout,
 			ResourceAttributes:           resourceAttributes,
 			SamplingRate:                 samplingRate,
+			SamplingStrategy:             samplingStrategy,
 			SendTimeout:                  sendTimeout,
 			TracesEndpoint:               tracesEndpoint,
 		}

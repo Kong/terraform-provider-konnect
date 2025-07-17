@@ -290,6 +290,8 @@ type SessionPluginConfig struct {
 	// The session cookie rolling timeout, in seconds. Specifies how long the session can be used until it needs to be renewed.
 	RollingTimeout *float64 `json:"rolling_timeout,omitempty"`
 	// The secret that is used in keyed HMAC generation.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Secret *string `json:"secret,omitempty"`
 	// The duration, in seconds, after which an old cookie is discarded, starting from the moment when the session becomes outdated and is replaced by a new one.
 	StaleTTL *float64 `json:"stale_ttl,omitempty"`

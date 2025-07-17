@@ -75,11 +75,11 @@ resource "konnect_gateway_plugin_ldap_auth" "my_gatewaypluginldapauth" {
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
@@ -98,16 +98,19 @@ resource "konnect_gateway_plugin_ldap_auth" "my_gatewaypluginldapauth" {
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
+Required:
+
+- `attribute` (String) Attribute to be used to search the user; e.g. cn
+- `base_dn` (String) Base DN as the starting point for the search; e.g., dc=example,dc=com
+- `ldap_host` (String) A string representing a host name, such as example.com.
+
 Optional:
 
 - `anonymous` (String) An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request fails with an authentication failure `4xx`.
-- `attribute` (String) Attribute to be used to search the user; e.g. cn
-- `base_dn` (String) Base DN as the starting point for the search; e.g., dc=example,dc=com
 - `cache_ttl` (Number) Cache expiry time in seconds.
 - `header_type` (String) An optional string to use as part of the Authorization header
 - `hide_credentials` (Boolean) An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request.
 - `keepalive` (Number) An optional value in milliseconds that defines how long an idle connection to LDAP server will live before being closed.
-- `ldap_host` (String) A string representing a host name, such as example.com.
 - `ldap_port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `ldaps` (Boolean) Set to `true` to connect using the LDAPS protocol (LDAP over TLS).  When `ldaps` is configured, you must use port 636. If the `ldap` setting is enabled, ensure the `start_tls` setting is disabled.
 - `realm` (String) When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.

@@ -178,6 +178,8 @@ type ProxyCacheAdvancedPluginRedis struct {
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
 	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	// This field is [encrypted](/gateway/keyring/).
 	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `json:"port,omitempty"`
@@ -190,10 +192,13 @@ type ProxyCacheAdvancedPluginRedis struct {
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
 	SentinelNodes []ProxyCacheAdvancedPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	// This field is [encrypted](/gateway/keyring/).
 	SentinelPassword *string `json:"sentinel_password,omitempty"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
 	SentinelRole *ProxyCacheAdvancedPluginSentinelRole `json:"sentinel_role,omitempty"`
 	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	SentinelUsername *string `json:"sentinel_username,omitempty"`
 	// A string representing an SNI (server name indication) value for TLS.
 	ServerName *string `json:"server_name,omitempty"`
@@ -202,6 +207,7 @@ type ProxyCacheAdvancedPluginRedis struct {
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
 	SslVerify *bool `json:"ssl_verify,omitempty"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Username *string `json:"username,omitempty"`
 }
 
@@ -464,7 +470,7 @@ type ProxyCacheAdvancedPluginConfig struct {
 	// Number of seconds to keep resources in the storage backend. This value is independent of `cache_ttl` or resource TTLs defined by Cache-Control behaviors.
 	StorageTTL *int64 `json:"storage_ttl,omitempty"`
 	// The backing data store in which to hold cache entities. Accepted values are: `memory` and `redis`.
-	Strategy *ProxyCacheAdvancedPluginStrategy `json:"strategy,omitempty"`
+	Strategy ProxyCacheAdvancedPluginStrategy `json:"strategy"`
 	// Relevant headers considered for the cache key. If undefined, none of the headers are taken into consideration.
 	VaryHeaders []string `json:"vary_headers,omitempty"`
 	// Relevant query parameters considered for the cache key. If undefined, all params are taken into consideration. By default, the max number of params accepted is 100. You can change this value via the `lua_max_post_args` in `kong.conf`.
@@ -548,9 +554,9 @@ func (o *ProxyCacheAdvancedPluginConfig) GetStorageTTL() *int64 {
 	return o.StorageTTL
 }
 
-func (o *ProxyCacheAdvancedPluginConfig) GetStrategy() *ProxyCacheAdvancedPluginStrategy {
+func (o *ProxyCacheAdvancedPluginConfig) GetStrategy() ProxyCacheAdvancedPluginStrategy {
 	if o == nil {
-		return nil
+		return ProxyCacheAdvancedPluginStrategy("")
 	}
 	return o.Strategy
 }
@@ -663,8 +669,8 @@ type ProxyCacheAdvancedPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                          `json:"updated_at,omitempty"`
-	Config    *ProxyCacheAdvancedPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                         `json:"updated_at,omitempty"`
+	Config    ProxyCacheAdvancedPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *ProxyCacheAdvancedPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -748,9 +754,9 @@ func (o *ProxyCacheAdvancedPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *ProxyCacheAdvancedPlugin) GetConfig() *ProxyCacheAdvancedPluginConfig {
+func (o *ProxyCacheAdvancedPlugin) GetConfig() ProxyCacheAdvancedPluginConfig {
 	if o == nil {
-		return nil
+		return ProxyCacheAdvancedPluginConfig{}
 	}
 	return o.Config
 }

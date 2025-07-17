@@ -38,19 +38,19 @@ type GatewayPluginLdapAuthAdvancedResource struct {
 
 // GatewayPluginLdapAuthAdvancedResourceModel describes the resource data model.
 type GatewayPluginLdapAuthAdvancedResourceModel struct {
-	Config         *tfTypes.LdapAuthAdvancedPluginConfig `tfsdk:"config"`
-	ControlPlaneID types.String                          `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                           `tfsdk:"created_at"`
-	Enabled        types.Bool                            `tfsdk:"enabled"`
-	ID             types.String                          `tfsdk:"id"`
-	InstanceName   types.String                          `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering            `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials                    `tfsdk:"partials"`
-	Protocols      []types.String                        `tfsdk:"protocols"`
-	Route          *tfTypes.Set                          `tfsdk:"route"`
-	Service        *tfTypes.Set                          `tfsdk:"service"`
-	Tags           []types.String                        `tfsdk:"tags"`
-	UpdatedAt      types.Int64                           `tfsdk:"updated_at"`
+	Config         tfTypes.LdapAuthAdvancedPluginConfig `tfsdk:"config"`
+	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                          `tfsdk:"created_at"`
+	Enabled        types.Bool                           `tfsdk:"enabled"`
+	ID             types.String                         `tfsdk:"id"`
+	InstanceName   types.String                         `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering           `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials                   `tfsdk:"partials"`
+	Protocols      []types.String                       `tfsdk:"protocols"`
+	Route          *tfTypes.Set                         `tfsdk:"route"`
+	Service        *tfTypes.Set                         `tfsdk:"service"`
+	Tags           []types.String                       `tfsdk:"tags"`
+	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginLdapAuthAdvancedResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,8 +62,7 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 		MarkdownDescription: "GatewayPluginLdapAuthAdvanced Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -71,19 +70,18 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 						Description: `An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure ` + "`" + `4xx` + "`" + `. Note that this value must refer to the consumer ` + "`" + `id` + "`" + ` or ` + "`" + `username` + "`" + ` attribute, and **not** its ` + "`" + `custom_id` + "`" + `.`,
 					},
 					"attribute": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `Attribute to be used to search the user; e.g., "cn".`,
 					},
 					"base_dn": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `Base DN as the starting point for the search; e.g., 'dc=example,dc=com'.`,
 					},
 					"bind_dn": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The DN to bind to. Used to perform LDAP search of user. This ` + "`" + `bind_dn` + "`" + ` should have permissions to search for the user being authenticated.`,
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `The DN to bind to. Used to perform LDAP search of user. This ` + "`" + `bind_dn` + "`" + ` should have permissions to search for the user being authenticated.` + "\n" +
+							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 					},
 					"cache_ttl": schema.Float64Attribute{
 						Computed:    true,
@@ -138,14 +136,15 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 						Description: `An optional value in milliseconds that defines how long an idle connection to LDAP server will live before being closed.`,
 					},
 					"ldap_host": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `Host on which the LDAP server is running.`,
 					},
 					"ldap_password": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The password to the LDAP server.`,
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `The password to the LDAP server.` + "\n" +
+							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+							`This field is [encrypted](/gateway/keyring/).`,
 					},
 					"ldap_port": schema.Float64Attribute{
 						Computed:    true,

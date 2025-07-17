@@ -343,6 +343,7 @@ type DatadogPluginConfig struct {
 	// Optional time in seconds. If `queue_size` > 1, this is the max idle time before sending a log with less than `queue_size` records.
 	FlushTimeout *float64 `json:"flush_timeout,omitempty"`
 	// A string representing a host name, such as example.com.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Host *string `json:"host,omitempty"`
 	// List of metrics to be logged.
 	Metrics []Metrics `json:"metrics,omitempty"`

@@ -40,21 +40,21 @@ type GatewayPluginRateLimitingAdvancedResource struct {
 
 // GatewayPluginRateLimitingAdvancedResourceModel describes the resource data model.
 type GatewayPluginRateLimitingAdvancedResourceModel struct {
-	Config         *tfTypes.RateLimitingAdvancedPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.Set                              `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.Set                              `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                              `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                               `tfsdk:"created_at"`
-	Enabled        types.Bool                                `tfsdk:"enabled"`
-	ID             types.String                              `tfsdk:"id"`
-	InstanceName   types.String                              `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering                `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials                        `tfsdk:"partials"`
-	Protocols      []types.String                            `tfsdk:"protocols"`
-	Route          *tfTypes.Set                              `tfsdk:"route"`
-	Service        *tfTypes.Set                              `tfsdk:"service"`
-	Tags           []types.String                            `tfsdk:"tags"`
-	UpdatedAt      types.Int64                               `tfsdk:"updated_at"`
+	Config         tfTypes.RateLimitingAdvancedPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.Set                             `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.Set                             `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                             `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                              `tfsdk:"created_at"`
+	Enabled        types.Bool                               `tfsdk:"enabled"`
+	ID             types.String                             `tfsdk:"id"`
+	InstanceName   types.String                             `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering               `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials                       `tfsdk:"partials"`
+	Protocols      []types.String                           `tfsdk:"protocols"`
+	Route          *tfTypes.Set                             `tfsdk:"route"`
+	Service        *tfTypes.Set                             `tfsdk:"service"`
+	Tags           []types.String                           `tfsdk:"tags"`
+	UpdatedAt      types.Int64                              `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginRateLimitingAdvancedResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -66,8 +66,7 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 		MarkdownDescription: "GatewayPluginRateLimitingAdvanced Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"compound_identifier": schema.ListAttribute{
 						Computed:    true,
@@ -133,8 +132,7 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 						},
 					},
 					"limit": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						ElementType: types.Float64Type,
 						Description: `One or more requests-per-window limits to apply. There must be a matching number of window limits and sizes specified.`,
 					},
@@ -144,8 +142,7 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 						Description: `The shared dictionary where concurrency control locks are stored. The default shared dictionary is ` + "`" + `kong_locks` + "`" + `. The shared dictionary should be declare in nginx-kong.conf.`,
 					},
 					"namespace": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. ` + "`" + `strategy` + "`" + `, ` + "`" + `redis` + "`" + `, ` + "`" + `sync_rate` + "`" + `, ` + "`" + `dictionary_name` + "`" + `, need to be the same.`,
 					},
 					"path": schema.StringAttribute{
@@ -227,9 +224,11 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 								},
 							},
 							"password": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+									`This field is [encrypted](/gateway/keyring/).` + "\n" +
+									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 							},
 							"port": schema.Int64Attribute{
 								Computed:    true,
@@ -296,9 +295,11 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 								Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
 							},
 							"sentinel_password": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+									`This field is [encrypted](/gateway/keyring/).` + "\n" +
+									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 							},
 							"sentinel_role": schema.StringAttribute{
 								Computed:    true,
@@ -313,9 +314,10 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 								},
 							},
 							"sentinel_username": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 							},
 							"server_name": schema.StringAttribute{
 								Computed:    true,
@@ -333,9 +335,10 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
 							},
 							"username": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 							},
 						},
 					},
@@ -362,8 +365,7 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 						Description: `How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 will sync the counters in the specified number of seconds. The minimum allowed interval is 0.02 seconds (20ms).`,
 					},
 					"window_size": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						ElementType: types.Float64Type,
 						Description: `One or more window sizes to apply a limit to (defined in seconds). There must be a matching number of window limits and sizes specified.`,
 					},

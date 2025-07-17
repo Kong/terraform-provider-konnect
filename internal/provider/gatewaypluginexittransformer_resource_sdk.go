@@ -15,17 +15,12 @@ func (r *GatewayPluginExitTransformerResourceModel) RefreshFromSharedExitTransfo
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.ExitTransformerPluginConfig{}
-			r.Config.Functions = make([]types.String, 0, len(resp.Config.Functions))
-			for _, v := range resp.Config.Functions {
-				r.Config.Functions = append(r.Config.Functions, types.StringValue(v))
-			}
-			r.Config.HandleUnexpected = types.BoolPointerValue(resp.Config.HandleUnexpected)
-			r.Config.HandleUnknown = types.BoolPointerValue(resp.Config.HandleUnknown)
+		r.Config.Functions = make([]types.String, 0, len(resp.Config.Functions))
+		for _, v := range resp.Config.Functions {
+			r.Config.Functions = append(r.Config.Functions, types.StringValue(v))
 		}
+		r.Config.HandleUnexpected = types.BoolPointerValue(resp.Config.HandleUnexpected)
+		r.Config.HandleUnknown = types.BoolPointerValue(resp.Config.HandleUnknown)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -277,29 +272,26 @@ func (r *GatewayPluginExitTransformerResourceModel) ToSharedExitTransformerPlugi
 	} else {
 		updatedAt = nil
 	}
-	var config *shared.ExitTransformerPluginConfig
-	if r.Config != nil {
-		functions := make([]string, 0, len(r.Config.Functions))
-		for _, functionsItem := range r.Config.Functions {
-			functions = append(functions, functionsItem.ValueString())
-		}
-		handleUnexpected := new(bool)
-		if !r.Config.HandleUnexpected.IsUnknown() && !r.Config.HandleUnexpected.IsNull() {
-			*handleUnexpected = r.Config.HandleUnexpected.ValueBool()
-		} else {
-			handleUnexpected = nil
-		}
-		handleUnknown := new(bool)
-		if !r.Config.HandleUnknown.IsUnknown() && !r.Config.HandleUnknown.IsNull() {
-			*handleUnknown = r.Config.HandleUnknown.ValueBool()
-		} else {
-			handleUnknown = nil
-		}
-		config = &shared.ExitTransformerPluginConfig{
-			Functions:        functions,
-			HandleUnexpected: handleUnexpected,
-			HandleUnknown:    handleUnknown,
-		}
+	functions := make([]string, 0, len(r.Config.Functions))
+	for _, functionsItem := range r.Config.Functions {
+		functions = append(functions, functionsItem.ValueString())
+	}
+	handleUnexpected := new(bool)
+	if !r.Config.HandleUnexpected.IsUnknown() && !r.Config.HandleUnexpected.IsNull() {
+		*handleUnexpected = r.Config.HandleUnexpected.ValueBool()
+	} else {
+		handleUnexpected = nil
+	}
+	handleUnknown := new(bool)
+	if !r.Config.HandleUnknown.IsUnknown() && !r.Config.HandleUnknown.IsNull() {
+		*handleUnknown = r.Config.HandleUnknown.ValueBool()
+	} else {
+		handleUnknown = nil
+	}
+	config := shared.ExitTransformerPluginConfig{
+		Functions:        functions,
+		HandleUnexpected: handleUnexpected,
+		HandleUnknown:    handleUnknown,
 	}
 	var consumer *shared.ExitTransformerPluginConsumer
 	if r.Consumer != nil {

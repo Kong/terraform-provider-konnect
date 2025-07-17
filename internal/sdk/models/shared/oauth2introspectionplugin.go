@@ -107,7 +107,9 @@ type Oauth2IntrospectionPluginConfig struct {
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request fails with an authentication failure `4xx`. Note that this value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
 	Anonymous *string `json:"anonymous,omitempty"`
 	// The value to set as the `Authorization` header when querying the introspection endpoint. This depends on the OAuth 2.0 server, but usually is the `client_id` and `client_secret` as a Base64-encoded Basic Auth string (`Basic MG9hNWl...`).
-	AuthorizationValue *string `json:"authorization_value,omitempty"`
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	AuthorizationValue string `json:"authorization_value"`
 	// A string indicating whether to associate OAuth2 `username` or `client_id` with the consumer's username. OAuth2 `username` is mapped to a consumer's `username` field, while an OAuth2 `client_id` maps to a consumer's `custom_id`.
 	ConsumerBy *Oauth2IntrospectionPluginConsumerBy `json:"consumer_by,omitempty"`
 	// A list of custom claims to be forwarded from the introspection response to the upstream request. Claims are forwarded in headers with prefix `X-Credential-{claim-name}`.
@@ -119,7 +121,7 @@ type Oauth2IntrospectionPluginConfig struct {
 	// A boolean indicating whether to forward information about the current downstream request to the introspect endpoint. If true, headers `X-Request-Path` and `X-Request-Http-Method` will be inserted into the introspect request.
 	IntrospectRequest *bool `json:"introspect_request,omitempty"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
-	IntrospectionURL *string `json:"introspection_url,omitempty"`
+	IntrospectionURL string `json:"introspection_url"`
 	// An optional value in milliseconds that defines how long an idle connection lives before being closed.
 	Keepalive *int64 `json:"keepalive,omitempty"`
 	// A boolean value that indicates whether the plugin should run (and try to authenticate) on `OPTIONS` preflight requests. If set to `false`, then `OPTIONS` requests will always be allowed.
@@ -139,9 +141,9 @@ func (o *Oauth2IntrospectionPluginConfig) GetAnonymous() *string {
 	return o.Anonymous
 }
 
-func (o *Oauth2IntrospectionPluginConfig) GetAuthorizationValue() *string {
+func (o *Oauth2IntrospectionPluginConfig) GetAuthorizationValue() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.AuthorizationValue
 }
@@ -181,9 +183,9 @@ func (o *Oauth2IntrospectionPluginConfig) GetIntrospectRequest() *bool {
 	return o.IntrospectRequest
 }
 
-func (o *Oauth2IntrospectionPluginConfig) GetIntrospectionURL() *string {
+func (o *Oauth2IntrospectionPluginConfig) GetIntrospectionURL() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.IntrospectionURL
 }
@@ -293,8 +295,8 @@ type Oauth2IntrospectionPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                           `json:"updated_at,omitempty"`
-	Config    *Oauth2IntrospectionPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                          `json:"updated_at,omitempty"`
+	Config    Oauth2IntrospectionPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
 	Protocols []Oauth2IntrospectionPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -374,9 +376,9 @@ func (o *Oauth2IntrospectionPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *Oauth2IntrospectionPlugin) GetConfig() *Oauth2IntrospectionPluginConfig {
+func (o *Oauth2IntrospectionPlugin) GetConfig() Oauth2IntrospectionPluginConfig {
 	if o == nil {
-		return nil
+		return Oauth2IntrospectionPluginConfig{}
 	}
 	return o.Config
 }

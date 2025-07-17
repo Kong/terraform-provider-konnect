@@ -50,11 +50,18 @@ resource "konnect_gateway_plugin_ai_response_transformer" "my_gatewaypluginaires
           azure_deployment_id = "...my_azure_deployment_id..."
           azure_instance      = "...my_azure_instance..."
           bedrock = {
-            aws_assume_role_arn   = "...my_aws_assume_role_arn..."
-            aws_region            = "...my_aws_region..."
-            aws_role_session_name = "...my_aws_role_session_name..."
-            aws_sts_endpoint_url  = "...my_aws_sts_endpoint_url..."
+            aws_assume_role_arn        = "...my_aws_assume_role_arn..."
+            aws_region                 = "...my_aws_region..."
+            aws_role_session_name      = "...my_aws_role_session_name..."
+            aws_sts_endpoint_url       = "...my_aws_sts_endpoint_url..."
+            embeddings_normalize       = false
+            performance_config_latency = "...my_performance_config_latency..."
           }
+          cohere = {
+            embedding_input_type = "search_document"
+            wait_for_model       = false
+          }
+          embeddings_dimensions = 4
           gemini = {
             api_endpoint = "...my_api_endpoint..."
             location_id  = "...my_location_id..."
@@ -77,7 +84,7 @@ resource "konnect_gateway_plugin_ai_response_transformer" "my_gatewaypluginaires
         }
         provider = "cohere"
       }
-      route_type = "llm/v1/completions"
+      route_type = "llm/v1/chat"
     }
     max_request_body_size                = 3
     parse_llm_response_json_instructions = true
@@ -135,11 +142,11 @@ resource "konnect_gateway_plugin_ai_response_transformer" "my_gatewaypluginaires
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -160,6 +167,11 @@ resource "konnect_gateway_plugin_ai_response_transformer" "my_gatewaypluginaires
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
+Required:
+
+- `llm` (Attributes) (see [below for nested schema](#nestedatt--config--llm))
+- `prompt` (String) Use this prompt to tune the LLM system/assistant message for the returning proxy response (from the upstream), adn what response format you are expecting.
+
 Optional:
 
 - `http_proxy_host` (String) A string representing a host name, such as example.com.
@@ -168,60 +180,34 @@ Optional:
 - `https_proxy_host` (String) A string representing a host name, such as example.com.
 - `https_proxy_port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `https_verify` (Boolean) Verify the TLS certificate of the AI upstream service.
-- `llm` (Attributes) (see [below for nested schema](#nestedatt--config--llm))
-- `max_request_body_size` (Number) max allowed body size allowed to be introspected
+- `max_request_body_size` (Number) max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 - `parse_llm_response_json_instructions` (Boolean) Set true to read specific response format from the LLM, and accordingly set the status code / body / headers that proxy back to the client. You need to engineer your LLM prompt to return the correct format, see plugin docs 'Overview' page for usage instructions.
-- `prompt` (String) Use this prompt to tune the LLM system/assistant message for the returning proxy response (from the upstream), adn what response format you are expecting.
 - `transformation_extract_pattern` (String) Defines the regular expression that must match to indicate a successful AI transformation at the response phase. The first match will be set as the returning body. If the AI service's response doesn't match this pattern, a failure is returned to the client.
 
 <a id="nestedatt--config--llm"></a>
 ### Nested Schema for `config.llm`
 
+Required:
+
+- `model` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model))
+- `route_type` (String) The model's operation implementation, for this provider. must be one of ["audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime"]
+
 Optional:
 
 - `auth` (Attributes) (see [below for nested schema](#nestedatt--config--llm--auth))
 - `logging` (Attributes) (see [below for nested schema](#nestedatt--config--llm--logging))
-- `model` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model))
-- `route_type` (String) The model's operation implementation, for this provider. Set to `preserve` to pass through without transformation. must be one of ["llm/v1/chat", "llm/v1/completions", "preserve"]
-
-<a id="nestedatt--config--llm--auth"></a>
-### Nested Schema for `config.llm.auth`
-
-Optional:
-
-- `allow_override` (Boolean) If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
-- `aws_access_key_id` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
-- `aws_secret_access_key` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
-- `azure_client_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
-- `azure_client_secret` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
-- `azure_tenant_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
-- `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
-- `gcp_service_account_json` (String) Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
-- `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models.
-- `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
-- `header_value` (String) Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
-- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["body", "query"]
-- `param_name` (String) If AI model requires authentication via query parameter, specify its name here.
-- `param_value` (String) Specify the full parameter value for 'param_name'.
-
-
-<a id="nestedatt--config--llm--logging"></a>
-### Nested Schema for `config.llm.logging`
-
-Optional:
-
-- `log_payloads` (Boolean) If enabled, will log the request and response body into the Kong log plugin(s) output.
-- `log_statistics` (Boolean) If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.
-
 
 <a id="nestedatt--config--llm--model"></a>
 ### Nested Schema for `config.llm.model`
+
+Required:
+
+- `provider` (String) AI provider request format - Kong translates requests to and from the specified backend compatible formats. must be one of ["anthropic", "azure", "bedrock", "cohere", "gemini", "huggingface", "llama2", "mistral", "openai"]
 
 Optional:
 
 - `name` (String) Model name to execute.
 - `options` (Attributes) Key/value settings for the model (see [below for nested schema](#nestedatt--config--llm--model--options))
-- `provider` (String) AI provider request format - Kong translates requests to and from the specified backend compatible formats. must be one of ["anthropic", "azure", "bedrock", "cohere", "gemini", "huggingface", "llama2", "mistral", "openai"]
 
 <a id="nestedatt--config--llm--model--options"></a>
 ### Nested Schema for `config.llm.model.options`
@@ -233,6 +219,8 @@ Optional:
 - `azure_deployment_id` (String) Deployment ID for Azure OpenAI instances.
 - `azure_instance` (String) Instance name for Azure OpenAI hosted models.
 - `bedrock` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--bedrock))
+- `cohere` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--cohere))
+- `embeddings_dimensions` (Number) If using embeddings models, set the number of dimensions to generate.
 - `gemini` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--gemini))
 - `huggingface` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--huggingface))
 - `input_cost` (Number) Defines the cost per 1M tokens in your prompt.
@@ -255,6 +243,17 @@ Optional:
 - `aws_region` (String) If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
 - `aws_role_session_name` (String) If using AWS providers (Bedrock), set the identifier of the assumed role session.
 - `aws_sts_endpoint_url` (String) If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
+- `embeddings_normalize` (Boolean) If using AWS providers (Bedrock), set to true to normalize the embeddings.
+- `performance_config_latency` (String) Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
+
+
+<a id="nestedatt--config--llm--model--options--cohere"></a>
+### Nested Schema for `config.llm.model.options.cohere`
+
+Optional:
+
+- `embedding_input_type` (String) The purpose of the input text to calculate embedding vectors. must be one of ["classification", "clustering", "image", "search_document", "search_query"]
+- `wait_for_model` (Boolean) Wait for the model if it is not ready
 
 
 <a id="nestedatt--config--llm--model--options--gemini"></a>
@@ -276,6 +275,52 @@ Optional:
 - `wait_for_model` (Boolean) Wait for the model if it is not ready
 
 
+
+
+<a id="nestedatt--config--llm--auth"></a>
+### Nested Schema for `config.llm.auth`
+
+Optional:
+
+- `allow_override` (Boolean) If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
+- `aws_access_key_id` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `aws_secret_access_key` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `azure_client_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `azure_client_secret` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `azure_tenant_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
+- `gcp_service_account_json` (String) Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models.
+- `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `header_value` (String) Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["body", "query"]
+- `param_name` (String) If AI model requires authentication via query parameter, specify its name here.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `param_value` (String) Specify the full parameter value for 'param_name'.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--config--llm--logging"></a>
+### Nested Schema for `config.llm.logging`
+
+Optional:
+
+- `log_payloads` (Boolean) If enabled, will log the request and response body into the Kong log plugin(s) output.
+- `log_statistics` (Boolean) If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.
 
 
 

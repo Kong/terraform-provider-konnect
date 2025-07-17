@@ -17,6 +17,7 @@ type AiRateLimitingAdvancedPluginConfig struct {
 	Identifier                 types.String          `tfsdk:"identifier"`
 	LlmFormat                  types.String          `tfsdk:"llm_format"`
 	LlmProviders               []LlmProviders        `tfsdk:"llm_providers"`
+	Namespace                  types.String          `tfsdk:"namespace"`
 	Path                       types.String          `tfsdk:"path"`
 	Redis                      *PartialRedisEEConfig `tfsdk:"redis"`
 	RequestPromptCountFunction types.String          `tfsdk:"request_prompt_count_function"`

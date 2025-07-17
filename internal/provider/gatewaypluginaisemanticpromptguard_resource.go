@@ -40,21 +40,21 @@ type GatewayPluginAiSemanticPromptGuardResource struct {
 
 // GatewayPluginAiSemanticPromptGuardResourceModel describes the resource data model.
 type GatewayPluginAiSemanticPromptGuardResourceModel struct {
-	Config         *tfTypes.AiSemanticPromptGuardPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.Set                               `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.Set                               `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                               `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                                `tfsdk:"created_at"`
-	Enabled        types.Bool                                 `tfsdk:"enabled"`
-	ID             types.String                               `tfsdk:"id"`
-	InstanceName   types.String                               `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering                 `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials                         `tfsdk:"partials"`
-	Protocols      []types.String                             `tfsdk:"protocols"`
-	Route          *tfTypes.Set                               `tfsdk:"route"`
-	Service        *tfTypes.Set                               `tfsdk:"service"`
-	Tags           []types.String                             `tfsdk:"tags"`
-	UpdatedAt      types.Int64                                `tfsdk:"updated_at"`
+	Config         tfTypes.AiSemanticPromptGuardPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.Set                              `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.Set                              `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                              `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                               `tfsdk:"created_at"`
+	Enabled        types.Bool                                `tfsdk:"enabled"`
+	ID             types.String                              `tfsdk:"id"`
+	InstanceName   types.String                              `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering                `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials                        `tfsdk:"partials"`
+	Protocols      []types.String                            `tfsdk:"protocols"`
+	Route          *tfTypes.Set                              `tfsdk:"route"`
+	Service        *tfTypes.Set                              `tfsdk:"service"`
+	Tags           []types.String                            `tfsdk:"tags"`
+	UpdatedAt      types.Int64                               `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginAiSemanticPromptGuardResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -66,12 +66,10 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 		MarkdownDescription: "GatewayPluginAiSemanticPromptGuard Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"embeddings": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
+						Required: true,
 						Attributes: map[string]schema.Attribute{
 							"auth": schema.SingleNestedAttribute{
 								Computed: true,
@@ -83,29 +81,37 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										Description: `If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.`,
 									},
 									"aws_access_key_id": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.` + "\n" +
+											`This field is [encrypted](/gateway/keyring/).` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 									"aws_secret_access_key": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.` + "\n" +
+											`This field is [encrypted](/gateway/keyring/).` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 									"azure_client_id": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 									"azure_client_secret": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.` + "\n" +
+											`This field is [encrypted](/gateway/keyring/).` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 									"azure_tenant_id": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 									"azure_use_managed_identity": schema.BoolAttribute{
 										Computed:    true,
@@ -113,9 +119,11 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										Description: `Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.`,
 									},
 									"gcp_service_account_json": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable ` + "`" + `GCP_SERVICE_ACCOUNT` + "`" + `.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable ` + "`" + `GCP_SERVICE_ACCOUNT` + "`" + `.` + "\n" +
+											`This field is [encrypted](/gateway/keyring/).` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 									"gcp_use_service_account": schema.BoolAttribute{
 										Computed:    true,
@@ -123,14 +131,17 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										Description: `Use service account auth for GCP-based providers and models.`,
 									},
 									"header_name": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `If AI model requires authentication via Authorization or API key header, specify its name here.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `If AI model requires authentication via Authorization or API key header, specify its name here.` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 									"header_value": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.` + "\n" +
+											`This field is [encrypted](/gateway/keyring/).` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 									"param_location": schema.StringAttribute{
 										Computed:    true,
@@ -144,24 +155,25 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										},
 									},
 									"param_name": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `If AI model requires authentication via query parameter, specify its name here.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `If AI model requires authentication via query parameter, specify its name here.` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 									"param_value": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Specify the full parameter value for 'param_name'.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `Specify the full parameter value for 'param_name'.` + "\n" +
+											`This field is [encrypted](/gateway/keyring/).` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 								},
 							},
 							"model": schema.SingleNestedAttribute{
-								Computed: true,
-								Optional: true,
+								Required: true,
 								Attributes: map[string]schema.Attribute{
 									"name": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
+										Required:    true,
 										Description: `Model name to execute.`,
 									},
 									"options": schema.SingleNestedAttribute{
@@ -217,6 +229,16 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 														Optional:    true,
 														Description: `If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.`,
 													},
+													"embeddings_normalize": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `If using AWS providers (Bedrock), set to true to normalize the embeddings.`,
+													},
+													"performance_config_latency": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.`,
+													},
 												},
 											},
 											"gemini": schema.SingleNestedAttribute{
@@ -265,8 +287,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										Description: `Key/value settings for the model`,
 									},
 									"provider": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
+										Required:    true,
 										Description: `AI provider format to use for embeddings API. must be one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "openai"]`,
 										Validators: []validator.String{
 											stringvalidator.OneOf(
@@ -283,14 +304,32 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 							},
 						},
 					},
+					"genai_category": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Generative AI category of the request. must be one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"audio/speech",
+								"audio/transcription",
+								"image/generation",
+								"realtime/generation",
+								"text/embeddings",
+								"text/generation",
+								"video/generation",
+							),
+						},
+					},
 					"llm_format": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `LLM input and output format and schema to use. must be one of ["bedrock", "gemini", "openai"]`,
+						Description: `LLM input and output format and schema to use. must be one of ["bedrock", "cohere", "gemini", "huggingface", "openai"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"bedrock",
+								"cohere",
 								"gemini",
+								"huggingface",
 								"openai",
 							),
 						},
@@ -324,7 +363,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 							"max_request_body_size": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `max allowed body size allowed to be introspected`,
+								Description: `max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.`,
 							},
 						},
 					},
@@ -340,17 +379,14 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 						},
 					},
 					"vectordb": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
+						Required: true,
 						Attributes: map[string]schema.Attribute{
 							"dimensions": schema.Int64Attribute{
-								Computed:    true,
-								Optional:    true,
+								Required:    true,
 								Description: `the desired dimensionality for the vectors`,
 							},
 							"distance_metric": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
+								Required:    true,
 								Description: `the distance metric to use for vector searches. must be one of ["cosine", "euclidean"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
@@ -374,9 +410,11 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										Description: `the host of the pgvector database`,
 									},
 									"password": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `the password of the pgvector database`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `the password of the pgvector database` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+											`This field is [encrypted](/gateway/keyring/).`,
 									},
 									"port": schema.Int64Attribute{
 										Computed:    true,
@@ -426,9 +464,10 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										Description: `the timeout of the pgvector database`,
 									},
 									"user": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `the user of the pgvector database`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `the user of the pgvector database` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 								},
 							},
@@ -506,9 +545,11 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										},
 									},
 									"password": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+											`This field is [encrypted](/gateway/keyring/).`,
 									},
 									"port": schema.Int64Attribute{
 										Computed:    true,
@@ -565,9 +606,11 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
 									},
 									"sentinel_password": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+											`This field is [encrypted](/gateway/keyring/).`,
 									},
 									"sentinel_role": schema.StringAttribute{
 										Computed:    true,
@@ -582,9 +625,10 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										},
 									},
 									"sentinel_username": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 									"server_name": schema.StringAttribute{
 										Computed:    true,
@@ -602,15 +646,15 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
 									},
 									"username": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 								},
 							},
 							"strategy": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
+								Required:    true,
 								Description: `which vector database driver to use. must be one of ["pgvector", "redis"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
@@ -620,8 +664,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 								},
 							},
 							"threshold": schema.Float64Attribute{
-								Computed:    true,
-								Optional:    true,
+								Required:    true,
 								Description: `the default similarity threshold for accepting semantic search results (float)`,
 							},
 						},

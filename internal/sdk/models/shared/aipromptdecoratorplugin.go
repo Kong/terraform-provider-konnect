@@ -80,9 +80,11 @@ func (o *AiPromptDecoratorPluginPartials) GetPath() *string {
 type LlmFormat string
 
 const (
-	LlmFormatBedrock LlmFormat = "bedrock"
-	LlmFormatGemini  LlmFormat = "gemini"
-	LlmFormatOpenai  LlmFormat = "openai"
+	LlmFormatBedrock     LlmFormat = "bedrock"
+	LlmFormatCohere      LlmFormat = "cohere"
+	LlmFormatGemini      LlmFormat = "gemini"
+	LlmFormatHuggingface LlmFormat = "huggingface"
+	LlmFormatOpenai      LlmFormat = "openai"
 )
 
 func (e LlmFormat) ToPointer() *LlmFormat {
@@ -96,7 +98,11 @@ func (e *LlmFormat) UnmarshalJSON(data []byte) error {
 	switch v {
 	case "bedrock":
 		fallthrough
+	case "cohere":
+		fallthrough
 	case "gemini":
+		fallthrough
+	case "huggingface":
 		fallthrough
 	case "openai":
 		*e = LlmFormat(v)
@@ -226,7 +232,7 @@ func (o *Prompts) GetPrepend() []Prepend {
 type AiPromptDecoratorPluginConfig struct {
 	// LLM input and output format and schema to use
 	LlmFormat *LlmFormat `json:"llm_format,omitempty"`
-	// max allowed body size allowed to be introspected
+	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 	MaxRequestBodySize *int64   `json:"max_request_body_size,omitempty"`
 	Prompts            *Prompts `json:"prompts,omitempty"`
 }

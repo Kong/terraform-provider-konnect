@@ -203,6 +203,7 @@ type Consul struct {
 	// Timeout in milliseconds.
 	Timeout *float64 `json:"timeout,omitempty"`
 	// Consul ACL token.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Token *string `json:"token,omitempty"`
 }
 
@@ -278,6 +279,8 @@ type AcmePluginRedis struct {
 	// A string representing a host name, such as example.com.
 	Host *string `json:"host,omitempty"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `json:"port,omitempty"`
@@ -290,6 +293,7 @@ type AcmePluginRedis struct {
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	Timeout *int64 `json:"timeout,omitempty"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Username *string `json:"username,omitempty"`
 }
 
@@ -426,6 +430,7 @@ type AcmePluginVault struct {
 	// Turn on TLS verification.
 	TLSVerify *bool `json:"tls_verify,omitempty"`
 	// Consul ACL token.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Token *string `json:"token,omitempty"`
 }
 
@@ -558,7 +563,9 @@ func (o *StorageConfig) GetVault() *AcmePluginVault {
 
 type AcmePluginConfig struct {
 	// The account identifier. Can be reused in a different plugin instance.
-	AccountEmail *string `json:"account_email,omitempty"`
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	AccountEmail string `json:"account_email"`
 	// The private key associated with the account.
 	AccountKey *AccountKey `json:"account_key,omitempty"`
 	// If set to `true`, the plugin allows all domains and ignores any values in the `domains` list.
@@ -570,8 +577,12 @@ type AcmePluginConfig struct {
 	// An array of strings representing hosts. A valid host is a string containing one or more labels separated by periods, with at most one wildcard label ('*')
 	Domains []string `json:"domains,omitempty"`
 	// External account binding (EAB) base64-encoded URL string of the HMAC key. You usually don't need to set this unless it is explicitly required by the CA.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	// This field is [encrypted](/gateway/keyring/).
 	EabHmacKey *string `json:"eab_hmac_key,omitempty"`
 	// External account binding (EAB) key id. You usually don't need to set this unless it is explicitly required by the CA.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	// This field is [encrypted](/gateway/keyring/).
 	EabKid *string `json:"eab_kid,omitempty"`
 	// A boolean value that controls whether to include the IPv4 address in the common name field of generated certificates.
 	EnableIpv4CommonName *bool `json:"enable_ipv4_common_name,omitempty"`
@@ -591,9 +602,9 @@ type AcmePluginConfig struct {
 	TosAccepted *bool `json:"tos_accepted,omitempty"`
 }
 
-func (o *AcmePluginConfig) GetAccountEmail() *string {
+func (o *AcmePluginConfig) GetAccountEmail() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.AccountEmail
 }
@@ -749,8 +760,8 @@ type AcmePlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64            `json:"updated_at,omitempty"`
-	Config    *AcmePluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64           `json:"updated_at,omitempty"`
+	Config    AcmePluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
 	Protocols []AcmePluginProtocols `json:"protocols,omitempty"`
 }
@@ -826,9 +837,9 @@ func (o *AcmePlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *AcmePlugin) GetConfig() *AcmePluginConfig {
+func (o *AcmePlugin) GetConfig() AcmePluginConfig {
 	if o == nil {
-		return nil
+		return AcmePluginConfig{}
 	}
 	return o.Config
 }

@@ -69,9 +69,11 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"aws_assume_role_arn": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The target AWS IAM role ARN used to invoke the Lambda function.`,
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `The target AWS IAM role ARN used to invoke the Lambda function.` + "\n" +
+							`This field is [encrypted](/gateway/keyring/).` + "\n" +
+							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 					},
 					"aws_imds_protocol_version": schema.StringAttribute{
 						Computed:    true,
@@ -82,9 +84,11 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 						},
 					},
 					"aws_key": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The AWS key credential to be used when invoking the function.`,
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `The AWS key credential to be used when invoking the function.` + "\n" +
+							`This field is [encrypted](/gateway/keyring/).` + "\n" +
+							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 					},
 					"aws_region": schema.StringAttribute{
 						Computed:    true,
@@ -97,9 +101,11 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 						Description: `The identifier of the assumed role session.`,
 					},
 					"aws_secret": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The AWS secret credential to be used when invoking the function.`,
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `The AWS secret credential to be used when invoking the function. ` + "\n" +
+							`This field is [encrypted](/gateway/keyring/).` + "\n" +
+							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 					},
 					"aws_sts_endpoint_url": schema.StringAttribute{
 						Computed:    true,

@@ -15,120 +15,121 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		if resp.Config.Auth == nil {
+			r.Config.Auth = nil
 		} else {
-			r.Config = &tfTypes.AiProxyPluginConfig{}
-			if resp.Config.Auth == nil {
-				r.Config.Auth = nil
+			r.Config.Auth = &tfTypes.Auth{}
+			r.Config.Auth.AllowOverride = types.BoolPointerValue(resp.Config.Auth.AllowOverride)
+			r.Config.Auth.AwsAccessKeyID = types.StringPointerValue(resp.Config.Auth.AwsAccessKeyID)
+			r.Config.Auth.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Auth.AwsSecretAccessKey)
+			r.Config.Auth.AzureClientID = types.StringPointerValue(resp.Config.Auth.AzureClientID)
+			r.Config.Auth.AzureClientSecret = types.StringPointerValue(resp.Config.Auth.AzureClientSecret)
+			r.Config.Auth.AzureTenantID = types.StringPointerValue(resp.Config.Auth.AzureTenantID)
+			r.Config.Auth.AzureUseManagedIdentity = types.BoolPointerValue(resp.Config.Auth.AzureUseManagedIdentity)
+			r.Config.Auth.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.Auth.GcpServiceAccountJSON)
+			r.Config.Auth.GcpUseServiceAccount = types.BoolPointerValue(resp.Config.Auth.GcpUseServiceAccount)
+			r.Config.Auth.HeaderName = types.StringPointerValue(resp.Config.Auth.HeaderName)
+			r.Config.Auth.HeaderValue = types.StringPointerValue(resp.Config.Auth.HeaderValue)
+			if resp.Config.Auth.ParamLocation != nil {
+				r.Config.Auth.ParamLocation = types.StringValue(string(*resp.Config.Auth.ParamLocation))
 			} else {
-				r.Config.Auth = &tfTypes.Auth{}
-				r.Config.Auth.AllowOverride = types.BoolPointerValue(resp.Config.Auth.AllowOverride)
-				r.Config.Auth.AwsAccessKeyID = types.StringPointerValue(resp.Config.Auth.AwsAccessKeyID)
-				r.Config.Auth.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Auth.AwsSecretAccessKey)
-				r.Config.Auth.AzureClientID = types.StringPointerValue(resp.Config.Auth.AzureClientID)
-				r.Config.Auth.AzureClientSecret = types.StringPointerValue(resp.Config.Auth.AzureClientSecret)
-				r.Config.Auth.AzureTenantID = types.StringPointerValue(resp.Config.Auth.AzureTenantID)
-				r.Config.Auth.AzureUseManagedIdentity = types.BoolPointerValue(resp.Config.Auth.AzureUseManagedIdentity)
-				r.Config.Auth.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.Auth.GcpServiceAccountJSON)
-				r.Config.Auth.GcpUseServiceAccount = types.BoolPointerValue(resp.Config.Auth.GcpUseServiceAccount)
-				r.Config.Auth.HeaderName = types.StringPointerValue(resp.Config.Auth.HeaderName)
-				r.Config.Auth.HeaderValue = types.StringPointerValue(resp.Config.Auth.HeaderValue)
-				if resp.Config.Auth.ParamLocation != nil {
-					r.Config.Auth.ParamLocation = types.StringValue(string(*resp.Config.Auth.ParamLocation))
-				} else {
-					r.Config.Auth.ParamLocation = types.StringNull()
-				}
-				r.Config.Auth.ParamName = types.StringPointerValue(resp.Config.Auth.ParamName)
-				r.Config.Auth.ParamValue = types.StringPointerValue(resp.Config.Auth.ParamValue)
+				r.Config.Auth.ParamLocation = types.StringNull()
 			}
-			if resp.Config.LlmFormat != nil {
-				r.Config.LlmFormat = types.StringValue(string(*resp.Config.LlmFormat))
-			} else {
-				r.Config.LlmFormat = types.StringNull()
-			}
-			if resp.Config.Logging == nil {
-				r.Config.Logging = nil
-			} else {
-				r.Config.Logging = &tfTypes.Logging{}
-				r.Config.Logging.LogPayloads = types.BoolPointerValue(resp.Config.Logging.LogPayloads)
-				r.Config.Logging.LogStatistics = types.BoolPointerValue(resp.Config.Logging.LogStatistics)
-			}
-			r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
-			if resp.Config.Model == nil {
-				r.Config.Model = nil
-			} else {
-				r.Config.Model = &tfTypes.Model{}
-				r.Config.Model.Name = types.StringPointerValue(resp.Config.Model.Name)
-				if resp.Config.Model.Options == nil {
-					r.Config.Model.Options = nil
-				} else {
-					r.Config.Model.Options = &tfTypes.OptionsObj{}
-					r.Config.Model.Options.AnthropicVersion = types.StringPointerValue(resp.Config.Model.Options.AnthropicVersion)
-					r.Config.Model.Options.AzureAPIVersion = types.StringPointerValue(resp.Config.Model.Options.AzureAPIVersion)
-					r.Config.Model.Options.AzureDeploymentID = types.StringPointerValue(resp.Config.Model.Options.AzureDeploymentID)
-					r.Config.Model.Options.AzureInstance = types.StringPointerValue(resp.Config.Model.Options.AzureInstance)
-					if resp.Config.Model.Options.Bedrock == nil {
-						r.Config.Model.Options.Bedrock = nil
-					} else {
-						r.Config.Model.Options.Bedrock = &tfTypes.Bedrock{}
-						r.Config.Model.Options.Bedrock.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsAssumeRoleArn)
-						r.Config.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsRegion)
-						r.Config.Model.Options.Bedrock.AwsRoleSessionName = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsRoleSessionName)
-						r.Config.Model.Options.Bedrock.AwsStsEndpointURL = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsStsEndpointURL)
-					}
-					if resp.Config.Model.Options.Gemini == nil {
-						r.Config.Model.Options.Gemini = nil
-					} else {
-						r.Config.Model.Options.Gemini = &tfTypes.Gemini{}
-						r.Config.Model.Options.Gemini.APIEndpoint = types.StringPointerValue(resp.Config.Model.Options.Gemini.APIEndpoint)
-						r.Config.Model.Options.Gemini.LocationID = types.StringPointerValue(resp.Config.Model.Options.Gemini.LocationID)
-						r.Config.Model.Options.Gemini.ProjectID = types.StringPointerValue(resp.Config.Model.Options.Gemini.ProjectID)
-					}
-					if resp.Config.Model.Options.Huggingface == nil {
-						r.Config.Model.Options.Huggingface = nil
-					} else {
-						r.Config.Model.Options.Huggingface = &tfTypes.Huggingface{}
-						r.Config.Model.Options.Huggingface.UseCache = types.BoolPointerValue(resp.Config.Model.Options.Huggingface.UseCache)
-						r.Config.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(resp.Config.Model.Options.Huggingface.WaitForModel)
-					}
-					r.Config.Model.Options.InputCost = types.Float64PointerValue(resp.Config.Model.Options.InputCost)
-					if resp.Config.Model.Options.Llama2Format != nil {
-						r.Config.Model.Options.Llama2Format = types.StringValue(string(*resp.Config.Model.Options.Llama2Format))
-					} else {
-						r.Config.Model.Options.Llama2Format = types.StringNull()
-					}
-					r.Config.Model.Options.MaxTokens = types.Int64PointerValue(resp.Config.Model.Options.MaxTokens)
-					if resp.Config.Model.Options.MistralFormat != nil {
-						r.Config.Model.Options.MistralFormat = types.StringValue(string(*resp.Config.Model.Options.MistralFormat))
-					} else {
-						r.Config.Model.Options.MistralFormat = types.StringNull()
-					}
-					r.Config.Model.Options.OutputCost = types.Float64PointerValue(resp.Config.Model.Options.OutputCost)
-					r.Config.Model.Options.Temperature = types.Float64PointerValue(resp.Config.Model.Options.Temperature)
-					r.Config.Model.Options.TopK = types.Int64PointerValue(resp.Config.Model.Options.TopK)
-					r.Config.Model.Options.TopP = types.Float64PointerValue(resp.Config.Model.Options.TopP)
-					r.Config.Model.Options.UpstreamPath = types.StringPointerValue(resp.Config.Model.Options.UpstreamPath)
-					r.Config.Model.Options.UpstreamURL = types.StringPointerValue(resp.Config.Model.Options.UpstreamURL)
-				}
-				if resp.Config.Model.Provider != nil {
-					r.Config.Model.Provider = types.StringValue(string(*resp.Config.Model.Provider))
-				} else {
-					r.Config.Model.Provider = types.StringNull()
-				}
-			}
-			r.Config.ModelNameHeader = types.BoolPointerValue(resp.Config.ModelNameHeader)
-			if resp.Config.ResponseStreaming != nil {
-				r.Config.ResponseStreaming = types.StringValue(string(*resp.Config.ResponseStreaming))
-			} else {
-				r.Config.ResponseStreaming = types.StringNull()
-			}
-			if resp.Config.RouteType != nil {
-				r.Config.RouteType = types.StringValue(string(*resp.Config.RouteType))
-			} else {
-				r.Config.RouteType = types.StringNull()
-			}
+			r.Config.Auth.ParamName = types.StringPointerValue(resp.Config.Auth.ParamName)
+			r.Config.Auth.ParamValue = types.StringPointerValue(resp.Config.Auth.ParamValue)
 		}
+		if resp.Config.GenaiCategory != nil {
+			r.Config.GenaiCategory = types.StringValue(string(*resp.Config.GenaiCategory))
+		} else {
+			r.Config.GenaiCategory = types.StringNull()
+		}
+		if resp.Config.LlmFormat != nil {
+			r.Config.LlmFormat = types.StringValue(string(*resp.Config.LlmFormat))
+		} else {
+			r.Config.LlmFormat = types.StringNull()
+		}
+		if resp.Config.Logging == nil {
+			r.Config.Logging = nil
+		} else {
+			r.Config.Logging = &tfTypes.Logging{}
+			r.Config.Logging.LogPayloads = types.BoolPointerValue(resp.Config.Logging.LogPayloads)
+			r.Config.Logging.LogStatistics = types.BoolPointerValue(resp.Config.Logging.LogStatistics)
+		}
+		r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
+		r.Config.Model.Name = types.StringPointerValue(resp.Config.Model.Name)
+		if resp.Config.Model.Options == nil {
+			r.Config.Model.Options = nil
+		} else {
+			r.Config.Model.Options = &tfTypes.OptionsObj{}
+			r.Config.Model.Options.AnthropicVersion = types.StringPointerValue(resp.Config.Model.Options.AnthropicVersion)
+			r.Config.Model.Options.AzureAPIVersion = types.StringPointerValue(resp.Config.Model.Options.AzureAPIVersion)
+			r.Config.Model.Options.AzureDeploymentID = types.StringPointerValue(resp.Config.Model.Options.AzureDeploymentID)
+			r.Config.Model.Options.AzureInstance = types.StringPointerValue(resp.Config.Model.Options.AzureInstance)
+			if resp.Config.Model.Options.Bedrock == nil {
+				r.Config.Model.Options.Bedrock = nil
+			} else {
+				r.Config.Model.Options.Bedrock = &tfTypes.Bedrock{}
+				r.Config.Model.Options.Bedrock.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsAssumeRoleArn)
+				r.Config.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsRegion)
+				r.Config.Model.Options.Bedrock.AwsRoleSessionName = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsRoleSessionName)
+				r.Config.Model.Options.Bedrock.AwsStsEndpointURL = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsStsEndpointURL)
+				r.Config.Model.Options.Bedrock.EmbeddingsNormalize = types.BoolPointerValue(resp.Config.Model.Options.Bedrock.EmbeddingsNormalize)
+				r.Config.Model.Options.Bedrock.PerformanceConfigLatency = types.StringPointerValue(resp.Config.Model.Options.Bedrock.PerformanceConfigLatency)
+			}
+			if resp.Config.Model.Options.Cohere == nil {
+				r.Config.Model.Options.Cohere = nil
+			} else {
+				r.Config.Model.Options.Cohere = &tfTypes.Cohere{}
+				if resp.Config.Model.Options.Cohere.EmbeddingInputType != nil {
+					r.Config.Model.Options.Cohere.EmbeddingInputType = types.StringValue(string(*resp.Config.Model.Options.Cohere.EmbeddingInputType))
+				} else {
+					r.Config.Model.Options.Cohere.EmbeddingInputType = types.StringNull()
+				}
+				r.Config.Model.Options.Cohere.WaitForModel = types.BoolPointerValue(resp.Config.Model.Options.Cohere.WaitForModel)
+			}
+			r.Config.Model.Options.EmbeddingsDimensions = types.Int64PointerValue(resp.Config.Model.Options.EmbeddingsDimensions)
+			if resp.Config.Model.Options.Gemini == nil {
+				r.Config.Model.Options.Gemini = nil
+			} else {
+				r.Config.Model.Options.Gemini = &tfTypes.Gemini{}
+				r.Config.Model.Options.Gemini.APIEndpoint = types.StringPointerValue(resp.Config.Model.Options.Gemini.APIEndpoint)
+				r.Config.Model.Options.Gemini.LocationID = types.StringPointerValue(resp.Config.Model.Options.Gemini.LocationID)
+				r.Config.Model.Options.Gemini.ProjectID = types.StringPointerValue(resp.Config.Model.Options.Gemini.ProjectID)
+			}
+			if resp.Config.Model.Options.Huggingface == nil {
+				r.Config.Model.Options.Huggingface = nil
+			} else {
+				r.Config.Model.Options.Huggingface = &tfTypes.Huggingface{}
+				r.Config.Model.Options.Huggingface.UseCache = types.BoolPointerValue(resp.Config.Model.Options.Huggingface.UseCache)
+				r.Config.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(resp.Config.Model.Options.Huggingface.WaitForModel)
+			}
+			r.Config.Model.Options.InputCost = types.Float64PointerValue(resp.Config.Model.Options.InputCost)
+			if resp.Config.Model.Options.Llama2Format != nil {
+				r.Config.Model.Options.Llama2Format = types.StringValue(string(*resp.Config.Model.Options.Llama2Format))
+			} else {
+				r.Config.Model.Options.Llama2Format = types.StringNull()
+			}
+			r.Config.Model.Options.MaxTokens = types.Int64PointerValue(resp.Config.Model.Options.MaxTokens)
+			if resp.Config.Model.Options.MistralFormat != nil {
+				r.Config.Model.Options.MistralFormat = types.StringValue(string(*resp.Config.Model.Options.MistralFormat))
+			} else {
+				r.Config.Model.Options.MistralFormat = types.StringNull()
+			}
+			r.Config.Model.Options.OutputCost = types.Float64PointerValue(resp.Config.Model.Options.OutputCost)
+			r.Config.Model.Options.Temperature = types.Float64PointerValue(resp.Config.Model.Options.Temperature)
+			r.Config.Model.Options.TopK = types.Int64PointerValue(resp.Config.Model.Options.TopK)
+			r.Config.Model.Options.TopP = types.Float64PointerValue(resp.Config.Model.Options.TopP)
+			r.Config.Model.Options.UpstreamPath = types.StringPointerValue(resp.Config.Model.Options.UpstreamPath)
+			r.Config.Model.Options.UpstreamURL = types.StringPointerValue(resp.Config.Model.Options.UpstreamURL)
+		}
+		r.Config.Model.Provider = types.StringValue(string(resp.Config.Model.Provider))
+		r.Config.ModelNameHeader = types.BoolPointerValue(resp.Config.ModelNameHeader)
+		if resp.Config.ResponseStreaming != nil {
+			r.Config.ResponseStreaming = types.StringValue(string(*resp.Config.ResponseStreaming))
+		} else {
+			r.Config.ResponseStreaming = types.StringNull()
+		}
+		r.Config.RouteType = types.StringValue(string(resp.Config.RouteType))
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -386,374 +387,406 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 	} else {
 		updatedAt = nil
 	}
-	var config *shared.AiProxyPluginConfig
-	if r.Config != nil {
-		var auth *shared.Auth
-		if r.Config.Auth != nil {
-			allowOverride := new(bool)
-			if !r.Config.Auth.AllowOverride.IsUnknown() && !r.Config.Auth.AllowOverride.IsNull() {
-				*allowOverride = r.Config.Auth.AllowOverride.ValueBool()
-			} else {
-				allowOverride = nil
-			}
-			awsAccessKeyID := new(string)
-			if !r.Config.Auth.AwsAccessKeyID.IsUnknown() && !r.Config.Auth.AwsAccessKeyID.IsNull() {
-				*awsAccessKeyID = r.Config.Auth.AwsAccessKeyID.ValueString()
-			} else {
-				awsAccessKeyID = nil
-			}
-			awsSecretAccessKey := new(string)
-			if !r.Config.Auth.AwsSecretAccessKey.IsUnknown() && !r.Config.Auth.AwsSecretAccessKey.IsNull() {
-				*awsSecretAccessKey = r.Config.Auth.AwsSecretAccessKey.ValueString()
-			} else {
-				awsSecretAccessKey = nil
-			}
-			azureClientID := new(string)
-			if !r.Config.Auth.AzureClientID.IsUnknown() && !r.Config.Auth.AzureClientID.IsNull() {
-				*azureClientID = r.Config.Auth.AzureClientID.ValueString()
-			} else {
-				azureClientID = nil
-			}
-			azureClientSecret := new(string)
-			if !r.Config.Auth.AzureClientSecret.IsUnknown() && !r.Config.Auth.AzureClientSecret.IsNull() {
-				*azureClientSecret = r.Config.Auth.AzureClientSecret.ValueString()
-			} else {
-				azureClientSecret = nil
-			}
-			azureTenantID := new(string)
-			if !r.Config.Auth.AzureTenantID.IsUnknown() && !r.Config.Auth.AzureTenantID.IsNull() {
-				*azureTenantID = r.Config.Auth.AzureTenantID.ValueString()
-			} else {
-				azureTenantID = nil
-			}
-			azureUseManagedIdentity := new(bool)
-			if !r.Config.Auth.AzureUseManagedIdentity.IsUnknown() && !r.Config.Auth.AzureUseManagedIdentity.IsNull() {
-				*azureUseManagedIdentity = r.Config.Auth.AzureUseManagedIdentity.ValueBool()
-			} else {
-				azureUseManagedIdentity = nil
-			}
-			gcpServiceAccountJSON := new(string)
-			if !r.Config.Auth.GcpServiceAccountJSON.IsUnknown() && !r.Config.Auth.GcpServiceAccountJSON.IsNull() {
-				*gcpServiceAccountJSON = r.Config.Auth.GcpServiceAccountJSON.ValueString()
-			} else {
-				gcpServiceAccountJSON = nil
-			}
-			gcpUseServiceAccount := new(bool)
-			if !r.Config.Auth.GcpUseServiceAccount.IsUnknown() && !r.Config.Auth.GcpUseServiceAccount.IsNull() {
-				*gcpUseServiceAccount = r.Config.Auth.GcpUseServiceAccount.ValueBool()
-			} else {
-				gcpUseServiceAccount = nil
-			}
-			headerName := new(string)
-			if !r.Config.Auth.HeaderName.IsUnknown() && !r.Config.Auth.HeaderName.IsNull() {
-				*headerName = r.Config.Auth.HeaderName.ValueString()
-			} else {
-				headerName = nil
-			}
-			headerValue := new(string)
-			if !r.Config.Auth.HeaderValue.IsUnknown() && !r.Config.Auth.HeaderValue.IsNull() {
-				*headerValue = r.Config.Auth.HeaderValue.ValueString()
-			} else {
-				headerValue = nil
-			}
-			paramLocation := new(shared.ParamLocation)
-			if !r.Config.Auth.ParamLocation.IsUnknown() && !r.Config.Auth.ParamLocation.IsNull() {
-				*paramLocation = shared.ParamLocation(r.Config.Auth.ParamLocation.ValueString())
-			} else {
-				paramLocation = nil
-			}
-			paramName := new(string)
-			if !r.Config.Auth.ParamName.IsUnknown() && !r.Config.Auth.ParamName.IsNull() {
-				*paramName = r.Config.Auth.ParamName.ValueString()
-			} else {
-				paramName = nil
-			}
-			paramValue := new(string)
-			if !r.Config.Auth.ParamValue.IsUnknown() && !r.Config.Auth.ParamValue.IsNull() {
-				*paramValue = r.Config.Auth.ParamValue.ValueString()
-			} else {
-				paramValue = nil
-			}
-			auth = &shared.Auth{
-				AllowOverride:           allowOverride,
-				AwsAccessKeyID:          awsAccessKeyID,
-				AwsSecretAccessKey:      awsSecretAccessKey,
-				AzureClientID:           azureClientID,
-				AzureClientSecret:       azureClientSecret,
-				AzureTenantID:           azureTenantID,
-				AzureUseManagedIdentity: azureUseManagedIdentity,
-				GcpServiceAccountJSON:   gcpServiceAccountJSON,
-				GcpUseServiceAccount:    gcpUseServiceAccount,
-				HeaderName:              headerName,
-				HeaderValue:             headerValue,
-				ParamLocation:           paramLocation,
-				ParamName:               paramName,
-				ParamValue:              paramValue,
-			}
-		}
-		llmFormat := new(shared.AiProxyPluginLlmFormat)
-		if !r.Config.LlmFormat.IsUnknown() && !r.Config.LlmFormat.IsNull() {
-			*llmFormat = shared.AiProxyPluginLlmFormat(r.Config.LlmFormat.ValueString())
+	var auth *shared.Auth
+	if r.Config.Auth != nil {
+		allowOverride := new(bool)
+		if !r.Config.Auth.AllowOverride.IsUnknown() && !r.Config.Auth.AllowOverride.IsNull() {
+			*allowOverride = r.Config.Auth.AllowOverride.ValueBool()
 		} else {
-			llmFormat = nil
+			allowOverride = nil
 		}
-		var logging *shared.Logging
-		if r.Config.Logging != nil {
-			logPayloads := new(bool)
-			if !r.Config.Logging.LogPayloads.IsUnknown() && !r.Config.Logging.LogPayloads.IsNull() {
-				*logPayloads = r.Config.Logging.LogPayloads.ValueBool()
-			} else {
-				logPayloads = nil
-			}
-			logStatistics := new(bool)
-			if !r.Config.Logging.LogStatistics.IsUnknown() && !r.Config.Logging.LogStatistics.IsNull() {
-				*logStatistics = r.Config.Logging.LogStatistics.ValueBool()
-			} else {
-				logStatistics = nil
-			}
-			logging = &shared.Logging{
-				LogPayloads:   logPayloads,
-				LogStatistics: logStatistics,
-			}
-		}
-		maxRequestBodySize := new(int64)
-		if !r.Config.MaxRequestBodySize.IsUnknown() && !r.Config.MaxRequestBodySize.IsNull() {
-			*maxRequestBodySize = r.Config.MaxRequestBodySize.ValueInt64()
+		awsAccessKeyID := new(string)
+		if !r.Config.Auth.AwsAccessKeyID.IsUnknown() && !r.Config.Auth.AwsAccessKeyID.IsNull() {
+			*awsAccessKeyID = r.Config.Auth.AwsAccessKeyID.ValueString()
 		} else {
-			maxRequestBodySize = nil
+			awsAccessKeyID = nil
 		}
-		var model *shared.Model
-		if r.Config.Model != nil {
-			name1 := new(string)
-			if !r.Config.Model.Name.IsUnknown() && !r.Config.Model.Name.IsNull() {
-				*name1 = r.Config.Model.Name.ValueString()
+		awsSecretAccessKey := new(string)
+		if !r.Config.Auth.AwsSecretAccessKey.IsUnknown() && !r.Config.Auth.AwsSecretAccessKey.IsNull() {
+			*awsSecretAccessKey = r.Config.Auth.AwsSecretAccessKey.ValueString()
+		} else {
+			awsSecretAccessKey = nil
+		}
+		azureClientID := new(string)
+		if !r.Config.Auth.AzureClientID.IsUnknown() && !r.Config.Auth.AzureClientID.IsNull() {
+			*azureClientID = r.Config.Auth.AzureClientID.ValueString()
+		} else {
+			azureClientID = nil
+		}
+		azureClientSecret := new(string)
+		if !r.Config.Auth.AzureClientSecret.IsUnknown() && !r.Config.Auth.AzureClientSecret.IsNull() {
+			*azureClientSecret = r.Config.Auth.AzureClientSecret.ValueString()
+		} else {
+			azureClientSecret = nil
+		}
+		azureTenantID := new(string)
+		if !r.Config.Auth.AzureTenantID.IsUnknown() && !r.Config.Auth.AzureTenantID.IsNull() {
+			*azureTenantID = r.Config.Auth.AzureTenantID.ValueString()
+		} else {
+			azureTenantID = nil
+		}
+		azureUseManagedIdentity := new(bool)
+		if !r.Config.Auth.AzureUseManagedIdentity.IsUnknown() && !r.Config.Auth.AzureUseManagedIdentity.IsNull() {
+			*azureUseManagedIdentity = r.Config.Auth.AzureUseManagedIdentity.ValueBool()
+		} else {
+			azureUseManagedIdentity = nil
+		}
+		gcpServiceAccountJSON := new(string)
+		if !r.Config.Auth.GcpServiceAccountJSON.IsUnknown() && !r.Config.Auth.GcpServiceAccountJSON.IsNull() {
+			*gcpServiceAccountJSON = r.Config.Auth.GcpServiceAccountJSON.ValueString()
+		} else {
+			gcpServiceAccountJSON = nil
+		}
+		gcpUseServiceAccount := new(bool)
+		if !r.Config.Auth.GcpUseServiceAccount.IsUnknown() && !r.Config.Auth.GcpUseServiceAccount.IsNull() {
+			*gcpUseServiceAccount = r.Config.Auth.GcpUseServiceAccount.ValueBool()
+		} else {
+			gcpUseServiceAccount = nil
+		}
+		headerName := new(string)
+		if !r.Config.Auth.HeaderName.IsUnknown() && !r.Config.Auth.HeaderName.IsNull() {
+			*headerName = r.Config.Auth.HeaderName.ValueString()
+		} else {
+			headerName = nil
+		}
+		headerValue := new(string)
+		if !r.Config.Auth.HeaderValue.IsUnknown() && !r.Config.Auth.HeaderValue.IsNull() {
+			*headerValue = r.Config.Auth.HeaderValue.ValueString()
+		} else {
+			headerValue = nil
+		}
+		paramLocation := new(shared.ParamLocation)
+		if !r.Config.Auth.ParamLocation.IsUnknown() && !r.Config.Auth.ParamLocation.IsNull() {
+			*paramLocation = shared.ParamLocation(r.Config.Auth.ParamLocation.ValueString())
+		} else {
+			paramLocation = nil
+		}
+		paramName := new(string)
+		if !r.Config.Auth.ParamName.IsUnknown() && !r.Config.Auth.ParamName.IsNull() {
+			*paramName = r.Config.Auth.ParamName.ValueString()
+		} else {
+			paramName = nil
+		}
+		paramValue := new(string)
+		if !r.Config.Auth.ParamValue.IsUnknown() && !r.Config.Auth.ParamValue.IsNull() {
+			*paramValue = r.Config.Auth.ParamValue.ValueString()
+		} else {
+			paramValue = nil
+		}
+		auth = &shared.Auth{
+			AllowOverride:           allowOverride,
+			AwsAccessKeyID:          awsAccessKeyID,
+			AwsSecretAccessKey:      awsSecretAccessKey,
+			AzureClientID:           azureClientID,
+			AzureClientSecret:       azureClientSecret,
+			AzureTenantID:           azureTenantID,
+			AzureUseManagedIdentity: azureUseManagedIdentity,
+			GcpServiceAccountJSON:   gcpServiceAccountJSON,
+			GcpUseServiceAccount:    gcpUseServiceAccount,
+			HeaderName:              headerName,
+			HeaderValue:             headerValue,
+			ParamLocation:           paramLocation,
+			ParamName:               paramName,
+			ParamValue:              paramValue,
+		}
+	}
+	genaiCategory := new(shared.AiProxyPluginGenaiCategory)
+	if !r.Config.GenaiCategory.IsUnknown() && !r.Config.GenaiCategory.IsNull() {
+		*genaiCategory = shared.AiProxyPluginGenaiCategory(r.Config.GenaiCategory.ValueString())
+	} else {
+		genaiCategory = nil
+	}
+	llmFormat := new(shared.AiProxyPluginLlmFormat)
+	if !r.Config.LlmFormat.IsUnknown() && !r.Config.LlmFormat.IsNull() {
+		*llmFormat = shared.AiProxyPluginLlmFormat(r.Config.LlmFormat.ValueString())
+	} else {
+		llmFormat = nil
+	}
+	var logging *shared.Logging
+	if r.Config.Logging != nil {
+		logPayloads := new(bool)
+		if !r.Config.Logging.LogPayloads.IsUnknown() && !r.Config.Logging.LogPayloads.IsNull() {
+			*logPayloads = r.Config.Logging.LogPayloads.ValueBool()
+		} else {
+			logPayloads = nil
+		}
+		logStatistics := new(bool)
+		if !r.Config.Logging.LogStatistics.IsUnknown() && !r.Config.Logging.LogStatistics.IsNull() {
+			*logStatistics = r.Config.Logging.LogStatistics.ValueBool()
+		} else {
+			logStatistics = nil
+		}
+		logging = &shared.Logging{
+			LogPayloads:   logPayloads,
+			LogStatistics: logStatistics,
+		}
+	}
+	maxRequestBodySize := new(int64)
+	if !r.Config.MaxRequestBodySize.IsUnknown() && !r.Config.MaxRequestBodySize.IsNull() {
+		*maxRequestBodySize = r.Config.MaxRequestBodySize.ValueInt64()
+	} else {
+		maxRequestBodySize = nil
+	}
+	name1 := new(string)
+	if !r.Config.Model.Name.IsUnknown() && !r.Config.Model.Name.IsNull() {
+		*name1 = r.Config.Model.Name.ValueString()
+	} else {
+		name1 = nil
+	}
+	var optionsVar *shared.OptionsObj
+	if r.Config.Model.Options != nil {
+		anthropicVersion := new(string)
+		if !r.Config.Model.Options.AnthropicVersion.IsUnknown() && !r.Config.Model.Options.AnthropicVersion.IsNull() {
+			*anthropicVersion = r.Config.Model.Options.AnthropicVersion.ValueString()
+		} else {
+			anthropicVersion = nil
+		}
+		azureAPIVersion := new(string)
+		if !r.Config.Model.Options.AzureAPIVersion.IsUnknown() && !r.Config.Model.Options.AzureAPIVersion.IsNull() {
+			*azureAPIVersion = r.Config.Model.Options.AzureAPIVersion.ValueString()
+		} else {
+			azureAPIVersion = nil
+		}
+		azureDeploymentID := new(string)
+		if !r.Config.Model.Options.AzureDeploymentID.IsUnknown() && !r.Config.Model.Options.AzureDeploymentID.IsNull() {
+			*azureDeploymentID = r.Config.Model.Options.AzureDeploymentID.ValueString()
+		} else {
+			azureDeploymentID = nil
+		}
+		azureInstance := new(string)
+		if !r.Config.Model.Options.AzureInstance.IsUnknown() && !r.Config.Model.Options.AzureInstance.IsNull() {
+			*azureInstance = r.Config.Model.Options.AzureInstance.ValueString()
+		} else {
+			azureInstance = nil
+		}
+		var bedrock *shared.Bedrock
+		if r.Config.Model.Options.Bedrock != nil {
+			awsAssumeRoleArn := new(string)
+			if !r.Config.Model.Options.Bedrock.AwsAssumeRoleArn.IsUnknown() && !r.Config.Model.Options.Bedrock.AwsAssumeRoleArn.IsNull() {
+				*awsAssumeRoleArn = r.Config.Model.Options.Bedrock.AwsAssumeRoleArn.ValueString()
 			} else {
-				name1 = nil
+				awsAssumeRoleArn = nil
 			}
-			var optionsVar *shared.OptionsObj
-			if r.Config.Model.Options != nil {
-				anthropicVersion := new(string)
-				if !r.Config.Model.Options.AnthropicVersion.IsUnknown() && !r.Config.Model.Options.AnthropicVersion.IsNull() {
-					*anthropicVersion = r.Config.Model.Options.AnthropicVersion.ValueString()
-				} else {
-					anthropicVersion = nil
-				}
-				azureAPIVersion := new(string)
-				if !r.Config.Model.Options.AzureAPIVersion.IsUnknown() && !r.Config.Model.Options.AzureAPIVersion.IsNull() {
-					*azureAPIVersion = r.Config.Model.Options.AzureAPIVersion.ValueString()
-				} else {
-					azureAPIVersion = nil
-				}
-				azureDeploymentID := new(string)
-				if !r.Config.Model.Options.AzureDeploymentID.IsUnknown() && !r.Config.Model.Options.AzureDeploymentID.IsNull() {
-					*azureDeploymentID = r.Config.Model.Options.AzureDeploymentID.ValueString()
-				} else {
-					azureDeploymentID = nil
-				}
-				azureInstance := new(string)
-				if !r.Config.Model.Options.AzureInstance.IsUnknown() && !r.Config.Model.Options.AzureInstance.IsNull() {
-					*azureInstance = r.Config.Model.Options.AzureInstance.ValueString()
-				} else {
-					azureInstance = nil
-				}
-				var bedrock *shared.Bedrock
-				if r.Config.Model.Options.Bedrock != nil {
-					awsAssumeRoleArn := new(string)
-					if !r.Config.Model.Options.Bedrock.AwsAssumeRoleArn.IsUnknown() && !r.Config.Model.Options.Bedrock.AwsAssumeRoleArn.IsNull() {
-						*awsAssumeRoleArn = r.Config.Model.Options.Bedrock.AwsAssumeRoleArn.ValueString()
-					} else {
-						awsAssumeRoleArn = nil
-					}
-					awsRegion := new(string)
-					if !r.Config.Model.Options.Bedrock.AwsRegion.IsUnknown() && !r.Config.Model.Options.Bedrock.AwsRegion.IsNull() {
-						*awsRegion = r.Config.Model.Options.Bedrock.AwsRegion.ValueString()
-					} else {
-						awsRegion = nil
-					}
-					awsRoleSessionName := new(string)
-					if !r.Config.Model.Options.Bedrock.AwsRoleSessionName.IsUnknown() && !r.Config.Model.Options.Bedrock.AwsRoleSessionName.IsNull() {
-						*awsRoleSessionName = r.Config.Model.Options.Bedrock.AwsRoleSessionName.ValueString()
-					} else {
-						awsRoleSessionName = nil
-					}
-					awsStsEndpointURL := new(string)
-					if !r.Config.Model.Options.Bedrock.AwsStsEndpointURL.IsUnknown() && !r.Config.Model.Options.Bedrock.AwsStsEndpointURL.IsNull() {
-						*awsStsEndpointURL = r.Config.Model.Options.Bedrock.AwsStsEndpointURL.ValueString()
-					} else {
-						awsStsEndpointURL = nil
-					}
-					bedrock = &shared.Bedrock{
-						AwsAssumeRoleArn:   awsAssumeRoleArn,
-						AwsRegion:          awsRegion,
-						AwsRoleSessionName: awsRoleSessionName,
-						AwsStsEndpointURL:  awsStsEndpointURL,
-					}
-				}
-				var gemini *shared.Gemini
-				if r.Config.Model.Options.Gemini != nil {
-					apiEndpoint := new(string)
-					if !r.Config.Model.Options.Gemini.APIEndpoint.IsUnknown() && !r.Config.Model.Options.Gemini.APIEndpoint.IsNull() {
-						*apiEndpoint = r.Config.Model.Options.Gemini.APIEndpoint.ValueString()
-					} else {
-						apiEndpoint = nil
-					}
-					locationID := new(string)
-					if !r.Config.Model.Options.Gemini.LocationID.IsUnknown() && !r.Config.Model.Options.Gemini.LocationID.IsNull() {
-						*locationID = r.Config.Model.Options.Gemini.LocationID.ValueString()
-					} else {
-						locationID = nil
-					}
-					projectID := new(string)
-					if !r.Config.Model.Options.Gemini.ProjectID.IsUnknown() && !r.Config.Model.Options.Gemini.ProjectID.IsNull() {
-						*projectID = r.Config.Model.Options.Gemini.ProjectID.ValueString()
-					} else {
-						projectID = nil
-					}
-					gemini = &shared.Gemini{
-						APIEndpoint: apiEndpoint,
-						LocationID:  locationID,
-						ProjectID:   projectID,
-					}
-				}
-				var huggingface *shared.Huggingface
-				if r.Config.Model.Options.Huggingface != nil {
-					useCache := new(bool)
-					if !r.Config.Model.Options.Huggingface.UseCache.IsUnknown() && !r.Config.Model.Options.Huggingface.UseCache.IsNull() {
-						*useCache = r.Config.Model.Options.Huggingface.UseCache.ValueBool()
-					} else {
-						useCache = nil
-					}
-					waitForModel := new(bool)
-					if !r.Config.Model.Options.Huggingface.WaitForModel.IsUnknown() && !r.Config.Model.Options.Huggingface.WaitForModel.IsNull() {
-						*waitForModel = r.Config.Model.Options.Huggingface.WaitForModel.ValueBool()
-					} else {
-						waitForModel = nil
-					}
-					huggingface = &shared.Huggingface{
-						UseCache:     useCache,
-						WaitForModel: waitForModel,
-					}
-				}
-				inputCost := new(float64)
-				if !r.Config.Model.Options.InputCost.IsUnknown() && !r.Config.Model.Options.InputCost.IsNull() {
-					*inputCost = r.Config.Model.Options.InputCost.ValueFloat64()
-				} else {
-					inputCost = nil
-				}
-				llama2Format := new(shared.Llama2Format)
-				if !r.Config.Model.Options.Llama2Format.IsUnknown() && !r.Config.Model.Options.Llama2Format.IsNull() {
-					*llama2Format = shared.Llama2Format(r.Config.Model.Options.Llama2Format.ValueString())
-				} else {
-					llama2Format = nil
-				}
-				maxTokens := new(int64)
-				if !r.Config.Model.Options.MaxTokens.IsUnknown() && !r.Config.Model.Options.MaxTokens.IsNull() {
-					*maxTokens = r.Config.Model.Options.MaxTokens.ValueInt64()
-				} else {
-					maxTokens = nil
-				}
-				mistralFormat := new(shared.MistralFormat)
-				if !r.Config.Model.Options.MistralFormat.IsUnknown() && !r.Config.Model.Options.MistralFormat.IsNull() {
-					*mistralFormat = shared.MistralFormat(r.Config.Model.Options.MistralFormat.ValueString())
-				} else {
-					mistralFormat = nil
-				}
-				outputCost := new(float64)
-				if !r.Config.Model.Options.OutputCost.IsUnknown() && !r.Config.Model.Options.OutputCost.IsNull() {
-					*outputCost = r.Config.Model.Options.OutputCost.ValueFloat64()
-				} else {
-					outputCost = nil
-				}
-				temperature := new(float64)
-				if !r.Config.Model.Options.Temperature.IsUnknown() && !r.Config.Model.Options.Temperature.IsNull() {
-					*temperature = r.Config.Model.Options.Temperature.ValueFloat64()
-				} else {
-					temperature = nil
-				}
-				topK := new(int64)
-				if !r.Config.Model.Options.TopK.IsUnknown() && !r.Config.Model.Options.TopK.IsNull() {
-					*topK = r.Config.Model.Options.TopK.ValueInt64()
-				} else {
-					topK = nil
-				}
-				topP := new(float64)
-				if !r.Config.Model.Options.TopP.IsUnknown() && !r.Config.Model.Options.TopP.IsNull() {
-					*topP = r.Config.Model.Options.TopP.ValueFloat64()
-				} else {
-					topP = nil
-				}
-				upstreamPath := new(string)
-				if !r.Config.Model.Options.UpstreamPath.IsUnknown() && !r.Config.Model.Options.UpstreamPath.IsNull() {
-					*upstreamPath = r.Config.Model.Options.UpstreamPath.ValueString()
-				} else {
-					upstreamPath = nil
-				}
-				upstreamURL := new(string)
-				if !r.Config.Model.Options.UpstreamURL.IsUnknown() && !r.Config.Model.Options.UpstreamURL.IsNull() {
-					*upstreamURL = r.Config.Model.Options.UpstreamURL.ValueString()
-				} else {
-					upstreamURL = nil
-				}
-				optionsVar = &shared.OptionsObj{
-					AnthropicVersion:  anthropicVersion,
-					AzureAPIVersion:   azureAPIVersion,
-					AzureDeploymentID: azureDeploymentID,
-					AzureInstance:     azureInstance,
-					Bedrock:           bedrock,
-					Gemini:            gemini,
-					Huggingface:       huggingface,
-					InputCost:         inputCost,
-					Llama2Format:      llama2Format,
-					MaxTokens:         maxTokens,
-					MistralFormat:     mistralFormat,
-					OutputCost:        outputCost,
-					Temperature:       temperature,
-					TopK:              topK,
-					TopP:              topP,
-					UpstreamPath:      upstreamPath,
-					UpstreamURL:       upstreamURL,
-				}
-			}
-			provider := new(shared.Provider)
-			if !r.Config.Model.Provider.IsUnknown() && !r.Config.Model.Provider.IsNull() {
-				*provider = shared.Provider(r.Config.Model.Provider.ValueString())
+			awsRegion := new(string)
+			if !r.Config.Model.Options.Bedrock.AwsRegion.IsUnknown() && !r.Config.Model.Options.Bedrock.AwsRegion.IsNull() {
+				*awsRegion = r.Config.Model.Options.Bedrock.AwsRegion.ValueString()
 			} else {
-				provider = nil
+				awsRegion = nil
 			}
-			model = &shared.Model{
-				Name:     name1,
-				Options:  optionsVar,
-				Provider: provider,
+			awsRoleSessionName := new(string)
+			if !r.Config.Model.Options.Bedrock.AwsRoleSessionName.IsUnknown() && !r.Config.Model.Options.Bedrock.AwsRoleSessionName.IsNull() {
+				*awsRoleSessionName = r.Config.Model.Options.Bedrock.AwsRoleSessionName.ValueString()
+			} else {
+				awsRoleSessionName = nil
+			}
+			awsStsEndpointURL := new(string)
+			if !r.Config.Model.Options.Bedrock.AwsStsEndpointURL.IsUnknown() && !r.Config.Model.Options.Bedrock.AwsStsEndpointURL.IsNull() {
+				*awsStsEndpointURL = r.Config.Model.Options.Bedrock.AwsStsEndpointURL.ValueString()
+			} else {
+				awsStsEndpointURL = nil
+			}
+			embeddingsNormalize := new(bool)
+			if !r.Config.Model.Options.Bedrock.EmbeddingsNormalize.IsUnknown() && !r.Config.Model.Options.Bedrock.EmbeddingsNormalize.IsNull() {
+				*embeddingsNormalize = r.Config.Model.Options.Bedrock.EmbeddingsNormalize.ValueBool()
+			} else {
+				embeddingsNormalize = nil
+			}
+			performanceConfigLatency := new(string)
+			if !r.Config.Model.Options.Bedrock.PerformanceConfigLatency.IsUnknown() && !r.Config.Model.Options.Bedrock.PerformanceConfigLatency.IsNull() {
+				*performanceConfigLatency = r.Config.Model.Options.Bedrock.PerformanceConfigLatency.ValueString()
+			} else {
+				performanceConfigLatency = nil
+			}
+			bedrock = &shared.Bedrock{
+				AwsAssumeRoleArn:         awsAssumeRoleArn,
+				AwsRegion:                awsRegion,
+				AwsRoleSessionName:       awsRoleSessionName,
+				AwsStsEndpointURL:        awsStsEndpointURL,
+				EmbeddingsNormalize:      embeddingsNormalize,
+				PerformanceConfigLatency: performanceConfigLatency,
 			}
 		}
-		modelNameHeader := new(bool)
-		if !r.Config.ModelNameHeader.IsUnknown() && !r.Config.ModelNameHeader.IsNull() {
-			*modelNameHeader = r.Config.ModelNameHeader.ValueBool()
+		var cohere *shared.Cohere
+		if r.Config.Model.Options.Cohere != nil {
+			embeddingInputType := new(shared.EmbeddingInputType)
+			if !r.Config.Model.Options.Cohere.EmbeddingInputType.IsUnknown() && !r.Config.Model.Options.Cohere.EmbeddingInputType.IsNull() {
+				*embeddingInputType = shared.EmbeddingInputType(r.Config.Model.Options.Cohere.EmbeddingInputType.ValueString())
+			} else {
+				embeddingInputType = nil
+			}
+			waitForModel := new(bool)
+			if !r.Config.Model.Options.Cohere.WaitForModel.IsUnknown() && !r.Config.Model.Options.Cohere.WaitForModel.IsNull() {
+				*waitForModel = r.Config.Model.Options.Cohere.WaitForModel.ValueBool()
+			} else {
+				waitForModel = nil
+			}
+			cohere = &shared.Cohere{
+				EmbeddingInputType: embeddingInputType,
+				WaitForModel:       waitForModel,
+			}
+		}
+		embeddingsDimensions := new(int64)
+		if !r.Config.Model.Options.EmbeddingsDimensions.IsUnknown() && !r.Config.Model.Options.EmbeddingsDimensions.IsNull() {
+			*embeddingsDimensions = r.Config.Model.Options.EmbeddingsDimensions.ValueInt64()
 		} else {
-			modelNameHeader = nil
+			embeddingsDimensions = nil
 		}
-		responseStreaming := new(shared.ResponseStreaming)
-		if !r.Config.ResponseStreaming.IsUnknown() && !r.Config.ResponseStreaming.IsNull() {
-			*responseStreaming = shared.ResponseStreaming(r.Config.ResponseStreaming.ValueString())
+		var gemini *shared.Gemini
+		if r.Config.Model.Options.Gemini != nil {
+			apiEndpoint := new(string)
+			if !r.Config.Model.Options.Gemini.APIEndpoint.IsUnknown() && !r.Config.Model.Options.Gemini.APIEndpoint.IsNull() {
+				*apiEndpoint = r.Config.Model.Options.Gemini.APIEndpoint.ValueString()
+			} else {
+				apiEndpoint = nil
+			}
+			locationID := new(string)
+			if !r.Config.Model.Options.Gemini.LocationID.IsUnknown() && !r.Config.Model.Options.Gemini.LocationID.IsNull() {
+				*locationID = r.Config.Model.Options.Gemini.LocationID.ValueString()
+			} else {
+				locationID = nil
+			}
+			projectID := new(string)
+			if !r.Config.Model.Options.Gemini.ProjectID.IsUnknown() && !r.Config.Model.Options.Gemini.ProjectID.IsNull() {
+				*projectID = r.Config.Model.Options.Gemini.ProjectID.ValueString()
+			} else {
+				projectID = nil
+			}
+			gemini = &shared.Gemini{
+				APIEndpoint: apiEndpoint,
+				LocationID:  locationID,
+				ProjectID:   projectID,
+			}
+		}
+		var huggingface *shared.Huggingface
+		if r.Config.Model.Options.Huggingface != nil {
+			useCache := new(bool)
+			if !r.Config.Model.Options.Huggingface.UseCache.IsUnknown() && !r.Config.Model.Options.Huggingface.UseCache.IsNull() {
+				*useCache = r.Config.Model.Options.Huggingface.UseCache.ValueBool()
+			} else {
+				useCache = nil
+			}
+			waitForModel1 := new(bool)
+			if !r.Config.Model.Options.Huggingface.WaitForModel.IsUnknown() && !r.Config.Model.Options.Huggingface.WaitForModel.IsNull() {
+				*waitForModel1 = r.Config.Model.Options.Huggingface.WaitForModel.ValueBool()
+			} else {
+				waitForModel1 = nil
+			}
+			huggingface = &shared.Huggingface{
+				UseCache:     useCache,
+				WaitForModel: waitForModel1,
+			}
+		}
+		inputCost := new(float64)
+		if !r.Config.Model.Options.InputCost.IsUnknown() && !r.Config.Model.Options.InputCost.IsNull() {
+			*inputCost = r.Config.Model.Options.InputCost.ValueFloat64()
 		} else {
-			responseStreaming = nil
+			inputCost = nil
 		}
-		routeType := new(shared.RouteType)
-		if !r.Config.RouteType.IsUnknown() && !r.Config.RouteType.IsNull() {
-			*routeType = shared.RouteType(r.Config.RouteType.ValueString())
+		llama2Format := new(shared.Llama2Format)
+		if !r.Config.Model.Options.Llama2Format.IsUnknown() && !r.Config.Model.Options.Llama2Format.IsNull() {
+			*llama2Format = shared.Llama2Format(r.Config.Model.Options.Llama2Format.ValueString())
 		} else {
-			routeType = nil
+			llama2Format = nil
 		}
-		config = &shared.AiProxyPluginConfig{
-			Auth:               auth,
-			LlmFormat:          llmFormat,
-			Logging:            logging,
-			MaxRequestBodySize: maxRequestBodySize,
-			Model:              model,
-			ModelNameHeader:    modelNameHeader,
-			ResponseStreaming:  responseStreaming,
-			RouteType:          routeType,
+		maxTokens := new(int64)
+		if !r.Config.Model.Options.MaxTokens.IsUnknown() && !r.Config.Model.Options.MaxTokens.IsNull() {
+			*maxTokens = r.Config.Model.Options.MaxTokens.ValueInt64()
+		} else {
+			maxTokens = nil
 		}
+		mistralFormat := new(shared.MistralFormat)
+		if !r.Config.Model.Options.MistralFormat.IsUnknown() && !r.Config.Model.Options.MistralFormat.IsNull() {
+			*mistralFormat = shared.MistralFormat(r.Config.Model.Options.MistralFormat.ValueString())
+		} else {
+			mistralFormat = nil
+		}
+		outputCost := new(float64)
+		if !r.Config.Model.Options.OutputCost.IsUnknown() && !r.Config.Model.Options.OutputCost.IsNull() {
+			*outputCost = r.Config.Model.Options.OutputCost.ValueFloat64()
+		} else {
+			outputCost = nil
+		}
+		temperature := new(float64)
+		if !r.Config.Model.Options.Temperature.IsUnknown() && !r.Config.Model.Options.Temperature.IsNull() {
+			*temperature = r.Config.Model.Options.Temperature.ValueFloat64()
+		} else {
+			temperature = nil
+		}
+		topK := new(int64)
+		if !r.Config.Model.Options.TopK.IsUnknown() && !r.Config.Model.Options.TopK.IsNull() {
+			*topK = r.Config.Model.Options.TopK.ValueInt64()
+		} else {
+			topK = nil
+		}
+		topP := new(float64)
+		if !r.Config.Model.Options.TopP.IsUnknown() && !r.Config.Model.Options.TopP.IsNull() {
+			*topP = r.Config.Model.Options.TopP.ValueFloat64()
+		} else {
+			topP = nil
+		}
+		upstreamPath := new(string)
+		if !r.Config.Model.Options.UpstreamPath.IsUnknown() && !r.Config.Model.Options.UpstreamPath.IsNull() {
+			*upstreamPath = r.Config.Model.Options.UpstreamPath.ValueString()
+		} else {
+			upstreamPath = nil
+		}
+		upstreamURL := new(string)
+		if !r.Config.Model.Options.UpstreamURL.IsUnknown() && !r.Config.Model.Options.UpstreamURL.IsNull() {
+			*upstreamURL = r.Config.Model.Options.UpstreamURL.ValueString()
+		} else {
+			upstreamURL = nil
+		}
+		optionsVar = &shared.OptionsObj{
+			AnthropicVersion:     anthropicVersion,
+			AzureAPIVersion:      azureAPIVersion,
+			AzureDeploymentID:    azureDeploymentID,
+			AzureInstance:        azureInstance,
+			Bedrock:              bedrock,
+			Cohere:               cohere,
+			EmbeddingsDimensions: embeddingsDimensions,
+			Gemini:               gemini,
+			Huggingface:          huggingface,
+			InputCost:            inputCost,
+			Llama2Format:         llama2Format,
+			MaxTokens:            maxTokens,
+			MistralFormat:        mistralFormat,
+			OutputCost:           outputCost,
+			Temperature:          temperature,
+			TopK:                 topK,
+			TopP:                 topP,
+			UpstreamPath:         upstreamPath,
+			UpstreamURL:          upstreamURL,
+		}
+	}
+	provider := shared.Provider(r.Config.Model.Provider.ValueString())
+	model := shared.Model{
+		Name:     name1,
+		Options:  optionsVar,
+		Provider: provider,
+	}
+	modelNameHeader := new(bool)
+	if !r.Config.ModelNameHeader.IsUnknown() && !r.Config.ModelNameHeader.IsNull() {
+		*modelNameHeader = r.Config.ModelNameHeader.ValueBool()
+	} else {
+		modelNameHeader = nil
+	}
+	responseStreaming := new(shared.ResponseStreaming)
+	if !r.Config.ResponseStreaming.IsUnknown() && !r.Config.ResponseStreaming.IsNull() {
+		*responseStreaming = shared.ResponseStreaming(r.Config.ResponseStreaming.ValueString())
+	} else {
+		responseStreaming = nil
+	}
+	routeType := shared.RouteType(r.Config.RouteType.ValueString())
+	config := shared.AiProxyPluginConfig{
+		Auth:               auth,
+		GenaiCategory:      genaiCategory,
+		LlmFormat:          llmFormat,
+		Logging:            logging,
+		MaxRequestBodySize: maxRequestBodySize,
+		Model:              model,
+		ModelNameHeader:    modelNameHeader,
+		ResponseStreaming:  responseStreaming,
+		RouteType:          routeType,
 	}
 	var consumer *shared.AiProxyPluginConsumer
 	if r.Consumer != nil {

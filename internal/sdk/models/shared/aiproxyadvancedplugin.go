@@ -349,30 +349,46 @@ type AiProxyAdvancedPluginAuth struct {
 	// If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
 	AllowOverride *bool `json:"allow_override,omitempty"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AwsAccessKeyID *string `json:"aws_access_key_id,omitempty"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AwsSecretAccessKey *string `json:"aws_secret_access_key,omitempty"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AzureClientID *string `json:"azure_client_id,omitempty"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AzureClientSecret *string `json:"azure_client_secret,omitempty"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AzureTenantID *string `json:"azure_tenant_id,omitempty"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
 	AzureUseManagedIdentity *bool `json:"azure_use_managed_identity,omitempty"`
 	// Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	GcpServiceAccountJSON *string `json:"gcp_service_account_json,omitempty"`
 	// Use service account auth for GCP-based providers and models.
 	GcpUseServiceAccount *bool `json:"gcp_use_service_account,omitempty"`
 	// If AI model requires authentication via Authorization or API key header, specify its name here.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	HeaderName *string `json:"header_name,omitempty"`
 	// Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	HeaderValue *string `json:"header_value,omitempty"`
 	// Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
 	ParamLocation *AiProxyAdvancedPluginParamLocation `json:"param_location,omitempty"`
 	// If AI model requires authentication via query parameter, specify its name here.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	ParamName *string `json:"param_name,omitempty"`
 	// Specify the full parameter value for 'param_name'.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	ParamValue *string `json:"param_value,omitempty"`
 }
 
@@ -513,6 +529,10 @@ type AiProxyAdvancedPluginBedrock struct {
 	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
+	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
+	EmbeddingsNormalize *bool `json:"embeddings_normalize,omitempty"`
+	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
+	PerformanceConfigLatency *string `json:"performance_config_latency,omitempty"`
 }
 
 func (o *AiProxyAdvancedPluginBedrock) GetAwsAssumeRoleArn() *string {
@@ -541,6 +561,20 @@ func (o *AiProxyAdvancedPluginBedrock) GetAwsStsEndpointURL() *string {
 		return nil
 	}
 	return o.AwsStsEndpointURL
+}
+
+func (o *AiProxyAdvancedPluginBedrock) GetEmbeddingsNormalize() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EmbeddingsNormalize
+}
+
+func (o *AiProxyAdvancedPluginBedrock) GetPerformanceConfigLatency() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PerformanceConfigLatency
 }
 
 type AiProxyAdvancedPluginGemini struct {
@@ -727,13 +761,57 @@ func (o *Embeddings) GetModel() AiProxyAdvancedPluginModel {
 	return o.Model
 }
 
+// AiProxyAdvancedPluginGenaiCategory - Generative AI category of the request
+type AiProxyAdvancedPluginGenaiCategory string
+
+const (
+	AiProxyAdvancedPluginGenaiCategoryAudioSpeech        AiProxyAdvancedPluginGenaiCategory = "audio/speech"
+	AiProxyAdvancedPluginGenaiCategoryAudioTranscription AiProxyAdvancedPluginGenaiCategory = "audio/transcription"
+	AiProxyAdvancedPluginGenaiCategoryImageGeneration    AiProxyAdvancedPluginGenaiCategory = "image/generation"
+	AiProxyAdvancedPluginGenaiCategoryRealtimeGeneration AiProxyAdvancedPluginGenaiCategory = "realtime/generation"
+	AiProxyAdvancedPluginGenaiCategoryTextEmbeddings     AiProxyAdvancedPluginGenaiCategory = "text/embeddings"
+	AiProxyAdvancedPluginGenaiCategoryTextGeneration     AiProxyAdvancedPluginGenaiCategory = "text/generation"
+	AiProxyAdvancedPluginGenaiCategoryVideoGeneration    AiProxyAdvancedPluginGenaiCategory = "video/generation"
+)
+
+func (e AiProxyAdvancedPluginGenaiCategory) ToPointer() *AiProxyAdvancedPluginGenaiCategory {
+	return &e
+}
+func (e *AiProxyAdvancedPluginGenaiCategory) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "audio/speech":
+		fallthrough
+	case "audio/transcription":
+		fallthrough
+	case "image/generation":
+		fallthrough
+	case "realtime/generation":
+		fallthrough
+	case "text/embeddings":
+		fallthrough
+	case "text/generation":
+		fallthrough
+	case "video/generation":
+		*e = AiProxyAdvancedPluginGenaiCategory(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AiProxyAdvancedPluginGenaiCategory: %v", v)
+	}
+}
+
 // AiProxyAdvancedPluginLlmFormat - LLM input and output format and schema to use
 type AiProxyAdvancedPluginLlmFormat string
 
 const (
-	AiProxyAdvancedPluginLlmFormatBedrock AiProxyAdvancedPluginLlmFormat = "bedrock"
-	AiProxyAdvancedPluginLlmFormatGemini  AiProxyAdvancedPluginLlmFormat = "gemini"
-	AiProxyAdvancedPluginLlmFormatOpenai  AiProxyAdvancedPluginLlmFormat = "openai"
+	AiProxyAdvancedPluginLlmFormatBedrock     AiProxyAdvancedPluginLlmFormat = "bedrock"
+	AiProxyAdvancedPluginLlmFormatCohere      AiProxyAdvancedPluginLlmFormat = "cohere"
+	AiProxyAdvancedPluginLlmFormatGemini      AiProxyAdvancedPluginLlmFormat = "gemini"
+	AiProxyAdvancedPluginLlmFormatHuggingface AiProxyAdvancedPluginLlmFormat = "huggingface"
+	AiProxyAdvancedPluginLlmFormatOpenai      AiProxyAdvancedPluginLlmFormat = "openai"
 )
 
 func (e AiProxyAdvancedPluginLlmFormat) ToPointer() *AiProxyAdvancedPluginLlmFormat {
@@ -747,7 +825,11 @@ func (e *AiProxyAdvancedPluginLlmFormat) UnmarshalJSON(data []byte) error {
 	switch v {
 	case "bedrock":
 		fallthrough
+	case "cohere":
+		fallthrough
 	case "gemini":
+		fallthrough
+	case "huggingface":
 		fallthrough
 	case "openai":
 		*e = AiProxyAdvancedPluginLlmFormat(v)
@@ -818,30 +900,46 @@ type AiProxyAdvancedPluginConfigAuth struct {
 	// If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
 	AllowOverride *bool `json:"allow_override,omitempty"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AwsAccessKeyID *string `json:"aws_access_key_id,omitempty"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AwsSecretAccessKey *string `json:"aws_secret_access_key,omitempty"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AzureClientID *string `json:"azure_client_id,omitempty"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AzureClientSecret *string `json:"azure_client_secret,omitempty"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AzureTenantID *string `json:"azure_tenant_id,omitempty"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
 	AzureUseManagedIdentity *bool `json:"azure_use_managed_identity,omitempty"`
 	// Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	GcpServiceAccountJSON *string `json:"gcp_service_account_json,omitempty"`
 	// Use service account auth for GCP-based providers and models.
 	GcpUseServiceAccount *bool `json:"gcp_use_service_account,omitempty"`
 	// If AI model requires authentication via Authorization or API key header, specify its name here.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	HeaderName *string `json:"header_name,omitempty"`
 	// Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	HeaderValue *string `json:"header_value,omitempty"`
 	// Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
 	ParamLocation *AiProxyAdvancedPluginConfigParamLocation `json:"param_location,omitempty"`
 	// If AI model requires authentication via query parameter, specify its name here.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	ParamName *string `json:"param_name,omitempty"`
 	// Specify the full parameter value for 'param_name'.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	ParamValue *string `json:"param_value,omitempty"`
 }
 
@@ -973,6 +1071,10 @@ type AiProxyAdvancedPluginConfigBedrock struct {
 	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
+	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
+	EmbeddingsNormalize *bool `json:"embeddings_normalize,omitempty"`
+	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
+	PerformanceConfigLatency *string `json:"performance_config_latency,omitempty"`
 }
 
 func (o *AiProxyAdvancedPluginConfigBedrock) GetAwsAssumeRoleArn() *string {
@@ -1001,6 +1103,77 @@ func (o *AiProxyAdvancedPluginConfigBedrock) GetAwsStsEndpointURL() *string {
 		return nil
 	}
 	return o.AwsStsEndpointURL
+}
+
+func (o *AiProxyAdvancedPluginConfigBedrock) GetEmbeddingsNormalize() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EmbeddingsNormalize
+}
+
+func (o *AiProxyAdvancedPluginConfigBedrock) GetPerformanceConfigLatency() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PerformanceConfigLatency
+}
+
+// AiProxyAdvancedPluginEmbeddingInputType - The purpose of the input text to calculate embedding vectors.
+type AiProxyAdvancedPluginEmbeddingInputType string
+
+const (
+	AiProxyAdvancedPluginEmbeddingInputTypeClassification AiProxyAdvancedPluginEmbeddingInputType = "classification"
+	AiProxyAdvancedPluginEmbeddingInputTypeClustering     AiProxyAdvancedPluginEmbeddingInputType = "clustering"
+	AiProxyAdvancedPluginEmbeddingInputTypeImage          AiProxyAdvancedPluginEmbeddingInputType = "image"
+	AiProxyAdvancedPluginEmbeddingInputTypeSearchDocument AiProxyAdvancedPluginEmbeddingInputType = "search_document"
+	AiProxyAdvancedPluginEmbeddingInputTypeSearchQuery    AiProxyAdvancedPluginEmbeddingInputType = "search_query"
+)
+
+func (e AiProxyAdvancedPluginEmbeddingInputType) ToPointer() *AiProxyAdvancedPluginEmbeddingInputType {
+	return &e
+}
+func (e *AiProxyAdvancedPluginEmbeddingInputType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "classification":
+		fallthrough
+	case "clustering":
+		fallthrough
+	case "image":
+		fallthrough
+	case "search_document":
+		fallthrough
+	case "search_query":
+		*e = AiProxyAdvancedPluginEmbeddingInputType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AiProxyAdvancedPluginEmbeddingInputType: %v", v)
+	}
+}
+
+type AiProxyAdvancedPluginCohere struct {
+	// The purpose of the input text to calculate embedding vectors.
+	EmbeddingInputType *AiProxyAdvancedPluginEmbeddingInputType `json:"embedding_input_type,omitempty"`
+	// Wait for the model if it is not ready
+	WaitForModel *bool `json:"wait_for_model,omitempty"`
+}
+
+func (o *AiProxyAdvancedPluginCohere) GetEmbeddingInputType() *AiProxyAdvancedPluginEmbeddingInputType {
+	if o == nil {
+		return nil
+	}
+	return o.EmbeddingInputType
+}
+
+func (o *AiProxyAdvancedPluginCohere) GetWaitForModel() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.WaitForModel
 }
 
 type AiProxyAdvancedPluginConfigGemini struct {
@@ -1120,10 +1293,13 @@ type AiProxyAdvancedPluginConfigOptions struct {
 	// Deployment ID for Azure OpenAI instances.
 	AzureDeploymentID *string `json:"azure_deployment_id,omitempty"`
 	// Instance name for Azure OpenAI hosted models.
-	AzureInstance *string                                 `json:"azure_instance,omitempty"`
-	Bedrock       *AiProxyAdvancedPluginConfigBedrock     `json:"bedrock,omitempty"`
-	Gemini        *AiProxyAdvancedPluginConfigGemini      `json:"gemini,omitempty"`
-	Huggingface   *AiProxyAdvancedPluginConfigHuggingface `json:"huggingface,omitempty"`
+	AzureInstance *string                             `json:"azure_instance,omitempty"`
+	Bedrock       *AiProxyAdvancedPluginConfigBedrock `json:"bedrock,omitempty"`
+	Cohere        *AiProxyAdvancedPluginCohere        `json:"cohere,omitempty"`
+	// If using embeddings models, set the number of dimensions to generate.
+	EmbeddingsDimensions *int64                                  `json:"embeddings_dimensions,omitempty"`
+	Gemini               *AiProxyAdvancedPluginConfigGemini      `json:"gemini,omitempty"`
+	Huggingface          *AiProxyAdvancedPluginConfigHuggingface `json:"huggingface,omitempty"`
 	// Defines the cost per 1M tokens in your prompt.
 	InputCost *float64 `json:"input_cost,omitempty"`
 	// If using llama2 provider, select the upstream message format.
@@ -1179,6 +1355,20 @@ func (o *AiProxyAdvancedPluginConfigOptions) GetBedrock() *AiProxyAdvancedPlugin
 		return nil
 	}
 	return o.Bedrock
+}
+
+func (o *AiProxyAdvancedPluginConfigOptions) GetCohere() *AiProxyAdvancedPluginCohere {
+	if o == nil {
+		return nil
+	}
+	return o.Cohere
+}
+
+func (o *AiProxyAdvancedPluginConfigOptions) GetEmbeddingsDimensions() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.EmbeddingsDimensions
 }
 
 func (o *AiProxyAdvancedPluginConfigOptions) GetGemini() *AiProxyAdvancedPluginConfigGemini {
@@ -1343,13 +1533,24 @@ func (o *AiProxyAdvancedPluginConfigModel) GetProvider() AiProxyAdvancedPluginCo
 	return o.Provider
 }
 
-// AiProxyAdvancedPluginRouteType - The model's operation implementation, for this provider. Set to `preserve` to pass through without transformation.
+// AiProxyAdvancedPluginRouteType - The model's operation implementation, for this provider.
 type AiProxyAdvancedPluginRouteType string
 
 const (
-	AiProxyAdvancedPluginRouteTypeLlmV1Chat        AiProxyAdvancedPluginRouteType = "llm/v1/chat"
-	AiProxyAdvancedPluginRouteTypeLlmV1Completions AiProxyAdvancedPluginRouteType = "llm/v1/completions"
-	AiProxyAdvancedPluginRouteTypePreserve         AiProxyAdvancedPluginRouteType = "preserve"
+	AiProxyAdvancedPluginRouteTypeAudioV1AudioSpeech         AiProxyAdvancedPluginRouteType = "audio/v1/audio/speech"
+	AiProxyAdvancedPluginRouteTypeAudioV1AudioTranscriptions AiProxyAdvancedPluginRouteType = "audio/v1/audio/transcriptions"
+	AiProxyAdvancedPluginRouteTypeAudioV1AudioTranslations   AiProxyAdvancedPluginRouteType = "audio/v1/audio/translations"
+	AiProxyAdvancedPluginRouteTypeImageV1ImagesEdits         AiProxyAdvancedPluginRouteType = "image/v1/images/edits"
+	AiProxyAdvancedPluginRouteTypeImageV1ImagesGenerations   AiProxyAdvancedPluginRouteType = "image/v1/images/generations"
+	AiProxyAdvancedPluginRouteTypeLlmV1Assistants            AiProxyAdvancedPluginRouteType = "llm/v1/assistants"
+	AiProxyAdvancedPluginRouteTypeLlmV1Batches               AiProxyAdvancedPluginRouteType = "llm/v1/batches"
+	AiProxyAdvancedPluginRouteTypeLlmV1Chat                  AiProxyAdvancedPluginRouteType = "llm/v1/chat"
+	AiProxyAdvancedPluginRouteTypeLlmV1Completions           AiProxyAdvancedPluginRouteType = "llm/v1/completions"
+	AiProxyAdvancedPluginRouteTypeLlmV1Embeddings            AiProxyAdvancedPluginRouteType = "llm/v1/embeddings"
+	AiProxyAdvancedPluginRouteTypeLlmV1Files                 AiProxyAdvancedPluginRouteType = "llm/v1/files"
+	AiProxyAdvancedPluginRouteTypeLlmV1Responses             AiProxyAdvancedPluginRouteType = "llm/v1/responses"
+	AiProxyAdvancedPluginRouteTypePreserve                   AiProxyAdvancedPluginRouteType = "preserve"
+	AiProxyAdvancedPluginRouteTypeRealtimeV1Realtime         AiProxyAdvancedPluginRouteType = "realtime/v1/realtime"
 )
 
 func (e AiProxyAdvancedPluginRouteType) ToPointer() *AiProxyAdvancedPluginRouteType {
@@ -1361,11 +1562,33 @@ func (e *AiProxyAdvancedPluginRouteType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "audio/v1/audio/speech":
+		fallthrough
+	case "audio/v1/audio/transcriptions":
+		fallthrough
+	case "audio/v1/audio/translations":
+		fallthrough
+	case "image/v1/images/edits":
+		fallthrough
+	case "image/v1/images/generations":
+		fallthrough
+	case "llm/v1/assistants":
+		fallthrough
+	case "llm/v1/batches":
+		fallthrough
 	case "llm/v1/chat":
 		fallthrough
 	case "llm/v1/completions":
 		fallthrough
+	case "llm/v1/embeddings":
+		fallthrough
+	case "llm/v1/files":
+		fallthrough
+	case "llm/v1/responses":
+		fallthrough
 	case "preserve":
+		fallthrough
+	case "realtime/v1/realtime":
 		*e = AiProxyAdvancedPluginRouteType(v)
 		return nil
 	default:
@@ -1379,7 +1602,7 @@ type Targets struct {
 	Description *string                          `json:"description,omitempty"`
 	Logging     AiProxyAdvancedPluginLogging     `json:"logging"`
 	Model       AiProxyAdvancedPluginConfigModel `json:"model"`
-	// The model's operation implementation, for this provider. Set to `preserve` to pass through without transformation.
+	// The model's operation implementation, for this provider.
 	RouteType AiProxyAdvancedPluginRouteType `json:"route_type"`
 	// The weight this target gets within the upstream loadbalancer (1-65535).
 	Weight *int64 `json:"weight,omitempty"`
@@ -1490,6 +1713,8 @@ type Pgvector struct {
 	// the host of the pgvector database
 	Host *string `json:"host,omitempty"`
 	// the password of the pgvector database
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Password *string `json:"password,omitempty"`
 	// the port of the pgvector database
 	Port *int64 `json:"port,omitempty"`
@@ -1508,6 +1733,7 @@ type Pgvector struct {
 	// the timeout of the pgvector database
 	Timeout *float64 `json:"timeout,omitempty"`
 	// the user of the pgvector database
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	User *string `json:"user,omitempty"`
 }
 
@@ -1685,6 +1911,8 @@ type AiProxyAdvancedPluginRedis struct {
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
 	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `json:"port,omitempty"`
@@ -1697,10 +1925,13 @@ type AiProxyAdvancedPluginRedis struct {
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
 	SentinelNodes []AiProxyAdvancedPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	SentinelPassword *string `json:"sentinel_password,omitempty"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
 	SentinelRole *AiProxyAdvancedPluginSentinelRole `json:"sentinel_role,omitempty"`
 	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	SentinelUsername *string `json:"sentinel_username,omitempty"`
 	// A string representing an SNI (server name indication) value for TLS.
 	ServerName *string `json:"server_name,omitempty"`
@@ -1709,6 +1940,7 @@ type AiProxyAdvancedPluginRedis struct {
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
 	SslVerify *bool `json:"ssl_verify,omitempty"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Username *string `json:"username,omitempty"`
 }
 
@@ -1944,15 +2176,17 @@ func (o *Vectordb) GetThreshold() float64 {
 type AiProxyAdvancedPluginConfig struct {
 	Balancer   *Balancer   `json:"balancer,omitempty"`
 	Embeddings *Embeddings `json:"embeddings,omitempty"`
+	// Generative AI category of the request
+	GenaiCategory *AiProxyAdvancedPluginGenaiCategory `json:"genai_category,omitempty"`
 	// LLM input and output format and schema to use
 	LlmFormat *AiProxyAdvancedPluginLlmFormat `json:"llm_format,omitempty"`
-	// max allowed body size allowed to be introspected
+	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 	MaxRequestBodySize *int64 `json:"max_request_body_size,omitempty"`
 	// Display the model name selected in the X-Kong-LLM-Model response header
 	ModelNameHeader *bool `json:"model_name_header,omitempty"`
 	// Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events.
 	ResponseStreaming *AiProxyAdvancedPluginResponseStreaming `json:"response_streaming,omitempty"`
-	Targets           []Targets                               `json:"targets,omitempty"`
+	Targets           []Targets                               `json:"targets"`
 	Vectordb          *Vectordb                               `json:"vectordb,omitempty"`
 }
 
@@ -1968,6 +2202,13 @@ func (o *AiProxyAdvancedPluginConfig) GetEmbeddings() *Embeddings {
 		return nil
 	}
 	return o.Embeddings
+}
+
+func (o *AiProxyAdvancedPluginConfig) GetGenaiCategory() *AiProxyAdvancedPluginGenaiCategory {
+	if o == nil {
+		return nil
+	}
+	return o.GenaiCategory
 }
 
 func (o *AiProxyAdvancedPluginConfig) GetLlmFormat() *AiProxyAdvancedPluginLlmFormat {
@@ -2000,7 +2241,7 @@ func (o *AiProxyAdvancedPluginConfig) GetResponseStreaming() *AiProxyAdvancedPlu
 
 func (o *AiProxyAdvancedPluginConfig) GetTargets() []Targets {
 	if o == nil {
-		return nil
+		return []Targets{}
 	}
 	return o.Targets
 }
@@ -2043,6 +2284,8 @@ const (
 	AiProxyAdvancedPluginProtocolsGrpcs AiProxyAdvancedPluginProtocols = "grpcs"
 	AiProxyAdvancedPluginProtocolsHTTP  AiProxyAdvancedPluginProtocols = "http"
 	AiProxyAdvancedPluginProtocolsHTTPS AiProxyAdvancedPluginProtocols = "https"
+	AiProxyAdvancedPluginProtocolsWs    AiProxyAdvancedPluginProtocols = "ws"
+	AiProxyAdvancedPluginProtocolsWss   AiProxyAdvancedPluginProtocols = "wss"
 )
 
 func (e AiProxyAdvancedPluginProtocols) ToPointer() *AiProxyAdvancedPluginProtocols {
@@ -2061,6 +2304,10 @@ func (e *AiProxyAdvancedPluginProtocols) UnmarshalJSON(data []byte) error {
 	case "http":
 		fallthrough
 	case "https":
+		fallthrough
+	case "ws":
+		fallthrough
+	case "wss":
 		*e = AiProxyAdvancedPluginProtocols(v)
 		return nil
 	default:
@@ -2106,13 +2353,13 @@ type AiProxyAdvancedPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                       `json:"updated_at,omitempty"`
-	Config    *AiProxyAdvancedPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                      `json:"updated_at,omitempty"`
+	Config    AiProxyAdvancedPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *AiProxyAdvancedPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *AiProxyAdvancedPluginConsumerGroup `json:"consumer_group"`
-	// A set of strings representing HTTP protocols.
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []AiProxyAdvancedPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *AiProxyAdvancedPluginRoute `json:"route"`
@@ -2191,9 +2438,9 @@ func (o *AiProxyAdvancedPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *AiProxyAdvancedPlugin) GetConfig() *AiProxyAdvancedPluginConfig {
+func (o *AiProxyAdvancedPlugin) GetConfig() AiProxyAdvancedPluginConfig {
 	if o == nil {
-		return nil
+		return AiProxyAdvancedPluginConfig{}
 	}
 	return o.Config
 }

@@ -107,30 +107,46 @@ type AiRagInjectorPluginAuth struct {
 	// If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
 	AllowOverride *bool `json:"allow_override,omitempty"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AwsAccessKeyID *string `json:"aws_access_key_id,omitempty"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AwsSecretAccessKey *string `json:"aws_secret_access_key,omitempty"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AzureClientID *string `json:"azure_client_id,omitempty"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AzureClientSecret *string `json:"azure_client_secret,omitempty"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AzureTenantID *string `json:"azure_tenant_id,omitempty"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
 	AzureUseManagedIdentity *bool `json:"azure_use_managed_identity,omitempty"`
 	// Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	GcpServiceAccountJSON *string `json:"gcp_service_account_json,omitempty"`
 	// Use service account auth for GCP-based providers and models.
 	GcpUseServiceAccount *bool `json:"gcp_use_service_account,omitempty"`
 	// If AI model requires authentication via Authorization or API key header, specify its name here.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	HeaderName *string `json:"header_name,omitempty"`
 	// Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	HeaderValue *string `json:"header_value,omitempty"`
 	// Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
 	ParamLocation *AiRagInjectorPluginParamLocation `json:"param_location,omitempty"`
 	// If AI model requires authentication via query parameter, specify its name here.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	ParamName *string `json:"param_name,omitempty"`
 	// Specify the full parameter value for 'param_name'.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	ParamValue *string `json:"param_value,omitempty"`
 }
 
@@ -271,6 +287,10 @@ type AiRagInjectorPluginBedrock struct {
 	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
+	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
+	EmbeddingsNormalize *bool `json:"embeddings_normalize,omitempty"`
+	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
+	PerformanceConfigLatency *string `json:"performance_config_latency,omitempty"`
 }
 
 func (o *AiRagInjectorPluginBedrock) GetAwsAssumeRoleArn() *string {
@@ -299,6 +319,20 @@ func (o *AiRagInjectorPluginBedrock) GetAwsStsEndpointURL() *string {
 		return nil
 	}
 	return o.AwsStsEndpointURL
+}
+
+func (o *AiRagInjectorPluginBedrock) GetEmbeddingsNormalize() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EmbeddingsNormalize
+}
+
+func (o *AiRagInjectorPluginBedrock) GetPerformanceConfigLatency() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PerformanceConfigLatency
 }
 
 type AiRagInjectorPluginGemini struct {
@@ -438,16 +472,16 @@ func (e *AiRagInjectorPluginProvider) UnmarshalJSON(data []byte) error {
 
 type AiRagInjectorPluginModel struct {
 	// Model name to execute.
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name"`
 	// Key/value settings for the model
 	Options *AiRagInjectorPluginOptions `json:"options,omitempty"`
 	// AI provider format to use for embeddings API
-	Provider *AiRagInjectorPluginProvider `json:"provider,omitempty"`
+	Provider AiRagInjectorPluginProvider `json:"provider"`
 }
 
-func (o *AiRagInjectorPluginModel) GetName() *string {
+func (o *AiRagInjectorPluginModel) GetName() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Name
 }
@@ -459,16 +493,16 @@ func (o *AiRagInjectorPluginModel) GetOptions() *AiRagInjectorPluginOptions {
 	return o.Options
 }
 
-func (o *AiRagInjectorPluginModel) GetProvider() *AiRagInjectorPluginProvider {
+func (o *AiRagInjectorPluginModel) GetProvider() AiRagInjectorPluginProvider {
 	if o == nil {
-		return nil
+		return AiRagInjectorPluginProvider("")
 	}
 	return o.Provider
 }
 
 type AiRagInjectorPluginEmbeddings struct {
-	Auth  *AiRagInjectorPluginAuth  `json:"auth,omitempty"`
-	Model *AiRagInjectorPluginModel `json:"model,omitempty"`
+	Auth  *AiRagInjectorPluginAuth `json:"auth,omitempty"`
+	Model AiRagInjectorPluginModel `json:"model"`
 }
 
 func (o *AiRagInjectorPluginEmbeddings) GetAuth() *AiRagInjectorPluginAuth {
@@ -478,9 +512,9 @@ func (o *AiRagInjectorPluginEmbeddings) GetAuth() *AiRagInjectorPluginAuth {
 	return o.Auth
 }
 
-func (o *AiRagInjectorPluginEmbeddings) GetModel() *AiRagInjectorPluginModel {
+func (o *AiRagInjectorPluginEmbeddings) GetModel() AiRagInjectorPluginModel {
 	if o == nil {
-		return nil
+		return AiRagInjectorPluginModel{}
 	}
 	return o.Model
 }
@@ -577,6 +611,8 @@ type AiRagInjectorPluginPgvector struct {
 	// the host of the pgvector database
 	Host *string `json:"host,omitempty"`
 	// the password of the pgvector database
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Password *string `json:"password,omitempty"`
 	// the port of the pgvector database
 	Port *int64 `json:"port,omitempty"`
@@ -595,6 +631,7 @@ type AiRagInjectorPluginPgvector struct {
 	// the timeout of the pgvector database
 	Timeout *float64 `json:"timeout,omitempty"`
 	// the user of the pgvector database
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	User *string `json:"user,omitempty"`
 }
 
@@ -772,6 +809,8 @@ type AiRagInjectorPluginRedis struct {
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
 	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `json:"port,omitempty"`
@@ -784,10 +823,13 @@ type AiRagInjectorPluginRedis struct {
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
 	SentinelNodes []AiRagInjectorPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	SentinelPassword *string `json:"sentinel_password,omitempty"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
 	SentinelRole *AiRagInjectorPluginSentinelRole `json:"sentinel_role,omitempty"`
 	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	SentinelUsername *string `json:"sentinel_username,omitempty"`
 	// A string representing an SNI (server name indication) value for TLS.
 	ServerName *string `json:"server_name,omitempty"`
@@ -796,6 +838,7 @@ type AiRagInjectorPluginRedis struct {
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
 	SslVerify *bool `json:"ssl_verify,omitempty"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Username *string `json:"username,omitempty"`
 }
 
@@ -975,25 +1018,25 @@ func (e *AiRagInjectorPluginStrategy) UnmarshalJSON(data []byte) error {
 
 type AiRagInjectorPluginVectordb struct {
 	// the desired dimensionality for the vectors
-	Dimensions *int64 `json:"dimensions,omitempty"`
+	Dimensions int64 `json:"dimensions"`
 	// the distance metric to use for vector searches
-	DistanceMetric *AiRagInjectorPluginDistanceMetric `json:"distance_metric,omitempty"`
-	Pgvector       *AiRagInjectorPluginPgvector       `json:"pgvector,omitempty"`
-	Redis          *AiRagInjectorPluginRedis          `json:"redis,omitempty"`
+	DistanceMetric AiRagInjectorPluginDistanceMetric `json:"distance_metric"`
+	Pgvector       *AiRagInjectorPluginPgvector      `json:"pgvector,omitempty"`
+	Redis          *AiRagInjectorPluginRedis         `json:"redis,omitempty"`
 	// which vector database driver to use
-	Strategy *AiRagInjectorPluginStrategy `json:"strategy,omitempty"`
+	Strategy AiRagInjectorPluginStrategy `json:"strategy"`
 }
 
-func (o *AiRagInjectorPluginVectordb) GetDimensions() *int64 {
+func (o *AiRagInjectorPluginVectordb) GetDimensions() int64 {
 	if o == nil {
-		return nil
+		return 0
 	}
 	return o.Dimensions
 }
 
-func (o *AiRagInjectorPluginVectordb) GetDistanceMetric() *AiRagInjectorPluginDistanceMetric {
+func (o *AiRagInjectorPluginVectordb) GetDistanceMetric() AiRagInjectorPluginDistanceMetric {
 	if o == nil {
-		return nil
+		return AiRagInjectorPluginDistanceMetric("")
 	}
 	return o.DistanceMetric
 }
@@ -1012,29 +1055,29 @@ func (o *AiRagInjectorPluginVectordb) GetRedis() *AiRagInjectorPluginRedis {
 	return o.Redis
 }
 
-func (o *AiRagInjectorPluginVectordb) GetStrategy() *AiRagInjectorPluginStrategy {
+func (o *AiRagInjectorPluginVectordb) GetStrategy() AiRagInjectorPluginStrategy {
 	if o == nil {
-		return nil
+		return AiRagInjectorPluginStrategy("")
 	}
 	return o.Strategy
 }
 
 type AiRagInjectorPluginConfig struct {
-	Embeddings *AiRagInjectorPluginEmbeddings `json:"embeddings,omitempty"`
+	Embeddings AiRagInjectorPluginEmbeddings `json:"embeddings"`
 	// The maximum number of chunks to fetch from vectordb
 	FetchChunksCount *float64      `json:"fetch_chunks_count,omitempty"`
 	InjectAsRole     *InjectAsRole `json:"inject_as_role,omitempty"`
 	InjectTemplate   *string       `json:"inject_template,omitempty"`
 	// Halt the LLM request process in case of a vectordb or embeddings service failure
-	StopOnFailure *bool                        `json:"stop_on_failure,omitempty"`
-	Vectordb      *AiRagInjectorPluginVectordb `json:"vectordb,omitempty"`
+	StopOnFailure *bool                       `json:"stop_on_failure,omitempty"`
+	Vectordb      AiRagInjectorPluginVectordb `json:"vectordb"`
 	// The namespace of the vectordb to use for embeddings lookup
 	VectordbNamespace *string `json:"vectordb_namespace,omitempty"`
 }
 
-func (o *AiRagInjectorPluginConfig) GetEmbeddings() *AiRagInjectorPluginEmbeddings {
+func (o *AiRagInjectorPluginConfig) GetEmbeddings() AiRagInjectorPluginEmbeddings {
 	if o == nil {
-		return nil
+		return AiRagInjectorPluginEmbeddings{}
 	}
 	return o.Embeddings
 }
@@ -1067,9 +1110,9 @@ func (o *AiRagInjectorPluginConfig) GetStopOnFailure() *bool {
 	return o.StopOnFailure
 }
 
-func (o *AiRagInjectorPluginConfig) GetVectordb() *AiRagInjectorPluginVectordb {
+func (o *AiRagInjectorPluginConfig) GetVectordb() AiRagInjectorPluginVectordb {
 	if o == nil {
-		return nil
+		return AiRagInjectorPluginVectordb{}
 	}
 	return o.Vectordb
 }
@@ -1175,8 +1218,8 @@ type AiRagInjectorPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                     `json:"updated_at,omitempty"`
-	Config    *AiRagInjectorPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                    `json:"updated_at,omitempty"`
+	Config    AiRagInjectorPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *AiRagInjectorPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -1260,9 +1303,9 @@ func (o *AiRagInjectorPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *AiRagInjectorPlugin) GetConfig() *AiRagInjectorPluginConfig {
+func (o *AiRagInjectorPlugin) GetConfig() AiRagInjectorPluginConfig {
 	if o == nil {
-		return nil
+		return AiRagInjectorPluginConfig{}
 	}
 	return o.Config
 }

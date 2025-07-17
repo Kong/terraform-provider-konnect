@@ -41,21 +41,21 @@ type GatewayPluginAiResponseTransformerResource struct {
 
 // GatewayPluginAiResponseTransformerResourceModel describes the resource data model.
 type GatewayPluginAiResponseTransformerResourceModel struct {
-	Config         *tfTypes.AiResponseTransformerPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.Set                               `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.Set                               `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                               `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                                `tfsdk:"created_at"`
-	Enabled        types.Bool                                 `tfsdk:"enabled"`
-	ID             types.String                               `tfsdk:"id"`
-	InstanceName   types.String                               `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering                 `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials                         `tfsdk:"partials"`
-	Protocols      []types.String                             `tfsdk:"protocols"`
-	Route          *tfTypes.Set                               `tfsdk:"route"`
-	Service        *tfTypes.Set                               `tfsdk:"service"`
-	Tags           []types.String                             `tfsdk:"tags"`
-	UpdatedAt      types.Int64                                `tfsdk:"updated_at"`
+	Config         tfTypes.AiResponseTransformerPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.Set                              `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.Set                              `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                              `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                               `tfsdk:"created_at"`
+	Enabled        types.Bool                                `tfsdk:"enabled"`
+	ID             types.String                              `tfsdk:"id"`
+	InstanceName   types.String                              `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering                `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials                        `tfsdk:"partials"`
+	Protocols      []types.String                            `tfsdk:"protocols"`
+	Route          *tfTypes.Set                              `tfsdk:"route"`
+	Service        *tfTypes.Set                              `tfsdk:"service"`
+	Tags           []types.String                            `tfsdk:"tags"`
+	UpdatedAt      types.Int64                               `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginAiResponseTransformerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -67,8 +67,7 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 		MarkdownDescription: "GatewayPluginAiResponseTransformer Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"http_proxy_host": schema.StringAttribute{
 						Computed:    true,
@@ -107,8 +106,7 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 						Description: `Verify the TLS certificate of the AI upstream service.`,
 					},
 					"llm": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
+						Required: true,
 						Attributes: map[string]schema.Attribute{
 							"auth": schema.SingleNestedAttribute{
 								Computed: true,
@@ -120,29 +118,37 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 										Description: `If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.`,
 									},
 									"aws_access_key_id": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.` + "\n" +
+											`This field is [encrypted](/gateway/keyring/).` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 									"aws_secret_access_key": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.` + "\n" +
+											`This field is [encrypted](/gateway/keyring/).` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 									"azure_client_id": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 									"azure_client_secret": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.` + "\n" +
+											`This field is [encrypted](/gateway/keyring/).` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 									"azure_tenant_id": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 									"azure_use_managed_identity": schema.BoolAttribute{
 										Computed:    true,
@@ -150,9 +156,11 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 										Description: `Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.`,
 									},
 									"gcp_service_account_json": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable ` + "`" + `GCP_SERVICE_ACCOUNT` + "`" + `.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable ` + "`" + `GCP_SERVICE_ACCOUNT` + "`" + `.` + "\n" +
+											`This field is [encrypted](/gateway/keyring/).` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 									"gcp_use_service_account": schema.BoolAttribute{
 										Computed:    true,
@@ -160,14 +168,17 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 										Description: `Use service account auth for GCP-based providers and models.`,
 									},
 									"header_name": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `If AI model requires authentication via Authorization or API key header, specify its name here.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `If AI model requires authentication via Authorization or API key header, specify its name here.` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 									"header_value": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.` + "\n" +
+											`This field is [encrypted](/gateway/keyring/).` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 									"param_location": schema.StringAttribute{
 										Computed:    true,
@@ -181,14 +192,17 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 										},
 									},
 									"param_name": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `If AI model requires authentication via query parameter, specify its name here.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `If AI model requires authentication via query parameter, specify its name here.` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 									"param_value": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Specify the full parameter value for 'param_name'.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `Specify the full parameter value for 'param_name'.` + "\n" +
+											`This field is [encrypted](/gateway/keyring/).` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 								},
 							},
@@ -209,8 +223,7 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 								},
 							},
 							"model": schema.SingleNestedAttribute{
-								Computed: true,
-								Optional: true,
+								Required: true,
 								Attributes: map[string]schema.Attribute{
 									"name": schema.StringAttribute{
 										Computed:    true,
@@ -265,7 +278,47 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 														Optional:    true,
 														Description: `If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.`,
 													},
+													"embeddings_normalize": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `If using AWS providers (Bedrock), set to true to normalize the embeddings.`,
+													},
+													"performance_config_latency": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.`,
+													},
 												},
+											},
+											"cohere": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"embedding_input_type": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The purpose of the input text to calculate embedding vectors. must be one of ["classification", "clustering", "image", "search_document", "search_query"]`,
+														Validators: []validator.String{
+															stringvalidator.OneOf(
+																"classification",
+																"clustering",
+																"image",
+																"search_document",
+																"search_query",
+															),
+														},
+													},
+													"wait_for_model": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Wait for the model if it is not ready`,
+													},
+												},
+											},
+											"embeddings_dimensions": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `If using embeddings models, set the number of dimensions to generate.`,
 											},
 											"gemini": schema.SingleNestedAttribute{
 												Computed: true,
@@ -380,8 +433,7 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 										Description: `Key/value settings for the model`,
 									},
 									"provider": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
+										Required:    true,
 										Description: `AI provider request format - Kong translates requests to and from the specified backend compatible formats. must be one of ["anthropic", "azure", "bedrock", "cohere", "gemini", "huggingface", "llama2", "mistral", "openai"]`,
 										Validators: []validator.String{
 											stringvalidator.OneOf(
@@ -400,14 +452,24 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 								},
 							},
 							"route_type": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `The model's operation implementation, for this provider. Set to ` + "`" + `preserve` + "`" + ` to pass through without transformation. must be one of ["llm/v1/chat", "llm/v1/completions", "preserve"]`,
+								Required:    true,
+								Description: `The model's operation implementation, for this provider. must be one of ["audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
+										"audio/v1/audio/speech",
+										"audio/v1/audio/transcriptions",
+										"audio/v1/audio/translations",
+										"image/v1/images/edits",
+										"image/v1/images/generations",
+										"llm/v1/assistants",
+										"llm/v1/batches",
 										"llm/v1/chat",
 										"llm/v1/completions",
+										"llm/v1/embeddings",
+										"llm/v1/files",
+										"llm/v1/responses",
 										"preserve",
+										"realtime/v1/realtime",
 									),
 								},
 							},
@@ -416,7 +478,7 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 					"max_request_body_size": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `max allowed body size allowed to be introspected`,
+						Description: `max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.`,
 					},
 					"parse_llm_response_json_instructions": schema.BoolAttribute{
 						Computed:    true,
@@ -424,8 +486,7 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 						Description: `Set true to read specific response format from the LLM, and accordingly set the status code / body / headers that proxy back to the client. You need to engineer your LLM prompt to return the correct format, see plugin docs 'Overview' page for usage instructions.`,
 					},
 					"prompt": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `Use this prompt to tune the LLM system/assistant message for the returning proxy response (from the upstream), adn what response format you are expecting.`,
 					},
 					"transformation_extract_pattern": schema.StringAttribute{

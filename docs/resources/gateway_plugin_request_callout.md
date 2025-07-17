@@ -198,11 +198,11 @@ resource "konnect_gateway_plugin_request_callout" "my_gatewaypluginrequestcallou
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -223,11 +223,153 @@ resource "konnect_gateway_plugin_request_callout" "my_gatewaypluginrequestcallou
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
+Required:
+
+- `callouts` (Attributes List) A collection of callout objects, where each object represents an HTTP request made in the context of a proxy request. (see [below for nested schema](#nestedatt--config--callouts))
+
 Optional:
 
 - `cache` (Attributes) Plugin global caching configuration. (see [below for nested schema](#nestedatt--config--cache))
-- `callouts` (Attributes List) A collection of callout objects, where each object represents an HTTPrequest made in the context of a proxy request. (see [below for nested schema](#nestedatt--config--callouts))
 - `upstream` (Attributes) Customizations to the upstream request. (see [below for nested schema](#nestedatt--config--upstream))
+
+<a id="nestedatt--config--callouts"></a>
+### Nested Schema for `config.callouts`
+
+Optional:
+
+- `cache` (Attributes) Callout caching configuration. Not Null (see [below for nested schema](#nestedatt--config--callouts--cache))
+- `depends_on` (List of String) An array of callout names the current callout depends on. This dependency list determines the callout execution order via a topological sorting algorithm.
+- `name` (String) A string identifier for a callout. A callout object is referenceable via its name in the `kong.ctx.shared.callouts.<name>`. Not Null
+- `request` (Attributes) The customizations for the callout request. Not Null (see [below for nested schema](#nestedatt--config--callouts--request))
+- `response` (Attributes) Configurations of callout response handling. Not Null (see [below for nested schema](#nestedatt--config--callouts--response))
+
+<a id="nestedatt--config--callouts--cache"></a>
+### Nested Schema for `config.callouts.cache`
+
+Optional:
+
+- `bypass` (Boolean) If `true`, skips caching the callout response.
+
+
+<a id="nestedatt--config--callouts--request"></a>
+### Nested Schema for `config.callouts.request`
+
+Optional:
+
+- `body` (Attributes) Callout request body customizations. Not Null (see [below for nested schema](#nestedatt--config--callouts--request--body))
+- `by_lua` (String) Lua code that executes before the callout request is made. **Warning** can impact system behavior. Standard Lua sandboxing restrictions apply.
+- `error` (Attributes) The error handling policy the plugin will apply to TCP and HTTP errors. Not Null (see [below for nested schema](#nestedatt--config--callouts--request--error))
+- `headers` (Attributes) Callout request header customizations. Not Null (see [below for nested schema](#nestedatt--config--callouts--request--headers))
+- `http_opts` (Attributes) HTTP connection parameters. Not Null (see [below for nested schema](#nestedatt--config--callouts--request--http_opts))
+- `method` (String) The HTTP method that will be requested.
+- `query` (Attributes) Callout request query param customizations. Not Null (see [below for nested schema](#nestedatt--config--callouts--request--query))
+- `url` (String) The URL that will be requested.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+Not Null
+
+<a id="nestedatt--config--callouts--request--body"></a>
+### Nested Schema for `config.callouts.request.body`
+
+Optional:
+
+- `custom` (Map of String) The custom body fields to be added to the callout HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
+- `decode` (Boolean) If `true`, decodes the request's body and make it available for customizations. Only JSON content type is supported.
+- `forward` (Boolean) If `true`, forwards the incoming request's body to the callout request.
+
+
+<a id="nestedatt--config--callouts--request--error"></a>
+### Nested Schema for `config.callouts.request.error`
+
+Optional:
+
+- `error_response_code` (Number) The error code to respond with if `on_error` is `fail` or if `retries` is achieved.
+- `error_response_msg` (String) The error mesasge to respond with if `on_error` is set to `fail` or if `retries` is achieved. Templating with Lua expressions is supported.
+- `http_statuses` (List of Number) The list of HTTP status codes considered errors under the error handling policy.
+- `on_error` (String) must be one of ["continue", "fail", "retry"]
+- `retries` (Number) The number of retries the plugin will attempt on TCP and HTTP errors if `on_error` is set to `retry`.
+
+
+<a id="nestedatt--config--callouts--request--headers"></a>
+### Nested Schema for `config.callouts.request.headers`
+
+Optional:
+
+- `custom` (Map of String) The custom headers to be added in the callout HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
+- `forward` (Boolean) If `true`, forwards the incoming request's headers to the callout request.
+
+
+<a id="nestedatt--config--callouts--request--http_opts"></a>
+### Nested Schema for `config.callouts.request.http_opts`
+
+Optional:
+
+- `proxy` (Attributes) Proxy settings. (see [below for nested schema](#nestedatt--config--callouts--request--http_opts--proxy))
+- `ssl_server_name` (String) The SNI used in the callout request. Defaults to host if omitted.
+- `ssl_verify` (Boolean) If set to `true`, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
+- `timeouts` (Attributes) Socket timeouts in milliseconds. All or none must be set. (see [below for nested schema](#nestedatt--config--callouts--request--http_opts--timeouts))
+
+<a id="nestedatt--config--callouts--request--http_opts--proxy"></a>
+### Nested Schema for `config.callouts.request.http_opts.proxy`
+
+Optional:
+
+- `auth_password` (String) The password to authenticate with, if the forward proxy is protected by basic authentication.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `auth_username` (String) The username to authenticate with, if the forward proxy is protected by basic authentication.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `http_proxy` (String) The HTTP proxy URL. This proxy server will be used for HTTP requests.
+- `https_proxy` (String) The HTTPS proxy URL. This proxy server will be used for HTTPS requests.
+
+
+<a id="nestedatt--config--callouts--request--http_opts--timeouts"></a>
+### Nested Schema for `config.callouts.request.http_opts.timeouts`
+
+Optional:
+
+- `connect` (Number) The socket connect timeout.
+- `read` (Number) The socket read timeout.
+- `write` (Number) The socket write timeout.
+
+
+
+<a id="nestedatt--config--callouts--request--query"></a>
+### Nested Schema for `config.callouts.request.query`
+
+Optional:
+
+- `custom` (Map of String) The custom query params to be added in the callout HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
+- `forward` (Boolean) If `true`, forwards the incoming request's query params to the callout request.
+
+
+
+<a id="nestedatt--config--callouts--response"></a>
+### Nested Schema for `config.callouts.response`
+
+Optional:
+
+- `body` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--callouts--response--body))
+- `by_lua` (String) Lua code that executes after the callout response is received, before caching takes place. Can produce side effects. Standard Lua sandboxing restrictions apply.
+- `headers` (Attributes) Callout response header customizations. Not Null (see [below for nested schema](#nestedatt--config--callouts--response--headers))
+
+<a id="nestedatt--config--callouts--response--body"></a>
+### Nested Schema for `config.callouts.response.body`
+
+Optional:
+
+- `decode` (Boolean) If `true`, decodes the response body before storing into the context. Only JSON is supported.
+- `store` (Boolean) If `false`, skips storing the callout response body into kong.ctx.shared.callouts.<name>.response.body.
+
+
+<a id="nestedatt--config--callouts--response--headers"></a>
+### Nested Schema for `config.callouts.response.headers`
+
+Optional:
+
+- `store` (Boolean) If `false`, skips storing the callout response headers into kong.ctx.shared.callouts.<name>.response.headers.
+
+
+
 
 <a id="nestedatt--config--cache"></a>
 ### Nested Schema for `config.cache`
@@ -261,18 +403,24 @@ Optional:
 - `keepalive_backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
 - `keepalive_pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+This field is [encrypted](/gateway/keyring/).
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 - `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--cache--redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+This field is [encrypted](/gateway/keyring/).
 - `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis.
 - `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
 - `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
 <a id="nestedatt--config--cache--redis--cluster_nodes"></a>
 ### Nested Schema for `config.cache.redis.cluster_nodes`
@@ -294,147 +442,13 @@ Optional:
 
 
 
-<a id="nestedatt--config--callouts"></a>
-### Nested Schema for `config.callouts`
-
-Optional:
-
-- `cache` (Attributes) Callout caching configuration. Not Null (see [below for nested schema](#nestedatt--config--callouts--cache))
-- `depends_on` (List of String) An array of callout names the current callout depends on.This dependency determines the callout execution order.
-- `name` (String) A string identifier for a callout. A callout object is referenceablevia its name in the kong.ctx.shared.callouts.<name>. Not Null
-- `request` (Attributes) The customizations for the callout request. Not Null (see [below for nested schema](#nestedatt--config--callouts--request))
-- `response` (Attributes) Configurations of callout response handling. Not Null (see [below for nested schema](#nestedatt--config--callouts--response))
-
-<a id="nestedatt--config--callouts--cache"></a>
-### Nested Schema for `config.callouts.cache`
-
-Optional:
-
-- `bypass` (Boolean) If true, skips caching the callout response.
-
-
-<a id="nestedatt--config--callouts--request"></a>
-### Nested Schema for `config.callouts.request`
-
-Optional:
-
-- `body` (Attributes) Callout request body customizations. Not Null (see [below for nested schema](#nestedatt--config--callouts--request--body))
-- `by_lua` (String) Lua code that executes before the callout request is made.Standard Lua sandboxing restrictions apply.
-- `error` (Attributes) The error handling policy the plugin will apply to TCP and HTTP errors. Not Null (see [below for nested schema](#nestedatt--config--callouts--request--error))
-- `headers` (Attributes) Callout request header customizations. Not Null (see [below for nested schema](#nestedatt--config--callouts--request--headers))
-- `http_opts` (Attributes) HTTP connection parameters. Not Null (see [below for nested schema](#nestedatt--config--callouts--request--http_opts))
-- `method` (String) The HTTP method that will be requested.
-- `query` (Attributes) Callout request query param customizations. Not Null (see [below for nested schema](#nestedatt--config--callouts--request--query))
-- `url` (String) The URL that will be requested. Not Null
-
-<a id="nestedatt--config--callouts--request--body"></a>
-### Nested Schema for `config.callouts.request.body`
-
-Optional:
-
-- `custom` (Map of String) The custom body fields to be added in the callout HTTP request.Values can contain Lua expressions in the form $(some_lua_code).
-- `decode` (Boolean) If true, decodes the request's body to make it available for customizations.
-- `forward` (Boolean) If true, forwards the incoming request's body to the callout request.
-
-
-<a id="nestedatt--config--callouts--request--error"></a>
-### Nested Schema for `config.callouts.request.error`
-
-Optional:
-
-- `error_response_code` (Number) The error code to respond with if `on_error` is `fail` or if `retries` is achieved.
-- `error_response_msg` (String) The error mesasge to respond with if `on_error` is `fail` or if `retries` is achieved.Templating with Lua expressions is supported.
-- `http_statuses` (List of Number) The list of HTTP status codes considered errors under the error handling policy.
-- `on_error` (String) must be one of ["continue", "fail", "retry"]
-- `retries` (Number) The number of retries the plugin will attempt on TCP and HTTP errors if `on_error` is set to `retry`.
-
-
-<a id="nestedatt--config--callouts--request--headers"></a>
-### Nested Schema for `config.callouts.request.headers`
-
-Optional:
-
-- `custom` (Map of String) The custom headers to be added in the callout HTTP request.Values can contain Lua expressions in the form $(some_lua_code).
-- `forward` (Boolean) If true, forwards the incoming request's headers to the callout request.
-
-
-<a id="nestedatt--config--callouts--request--http_opts"></a>
-### Nested Schema for `config.callouts.request.http_opts`
-
-Optional:
-
-- `proxy` (Attributes) Proxy settings. (see [below for nested schema](#nestedatt--config--callouts--request--http_opts--proxy))
-- `ssl_server_name` (String) The SNI used in the callout request. Defaults to host if omitted.
-- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-- `timeouts` (Attributes) Socket timeouts in milliseconds. All or none must be set. (see [below for nested schema](#nestedatt--config--callouts--request--http_opts--timeouts))
-
-<a id="nestedatt--config--callouts--request--http_opts--proxy"></a>
-### Nested Schema for `config.callouts.request.http_opts.proxy`
-
-Optional:
-
-- `auth_password` (String) The password to authenticate with, if the forward proxy is protected by basic authentication.
-- `auth_username` (String) The username to authenticate with, if the forward proxy is protected by basic authentication.
-- `http_proxy` (String) The HTTP proxy URL. This proxy server will be used for HTTP requests.
-- `https_proxy` (String) The HTTPS proxy URL. This proxy server will be used for HTTPS requests.
-
-
-<a id="nestedatt--config--callouts--request--http_opts--timeouts"></a>
-### Nested Schema for `config.callouts.request.http_opts.timeouts`
-
-Optional:
-
-- `connect` (Number) The socket connect timeout.
-- `read` (Number) The socket read timeout.
-- `write` (Number) The socket write timeout.
-
-
-
-<a id="nestedatt--config--callouts--request--query"></a>
-### Nested Schema for `config.callouts.request.query`
-
-Optional:
-
-- `custom` (Map of String) The custom query params to be added in the callout HTTP request.Values can contain Lua expressions in the form $(some_lua_code).
-- `forward` (Boolean) If true, forwards the incoming request's query params to the callout request.
-
-
-
-<a id="nestedatt--config--callouts--response"></a>
-### Nested Schema for `config.callouts.response`
-
-Optional:
-
-- `body` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--callouts--response--body))
-- `by_lua` (String) Lua code that executes after the callout request is made, before caching takes place. Standard Lua sandboxing restrictions apply.
-- `headers` (Attributes) Callout response header customizations. Not Null (see [below for nested schema](#nestedatt--config--callouts--response--headers))
-
-<a id="nestedatt--config--callouts--response--body"></a>
-### Nested Schema for `config.callouts.response.body`
-
-Optional:
-
-- `decode` (Boolean) If true, decodes the response body before storing into the context. Only JSON is supported.
-- `store` (Boolean) If false, skips storing the callout response body into kong.ctx.shared.callouts.<name>.response.body.
-
-
-<a id="nestedatt--config--callouts--response--headers"></a>
-### Nested Schema for `config.callouts.response.headers`
-
-Optional:
-
-- `store` (Boolean) If false, skips storing the callout response headers intokong.ctx.shared.callouts.<name>.response.headers.
-
-
-
-
 <a id="nestedatt--config--upstream"></a>
 ### Nested Schema for `config.upstream`
 
 Optional:
 
 - `body` (Attributes) Callout request body customizations. (see [below for nested schema](#nestedatt--config--upstream--body))
-- `by_lua` (String) Lua code that executes before the upstream request is made. Standard Lua sandboxing restrictions apply.
+- `by_lua` (String) Lua code that executes before the upstream request is made. Can produce side effects. Standard Lua sandboxing restrictions apply.
 - `headers` (Attributes) Callout request header customizations. (see [below for nested schema](#nestedatt--config--upstream--headers))
 - `query` (Attributes) Upstream request query param customizations. (see [below for nested schema](#nestedatt--config--upstream--query))
 
@@ -443,9 +457,9 @@ Optional:
 
 Optional:
 
-- `custom` (Map of String) The custom body fields to be added in the upstream request body. Values can contain Lua expressions in the form $(some_lua_code).
-- `decode` (Boolean) If true, decodes the request's body to make it available for upstream by_lua customizations.
-- `forward` (Boolean) If false, skips forwarding the incoming request's body to the upstream request.
+- `custom` (Map of String) The custom body fields to be added in the upstream request body. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
+- `decode` (Boolean) If `true`, decodes the request's body to make it available for upstream by_lua customizations. Only JSON content type is supported.
+- `forward` (Boolean) If `false`, skips forwarding the incoming request's body to the upstream request.
 
 
 <a id="nestedatt--config--upstream--headers"></a>
@@ -453,8 +467,8 @@ Optional:
 
 Optional:
 
-- `custom` (Map of String) The custom headers to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_code).
-- `forward` (Boolean) If false, does not forward request headers to upstream request.
+- `custom` (Map of String) The custom headers to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
+- `forward` (Boolean) If `false`, does not forward request headers to upstream request.
 
 
 <a id="nestedatt--config--upstream--query"></a>
@@ -462,8 +476,8 @@ Optional:
 
 Optional:
 
-- `custom` (Map of String) The custom query params to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_code).
-- `forward` (Boolean) If false, does not forward request query params to upstream request.
+- `custom` (Map of String) The custom query params to be added in the upstream HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
+- `forward` (Boolean) If `false`, does not forward request query params to upstream request.
 
 
 

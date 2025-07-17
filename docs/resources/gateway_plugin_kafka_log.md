@@ -34,6 +34,7 @@ resource "konnect_gateway_plugin_kafka_log" "my_gatewaypluginkafkalog" {
     }
     keepalive                                          = 2
     keepalive_enabled                                  = true
+    key_query_arg                                      = "...my_key_query_arg..."
     producer_async                                     = false
     producer_async_buffering_limits_messages_in_memory = 2
     producer_async_flush_timeout                       = 6
@@ -43,6 +44,28 @@ resource "konnect_gateway_plugin_kafka_log" "my_gatewaypluginkafkalog" {
     producer_request_retries_backoff_timeout           = 1
     producer_request_retries_max_attempts              = 4
     producer_request_timeout                           = 3
+    schema_registry = {
+      confluent = {
+        authentication = {
+          basic = {
+            password = "...my_password..."
+            username = "...my_username..."
+          }
+          mode = "none"
+        }
+        key_schema = {
+          schema_version = "...my_schema_version..."
+          subject_name   = "...my_subject_name..."
+        }
+        ssl_verify = true
+        ttl        = 94.95
+        url        = "...my_url..."
+        value_schema = {
+          schema_version = "...my_schema_version..."
+          subject_name   = "...my_subject_name..."
+        }
+      }
+    }
     security = {
       certificate_id = "...my_certificate_id..."
       ssl            = false
@@ -98,11 +121,11 @@ resource "konnect_gateway_plugin_kafka_log" "my_gatewaypluginkafkalog" {
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied.
@@ -122,6 +145,10 @@ resource "konnect_gateway_plugin_kafka_log" "my_gatewaypluginkafkalog" {
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
+Required:
+
+- `topic` (String) The Kafka topic to publish to.
+
 Optional:
 
 - `authentication` (Attributes) (see [below for nested schema](#nestedatt--config--authentication))
@@ -130,6 +157,7 @@ Optional:
 - `custom_fields_by_lua` (Map of String) Lua code as a key-value map
 - `keepalive` (Number)
 - `keepalive_enabled` (Boolean)
+- `key_query_arg` (String) The request query parameter name that contains the Kafka message key. If specified, messages with the same key will be sent to the same Kafka partition, ensuring consistent ordering.
 - `producer_async` (Boolean) Flag to enable asynchronous mode.
 - `producer_async_buffering_limits_messages_in_memory` (Number) Maximum number of messages that can be buffered in memory in asynchronous mode.
 - `producer_async_flush_timeout` (Number) Maximum time interval in milliseconds between buffer flushes in asynchronous mode.
@@ -139,9 +167,9 @@ Optional:
 - `producer_request_retries_backoff_timeout` (Number) Backoff interval between retry attempts in milliseconds.
 - `producer_request_retries_max_attempts` (Number) Maximum number of retry attempts per single Produce request.
 - `producer_request_timeout` (Number) Time to wait for a Produce response in milliseconds
+- `schema_registry` (Attributes) The plugin-global schema registry configuration. This can be overwritten by the topic configuration. (see [below for nested schema](#nestedatt--config--schema_registry))
 - `security` (Attributes) (see [below for nested schema](#nestedatt--config--security))
 - `timeout` (Number) Socket timeout in milliseconds.
-- `topic` (String) The Kafka topic to publish to.
 
 <a id="nestedatt--config--authentication"></a>
 ### Nested Schema for `config.authentication`
@@ -150,9 +178,13 @@ Optional:
 
 - `mechanism` (String) The SASL authentication mechanism.  Supported options: `PLAIN`, `SCRAM-SHA-256` or `SCRAM-SHA-512`. must be one of ["PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512"]
 - `password` (String) Password for SASL authentication.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `strategy` (String) The authentication strategy for the plugin, the only option for the value is `sasl`. must be "sasl"
 - `tokenauth` (Boolean) Enable this to indicate `DelegationToken` authentication
 - `user` (String) Username for SASL authentication.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
 
 <a id="nestedatt--config--bootstrap_servers"></a>
@@ -162,6 +194,67 @@ Optional:
 
 - `host` (String) A string representing a host name, such as example.com. Not Null
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Not Null
+
+
+<a id="nestedatt--config--schema_registry"></a>
+### Nested Schema for `config.schema_registry`
+
+Optional:
+
+- `confluent` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent))
+
+<a id="nestedatt--config--schema_registry--confluent"></a>
+### Nested Schema for `config.schema_registry.confluent`
+
+Optional:
+
+- `authentication` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication))
+- `key_schema` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--key_schema))
+- `ssl_verify` (Boolean) Set to false to disable SSL certificate verification when connecting to the schema registry.
+- `ttl` (Number) The TTL in seconds for the schema registry cache.
+- `url` (String) The URL of the schema registry.
+- `value_schema` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--value_schema))
+
+<a id="nestedatt--config--schema_registry--confluent--authentication"></a>
+### Nested Schema for `config.schema_registry.confluent.authentication`
+
+Optional:
+
+- `basic` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication--basic))
+- `mode` (String) Authentication mode to use with the schema registry. must be one of ["basic", "none"]
+
+<a id="nestedatt--config--schema_registry--confluent--authentication--basic"></a>
+### Nested Schema for `config.schema_registry.confluent.authentication.basic`
+
+Optional:
+
+- `password` (String) This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+This field is [encrypted](/gateway/keyring/).
+Not Null
+- `username` (String) This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+This field is [encrypted](/gateway/keyring/).
+Not Null
+
+
+
+<a id="nestedatt--config--schema_registry--confluent--key_schema"></a>
+### Nested Schema for `config.schema_registry.confluent.key_schema`
+
+Optional:
+
+- `schema_version` (String) The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
+- `subject_name` (String) The name of the subject
+
+
+<a id="nestedatt--config--schema_registry--confluent--value_schema"></a>
+### Nested Schema for `config.schema_registry.confluent.value_schema`
+
+Optional:
+
+- `schema_version` (String) The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
+- `subject_name` (String) The name of the subject
+
+
 
 
 <a id="nestedatt--config--security"></a>

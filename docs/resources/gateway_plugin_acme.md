@@ -120,11 +120,11 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
@@ -141,16 +141,25 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
-Optional:
+Required:
 
 - `account_email` (String) The account identifier. Can be reused in a different plugin instance.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+Optional:
+
 - `account_key` (Attributes) The private key associated with the account. (see [below for nested schema](#nestedatt--config--account_key))
 - `allow_any_domain` (Boolean) If set to `true`, the plugin allows all domains and ignores any values in the `domains` list.
 - `api_uri` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
 - `cert_type` (String) The certificate type to create. The possible values are `rsa` for RSA certificate or `ecc` for EC certificate. must be one of ["ecc", "rsa"]
 - `domains` (List of String) An array of strings representing hosts. A valid host is a string containing one or more labels separated by periods, with at most one wildcard label ('*')
 - `eab_hmac_key` (String) External account binding (EAB) base64-encoded URL string of the HMAC key. You usually don't need to set this unless it is explicitly required by the CA.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+This field is [encrypted](/gateway/keyring/).
 - `eab_kid` (String) External account binding (EAB) key id. You usually don't need to set this unless it is explicitly required by the CA.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+This field is [encrypted](/gateway/keyring/).
 - `enable_ipv4_common_name` (Boolean) A boolean value that controls whether to include the IPv4 address in the common name field of generated certificates.
 - `fail_backoff_minutes` (Number) Minutes to wait for each domain that fails to create a certificate. This applies to both a
 new certificate and a renewal certificate.
@@ -192,6 +201,7 @@ Optional:
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `timeout` (Number) Timeout in milliseconds.
 - `token` (String) Consul ACL token.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
 
 <a id="nestedatt--config--storage_config--redis"></a>
@@ -203,12 +213,15 @@ Optional:
 - `extra_options` (Attributes) Custom ACME Redis options (see [below for nested schema](#nestedatt--config--storage_config--redis--extra_options))
 - `host` (String) A string representing a host name, such as example.com.
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis.
 - `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
 - `timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 - `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
 <a id="nestedatt--config--storage_config--redis--extra_options"></a>
 ### Nested Schema for `config.storage_config.redis.extra_options`
@@ -245,6 +258,7 @@ Optional:
 - `tls_server_name` (String) SNI used in request, default to host if omitted.
 - `tls_verify` (Boolean) Turn on TLS verification.
 - `token` (String) Consul ACL token.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
 
 

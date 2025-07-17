@@ -32,7 +32,21 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
     cluster_name         = "...my_cluster_name..."
     commit_strategy      = "off"
     message_deserializer = "noop"
-    mode                 = "server-sent-events"
+    mode                 = "websocket"
+    schema_registry = {
+      confluent = {
+        authentication = {
+          basic = {
+            password = "...my_password..."
+            username = "...my_username..."
+          }
+          mode = "none"
+        }
+        ssl_verify = false
+        ttl        = 1981.8
+        url        = "...my_url..."
+      }
+    }
     security = {
       certificate_id = "...my_certificate_id..."
       ssl            = true
@@ -40,6 +54,20 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
     topics = [
       {
         name = "...my_name..."
+        schema_registry = {
+          confluent = {
+            authentication = {
+              basic = {
+                password = "...my_password..."
+                username = "...my_username..."
+              }
+              mode = "basic"
+            }
+            ssl_verify = true
+            ttl        = 2977.64
+            url        = "...my_url..."
+          }
+        }
       }
     ]
   }
@@ -91,11 +119,11 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied.
@@ -115,29 +143,21 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
+Required:
+
+- `bootstrap_servers` (Attributes List) Set of bootstrap brokers in a `{host: host, port: port}` list format. (see [below for nested schema](#nestedatt--config--bootstrap_servers))
+- `topics` (Attributes List) The Kafka topics and their configuration you want to consume from. (see [below for nested schema](#nestedatt--config--topics))
+
 Optional:
 
 - `authentication` (Attributes) (see [below for nested schema](#nestedatt--config--authentication))
 - `auto_offset_reset` (String) The offset to start from when there is no initial offset in the consumer group. must be one of ["earliest", "latest"]
-- `bootstrap_servers` (Attributes List) Set of bootstrap brokers in a `{host: host, port: port}` list format. (see [below for nested schema](#nestedatt--config--bootstrap_servers))
 - `cluster_name` (String) An identifier for the Kafka cluster.
 - `commit_strategy` (String) The strategy to use for committing offsets. must be one of ["auto", "off"]
 - `message_deserializer` (String) The deserializer to use for the consumed messages. must be one of ["json", "noop"]
-- `mode` (String) The mode of operation for the plugin. must be one of ["http-get", "server-sent-events"]
+- `mode` (String) The mode of operation for the plugin. must be one of ["http-get", "server-sent-events", "websocket"]
+- `schema_registry` (Attributes) The plugin-global schema registry configuration. (see [below for nested schema](#nestedatt--config--schema_registry))
 - `security` (Attributes) (see [below for nested schema](#nestedatt--config--security))
-- `topics` (Attributes List) The Kafka topics and their configuration you want to consume from. (see [below for nested schema](#nestedatt--config--topics))
-
-<a id="nestedatt--config--authentication"></a>
-### Nested Schema for `config.authentication`
-
-Optional:
-
-- `mechanism` (String) The SASL authentication mechanism.  Supported options: `PLAIN` or `SCRAM-SHA-256`. must be one of ["PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512"]
-- `password` (String) Password for SASL authentication.
-- `strategy` (String) The authentication strategy for the plugin, the only option for the value is `sasl`. must be "sasl"
-- `tokenauth` (Boolean) Enable this to indicate `DelegationToken` authentication
-- `user` (String) Username for SASL authentication.
-
 
 <a id="nestedatt--config--bootstrap_servers"></a>
 ### Nested Schema for `config.bootstrap_servers`
@@ -148,6 +168,113 @@ Optional:
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Not Null
 
 
+<a id="nestedatt--config--topics"></a>
+### Nested Schema for `config.topics`
+
+Optional:
+
+- `name` (String) Not Null
+- `schema_registry` (Attributes) The plugin-global schema registry configuration. Not Null (see [below for nested schema](#nestedatt--config--topics--schema_registry))
+
+<a id="nestedatt--config--topics--schema_registry"></a>
+### Nested Schema for `config.topics.schema_registry`
+
+Optional:
+
+- `confluent` (Attributes) (see [below for nested schema](#nestedatt--config--topics--schema_registry--confluent))
+
+<a id="nestedatt--config--topics--schema_registry--confluent"></a>
+### Nested Schema for `config.topics.schema_registry.confluent`
+
+Optional:
+
+- `authentication` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--topics--schema_registry--confluent--authentication))
+- `ssl_verify` (Boolean) Set to false to disable SSL certificate verification when connecting to the schema registry.
+- `ttl` (Number) The TTL in seconds for the schema registry cache.
+- `url` (String) The URL of the schema registry.
+
+<a id="nestedatt--config--topics--schema_registry--confluent--authentication"></a>
+### Nested Schema for `config.topics.schema_registry.confluent.authentication`
+
+Optional:
+
+- `basic` (Attributes) (see [below for nested schema](#nestedatt--config--topics--schema_registry--confluent--authentication--basic))
+- `mode` (String) Authentication mode to use with the schema registry. must be one of ["basic", "none"]
+
+<a id="nestedatt--config--topics--schema_registry--confluent--authentication--basic"></a>
+### Nested Schema for `config.topics.schema_registry.confluent.authentication.basic`
+
+Optional:
+
+- `password` (String) This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+This field is [encrypted](/gateway/keyring/).
+Not Null
+- `username` (String) This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+This field is [encrypted](/gateway/keyring/).
+Not Null
+
+
+
+
+
+
+<a id="nestedatt--config--authentication"></a>
+### Nested Schema for `config.authentication`
+
+Optional:
+
+- `mechanism` (String) The SASL authentication mechanism.  Supported options: `PLAIN` or `SCRAM-SHA-256`. must be one of ["PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512"]
+- `password` (String) Password for SASL authentication.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `strategy` (String) The authentication strategy for the plugin, the only option for the value is `sasl`. must be "sasl"
+- `tokenauth` (Boolean) Enable this to indicate `DelegationToken` authentication
+- `user` (String) Username for SASL authentication.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
+<a id="nestedatt--config--schema_registry"></a>
+### Nested Schema for `config.schema_registry`
+
+Optional:
+
+- `confluent` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent))
+
+<a id="nestedatt--config--schema_registry--confluent"></a>
+### Nested Schema for `config.schema_registry.confluent`
+
+Optional:
+
+- `authentication` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication))
+- `ssl_verify` (Boolean) Set to false to disable SSL certificate verification when connecting to the schema registry.
+- `ttl` (Number) The TTL in seconds for the schema registry cache.
+- `url` (String) The URL of the schema registry.
+
+<a id="nestedatt--config--schema_registry--confluent--authentication"></a>
+### Nested Schema for `config.schema_registry.confluent.authentication`
+
+Optional:
+
+- `basic` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication--basic))
+- `mode` (String) Authentication mode to use with the schema registry. must be one of ["basic", "none"]
+
+<a id="nestedatt--config--schema_registry--confluent--authentication--basic"></a>
+### Nested Schema for `config.schema_registry.confluent.authentication.basic`
+
+Optional:
+
+- `password` (String) This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+This field is [encrypted](/gateway/keyring/).
+Not Null
+- `username` (String) This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+This field is [encrypted](/gateway/keyring/).
+Not Null
+
+
+
+
+
 <a id="nestedatt--config--security"></a>
 ### Nested Schema for `config.security`
 
@@ -155,14 +282,6 @@ Optional:
 
 - `certificate_id` (String) UUID of certificate entity for mTLS authentication.
 - `ssl` (Boolean) Enables TLS.
-
-
-<a id="nestedatt--config--topics"></a>
-### Nested Schema for `config.topics`
-
-Optional:
-
-- `name` (String) Not Null
 
 
 

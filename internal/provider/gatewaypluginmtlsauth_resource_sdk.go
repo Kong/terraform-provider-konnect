@@ -15,41 +15,36 @@ func (r *GatewayPluginMtlsAuthResourceModel) RefreshFromSharedMtlsAuthPlugin(ctx
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		r.Config.AllowPartialChain = types.BoolPointerValue(resp.Config.AllowPartialChain)
+		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
+		if resp.Config.AuthenticatedGroupBy != nil {
+			r.Config.AuthenticatedGroupBy = types.StringValue(string(*resp.Config.AuthenticatedGroupBy))
 		} else {
-			r.Config = &tfTypes.MtlsAuthPluginConfig{}
-			r.Config.AllowPartialChain = types.BoolPointerValue(resp.Config.AllowPartialChain)
-			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-			if resp.Config.AuthenticatedGroupBy != nil {
-				r.Config.AuthenticatedGroupBy = types.StringValue(string(*resp.Config.AuthenticatedGroupBy))
-			} else {
-				r.Config.AuthenticatedGroupBy = types.StringNull()
-			}
-			r.Config.CaCertificates = make([]types.String, 0, len(resp.Config.CaCertificates))
-			for _, v := range resp.Config.CaCertificates {
-				r.Config.CaCertificates = append(r.Config.CaCertificates, types.StringValue(v))
-			}
-			r.Config.CacheTTL = types.Float64PointerValue(resp.Config.CacheTTL)
-			r.Config.CertCacheTTL = types.Float64PointerValue(resp.Config.CertCacheTTL)
-			r.Config.ConsumerBy = make([]types.String, 0, len(resp.Config.ConsumerBy))
-			for _, v := range resp.Config.ConsumerBy {
-				r.Config.ConsumerBy = append(r.Config.ConsumerBy, types.StringValue(string(v)))
-			}
-			r.Config.DefaultConsumer = types.StringPointerValue(resp.Config.DefaultConsumer)
-			r.Config.HTTPProxyHost = types.StringPointerValue(resp.Config.HTTPProxyHost)
-			r.Config.HTTPProxyPort = types.Int64PointerValue(resp.Config.HTTPProxyPort)
-			r.Config.HTTPTimeout = types.Float64PointerValue(resp.Config.HTTPTimeout)
-			r.Config.HTTPSProxyHost = types.StringPointerValue(resp.Config.HTTPSProxyHost)
-			r.Config.HTTPSProxyPort = types.Int64PointerValue(resp.Config.HTTPSProxyPort)
-			if resp.Config.RevocationCheckMode != nil {
-				r.Config.RevocationCheckMode = types.StringValue(string(*resp.Config.RevocationCheckMode))
-			} else {
-				r.Config.RevocationCheckMode = types.StringNull()
-			}
-			r.Config.SendCaDn = types.BoolPointerValue(resp.Config.SendCaDn)
-			r.Config.SkipConsumerLookup = types.BoolPointerValue(resp.Config.SkipConsumerLookup)
+			r.Config.AuthenticatedGroupBy = types.StringNull()
 		}
+		r.Config.CaCertificates = make([]types.String, 0, len(resp.Config.CaCertificates))
+		for _, v := range resp.Config.CaCertificates {
+			r.Config.CaCertificates = append(r.Config.CaCertificates, types.StringValue(v))
+		}
+		r.Config.CacheTTL = types.Float64PointerValue(resp.Config.CacheTTL)
+		r.Config.CertCacheTTL = types.Float64PointerValue(resp.Config.CertCacheTTL)
+		r.Config.ConsumerBy = make([]types.String, 0, len(resp.Config.ConsumerBy))
+		for _, v := range resp.Config.ConsumerBy {
+			r.Config.ConsumerBy = append(r.Config.ConsumerBy, types.StringValue(string(v)))
+		}
+		r.Config.DefaultConsumer = types.StringPointerValue(resp.Config.DefaultConsumer)
+		r.Config.HTTPProxyHost = types.StringPointerValue(resp.Config.HTTPProxyHost)
+		r.Config.HTTPProxyPort = types.Int64PointerValue(resp.Config.HTTPProxyPort)
+		r.Config.HTTPTimeout = types.Float64PointerValue(resp.Config.HTTPTimeout)
+		r.Config.HTTPSProxyHost = types.StringPointerValue(resp.Config.HTTPSProxyHost)
+		r.Config.HTTPSProxyPort = types.Int64PointerValue(resp.Config.HTTPSProxyPort)
+		if resp.Config.RevocationCheckMode != nil {
+			r.Config.RevocationCheckMode = types.StringValue(string(*resp.Config.RevocationCheckMode))
+		} else {
+			r.Config.RevocationCheckMode = types.StringNull()
+		}
+		r.Config.SendCaDn = types.BoolPointerValue(resp.Config.SendCaDn)
+		r.Config.SkipConsumerLookup = types.BoolPointerValue(resp.Config.SkipConsumerLookup)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -295,118 +290,115 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToSharedMtlsAuthPlugin(ctx context.
 	} else {
 		updatedAt = nil
 	}
-	var config *shared.MtlsAuthPluginConfig
-	if r.Config != nil {
-		allowPartialChain := new(bool)
-		if !r.Config.AllowPartialChain.IsUnknown() && !r.Config.AllowPartialChain.IsNull() {
-			*allowPartialChain = r.Config.AllowPartialChain.ValueBool()
-		} else {
-			allowPartialChain = nil
-		}
-		anonymous := new(string)
-		if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
-			*anonymous = r.Config.Anonymous.ValueString()
-		} else {
-			anonymous = nil
-		}
-		authenticatedGroupBy := new(shared.MtlsAuthPluginAuthenticatedGroupBy)
-		if !r.Config.AuthenticatedGroupBy.IsUnknown() && !r.Config.AuthenticatedGroupBy.IsNull() {
-			*authenticatedGroupBy = shared.MtlsAuthPluginAuthenticatedGroupBy(r.Config.AuthenticatedGroupBy.ValueString())
-		} else {
-			authenticatedGroupBy = nil
-		}
-		caCertificates := make([]string, 0, len(r.Config.CaCertificates))
-		for _, caCertificatesItem := range r.Config.CaCertificates {
-			caCertificates = append(caCertificates, caCertificatesItem.ValueString())
-		}
-		cacheTTL := new(float64)
-		if !r.Config.CacheTTL.IsUnknown() && !r.Config.CacheTTL.IsNull() {
-			*cacheTTL = r.Config.CacheTTL.ValueFloat64()
-		} else {
-			cacheTTL = nil
-		}
-		certCacheTTL := new(float64)
-		if !r.Config.CertCacheTTL.IsUnknown() && !r.Config.CertCacheTTL.IsNull() {
-			*certCacheTTL = r.Config.CertCacheTTL.ValueFloat64()
-		} else {
-			certCacheTTL = nil
-		}
-		consumerBy := make([]shared.MtlsAuthPluginConsumerBy, 0, len(r.Config.ConsumerBy))
-		for _, consumerByItem := range r.Config.ConsumerBy {
-			consumerBy = append(consumerBy, shared.MtlsAuthPluginConsumerBy(consumerByItem.ValueString()))
-		}
-		defaultConsumer := new(string)
-		if !r.Config.DefaultConsumer.IsUnknown() && !r.Config.DefaultConsumer.IsNull() {
-			*defaultConsumer = r.Config.DefaultConsumer.ValueString()
-		} else {
-			defaultConsumer = nil
-		}
-		httpProxyHost := new(string)
-		if !r.Config.HTTPProxyHost.IsUnknown() && !r.Config.HTTPProxyHost.IsNull() {
-			*httpProxyHost = r.Config.HTTPProxyHost.ValueString()
-		} else {
-			httpProxyHost = nil
-		}
-		httpProxyPort := new(int64)
-		if !r.Config.HTTPProxyPort.IsUnknown() && !r.Config.HTTPProxyPort.IsNull() {
-			*httpProxyPort = r.Config.HTTPProxyPort.ValueInt64()
-		} else {
-			httpProxyPort = nil
-		}
-		httpTimeout := new(float64)
-		if !r.Config.HTTPTimeout.IsUnknown() && !r.Config.HTTPTimeout.IsNull() {
-			*httpTimeout = r.Config.HTTPTimeout.ValueFloat64()
-		} else {
-			httpTimeout = nil
-		}
-		httpsProxyHost := new(string)
-		if !r.Config.HTTPSProxyHost.IsUnknown() && !r.Config.HTTPSProxyHost.IsNull() {
-			*httpsProxyHost = r.Config.HTTPSProxyHost.ValueString()
-		} else {
-			httpsProxyHost = nil
-		}
-		httpsProxyPort := new(int64)
-		if !r.Config.HTTPSProxyPort.IsUnknown() && !r.Config.HTTPSProxyPort.IsNull() {
-			*httpsProxyPort = r.Config.HTTPSProxyPort.ValueInt64()
-		} else {
-			httpsProxyPort = nil
-		}
-		revocationCheckMode := new(shared.MtlsAuthPluginRevocationCheckMode)
-		if !r.Config.RevocationCheckMode.IsUnknown() && !r.Config.RevocationCheckMode.IsNull() {
-			*revocationCheckMode = shared.MtlsAuthPluginRevocationCheckMode(r.Config.RevocationCheckMode.ValueString())
-		} else {
-			revocationCheckMode = nil
-		}
-		sendCaDn := new(bool)
-		if !r.Config.SendCaDn.IsUnknown() && !r.Config.SendCaDn.IsNull() {
-			*sendCaDn = r.Config.SendCaDn.ValueBool()
-		} else {
-			sendCaDn = nil
-		}
-		skipConsumerLookup := new(bool)
-		if !r.Config.SkipConsumerLookup.IsUnknown() && !r.Config.SkipConsumerLookup.IsNull() {
-			*skipConsumerLookup = r.Config.SkipConsumerLookup.ValueBool()
-		} else {
-			skipConsumerLookup = nil
-		}
-		config = &shared.MtlsAuthPluginConfig{
-			AllowPartialChain:    allowPartialChain,
-			Anonymous:            anonymous,
-			AuthenticatedGroupBy: authenticatedGroupBy,
-			CaCertificates:       caCertificates,
-			CacheTTL:             cacheTTL,
-			CertCacheTTL:         certCacheTTL,
-			ConsumerBy:           consumerBy,
-			DefaultConsumer:      defaultConsumer,
-			HTTPProxyHost:        httpProxyHost,
-			HTTPProxyPort:        httpProxyPort,
-			HTTPTimeout:          httpTimeout,
-			HTTPSProxyHost:       httpsProxyHost,
-			HTTPSProxyPort:       httpsProxyPort,
-			RevocationCheckMode:  revocationCheckMode,
-			SendCaDn:             sendCaDn,
-			SkipConsumerLookup:   skipConsumerLookup,
-		}
+	allowPartialChain := new(bool)
+	if !r.Config.AllowPartialChain.IsUnknown() && !r.Config.AllowPartialChain.IsNull() {
+		*allowPartialChain = r.Config.AllowPartialChain.ValueBool()
+	} else {
+		allowPartialChain = nil
+	}
+	anonymous := new(string)
+	if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
+		*anonymous = r.Config.Anonymous.ValueString()
+	} else {
+		anonymous = nil
+	}
+	authenticatedGroupBy := new(shared.MtlsAuthPluginAuthenticatedGroupBy)
+	if !r.Config.AuthenticatedGroupBy.IsUnknown() && !r.Config.AuthenticatedGroupBy.IsNull() {
+		*authenticatedGroupBy = shared.MtlsAuthPluginAuthenticatedGroupBy(r.Config.AuthenticatedGroupBy.ValueString())
+	} else {
+		authenticatedGroupBy = nil
+	}
+	caCertificates := make([]string, 0, len(r.Config.CaCertificates))
+	for _, caCertificatesItem := range r.Config.CaCertificates {
+		caCertificates = append(caCertificates, caCertificatesItem.ValueString())
+	}
+	cacheTTL := new(float64)
+	if !r.Config.CacheTTL.IsUnknown() && !r.Config.CacheTTL.IsNull() {
+		*cacheTTL = r.Config.CacheTTL.ValueFloat64()
+	} else {
+		cacheTTL = nil
+	}
+	certCacheTTL := new(float64)
+	if !r.Config.CertCacheTTL.IsUnknown() && !r.Config.CertCacheTTL.IsNull() {
+		*certCacheTTL = r.Config.CertCacheTTL.ValueFloat64()
+	} else {
+		certCacheTTL = nil
+	}
+	consumerBy := make([]shared.MtlsAuthPluginConsumerBy, 0, len(r.Config.ConsumerBy))
+	for _, consumerByItem := range r.Config.ConsumerBy {
+		consumerBy = append(consumerBy, shared.MtlsAuthPluginConsumerBy(consumerByItem.ValueString()))
+	}
+	defaultConsumer := new(string)
+	if !r.Config.DefaultConsumer.IsUnknown() && !r.Config.DefaultConsumer.IsNull() {
+		*defaultConsumer = r.Config.DefaultConsumer.ValueString()
+	} else {
+		defaultConsumer = nil
+	}
+	httpProxyHost := new(string)
+	if !r.Config.HTTPProxyHost.IsUnknown() && !r.Config.HTTPProxyHost.IsNull() {
+		*httpProxyHost = r.Config.HTTPProxyHost.ValueString()
+	} else {
+		httpProxyHost = nil
+	}
+	httpProxyPort := new(int64)
+	if !r.Config.HTTPProxyPort.IsUnknown() && !r.Config.HTTPProxyPort.IsNull() {
+		*httpProxyPort = r.Config.HTTPProxyPort.ValueInt64()
+	} else {
+		httpProxyPort = nil
+	}
+	httpTimeout := new(float64)
+	if !r.Config.HTTPTimeout.IsUnknown() && !r.Config.HTTPTimeout.IsNull() {
+		*httpTimeout = r.Config.HTTPTimeout.ValueFloat64()
+	} else {
+		httpTimeout = nil
+	}
+	httpsProxyHost := new(string)
+	if !r.Config.HTTPSProxyHost.IsUnknown() && !r.Config.HTTPSProxyHost.IsNull() {
+		*httpsProxyHost = r.Config.HTTPSProxyHost.ValueString()
+	} else {
+		httpsProxyHost = nil
+	}
+	httpsProxyPort := new(int64)
+	if !r.Config.HTTPSProxyPort.IsUnknown() && !r.Config.HTTPSProxyPort.IsNull() {
+		*httpsProxyPort = r.Config.HTTPSProxyPort.ValueInt64()
+	} else {
+		httpsProxyPort = nil
+	}
+	revocationCheckMode := new(shared.MtlsAuthPluginRevocationCheckMode)
+	if !r.Config.RevocationCheckMode.IsUnknown() && !r.Config.RevocationCheckMode.IsNull() {
+		*revocationCheckMode = shared.MtlsAuthPluginRevocationCheckMode(r.Config.RevocationCheckMode.ValueString())
+	} else {
+		revocationCheckMode = nil
+	}
+	sendCaDn := new(bool)
+	if !r.Config.SendCaDn.IsUnknown() && !r.Config.SendCaDn.IsNull() {
+		*sendCaDn = r.Config.SendCaDn.ValueBool()
+	} else {
+		sendCaDn = nil
+	}
+	skipConsumerLookup := new(bool)
+	if !r.Config.SkipConsumerLookup.IsUnknown() && !r.Config.SkipConsumerLookup.IsNull() {
+		*skipConsumerLookup = r.Config.SkipConsumerLookup.ValueBool()
+	} else {
+		skipConsumerLookup = nil
+	}
+	config := shared.MtlsAuthPluginConfig{
+		AllowPartialChain:    allowPartialChain,
+		Anonymous:            anonymous,
+		AuthenticatedGroupBy: authenticatedGroupBy,
+		CaCertificates:       caCertificates,
+		CacheTTL:             cacheTTL,
+		CertCacheTTL:         certCacheTTL,
+		ConsumerBy:           consumerBy,
+		DefaultConsumer:      defaultConsumer,
+		HTTPProxyHost:        httpProxyHost,
+		HTTPProxyPort:        httpProxyPort,
+		HTTPTimeout:          httpTimeout,
+		HTTPSProxyHost:       httpsProxyHost,
+		HTTPSProxyPort:       httpsProxyPort,
+		RevocationCheckMode:  revocationCheckMode,
+		SendCaDn:             sendCaDn,
+		SkipConsumerLookup:   skipConsumerLookup,
 	}
 	protocols := make([]shared.MtlsAuthPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {

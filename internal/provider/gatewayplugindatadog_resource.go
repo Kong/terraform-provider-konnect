@@ -81,9 +81,10 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 						Description: `Optional time in seconds. If ` + "`" + `queue_size` + "`" + ` > 1, this is the max idle time before sending a log with less than ` + "`" + `queue_size` + "`" + ` records.`,
 					},
 					"host": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `A string representing a host name, such as example.com.`,
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 					},
 					"metrics": schema.ListNestedAttribute{
 						Computed: true,

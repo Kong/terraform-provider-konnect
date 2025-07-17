@@ -80,9 +80,9 @@ type LdapAuthPluginConfig struct {
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request fails with an authentication failure `4xx`.
 	Anonymous *string `json:"anonymous,omitempty"`
 	// Attribute to be used to search the user; e.g. cn
-	Attribute *string `json:"attribute,omitempty"`
+	Attribute string `json:"attribute"`
 	// Base DN as the starting point for the search; e.g., dc=example,dc=com
-	BaseDn *string `json:"base_dn,omitempty"`
+	BaseDn string `json:"base_dn"`
 	// Cache expiry time in seconds.
 	CacheTTL *float64 `json:"cache_ttl,omitempty"`
 	// An optional string to use as part of the Authorization header
@@ -92,7 +92,7 @@ type LdapAuthPluginConfig struct {
 	// An optional value in milliseconds that defines how long an idle connection to LDAP server will live before being closed.
 	Keepalive *float64 `json:"keepalive,omitempty"`
 	// A string representing a host name, such as example.com.
-	LdapHost *string `json:"ldap_host,omitempty"`
+	LdapHost string `json:"ldap_host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	LdapPort *int64 `json:"ldap_port,omitempty"`
 	// Set to `true` to connect using the LDAPS protocol (LDAP over TLS).  When `ldaps` is configured, you must use port 636. If the `ldap` setting is enabled, ensure the `start_tls` setting is disabled.
@@ -114,16 +114,16 @@ func (o *LdapAuthPluginConfig) GetAnonymous() *string {
 	return o.Anonymous
 }
 
-func (o *LdapAuthPluginConfig) GetAttribute() *string {
+func (o *LdapAuthPluginConfig) GetAttribute() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Attribute
 }
 
-func (o *LdapAuthPluginConfig) GetBaseDn() *string {
+func (o *LdapAuthPluginConfig) GetBaseDn() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.BaseDn
 }
@@ -156,9 +156,9 @@ func (o *LdapAuthPluginConfig) GetKeepalive() *float64 {
 	return o.Keepalive
 }
 
-func (o *LdapAuthPluginConfig) GetLdapHost() *string {
+func (o *LdapAuthPluginConfig) GetLdapHost() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.LdapHost
 }
@@ -281,8 +281,8 @@ type LdapAuthPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                `json:"updated_at,omitempty"`
-	Config    *LdapAuthPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64               `json:"updated_at,omitempty"`
+	Config    LdapAuthPluginConfig `json:"config"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []LdapAuthPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -362,9 +362,9 @@ func (o *LdapAuthPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *LdapAuthPlugin) GetConfig() *LdapAuthPluginConfig {
+func (o *LdapAuthPlugin) GetConfig() LdapAuthPluginConfig {
 	if o == nil {
-		return nil
+		return LdapAuthPluginConfig{}
 	}
 	return o.Config
 }

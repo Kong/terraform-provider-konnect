@@ -340,8 +340,11 @@ type JwtSignerPluginConfig struct {
 	// The client certificate that will be used to authenticate Kong if `access_token_jwks_uri` is an https uri that requires mTLS Auth.
 	AccessTokenJwksURIClientCertificate *string `json:"access_token_jwks_uri_client_certificate,omitempty"`
 	// The client password that will be used to authenticate Kong if `access_token_jwks_uri` is a uri that requires Basic Auth. Should be configured together with `access_token_jwks_uri_client_username`
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AccessTokenJwksURIClientPassword *string `json:"access_token_jwks_uri_client_password,omitempty"`
 	// The client username that will be used to authenticate Kong if `access_token_jwks_uri` is a uri that requires Basic Auth. Should be configured together with `access_token_jwks_uri_client_password`
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AccessTokenJwksURIClientUsername *string `json:"access_token_jwks_uri_client_username,omitempty"`
 	// Specify the period (in seconds) to auto-rotate the jwks for `access_token_jwks_uri`. The default value 0 means no auto-rotation.
 	AccessTokenJwksURIRotatePeriod *float64 `json:"access_token_jwks_uri_rotate_period,omitempty"`
@@ -350,8 +353,11 @@ type JwtSignerPluginConfig struct {
 	// The client certificate that will be used to authenticate Kong if `access_token_keyset` is an https uri that requires mTLS Auth.
 	AccessTokenKeysetClientCertificate *string `json:"access_token_keyset_client_certificate,omitempty"`
 	// The client password that will be used to authenticate Kong if `access_token_keyset` is a uri that requires Basic Auth. Should be configured together with `access_token_keyset_client_username`
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AccessTokenKeysetClientPassword *string `json:"access_token_keyset_client_password,omitempty"`
 	// The client username that will be used to authenticate Kong if `access_token_keyset` is a uri that requires Basic Auth. Should be configured together with `access_token_keyset_client_password`
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AccessTokenKeysetClientUsername *string `json:"access_token_keyset_client_username,omitempty"`
 	// Specify the period (in seconds) to auto-rotate the jwks for `access_token_keyset`. The default value 0 means no auto-rotation.
 	AccessTokenKeysetRotatePeriod *float64 `json:"access_token_keyset_rotate_period,omitempty"`
@@ -414,8 +420,11 @@ type JwtSignerPluginConfig struct {
 	// The client certificate that will be used to authenticate Kong if `access_token_jwks_uri` is an https uri that requires mTLS Auth.
 	ChannelTokenJwksURIClientCertificate *string `json:"channel_token_jwks_uri_client_certificate,omitempty"`
 	// The client password that will be used to authenticate Kong if `channel_token_jwks_uri` is a uri that requires Basic Auth. Should be configured together with `channel_token_jwks_uri_client_username`
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	ChannelTokenJwksURIClientPassword *string `json:"channel_token_jwks_uri_client_password,omitempty"`
 	// The client username that will be used to authenticate Kong if `channel_token_jwks_uri` is a uri that requires Basic Auth. Should be configured together with `channel_token_jwks_uri_client_password`
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	ChannelTokenJwksURIClientUsername *string `json:"channel_token_jwks_uri_client_username,omitempty"`
 	// Specify the period (in seconds) to auto-rotate the jwks for `channel_token_jwks_uri`. The default value 0 means no auto-rotation.
 	ChannelTokenJwksURIRotatePeriod *float64 `json:"channel_token_jwks_uri_rotate_period,omitempty"`
@@ -424,8 +433,11 @@ type JwtSignerPluginConfig struct {
 	// The client certificate that will be used to authenticate Kong if `channel_token_keyset` is an https uri that requires mTLS Auth.
 	ChannelTokenKeysetClientCertificate *string `json:"channel_token_keyset_client_certificate,omitempty"`
 	// The client password that will be used to authenticate Kong if `channel_token_keyset` is a uri that requires Basic Auth. Should be configured together with `channel_token_keyset_client_username`
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	ChannelTokenKeysetClientPassword *string `json:"channel_token_keyset_client_password,omitempty"`
 	// The client username that will be used to authenticate Kong if `channel_token_keyset` is a uri that requires Basic Auth. Should be configured together with `channel_token_keyset_client_password`
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	ChannelTokenKeysetClientUsername *string `json:"channel_token_keyset_client_username,omitempty"`
 	// Specify the period (in seconds) to auto-rotate the jwks for `channel_token_keyset`. The default value 0 means no auto-rotation.
 	ChannelTokenKeysetRotatePeriod *float64 `json:"channel_token_keyset_rotate_period,omitempty"`

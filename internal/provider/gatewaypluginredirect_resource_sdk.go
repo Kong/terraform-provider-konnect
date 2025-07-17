@@ -15,14 +15,9 @@ func (r *GatewayPluginRedirectResourceModel) RefreshFromSharedRedirectPlugin(ctx
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.RedirectPluginConfig{}
-			r.Config.KeepIncomingPath = types.BoolPointerValue(resp.Config.KeepIncomingPath)
-			r.Config.Location = types.StringPointerValue(resp.Config.Location)
-			r.Config.StatusCode = types.Int64PointerValue(resp.Config.StatusCode)
-		}
+		r.Config.KeepIncomingPath = types.BoolPointerValue(resp.Config.KeepIncomingPath)
+		r.Config.Location = types.StringValue(resp.Config.Location)
+		r.Config.StatusCode = types.Int64PointerValue(resp.Config.StatusCode)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -280,31 +275,25 @@ func (r *GatewayPluginRedirectResourceModel) ToSharedRedirectPlugin(ctx context.
 	} else {
 		updatedAt = nil
 	}
-	var config *shared.RedirectPluginConfig
-	if r.Config != nil {
-		keepIncomingPath := new(bool)
-		if !r.Config.KeepIncomingPath.IsUnknown() && !r.Config.KeepIncomingPath.IsNull() {
-			*keepIncomingPath = r.Config.KeepIncomingPath.ValueBool()
-		} else {
-			keepIncomingPath = nil
-		}
-		location := new(string)
-		if !r.Config.Location.IsUnknown() && !r.Config.Location.IsNull() {
-			*location = r.Config.Location.ValueString()
-		} else {
-			location = nil
-		}
-		statusCode := new(int64)
-		if !r.Config.StatusCode.IsUnknown() && !r.Config.StatusCode.IsNull() {
-			*statusCode = r.Config.StatusCode.ValueInt64()
-		} else {
-			statusCode = nil
-		}
-		config = &shared.RedirectPluginConfig{
-			KeepIncomingPath: keepIncomingPath,
-			Location:         location,
-			StatusCode:       statusCode,
-		}
+	keepIncomingPath := new(bool)
+	if !r.Config.KeepIncomingPath.IsUnknown() && !r.Config.KeepIncomingPath.IsNull() {
+		*keepIncomingPath = r.Config.KeepIncomingPath.ValueBool()
+	} else {
+		keepIncomingPath = nil
+	}
+	var location string
+	location = r.Config.Location.ValueString()
+
+	statusCode := new(int64)
+	if !r.Config.StatusCode.IsUnknown() && !r.Config.StatusCode.IsNull() {
+		*statusCode = r.Config.StatusCode.ValueInt64()
+	} else {
+		statusCode = nil
+	}
+	config := shared.RedirectPluginConfig{
+		KeepIncomingPath: keepIncomingPath,
+		Location:         location,
+		StatusCode:       statusCode,
 	}
 	var consumer *shared.RedirectPluginConsumer
 	if r.Consumer != nil {

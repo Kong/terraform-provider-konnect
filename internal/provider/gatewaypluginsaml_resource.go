@@ -41,7 +41,7 @@ type GatewayPluginSamlResource struct {
 
 // GatewayPluginSamlResourceModel describes the resource data model.
 type GatewayPluginSamlResourceModel struct {
-	Config         *tfTypes.SamlPluginConfig  `tfsdk:"config"`
+	Config         tfTypes.SamlPluginConfig   `tfsdk:"config"`
 	ControlPlaneID types.String               `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                `tfsdk:"created_at"`
 	Enabled        types.Bool                 `tfsdk:"enabled"`
@@ -65,8 +65,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 		MarkdownDescription: "GatewayPluginSaml Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -74,23 +73,22 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Description: `An optional string (consumer UUID or username) value to use as an “anonymous” consumer. If not set, a Kong Consumer must exist for the SAML IdP user credentials, mapping the username format to the Kong Consumer username.`,
 					},
 					"assertion_consumer_path": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).`,
 					},
 					"idp_certificate": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The public certificate provided by the IdP. This is used to validate responses from the IdP.  Only include the contents of the certificate. Do not include the header (` + "`" + `BEGIN CERTIFICATE` + "`" + `) and footer (` + "`" + `END CERTIFICATE` + "`" + `) lines.`,
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `The public certificate provided by the IdP. This is used to validate responses from the IdP.  Only include the contents of the certificate. Do not include the header (` + "`" + `BEGIN CERTIFICATE` + "`" + `) and footer (` + "`" + `END CERTIFICATE` + "`" + `) lines.` + "\n" +
+							`This field is [encrypted](/gateway/keyring/).` + "\n" +
+							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 					},
 					"idp_sso_url": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
 					},
 					"issuer": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `The unique identifier of the IdP application. Formatted as a URL containing information about the IdP so the SP can validate that the SAML assertions it receives are issued from the correct IdP.`,
 					},
 					"nameid_format": schema.StringAttribute{
@@ -180,9 +178,11 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 								},
 							},
 							"password": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+									`This field is [encrypted](/gateway/keyring/).` + "\n" +
+									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 							},
 							"port": schema.Int64Attribute{
 								Computed:    true,
@@ -244,9 +244,11 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 								Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
 							},
 							"sentinel_password": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+									`This field is [encrypted](/gateway/keyring/).` + "\n" +
+									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 							},
 							"sentinel_role": schema.StringAttribute{
 								Computed:    true,
@@ -261,9 +263,10 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 								},
 							},
 							"sentinel_username": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 							},
 							"server_name": schema.StringAttribute{
 								Computed:    true,
@@ -286,9 +289,10 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
 							},
 							"username": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 							},
 						},
 					},
@@ -316,14 +320,18 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						},
 					},
 					"request_signing_certificate": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The certificate for signing requests.`,
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `The certificate for signing requests.` + "\n" +
+							`This field is [encrypted](/gateway/keyring/).` + "\n" +
+							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 					},
 					"request_signing_key": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The private key for signing requests.  If this parameter is set, requests sent to the IdP are signed.  The ` + "`" + `request_signing_certificate` + "`" + ` parameter must be set as well.`,
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `The private key for signing requests.  If this parameter is set, requests sent to the IdP are signed.  The ` + "`" + `request_signing_certificate` + "`" + ` parameter must be set as well.` + "\n" +
+							`This field is [encrypted](/gateway/keyring/).` + "\n" +
+							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 					},
 					"response_digest_algorithm": schema.StringAttribute{
 						Computed:    true,
@@ -337,9 +345,11 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						},
 					},
 					"response_encryption_key": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The private encryption key required to decrypt encrypted assertions.`,
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `The private encryption key required to decrypt encrypted assertions.` + "\n" +
+							`This field is [encrypted](/gateway/keyring/).` + "\n" +
+							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 					},
 					"response_signature_algorithm": schema.StringAttribute{
 						Computed:    true,
@@ -480,9 +490,10 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Description: `The session cookie absolute timeout in seconds. Specifies how long the session can be used until it is no longer valid.`,
 					},
 					"session_secret": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The session secret. This must be a random string of 32 characters from the base64 alphabet (letters, numbers, ` + "`" + `/` + "`" + `, ` + "`" + `_` + "`" + ` and ` + "`" + `+` + "`" + `). It is used as the secret key for encrypting session data as well as state information that is sent to the IdP in the authentication exchange.`,
+						Required: true,
+						MarkdownDescription: `The session secret. This must be a random string of 32 characters from the base64 alphabet (letters, numbers, ` + "`" + `/` + "`" + `, ` + "`" + `_` + "`" + ` and ` + "`" + `+` + "`" + `). It is used as the secret key for encrypting session data as well as state information that is sent to the IdP in the authentication exchange.` + "\n" +
+							`This field is [encrypted](/gateway/keyring/).` + "\n" +
+							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 						Validators: []validator.String{
 							stringvalidator.UTF8LengthBetween(32, 32),
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9a-zA-Z/_+]+$`), "must match pattern "+regexp.MustCompile(`^[0-9a-zA-Z/_+]+$`).String()),

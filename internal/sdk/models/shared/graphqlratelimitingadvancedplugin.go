@@ -223,6 +223,8 @@ type GraphqlRateLimitingAdvancedPluginRedis struct {
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
 	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	// This field is [encrypted](/gateway/keyring/).
 	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `json:"port,omitempty"`
@@ -235,10 +237,13 @@ type GraphqlRateLimitingAdvancedPluginRedis struct {
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
 	SentinelNodes []GraphqlRateLimitingAdvancedPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	// This field is [encrypted](/gateway/keyring/).
 	SentinelPassword *string `json:"sentinel_password,omitempty"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
 	SentinelRole *GraphqlRateLimitingAdvancedPluginSentinelRole `json:"sentinel_role,omitempty"`
 	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	SentinelUsername *string `json:"sentinel_username,omitempty"`
 	// A string representing an SNI (server name indication) value for TLS.
 	ServerName *string `json:"server_name,omitempty"`
@@ -247,6 +252,7 @@ type GraphqlRateLimitingAdvancedPluginRedis struct {
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
 	SslVerify *bool `json:"ssl_verify,omitempty"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Username *string `json:"username,omitempty"`
 }
 
@@ -461,20 +467,22 @@ type GraphqlRateLimitingAdvancedPluginConfig struct {
 	// How to define the rate limit key. Can be `ip`, `credential`, `consumer`.
 	Identifier *GraphqlRateLimitingAdvancedPluginIdentifier `json:"identifier,omitempty"`
 	// One or more requests-per-window limits to apply.
-	Limit []float64 `json:"limit,omitempty"`
+	Limit []float64 `json:"limit"`
 	// A defined maximum cost per query. 0 means unlimited.
 	MaxCost *float64 `json:"max_cost,omitempty"`
 	// The rate limiting namespace to use for this plugin instance. This namespace is used to share rate limiting counters across different instances. If it is not provided, a random UUID is generated. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `window_size`, `dictionary_name`, need to be the same.
-	Namespace *string                                 `json:"namespace,omitempty"`
-	Redis     *GraphqlRateLimitingAdvancedPluginRedis `json:"redis,omitempty"`
+	Namespace *string `json:"namespace,omitempty"`
+	// pass all downstream headers to the upstream graphql server in introspection request
+	PassAllDownstreamHeaders *bool                                   `json:"pass_all_downstream_headers,omitempty"`
+	Redis                    *GraphqlRateLimitingAdvancedPluginRedis `json:"redis,omitempty"`
 	// A scoring factor to multiply (or divide) the cost. The `score_factor` must always be greater than 0.
 	ScoreFactor *float64 `json:"score_factor,omitempty"`
 	// The rate-limiting strategy to use for retrieving and incrementing the limits.
 	Strategy *GraphqlRateLimitingAdvancedPluginStrategy `json:"strategy,omitempty"`
 	// How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 syncs the counters in that many number of seconds.
-	SyncRate *float64 `json:"sync_rate,omitempty"`
+	SyncRate float64 `json:"sync_rate"`
 	// One or more window sizes to apply a limit to (defined in seconds).
-	WindowSize []float64 `json:"window_size,omitempty"`
+	WindowSize []float64 `json:"window_size"`
 	// Sets the time window to either `sliding` or `fixed`.
 	WindowType *GraphqlRateLimitingAdvancedPluginWindowType `json:"window_type,omitempty"`
 }
@@ -509,7 +517,7 @@ func (o *GraphqlRateLimitingAdvancedPluginConfig) GetIdentifier() *GraphqlRateLi
 
 func (o *GraphqlRateLimitingAdvancedPluginConfig) GetLimit() []float64 {
 	if o == nil {
-		return nil
+		return []float64{}
 	}
 	return o.Limit
 }
@@ -526,6 +534,13 @@ func (o *GraphqlRateLimitingAdvancedPluginConfig) GetNamespace() *string {
 		return nil
 	}
 	return o.Namespace
+}
+
+func (o *GraphqlRateLimitingAdvancedPluginConfig) GetPassAllDownstreamHeaders() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.PassAllDownstreamHeaders
 }
 
 func (o *GraphqlRateLimitingAdvancedPluginConfig) GetRedis() *GraphqlRateLimitingAdvancedPluginRedis {
@@ -549,16 +564,16 @@ func (o *GraphqlRateLimitingAdvancedPluginConfig) GetStrategy() *GraphqlRateLimi
 	return o.Strategy
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginConfig) GetSyncRate() *float64 {
+func (o *GraphqlRateLimitingAdvancedPluginConfig) GetSyncRate() float64 {
 	if o == nil {
-		return nil
+		return 0.0
 	}
 	return o.SyncRate
 }
 
 func (o *GraphqlRateLimitingAdvancedPluginConfig) GetWindowSize() []float64 {
 	if o == nil {
-		return nil
+		return []float64{}
 	}
 	return o.WindowSize
 }
@@ -652,8 +667,8 @@ type GraphqlRateLimitingAdvancedPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                                   `json:"updated_at,omitempty"`
-	Config    *GraphqlRateLimitingAdvancedPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                                  `json:"updated_at,omitempty"`
+	Config    GraphqlRateLimitingAdvancedPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *GraphqlRateLimitingAdvancedPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
@@ -735,9 +750,9 @@ func (o *GraphqlRateLimitingAdvancedPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *GraphqlRateLimitingAdvancedPlugin) GetConfig() *GraphqlRateLimitingAdvancedPluginConfig {
+func (o *GraphqlRateLimitingAdvancedPlugin) GetConfig() GraphqlRateLimitingAdvancedPluginConfig {
 	if o == nil {
-		return nil
+		return GraphqlRateLimitingAdvancedPluginConfig{}
 	}
 	return o.Config
 }

@@ -101,8 +101,11 @@ Optional:
 
 - `auth_password` (String) The password to authenticate with, if the forward proxy is protected
 by basic authentication.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `auth_username` (String) The username to authenticate with, if the forward proxy is protected
 by basic authentication.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `http_proxy_host` (String) A string representing a host name, such as example.com.
 - `http_proxy_port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `https_proxy_host` (String) A string representing a host name, such as example.com.

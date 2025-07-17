@@ -107,30 +107,46 @@ type AiSemanticPromptGuardPluginAuth struct {
 	// If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
 	AllowOverride *bool `json:"allow_override,omitempty"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AwsAccessKeyID *string `json:"aws_access_key_id,omitempty"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AwsSecretAccessKey *string `json:"aws_secret_access_key,omitempty"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AzureClientID *string `json:"azure_client_id,omitempty"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AzureClientSecret *string `json:"azure_client_secret,omitempty"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AzureTenantID *string `json:"azure_tenant_id,omitempty"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
 	AzureUseManagedIdentity *bool `json:"azure_use_managed_identity,omitempty"`
 	// Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	GcpServiceAccountJSON *string `json:"gcp_service_account_json,omitempty"`
 	// Use service account auth for GCP-based providers and models.
 	GcpUseServiceAccount *bool `json:"gcp_use_service_account,omitempty"`
 	// If AI model requires authentication via Authorization or API key header, specify its name here.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	HeaderName *string `json:"header_name,omitempty"`
 	// Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	HeaderValue *string `json:"header_value,omitempty"`
 	// Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
 	ParamLocation *AiSemanticPromptGuardPluginParamLocation `json:"param_location,omitempty"`
 	// If AI model requires authentication via query parameter, specify its name here.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	ParamName *string `json:"param_name,omitempty"`
 	// Specify the full parameter value for 'param_name'.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	ParamValue *string `json:"param_value,omitempty"`
 }
 
@@ -271,6 +287,10 @@ type AiSemanticPromptGuardPluginBedrock struct {
 	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
+	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
+	EmbeddingsNormalize *bool `json:"embeddings_normalize,omitempty"`
+	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
+	PerformanceConfigLatency *string `json:"performance_config_latency,omitempty"`
 }
 
 func (o *AiSemanticPromptGuardPluginBedrock) GetAwsAssumeRoleArn() *string {
@@ -299,6 +319,20 @@ func (o *AiSemanticPromptGuardPluginBedrock) GetAwsStsEndpointURL() *string {
 		return nil
 	}
 	return o.AwsStsEndpointURL
+}
+
+func (o *AiSemanticPromptGuardPluginBedrock) GetEmbeddingsNormalize() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EmbeddingsNormalize
+}
+
+func (o *AiSemanticPromptGuardPluginBedrock) GetPerformanceConfigLatency() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PerformanceConfigLatency
 }
 
 type AiSemanticPromptGuardPluginGemini struct {
@@ -438,16 +472,16 @@ func (e *AiSemanticPromptGuardPluginProvider) UnmarshalJSON(data []byte) error {
 
 type AiSemanticPromptGuardPluginModel struct {
 	// Model name to execute.
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name"`
 	// Key/value settings for the model
 	Options *AiSemanticPromptGuardPluginOptions `json:"options,omitempty"`
 	// AI provider format to use for embeddings API
-	Provider *AiSemanticPromptGuardPluginProvider `json:"provider,omitempty"`
+	Provider AiSemanticPromptGuardPluginProvider `json:"provider"`
 }
 
-func (o *AiSemanticPromptGuardPluginModel) GetName() *string {
+func (o *AiSemanticPromptGuardPluginModel) GetName() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Name
 }
@@ -459,16 +493,16 @@ func (o *AiSemanticPromptGuardPluginModel) GetOptions() *AiSemanticPromptGuardPl
 	return o.Options
 }
 
-func (o *AiSemanticPromptGuardPluginModel) GetProvider() *AiSemanticPromptGuardPluginProvider {
+func (o *AiSemanticPromptGuardPluginModel) GetProvider() AiSemanticPromptGuardPluginProvider {
 	if o == nil {
-		return nil
+		return AiSemanticPromptGuardPluginProvider("")
 	}
 	return o.Provider
 }
 
 type AiSemanticPromptGuardPluginEmbeddings struct {
-	Auth  *AiSemanticPromptGuardPluginAuth  `json:"auth,omitempty"`
-	Model *AiSemanticPromptGuardPluginModel `json:"model,omitempty"`
+	Auth  *AiSemanticPromptGuardPluginAuth `json:"auth,omitempty"`
+	Model AiSemanticPromptGuardPluginModel `json:"model"`
 }
 
 func (o *AiSemanticPromptGuardPluginEmbeddings) GetAuth() *AiSemanticPromptGuardPluginAuth {
@@ -478,20 +512,64 @@ func (o *AiSemanticPromptGuardPluginEmbeddings) GetAuth() *AiSemanticPromptGuard
 	return o.Auth
 }
 
-func (o *AiSemanticPromptGuardPluginEmbeddings) GetModel() *AiSemanticPromptGuardPluginModel {
+func (o *AiSemanticPromptGuardPluginEmbeddings) GetModel() AiSemanticPromptGuardPluginModel {
 	if o == nil {
-		return nil
+		return AiSemanticPromptGuardPluginModel{}
 	}
 	return o.Model
+}
+
+// AiSemanticPromptGuardPluginGenaiCategory - Generative AI category of the request
+type AiSemanticPromptGuardPluginGenaiCategory string
+
+const (
+	AiSemanticPromptGuardPluginGenaiCategoryAudioSpeech        AiSemanticPromptGuardPluginGenaiCategory = "audio/speech"
+	AiSemanticPromptGuardPluginGenaiCategoryAudioTranscription AiSemanticPromptGuardPluginGenaiCategory = "audio/transcription"
+	AiSemanticPromptGuardPluginGenaiCategoryImageGeneration    AiSemanticPromptGuardPluginGenaiCategory = "image/generation"
+	AiSemanticPromptGuardPluginGenaiCategoryRealtimeGeneration AiSemanticPromptGuardPluginGenaiCategory = "realtime/generation"
+	AiSemanticPromptGuardPluginGenaiCategoryTextEmbeddings     AiSemanticPromptGuardPluginGenaiCategory = "text/embeddings"
+	AiSemanticPromptGuardPluginGenaiCategoryTextGeneration     AiSemanticPromptGuardPluginGenaiCategory = "text/generation"
+	AiSemanticPromptGuardPluginGenaiCategoryVideoGeneration    AiSemanticPromptGuardPluginGenaiCategory = "video/generation"
+)
+
+func (e AiSemanticPromptGuardPluginGenaiCategory) ToPointer() *AiSemanticPromptGuardPluginGenaiCategory {
+	return &e
+}
+func (e *AiSemanticPromptGuardPluginGenaiCategory) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "audio/speech":
+		fallthrough
+	case "audio/transcription":
+		fallthrough
+	case "image/generation":
+		fallthrough
+	case "realtime/generation":
+		fallthrough
+	case "text/embeddings":
+		fallthrough
+	case "text/generation":
+		fallthrough
+	case "video/generation":
+		*e = AiSemanticPromptGuardPluginGenaiCategory(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AiSemanticPromptGuardPluginGenaiCategory: %v", v)
+	}
 }
 
 // AiSemanticPromptGuardPluginLlmFormat - LLM input and output format and schema to use
 type AiSemanticPromptGuardPluginLlmFormat string
 
 const (
-	AiSemanticPromptGuardPluginLlmFormatBedrock AiSemanticPromptGuardPluginLlmFormat = "bedrock"
-	AiSemanticPromptGuardPluginLlmFormatGemini  AiSemanticPromptGuardPluginLlmFormat = "gemini"
-	AiSemanticPromptGuardPluginLlmFormatOpenai  AiSemanticPromptGuardPluginLlmFormat = "openai"
+	AiSemanticPromptGuardPluginLlmFormatBedrock     AiSemanticPromptGuardPluginLlmFormat = "bedrock"
+	AiSemanticPromptGuardPluginLlmFormatCohere      AiSemanticPromptGuardPluginLlmFormat = "cohere"
+	AiSemanticPromptGuardPluginLlmFormatGemini      AiSemanticPromptGuardPluginLlmFormat = "gemini"
+	AiSemanticPromptGuardPluginLlmFormatHuggingface AiSemanticPromptGuardPluginLlmFormat = "huggingface"
+	AiSemanticPromptGuardPluginLlmFormatOpenai      AiSemanticPromptGuardPluginLlmFormat = "openai"
 )
 
 func (e AiSemanticPromptGuardPluginLlmFormat) ToPointer() *AiSemanticPromptGuardPluginLlmFormat {
@@ -505,7 +583,11 @@ func (e *AiSemanticPromptGuardPluginLlmFormat) UnmarshalJSON(data []byte) error 
 	switch v {
 	case "bedrock":
 		fallthrough
+	case "cohere":
+		fallthrough
 	case "gemini":
+		fallthrough
+	case "huggingface":
 		fallthrough
 	case "openai":
 		*e = AiSemanticPromptGuardPluginLlmFormat(v)
@@ -524,7 +606,7 @@ type Rules struct {
 	MatchAllConversationHistory *bool `json:"match_all_conversation_history,omitempty"`
 	// If true, will match all roles in addition to 'user' role in conversation history.
 	MatchAllRoles *bool `json:"match_all_roles,omitempty"`
-	// max allowed body size allowed to be introspected
+	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 	MaxRequestBodySize *int64 `json:"max_request_body_size,omitempty"`
 }
 
@@ -638,6 +720,8 @@ type AiSemanticPromptGuardPluginPgvector struct {
 	// the host of the pgvector database
 	Host *string `json:"host,omitempty"`
 	// the password of the pgvector database
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	// This field is [encrypted](/gateway/keyring/).
 	Password *string `json:"password,omitempty"`
 	// the port of the pgvector database
 	Port *int64 `json:"port,omitempty"`
@@ -656,6 +740,7 @@ type AiSemanticPromptGuardPluginPgvector struct {
 	// the timeout of the pgvector database
 	Timeout *float64 `json:"timeout,omitempty"`
 	// the user of the pgvector database
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	User *string `json:"user,omitempty"`
 }
 
@@ -833,6 +918,8 @@ type AiSemanticPromptGuardPluginRedis struct {
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
 	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	// This field is [encrypted](/gateway/keyring/).
 	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `json:"port,omitempty"`
@@ -845,10 +932,13 @@ type AiSemanticPromptGuardPluginRedis struct {
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
 	SentinelNodes []AiSemanticPromptGuardPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	// This field is [encrypted](/gateway/keyring/).
 	SentinelPassword *string `json:"sentinel_password,omitempty"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
 	SentinelRole *AiSemanticPromptGuardPluginSentinelRole `json:"sentinel_role,omitempty"`
 	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	SentinelUsername *string `json:"sentinel_username,omitempty"`
 	// A string representing an SNI (server name indication) value for TLS.
 	ServerName *string `json:"server_name,omitempty"`
@@ -857,6 +947,7 @@ type AiSemanticPromptGuardPluginRedis struct {
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
 	SslVerify *bool `json:"ssl_verify,omitempty"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Username *string `json:"username,omitempty"`
 }
 
@@ -1036,27 +1127,27 @@ func (e *AiSemanticPromptGuardPluginStrategy) UnmarshalJSON(data []byte) error {
 
 type AiSemanticPromptGuardPluginVectordb struct {
 	// the desired dimensionality for the vectors
-	Dimensions *int64 `json:"dimensions,omitempty"`
+	Dimensions int64 `json:"dimensions"`
 	// the distance metric to use for vector searches
-	DistanceMetric *AiSemanticPromptGuardPluginDistanceMetric `json:"distance_metric,omitempty"`
-	Pgvector       *AiSemanticPromptGuardPluginPgvector       `json:"pgvector,omitempty"`
-	Redis          *AiSemanticPromptGuardPluginRedis          `json:"redis,omitempty"`
+	DistanceMetric AiSemanticPromptGuardPluginDistanceMetric `json:"distance_metric"`
+	Pgvector       *AiSemanticPromptGuardPluginPgvector      `json:"pgvector,omitempty"`
+	Redis          *AiSemanticPromptGuardPluginRedis         `json:"redis,omitempty"`
 	// which vector database driver to use
-	Strategy *AiSemanticPromptGuardPluginStrategy `json:"strategy,omitempty"`
+	Strategy AiSemanticPromptGuardPluginStrategy `json:"strategy"`
 	// the default similarity threshold for accepting semantic search results (float)
-	Threshold *float64 `json:"threshold,omitempty"`
+	Threshold float64 `json:"threshold"`
 }
 
-func (o *AiSemanticPromptGuardPluginVectordb) GetDimensions() *int64 {
+func (o *AiSemanticPromptGuardPluginVectordb) GetDimensions() int64 {
 	if o == nil {
-		return nil
+		return 0
 	}
 	return o.Dimensions
 }
 
-func (o *AiSemanticPromptGuardPluginVectordb) GetDistanceMetric() *AiSemanticPromptGuardPluginDistanceMetric {
+func (o *AiSemanticPromptGuardPluginVectordb) GetDistanceMetric() AiSemanticPromptGuardPluginDistanceMetric {
 	if o == nil {
-		return nil
+		return AiSemanticPromptGuardPluginDistanceMetric("")
 	}
 	return o.DistanceMetric
 }
@@ -1075,34 +1166,43 @@ func (o *AiSemanticPromptGuardPluginVectordb) GetRedis() *AiSemanticPromptGuardP
 	return o.Redis
 }
 
-func (o *AiSemanticPromptGuardPluginVectordb) GetStrategy() *AiSemanticPromptGuardPluginStrategy {
+func (o *AiSemanticPromptGuardPluginVectordb) GetStrategy() AiSemanticPromptGuardPluginStrategy {
 	if o == nil {
-		return nil
+		return AiSemanticPromptGuardPluginStrategy("")
 	}
 	return o.Strategy
 }
 
-func (o *AiSemanticPromptGuardPluginVectordb) GetThreshold() *float64 {
+func (o *AiSemanticPromptGuardPluginVectordb) GetThreshold() float64 {
 	if o == nil {
-		return nil
+		return 0.0
 	}
 	return o.Threshold
 }
 
 type AiSemanticPromptGuardPluginConfig struct {
-	Embeddings *AiSemanticPromptGuardPluginEmbeddings `json:"embeddings,omitempty"`
+	Embeddings AiSemanticPromptGuardPluginEmbeddings `json:"embeddings"`
+	// Generative AI category of the request
+	GenaiCategory *AiSemanticPromptGuardPluginGenaiCategory `json:"genai_category,omitempty"`
 	// LLM input and output format and schema to use
 	LlmFormat *AiSemanticPromptGuardPluginLlmFormat `json:"llm_format,omitempty"`
 	Rules     *Rules                                `json:"rules,omitempty"`
 	Search    *Search                               `json:"search,omitempty"`
-	Vectordb  *AiSemanticPromptGuardPluginVectordb  `json:"vectordb,omitempty"`
+	Vectordb  AiSemanticPromptGuardPluginVectordb   `json:"vectordb"`
 }
 
-func (o *AiSemanticPromptGuardPluginConfig) GetEmbeddings() *AiSemanticPromptGuardPluginEmbeddings {
+func (o *AiSemanticPromptGuardPluginConfig) GetEmbeddings() AiSemanticPromptGuardPluginEmbeddings {
+	if o == nil {
+		return AiSemanticPromptGuardPluginEmbeddings{}
+	}
+	return o.Embeddings
+}
+
+func (o *AiSemanticPromptGuardPluginConfig) GetGenaiCategory() *AiSemanticPromptGuardPluginGenaiCategory {
 	if o == nil {
 		return nil
 	}
-	return o.Embeddings
+	return o.GenaiCategory
 }
 
 func (o *AiSemanticPromptGuardPluginConfig) GetLlmFormat() *AiSemanticPromptGuardPluginLlmFormat {
@@ -1126,9 +1226,9 @@ func (o *AiSemanticPromptGuardPluginConfig) GetSearch() *Search {
 	return o.Search
 }
 
-func (o *AiSemanticPromptGuardPluginConfig) GetVectordb() *AiSemanticPromptGuardPluginVectordb {
+func (o *AiSemanticPromptGuardPluginConfig) GetVectordb() AiSemanticPromptGuardPluginVectordb {
 	if o == nil {
-		return nil
+		return AiSemanticPromptGuardPluginVectordb{}
 	}
 	return o.Vectordb
 }
@@ -1227,8 +1327,8 @@ type AiSemanticPromptGuardPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                             `json:"updated_at,omitempty"`
-	Config    *AiSemanticPromptGuardPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                            `json:"updated_at,omitempty"`
+	Config    AiSemanticPromptGuardPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *AiSemanticPromptGuardPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -1312,9 +1412,9 @@ func (o *AiSemanticPromptGuardPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *AiSemanticPromptGuardPlugin) GetConfig() *AiSemanticPromptGuardPluginConfig {
+func (o *AiSemanticPromptGuardPlugin) GetConfig() AiSemanticPromptGuardPluginConfig {
 	if o == nil {
-		return nil
+		return AiSemanticPromptGuardPluginConfig{}
 	}
 	return o.Config
 }

@@ -43,10 +43,12 @@ resource "konnect_gateway_plugin_ai_semantic_cache" "my_gatewaypluginaisemanticc
             instance      = "...my_instance..."
           }
           bedrock = {
-            aws_assume_role_arn   = "...my_aws_assume_role_arn..."
-            aws_region            = "...my_aws_region..."
-            aws_role_session_name = "...my_aws_role_session_name..."
-            aws_sts_endpoint_url  = "...my_aws_sts_endpoint_url..."
+            aws_assume_role_arn        = "...my_aws_assume_role_arn..."
+            aws_region                 = "...my_aws_region..."
+            aws_role_session_name      = "...my_aws_role_session_name..."
+            aws_sts_endpoint_url       = "...my_aws_sts_endpoint_url..."
+            embeddings_normalize       = true
+            performance_config_latency = "...my_performance_config_latency..."
           }
           gemini = {
             api_endpoint = "...my_api_endpoint..."
@@ -66,7 +68,7 @@ resource "konnect_gateway_plugin_ai_semantic_cache" "my_gatewaypluginaisemanticc
     ignore_assistant_prompts = true
     ignore_system_prompts    = false
     ignore_tool_prompts      = true
-    llm_format               = "openai"
+    llm_format               = "huggingface"
     message_countback        = 289.61
     stop_on_failure          = false
     vectordb = {
@@ -174,11 +176,11 @@ resource "konnect_gateway_plugin_ai_semantic_cache" "my_gatewaypluginaisemanticc
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -199,57 +201,45 @@ resource "konnect_gateway_plugin_ai_semantic_cache" "my_gatewaypluginaisemanticc
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
+Required:
+
+- `embeddings` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings))
+- `vectordb` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb))
+
 Optional:
 
 - `cache_control` (Boolean) When enabled, respect the Cache-Control behaviors defined in RFC7234.
 - `cache_ttl` (Number) TTL in seconds of cache entities. Must be a value greater than 0.
-- `embeddings` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings))
 - `exact_caching` (Boolean) When enabled, a first check for exact query will be done. It will impact DB size
 - `ignore_assistant_prompts` (Boolean) Ignore and discard any assistant prompts when Vectorizing the request
 - `ignore_system_prompts` (Boolean) Ignore and discard any system prompts when Vectorizing the request
 - `ignore_tool_prompts` (Boolean) Ignore and discard any tool prompts when Vectorizing the request
-- `llm_format` (String) LLM input and output format and schema to use. must be one of ["bedrock", "gemini", "openai"]
+- `llm_format` (String) LLM input and output format and schema to use. must be one of ["bedrock", "cohere", "gemini", "huggingface", "openai"]
 - `message_countback` (Number) Number of messages in the chat history to Vectorize/Cache
 - `stop_on_failure` (Boolean) Halt the LLM request process in case of a caching system failure
-- `vectordb` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb))
 
 <a id="nestedatt--config--embeddings"></a>
 ### Nested Schema for `config.embeddings`
 
+Required:
+
+- `model` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--model))
+
 Optional:
 
 - `auth` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--auth))
-- `model` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--model))
-
-<a id="nestedatt--config--embeddings--auth"></a>
-### Nested Schema for `config.embeddings.auth`
-
-Optional:
-
-- `allow_override` (Boolean) If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
-- `aws_access_key_id` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
-- `aws_secret_access_key` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
-- `azure_client_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
-- `azure_client_secret` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
-- `azure_tenant_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
-- `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
-- `gcp_service_account_json` (String) Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
-- `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models.
-- `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
-- `header_value` (String) Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
-- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["body", "query"]
-- `param_name` (String) If AI model requires authentication via query parameter, specify its name here.
-- `param_value` (String) Specify the full parameter value for 'param_name'.
-
 
 <a id="nestedatt--config--embeddings--model"></a>
 ### Nested Schema for `config.embeddings.model`
 
-Optional:
+Required:
 
 - `name` (String) Model name to execute.
-- `options` (Attributes) Key/value settings for the model (see [below for nested schema](#nestedatt--config--embeddings--model--options))
 - `provider` (String) AI provider format to use for embeddings API. must be one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "openai"]
+
+Optional:
+
+- `options` (Attributes) Key/value settings for the model (see [below for nested schema](#nestedatt--config--embeddings--model--options))
 
 <a id="nestedatt--config--embeddings--model--options"></a>
 ### Nested Schema for `config.embeddings.model.options`
@@ -281,6 +271,8 @@ Optional:
 - `aws_region` (String) If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
 - `aws_role_session_name` (String) If using AWS providers (Bedrock), set the identifier of the assumed role session.
 - `aws_sts_endpoint_url` (String) If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
+- `embeddings_normalize` (Boolean) If using AWS providers (Bedrock), set to true to normalize the embeddings.
+- `performance_config_latency` (String) Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
 
 
 <a id="nestedatt--config--embeddings--model--options--gemini"></a>
@@ -304,18 +296,58 @@ Optional:
 
 
 
+<a id="nestedatt--config--embeddings--auth"></a>
+### Nested Schema for `config.embeddings.auth`
+
+Optional:
+
+- `allow_override` (Boolean) If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
+- `aws_access_key_id` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `aws_secret_access_key` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `azure_client_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `azure_client_secret` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `azure_tenant_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
+- `gcp_service_account_json` (String) Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models.
+- `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `header_value` (String) Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["body", "query"]
+- `param_name` (String) If AI model requires authentication via query parameter, specify its name here.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `param_value` (String) Specify the full parameter value for 'param_name'.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
+
 
 <a id="nestedatt--config--vectordb"></a>
 ### Nested Schema for `config.vectordb`
 
-Optional:
+Required:
 
 - `dimensions` (Number) the desired dimensionality for the vectors
 - `distance_metric` (String) the distance metric to use for vector searches. must be one of ["cosine", "euclidean"]
-- `pgvector` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb--pgvector))
-- `redis` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb--redis))
 - `strategy` (String) which vector database driver to use. must be one of ["pgvector", "redis"]
 - `threshold` (Number) the default similarity threshold for accepting semantic search results (float)
+
+Optional:
+
+- `pgvector` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb--pgvector))
+- `redis` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb--redis))
 
 <a id="nestedatt--config--vectordb--pgvector"></a>
 ### Nested Schema for `config.vectordb.pgvector`
@@ -325,6 +357,8 @@ Optional:
 - `database` (String) the database of the pgvector database
 - `host` (String) the host of the pgvector database
 - `password` (String) the password of the pgvector database
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+This field is [encrypted](/gateway/keyring/).
 - `port` (Number) the port of the pgvector database
 - `ssl` (Boolean) whether to use ssl for the pgvector database
 - `ssl_cert` (String) the path of ssl cert to use for the pgvector database
@@ -334,6 +368,7 @@ Optional:
 - `ssl_version` (String) the ssl version to use for the pgvector database. must be one of ["any", "tlsv1_2", "tlsv1_3"]
 - `timeout` (Number) the timeout of the pgvector database
 - `user` (String) the user of the pgvector database
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
 
 <a id="nestedatt--config--vectordb--redis"></a>
@@ -350,18 +385,24 @@ Optional:
 - `keepalive_backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
 - `keepalive_pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+This field is [encrypted](/gateway/keyring/).
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 - `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--vectordb--redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+This field is [encrypted](/gateway/keyring/).
 - `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis.
 - `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
 - `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
 <a id="nestedatt--config--vectordb--redis--cluster_nodes"></a>
 ### Nested Schema for `config.vectordb.redis.cluster_nodes`

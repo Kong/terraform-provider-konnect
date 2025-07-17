@@ -15,18 +15,13 @@ func (r *GatewayPluginVaultAuthResourceModel) RefreshFromSharedVaultAuthPlugin(c
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.VaultAuthPluginConfig{}
-			r.Config.AccessTokenName = types.StringPointerValue(resp.Config.AccessTokenName)
-			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
-			r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
-			r.Config.SecretTokenName = types.StringPointerValue(resp.Config.SecretTokenName)
-			r.Config.TokensInBody = types.BoolPointerValue(resp.Config.TokensInBody)
-			r.Config.Vault = types.StringPointerValue(resp.Config.Vault)
-		}
+		r.Config.AccessTokenName = types.StringPointerValue(resp.Config.AccessTokenName)
+		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
+		r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
+		r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
+		r.Config.SecretTokenName = types.StringPointerValue(resp.Config.SecretTokenName)
+		r.Config.TokensInBody = types.BoolPointerValue(resp.Config.TokensInBody)
+		r.Config.Vault = types.StringValue(resp.Config.Vault)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -272,59 +267,53 @@ func (r *GatewayPluginVaultAuthResourceModel) ToSharedVaultAuthPlugin(ctx contex
 	} else {
 		updatedAt = nil
 	}
-	var config *shared.VaultAuthPluginConfig
-	if r.Config != nil {
-		accessTokenName := new(string)
-		if !r.Config.AccessTokenName.IsUnknown() && !r.Config.AccessTokenName.IsNull() {
-			*accessTokenName = r.Config.AccessTokenName.ValueString()
-		} else {
-			accessTokenName = nil
-		}
-		anonymous := new(string)
-		if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
-			*anonymous = r.Config.Anonymous.ValueString()
-		} else {
-			anonymous = nil
-		}
-		hideCredentials := new(bool)
-		if !r.Config.HideCredentials.IsUnknown() && !r.Config.HideCredentials.IsNull() {
-			*hideCredentials = r.Config.HideCredentials.ValueBool()
-		} else {
-			hideCredentials = nil
-		}
-		runOnPreflight := new(bool)
-		if !r.Config.RunOnPreflight.IsUnknown() && !r.Config.RunOnPreflight.IsNull() {
-			*runOnPreflight = r.Config.RunOnPreflight.ValueBool()
-		} else {
-			runOnPreflight = nil
-		}
-		secretTokenName := new(string)
-		if !r.Config.SecretTokenName.IsUnknown() && !r.Config.SecretTokenName.IsNull() {
-			*secretTokenName = r.Config.SecretTokenName.ValueString()
-		} else {
-			secretTokenName = nil
-		}
-		tokensInBody := new(bool)
-		if !r.Config.TokensInBody.IsUnknown() && !r.Config.TokensInBody.IsNull() {
-			*tokensInBody = r.Config.TokensInBody.ValueBool()
-		} else {
-			tokensInBody = nil
-		}
-		vault := new(string)
-		if !r.Config.Vault.IsUnknown() && !r.Config.Vault.IsNull() {
-			*vault = r.Config.Vault.ValueString()
-		} else {
-			vault = nil
-		}
-		config = &shared.VaultAuthPluginConfig{
-			AccessTokenName: accessTokenName,
-			Anonymous:       anonymous,
-			HideCredentials: hideCredentials,
-			RunOnPreflight:  runOnPreflight,
-			SecretTokenName: secretTokenName,
-			TokensInBody:    tokensInBody,
-			Vault:           vault,
-		}
+	accessTokenName := new(string)
+	if !r.Config.AccessTokenName.IsUnknown() && !r.Config.AccessTokenName.IsNull() {
+		*accessTokenName = r.Config.AccessTokenName.ValueString()
+	} else {
+		accessTokenName = nil
+	}
+	anonymous := new(string)
+	if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
+		*anonymous = r.Config.Anonymous.ValueString()
+	} else {
+		anonymous = nil
+	}
+	hideCredentials := new(bool)
+	if !r.Config.HideCredentials.IsUnknown() && !r.Config.HideCredentials.IsNull() {
+		*hideCredentials = r.Config.HideCredentials.ValueBool()
+	} else {
+		hideCredentials = nil
+	}
+	runOnPreflight := new(bool)
+	if !r.Config.RunOnPreflight.IsUnknown() && !r.Config.RunOnPreflight.IsNull() {
+		*runOnPreflight = r.Config.RunOnPreflight.ValueBool()
+	} else {
+		runOnPreflight = nil
+	}
+	secretTokenName := new(string)
+	if !r.Config.SecretTokenName.IsUnknown() && !r.Config.SecretTokenName.IsNull() {
+		*secretTokenName = r.Config.SecretTokenName.ValueString()
+	} else {
+		secretTokenName = nil
+	}
+	tokensInBody := new(bool)
+	if !r.Config.TokensInBody.IsUnknown() && !r.Config.TokensInBody.IsNull() {
+		*tokensInBody = r.Config.TokensInBody.ValueBool()
+	} else {
+		tokensInBody = nil
+	}
+	var vault string
+	vault = r.Config.Vault.ValueString()
+
+	config := shared.VaultAuthPluginConfig{
+		AccessTokenName: accessTokenName,
+		Anonymous:       anonymous,
+		HideCredentials: hideCredentials,
+		RunOnPreflight:  runOnPreflight,
+		SecretTokenName: secretTokenName,
+		TokensInBody:    tokensInBody,
+		Vault:           vault,
 	}
 	protocols := make([]shared.VaultAuthPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {

@@ -41,19 +41,19 @@ type GatewayPluginAiAzureContentSafetyResource struct {
 
 // GatewayPluginAiAzureContentSafetyResourceModel describes the resource data model.
 type GatewayPluginAiAzureContentSafetyResourceModel struct {
-	Config         *tfTypes.AiAzureContentSafetyPluginConfig `tfsdk:"config"`
-	ControlPlaneID types.String                              `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                               `tfsdk:"created_at"`
-	Enabled        types.Bool                                `tfsdk:"enabled"`
-	ID             types.String                              `tfsdk:"id"`
-	InstanceName   types.String                              `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering                `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials                        `tfsdk:"partials"`
-	Protocols      []types.String                            `tfsdk:"protocols"`
-	Route          *tfTypes.Set                              `tfsdk:"route"`
-	Service        *tfTypes.Set                              `tfsdk:"service"`
-	Tags           []types.String                            `tfsdk:"tags"`
-	UpdatedAt      types.Int64                               `tfsdk:"updated_at"`
+	Config         tfTypes.AiAzureContentSafetyPluginConfig `tfsdk:"config"`
+	ControlPlaneID types.String                             `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                              `tfsdk:"created_at"`
+	Enabled        types.Bool                               `tfsdk:"enabled"`
+	ID             types.String                             `tfsdk:"id"`
+	InstanceName   types.String                             `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering               `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials                       `tfsdk:"partials"`
+	Protocols      []types.String                           `tfsdk:"protocols"`
+	Route          *tfTypes.Set                             `tfsdk:"route"`
+	Service        *tfTypes.Set                             `tfsdk:"service"`
+	Tags           []types.String                           `tfsdk:"tags"`
+	UpdatedAt      types.Int64                              `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginAiAzureContentSafetyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,8 +65,7 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 		MarkdownDescription: "GatewayPluginAiAzureContentSafety Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"azure_api_version": schema.StringAttribute{
 						Computed:    true,
@@ -131,14 +130,16 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 						Description: `Array of categories, and their thresholds, to measure on.`,
 					},
 					"content_safety_key": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `If ` + "`" + `azure_use_managed_identity` + "`" + ` is true, set the API key to call Content Safety.`,
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `If ` + "`" + `azure_use_managed_identity` + "`" + ` is true, set the API key to call Content Safety.` + "\n" +
+							`This field is [encrypted](/gateway/keyring/).` + "\n" +
+							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 					},
 					"content_safety_url": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Full URL, inc protocol, of the Azure Content Safety instance.`,
+						Required: true,
+						MarkdownDescription: `Full URL, inc protocol, of the Azure Content Safety instance.` + "\n" +
+							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 					},
 					"halt_on_blocklist_hit": schema.BoolAttribute{
 						Computed:    true,

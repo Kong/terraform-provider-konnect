@@ -40,19 +40,19 @@ type GatewayPluginHeaderCertAuthResource struct {
 
 // GatewayPluginHeaderCertAuthResourceModel describes the resource data model.
 type GatewayPluginHeaderCertAuthResourceModel struct {
-	Config         *tfTypes.HeaderCertAuthPluginConfig `tfsdk:"config"`
-	ControlPlaneID types.String                        `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                         `tfsdk:"created_at"`
-	Enabled        types.Bool                          `tfsdk:"enabled"`
-	ID             types.String                        `tfsdk:"id"`
-	InstanceName   types.String                        `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering          `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials                  `tfsdk:"partials"`
-	Protocols      []types.String                      `tfsdk:"protocols"`
-	Route          *tfTypes.Set                        `tfsdk:"route"`
-	Service        *tfTypes.Set                        `tfsdk:"service"`
-	Tags           []types.String                      `tfsdk:"tags"`
-	UpdatedAt      types.Int64                         `tfsdk:"updated_at"`
+	Config         tfTypes.HeaderCertAuthPluginConfig `tfsdk:"config"`
+	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                        `tfsdk:"created_at"`
+	Enabled        types.Bool                         `tfsdk:"enabled"`
+	ID             types.String                       `tfsdk:"id"`
+	InstanceName   types.String                       `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials                 `tfsdk:"partials"`
+	Protocols      []types.String                     `tfsdk:"protocols"`
+	Route          *tfTypes.Set                       `tfsdk:"route"`
+	Service        *tfTypes.Set                       `tfsdk:"service"`
+	Tags           []types.String                     `tfsdk:"tags"`
+	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginHeaderCertAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,8 +64,7 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 		MarkdownDescription: "GatewayPluginHeaderCertAuth Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"allow_partial_chain": schema.BoolAttribute{
 						Computed:    true,
@@ -86,8 +85,7 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 						},
 					},
 					"ca_certificates": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						ElementType: types.StringType,
 						Description: `List of CA Certificates strings to use as Certificate Authorities (CA) when validating a client certificate. At least one is required but you can specify as many as needed. The value of this array is comprised of primary keys (` + "`" + `id` + "`" + `).`,
 					},
@@ -102,8 +100,7 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 						Description: `The length of time in milliseconds between refreshes of the revocation check status cache.`,
 					},
 					"certificate_header_format": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `Format of the certificate header. Supported formats: ` + "`" + `base64_encoded` + "`" + `, ` + "`" + `url_encoded` + "`" + `. must be one of ["base64_encoded", "url_encoded"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
@@ -113,8 +110,7 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 						},
 					},
 					"certificate_header_name": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `Name of the header that contains the certificate, received from the WAF or other L7 downstream proxy.`,
 					},
 					"consumer_by": schema.ListAttribute{

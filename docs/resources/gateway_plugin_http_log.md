@@ -88,11 +88,11 @@ resource "konnect_gateway_plugin_http_log" "my_gatewaypluginhttplog" {
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied.
@@ -112,13 +112,18 @@ resource "konnect_gateway_plugin_http_log" "my_gatewaypluginhttplog" {
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
+Required:
+
+- `http_endpoint` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
 Optional:
 
 - `content_type` (String) Indicates the type of data sent. The only available option is `application/json`. must be one of ["application/json", "application/json; charset=utf-8"]
 - `custom_fields_by_lua` (Map of String) Lua code as a key-value map
 - `flush_timeout` (Number) Optional time in seconds. If `queue_size` > 1, this is the max idle time before sending a log with less than `queue_size` records.
 - `headers` (Map of String) An optional table of headers included in the HTTP message to the upstream server. Values are indexed by header name, and each header name accepts a single string.
-- `http_endpoint` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
 - `keepalive` (Number) An optional value in milliseconds that defines how long an idle connection will live before being closed.
 - `method` (String) An optional method used to send data to the HTTP server. Supported values are `POST` (default), `PUT`, and `PATCH`. must be one of ["PATCH", "POST", "PUT"]
 - `queue` (Attributes) (see [below for nested schema](#nestedatt--config--queue))

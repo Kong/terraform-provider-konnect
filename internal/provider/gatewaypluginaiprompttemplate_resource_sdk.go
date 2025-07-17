@@ -15,27 +15,22 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) RefreshFromSharedAiPromptTe
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.AiPromptTemplatePluginConfig{}
-			r.Config.AllowUntemplatedRequests = types.BoolPointerValue(resp.Config.AllowUntemplatedRequests)
-			r.Config.LogOriginalRequest = types.BoolPointerValue(resp.Config.LogOriginalRequest)
-			r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
-			r.Config.Templates = []tfTypes.Templates{}
-			if len(r.Config.Templates) > len(resp.Config.Templates) {
-				r.Config.Templates = r.Config.Templates[:len(resp.Config.Templates)]
-			}
-			for templatesCount, templatesItem := range resp.Config.Templates {
-				var templates tfTypes.Templates
-				templates.Name = types.StringValue(templatesItem.Name)
-				templates.Template = types.StringValue(templatesItem.Template)
-				if templatesCount+1 > len(r.Config.Templates) {
-					r.Config.Templates = append(r.Config.Templates, templates)
-				} else {
-					r.Config.Templates[templatesCount].Name = templates.Name
-					r.Config.Templates[templatesCount].Template = templates.Template
-				}
+		r.Config.AllowUntemplatedRequests = types.BoolPointerValue(resp.Config.AllowUntemplatedRequests)
+		r.Config.LogOriginalRequest = types.BoolPointerValue(resp.Config.LogOriginalRequest)
+		r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
+		r.Config.Templates = []tfTypes.Templates{}
+		if len(r.Config.Templates) > len(resp.Config.Templates) {
+			r.Config.Templates = r.Config.Templates[:len(resp.Config.Templates)]
+		}
+		for templatesCount, templatesItem := range resp.Config.Templates {
+			var templates tfTypes.Templates
+			templates.Name = types.StringValue(templatesItem.Name)
+			templates.Template = types.StringValue(templatesItem.Template)
+			if templatesCount+1 > len(r.Config.Templates) {
+				r.Config.Templates = append(r.Config.Templates, templates)
+			} else {
+				r.Config.Templates[templatesCount].Name = templates.Name
+				r.Config.Templates[templatesCount].Template = templates.Template
 			}
 		}
 		if resp.Consumer == nil {
@@ -295,45 +290,42 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) ToSharedAiPromptTemplatePlu
 	} else {
 		updatedAt = nil
 	}
-	var config *shared.AiPromptTemplatePluginConfig
-	if r.Config != nil {
-		allowUntemplatedRequests := new(bool)
-		if !r.Config.AllowUntemplatedRequests.IsUnknown() && !r.Config.AllowUntemplatedRequests.IsNull() {
-			*allowUntemplatedRequests = r.Config.AllowUntemplatedRequests.ValueBool()
-		} else {
-			allowUntemplatedRequests = nil
-		}
-		logOriginalRequest := new(bool)
-		if !r.Config.LogOriginalRequest.IsUnknown() && !r.Config.LogOriginalRequest.IsNull() {
-			*logOriginalRequest = r.Config.LogOriginalRequest.ValueBool()
-		} else {
-			logOriginalRequest = nil
-		}
-		maxRequestBodySize := new(int64)
-		if !r.Config.MaxRequestBodySize.IsUnknown() && !r.Config.MaxRequestBodySize.IsNull() {
-			*maxRequestBodySize = r.Config.MaxRequestBodySize.ValueInt64()
-		} else {
-			maxRequestBodySize = nil
-		}
-		templates := make([]shared.Templates, 0, len(r.Config.Templates))
-		for _, templatesItem := range r.Config.Templates {
-			var name1 string
-			name1 = templatesItem.Name.ValueString()
+	allowUntemplatedRequests := new(bool)
+	if !r.Config.AllowUntemplatedRequests.IsUnknown() && !r.Config.AllowUntemplatedRequests.IsNull() {
+		*allowUntemplatedRequests = r.Config.AllowUntemplatedRequests.ValueBool()
+	} else {
+		allowUntemplatedRequests = nil
+	}
+	logOriginalRequest := new(bool)
+	if !r.Config.LogOriginalRequest.IsUnknown() && !r.Config.LogOriginalRequest.IsNull() {
+		*logOriginalRequest = r.Config.LogOriginalRequest.ValueBool()
+	} else {
+		logOriginalRequest = nil
+	}
+	maxRequestBodySize := new(int64)
+	if !r.Config.MaxRequestBodySize.IsUnknown() && !r.Config.MaxRequestBodySize.IsNull() {
+		*maxRequestBodySize = r.Config.MaxRequestBodySize.ValueInt64()
+	} else {
+		maxRequestBodySize = nil
+	}
+	templates := make([]shared.Templates, 0, len(r.Config.Templates))
+	for _, templatesItem := range r.Config.Templates {
+		var name1 string
+		name1 = templatesItem.Name.ValueString()
 
-			var template string
-			template = templatesItem.Template.ValueString()
+		var template string
+		template = templatesItem.Template.ValueString()
 
-			templates = append(templates, shared.Templates{
-				Name:     name1,
-				Template: template,
-			})
-		}
-		config = &shared.AiPromptTemplatePluginConfig{
-			AllowUntemplatedRequests: allowUntemplatedRequests,
-			LogOriginalRequest:       logOriginalRequest,
-			MaxRequestBodySize:       maxRequestBodySize,
-			Templates:                templates,
-		}
+		templates = append(templates, shared.Templates{
+			Name:     name1,
+			Template: template,
+		})
+	}
+	config := shared.AiPromptTemplatePluginConfig{
+		AllowUntemplatedRequests: allowUntemplatedRequests,
+		LogOriginalRequest:       logOriginalRequest,
+		MaxRequestBodySize:       maxRequestBodySize,
+		Templates:                templates,
 	}
 	var consumer *shared.AiPromptTemplatePluginConsumer
 	if r.Consumer != nil {

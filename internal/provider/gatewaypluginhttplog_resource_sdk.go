@@ -16,58 +16,53 @@ func (r *GatewayPluginHTTPLogResourceModel) RefreshFromSharedHTTPLogPlugin(ctx c
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		if resp.Config.ContentType != nil {
+			r.Config.ContentType = types.StringValue(string(*resp.Config.ContentType))
 		} else {
-			r.Config = &tfTypes.HTTPLogPluginConfig{}
-			if resp.Config.ContentType != nil {
-				r.Config.ContentType = types.StringValue(string(*resp.Config.ContentType))
-			} else {
-				r.Config.ContentType = types.StringNull()
-			}
-			if len(resp.Config.CustomFieldsByLua) > 0 {
-				r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
-				for key, value := range resp.Config.CustomFieldsByLua {
-					result, _ := json.Marshal(value)
-					r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
-				}
-			}
-			r.Config.FlushTimeout = types.Float64PointerValue(resp.Config.FlushTimeout)
-			if len(resp.Config.Headers) > 0 {
-				r.Config.Headers = make(map[string]types.String, len(resp.Config.Headers))
-				for key1, value1 := range resp.Config.Headers {
-					result1, _ := json.Marshal(value1)
-					r.Config.Headers[key1] = types.StringValue(string(result1))
-				}
-			}
-			r.Config.HTTPEndpoint = types.StringPointerValue(resp.Config.HTTPEndpoint)
-			r.Config.Keepalive = types.Float64PointerValue(resp.Config.Keepalive)
-			if resp.Config.Method != nil {
-				r.Config.Method = types.StringValue(string(*resp.Config.Method))
-			} else {
-				r.Config.Method = types.StringNull()
-			}
-			if resp.Config.Queue == nil {
-				r.Config.Queue = nil
-			} else {
-				r.Config.Queue = &tfTypes.Queue{}
-				if resp.Config.Queue.ConcurrencyLimit != nil {
-					r.Config.Queue.ConcurrencyLimit = types.Int64Value(int64(*resp.Config.Queue.ConcurrencyLimit))
-				} else {
-					r.Config.Queue.ConcurrencyLimit = types.Int64Null()
-				}
-				r.Config.Queue.InitialRetryDelay = types.Float64PointerValue(resp.Config.Queue.InitialRetryDelay)
-				r.Config.Queue.MaxBatchSize = types.Int64PointerValue(resp.Config.Queue.MaxBatchSize)
-				r.Config.Queue.MaxBytes = types.Int64PointerValue(resp.Config.Queue.MaxBytes)
-				r.Config.Queue.MaxCoalescingDelay = types.Float64PointerValue(resp.Config.Queue.MaxCoalescingDelay)
-				r.Config.Queue.MaxEntries = types.Int64PointerValue(resp.Config.Queue.MaxEntries)
-				r.Config.Queue.MaxRetryDelay = types.Float64PointerValue(resp.Config.Queue.MaxRetryDelay)
-				r.Config.Queue.MaxRetryTime = types.Float64PointerValue(resp.Config.Queue.MaxRetryTime)
-			}
-			r.Config.QueueSize = types.Int64PointerValue(resp.Config.QueueSize)
-			r.Config.RetryCount = types.Int64PointerValue(resp.Config.RetryCount)
-			r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
+			r.Config.ContentType = types.StringNull()
 		}
+		if len(resp.Config.CustomFieldsByLua) > 0 {
+			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
+			for key, value := range resp.Config.CustomFieldsByLua {
+				result, _ := json.Marshal(value)
+				r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
+			}
+		}
+		r.Config.FlushTimeout = types.Float64PointerValue(resp.Config.FlushTimeout)
+		if len(resp.Config.Headers) > 0 {
+			r.Config.Headers = make(map[string]types.String, len(resp.Config.Headers))
+			for key1, value1 := range resp.Config.Headers {
+				result1, _ := json.Marshal(value1)
+				r.Config.Headers[key1] = types.StringValue(string(result1))
+			}
+		}
+		r.Config.HTTPEndpoint = types.StringValue(resp.Config.HTTPEndpoint)
+		r.Config.Keepalive = types.Float64PointerValue(resp.Config.Keepalive)
+		if resp.Config.Method != nil {
+			r.Config.Method = types.StringValue(string(*resp.Config.Method))
+		} else {
+			r.Config.Method = types.StringNull()
+		}
+		if resp.Config.Queue == nil {
+			r.Config.Queue = nil
+		} else {
+			r.Config.Queue = &tfTypes.Queue{}
+			if resp.Config.Queue.ConcurrencyLimit != nil {
+				r.Config.Queue.ConcurrencyLimit = types.Int64Value(int64(*resp.Config.Queue.ConcurrencyLimit))
+			} else {
+				r.Config.Queue.ConcurrencyLimit = types.Int64Null()
+			}
+			r.Config.Queue.InitialRetryDelay = types.Float64PointerValue(resp.Config.Queue.InitialRetryDelay)
+			r.Config.Queue.MaxBatchSize = types.Int64PointerValue(resp.Config.Queue.MaxBatchSize)
+			r.Config.Queue.MaxBytes = types.Int64PointerValue(resp.Config.Queue.MaxBytes)
+			r.Config.Queue.MaxCoalescingDelay = types.Float64PointerValue(resp.Config.Queue.MaxCoalescingDelay)
+			r.Config.Queue.MaxEntries = types.Int64PointerValue(resp.Config.Queue.MaxEntries)
+			r.Config.Queue.MaxRetryDelay = types.Float64PointerValue(resp.Config.Queue.MaxRetryDelay)
+			r.Config.Queue.MaxRetryTime = types.Float64PointerValue(resp.Config.Queue.MaxRetryTime)
+		}
+		r.Config.QueueSize = types.Int64PointerValue(resp.Config.QueueSize)
+		r.Config.RetryCount = types.Int64PointerValue(resp.Config.RetryCount)
+		r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -319,142 +314,136 @@ func (r *GatewayPluginHTTPLogResourceModel) ToSharedHTTPLogPlugin(ctx context.Co
 	} else {
 		updatedAt = nil
 	}
-	var config *shared.HTTPLogPluginConfig
-	if r.Config != nil {
-		contentType := new(shared.ContentType)
-		if !r.Config.ContentType.IsUnknown() && !r.Config.ContentType.IsNull() {
-			*contentType = shared.ContentType(r.Config.ContentType.ValueString())
+	contentType := new(shared.ContentType)
+	if !r.Config.ContentType.IsUnknown() && !r.Config.ContentType.IsNull() {
+		*contentType = shared.ContentType(r.Config.ContentType.ValueString())
+	} else {
+		contentType = nil
+	}
+	customFieldsByLua := make(map[string]interface{})
+	for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
+		var customFieldsByLuaInst interface{}
+		_ = json.Unmarshal([]byte(customFieldsByLuaValue.ValueString()), &customFieldsByLuaInst)
+		customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
+	}
+	flushTimeout := new(float64)
+	if !r.Config.FlushTimeout.IsUnknown() && !r.Config.FlushTimeout.IsNull() {
+		*flushTimeout = r.Config.FlushTimeout.ValueFloat64()
+	} else {
+		flushTimeout = nil
+	}
+	headers := make(map[string]interface{})
+	for headersKey, headersValue := range r.Config.Headers {
+		var headersInst interface{}
+		_ = json.Unmarshal([]byte(headersValue.ValueString()), &headersInst)
+		headers[headersKey] = headersInst
+	}
+	var httpEndpoint string
+	httpEndpoint = r.Config.HTTPEndpoint.ValueString()
+
+	keepalive := new(float64)
+	if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
+		*keepalive = r.Config.Keepalive.ValueFloat64()
+	} else {
+		keepalive = nil
+	}
+	method := new(shared.Method)
+	if !r.Config.Method.IsUnknown() && !r.Config.Method.IsNull() {
+		*method = shared.Method(r.Config.Method.ValueString())
+	} else {
+		method = nil
+	}
+	var queue *shared.HTTPLogPluginQueue
+	if r.Config.Queue != nil {
+		concurrencyLimit := new(shared.HTTPLogPluginConcurrencyLimit)
+		if !r.Config.Queue.ConcurrencyLimit.IsUnknown() && !r.Config.Queue.ConcurrencyLimit.IsNull() {
+			*concurrencyLimit = shared.HTTPLogPluginConcurrencyLimit(r.Config.Queue.ConcurrencyLimit.ValueInt64())
 		} else {
-			contentType = nil
+			concurrencyLimit = nil
 		}
-		customFieldsByLua := make(map[string]interface{})
-		for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
-			var customFieldsByLuaInst interface{}
-			_ = json.Unmarshal([]byte(customFieldsByLuaValue.ValueString()), &customFieldsByLuaInst)
-			customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
-		}
-		flushTimeout := new(float64)
-		if !r.Config.FlushTimeout.IsUnknown() && !r.Config.FlushTimeout.IsNull() {
-			*flushTimeout = r.Config.FlushTimeout.ValueFloat64()
+		initialRetryDelay := new(float64)
+		if !r.Config.Queue.InitialRetryDelay.IsUnknown() && !r.Config.Queue.InitialRetryDelay.IsNull() {
+			*initialRetryDelay = r.Config.Queue.InitialRetryDelay.ValueFloat64()
 		} else {
-			flushTimeout = nil
+			initialRetryDelay = nil
 		}
-		headers := make(map[string]interface{})
-		for headersKey, headersValue := range r.Config.Headers {
-			var headersInst interface{}
-			_ = json.Unmarshal([]byte(headersValue.ValueString()), &headersInst)
-			headers[headersKey] = headersInst
-		}
-		httpEndpoint := new(string)
-		if !r.Config.HTTPEndpoint.IsUnknown() && !r.Config.HTTPEndpoint.IsNull() {
-			*httpEndpoint = r.Config.HTTPEndpoint.ValueString()
+		maxBatchSize := new(int64)
+		if !r.Config.Queue.MaxBatchSize.IsUnknown() && !r.Config.Queue.MaxBatchSize.IsNull() {
+			*maxBatchSize = r.Config.Queue.MaxBatchSize.ValueInt64()
 		} else {
-			httpEndpoint = nil
+			maxBatchSize = nil
 		}
-		keepalive := new(float64)
-		if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
-			*keepalive = r.Config.Keepalive.ValueFloat64()
+		maxBytes := new(int64)
+		if !r.Config.Queue.MaxBytes.IsUnknown() && !r.Config.Queue.MaxBytes.IsNull() {
+			*maxBytes = r.Config.Queue.MaxBytes.ValueInt64()
 		} else {
-			keepalive = nil
+			maxBytes = nil
 		}
-		method := new(shared.Method)
-		if !r.Config.Method.IsUnknown() && !r.Config.Method.IsNull() {
-			*method = shared.Method(r.Config.Method.ValueString())
+		maxCoalescingDelay := new(float64)
+		if !r.Config.Queue.MaxCoalescingDelay.IsUnknown() && !r.Config.Queue.MaxCoalescingDelay.IsNull() {
+			*maxCoalescingDelay = r.Config.Queue.MaxCoalescingDelay.ValueFloat64()
 		} else {
-			method = nil
+			maxCoalescingDelay = nil
 		}
-		var queue *shared.HTTPLogPluginQueue
-		if r.Config.Queue != nil {
-			concurrencyLimit := new(shared.HTTPLogPluginConcurrencyLimit)
-			if !r.Config.Queue.ConcurrencyLimit.IsUnknown() && !r.Config.Queue.ConcurrencyLimit.IsNull() {
-				*concurrencyLimit = shared.HTTPLogPluginConcurrencyLimit(r.Config.Queue.ConcurrencyLimit.ValueInt64())
-			} else {
-				concurrencyLimit = nil
-			}
-			initialRetryDelay := new(float64)
-			if !r.Config.Queue.InitialRetryDelay.IsUnknown() && !r.Config.Queue.InitialRetryDelay.IsNull() {
-				*initialRetryDelay = r.Config.Queue.InitialRetryDelay.ValueFloat64()
-			} else {
-				initialRetryDelay = nil
-			}
-			maxBatchSize := new(int64)
-			if !r.Config.Queue.MaxBatchSize.IsUnknown() && !r.Config.Queue.MaxBatchSize.IsNull() {
-				*maxBatchSize = r.Config.Queue.MaxBatchSize.ValueInt64()
-			} else {
-				maxBatchSize = nil
-			}
-			maxBytes := new(int64)
-			if !r.Config.Queue.MaxBytes.IsUnknown() && !r.Config.Queue.MaxBytes.IsNull() {
-				*maxBytes = r.Config.Queue.MaxBytes.ValueInt64()
-			} else {
-				maxBytes = nil
-			}
-			maxCoalescingDelay := new(float64)
-			if !r.Config.Queue.MaxCoalescingDelay.IsUnknown() && !r.Config.Queue.MaxCoalescingDelay.IsNull() {
-				*maxCoalescingDelay = r.Config.Queue.MaxCoalescingDelay.ValueFloat64()
-			} else {
-				maxCoalescingDelay = nil
-			}
-			maxEntries := new(int64)
-			if !r.Config.Queue.MaxEntries.IsUnknown() && !r.Config.Queue.MaxEntries.IsNull() {
-				*maxEntries = r.Config.Queue.MaxEntries.ValueInt64()
-			} else {
-				maxEntries = nil
-			}
-			maxRetryDelay := new(float64)
-			if !r.Config.Queue.MaxRetryDelay.IsUnknown() && !r.Config.Queue.MaxRetryDelay.IsNull() {
-				*maxRetryDelay = r.Config.Queue.MaxRetryDelay.ValueFloat64()
-			} else {
-				maxRetryDelay = nil
-			}
-			maxRetryTime := new(float64)
-			if !r.Config.Queue.MaxRetryTime.IsUnknown() && !r.Config.Queue.MaxRetryTime.IsNull() {
-				*maxRetryTime = r.Config.Queue.MaxRetryTime.ValueFloat64()
-			} else {
-				maxRetryTime = nil
-			}
-			queue = &shared.HTTPLogPluginQueue{
-				ConcurrencyLimit:   concurrencyLimit,
-				InitialRetryDelay:  initialRetryDelay,
-				MaxBatchSize:       maxBatchSize,
-				MaxBytes:           maxBytes,
-				MaxCoalescingDelay: maxCoalescingDelay,
-				MaxEntries:         maxEntries,
-				MaxRetryDelay:      maxRetryDelay,
-				MaxRetryTime:       maxRetryTime,
-			}
-		}
-		queueSize := new(int64)
-		if !r.Config.QueueSize.IsUnknown() && !r.Config.QueueSize.IsNull() {
-			*queueSize = r.Config.QueueSize.ValueInt64()
+		maxEntries := new(int64)
+		if !r.Config.Queue.MaxEntries.IsUnknown() && !r.Config.Queue.MaxEntries.IsNull() {
+			*maxEntries = r.Config.Queue.MaxEntries.ValueInt64()
 		} else {
-			queueSize = nil
+			maxEntries = nil
 		}
-		retryCount := new(int64)
-		if !r.Config.RetryCount.IsUnknown() && !r.Config.RetryCount.IsNull() {
-			*retryCount = r.Config.RetryCount.ValueInt64()
+		maxRetryDelay := new(float64)
+		if !r.Config.Queue.MaxRetryDelay.IsUnknown() && !r.Config.Queue.MaxRetryDelay.IsNull() {
+			*maxRetryDelay = r.Config.Queue.MaxRetryDelay.ValueFloat64()
 		} else {
-			retryCount = nil
+			maxRetryDelay = nil
 		}
-		timeout := new(float64)
-		if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
-			*timeout = r.Config.Timeout.ValueFloat64()
+		maxRetryTime := new(float64)
+		if !r.Config.Queue.MaxRetryTime.IsUnknown() && !r.Config.Queue.MaxRetryTime.IsNull() {
+			*maxRetryTime = r.Config.Queue.MaxRetryTime.ValueFloat64()
 		} else {
-			timeout = nil
+			maxRetryTime = nil
 		}
-		config = &shared.HTTPLogPluginConfig{
-			ContentType:       contentType,
-			CustomFieldsByLua: customFieldsByLua,
-			FlushTimeout:      flushTimeout,
-			Headers:           headers,
-			HTTPEndpoint:      httpEndpoint,
-			Keepalive:         keepalive,
-			Method:            method,
-			Queue:             queue,
-			QueueSize:         queueSize,
-			RetryCount:        retryCount,
-			Timeout:           timeout,
+		queue = &shared.HTTPLogPluginQueue{
+			ConcurrencyLimit:   concurrencyLimit,
+			InitialRetryDelay:  initialRetryDelay,
+			MaxBatchSize:       maxBatchSize,
+			MaxBytes:           maxBytes,
+			MaxCoalescingDelay: maxCoalescingDelay,
+			MaxEntries:         maxEntries,
+			MaxRetryDelay:      maxRetryDelay,
+			MaxRetryTime:       maxRetryTime,
 		}
+	}
+	queueSize := new(int64)
+	if !r.Config.QueueSize.IsUnknown() && !r.Config.QueueSize.IsNull() {
+		*queueSize = r.Config.QueueSize.ValueInt64()
+	} else {
+		queueSize = nil
+	}
+	retryCount := new(int64)
+	if !r.Config.RetryCount.IsUnknown() && !r.Config.RetryCount.IsNull() {
+		*retryCount = r.Config.RetryCount.ValueInt64()
+	} else {
+		retryCount = nil
+	}
+	timeout := new(float64)
+	if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
+		*timeout = r.Config.Timeout.ValueFloat64()
+	} else {
+		timeout = nil
+	}
+	config := shared.HTTPLogPluginConfig{
+		ContentType:       contentType,
+		CustomFieldsByLua: customFieldsByLua,
+		FlushTimeout:      flushTimeout,
+		Headers:           headers,
+		HTTPEndpoint:      httpEndpoint,
+		Keepalive:         keepalive,
+		Method:            method,
+		Queue:             queue,
+		QueueSize:         queueSize,
+		RetryCount:        retryCount,
+		Timeout:           timeout,
 	}
 	var consumer *shared.HTTPLogPluginConsumer
 	if r.Consumer != nil {

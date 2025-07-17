@@ -77,14 +77,15 @@ func (o *DatadogTracingPluginPartials) GetPath() *string {
 }
 
 type DatadogTracingPluginConfig struct {
-	BatchFlushDelay *int64  `json:"batch_flush_delay,omitempty"`
-	BatchSpanCount  *int64  `json:"batch_span_count,omitempty"`
-	ConnectTimeout  *int64  `json:"connect_timeout,omitempty"`
-	Endpoint        *string `json:"endpoint,omitempty"`
-	Environment     *string `json:"environment,omitempty"`
-	ReadTimeout     *int64  `json:"read_timeout,omitempty"`
-	SendTimeout     *int64  `json:"send_timeout,omitempty"`
-	ServiceName     *string `json:"service_name,omitempty"`
+	BatchFlushDelay *int64 `json:"batch_flush_delay,omitempty"`
+	BatchSpanCount  *int64 `json:"batch_span_count,omitempty"`
+	ConnectTimeout  *int64 `json:"connect_timeout,omitempty"`
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	Endpoint    *string `json:"endpoint,omitempty"`
+	Environment *string `json:"environment,omitempty"`
+	ReadTimeout *int64  `json:"read_timeout,omitempty"`
+	SendTimeout *int64  `json:"send_timeout,omitempty"`
+	ServiceName *string `json:"service_name,omitempty"`
 }
 
 func (o *DatadogTracingPluginConfig) GetBatchFlushDelay() *int64 {

@@ -81,11 +81,11 @@ resource "konnect_gateway_plugin_oauth2" "my_gatewaypluginoauth2" {
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
@@ -104,6 +104,11 @@ resource "konnect_gateway_plugin_oauth2" "my_gatewaypluginoauth2" {
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
+Required:
+
+- `provision_key` (String) The unique key the plugin has generated when it has been added to the Service.
+This field is [encrypted](/gateway/keyring/).
+
 Optional:
 
 - `accept_http_if_already_terminated` (Boolean) Accepts HTTPs requests that have already been terminated by a proxy or load balancer.
@@ -118,7 +123,6 @@ Optional:
 - `mandatory_scope` (Boolean) An optional boolean value telling the plugin to require at least one `scope` to be authorized by the end user.
 - `persistent_refresh_token` (Boolean)
 - `pkce` (String) Specifies a mode of how the Proof Key for Code Exchange (PKCE) should be handled by the plugin. must be one of ["lax", "none", "strict"]
-- `provision_key` (String) The unique key the plugin has generated when it has been added to the Service.
 - `realm` (String) When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
 - `refresh_token_ttl` (Number) Time-to-live value for data
 - `reuse_refresh_token` (Boolean) An optional boolean value that indicates whether an OAuth refresh token is reused when refreshing an access token.

@@ -15,13 +15,8 @@ func (r *GatewayPluginStandardWebhooksResourceModel) RefreshFromSharedStandardWe
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.StandardWebhooksPluginConfig{}
-			r.Config.SecretV1 = types.StringPointerValue(resp.Config.SecretV1)
-			r.Config.ToleranceSecond = types.Int64PointerValue(resp.Config.ToleranceSecond)
-		}
+		r.Config.SecretV1 = types.StringValue(resp.Config.SecretV1)
+		r.Config.ToleranceSecond = types.Int64PointerValue(resp.Config.ToleranceSecond)
 		if resp.ConsumerGroup == nil {
 			r.ConsumerGroup = nil
 		} else {
@@ -273,24 +268,18 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToSharedStandardWebhooksPlu
 	} else {
 		updatedAt = nil
 	}
-	var config *shared.StandardWebhooksPluginConfig
-	if r.Config != nil {
-		secretV1 := new(string)
-		if !r.Config.SecretV1.IsUnknown() && !r.Config.SecretV1.IsNull() {
-			*secretV1 = r.Config.SecretV1.ValueString()
-		} else {
-			secretV1 = nil
-		}
-		toleranceSecond := new(int64)
-		if !r.Config.ToleranceSecond.IsUnknown() && !r.Config.ToleranceSecond.IsNull() {
-			*toleranceSecond = r.Config.ToleranceSecond.ValueInt64()
-		} else {
-			toleranceSecond = nil
-		}
-		config = &shared.StandardWebhooksPluginConfig{
-			SecretV1:        secretV1,
-			ToleranceSecond: toleranceSecond,
-		}
+	var secretV1 string
+	secretV1 = r.Config.SecretV1.ValueString()
+
+	toleranceSecond := new(int64)
+	if !r.Config.ToleranceSecond.IsUnknown() && !r.Config.ToleranceSecond.IsNull() {
+		*toleranceSecond = r.Config.ToleranceSecond.ValueInt64()
+	} else {
+		toleranceSecond = nil
+	}
+	config := shared.StandardWebhooksPluginConfig{
+		SecretV1:        secretV1,
+		ToleranceSecond: toleranceSecond,
 	}
 	var consumerGroup *shared.StandardWebhooksPluginConsumerGroup
 	if r.ConsumerGroup != nil {

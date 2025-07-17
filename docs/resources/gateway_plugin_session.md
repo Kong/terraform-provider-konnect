@@ -139,6 +139,8 @@ Optional:
 - `response_headers` (List of String) List of information to include, as headers, in the response to the downstream.
 - `rolling_timeout` (Number) The session cookie rolling timeout, in seconds. Specifies how long the session can be used until it needs to be renewed.
 - `secret` (String) The secret that is used in keyed HMAC generation.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `stale_ttl` (Number) The duration, in seconds, after which an old cookie is discarded, starting from the moment when the session becomes outdated and is replaced by a new one.
 - `storage` (String) Determines where the session data is stored. `kong`: Stores encrypted session data into Kong's current database strategy; the cookie will not contain any session data. `cookie`: Stores encrypted session data within the cookie itself. must be one of ["cookie", "kong"]
 - `store_metadata` (Boolean) Whether to also store metadata of sessions, such as collecting data of sessions for a specific audience belonging to a specific subject.

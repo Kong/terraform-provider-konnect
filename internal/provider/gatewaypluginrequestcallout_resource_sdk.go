@@ -16,215 +16,210 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		if resp.Config.Cache == nil {
+			r.Config.Cache = nil
 		} else {
-			r.Config = &tfTypes.RequestCalloutPluginConfig{}
-			if resp.Config.Cache == nil {
-				r.Config.Cache = nil
+			r.Config.Cache = &tfTypes.Cache{}
+			r.Config.Cache.CacheTTL = types.Int64PointerValue(resp.Config.Cache.CacheTTL)
+			if resp.Config.Cache.Memory == nil {
+				r.Config.Cache.Memory = nil
 			} else {
-				r.Config.Cache = &tfTypes.Cache{}
-				r.Config.Cache.CacheTTL = types.Int64PointerValue(resp.Config.Cache.CacheTTL)
-				if resp.Config.Cache.Memory == nil {
-					r.Config.Cache.Memory = nil
-				} else {
-					r.Config.Cache.Memory = &tfTypes.Memory{}
-					r.Config.Cache.Memory.DictionaryName = types.StringPointerValue(resp.Config.Cache.Memory.DictionaryName)
+				r.Config.Cache.Memory = &tfTypes.Memory{}
+				r.Config.Cache.Memory.DictionaryName = types.StringPointerValue(resp.Config.Cache.Memory.DictionaryName)
+			}
+			if resp.Config.Cache.Redis == nil {
+				r.Config.Cache.Redis = nil
+			} else {
+				r.Config.Cache.Redis = &tfTypes.PartialRedisEEConfig{}
+				r.Config.Cache.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Cache.Redis.ClusterMaxRedirections)
+				r.Config.Cache.Redis.ClusterNodes = []tfTypes.PartialRedisEEClusterNodes{}
+				if len(r.Config.Cache.Redis.ClusterNodes) > len(resp.Config.Cache.Redis.ClusterNodes) {
+					r.Config.Cache.Redis.ClusterNodes = r.Config.Cache.Redis.ClusterNodes[:len(resp.Config.Cache.Redis.ClusterNodes)]
 				}
-				if resp.Config.Cache.Redis == nil {
-					r.Config.Cache.Redis = nil
-				} else {
-					r.Config.Cache.Redis = &tfTypes.PartialRedisEEConfig{}
-					r.Config.Cache.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Cache.Redis.ClusterMaxRedirections)
-					r.Config.Cache.Redis.ClusterNodes = []tfTypes.PartialRedisEEClusterNodes{}
-					if len(r.Config.Cache.Redis.ClusterNodes) > len(resp.Config.Cache.Redis.ClusterNodes) {
-						r.Config.Cache.Redis.ClusterNodes = r.Config.Cache.Redis.ClusterNodes[:len(resp.Config.Cache.Redis.ClusterNodes)]
-					}
-					for clusterNodesCount, clusterNodesItem := range resp.Config.Cache.Redis.ClusterNodes {
-						var clusterNodes tfTypes.PartialRedisEEClusterNodes
-						clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
-						clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
-						if clusterNodesCount+1 > len(r.Config.Cache.Redis.ClusterNodes) {
-							r.Config.Cache.Redis.ClusterNodes = append(r.Config.Cache.Redis.ClusterNodes, clusterNodes)
-						} else {
-							r.Config.Cache.Redis.ClusterNodes[clusterNodesCount].IP = clusterNodes.IP
-							r.Config.Cache.Redis.ClusterNodes[clusterNodesCount].Port = clusterNodes.Port
-						}
-					}
-					r.Config.Cache.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ConnectTimeout)
-					r.Config.Cache.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Cache.Redis.ConnectionIsProxied)
-					r.Config.Cache.Redis.Database = types.Int64PointerValue(resp.Config.Cache.Redis.Database)
-					r.Config.Cache.Redis.Host = types.StringPointerValue(resp.Config.Cache.Redis.Host)
-					r.Config.Cache.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Cache.Redis.KeepaliveBacklog)
-					r.Config.Cache.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Cache.Redis.KeepalivePoolSize)
-					r.Config.Cache.Redis.Password = types.StringPointerValue(resp.Config.Cache.Redis.Password)
-					r.Config.Cache.Redis.Port = types.Int64PointerValue(resp.Config.Cache.Redis.Port)
-					r.Config.Cache.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ReadTimeout)
-					r.Config.Cache.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.SendTimeout)
-					r.Config.Cache.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Cache.Redis.SentinelMaster)
-					r.Config.Cache.Redis.SentinelNodes = []tfTypes.PartialRedisEESentinelNodes{}
-					if len(r.Config.Cache.Redis.SentinelNodes) > len(resp.Config.Cache.Redis.SentinelNodes) {
-						r.Config.Cache.Redis.SentinelNodes = r.Config.Cache.Redis.SentinelNodes[:len(resp.Config.Cache.Redis.SentinelNodes)]
-					}
-					for sentinelNodesCount, sentinelNodesItem := range resp.Config.Cache.Redis.SentinelNodes {
-						var sentinelNodes tfTypes.PartialRedisEESentinelNodes
-						sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
-						sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
-						if sentinelNodesCount+1 > len(r.Config.Cache.Redis.SentinelNodes) {
-							r.Config.Cache.Redis.SentinelNodes = append(r.Config.Cache.Redis.SentinelNodes, sentinelNodes)
-						} else {
-							r.Config.Cache.Redis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes.Host
-							r.Config.Cache.Redis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes.Port
-						}
-					}
-					r.Config.Cache.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Cache.Redis.SentinelPassword)
-					if resp.Config.Cache.Redis.SentinelRole != nil {
-						r.Config.Cache.Redis.SentinelRole = types.StringValue(string(*resp.Config.Cache.Redis.SentinelRole))
+				for clusterNodesCount, clusterNodesItem := range resp.Config.Cache.Redis.ClusterNodes {
+					var clusterNodes tfTypes.PartialRedisEEClusterNodes
+					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
+					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
+					if clusterNodesCount+1 > len(r.Config.Cache.Redis.ClusterNodes) {
+						r.Config.Cache.Redis.ClusterNodes = append(r.Config.Cache.Redis.ClusterNodes, clusterNodes)
 					} else {
-						r.Config.Cache.Redis.SentinelRole = types.StringNull()
+						r.Config.Cache.Redis.ClusterNodes[clusterNodesCount].IP = clusterNodes.IP
+						r.Config.Cache.Redis.ClusterNodes[clusterNodesCount].Port = clusterNodes.Port
 					}
-					r.Config.Cache.Redis.SentinelUsername = types.StringPointerValue(resp.Config.Cache.Redis.SentinelUsername)
-					r.Config.Cache.Redis.ServerName = types.StringPointerValue(resp.Config.Cache.Redis.ServerName)
-					r.Config.Cache.Redis.Ssl = types.BoolPointerValue(resp.Config.Cache.Redis.Ssl)
-					r.Config.Cache.Redis.SslVerify = types.BoolPointerValue(resp.Config.Cache.Redis.SslVerify)
-					r.Config.Cache.Redis.Username = types.StringPointerValue(resp.Config.Cache.Redis.Username)
 				}
-				if resp.Config.Cache.Strategy != nil {
-					r.Config.Cache.Strategy = types.StringValue(string(*resp.Config.Cache.Strategy))
+				r.Config.Cache.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ConnectTimeout)
+				r.Config.Cache.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Cache.Redis.ConnectionIsProxied)
+				r.Config.Cache.Redis.Database = types.Int64PointerValue(resp.Config.Cache.Redis.Database)
+				r.Config.Cache.Redis.Host = types.StringPointerValue(resp.Config.Cache.Redis.Host)
+				r.Config.Cache.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Cache.Redis.KeepaliveBacklog)
+				r.Config.Cache.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Cache.Redis.KeepalivePoolSize)
+				r.Config.Cache.Redis.Password = types.StringPointerValue(resp.Config.Cache.Redis.Password)
+				r.Config.Cache.Redis.Port = types.Int64PointerValue(resp.Config.Cache.Redis.Port)
+				r.Config.Cache.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ReadTimeout)
+				r.Config.Cache.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.SendTimeout)
+				r.Config.Cache.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Cache.Redis.SentinelMaster)
+				r.Config.Cache.Redis.SentinelNodes = []tfTypes.PartialRedisEESentinelNodes{}
+				if len(r.Config.Cache.Redis.SentinelNodes) > len(resp.Config.Cache.Redis.SentinelNodes) {
+					r.Config.Cache.Redis.SentinelNodes = r.Config.Cache.Redis.SentinelNodes[:len(resp.Config.Cache.Redis.SentinelNodes)]
+				}
+				for sentinelNodesCount, sentinelNodesItem := range resp.Config.Cache.Redis.SentinelNodes {
+					var sentinelNodes tfTypes.PartialRedisEESentinelNodes
+					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
+					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+					if sentinelNodesCount+1 > len(r.Config.Cache.Redis.SentinelNodes) {
+						r.Config.Cache.Redis.SentinelNodes = append(r.Config.Cache.Redis.SentinelNodes, sentinelNodes)
+					} else {
+						r.Config.Cache.Redis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes.Host
+						r.Config.Cache.Redis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes.Port
+					}
+				}
+				r.Config.Cache.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Cache.Redis.SentinelPassword)
+				if resp.Config.Cache.Redis.SentinelRole != nil {
+					r.Config.Cache.Redis.SentinelRole = types.StringValue(string(*resp.Config.Cache.Redis.SentinelRole))
 				} else {
-					r.Config.Cache.Strategy = types.StringNull()
+					r.Config.Cache.Redis.SentinelRole = types.StringNull()
 				}
+				r.Config.Cache.Redis.SentinelUsername = types.StringPointerValue(resp.Config.Cache.Redis.SentinelUsername)
+				r.Config.Cache.Redis.ServerName = types.StringPointerValue(resp.Config.Cache.Redis.ServerName)
+				r.Config.Cache.Redis.Ssl = types.BoolPointerValue(resp.Config.Cache.Redis.Ssl)
+				r.Config.Cache.Redis.SslVerify = types.BoolPointerValue(resp.Config.Cache.Redis.SslVerify)
+				r.Config.Cache.Redis.Username = types.StringPointerValue(resp.Config.Cache.Redis.Username)
 			}
-			r.Config.Callouts = []tfTypes.Callouts{}
-			if len(r.Config.Callouts) > len(resp.Config.Callouts) {
-				r.Config.Callouts = r.Config.Callouts[:len(resp.Config.Callouts)]
-			}
-			for calloutsCount, calloutsItem := range resp.Config.Callouts {
-				var callouts tfTypes.Callouts
-				callouts.Cache.Bypass = types.BoolPointerValue(calloutsItem.Cache.Bypass)
-				callouts.DependsOn = make([]types.String, 0, len(calloutsItem.DependsOn))
-				for _, v := range calloutsItem.DependsOn {
-					callouts.DependsOn = append(callouts.DependsOn, types.StringValue(v))
-				}
-				callouts.Name = types.StringValue(calloutsItem.Name)
-				if len(calloutsItem.Request.Body.Custom) > 0 {
-					callouts.Request.Body.Custom = make(map[string]types.String, len(calloutsItem.Request.Body.Custom))
-					for key, value := range calloutsItem.Request.Body.Custom {
-						result, _ := json.Marshal(value)
-						callouts.Request.Body.Custom[key] = types.StringValue(string(result))
-					}
-				}
-				callouts.Request.Body.Decode = types.BoolPointerValue(calloutsItem.Request.Body.Decode)
-				callouts.Request.Body.Forward = types.BoolPointerValue(calloutsItem.Request.Body.Forward)
-				callouts.Request.ByLua = types.StringPointerValue(calloutsItem.Request.ByLua)
-				callouts.Request.Error.ErrorResponseCode = types.Int64PointerValue(calloutsItem.Request.Error.ErrorResponseCode)
-				callouts.Request.Error.ErrorResponseMsg = types.StringPointerValue(calloutsItem.Request.Error.ErrorResponseMsg)
-				callouts.Request.Error.HTTPStatuses = make([]types.Int64, 0, len(calloutsItem.Request.Error.HTTPStatuses))
-				for _, v := range calloutsItem.Request.Error.HTTPStatuses {
-					callouts.Request.Error.HTTPStatuses = append(callouts.Request.Error.HTTPStatuses, types.Int64Value(v))
-				}
-				if calloutsItem.Request.Error.OnError != nil {
-					callouts.Request.Error.OnError = types.StringValue(string(*calloutsItem.Request.Error.OnError))
-				} else {
-					callouts.Request.Error.OnError = types.StringNull()
-				}
-				callouts.Request.Error.Retries = types.Int64PointerValue(calloutsItem.Request.Error.Retries)
-				if len(calloutsItem.Request.Headers.Custom) > 0 {
-					callouts.Request.Headers.Custom = make(map[string]types.String, len(calloutsItem.Request.Headers.Custom))
-					for key1, value1 := range calloutsItem.Request.Headers.Custom {
-						result1, _ := json.Marshal(value1)
-						callouts.Request.Headers.Custom[key1] = types.StringValue(string(result1))
-					}
-				}
-				callouts.Request.Headers.Forward = types.BoolPointerValue(calloutsItem.Request.Headers.Forward)
-				if calloutsItem.Request.HTTPOpts.Proxy == nil {
-					callouts.Request.HTTPOpts.Proxy = nil
-				} else {
-					callouts.Request.HTTPOpts.Proxy = &tfTypes.Proxy{}
-					callouts.Request.HTTPOpts.Proxy.AuthPassword = types.StringPointerValue(calloutsItem.Request.HTTPOpts.Proxy.AuthPassword)
-					callouts.Request.HTTPOpts.Proxy.AuthUsername = types.StringPointerValue(calloutsItem.Request.HTTPOpts.Proxy.AuthUsername)
-					callouts.Request.HTTPOpts.Proxy.HTTPProxy = types.StringPointerValue(calloutsItem.Request.HTTPOpts.Proxy.HTTPProxy)
-					callouts.Request.HTTPOpts.Proxy.HTTPSProxy = types.StringPointerValue(calloutsItem.Request.HTTPOpts.Proxy.HTTPSProxy)
-				}
-				callouts.Request.HTTPOpts.SslServerName = types.StringPointerValue(calloutsItem.Request.HTTPOpts.SslServerName)
-				callouts.Request.HTTPOpts.SslVerify = types.BoolPointerValue(calloutsItem.Request.HTTPOpts.SslVerify)
-				if calloutsItem.Request.HTTPOpts.Timeouts == nil {
-					callouts.Request.HTTPOpts.Timeouts = nil
-				} else {
-					callouts.Request.HTTPOpts.Timeouts = &tfTypes.Timeouts{}
-					callouts.Request.HTTPOpts.Timeouts.Connect = types.Int64PointerValue(calloutsItem.Request.HTTPOpts.Timeouts.Connect)
-					callouts.Request.HTTPOpts.Timeouts.Read = types.Int64PointerValue(calloutsItem.Request.HTTPOpts.Timeouts.Read)
-					callouts.Request.HTTPOpts.Timeouts.Write = types.Int64PointerValue(calloutsItem.Request.HTTPOpts.Timeouts.Write)
-				}
-				callouts.Request.Method = types.StringPointerValue(calloutsItem.Request.Method)
-				if len(calloutsItem.Request.Query.Custom) > 0 {
-					callouts.Request.Query.Custom = make(map[string]types.String, len(calloutsItem.Request.Query.Custom))
-					for key2, value2 := range calloutsItem.Request.Query.Custom {
-						result2, _ := json.Marshal(value2)
-						callouts.Request.Query.Custom[key2] = types.StringValue(string(result2))
-					}
-				}
-				callouts.Request.Query.Forward = types.BoolPointerValue(calloutsItem.Request.Query.Forward)
-				callouts.Request.URL = types.StringValue(calloutsItem.Request.URL)
-				callouts.Response.Body.Decode = types.BoolPointerValue(calloutsItem.Response.Body.Decode)
-				callouts.Response.Body.Store = types.BoolPointerValue(calloutsItem.Response.Body.Store)
-				callouts.Response.ByLua = types.StringPointerValue(calloutsItem.Response.ByLua)
-				callouts.Response.Headers.Store = types.BoolPointerValue(calloutsItem.Response.Headers.Store)
-				if calloutsCount+1 > len(r.Config.Callouts) {
-					r.Config.Callouts = append(r.Config.Callouts, callouts)
-				} else {
-					r.Config.Callouts[calloutsCount].Cache = callouts.Cache
-					r.Config.Callouts[calloutsCount].DependsOn = callouts.DependsOn
-					r.Config.Callouts[calloutsCount].Name = callouts.Name
-					r.Config.Callouts[calloutsCount].Request = callouts.Request
-					r.Config.Callouts[calloutsCount].Response = callouts.Response
-				}
-			}
-			if resp.Config.Upstream == nil {
-				r.Config.Upstream = nil
+			if resp.Config.Cache.Strategy != nil {
+				r.Config.Cache.Strategy = types.StringValue(string(*resp.Config.Cache.Strategy))
 			} else {
-				r.Config.Upstream = &tfTypes.RequestCalloutPluginUpstream{}
-				if resp.Config.Upstream.Body == nil {
-					r.Config.Upstream.Body = nil
-				} else {
-					r.Config.Upstream.Body = &tfTypes.RequestCalloutPluginConfigBody{}
-					if len(resp.Config.Upstream.Body.Custom) > 0 {
-						r.Config.Upstream.Body.Custom = make(map[string]types.String, len(resp.Config.Upstream.Body.Custom))
-						for key3, value3 := range resp.Config.Upstream.Body.Custom {
-							result3, _ := json.Marshal(value3)
-							r.Config.Upstream.Body.Custom[key3] = types.StringValue(string(result3))
-						}
-					}
-					r.Config.Upstream.Body.Decode = types.BoolPointerValue(resp.Config.Upstream.Body.Decode)
-					r.Config.Upstream.Body.Forward = types.BoolPointerValue(resp.Config.Upstream.Body.Forward)
+				r.Config.Cache.Strategy = types.StringNull()
+			}
+		}
+		r.Config.Callouts = []tfTypes.Callouts{}
+		if len(r.Config.Callouts) > len(resp.Config.Callouts) {
+			r.Config.Callouts = r.Config.Callouts[:len(resp.Config.Callouts)]
+		}
+		for calloutsCount, calloutsItem := range resp.Config.Callouts {
+			var callouts tfTypes.Callouts
+			callouts.Cache.Bypass = types.BoolPointerValue(calloutsItem.Cache.Bypass)
+			callouts.DependsOn = make([]types.String, 0, len(calloutsItem.DependsOn))
+			for _, v := range calloutsItem.DependsOn {
+				callouts.DependsOn = append(callouts.DependsOn, types.StringValue(v))
+			}
+			callouts.Name = types.StringValue(calloutsItem.Name)
+			if len(calloutsItem.Request.Body.Custom) > 0 {
+				callouts.Request.Body.Custom = make(map[string]types.String, len(calloutsItem.Request.Body.Custom))
+				for key, value := range calloutsItem.Request.Body.Custom {
+					result, _ := json.Marshal(value)
+					callouts.Request.Body.Custom[key] = types.StringValue(string(result))
 				}
-				r.Config.Upstream.ByLua = types.StringPointerValue(resp.Config.Upstream.ByLua)
-				if resp.Config.Upstream.Headers == nil {
-					r.Config.Upstream.Headers = nil
-				} else {
-					r.Config.Upstream.Headers = &tfTypes.RequestCalloutPluginConfigHeaders{}
-					if len(resp.Config.Upstream.Headers.Custom) > 0 {
-						r.Config.Upstream.Headers.Custom = make(map[string]types.String, len(resp.Config.Upstream.Headers.Custom))
-						for key4, value4 := range resp.Config.Upstream.Headers.Custom {
-							result4, _ := json.Marshal(value4)
-							r.Config.Upstream.Headers.Custom[key4] = types.StringValue(string(result4))
-						}
-					}
-					r.Config.Upstream.Headers.Forward = types.BoolPointerValue(resp.Config.Upstream.Headers.Forward)
+			}
+			callouts.Request.Body.Decode = types.BoolPointerValue(calloutsItem.Request.Body.Decode)
+			callouts.Request.Body.Forward = types.BoolPointerValue(calloutsItem.Request.Body.Forward)
+			callouts.Request.ByLua = types.StringPointerValue(calloutsItem.Request.ByLua)
+			callouts.Request.Error.ErrorResponseCode = types.Int64PointerValue(calloutsItem.Request.Error.ErrorResponseCode)
+			callouts.Request.Error.ErrorResponseMsg = types.StringPointerValue(calloutsItem.Request.Error.ErrorResponseMsg)
+			callouts.Request.Error.HTTPStatuses = make([]types.Int64, 0, len(calloutsItem.Request.Error.HTTPStatuses))
+			for _, v := range calloutsItem.Request.Error.HTTPStatuses {
+				callouts.Request.Error.HTTPStatuses = append(callouts.Request.Error.HTTPStatuses, types.Int64Value(v))
+			}
+			if calloutsItem.Request.Error.OnError != nil {
+				callouts.Request.Error.OnError = types.StringValue(string(*calloutsItem.Request.Error.OnError))
+			} else {
+				callouts.Request.Error.OnError = types.StringNull()
+			}
+			callouts.Request.Error.Retries = types.Int64PointerValue(calloutsItem.Request.Error.Retries)
+			if len(calloutsItem.Request.Headers.Custom) > 0 {
+				callouts.Request.Headers.Custom = make(map[string]types.String, len(calloutsItem.Request.Headers.Custom))
+				for key1, value1 := range calloutsItem.Request.Headers.Custom {
+					result1, _ := json.Marshal(value1)
+					callouts.Request.Headers.Custom[key1] = types.StringValue(string(result1))
 				}
-				if resp.Config.Upstream.Query == nil {
-					r.Config.Upstream.Query = nil
-				} else {
-					r.Config.Upstream.Query = &tfTypes.RequestCalloutPluginConfigHeaders{}
-					if len(resp.Config.Upstream.Query.Custom) > 0 {
-						r.Config.Upstream.Query.Custom = make(map[string]types.String, len(resp.Config.Upstream.Query.Custom))
-						for key5, value5 := range resp.Config.Upstream.Query.Custom {
-							result5, _ := json.Marshal(value5)
-							r.Config.Upstream.Query.Custom[key5] = types.StringValue(string(result5))
-						}
-					}
-					r.Config.Upstream.Query.Forward = types.BoolPointerValue(resp.Config.Upstream.Query.Forward)
+			}
+			callouts.Request.Headers.Forward = types.BoolPointerValue(calloutsItem.Request.Headers.Forward)
+			if calloutsItem.Request.HTTPOpts.Proxy == nil {
+				callouts.Request.HTTPOpts.Proxy = nil
+			} else {
+				callouts.Request.HTTPOpts.Proxy = &tfTypes.Proxy{}
+				callouts.Request.HTTPOpts.Proxy.AuthPassword = types.StringPointerValue(calloutsItem.Request.HTTPOpts.Proxy.AuthPassword)
+				callouts.Request.HTTPOpts.Proxy.AuthUsername = types.StringPointerValue(calloutsItem.Request.HTTPOpts.Proxy.AuthUsername)
+				callouts.Request.HTTPOpts.Proxy.HTTPProxy = types.StringPointerValue(calloutsItem.Request.HTTPOpts.Proxy.HTTPProxy)
+				callouts.Request.HTTPOpts.Proxy.HTTPSProxy = types.StringPointerValue(calloutsItem.Request.HTTPOpts.Proxy.HTTPSProxy)
+			}
+			callouts.Request.HTTPOpts.SslServerName = types.StringPointerValue(calloutsItem.Request.HTTPOpts.SslServerName)
+			callouts.Request.HTTPOpts.SslVerify = types.BoolPointerValue(calloutsItem.Request.HTTPOpts.SslVerify)
+			if calloutsItem.Request.HTTPOpts.Timeouts == nil {
+				callouts.Request.HTTPOpts.Timeouts = nil
+			} else {
+				callouts.Request.HTTPOpts.Timeouts = &tfTypes.Timeouts{}
+				callouts.Request.HTTPOpts.Timeouts.Connect = types.Int64PointerValue(calloutsItem.Request.HTTPOpts.Timeouts.Connect)
+				callouts.Request.HTTPOpts.Timeouts.Read = types.Int64PointerValue(calloutsItem.Request.HTTPOpts.Timeouts.Read)
+				callouts.Request.HTTPOpts.Timeouts.Write = types.Int64PointerValue(calloutsItem.Request.HTTPOpts.Timeouts.Write)
+			}
+			callouts.Request.Method = types.StringPointerValue(calloutsItem.Request.Method)
+			if len(calloutsItem.Request.Query.Custom) > 0 {
+				callouts.Request.Query.Custom = make(map[string]types.String, len(calloutsItem.Request.Query.Custom))
+				for key2, value2 := range calloutsItem.Request.Query.Custom {
+					result2, _ := json.Marshal(value2)
+					callouts.Request.Query.Custom[key2] = types.StringValue(string(result2))
 				}
+			}
+			callouts.Request.Query.Forward = types.BoolPointerValue(calloutsItem.Request.Query.Forward)
+			callouts.Request.URL = types.StringValue(calloutsItem.Request.URL)
+			callouts.Response.Body.Decode = types.BoolPointerValue(calloutsItem.Response.Body.Decode)
+			callouts.Response.Body.Store = types.BoolPointerValue(calloutsItem.Response.Body.Store)
+			callouts.Response.ByLua = types.StringPointerValue(calloutsItem.Response.ByLua)
+			callouts.Response.Headers.Store = types.BoolPointerValue(calloutsItem.Response.Headers.Store)
+			if calloutsCount+1 > len(r.Config.Callouts) {
+				r.Config.Callouts = append(r.Config.Callouts, callouts)
+			} else {
+				r.Config.Callouts[calloutsCount].Cache = callouts.Cache
+				r.Config.Callouts[calloutsCount].DependsOn = callouts.DependsOn
+				r.Config.Callouts[calloutsCount].Name = callouts.Name
+				r.Config.Callouts[calloutsCount].Request = callouts.Request
+				r.Config.Callouts[calloutsCount].Response = callouts.Response
+			}
+		}
+		if resp.Config.Upstream == nil {
+			r.Config.Upstream = nil
+		} else {
+			r.Config.Upstream = &tfTypes.RequestCalloutPluginUpstream{}
+			if resp.Config.Upstream.Body == nil {
+				r.Config.Upstream.Body = nil
+			} else {
+				r.Config.Upstream.Body = &tfTypes.RequestCalloutPluginConfigBody{}
+				if len(resp.Config.Upstream.Body.Custom) > 0 {
+					r.Config.Upstream.Body.Custom = make(map[string]types.String, len(resp.Config.Upstream.Body.Custom))
+					for key3, value3 := range resp.Config.Upstream.Body.Custom {
+						result3, _ := json.Marshal(value3)
+						r.Config.Upstream.Body.Custom[key3] = types.StringValue(string(result3))
+					}
+				}
+				r.Config.Upstream.Body.Decode = types.BoolPointerValue(resp.Config.Upstream.Body.Decode)
+				r.Config.Upstream.Body.Forward = types.BoolPointerValue(resp.Config.Upstream.Body.Forward)
+			}
+			r.Config.Upstream.ByLua = types.StringPointerValue(resp.Config.Upstream.ByLua)
+			if resp.Config.Upstream.Headers == nil {
+				r.Config.Upstream.Headers = nil
+			} else {
+				r.Config.Upstream.Headers = &tfTypes.RequestCalloutPluginConfigHeaders{}
+				if len(resp.Config.Upstream.Headers.Custom) > 0 {
+					r.Config.Upstream.Headers.Custom = make(map[string]types.String, len(resp.Config.Upstream.Headers.Custom))
+					for key4, value4 := range resp.Config.Upstream.Headers.Custom {
+						result4, _ := json.Marshal(value4)
+						r.Config.Upstream.Headers.Custom[key4] = types.StringValue(string(result4))
+					}
+				}
+				r.Config.Upstream.Headers.Forward = types.BoolPointerValue(resp.Config.Upstream.Headers.Forward)
+			}
+			if resp.Config.Upstream.Query == nil {
+				r.Config.Upstream.Query = nil
+			} else {
+				r.Config.Upstream.Query = &tfTypes.RequestCalloutPluginConfigHeaders{}
+				if len(resp.Config.Upstream.Query.Custom) > 0 {
+					r.Config.Upstream.Query.Custom = make(map[string]types.String, len(resp.Config.Upstream.Query.Custom))
+					for key5, value5 := range resp.Config.Upstream.Query.Custom {
+						result5, _ := json.Marshal(value5)
+						r.Config.Upstream.Query.Custom[key5] = types.StringValue(string(result5))
+					}
+				}
+				r.Config.Upstream.Query.Forward = types.BoolPointerValue(resp.Config.Upstream.Query.Forward)
 			}
 		}
 		if resp.Consumer == nil {
@@ -484,557 +479,554 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 	} else {
 		updatedAt = nil
 	}
-	var config *shared.RequestCalloutPluginConfig
-	if r.Config != nil {
-		var cache *shared.Cache
-		if r.Config.Cache != nil {
-			cacheTTL := new(int64)
-			if !r.Config.Cache.CacheTTL.IsUnknown() && !r.Config.Cache.CacheTTL.IsNull() {
-				*cacheTTL = r.Config.Cache.CacheTTL.ValueInt64()
+	var cache *shared.Cache
+	if r.Config.Cache != nil {
+		cacheTTL := new(int64)
+		if !r.Config.Cache.CacheTTL.IsUnknown() && !r.Config.Cache.CacheTTL.IsNull() {
+			*cacheTTL = r.Config.Cache.CacheTTL.ValueInt64()
+		} else {
+			cacheTTL = nil
+		}
+		var memory *shared.RequestCalloutPluginMemory
+		if r.Config.Cache.Memory != nil {
+			dictionaryName := new(string)
+			if !r.Config.Cache.Memory.DictionaryName.IsUnknown() && !r.Config.Cache.Memory.DictionaryName.IsNull() {
+				*dictionaryName = r.Config.Cache.Memory.DictionaryName.ValueString()
 			} else {
-				cacheTTL = nil
+				dictionaryName = nil
 			}
-			var memory *shared.RequestCalloutPluginMemory
-			if r.Config.Cache.Memory != nil {
-				dictionaryName := new(string)
-				if !r.Config.Cache.Memory.DictionaryName.IsUnknown() && !r.Config.Cache.Memory.DictionaryName.IsNull() {
-					*dictionaryName = r.Config.Cache.Memory.DictionaryName.ValueString()
-				} else {
-					dictionaryName = nil
-				}
-				memory = &shared.RequestCalloutPluginMemory{
-					DictionaryName: dictionaryName,
-				}
-			}
-			var redis *shared.RequestCalloutPluginRedis
-			if r.Config.Cache.Redis != nil {
-				clusterMaxRedirections := new(int64)
-				if !r.Config.Cache.Redis.ClusterMaxRedirections.IsUnknown() && !r.Config.Cache.Redis.ClusterMaxRedirections.IsNull() {
-					*clusterMaxRedirections = r.Config.Cache.Redis.ClusterMaxRedirections.ValueInt64()
-				} else {
-					clusterMaxRedirections = nil
-				}
-				clusterNodes := make([]shared.RequestCalloutPluginClusterNodes, 0, len(r.Config.Cache.Redis.ClusterNodes))
-				for _, clusterNodesItem := range r.Config.Cache.Redis.ClusterNodes {
-					ip := new(string)
-					if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
-						*ip = clusterNodesItem.IP.ValueString()
-					} else {
-						ip = nil
-					}
-					port := new(int64)
-					if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
-						*port = clusterNodesItem.Port.ValueInt64()
-					} else {
-						port = nil
-					}
-					clusterNodes = append(clusterNodes, shared.RequestCalloutPluginClusterNodes{
-						IP:   ip,
-						Port: port,
-					})
-				}
-				connectTimeout := new(int64)
-				if !r.Config.Cache.Redis.ConnectTimeout.IsUnknown() && !r.Config.Cache.Redis.ConnectTimeout.IsNull() {
-					*connectTimeout = r.Config.Cache.Redis.ConnectTimeout.ValueInt64()
-				} else {
-					connectTimeout = nil
-				}
-				connectionIsProxied := new(bool)
-				if !r.Config.Cache.Redis.ConnectionIsProxied.IsUnknown() && !r.Config.Cache.Redis.ConnectionIsProxied.IsNull() {
-					*connectionIsProxied = r.Config.Cache.Redis.ConnectionIsProxied.ValueBool()
-				} else {
-					connectionIsProxied = nil
-				}
-				database := new(int64)
-				if !r.Config.Cache.Redis.Database.IsUnknown() && !r.Config.Cache.Redis.Database.IsNull() {
-					*database = r.Config.Cache.Redis.Database.ValueInt64()
-				} else {
-					database = nil
-				}
-				host := new(string)
-				if !r.Config.Cache.Redis.Host.IsUnknown() && !r.Config.Cache.Redis.Host.IsNull() {
-					*host = r.Config.Cache.Redis.Host.ValueString()
-				} else {
-					host = nil
-				}
-				keepaliveBacklog := new(int64)
-				if !r.Config.Cache.Redis.KeepaliveBacklog.IsUnknown() && !r.Config.Cache.Redis.KeepaliveBacklog.IsNull() {
-					*keepaliveBacklog = r.Config.Cache.Redis.KeepaliveBacklog.ValueInt64()
-				} else {
-					keepaliveBacklog = nil
-				}
-				keepalivePoolSize := new(int64)
-				if !r.Config.Cache.Redis.KeepalivePoolSize.IsUnknown() && !r.Config.Cache.Redis.KeepalivePoolSize.IsNull() {
-					*keepalivePoolSize = r.Config.Cache.Redis.KeepalivePoolSize.ValueInt64()
-				} else {
-					keepalivePoolSize = nil
-				}
-				password := new(string)
-				if !r.Config.Cache.Redis.Password.IsUnknown() && !r.Config.Cache.Redis.Password.IsNull() {
-					*password = r.Config.Cache.Redis.Password.ValueString()
-				} else {
-					password = nil
-				}
-				port1 := new(int64)
-				if !r.Config.Cache.Redis.Port.IsUnknown() && !r.Config.Cache.Redis.Port.IsNull() {
-					*port1 = r.Config.Cache.Redis.Port.ValueInt64()
-				} else {
-					port1 = nil
-				}
-				readTimeout := new(int64)
-				if !r.Config.Cache.Redis.ReadTimeout.IsUnknown() && !r.Config.Cache.Redis.ReadTimeout.IsNull() {
-					*readTimeout = r.Config.Cache.Redis.ReadTimeout.ValueInt64()
-				} else {
-					readTimeout = nil
-				}
-				sendTimeout := new(int64)
-				if !r.Config.Cache.Redis.SendTimeout.IsUnknown() && !r.Config.Cache.Redis.SendTimeout.IsNull() {
-					*sendTimeout = r.Config.Cache.Redis.SendTimeout.ValueInt64()
-				} else {
-					sendTimeout = nil
-				}
-				sentinelMaster := new(string)
-				if !r.Config.Cache.Redis.SentinelMaster.IsUnknown() && !r.Config.Cache.Redis.SentinelMaster.IsNull() {
-					*sentinelMaster = r.Config.Cache.Redis.SentinelMaster.ValueString()
-				} else {
-					sentinelMaster = nil
-				}
-				sentinelNodes := make([]shared.RequestCalloutPluginSentinelNodes, 0, len(r.Config.Cache.Redis.SentinelNodes))
-				for _, sentinelNodesItem := range r.Config.Cache.Redis.SentinelNodes {
-					host1 := new(string)
-					if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
-						*host1 = sentinelNodesItem.Host.ValueString()
-					} else {
-						host1 = nil
-					}
-					port2 := new(int64)
-					if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
-						*port2 = sentinelNodesItem.Port.ValueInt64()
-					} else {
-						port2 = nil
-					}
-					sentinelNodes = append(sentinelNodes, shared.RequestCalloutPluginSentinelNodes{
-						Host: host1,
-						Port: port2,
-					})
-				}
-				sentinelPassword := new(string)
-				if !r.Config.Cache.Redis.SentinelPassword.IsUnknown() && !r.Config.Cache.Redis.SentinelPassword.IsNull() {
-					*sentinelPassword = r.Config.Cache.Redis.SentinelPassword.ValueString()
-				} else {
-					sentinelPassword = nil
-				}
-				sentinelRole := new(shared.RequestCalloutPluginSentinelRole)
-				if !r.Config.Cache.Redis.SentinelRole.IsUnknown() && !r.Config.Cache.Redis.SentinelRole.IsNull() {
-					*sentinelRole = shared.RequestCalloutPluginSentinelRole(r.Config.Cache.Redis.SentinelRole.ValueString())
-				} else {
-					sentinelRole = nil
-				}
-				sentinelUsername := new(string)
-				if !r.Config.Cache.Redis.SentinelUsername.IsUnknown() && !r.Config.Cache.Redis.SentinelUsername.IsNull() {
-					*sentinelUsername = r.Config.Cache.Redis.SentinelUsername.ValueString()
-				} else {
-					sentinelUsername = nil
-				}
-				serverName := new(string)
-				if !r.Config.Cache.Redis.ServerName.IsUnknown() && !r.Config.Cache.Redis.ServerName.IsNull() {
-					*serverName = r.Config.Cache.Redis.ServerName.ValueString()
-				} else {
-					serverName = nil
-				}
-				ssl := new(bool)
-				if !r.Config.Cache.Redis.Ssl.IsUnknown() && !r.Config.Cache.Redis.Ssl.IsNull() {
-					*ssl = r.Config.Cache.Redis.Ssl.ValueBool()
-				} else {
-					ssl = nil
-				}
-				sslVerify := new(bool)
-				if !r.Config.Cache.Redis.SslVerify.IsUnknown() && !r.Config.Cache.Redis.SslVerify.IsNull() {
-					*sslVerify = r.Config.Cache.Redis.SslVerify.ValueBool()
-				} else {
-					sslVerify = nil
-				}
-				username := new(string)
-				if !r.Config.Cache.Redis.Username.IsUnknown() && !r.Config.Cache.Redis.Username.IsNull() {
-					*username = r.Config.Cache.Redis.Username.ValueString()
-				} else {
-					username = nil
-				}
-				redis = &shared.RequestCalloutPluginRedis{
-					ClusterMaxRedirections: clusterMaxRedirections,
-					ClusterNodes:           clusterNodes,
-					ConnectTimeout:         connectTimeout,
-					ConnectionIsProxied:    connectionIsProxied,
-					Database:               database,
-					Host:                   host,
-					KeepaliveBacklog:       keepaliveBacklog,
-					KeepalivePoolSize:      keepalivePoolSize,
-					Password:               password,
-					Port:                   port1,
-					ReadTimeout:            readTimeout,
-					SendTimeout:            sendTimeout,
-					SentinelMaster:         sentinelMaster,
-					SentinelNodes:          sentinelNodes,
-					SentinelPassword:       sentinelPassword,
-					SentinelRole:           sentinelRole,
-					SentinelUsername:       sentinelUsername,
-					ServerName:             serverName,
-					Ssl:                    ssl,
-					SslVerify:              sslVerify,
-					Username:               username,
-				}
-			}
-			strategy := new(shared.RequestCalloutPluginStrategy)
-			if !r.Config.Cache.Strategy.IsUnknown() && !r.Config.Cache.Strategy.IsNull() {
-				*strategy = shared.RequestCalloutPluginStrategy(r.Config.Cache.Strategy.ValueString())
-			} else {
-				strategy = nil
-			}
-			cache = &shared.Cache{
-				CacheTTL: cacheTTL,
-				Memory:   memory,
-				Redis:    redis,
-				Strategy: strategy,
+			memory = &shared.RequestCalloutPluginMemory{
+				DictionaryName: dictionaryName,
 			}
 		}
-		callouts := make([]shared.Callouts, 0, len(r.Config.Callouts))
-		for _, calloutsItem := range r.Config.Callouts {
-			bypass := new(bool)
-			if !calloutsItem.Cache.Bypass.IsUnknown() && !calloutsItem.Cache.Bypass.IsNull() {
-				*bypass = calloutsItem.Cache.Bypass.ValueBool()
+		var redis *shared.RequestCalloutPluginRedis
+		if r.Config.Cache.Redis != nil {
+			clusterMaxRedirections := new(int64)
+			if !r.Config.Cache.Redis.ClusterMaxRedirections.IsUnknown() && !r.Config.Cache.Redis.ClusterMaxRedirections.IsNull() {
+				*clusterMaxRedirections = r.Config.Cache.Redis.ClusterMaxRedirections.ValueInt64()
 			} else {
-				bypass = nil
+				clusterMaxRedirections = nil
 			}
-			cache1 := shared.RequestCalloutPluginCache{
-				Bypass: bypass,
+			clusterNodes := make([]shared.RequestCalloutPluginClusterNodes, 0, len(r.Config.Cache.Redis.ClusterNodes))
+			for _, clusterNodesItem := range r.Config.Cache.Redis.ClusterNodes {
+				ip := new(string)
+				if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
+					*ip = clusterNodesItem.IP.ValueString()
+				} else {
+					ip = nil
+				}
+				port := new(int64)
+				if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
+					*port = clusterNodesItem.Port.ValueInt64()
+				} else {
+					port = nil
+				}
+				clusterNodes = append(clusterNodes, shared.RequestCalloutPluginClusterNodes{
+					IP:   ip,
+					Port: port,
+				})
 			}
-			dependsOn := make([]string, 0, len(calloutsItem.DependsOn))
-			for _, dependsOnItem := range calloutsItem.DependsOn {
-				dependsOn = append(dependsOn, dependsOnItem.ValueString())
+			connectTimeout := new(int64)
+			if !r.Config.Cache.Redis.ConnectTimeout.IsUnknown() && !r.Config.Cache.Redis.ConnectTimeout.IsNull() {
+				*connectTimeout = r.Config.Cache.Redis.ConnectTimeout.ValueInt64()
+			} else {
+				connectTimeout = nil
 			}
-			var name1 string
-			name1 = calloutsItem.Name.ValueString()
+			connectionIsProxied := new(bool)
+			if !r.Config.Cache.Redis.ConnectionIsProxied.IsUnknown() && !r.Config.Cache.Redis.ConnectionIsProxied.IsNull() {
+				*connectionIsProxied = r.Config.Cache.Redis.ConnectionIsProxied.ValueBool()
+			} else {
+				connectionIsProxied = nil
+			}
+			database := new(int64)
+			if !r.Config.Cache.Redis.Database.IsUnknown() && !r.Config.Cache.Redis.Database.IsNull() {
+				*database = r.Config.Cache.Redis.Database.ValueInt64()
+			} else {
+				database = nil
+			}
+			host := new(string)
+			if !r.Config.Cache.Redis.Host.IsUnknown() && !r.Config.Cache.Redis.Host.IsNull() {
+				*host = r.Config.Cache.Redis.Host.ValueString()
+			} else {
+				host = nil
+			}
+			keepaliveBacklog := new(int64)
+			if !r.Config.Cache.Redis.KeepaliveBacklog.IsUnknown() && !r.Config.Cache.Redis.KeepaliveBacklog.IsNull() {
+				*keepaliveBacklog = r.Config.Cache.Redis.KeepaliveBacklog.ValueInt64()
+			} else {
+				keepaliveBacklog = nil
+			}
+			keepalivePoolSize := new(int64)
+			if !r.Config.Cache.Redis.KeepalivePoolSize.IsUnknown() && !r.Config.Cache.Redis.KeepalivePoolSize.IsNull() {
+				*keepalivePoolSize = r.Config.Cache.Redis.KeepalivePoolSize.ValueInt64()
+			} else {
+				keepalivePoolSize = nil
+			}
+			password := new(string)
+			if !r.Config.Cache.Redis.Password.IsUnknown() && !r.Config.Cache.Redis.Password.IsNull() {
+				*password = r.Config.Cache.Redis.Password.ValueString()
+			} else {
+				password = nil
+			}
+			port1 := new(int64)
+			if !r.Config.Cache.Redis.Port.IsUnknown() && !r.Config.Cache.Redis.Port.IsNull() {
+				*port1 = r.Config.Cache.Redis.Port.ValueInt64()
+			} else {
+				port1 = nil
+			}
+			readTimeout := new(int64)
+			if !r.Config.Cache.Redis.ReadTimeout.IsUnknown() && !r.Config.Cache.Redis.ReadTimeout.IsNull() {
+				*readTimeout = r.Config.Cache.Redis.ReadTimeout.ValueInt64()
+			} else {
+				readTimeout = nil
+			}
+			sendTimeout := new(int64)
+			if !r.Config.Cache.Redis.SendTimeout.IsUnknown() && !r.Config.Cache.Redis.SendTimeout.IsNull() {
+				*sendTimeout = r.Config.Cache.Redis.SendTimeout.ValueInt64()
+			} else {
+				sendTimeout = nil
+			}
+			sentinelMaster := new(string)
+			if !r.Config.Cache.Redis.SentinelMaster.IsUnknown() && !r.Config.Cache.Redis.SentinelMaster.IsNull() {
+				*sentinelMaster = r.Config.Cache.Redis.SentinelMaster.ValueString()
+			} else {
+				sentinelMaster = nil
+			}
+			sentinelNodes := make([]shared.RequestCalloutPluginSentinelNodes, 0, len(r.Config.Cache.Redis.SentinelNodes))
+			for _, sentinelNodesItem := range r.Config.Cache.Redis.SentinelNodes {
+				host1 := new(string)
+				if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
+					*host1 = sentinelNodesItem.Host.ValueString()
+				} else {
+					host1 = nil
+				}
+				port2 := new(int64)
+				if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
+					*port2 = sentinelNodesItem.Port.ValueInt64()
+				} else {
+					port2 = nil
+				}
+				sentinelNodes = append(sentinelNodes, shared.RequestCalloutPluginSentinelNodes{
+					Host: host1,
+					Port: port2,
+				})
+			}
+			sentinelPassword := new(string)
+			if !r.Config.Cache.Redis.SentinelPassword.IsUnknown() && !r.Config.Cache.Redis.SentinelPassword.IsNull() {
+				*sentinelPassword = r.Config.Cache.Redis.SentinelPassword.ValueString()
+			} else {
+				sentinelPassword = nil
+			}
+			sentinelRole := new(shared.RequestCalloutPluginSentinelRole)
+			if !r.Config.Cache.Redis.SentinelRole.IsUnknown() && !r.Config.Cache.Redis.SentinelRole.IsNull() {
+				*sentinelRole = shared.RequestCalloutPluginSentinelRole(r.Config.Cache.Redis.SentinelRole.ValueString())
+			} else {
+				sentinelRole = nil
+			}
+			sentinelUsername := new(string)
+			if !r.Config.Cache.Redis.SentinelUsername.IsUnknown() && !r.Config.Cache.Redis.SentinelUsername.IsNull() {
+				*sentinelUsername = r.Config.Cache.Redis.SentinelUsername.ValueString()
+			} else {
+				sentinelUsername = nil
+			}
+			serverName := new(string)
+			if !r.Config.Cache.Redis.ServerName.IsUnknown() && !r.Config.Cache.Redis.ServerName.IsNull() {
+				*serverName = r.Config.Cache.Redis.ServerName.ValueString()
+			} else {
+				serverName = nil
+			}
+			ssl := new(bool)
+			if !r.Config.Cache.Redis.Ssl.IsUnknown() && !r.Config.Cache.Redis.Ssl.IsNull() {
+				*ssl = r.Config.Cache.Redis.Ssl.ValueBool()
+			} else {
+				ssl = nil
+			}
+			sslVerify := new(bool)
+			if !r.Config.Cache.Redis.SslVerify.IsUnknown() && !r.Config.Cache.Redis.SslVerify.IsNull() {
+				*sslVerify = r.Config.Cache.Redis.SslVerify.ValueBool()
+			} else {
+				sslVerify = nil
+			}
+			username := new(string)
+			if !r.Config.Cache.Redis.Username.IsUnknown() && !r.Config.Cache.Redis.Username.IsNull() {
+				*username = r.Config.Cache.Redis.Username.ValueString()
+			} else {
+				username = nil
+			}
+			redis = &shared.RequestCalloutPluginRedis{
+				ClusterMaxRedirections: clusterMaxRedirections,
+				ClusterNodes:           clusterNodes,
+				ConnectTimeout:         connectTimeout,
+				ConnectionIsProxied:    connectionIsProxied,
+				Database:               database,
+				Host:                   host,
+				KeepaliveBacklog:       keepaliveBacklog,
+				KeepalivePoolSize:      keepalivePoolSize,
+				Password:               password,
+				Port:                   port1,
+				ReadTimeout:            readTimeout,
+				SendTimeout:            sendTimeout,
+				SentinelMaster:         sentinelMaster,
+				SentinelNodes:          sentinelNodes,
+				SentinelPassword:       sentinelPassword,
+				SentinelRole:           sentinelRole,
+				SentinelUsername:       sentinelUsername,
+				ServerName:             serverName,
+				Ssl:                    ssl,
+				SslVerify:              sslVerify,
+				Username:               username,
+			}
+		}
+		strategy := new(shared.RequestCalloutPluginStrategy)
+		if !r.Config.Cache.Strategy.IsUnknown() && !r.Config.Cache.Strategy.IsNull() {
+			*strategy = shared.RequestCalloutPluginStrategy(r.Config.Cache.Strategy.ValueString())
+		} else {
+			strategy = nil
+		}
+		cache = &shared.Cache{
+			CacheTTL: cacheTTL,
+			Memory:   memory,
+			Redis:    redis,
+			Strategy: strategy,
+		}
+	}
+	callouts := make([]shared.Callouts, 0, len(r.Config.Callouts))
+	for _, calloutsItem := range r.Config.Callouts {
+		bypass := new(bool)
+		if !calloutsItem.Cache.Bypass.IsUnknown() && !calloutsItem.Cache.Bypass.IsNull() {
+			*bypass = calloutsItem.Cache.Bypass.ValueBool()
+		} else {
+			bypass = nil
+		}
+		cache1 := shared.RequestCalloutPluginCache{
+			Bypass: bypass,
+		}
+		dependsOn := make([]string, 0, len(calloutsItem.DependsOn))
+		for _, dependsOnItem := range calloutsItem.DependsOn {
+			dependsOn = append(dependsOn, dependsOnItem.ValueString())
+		}
+		var name1 string
+		name1 = calloutsItem.Name.ValueString()
 
-			custom := make(map[string]interface{})
-			for customKey, customValue := range calloutsItem.Request.Body.Custom {
-				var customInst interface{}
-				_ = json.Unmarshal([]byte(customValue.ValueString()), &customInst)
-				custom[customKey] = customInst
-			}
-			decode := new(bool)
-			if !calloutsItem.Request.Body.Decode.IsUnknown() && !calloutsItem.Request.Body.Decode.IsNull() {
-				*decode = calloutsItem.Request.Body.Decode.ValueBool()
+		custom := make(map[string]interface{})
+		for customKey, customValue := range calloutsItem.Request.Body.Custom {
+			var customInst interface{}
+			_ = json.Unmarshal([]byte(customValue.ValueString()), &customInst)
+			custom[customKey] = customInst
+		}
+		decode := new(bool)
+		if !calloutsItem.Request.Body.Decode.IsUnknown() && !calloutsItem.Request.Body.Decode.IsNull() {
+			*decode = calloutsItem.Request.Body.Decode.ValueBool()
+		} else {
+			decode = nil
+		}
+		forward := new(bool)
+		if !calloutsItem.Request.Body.Forward.IsUnknown() && !calloutsItem.Request.Body.Forward.IsNull() {
+			*forward = calloutsItem.Request.Body.Forward.ValueBool()
+		} else {
+			forward = nil
+		}
+		body := shared.RequestCalloutPluginConfigBody{
+			Custom:  custom,
+			Decode:  decode,
+			Forward: forward,
+		}
+		byLua := new(string)
+		if !calloutsItem.Request.ByLua.IsUnknown() && !calloutsItem.Request.ByLua.IsNull() {
+			*byLua = calloutsItem.Request.ByLua.ValueString()
+		} else {
+			byLua = nil
+		}
+		errorResponseCode := new(int64)
+		if !calloutsItem.Request.Error.ErrorResponseCode.IsUnknown() && !calloutsItem.Request.Error.ErrorResponseCode.IsNull() {
+			*errorResponseCode = calloutsItem.Request.Error.ErrorResponseCode.ValueInt64()
+		} else {
+			errorResponseCode = nil
+		}
+		errorResponseMsg := new(string)
+		if !calloutsItem.Request.Error.ErrorResponseMsg.IsUnknown() && !calloutsItem.Request.Error.ErrorResponseMsg.IsNull() {
+			*errorResponseMsg = calloutsItem.Request.Error.ErrorResponseMsg.ValueString()
+		} else {
+			errorResponseMsg = nil
+		}
+		httpStatuses := make([]int64, 0, len(calloutsItem.Request.Error.HTTPStatuses))
+		for _, httpStatusesItem := range calloutsItem.Request.Error.HTTPStatuses {
+			httpStatuses = append(httpStatuses, httpStatusesItem.ValueInt64())
+		}
+		onError := new(shared.OnError)
+		if !calloutsItem.Request.Error.OnError.IsUnknown() && !calloutsItem.Request.Error.OnError.IsNull() {
+			*onError = shared.OnError(calloutsItem.Request.Error.OnError.ValueString())
+		} else {
+			onError = nil
+		}
+		retries := new(int64)
+		if !calloutsItem.Request.Error.Retries.IsUnknown() && !calloutsItem.Request.Error.Retries.IsNull() {
+			*retries = calloutsItem.Request.Error.Retries.ValueInt64()
+		} else {
+			retries = nil
+		}
+		error := shared.Error{
+			ErrorResponseCode: errorResponseCode,
+			ErrorResponseMsg:  errorResponseMsg,
+			HTTPStatuses:      httpStatuses,
+			OnError:           onError,
+			Retries:           retries,
+		}
+		custom1 := make(map[string]interface{})
+		for customKey1, customValue1 := range calloutsItem.Request.Headers.Custom {
+			var customInst1 interface{}
+			_ = json.Unmarshal([]byte(customValue1.ValueString()), &customInst1)
+			custom1[customKey1] = customInst1
+		}
+		forward1 := new(bool)
+		if !calloutsItem.Request.Headers.Forward.IsUnknown() && !calloutsItem.Request.Headers.Forward.IsNull() {
+			*forward1 = calloutsItem.Request.Headers.Forward.ValueBool()
+		} else {
+			forward1 = nil
+		}
+		headers := shared.RequestCalloutPluginConfigHeaders{
+			Custom:  custom1,
+			Forward: forward1,
+		}
+		var proxy *shared.Proxy
+		if calloutsItem.Request.HTTPOpts.Proxy != nil {
+			authPassword := new(string)
+			if !calloutsItem.Request.HTTPOpts.Proxy.AuthPassword.IsUnknown() && !calloutsItem.Request.HTTPOpts.Proxy.AuthPassword.IsNull() {
+				*authPassword = calloutsItem.Request.HTTPOpts.Proxy.AuthPassword.ValueString()
 			} else {
-				decode = nil
+				authPassword = nil
 			}
-			forward := new(bool)
-			if !calloutsItem.Request.Body.Forward.IsUnknown() && !calloutsItem.Request.Body.Forward.IsNull() {
-				*forward = calloutsItem.Request.Body.Forward.ValueBool()
+			authUsername := new(string)
+			if !calloutsItem.Request.HTTPOpts.Proxy.AuthUsername.IsUnknown() && !calloutsItem.Request.HTTPOpts.Proxy.AuthUsername.IsNull() {
+				*authUsername = calloutsItem.Request.HTTPOpts.Proxy.AuthUsername.ValueString()
 			} else {
-				forward = nil
+				authUsername = nil
 			}
-			body := shared.RequestCalloutPluginConfigBody{
-				Custom:  custom,
-				Decode:  decode,
-				Forward: forward,
-			}
-			byLua := new(string)
-			if !calloutsItem.Request.ByLua.IsUnknown() && !calloutsItem.Request.ByLua.IsNull() {
-				*byLua = calloutsItem.Request.ByLua.ValueString()
+			httpProxy := new(string)
+			if !calloutsItem.Request.HTTPOpts.Proxy.HTTPProxy.IsUnknown() && !calloutsItem.Request.HTTPOpts.Proxy.HTTPProxy.IsNull() {
+				*httpProxy = calloutsItem.Request.HTTPOpts.Proxy.HTTPProxy.ValueString()
 			} else {
-				byLua = nil
+				httpProxy = nil
 			}
-			errorResponseCode := new(int64)
-			if !calloutsItem.Request.Error.ErrorResponseCode.IsUnknown() && !calloutsItem.Request.Error.ErrorResponseCode.IsNull() {
-				*errorResponseCode = calloutsItem.Request.Error.ErrorResponseCode.ValueInt64()
+			httpsProxy := new(string)
+			if !calloutsItem.Request.HTTPOpts.Proxy.HTTPSProxy.IsUnknown() && !calloutsItem.Request.HTTPOpts.Proxy.HTTPSProxy.IsNull() {
+				*httpsProxy = calloutsItem.Request.HTTPOpts.Proxy.HTTPSProxy.ValueString()
 			} else {
-				errorResponseCode = nil
+				httpsProxy = nil
 			}
-			errorResponseMsg := new(string)
-			if !calloutsItem.Request.Error.ErrorResponseMsg.IsUnknown() && !calloutsItem.Request.Error.ErrorResponseMsg.IsNull() {
-				*errorResponseMsg = calloutsItem.Request.Error.ErrorResponseMsg.ValueString()
+			proxy = &shared.Proxy{
+				AuthPassword: authPassword,
+				AuthUsername: authUsername,
+				HTTPProxy:    httpProxy,
+				HTTPSProxy:   httpsProxy,
+			}
+		}
+		sslServerName := new(string)
+		if !calloutsItem.Request.HTTPOpts.SslServerName.IsUnknown() && !calloutsItem.Request.HTTPOpts.SslServerName.IsNull() {
+			*sslServerName = calloutsItem.Request.HTTPOpts.SslServerName.ValueString()
+		} else {
+			sslServerName = nil
+		}
+		sslVerify1 := new(bool)
+		if !calloutsItem.Request.HTTPOpts.SslVerify.IsUnknown() && !calloutsItem.Request.HTTPOpts.SslVerify.IsNull() {
+			*sslVerify1 = calloutsItem.Request.HTTPOpts.SslVerify.ValueBool()
+		} else {
+			sslVerify1 = nil
+		}
+		var timeouts *shared.Timeouts
+		if calloutsItem.Request.HTTPOpts.Timeouts != nil {
+			connect := new(int64)
+			if !calloutsItem.Request.HTTPOpts.Timeouts.Connect.IsUnknown() && !calloutsItem.Request.HTTPOpts.Timeouts.Connect.IsNull() {
+				*connect = calloutsItem.Request.HTTPOpts.Timeouts.Connect.ValueInt64()
 			} else {
-				errorResponseMsg = nil
+				connect = nil
 			}
-			httpStatuses := make([]int64, 0, len(calloutsItem.Request.Error.HTTPStatuses))
-			for _, httpStatusesItem := range calloutsItem.Request.Error.HTTPStatuses {
-				httpStatuses = append(httpStatuses, httpStatusesItem.ValueInt64())
-			}
-			onError := new(shared.OnError)
-			if !calloutsItem.Request.Error.OnError.IsUnknown() && !calloutsItem.Request.Error.OnError.IsNull() {
-				*onError = shared.OnError(calloutsItem.Request.Error.OnError.ValueString())
+			read := new(int64)
+			if !calloutsItem.Request.HTTPOpts.Timeouts.Read.IsUnknown() && !calloutsItem.Request.HTTPOpts.Timeouts.Read.IsNull() {
+				*read = calloutsItem.Request.HTTPOpts.Timeouts.Read.ValueInt64()
 			} else {
-				onError = nil
+				read = nil
 			}
-			retries := new(int64)
-			if !calloutsItem.Request.Error.Retries.IsUnknown() && !calloutsItem.Request.Error.Retries.IsNull() {
-				*retries = calloutsItem.Request.Error.Retries.ValueInt64()
+			write := new(int64)
+			if !calloutsItem.Request.HTTPOpts.Timeouts.Write.IsUnknown() && !calloutsItem.Request.HTTPOpts.Timeouts.Write.IsNull() {
+				*write = calloutsItem.Request.HTTPOpts.Timeouts.Write.ValueInt64()
 			} else {
-				retries = nil
+				write = nil
 			}
-			error := shared.Error{
-				ErrorResponseCode: errorResponseCode,
-				ErrorResponseMsg:  errorResponseMsg,
-				HTTPStatuses:      httpStatuses,
-				OnError:           onError,
-				Retries:           retries,
+			timeouts = &shared.Timeouts{
+				Connect: connect,
+				Read:    read,
+				Write:   write,
 			}
-			custom1 := make(map[string]interface{})
-			for customKey1, customValue1 := range calloutsItem.Request.Headers.Custom {
-				var customInst1 interface{}
-				_ = json.Unmarshal([]byte(customValue1.ValueString()), &customInst1)
-				custom1[customKey1] = customInst1
-			}
-			forward1 := new(bool)
-			if !calloutsItem.Request.Headers.Forward.IsUnknown() && !calloutsItem.Request.Headers.Forward.IsNull() {
-				*forward1 = calloutsItem.Request.Headers.Forward.ValueBool()
-			} else {
-				forward1 = nil
-			}
-			headers := shared.RequestCalloutPluginConfigHeaders{
-				Custom:  custom1,
-				Forward: forward1,
-			}
-			var proxy *shared.Proxy
-			if calloutsItem.Request.HTTPOpts.Proxy != nil {
-				authPassword := new(string)
-				if !calloutsItem.Request.HTTPOpts.Proxy.AuthPassword.IsUnknown() && !calloutsItem.Request.HTTPOpts.Proxy.AuthPassword.IsNull() {
-					*authPassword = calloutsItem.Request.HTTPOpts.Proxy.AuthPassword.ValueString()
-				} else {
-					authPassword = nil
-				}
-				authUsername := new(string)
-				if !calloutsItem.Request.HTTPOpts.Proxy.AuthUsername.IsUnknown() && !calloutsItem.Request.HTTPOpts.Proxy.AuthUsername.IsNull() {
-					*authUsername = calloutsItem.Request.HTTPOpts.Proxy.AuthUsername.ValueString()
-				} else {
-					authUsername = nil
-				}
-				httpProxy := new(string)
-				if !calloutsItem.Request.HTTPOpts.Proxy.HTTPProxy.IsUnknown() && !calloutsItem.Request.HTTPOpts.Proxy.HTTPProxy.IsNull() {
-					*httpProxy = calloutsItem.Request.HTTPOpts.Proxy.HTTPProxy.ValueString()
-				} else {
-					httpProxy = nil
-				}
-				httpsProxy := new(string)
-				if !calloutsItem.Request.HTTPOpts.Proxy.HTTPSProxy.IsUnknown() && !calloutsItem.Request.HTTPOpts.Proxy.HTTPSProxy.IsNull() {
-					*httpsProxy = calloutsItem.Request.HTTPOpts.Proxy.HTTPSProxy.ValueString()
-				} else {
-					httpsProxy = nil
-				}
-				proxy = &shared.Proxy{
-					AuthPassword: authPassword,
-					AuthUsername: authUsername,
-					HTTPProxy:    httpProxy,
-					HTTPSProxy:   httpsProxy,
-				}
-			}
-			sslServerName := new(string)
-			if !calloutsItem.Request.HTTPOpts.SslServerName.IsUnknown() && !calloutsItem.Request.HTTPOpts.SslServerName.IsNull() {
-				*sslServerName = calloutsItem.Request.HTTPOpts.SslServerName.ValueString()
-			} else {
-				sslServerName = nil
-			}
-			sslVerify1 := new(bool)
-			if !calloutsItem.Request.HTTPOpts.SslVerify.IsUnknown() && !calloutsItem.Request.HTTPOpts.SslVerify.IsNull() {
-				*sslVerify1 = calloutsItem.Request.HTTPOpts.SslVerify.ValueBool()
-			} else {
-				sslVerify1 = nil
-			}
-			var timeouts *shared.Timeouts
-			if calloutsItem.Request.HTTPOpts.Timeouts != nil {
-				connect := new(int64)
-				if !calloutsItem.Request.HTTPOpts.Timeouts.Connect.IsUnknown() && !calloutsItem.Request.HTTPOpts.Timeouts.Connect.IsNull() {
-					*connect = calloutsItem.Request.HTTPOpts.Timeouts.Connect.ValueInt64()
-				} else {
-					connect = nil
-				}
-				read := new(int64)
-				if !calloutsItem.Request.HTTPOpts.Timeouts.Read.IsUnknown() && !calloutsItem.Request.HTTPOpts.Timeouts.Read.IsNull() {
-					*read = calloutsItem.Request.HTTPOpts.Timeouts.Read.ValueInt64()
-				} else {
-					read = nil
-				}
-				write := new(int64)
-				if !calloutsItem.Request.HTTPOpts.Timeouts.Write.IsUnknown() && !calloutsItem.Request.HTTPOpts.Timeouts.Write.IsNull() {
-					*write = calloutsItem.Request.HTTPOpts.Timeouts.Write.ValueInt64()
-				} else {
-					write = nil
-				}
-				timeouts = &shared.Timeouts{
-					Connect: connect,
-					Read:    read,
-					Write:   write,
-				}
-			}
-			httpOpts := shared.HTTPOpts{
-				Proxy:         proxy,
-				SslServerName: sslServerName,
-				SslVerify:     sslVerify1,
-				Timeouts:      timeouts,
-			}
-			method := new(string)
-			if !calloutsItem.Request.Method.IsUnknown() && !calloutsItem.Request.Method.IsNull() {
-				*method = calloutsItem.Request.Method.ValueString()
-			} else {
-				method = nil
-			}
-			custom2 := make(map[string]interface{})
-			for customKey2, customValue2 := range calloutsItem.Request.Query.Custom {
-				var customInst2 interface{}
-				_ = json.Unmarshal([]byte(customValue2.ValueString()), &customInst2)
-				custom2[customKey2] = customInst2
-			}
-			forward2 := new(bool)
-			if !calloutsItem.Request.Query.Forward.IsUnknown() && !calloutsItem.Request.Query.Forward.IsNull() {
-				*forward2 = calloutsItem.Request.Query.Forward.ValueBool()
-			} else {
-				forward2 = nil
-			}
-			query := shared.RequestCalloutPluginQuery{
-				Custom:  custom2,
-				Forward: forward2,
-			}
-			var url string
-			url = calloutsItem.Request.URL.ValueString()
+		}
+		httpOpts := shared.HTTPOpts{
+			Proxy:         proxy,
+			SslServerName: sslServerName,
+			SslVerify:     sslVerify1,
+			Timeouts:      timeouts,
+		}
+		method := new(string)
+		if !calloutsItem.Request.Method.IsUnknown() && !calloutsItem.Request.Method.IsNull() {
+			*method = calloutsItem.Request.Method.ValueString()
+		} else {
+			method = nil
+		}
+		custom2 := make(map[string]interface{})
+		for customKey2, customValue2 := range calloutsItem.Request.Query.Custom {
+			var customInst2 interface{}
+			_ = json.Unmarshal([]byte(customValue2.ValueString()), &customInst2)
+			custom2[customKey2] = customInst2
+		}
+		forward2 := new(bool)
+		if !calloutsItem.Request.Query.Forward.IsUnknown() && !calloutsItem.Request.Query.Forward.IsNull() {
+			*forward2 = calloutsItem.Request.Query.Forward.ValueBool()
+		} else {
+			forward2 = nil
+		}
+		query := shared.RequestCalloutPluginQuery{
+			Custom:  custom2,
+			Forward: forward2,
+		}
+		var url string
+		url = calloutsItem.Request.URL.ValueString()
 
-			request := shared.Request{
-				Body:     body,
-				ByLua:    byLua,
-				Error:    error,
-				Headers:  headers,
-				HTTPOpts: httpOpts,
-				Method:   method,
-				Query:    query,
-				URL:      url,
-			}
-			decode1 := new(bool)
-			if !calloutsItem.Response.Body.Decode.IsUnknown() && !calloutsItem.Response.Body.Decode.IsNull() {
-				*decode1 = calloutsItem.Response.Body.Decode.ValueBool()
-			} else {
-				decode1 = nil
-			}
-			store := new(bool)
-			if !calloutsItem.Response.Body.Store.IsUnknown() && !calloutsItem.Response.Body.Store.IsNull() {
-				*store = calloutsItem.Response.Body.Store.ValueBool()
-			} else {
-				store = nil
-			}
-			body1 := shared.RequestCalloutPluginBody{
-				Decode: decode1,
-				Store:  store,
-			}
-			byLua1 := new(string)
-			if !calloutsItem.Response.ByLua.IsUnknown() && !calloutsItem.Response.ByLua.IsNull() {
-				*byLua1 = calloutsItem.Response.ByLua.ValueString()
-			} else {
-				byLua1 = nil
-			}
-			store1 := new(bool)
-			if !calloutsItem.Response.Headers.Store.IsUnknown() && !calloutsItem.Response.Headers.Store.IsNull() {
-				*store1 = calloutsItem.Response.Headers.Store.ValueBool()
-			} else {
-				store1 = nil
-			}
-			headers1 := shared.RequestCalloutPluginHeaders{
-				Store: store1,
-			}
-			response := shared.Response{
-				Body:    body1,
-				ByLua:   byLua1,
-				Headers: headers1,
-			}
-			callouts = append(callouts, shared.Callouts{
-				Cache:     cache1,
-				DependsOn: dependsOn,
-				Name:      name1,
-				Request:   request,
-				Response:  response,
-			})
+		request := shared.Request{
+			Body:     body,
+			ByLua:    byLua,
+			Error:    error,
+			Headers:  headers,
+			HTTPOpts: httpOpts,
+			Method:   method,
+			Query:    query,
+			URL:      url,
 		}
-		var upstream *shared.RequestCalloutPluginUpstream
-		if r.Config.Upstream != nil {
-			var body2 *shared.Body
-			if r.Config.Upstream.Body != nil {
-				custom3 := make(map[string]interface{})
-				for customKey3, customValue3 := range r.Config.Upstream.Body.Custom {
-					var customInst3 interface{}
-					_ = json.Unmarshal([]byte(customValue3.ValueString()), &customInst3)
-					custom3[customKey3] = customInst3
-				}
-				decode2 := new(bool)
-				if !r.Config.Upstream.Body.Decode.IsUnknown() && !r.Config.Upstream.Body.Decode.IsNull() {
-					*decode2 = r.Config.Upstream.Body.Decode.ValueBool()
-				} else {
-					decode2 = nil
-				}
-				forward3 := new(bool)
-				if !r.Config.Upstream.Body.Forward.IsUnknown() && !r.Config.Upstream.Body.Forward.IsNull() {
-					*forward3 = r.Config.Upstream.Body.Forward.ValueBool()
-				} else {
-					forward3 = nil
-				}
-				body2 = &shared.Body{
-					Custom:  custom3,
-					Decode:  decode2,
-					Forward: forward3,
-				}
+		decode1 := new(bool)
+		if !calloutsItem.Response.Body.Decode.IsUnknown() && !calloutsItem.Response.Body.Decode.IsNull() {
+			*decode1 = calloutsItem.Response.Body.Decode.ValueBool()
+		} else {
+			decode1 = nil
+		}
+		store := new(bool)
+		if !calloutsItem.Response.Body.Store.IsUnknown() && !calloutsItem.Response.Body.Store.IsNull() {
+			*store = calloutsItem.Response.Body.Store.ValueBool()
+		} else {
+			store = nil
+		}
+		body1 := shared.RequestCalloutPluginBody{
+			Decode: decode1,
+			Store:  store,
+		}
+		byLua1 := new(string)
+		if !calloutsItem.Response.ByLua.IsUnknown() && !calloutsItem.Response.ByLua.IsNull() {
+			*byLua1 = calloutsItem.Response.ByLua.ValueString()
+		} else {
+			byLua1 = nil
+		}
+		store1 := new(bool)
+		if !calloutsItem.Response.Headers.Store.IsUnknown() && !calloutsItem.Response.Headers.Store.IsNull() {
+			*store1 = calloutsItem.Response.Headers.Store.ValueBool()
+		} else {
+			store1 = nil
+		}
+		headers1 := shared.RequestCalloutPluginHeaders{
+			Store: store1,
+		}
+		response := shared.Response{
+			Body:    body1,
+			ByLua:   byLua1,
+			Headers: headers1,
+		}
+		callouts = append(callouts, shared.Callouts{
+			Cache:     cache1,
+			DependsOn: dependsOn,
+			Name:      name1,
+			Request:   request,
+			Response:  response,
+		})
+	}
+	var upstream *shared.RequestCalloutPluginUpstream
+	if r.Config.Upstream != nil {
+		var body2 *shared.Body
+		if r.Config.Upstream.Body != nil {
+			custom3 := make(map[string]interface{})
+			for customKey3, customValue3 := range r.Config.Upstream.Body.Custom {
+				var customInst3 interface{}
+				_ = json.Unmarshal([]byte(customValue3.ValueString()), &customInst3)
+				custom3[customKey3] = customInst3
 			}
-			byLua2 := new(string)
-			if !r.Config.Upstream.ByLua.IsUnknown() && !r.Config.Upstream.ByLua.IsNull() {
-				*byLua2 = r.Config.Upstream.ByLua.ValueString()
+			decode2 := new(bool)
+			if !r.Config.Upstream.Body.Decode.IsUnknown() && !r.Config.Upstream.Body.Decode.IsNull() {
+				*decode2 = r.Config.Upstream.Body.Decode.ValueBool()
 			} else {
-				byLua2 = nil
+				decode2 = nil
 			}
-			var headers2 *shared.Headers
-			if r.Config.Upstream.Headers != nil {
-				custom4 := make(map[string]interface{})
-				for customKey4, customValue4 := range r.Config.Upstream.Headers.Custom {
-					var customInst4 interface{}
-					_ = json.Unmarshal([]byte(customValue4.ValueString()), &customInst4)
-					custom4[customKey4] = customInst4
-				}
-				forward4 := new(bool)
-				if !r.Config.Upstream.Headers.Forward.IsUnknown() && !r.Config.Upstream.Headers.Forward.IsNull() {
-					*forward4 = r.Config.Upstream.Headers.Forward.ValueBool()
-				} else {
-					forward4 = nil
-				}
-				headers2 = &shared.Headers{
-					Custom:  custom4,
-					Forward: forward4,
-				}
+			forward3 := new(bool)
+			if !r.Config.Upstream.Body.Forward.IsUnknown() && !r.Config.Upstream.Body.Forward.IsNull() {
+				*forward3 = r.Config.Upstream.Body.Forward.ValueBool()
+			} else {
+				forward3 = nil
 			}
-			var query1 *shared.Query
-			if r.Config.Upstream.Query != nil {
-				custom5 := make(map[string]interface{})
-				for customKey5, customValue5 := range r.Config.Upstream.Query.Custom {
-					var customInst5 interface{}
-					_ = json.Unmarshal([]byte(customValue5.ValueString()), &customInst5)
-					custom5[customKey5] = customInst5
-				}
-				forward5 := new(bool)
-				if !r.Config.Upstream.Query.Forward.IsUnknown() && !r.Config.Upstream.Query.Forward.IsNull() {
-					*forward5 = r.Config.Upstream.Query.Forward.ValueBool()
-				} else {
-					forward5 = nil
-				}
-				query1 = &shared.Query{
-					Custom:  custom5,
-					Forward: forward5,
-				}
-			}
-			upstream = &shared.RequestCalloutPluginUpstream{
-				Body:    body2,
-				ByLua:   byLua2,
-				Headers: headers2,
-				Query:   query1,
+			body2 = &shared.Body{
+				Custom:  custom3,
+				Decode:  decode2,
+				Forward: forward3,
 			}
 		}
-		config = &shared.RequestCalloutPluginConfig{
-			Cache:    cache,
-			Callouts: callouts,
-			Upstream: upstream,
+		byLua2 := new(string)
+		if !r.Config.Upstream.ByLua.IsUnknown() && !r.Config.Upstream.ByLua.IsNull() {
+			*byLua2 = r.Config.Upstream.ByLua.ValueString()
+		} else {
+			byLua2 = nil
 		}
+		var headers2 *shared.Headers
+		if r.Config.Upstream.Headers != nil {
+			custom4 := make(map[string]interface{})
+			for customKey4, customValue4 := range r.Config.Upstream.Headers.Custom {
+				var customInst4 interface{}
+				_ = json.Unmarshal([]byte(customValue4.ValueString()), &customInst4)
+				custom4[customKey4] = customInst4
+			}
+			forward4 := new(bool)
+			if !r.Config.Upstream.Headers.Forward.IsUnknown() && !r.Config.Upstream.Headers.Forward.IsNull() {
+				*forward4 = r.Config.Upstream.Headers.Forward.ValueBool()
+			} else {
+				forward4 = nil
+			}
+			headers2 = &shared.Headers{
+				Custom:  custom4,
+				Forward: forward4,
+			}
+		}
+		var query1 *shared.Query
+		if r.Config.Upstream.Query != nil {
+			custom5 := make(map[string]interface{})
+			for customKey5, customValue5 := range r.Config.Upstream.Query.Custom {
+				var customInst5 interface{}
+				_ = json.Unmarshal([]byte(customValue5.ValueString()), &customInst5)
+				custom5[customKey5] = customInst5
+			}
+			forward5 := new(bool)
+			if !r.Config.Upstream.Query.Forward.IsUnknown() && !r.Config.Upstream.Query.Forward.IsNull() {
+				*forward5 = r.Config.Upstream.Query.Forward.ValueBool()
+			} else {
+				forward5 = nil
+			}
+			query1 = &shared.Query{
+				Custom:  custom5,
+				Forward: forward5,
+			}
+		}
+		upstream = &shared.RequestCalloutPluginUpstream{
+			Body:    body2,
+			ByLua:   byLua2,
+			Headers: headers2,
+			Query:   query1,
+		}
+	}
+	config := shared.RequestCalloutPluginConfig{
+		Cache:    cache,
+		Callouts: callouts,
+		Upstream: upstream,
 	}
 	var consumer *shared.RequestCalloutPluginConsumer
 	if r.Consumer != nil {

@@ -318,23 +318,43 @@ func (e *ClientCredentialsParamType) UnmarshalJSON(data []byte) error {
 }
 
 type ClientJwk struct {
-	Alg           *string  `json:"alg,omitempty"`
-	Crv           *string  `json:"crv,omitempty"`
-	D             *string  `json:"d,omitempty"`
-	Dp            *string  `json:"dp,omitempty"`
-	Dq            *string  `json:"dq,omitempty"`
-	E             *string  `json:"e,omitempty"`
-	Issuer        *string  `json:"issuer,omitempty"`
-	K             *string  `json:"k,omitempty"`
-	KeyOps        []string `json:"key_ops,omitempty"`
-	Kid           *string  `json:"kid,omitempty"`
-	Kty           *string  `json:"kty,omitempty"`
-	N             *string  `json:"n,omitempty"`
-	Oth           *string  `json:"oth,omitempty"`
-	P             *string  `json:"p,omitempty"`
-	Q             *string  `json:"q,omitempty"`
-	Qi            *string  `json:"qi,omitempty"`
-	R             *string  `json:"r,omitempty"`
+	Alg *string `json:"alg,omitempty"`
+	Crv *string `json:"crv,omitempty"`
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	D *string `json:"d,omitempty"`
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	Dp *string `json:"dp,omitempty"`
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	Dq     *string `json:"dq,omitempty"`
+	E      *string `json:"e,omitempty"`
+	Issuer *string `json:"issuer,omitempty"`
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	K      *string  `json:"k,omitempty"`
+	KeyOps []string `json:"key_ops,omitempty"`
+	Kid    *string  `json:"kid,omitempty"`
+	Kty    *string  `json:"kty,omitempty"`
+	N      *string  `json:"n,omitempty"`
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	Oth *string `json:"oth,omitempty"`
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	P *string `json:"p,omitempty"`
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	Q *string `json:"q,omitempty"`
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	Qi *string `json:"qi,omitempty"`
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	R *string `json:"r,omitempty"`
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	T             *string  `json:"t,omitempty"`
 	Use           *string  `json:"use,omitempty"`
 	X             *string  `json:"x,omitempty"`
@@ -610,6 +630,8 @@ type ClusterCacheRedis struct {
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
 	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	// This field is [encrypted](/gateway/keyring/).
 	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `json:"port,omitempty"`
@@ -622,10 +644,13 @@ type ClusterCacheRedis struct {
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
 	SentinelNodes []OpenidConnectPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	// This field is [encrypted](/gateway/keyring/).
 	SentinelPassword *string `json:"sentinel_password,omitempty"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
 	SentinelRole *OpenidConnectPluginSentinelRole `json:"sentinel_role,omitempty"`
 	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	SentinelUsername *string `json:"sentinel_username,omitempty"`
 	// A string representing an SNI (server name indication) value for TLS.
 	ServerName *string `json:"server_name,omitempty"`
@@ -634,6 +659,7 @@ type ClusterCacheRedis struct {
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
 	SslVerify *bool `json:"ssl_verify,omitempty"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Username *string `json:"username,omitempty"`
 }
 
@@ -1418,6 +1444,8 @@ type OpenidConnectPluginRedis struct {
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
 	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `json:"port,omitempty"`
@@ -1432,10 +1460,13 @@ type OpenidConnectPluginRedis struct {
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
 	SentinelNodes []OpenidConnectPluginConfigSentinelNodes `json:"sentinel_nodes,omitempty"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	SentinelPassword *string `json:"sentinel_password,omitempty"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
 	SentinelRole *OpenidConnectPluginConfigSentinelRole `json:"sentinel_role,omitempty"`
 	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	SentinelUsername *string `json:"sentinel_username,omitempty"`
 	// A string representing an SNI (server name indication) value for TLS.
 	ServerName *string `json:"server_name,omitempty"`
@@ -1446,6 +1477,7 @@ type OpenidConnectPluginRedis struct {
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
 	SslVerify *bool `json:"ssl_verify,omitempty"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Username *string `json:"username,omitempty"`
 }
 
@@ -2044,10 +2076,12 @@ type OpenidConnectPluginConfig struct {
 	// Where to look for the client credentials: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search from the HTTP request body.
 	ClientCredentialsParamType []ClientCredentialsParamType `json:"client_credentials_param_type,omitempty"`
 	// The client id(s) that the plugin uses when it calls authenticated endpoints on the identity provider.
+	// This field is [encrypted](/gateway/keyring/).
 	ClientID []string `json:"client_id,omitempty"`
 	// The JWK used for the private_key_jwt authentication.
 	ClientJwk []ClientJwk `json:"client_jwk,omitempty"`
 	// The client secret.
+	// This field is [encrypted](/gateway/keyring/).
 	ClientSecret      []string           `json:"client_secret,omitempty"`
 	ClusterCacheRedis *ClusterCacheRedis `json:"cluster_cache_redis,omitempty"`
 	// The strategy to use for the cluster cache. If set, the plugin will share cache with nodes configured with the same strategy backend. Currentlly only introspection cache is shared.
@@ -2121,12 +2155,14 @@ type OpenidConnectPluginConfig struct {
 	// The HTTP proxy.
 	HTTPProxy *string `json:"http_proxy,omitempty"`
 	// The HTTP proxy authorization.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	HTTPProxyAuthorization *string `json:"http_proxy_authorization,omitempty"`
 	// The HTTP version used for the requests by this plugin: - `1.1`: HTTP 1.1 (the default) - `1.0`: HTTP 1.0.
 	HTTPVersion *float64 `json:"http_version,omitempty"`
 	// The HTTPS proxy.
 	HTTPSProxy *string `json:"https_proxy,omitempty"`
 	// The HTTPS proxy authorization.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	HTTPSProxyAuthorization *string `json:"https_proxy_authorization,omitempty"`
 	// The name of the parameter used to pass the id token.
 	IDTokenParamName *string `json:"id_token_param_name,omitempty"`
@@ -2149,6 +2185,7 @@ type OpenidConnectPluginConfig struct {
 	// Extra header names passed to the introspection endpoint.
 	IntrospectionHeadersNames []string `json:"introspection_headers_names,omitempty"`
 	// Extra header values passed to the introspection endpoint.
+	// This field is [encrypted](/gateway/keyring/).
 	IntrospectionHeadersValues []string `json:"introspection_headers_values,omitempty"`
 	// Introspection hint parameter value passed to the introspection endpoint.
 	IntrospectionHint *string `json:"introspection_hint,omitempty"`
@@ -2163,7 +2200,7 @@ type OpenidConnectPluginConfig struct {
 	// Designate token's parameter name for introspection.
 	IntrospectionTokenParamName *string `json:"introspection_token_param_name,omitempty"`
 	// The discovery endpoint (or the issuer identifier). When there is no discovery endpoint, please also configure `config.using_pseudo_issuer=true`.
-	Issuer *string `json:"issuer,omitempty"`
+	Issuer string `json:"issuer"`
 	// The issuers allowed to be present in the tokens (`iss` claim).
 	IssuersAllowed []string `json:"issuers_allowed,omitempty"`
 	// The claim to match against the JWT session cookie.
@@ -2318,6 +2355,8 @@ type OpenidConnectPluginConfig struct {
 	// Specifies how long the session can be used in seconds until it needs to be renewed. 0 disables the checks and rolling.
 	SessionRollingTimeout *float64 `json:"session_rolling_timeout,omitempty"`
 	// The session secret.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	SessionSecret *string `json:"session_secret,omitempty"`
 	// The session storage for session data: - `cookie`: stores session data with the session cookie (the session cannot be invalidated or revoked without changing session secret, but is stateless, and doesn't require a database) - `memcache`: stores session data in memcached - `redis`: stores session data in Redis.
 	SessionStorage *SessionStorage `json:"session_storage,omitempty"`
@@ -3082,9 +3121,9 @@ func (o *OpenidConnectPluginConfig) GetIntrospectionTokenParamName() *string {
 	return o.IntrospectionTokenParamName
 }
 
-func (o *OpenidConnectPluginConfig) GetIssuer() *string {
+func (o *OpenidConnectPluginConfig) GetIssuer() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Issuer
 }
@@ -4034,8 +4073,8 @@ type OpenidConnectPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                     `json:"updated_at,omitempty"`
-	Config    *OpenidConnectPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                    `json:"updated_at,omitempty"`
+	Config    OpenidConnectPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
 	Protocols []OpenidConnectPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -4115,9 +4154,9 @@ func (o *OpenidConnectPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *OpenidConnectPlugin) GetConfig() *OpenidConnectPluginConfig {
+func (o *OpenidConnectPlugin) GetConfig() OpenidConnectPluginConfig {
 	if o == nil {
-		return nil
+		return OpenidConnectPluginConfig{}
 	}
 	return o.Config
 }

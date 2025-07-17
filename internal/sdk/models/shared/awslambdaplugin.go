@@ -189,16 +189,22 @@ func (e *LogType) UnmarshalJSON(data []byte) error {
 
 type AwsLambdaPluginConfig struct {
 	// The target AWS IAM role ARN used to invoke the Lambda function.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AwsAssumeRoleArn *string `json:"aws_assume_role_arn,omitempty"`
 	// Identifier to select the IMDS protocol version to use: `v1` or `v2`.
 	AwsImdsProtocolVersion *AwsImdsProtocolVersion `json:"aws_imds_protocol_version,omitempty"`
 	// The AWS key credential to be used when invoking the function.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AwsKey *string `json:"aws_key,omitempty"`
 	// A string representing a host name, such as example.com.
 	AwsRegion *string `json:"aws_region,omitempty"`
 	// The identifier of the assumed role session.
 	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
 	// The AWS secret credential to be used when invoking the function.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AwsSecret *string `json:"aws_secret,omitempty"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
 	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`

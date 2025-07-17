@@ -43,21 +43,21 @@ type GatewayPluginUpstreamOauthResource struct {
 
 // GatewayPluginUpstreamOauthResourceModel describes the resource data model.
 type GatewayPluginUpstreamOauthResourceModel struct {
-	Config         *tfTypes.UpstreamOauthPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.Set                       `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.Set                       `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                        `tfsdk:"created_at"`
-	Enabled        types.Bool                         `tfsdk:"enabled"`
-	ID             types.String                       `tfsdk:"id"`
-	InstanceName   types.String                       `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials                 `tfsdk:"partials"`
-	Protocols      []types.String                     `tfsdk:"protocols"`
-	Route          *tfTypes.Set                       `tfsdk:"route"`
-	Service        *tfTypes.Set                       `tfsdk:"service"`
-	Tags           []types.String                     `tfsdk:"tags"`
-	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
+	Config         tfTypes.UpstreamOauthPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.Set                      `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.Set                      `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                      `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                       `tfsdk:"created_at"`
+	Enabled        types.Bool                        `tfsdk:"enabled"`
+	ID             types.String                      `tfsdk:"id"`
+	InstanceName   types.String                      `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering        `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials                `tfsdk:"partials"`
+	Protocols      []types.String                    `tfsdk:"protocols"`
+	Route          *tfTypes.Set                      `tfsdk:"route"`
+	Service        *tfTypes.Set                      `tfsdk:"service"`
+	Tags           []types.String                    `tfsdk:"tags"`
+	UpdatedAt      types.Int64                       `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginUpstreamOauthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -69,8 +69,7 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 		MarkdownDescription: "GatewayPluginUpstreamOauth Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"behavior": schema.SingleNestedAttribute{
 						Computed: true,
@@ -211,9 +210,11 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 										},
 									},
 									"password": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+											`This field is [encrypted](/gateway/keyring/).`,
 									},
 									"port": schema.Int64Attribute{
 										Computed:    true,
@@ -270,9 +271,11 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 										Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
 									},
 									"sentinel_password": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+											`This field is [encrypted](/gateway/keyring/).`,
 									},
 									"sentinel_role": schema.StringAttribute{
 										Computed:    true,
@@ -287,9 +290,10 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 										},
 									},
 									"sentinel_username": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 									"server_name": schema.StringAttribute{
 										Computed:    true,
@@ -307,9 +311,10 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 										Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
 									},
 									"username": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
-										Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 									},
 								},
 							},
@@ -405,8 +410,7 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 						},
 					},
 					"oauth": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
+						Required: true,
 						Attributes: map[string]schema.Attribute{
 							"audience": schema.ListAttribute{
 								Computed:    true,
@@ -415,14 +419,18 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 								Description: `List of audiences passed to the IdP when obtaining a new token.`,
 							},
 							"client_id": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `The client ID for the application registration in the IdP.`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The client ID for the application registration in the IdP.` + "\n" +
+									`This field is [encrypted](/gateway/keyring/).` + "\n" +
+									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 							},
 							"client_secret": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `The client secret for the application registration in the IdP.`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The client secret for the application registration in the IdP.` + "\n" +
+									`This field is [encrypted](/gateway/keyring/).` + "\n" +
+									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 							},
 							"grant_type": schema.StringAttribute{
 								Computed:    true,
@@ -436,9 +444,11 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 								},
 							},
 							"password": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `The password to use if ` + "`" + `config.oauth.grant_type` + "`" + ` is set to ` + "`" + `password` + "`" + `.`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The password to use if ` + "`" + `config.oauth.grant_type` + "`" + ` is set to ` + "`" + `password` + "`" + `.` + "\n" +
+									`This field is [encrypted](/gateway/keyring/).` + "\n" +
+									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 							},
 							"scopes": schema.ListAttribute{
 								Computed:    true,
@@ -448,8 +458,7 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 								Description: `List of scopes to request from the IdP when obtaining a new token.`,
 							},
 							"token_endpoint": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
+								Required:    true,
 								Description: `The token endpoint URI.`,
 							},
 							"token_headers": schema.MapAttribute{
@@ -471,9 +480,11 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 								},
 							},
 							"username": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `The username to use if ` + "`" + `config.oauth.grant_type` + "`" + ` is set to ` + "`" + `password` + "`" + `.`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The username to use if ` + "`" + `config.oauth.grant_type` + "`" + ` is set to ` + "`" + `password` + "`" + `.` + "\n" +
+									`This field is [encrypted](/gateway/keyring/).` + "\n" +
+									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 							},
 						},
 					},

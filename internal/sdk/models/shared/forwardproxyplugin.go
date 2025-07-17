@@ -133,9 +133,12 @@ func (e *XHeaders) UnmarshalJSON(data []byte) error {
 type ForwardProxyPluginConfig struct {
 	// The password to authenticate with, if the forward proxy is protected
 	// by basic authentication.
+	// This field is [encrypted](/gateway/keyring/).
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AuthPassword *string `json:"auth_password,omitempty"`
 	// The username to authenticate with, if the forward proxy is protected
 	// by basic authentication.
+	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AuthUsername *string `json:"auth_username,omitempty"`
 	// A string representing a host name, such as example.com.
 	HTTPProxyHost *string `json:"http_proxy_host,omitempty"`

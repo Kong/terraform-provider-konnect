@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/float64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -42,20 +43,20 @@ type GatewayPluginKafkaUpstreamResource struct {
 
 // GatewayPluginKafkaUpstreamResourceModel describes the resource data model.
 type GatewayPluginKafkaUpstreamResourceModel struct {
-	Config         *tfTypes.KafkaUpstreamPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.Set                       `tfsdk:"consumer"`
-	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                        `tfsdk:"created_at"`
-	Enabled        types.Bool                         `tfsdk:"enabled"`
-	ID             types.String                       `tfsdk:"id"`
-	InstanceName   types.String                       `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials                 `tfsdk:"partials"`
-	Protocols      []types.String                     `tfsdk:"protocols"`
-	Route          *tfTypes.Set                       `tfsdk:"route"`
-	Service        *tfTypes.Set                       `tfsdk:"service"`
-	Tags           []types.String                     `tfsdk:"tags"`
-	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
+	Config         tfTypes.KafkaUpstreamPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.Set                      `tfsdk:"consumer"`
+	ControlPlaneID types.String                      `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                       `tfsdk:"created_at"`
+	Enabled        types.Bool                        `tfsdk:"enabled"`
+	ID             types.String                      `tfsdk:"id"`
+	InstanceName   types.String                      `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering        `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials                `tfsdk:"partials"`
+	Protocols      []types.String                    `tfsdk:"protocols"`
+	Route          *tfTypes.Set                      `tfsdk:"route"`
+	Service        *tfTypes.Set                      `tfsdk:"service"`
+	Tags           []types.String                    `tfsdk:"tags"`
+	UpdatedAt      types.Int64                       `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginKafkaUpstreamResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -67,8 +68,7 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 		MarkdownDescription: "GatewayPluginKafkaUpstream Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"allowed_topics": schema.ListAttribute{
 						Computed:    true,
@@ -93,9 +93,11 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 								},
 							},
 							"password": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `Password for SASL authentication.`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `Password for SASL authentication.` + "\n" +
+									`This field is [encrypted](/gateway/keyring/).` + "\n" +
+									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 							},
 							"strategy": schema.StringAttribute{
 								Computed:    true,
@@ -111,9 +113,11 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 								Description: `Enable this to indicate ` + "`" + `DelegationToken` + "`" + ` authentication.`,
 							},
 							"user": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `Username for SASL authentication.`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `Username for SASL authentication.` + "\n" +
+									`This field is [encrypted](/gateway/keyring/).` + "\n" +
+									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 							},
 						},
 					},
@@ -180,6 +184,11 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 						Computed: true,
 						Optional: true,
 					},
+					"key_query_arg": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The request query parameter name that contains the Kafka message key. If specified, messages with the same key will be sent to the same Kafka partition, ensuring consistent ordering.`,
+					},
 					"message_by_lua_functions": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -234,6 +243,116 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						Description: `Time to wait for a Produce response in milliseconds.`,
 					},
+					"schema_registry": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"confluent": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"authentication": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"basic": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"password": schema.StringAttribute{
+														Computed: true,
+														Optional: true,
+														MarkdownDescription: `This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+															`This field is [encrypted](/gateway/keyring/).` + "\n" +
+															`Not Null`,
+														Validators: []validator.String{
+															speakeasy_stringvalidators.NotNull(),
+														},
+													},
+													"username": schema.StringAttribute{
+														Computed: true,
+														Optional: true,
+														MarkdownDescription: `This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+															`This field is [encrypted](/gateway/keyring/).` + "\n" +
+															`Not Null`,
+														Validators: []validator.String{
+															speakeasy_stringvalidators.NotNull(),
+														},
+													},
+												},
+											},
+											"mode": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Authentication mode to use with the schema registry. must be one of ["basic", "none"]`,
+												Validators: []validator.String{
+													stringvalidator.OneOf(
+														"basic",
+														"none",
+													),
+												},
+											},
+										},
+										Description: `Not Null`,
+										Validators: []validator.Object{
+											speakeasy_objectvalidators.NotNull(),
+										},
+									},
+									"key_schema": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"schema_version": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.`,
+											},
+											"subject_name": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The name of the subject`,
+											},
+										},
+									},
+									"ssl_verify": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `Set to false to disable SSL certificate verification when connecting to the schema registry.`,
+									},
+									"ttl": schema.Float64Attribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `The TTL in seconds for the schema registry cache.`,
+										Validators: []validator.Float64{
+											float64validator.AtMost(3600),
+										},
+									},
+									"url": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `The URL of the schema registry.`,
+									},
+									"value_schema": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"schema_version": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.`,
+											},
+											"subject_name": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The name of the subject`,
+											},
+										},
+									},
+								},
+							},
+						},
+						Description: `The plugin-global schema registry configuration. This can be overwritten by the topic configuration.`,
+					},
 					"security": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
@@ -256,8 +375,7 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 						Description: `Socket timeout in milliseconds.`,
 					},
 					"topic": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `The default Kafka topic to publish to if the query parameter defined in the ` + "`" + `topics_query_arg` + "`" + ` does not exist in the request`,
 					},
 					"topics_query_arg": schema.StringAttribute{

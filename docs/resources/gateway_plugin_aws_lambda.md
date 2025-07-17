@@ -118,11 +118,17 @@ resource "konnect_gateway_plugin_aws_lambda" "my_gatewaypluginawslambda" {
 Optional:
 
 - `aws_assume_role_arn` (String) The target AWS IAM role ARN used to invoke the Lambda function.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `aws_imds_protocol_version` (String) Identifier to select the IMDS protocol version to use: `v1` or `v2`. must be one of ["v1", "v2"]
 - `aws_key` (String) The AWS key credential to be used when invoking the function.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `aws_region` (String) A string representing a host name, such as example.com.
 - `aws_role_session_name` (String) The identifier of the assumed role session.
-- `aws_secret` (String) The AWS secret credential to be used when invoking the function.
+- `aws_secret` (String) The AWS secret credential to be used when invoking the function. 
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `aws_sts_endpoint_url` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
 - `awsgateway_compatible` (Boolean) An optional value that defines whether the plugin should wrap requests into the Amazon API gateway.
 - `base64_encode_body` (Boolean) An optional value that Base64-encodes the request body.

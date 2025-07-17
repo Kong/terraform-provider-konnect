@@ -81,11 +81,11 @@ resource "konnect_gateway_plugin_ai_azure_content_safety" "my_gatewaypluginaiazu
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
@@ -104,6 +104,11 @@ resource "konnect_gateway_plugin_ai_azure_content_safety" "my_gatewaypluginaiazu
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
+Required:
+
+- `content_safety_url` (String) Full URL, inc protocol, of the Azure Content Safety instance.
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+
 Optional:
 
 - `azure_api_version` (String) Sets the ?api-version URL parameter, used for defining the Azure Content Services interchange format.
@@ -114,7 +119,8 @@ Optional:
 - `blocklist_names` (List of String) Use these configured blocklists (in Azure Content Services) when inspecting content.
 - `categories` (Attributes List) Array of categories, and their thresholds, to measure on. (see [below for nested schema](#nestedatt--config--categories))
 - `content_safety_key` (String) If `azure_use_managed_identity` is true, set the API key to call Content Safety.
-- `content_safety_url` (String) Full URL, inc protocol, of the Azure Content Safety instance.
+This field is [encrypted](/gateway/keyring/).
+This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `halt_on_blocklist_hit` (Boolean) Tells Azure to reject the request if any blocklist filter is hit.
 - `output_type` (String) See https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/content-filter#content-filtering-categories. must be one of ["EightSeverityLevels", "FourSeverityLevels"]
 - `reveal_failure_reason` (Boolean) Set true to tell the caller why their request was rejected, if so.
