@@ -34,7 +34,7 @@ func (r *GatewayCACertificateResourceModel) ToOperationsCreateCaCertificateReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	caCertificate, caCertificateDiags := r.ToSharedCACertificate(ctx)
+	caCertificate, caCertificateDiags := r.ToSharedCACertificateInput(ctx)
 	diags.Append(caCertificateDiags...)
 
 	if diags.HasError() {
@@ -92,7 +92,7 @@ func (r *GatewayCACertificateResourceModel) ToOperationsUpsertCaCertificateReque
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	caCertificate, caCertificateDiags := r.ToSharedCACertificate(ctx)
+	caCertificate, caCertificateDiags := r.ToSharedCACertificateInput(ctx)
 	diags.Append(caCertificateDiags...)
 
 	if diags.HasError() {
@@ -108,18 +108,12 @@ func (r *GatewayCACertificateResourceModel) ToOperationsUpsertCaCertificateReque
 	return &out, diags
 }
 
-func (r *GatewayCACertificateResourceModel) ToSharedCACertificate(ctx context.Context) (*shared.CACertificate, diag.Diagnostics) {
+func (r *GatewayCACertificateResourceModel) ToSharedCACertificateInput(ctx context.Context) (*shared.CACertificateInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cert string
 	cert = r.Cert.ValueString()
 
-	certDigest := new(string)
-	if !r.CertDigest.IsUnknown() && !r.CertDigest.IsNull() {
-		*certDigest = r.CertDigest.ValueString()
-	} else {
-		certDigest = nil
-	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -142,13 +136,12 @@ func (r *GatewayCACertificateResourceModel) ToSharedCACertificate(ctx context.Co
 	} else {
 		updatedAt = nil
 	}
-	out := shared.CACertificate{
-		Cert:       cert,
-		CertDigest: certDigest,
-		CreatedAt:  createdAt,
-		ID:         id,
-		Tags:       tags,
-		UpdatedAt:  updatedAt,
+	out := shared.CACertificateInput{
+		Cert:      cert,
+		CreatedAt: createdAt,
+		ID:        id,
+		Tags:      tags,
+		UpdatedAt: updatedAt,
 	}
 
 	return &out, diags

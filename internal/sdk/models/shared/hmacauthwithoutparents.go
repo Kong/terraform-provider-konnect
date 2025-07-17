@@ -2,10 +2,6 @@
 
 package shared
 
-import (
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
-)
-
 type HMACAuthWithoutParentsConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -22,20 +18,9 @@ type HMACAuthWithoutParents struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64   `json:"created_at,omitempty"`
 	ID        *string  `json:"id,omitempty"`
-	Secret    *string  `default:"null" json:"secret"`
+	Secret    *string  `json:"secret,omitempty"`
 	Tags      []string `json:"tags,omitempty"`
 	Username  string   `json:"username"`
-}
-
-func (h HMACAuthWithoutParents) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(h, "", false)
-}
-
-func (h *HMACAuthWithoutParents) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &h, "", false, false); err != nil {
-		return err
-	}
-	return nil
 }
 
 func (o *HMACAuthWithoutParents) GetConsumer() *HMACAuthWithoutParentsConsumer {

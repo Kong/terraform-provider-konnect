@@ -114,9 +114,9 @@ type JWTWithoutParents struct {
 	// Unix epoch when the resource was created.
 	CreatedAt    *int64   `json:"created_at,omitempty"`
 	ID           *string  `json:"id,omitempty"`
-	Key          *string  `default:"null" json:"key"`
+	Key          *string  `json:"key,omitempty"`
 	RsaPublicKey *string  `default:"null" json:"rsa_public_key"`
-	Secret       *string  `default:"null" json:"secret"`
+	Secret       *string  `json:"secret,omitempty"`
 	Tags         []string `json:"tags,omitempty"`
 }
 

@@ -130,9 +130,11 @@ func (r *GatewayJWTResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `Requires replacement if changed.`,
 			},
 			"key": schema.StringAttribute{
+				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `Requires replacement if changed.`,
 			},
@@ -144,9 +146,11 @@ func (r *GatewayJWTResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `Requires replacement if changed.`,
 			},
 			"secret": schema.StringAttribute{
+				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `Requires replacement if changed.`,
 			},

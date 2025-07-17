@@ -19317,13 +19317,10 @@ components:
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         username:
-          description: The unique username of the Consumer. You must send either this field or `custom_id` with the request.
+          description: The unique username of the Consumer.
           type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
         custom_id:
-          description: Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database. You must send either this field or `username` with the request.
+          description: Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database.
           type: string
           default: null
           nullable: true
@@ -24145,9 +24142,8 @@ components:
         cert_digest:
           description: 'SHA256 hex digest of the public certificate. This field is read-only and it cannot be set by the caller, the value is automatically computed.'
           type: string
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
+          readOnly: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -24329,9 +24325,8 @@ components:
           type: array
           items:
             type: string
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
+          readOnly: true
         tags:
           description: An optional set of strings associated with the Certificate for grouping and filtering.
           type: array
@@ -26212,9 +26207,8 @@ components:
           nullable: true
         secret:
           type: string
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         tags:
           type: array
           items:
@@ -26253,9 +26247,8 @@ components:
           nullable: true
         secret:
           type: string
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         tags:
           type: array
           items:
@@ -26908,9 +26901,8 @@ components:
           nullable: true
         key:
           type: string
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         rsa_public_key:
           type: string
           default: null
@@ -26918,9 +26910,8 @@ components:
           x-speakeasy-param-computed: false
         secret:
           type: string
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         tags:
           type: array
           items:
@@ -26984,9 +26975,8 @@ components:
           nullable: true
         key:
           type: string
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         rsa_public_key:
           type: string
           default: null
@@ -26994,9 +26984,8 @@ components:
           x-speakeasy-param-computed: false
         secret:
           type: string
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         tags:
           type: array
           items:
@@ -28503,9 +28492,8 @@ components:
           nullable: true
         key:
           type: string
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         tags:
           type: array
           items:
@@ -28513,9 +28501,8 @@ components:
         ttl:
           description: key-auth ttl in seconds
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
       example:
         consumer:
           id: 84a73fb8-50fc-44a7-a4d5-aa17728ee83f
@@ -28736,9 +28723,8 @@ components:
           nullable: true
         key:
           type: string
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         tags:
           type: array
           items:
@@ -28746,9 +28732,8 @@ components:
         ttl:
           description: key-auth ttl in seconds
           type: integer
-          default: null
           nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
       example:
         id: b2f34145-0343-41a4-9602-4c69dec2f269
         key: IL1deIyHyQA40WpeLeA1bIUXuvTwlGjo
@@ -35334,9 +35319,6 @@ components:
         expression:
           description: Use Router Expression to perform route match. This option is only available when `router_flavor` is set to `expressions`.
           type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
         https_redirect_status_code:
           description: 'The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the `https` protocol.'
           type: integer

@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 306f8ae16f776bb19e76d4677a02b987
+  docChecksum: 3814bd7818152beadc872d6f341e5632
   docVersion: 2.0.0
   speakeasyVersion: 1.581.1
   generationVersion: 2.656.9
@@ -1651,9 +1651,11 @@ generatedFiles:
   - internal/sdk/models/shared/basicauthwithoutparents.go
   - internal/sdk/models/shared/botdetectionplugin.go
   - internal/sdk/models/shared/cacertificate.go
+  - internal/sdk/models/shared/cacertificateinput.go
   - internal/sdk/models/shared/canaryplugin.go
   - internal/sdk/models/shared/centralizedconsumer.go
   - internal/sdk/models/shared/certificate.go
+  - internal/sdk/models/shared/certificateinput.go
   - internal/sdk/models/shared/configstore.go
   - internal/sdk/models/shared/configurationdataplanegroup.go
   - internal/sdk/models/shared/configurationdataplanegroupautoscale.go
@@ -2925,7 +2927,7 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "cert_digest": "9b8aaf19a276885f6c8a6bc48a30700fdb3a351d8b05374d153bfb7b178e2a9f", "created_at": 1706598432, "id": "b2f34145-0343-41a4-9602-4c69dec2f260", "tags": ["trusted", "api"]}
+        application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "created_at": 1706598432, "id": "b2f34145-0343-41a4-9602-4c69dec2f260", "tags": ["trusted", "api"]}
       responses:
         "201":
           application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "cert_digest": "9b8aaf19a276885f6c8a6bc48a30700fdb3a351d8b05374d153bfb7b178e2a9f", "created_at": 1706598432, "id": "b2f34145-0343-41a4-9602-4c69dec2f260", "tags": ["trusted", "api"]}
@@ -2988,7 +2990,7 @@ examples:
           CACertificateId: "3c31f18a-f27a-4f9b-8cd4-bf841554612f"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "cert_digest": "9b8aaf19a276885f6c8a6bc48a30700fdb3a351d8b05374d153bfb7b178e2a9f", "created_at": 1706598432, "id": "b2f34145-0343-41a4-9602-4c69dec2f260", "tags": ["trusted", "api"]}
+        application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "created_at": 1706598432, "id": "b2f34145-0343-41a4-9602-4c69dec2f260", "tags": ["trusted", "api"]}
       responses:
         "200":
           application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "cert_digest": "9b8aaf19a276885f6c8a6bc48a30700fdb3a351d8b05374d153bfb7b178e2a9f", "created_at": 1706598432, "id": "b2f34145-0343-41a4-9602-4c69dec2f260", "tags": ["trusted", "api"]}
@@ -3000,10 +3002,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "cert_alt": null, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "-----BEGIN PRIVATE KEY-----\nprivate-key-content\n-----END PRIVATE KEY-----", "key_alt": null, "snis": null}
+        application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "cert_alt": null, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "-----BEGIN PRIVATE KEY-----\nprivate-key-content\n-----END PRIVATE KEY-----", "key_alt": null}
       responses:
         "201":
-          application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "cert_alt": null, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "-----BEGIN PRIVATE KEY-----\nprivate-key-content\n-----END PRIVATE KEY-----", "key_alt": null, "snis": null}
+          application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "cert_alt": null, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "-----BEGIN PRIVATE KEY-----\nprivate-key-content\n-----END PRIVATE KEY-----", "key_alt": null}
         "401":
           application/json: {"message": "<value>", "status": 443586}
   delete-certificate:
@@ -3041,7 +3043,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "cert_alt": null, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "-----BEGIN PRIVATE KEY-----\nprivate-key-content\n-----END PRIVATE KEY-----", "key_alt": null, "snis": null}
+          application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "cert_alt": null, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "-----BEGIN PRIVATE KEY-----\nprivate-key-content\n-----END PRIVATE KEY-----", "key_alt": null}
         "401":
           application/json: {"message": "<value>", "status": 769994}
   upsert-certificate:
@@ -3063,10 +3065,10 @@ examples:
           CertificateId: "ddf3cdaa-3329-4961-822a-ce6dbd38eff7"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "cert_alt": null, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "-----BEGIN PRIVATE KEY-----\nprivate-key-content\n-----END PRIVATE KEY-----", "key_alt": null, "snis": null}
+        application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "cert_alt": null, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "-----BEGIN PRIVATE KEY-----\nprivate-key-content\n-----END PRIVATE KEY-----", "key_alt": null}
       responses:
         "200":
-          application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "cert_alt": null, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "-----BEGIN PRIVATE KEY-----\nprivate-key-content\n-----END PRIVATE KEY-----", "key_alt": null, "snis": null}
+          application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "cert_alt": null, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "-----BEGIN PRIVATE KEY-----\nprivate-key-content\n-----END PRIVATE KEY-----", "key_alt": null}
         "401":
           application/json: {"message": "<value>", "status": 501690}
   create-consumer_group:
@@ -3463,10 +3465,10 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           ConsumerIdForNestedEntities: "f28acbfa-c866-4587-b688-0208ac24df21"
       requestBody:
-        application/json: {"consumer": null, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "IL1deIyHyQA40WpeLeA1bIUXuvTwlGjo", "ttl": null}
+        application/json: {"consumer": null, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "IL1deIyHyQA40WpeLeA1bIUXuvTwlGjo"}
       responses:
         "201":
-          application/json: {"consumer": {"id": "84a73fb8-50fc-44a7-a4d5-aa17728ee83f"}, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "IL1deIyHyQA40WpeLeA1bIUXuvTwlGjo", "ttl": null}
+          application/json: {"consumer": {"id": "84a73fb8-50fc-44a7-a4d5-aa17728ee83f"}, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "IL1deIyHyQA40WpeLeA1bIUXuvTwlGjo"}
   delete-key-auth-with-consumer:
     "":
       parameters:
@@ -3498,7 +3500,7 @@ examples:
           KeyAuthId: ""
       responses:
         "200":
-          application/json: {"consumer": {"id": "84a73fb8-50fc-44a7-a4d5-aa17728ee83f"}, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "IL1deIyHyQA40WpeLeA1bIUXuvTwlGjo", "ttl": null}
+          application/json: {"consumer": {"id": "84a73fb8-50fc-44a7-a4d5-aa17728ee83f"}, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "IL1deIyHyQA40WpeLeA1bIUXuvTwlGjo"}
   create-mtls-auth-with-consumer:
     "":
       parameters:
@@ -11399,7 +11401,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"expression": null, "https_redirect_status_code": 426, "name": null, "path_handling": "v0", "preserve_host": false, "priority": 0, "protocols": ["http", "https"], "request_buffering": true, "response_buffering": true, "service": null, "strip_path": true}
+          application/json: {"https_redirect_status_code": 426, "name": null, "path_handling": "v0", "preserve_host": false, "priority": 0, "protocols": ["http", "https"], "request_buffering": true, "response_buffering": true, "service": null, "strip_path": true}
         "401":
           application/json: {"message": "<value>", "status": 703154}
   upsert-route-RouteExpression:
@@ -11421,10 +11423,10 @@ examples:
           RouteId: "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"expression": null, "https_redirect_status_code": 426, "name": null, "path_handling": "v0", "preserve_host": false, "priority": 0, "protocols": ["http", "https"], "request_buffering": true, "response_buffering": true, "service": null, "strip_path": true}
+        application/json: {"https_redirect_status_code": 426, "name": null, "path_handling": "v0", "preserve_host": false, "priority": 0, "protocols": ["http", "https"], "request_buffering": true, "response_buffering": true, "service": null, "strip_path": true}
       responses:
         "200":
-          application/json: {"expression": null, "https_redirect_status_code": 426, "name": null, "path_handling": "v0", "preserve_host": false, "priority": 0, "protocols": ["http", "https"], "request_buffering": true, "response_buffering": true, "service": null, "strip_path": true}
+          application/json: {"https_redirect_status_code": 426, "name": null, "path_handling": "v0", "preserve_host": false, "priority": 0, "protocols": ["http", "https"], "request_buffering": true, "response_buffering": true, "service": null, "strip_path": true}
         "401":
           application/json: {"message": "<value>", "status": 67918}
   create-route-RouteExpression:
@@ -11433,10 +11435,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"expression": null, "https_redirect_status_code": 426, "name": null, "path_handling": "v0", "preserve_host": false, "priority": 0, "protocols": ["http", "https"], "request_buffering": true, "response_buffering": true, "service": null, "strip_path": true}
+        application/json: {"https_redirect_status_code": 426, "name": null, "path_handling": "v0", "preserve_host": false, "priority": 0, "protocols": ["http", "https"], "request_buffering": true, "response_buffering": true, "service": null, "strip_path": true}
       responses:
         "201":
-          application/json: {"expression": null, "https_redirect_status_code": 426, "name": null, "path_handling": "v0", "preserve_host": false, "priority": 0, "protocols": ["http", "https"], "request_buffering": true, "response_buffering": true, "service": null, "strip_path": true}
+          application/json: {"https_redirect_status_code": 426, "name": null, "path_handling": "v0", "preserve_host": false, "priority": 0, "protocols": ["http", "https"], "request_buffering": true, "response_buffering": true, "service": null, "strip_path": true}
         "401":
           application/json: {"message": "<value>", "status": 585160}
   create-service:

@@ -81,6 +81,7 @@ func (r *GatewayRouteExpressionResource) Schema(ctx context.Context, req resourc
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"expression": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
 				Description: `Use Router Expression to perform route match. This option is only available when ` + "`" + `router_flavor` + "`" + ` is set to ` + "`" + `expressions` + "`" + `.`,
 			},

@@ -11,9 +11,9 @@ import (
 type CentralizedConsumer struct {
 	// The Consumer ID.
 	ID string `json:"id"`
-	// The unique username of the Consumer. You must send either this field or `custom_id` with the request.
-	Username *string `default:"null" json:"username"`
-	// Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database. You must send either this field or `username` with the request.
+	// The unique username of the Consumer.
+	Username string `json:"username"`
+	// Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database.
 	CustomID *string `default:"null" json:"custom_id"`
 	// Type of the consumer.
 	//
@@ -47,9 +47,9 @@ func (o *CentralizedConsumer) GetID() string {
 	return o.ID
 }
 
-func (o *CentralizedConsumer) GetUsername() *string {
+func (o *CentralizedConsumer) GetUsername() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Username
 }
