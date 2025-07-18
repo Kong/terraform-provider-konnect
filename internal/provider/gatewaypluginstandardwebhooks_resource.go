@@ -66,10 +66,8 @@ func (r *GatewayPluginStandardWebhooksResource) Schema(ctx context.Context, req 
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"secret_v1": schema.StringAttribute{
-						Required: true,
-						MarkdownDescription: `Webhook secret` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Required:    true,
+						Description: `Webhook secret`,
 					},
 					"tolerance_second": schema.Int64Attribute{
 						Computed:    true,

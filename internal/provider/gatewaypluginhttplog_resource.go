@@ -105,10 +105,8 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 						},
 					},
 					"http_endpoint": schema.StringAttribute{
-						Required: true,
-						MarkdownDescription: `A string representing a URL, such as https://example.com/path/to/resource?q=search.` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Required:    true,
+						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
 					},
 					"keepalive": schema.Float64Attribute{
 						Computed:    true,

@@ -106,11 +106,7 @@ Required:
 Optional:
 
 - `apikey` (String) The apikey to access the Azure resources. If provided, it is injected as the `x-functions-key` header.
-This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-This field is [encrypted](/gateway/keyring/).
 - `clientid` (String) The `clientid` to access the Azure resources. If provided, it is injected as the `x-functions-clientid` header.
-This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-This field is [encrypted](/gateway/keyring/).
 - `hostdomain` (String) The domain where the function resides.
 - `https` (Boolean) Use of HTTPS to connect with the Azure Functions server.
 - `https_verify` (Boolean) Set to `true` to authenticate the Azure Functions server.

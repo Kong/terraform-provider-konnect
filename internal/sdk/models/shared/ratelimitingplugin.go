@@ -155,8 +155,6 @@ type RateLimitingPluginRedis struct {
 	// A string representing a host name, such as example.com.
 	Host *string `json:"host,omitempty"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-	// This field is [encrypted](/gateway/keyring/).
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `json:"port,omitempty"`
@@ -169,7 +167,6 @@ type RateLimitingPluginRedis struct {
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	Timeout *int64 `json:"timeout,omitempty"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Username *string `json:"username,omitempty"`
 }
 

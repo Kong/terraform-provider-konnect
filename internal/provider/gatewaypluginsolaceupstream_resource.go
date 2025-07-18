@@ -196,33 +196,27 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"access_token": schema.StringAttribute{
-										Computed: true,
-										Optional: true,
-										MarkdownDescription: `The OAuth2 access token used with ` + "`" + `OAUTH2` + "`" + ` authentication scheme when connecting to an event broker.` + "\n" +
-											`This field is [encrypted](/gateway/keyring/).` + "\n" +
-											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+										Computed:    true,
+										Optional:    true,
+										Description: `The OAuth2 access token used with ` + "`" + `OAUTH2` + "`" + ` authentication scheme when connecting to an event broker.`,
 									},
 									"access_token_header": schema.StringAttribute{
 										Computed: true,
 										Optional: true,
 									},
 									"id_token": schema.StringAttribute{
-										Computed: true,
-										Optional: true,
-										MarkdownDescription: `The OpenID Connect ID token used with ` + "`" + `OAUTH2` + "`" + ` authentication scheme when connecting to an event broker.` + "\n" +
-											`This field is [encrypted](/gateway/keyring/).` + "\n" +
-											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+										Computed:    true,
+										Optional:    true,
+										Description: `The OpenID Connect ID token used with ` + "`" + `OAUTH2` + "`" + ` authentication scheme when connecting to an event broker.`,
 									},
 									"id_token_header": schema.StringAttribute{
 										Computed: true,
 										Optional: true,
 									},
 									"password": schema.StringAttribute{
-										Computed: true,
-										Optional: true,
-										MarkdownDescription: `The password used with ` + "`" + `BASIC` + "`" + ` authentication scheme when connecting to an event broker.` + "\n" +
-											`This field is [encrypted](/gateway/keyring/).` + "\n" +
-											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+										Computed:    true,
+										Optional:    true,
+										Description: `The password used with ` + "`" + `BASIC` + "`" + ` authentication scheme when connecting to an event broker.`,
 									},
 									"scheme": schema.StringAttribute{
 										Computed:    true,
@@ -237,10 +231,9 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 										},
 									},
 									"username": schema.StringAttribute{
-										Computed: true,
-										Optional: true,
-										MarkdownDescription: `The username used with ` + "`" + `BASIC` + "`" + ` authentication scheme when connecting to an event broker .` + "\n" +
-											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+										Computed:    true,
+										Optional:    true,
+										Description: `The username used with ` + "`" + `BASIC` + "`" + ` authentication scheme when connecting to an event broker .`,
 									},
 								},
 								Description: `Session authentication related configuration.`,
@@ -254,9 +247,8 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 								},
 							},
 							"host": schema.StringAttribute{
-								Required: true,
-								MarkdownDescription: `The IPv4 or IPv6 address or host name to connect to (see: https://docs.solace.com/API-Developer-Online-Ref-Documentation/c/index.html#host-entry).` + "\n" +
-									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+								Required:    true,
+								Description: `The IPv4 or IPv6 address or host name to connect to (see: https://docs.solace.com/API-Developer-Online-Ref-Documentation/c/index.html#host-entry).`,
 							},
 							"properties": schema.MapAttribute{
 								Computed:    true,

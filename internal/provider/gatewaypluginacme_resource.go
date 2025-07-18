@@ -67,10 +67,8 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"account_email": schema.StringAttribute{
-						Required: true,
-						MarkdownDescription: `The account identifier. Can be reused in a different plugin instance.` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Required:    true,
+						Description: `The account identifier. Can be reused in a different plugin instance.`,
 						Validators: []validator.String{
 							stringvalidator.RegexMatches(regexp.MustCompile(`[a-zA-Z0-9]*[!-/:-@[-`+"`"+`{-~]*@+[a-zA-Z0-9]*%.?[a-zA-Z0-9]*`), "must match pattern "+regexp.MustCompile(`[a-zA-Z0-9]*[!-/:-@[-`+"`"+`{-~]*@+[a-zA-Z0-9]*%.?[a-zA-Z0-9]*`).String()),
 						},
@@ -123,18 +121,14 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 						Description: `An array of strings representing hosts. A valid host is a string containing one or more labels separated by periods, with at most one wildcard label ('*')`,
 					},
 					"eab_hmac_key": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `External account binding (EAB) base64-encoded URL string of the HMAC key. You usually don't need to set this unless it is explicitly required by the CA.` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `External account binding (EAB) base64-encoded URL string of the HMAC key. You usually don't need to set this unless it is explicitly required by the CA.`,
 					},
 					"eab_kid": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `External account binding (EAB) key id. You usually don't need to set this unless it is explicitly required by the CA.` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `External account binding (EAB) key id. You usually don't need to set this unless it is explicitly required by the CA.`,
 					},
 					"enable_ipv4_common_name": schema.BoolAttribute{
 						Computed:    true,
@@ -220,10 +214,9 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 										Description: `Timeout in milliseconds.`,
 									},
 									"token": schema.StringAttribute{
-										Computed: true,
-										Optional: true,
-										MarkdownDescription: `Consul ACL token.` + "\n" +
-											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+										Computed:    true,
+										Optional:    true,
+										Description: `Consul ACL token.`,
 									},
 								},
 							},
@@ -267,11 +260,9 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 										Description: `A string representing a host name, such as example.com.`,
 									},
 									"password": schema.StringAttribute{
-										Computed: true,
-										Optional: true,
-										MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
-											`This field is [encrypted](/gateway/keyring/).` + "\n" +
-											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+										Computed:    true,
+										Optional:    true,
+										Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 									},
 									"port": schema.Int64Attribute{
 										Computed:    true,
@@ -305,10 +296,9 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 										},
 									},
 									"username": schema.StringAttribute{
-										Computed: true,
-										Optional: true,
-										MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
-											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+										Computed:    true,
+										Optional:    true,
+										Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
 									},
 								},
 							},
@@ -392,10 +382,9 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 										Description: `Turn on TLS verification.`,
 									},
 									"token": schema.StringAttribute{
-										Computed: true,
-										Optional: true,
-										MarkdownDescription: `Consul ACL token.` + "\n" +
-											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+										Computed:    true,
+										Optional:    true,
+										Description: `Consul ACL token.`,
 									},
 								},
 							},

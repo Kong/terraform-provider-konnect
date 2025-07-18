@@ -171,7 +171,6 @@ Optional:
 Required:
 
 - `host` (String) The IPv4 or IPv6 address or host name to connect to (see: https://docs.solace.com/API-Developer-Online-Ref-Documentation/c/index.html#host-entry).
-This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
 Optional:
 
@@ -187,19 +186,12 @@ Optional:
 Optional:
 
 - `access_token` (String) The OAuth2 access token used with `OAUTH2` authentication scheme when connecting to an event broker.
-This field is [encrypted](/gateway/keyring/).
-This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `access_token_header` (String)
 - `id_token` (String) The OpenID Connect ID token used with `OAUTH2` authentication scheme when connecting to an event broker.
-This field is [encrypted](/gateway/keyring/).
-This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `id_token_header` (String)
 - `password` (String) The password used with `BASIC` authentication scheme when connecting to an event broker.
-This field is [encrypted](/gateway/keyring/).
-This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `scheme` (String) The client authentication scheme used when connection to an event broker. must be one of ["BASIC", "NONE", "OAUTH2"]
 - `username` (String) The username used with `BASIC` authentication scheme when connecting to an event broker .
-This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
 
 

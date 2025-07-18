@@ -88,7 +88,7 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 					"genai_category": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Generative AI category of the request. must be one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]`,
+						Description: `Generative AI category of the request. must be one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"audio/speech",
@@ -97,7 +97,6 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 								"realtime/generation",
 								"text/embeddings",
 								"text/generation",
-								"video/generation",
 							),
 						},
 					},

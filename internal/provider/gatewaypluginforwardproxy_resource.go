@@ -72,16 +72,13 @@ func (r *GatewayPluginForwardProxyResource) Schema(ctx context.Context, req reso
 						Computed: true,
 						Optional: true,
 						MarkdownDescription: `The password to authenticate with, if the forward proxy is protected` + "\n" +
-							`by basic authentication.` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+							`by basic authentication.`,
 					},
 					"auth_username": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
 						MarkdownDescription: `The username to authenticate with, if the forward proxy is protected` + "\n" +
-							`by basic authentication.` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+							`by basic authentication.`,
 					},
 					"http_proxy_host": schema.StringAttribute{
 						Computed:    true,

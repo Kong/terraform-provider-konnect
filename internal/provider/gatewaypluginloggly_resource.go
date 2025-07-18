@@ -102,8 +102,6 @@ func (r *GatewayPluginLogglyResource) Schema(ctx context.Context, req resource.S
 					},
 					"key": schema.StringAttribute{
 						Required: true,
-						MarkdownDescription: `This field is [encrypted](/gateway/keyring/).` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 					},
 					"log_level": schema.StringAttribute{
 						Computed:    true,

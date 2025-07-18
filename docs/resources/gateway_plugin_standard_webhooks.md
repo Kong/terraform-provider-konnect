@@ -93,8 +93,6 @@ resource "konnect_gateway_plugin_standard_webhooks" "my_gatewaypluginstandardweb
 Required:
 
 - `secret_v1` (String) Webhook secret
-This field is [encrypted](/gateway/keyring/).
-This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
 Optional:
 

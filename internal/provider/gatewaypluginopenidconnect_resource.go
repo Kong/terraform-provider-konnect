@@ -267,8 +267,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
-						MarkdownDescription: `The client id(s) that the plugin uses when it calls authenticated endpoints on the identity provider.` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).`,
+						Description: `The client id(s) that the plugin uses when it calls authenticated endpoints on the identity provider.`,
 					},
 					"client_jwk": schema.ListNestedAttribute{
 						Computed: true,
@@ -289,20 +288,14 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 								"d": schema.StringAttribute{
 									Computed: true,
 									Optional: true,
-									MarkdownDescription: `This field is [encrypted](/gateway/keyring/).` + "\n" +
-										`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 								},
 								"dp": schema.StringAttribute{
 									Computed: true,
 									Optional: true,
-									MarkdownDescription: `This field is [encrypted](/gateway/keyring/).` + "\n" +
-										`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 								},
 								"dq": schema.StringAttribute{
 									Computed: true,
 									Optional: true,
-									MarkdownDescription: `This field is [encrypted](/gateway/keyring/).` + "\n" +
-										`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 								},
 								"e": schema.StringAttribute{
 									Computed: true,
@@ -315,8 +308,6 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 								"k": schema.StringAttribute{
 									Computed: true,
 									Optional: true,
-									MarkdownDescription: `This field is [encrypted](/gateway/keyring/).` + "\n" +
-										`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 								},
 								"key_ops": schema.ListAttribute{
 									Computed:    true,
@@ -338,38 +329,26 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 								"oth": schema.StringAttribute{
 									Computed: true,
 									Optional: true,
-									MarkdownDescription: `This field is [encrypted](/gateway/keyring/).` + "\n" +
-										`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 								},
 								"p": schema.StringAttribute{
 									Computed: true,
 									Optional: true,
-									MarkdownDescription: `This field is [encrypted](/gateway/keyring/).` + "\n" +
-										`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 								},
 								"q": schema.StringAttribute{
 									Computed: true,
 									Optional: true,
-									MarkdownDescription: `This field is [encrypted](/gateway/keyring/).` + "\n" +
-										`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 								},
 								"qi": schema.StringAttribute{
 									Computed: true,
 									Optional: true,
-									MarkdownDescription: `This field is [encrypted](/gateway/keyring/).` + "\n" +
-										`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 								},
 								"r": schema.StringAttribute{
 									Computed: true,
 									Optional: true,
-									MarkdownDescription: `This field is [encrypted](/gateway/keyring/).` + "\n" +
-										`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 								},
 								"t": schema.StringAttribute{
 									Computed: true,
 									Optional: true,
-									MarkdownDescription: `This field is [encrypted](/gateway/keyring/).` + "\n" +
-										`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 								},
 								"use": schema.StringAttribute{
 									Computed: true,
@@ -408,8 +387,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
-						MarkdownDescription: `The client secret.` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).`,
+						Description: `The client secret.`,
 					},
 					"cluster_cache_redis": schema.SingleNestedAttribute{
 						Computed: true,
@@ -485,11 +463,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 								},
 							},
 							"password": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
-								MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
-									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
-									`This field is [encrypted](/gateway/keyring/).`,
+								Computed:    true,
+								Optional:    true,
+								Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 							},
 							"port": schema.Int64Attribute{
 								Computed:    true,
@@ -546,11 +522,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 								Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
 							},
 							"sentinel_password": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
-								MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
-									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
-									`This field is [encrypted](/gateway/keyring/).`,
+								Computed:    true,
+								Optional:    true,
+								Description: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.`,
 							},
 							"sentinel_role": schema.StringAttribute{
 								Computed:    true,
@@ -565,10 +539,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 								},
 							},
 							"sentinel_username": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
-								MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
-									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+								Computed:    true,
+								Optional:    true,
+								Description: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.`,
 							},
 							"server_name": schema.StringAttribute{
 								Computed:    true,
@@ -586,10 +559,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
 							},
 							"username": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
-								MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
-									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+								Computed:    true,
+								Optional:    true,
+								Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
 							},
 						},
 					},
@@ -788,10 +760,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Description: `The HTTP proxy.`,
 					},
 					"http_proxy_authorization": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `The HTTP proxy authorization.` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The HTTP proxy authorization.`,
 					},
 					"http_version": schema.Float64Attribute{
 						Computed:    true,
@@ -804,10 +775,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Description: `The HTTPS proxy.`,
 					},
 					"https_proxy_authorization": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `The HTTPS proxy authorization.` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The HTTPS proxy authorization.`,
 					},
 					"id_token_param_name": schema.StringAttribute{
 						Computed:    true,
@@ -885,8 +855,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
-						MarkdownDescription: `Extra header values passed to the introspection endpoint.` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).`,
+						Description: `Extra header values passed to the introspection endpoint.`,
 					},
 					"introspection_hint": schema.StringAttribute{
 						Computed:    true,
@@ -1203,11 +1172,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 								},
 							},
 							"password": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
-								MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
-									`This field is [encrypted](/gateway/keyring/).` + "\n" +
-									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+								Computed:    true,
+								Optional:    true,
+								Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 							},
 							"port": schema.Int64Attribute{
 								Computed:    true,
@@ -1269,11 +1236,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 								Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
 							},
 							"sentinel_password": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
-								MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
-									`This field is [encrypted](/gateway/keyring/).` + "\n" +
-									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+								Computed:    true,
+								Optional:    true,
+								Description: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.`,
 							},
 							"sentinel_role": schema.StringAttribute{
 								Computed:    true,
@@ -1288,10 +1253,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 								},
 							},
 							"sentinel_username": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
-								MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
-									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+								Computed:    true,
+								Optional:    true,
+								Description: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.`,
 							},
 							"server_name": schema.StringAttribute{
 								Computed:    true,
@@ -1314,10 +1278,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
 							},
 							"username": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
-								MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
-									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+								Computed:    true,
+								Optional:    true,
+								Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
 							},
 						},
 					},
@@ -1585,11 +1548,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Description: `Specifies how long the session can be used in seconds until it needs to be renewed. 0 disables the checks and rolling.`,
 					},
 					"session_secret": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `The session secret.` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The session secret.`,
 					},
 					"session_storage": schema.StringAttribute{
 						Computed:    true,

@@ -104,8 +104,6 @@ resource "konnect_gateway_plugin_oauth2_introspection" "my_gatewaypluginoauth2in
 Required:
 
 - `authorization_value` (String) The value to set as the `Authorization` header when querying the introspection endpoint. This depends on the OAuth 2.0 server, but usually is the `client_id` and `client_secret` as a Base64-encoded Basic Auth string (`Basic MG9hNWl...`).
-This field is [encrypted](/gateway/keyring/).
-This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `introspection_url` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
 
 Optional:

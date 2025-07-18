@@ -111,9 +111,7 @@ Required:
 Optional:
 
 - `aws_access_key_id` (String) The AWS access key ID to use for authentication
-This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `aws_secret_access_key` (String) The AWS secret access key to use for authentication
-This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `guarding_mode` (String) The guardrail mode to use for the request. must be one of ["BOTH", "INPUT", "OUTPUT"]
 - `response_buffer_size` (Number) The amount of token receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard.
 - `stop_on_error` (Boolean) Stop processing if an error occurs

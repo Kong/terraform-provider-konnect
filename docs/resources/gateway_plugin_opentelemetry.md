@@ -136,7 +136,6 @@ Optional:
 - `headers` (Map of String) The custom headers to be added in the HTTP request sent to the OTLP server. This setting is useful for adding the authentication headers (token) for the APM backend.
 - `http_response_header_for_traceid` (String)
 - `logs_endpoint` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
-This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `propagation` (Attributes) (see [below for nested schema](#nestedatt--config--propagation))
 - `queue` (Attributes) (see [below for nested schema](#nestedatt--config--queue))
 - `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -145,7 +144,6 @@ This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secret
 - `sampling_strategy` (String) The sampling strategy to use for OTLP `traces`. Set `parent_drop_probability_fallback` if you want parent-based sampling when the parent span contains a `false` sampled flag, and fallback to probability-based sampling otherwise. Set `parent_probability_fallback` if you want parent-based sampling when the parent span contains a valid sampled flag (`true` or `false`), and fallback to probability-based sampling otherwise. must be one of ["parent_drop_probability_fallback", "parent_probability_fallback"]
 - `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 - `traces_endpoint` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
-This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
 <a id="nestedatt--config--propagation"></a>
 ### Nested Schema for `config.propagation`

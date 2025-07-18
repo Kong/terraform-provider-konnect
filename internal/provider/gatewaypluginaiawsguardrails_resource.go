@@ -68,20 +68,18 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Schema(ctx context.Context, req r
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"aws_access_key_id": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `The AWS access key ID to use for authentication` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The AWS access key ID to use for authentication`,
 					},
 					"aws_region": schema.StringAttribute{
 						Required:    true,
 						Description: `The AWS region to use for the Bedrock API`,
 					},
 					"aws_secret_access_key": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `The AWS secret access key to use for authentication` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The AWS secret access key to use for authentication`,
 					},
 					"guarding_mode": schema.StringAttribute{
 						Computed:    true,

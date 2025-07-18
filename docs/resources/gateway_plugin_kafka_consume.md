@@ -206,12 +206,8 @@ Optional:
 
 Optional:
 
-- `password` (String) This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-This field is [encrypted](/gateway/keyring/).
-Not Null
-- `username` (String) This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-This field is [encrypted](/gateway/keyring/).
-Not Null
+- `password` (String) Not Null
+- `username` (String) Not Null
 
 
 
@@ -225,13 +221,9 @@ Optional:
 
 - `mechanism` (String) The SASL authentication mechanism.  Supported options: `PLAIN` or `SCRAM-SHA-256`. must be one of ["PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512"]
 - `password` (String) Password for SASL authentication.
-This field is [encrypted](/gateway/keyring/).
-This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `strategy` (String) The authentication strategy for the plugin, the only option for the value is `sasl`. must be "sasl"
 - `tokenauth` (Boolean) Enable this to indicate `DelegationToken` authentication
 - `user` (String) Username for SASL authentication.
-This field is [encrypted](/gateway/keyring/).
-This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
 
 <a id="nestedatt--config--schema_registry"></a>
@@ -264,12 +256,8 @@ Optional:
 
 Optional:
 
-- `password` (String) This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-This field is [encrypted](/gateway/keyring/).
-Not Null
-- `username` (String) This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-This field is [encrypted](/gateway/keyring/).
-Not Null
+- `password` (String) Not Null
+- `username` (String) Not Null
 
 
 

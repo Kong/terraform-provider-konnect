@@ -133,9 +133,8 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 						},
 					},
 					"provision_key": schema.StringAttribute{
-						Required: true,
-						MarkdownDescription: `The unique key the plugin has generated when it has been added to the Service.` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).`,
+						Required:    true,
+						Description: `The unique key the plugin has generated when it has been added to the Service.`,
 					},
 					"realm": schema.StringAttribute{
 						Computed:    true,

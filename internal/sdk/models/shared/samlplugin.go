@@ -199,8 +199,6 @@ type SamlPluginRedis struct {
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
 	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-	// This field is [encrypted](/gateway/keyring/).
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `json:"port,omitempty"`
@@ -215,13 +213,10 @@ type SamlPluginRedis struct {
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
 	SentinelNodes []SamlPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-	// This field is [encrypted](/gateway/keyring/).
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	SentinelPassword *string `json:"sentinel_password,omitempty"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
 	SentinelRole *SamlPluginSentinelRole `json:"sentinel_role,omitempty"`
 	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	SentinelUsername *string `json:"sentinel_username,omitempty"`
 	// A string representing an SNI (server name indication) value for TLS.
 	ServerName *string `json:"server_name,omitempty"`
@@ -232,7 +227,6 @@ type SamlPluginRedis struct {
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
 	SslVerify *bool `json:"ssl_verify,omitempty"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Username *string `json:"username,omitempty"`
 }
 
@@ -665,8 +659,6 @@ type SamlPluginConfig struct {
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
 	AssertionConsumerPath string `json:"assertion_consumer_path"`
 	// The public certificate provided by the IdP. This is used to validate responses from the IdP.  Only include the contents of the certificate. Do not include the header (`BEGIN CERTIFICATE`) and footer (`END CERTIFICATE`) lines.
-	// This field is [encrypted](/gateway/keyring/).
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	IdpCertificate *string `json:"idp_certificate,omitempty"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
 	IdpSsoURL string `json:"idp_sso_url"`
@@ -680,18 +672,12 @@ type SamlPluginConfig struct {
 	// The signature algorithm for signing Authn requests. Options available are: - `SHA256` - `SHA384` - `SHA512`
 	RequestSignatureAlgorithm *RequestSignatureAlgorithm `json:"request_signature_algorithm,omitempty"`
 	// The certificate for signing requests.
-	// This field is [encrypted](/gateway/keyring/).
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	RequestSigningCertificate *string `json:"request_signing_certificate,omitempty"`
 	// The private key for signing requests.  If this parameter is set, requests sent to the IdP are signed.  The `request_signing_certificate` parameter must be set as well.
-	// This field is [encrypted](/gateway/keyring/).
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	RequestSigningKey *string `json:"request_signing_key,omitempty"`
 	// The algorithm for verifying digest in SAML responses: - `SHA256` - `SHA1`
 	ResponseDigestAlgorithm *ResponseDigestAlgorithm `json:"response_digest_algorithm,omitempty"`
 	// The private encryption key required to decrypt encrypted assertions.
-	// This field is [encrypted](/gateway/keyring/).
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	ResponseEncryptionKey *string `json:"response_encryption_key,omitempty"`
 	// The algorithm for validating signatures in SAML responses. Options available are: - `SHA256` - `SHA384` - `SHA512`
 	ResponseSignatureAlgorithm *ResponseSignatureAlgorithm `json:"response_signature_algorithm,omitempty"`
@@ -740,8 +726,6 @@ type SamlPluginConfig struct {
 	// The session cookie absolute timeout in seconds. Specifies how long the session can be used until it is no longer valid.
 	SessionRollingTimeout *float64 `json:"session_rolling_timeout,omitempty"`
 	// The session secret. This must be a random string of 32 characters from the base64 alphabet (letters, numbers, `/`, `_` and `+`). It is used as the secret key for encrypting session data as well as state information that is sent to the IdP in the authentication exchange.
-	// This field is [encrypted](/gateway/keyring/).
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	SessionSecret string `json:"session_secret"`
 	// The session storage for session data: - `cookie`: stores session data with the session cookie. The session cannot be invalidated or revoked without changing the session secret, but is stateless, and doesn't require a database. - `memcached`: stores session data in memcached - `redis`: stores session data in Redis
 	SessionStorage *SamlPluginSessionStorage `json:"session_storage,omitempty"`

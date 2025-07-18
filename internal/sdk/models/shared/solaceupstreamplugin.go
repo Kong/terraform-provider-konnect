@@ -323,23 +323,16 @@ func (e *Scheme) UnmarshalJSON(data []byte) error {
 // SolaceUpstreamPluginAuthentication - Session authentication related configuration.
 type SolaceUpstreamPluginAuthentication struct {
 	// The OAuth2 access token used with `OAUTH2` authentication scheme when connecting to an event broker.
-	// This field is [encrypted](/gateway/keyring/).
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AccessToken       *string `json:"access_token,omitempty"`
 	AccessTokenHeader *string `json:"access_token_header,omitempty"`
 	// The OpenID Connect ID token used with `OAUTH2` authentication scheme when connecting to an event broker.
-	// This field is [encrypted](/gateway/keyring/).
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	IDToken       *string `json:"id_token,omitempty"`
 	IDTokenHeader *string `json:"id_token_header,omitempty"`
 	// The password used with `BASIC` authentication scheme when connecting to an event broker.
-	// This field is [encrypted](/gateway/keyring/).
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Password *string `json:"password,omitempty"`
 	// The client authentication scheme used when connection to an event broker.
 	Scheme *Scheme `json:"scheme,omitempty"`
 	// The username used with `BASIC` authentication scheme when connecting to an event broker .
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Username *string `json:"username,omitempty"`
 }
 
@@ -399,7 +392,6 @@ type Session struct {
 	// The timeout period (in milliseconds) for a connect operation to a given host (per host).
 	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
 	// The IPv4 or IPv6 address or host name to connect to (see: https://docs.solace.com/API-Developer-Online-Ref-Documentation/c/index.html#host-entry).
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Host string `json:"host"`
 	// Additional Solace session properties (each setting needs to have `SESSION_` prefix).
 	Properties map[string]any `json:"properties,omitempty"`

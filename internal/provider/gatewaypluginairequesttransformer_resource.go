@@ -117,37 +117,29 @@ func (r *GatewayPluginAiRequestTransformerResource) Schema(ctx context.Context, 
 										Description: `If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.`,
 									},
 									"aws_access_key_id": schema.StringAttribute{
-										Computed: true,
-										Optional: true,
-										MarkdownDescription: `Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.` + "\n" +
-											`This field is [encrypted](/gateway/keyring/).` + "\n" +
-											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+										Computed:    true,
+										Optional:    true,
+										Description: `Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.`,
 									},
 									"aws_secret_access_key": schema.StringAttribute{
-										Computed: true,
-										Optional: true,
-										MarkdownDescription: `Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.` + "\n" +
-											`This field is [encrypted](/gateway/keyring/).` + "\n" +
-											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+										Computed:    true,
+										Optional:    true,
+										Description: `Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.`,
 									},
 									"azure_client_id": schema.StringAttribute{
-										Computed: true,
-										Optional: true,
-										MarkdownDescription: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.` + "\n" +
-											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+										Computed:    true,
+										Optional:    true,
+										Description: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.`,
 									},
 									"azure_client_secret": schema.StringAttribute{
-										Computed: true,
-										Optional: true,
-										MarkdownDescription: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.` + "\n" +
-											`This field is [encrypted](/gateway/keyring/).` + "\n" +
-											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+										Computed:    true,
+										Optional:    true,
+										Description: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.`,
 									},
 									"azure_tenant_id": schema.StringAttribute{
-										Computed: true,
-										Optional: true,
-										MarkdownDescription: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.` + "\n" +
-											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+										Computed:    true,
+										Optional:    true,
+										Description: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.`,
 									},
 									"azure_use_managed_identity": schema.BoolAttribute{
 										Computed:    true,
@@ -155,11 +147,9 @@ func (r *GatewayPluginAiRequestTransformerResource) Schema(ctx context.Context, 
 										Description: `Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.`,
 									},
 									"gcp_service_account_json": schema.StringAttribute{
-										Computed: true,
-										Optional: true,
-										MarkdownDescription: `Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable ` + "`" + `GCP_SERVICE_ACCOUNT` + "`" + `.` + "\n" +
-											`This field is [encrypted](/gateway/keyring/).` + "\n" +
-											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+										Computed:    true,
+										Optional:    true,
+										Description: `Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable ` + "`" + `GCP_SERVICE_ACCOUNT` + "`" + `.`,
 									},
 									"gcp_use_service_account": schema.BoolAttribute{
 										Computed:    true,
@@ -167,17 +157,14 @@ func (r *GatewayPluginAiRequestTransformerResource) Schema(ctx context.Context, 
 										Description: `Use service account auth for GCP-based providers and models.`,
 									},
 									"header_name": schema.StringAttribute{
-										Computed: true,
-										Optional: true,
-										MarkdownDescription: `If AI model requires authentication via Authorization or API key header, specify its name here.` + "\n" +
-											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+										Computed:    true,
+										Optional:    true,
+										Description: `If AI model requires authentication via Authorization or API key header, specify its name here.`,
 									},
 									"header_value": schema.StringAttribute{
-										Computed: true,
-										Optional: true,
-										MarkdownDescription: `Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.` + "\n" +
-											`This field is [encrypted](/gateway/keyring/).` + "\n" +
-											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+										Computed:    true,
+										Optional:    true,
+										Description: `Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.`,
 									},
 									"param_location": schema.StringAttribute{
 										Computed:    true,
@@ -191,17 +178,14 @@ func (r *GatewayPluginAiRequestTransformerResource) Schema(ctx context.Context, 
 										},
 									},
 									"param_name": schema.StringAttribute{
-										Computed: true,
-										Optional: true,
-										MarkdownDescription: `If AI model requires authentication via query parameter, specify its name here.` + "\n" +
-											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+										Computed:    true,
+										Optional:    true,
+										Description: `If AI model requires authentication via query parameter, specify its name here.`,
 									},
 									"param_value": schema.StringAttribute{
-										Computed: true,
-										Optional: true,
-										MarkdownDescription: `Specify the full parameter value for 'param_name'.` + "\n" +
-											`This field is [encrypted](/gateway/keyring/).` + "\n" +
-											`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+										Computed:    true,
+										Optional:    true,
+										Description: `Specify the full parameter value for 'param_name'.`,
 									},
 								},
 							},

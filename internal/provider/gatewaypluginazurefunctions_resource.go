@@ -66,22 +66,18 @@ func (r *GatewayPluginAzureFunctionsResource) Schema(ctx context.Context, req re
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"apikey": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `The apikey to access the Azure resources. If provided, it is injected as the ` + "`" + `x-functions-key` + "`" + ` header.` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The apikey to access the Azure resources. If provided, it is injected as the ` + "`" + `x-functions-key` + "`" + ` header.`,
 					},
 					"appname": schema.StringAttribute{
 						Required:    true,
 						Description: `The Azure app name.`,
 					},
 					"clientid": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `The ` + "`" + `clientid` + "`" + ` to access the Azure resources. If provided, it is injected as the ` + "`" + `x-functions-clientid` + "`" + ` header.` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The ` + "`" + `clientid` + "`" + ` to access the Azure resources. If provided, it is injected as the ` + "`" + `x-functions-clientid` + "`" + ` header.`,
 					},
 					"functionname": schema.StringAttribute{
 						Required:    true,

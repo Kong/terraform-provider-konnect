@@ -107,7 +107,6 @@ resource "konnect_gateway_plugin_oauth2" "my_gatewaypluginoauth2" {
 Required:
 
 - `provision_key` (String) The unique key the plugin has generated when it has been added to the Service.
-This field is [encrypted](/gateway/keyring/).
 
 Optional:
 

@@ -135,12 +135,10 @@ func (e *TextSource) UnmarshalJSON(data []byte) error {
 
 type AiAwsGuardrailsPluginConfig struct {
 	// The AWS access key ID to use for authentication
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AwsAccessKeyID *string `json:"aws_access_key_id,omitempty"`
 	// The AWS region to use for the Bedrock API
 	AwsRegion string `json:"aws_region"`
 	// The AWS secret access key to use for authentication
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	AwsSecretAccessKey *string `json:"aws_secret_access_key,omitempty"`
 	// The guardrail mode to use for the request
 	GuardingMode *GuardingMode `json:"guarding_mode,omitempty"`

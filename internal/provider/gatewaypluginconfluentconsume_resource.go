@@ -111,16 +111,12 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 						Description: `Set of bootstrap brokers in a ` + "`" + `{host: host, port: port}` + "`" + ` list format.`,
 					},
 					"cluster_api_key": schema.StringAttribute{
-						Required: true,
-						MarkdownDescription: `Username/Apikey for SASL authentication.` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Required:    true,
+						Description: `Username/Apikey for SASL authentication.`,
 					},
 					"cluster_api_secret": schema.StringAttribute{
-						Required: true,
-						MarkdownDescription: `Password/ApiSecret for SASL authentication.` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Required:    true,
+						Description: `Password/ApiSecret for SASL authentication.`,
 					},
 					"cluster_name": schema.StringAttribute{
 						Computed:    true,
@@ -139,18 +135,14 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 						},
 					},
 					"confluent_cloud_api_key": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `Apikey for authentication with Confluent Cloud. This allows for management tasks such as creating topics, ACLs, etc.` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `Apikey for authentication with Confluent Cloud. This allows for management tasks such as creating topics, ACLs, etc.`,
 					},
 					"confluent_cloud_api_secret": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `The corresponding secret for the Confluent Cloud API key.` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The corresponding secret for the Confluent Cloud API key.`,
 					},
 					"keepalive": schema.Int64Attribute{
 						Computed:    true,
@@ -200,21 +192,17 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"password": schema.StringAttribute{
-														Computed: true,
-														Optional: true,
-														MarkdownDescription: `This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
-															`This field is [encrypted](/gateway/keyring/).` + "\n" +
-															`Not Null`,
+														Computed:    true,
+														Optional:    true,
+														Description: `Not Null`,
 														Validators: []validator.String{
 															speakeasy_stringvalidators.NotNull(),
 														},
 													},
 													"username": schema.StringAttribute{
-														Computed: true,
-														Optional: true,
-														MarkdownDescription: `This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
-															`This field is [encrypted](/gateway/keyring/).` + "\n" +
-															`Not Null`,
+														Computed:    true,
+														Optional:    true,
+														Description: `Not Null`,
 														Validators: []validator.String{
 															speakeasy_stringvalidators.NotNull(),
 														},
@@ -298,21 +286,17 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"password": schema.StringAttribute{
-																	Computed: true,
-																	Optional: true,
-																	MarkdownDescription: `This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
-																		`This field is [encrypted](/gateway/keyring/).` + "\n" +
-																		`Not Null`,
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `Not Null`,
 																	Validators: []validator.String{
 																		speakeasy_stringvalidators.NotNull(),
 																	},
 																},
 																"username": schema.StringAttribute{
-																	Computed: true,
-																	Optional: true,
-																	MarkdownDescription: `This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
-																		`This field is [encrypted](/gateway/keyring/).` + "\n" +
-																		`Not Null`,
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `Not Null`,
 																	Validators: []validator.String{
 																		speakeasy_stringvalidators.NotNull(),
 																	},

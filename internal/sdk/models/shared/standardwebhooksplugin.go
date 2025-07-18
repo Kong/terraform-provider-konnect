@@ -78,8 +78,6 @@ func (o *StandardWebhooksPluginPartials) GetPath() *string {
 
 type StandardWebhooksPluginConfig struct {
 	// Webhook secret
-	// This field is [encrypted](/gateway/keyring/).
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	SecretV1 string `json:"secret_v1"`
 	// Tolerance of the webhook timestamp in seconds. If the webhook timestamp is older than this number of seconds, it will be rejected with a '400' response.
 	ToleranceSecond *int64 `json:"tolerance_second,omitempty"`

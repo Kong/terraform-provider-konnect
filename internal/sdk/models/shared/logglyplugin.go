@@ -257,9 +257,7 @@ type LogglyPluginConfig struct {
 	// Lua code as a key-value map
 	CustomFieldsByLua map[string]any `json:"custom_fields_by_lua,omitempty"`
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
-	// This field is [encrypted](/gateway/keyring/).
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+	Host     *string   `json:"host,omitempty"`
 	Key      string    `json:"key"`
 	LogLevel *LogLevel `json:"log_level,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.

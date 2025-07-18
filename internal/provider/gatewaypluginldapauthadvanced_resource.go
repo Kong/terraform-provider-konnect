@@ -78,10 +78,9 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 						Description: `Base DN as the starting point for the search; e.g., 'dc=example,dc=com'.`,
 					},
 					"bind_dn": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `The DN to bind to. Used to perform LDAP search of user. This ` + "`" + `bind_dn` + "`" + ` should have permissions to search for the user being authenticated.` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The DN to bind to. Used to perform LDAP search of user. This ` + "`" + `bind_dn` + "`" + ` should have permissions to search for the user being authenticated.`,
 					},
 					"cache_ttl": schema.Float64Attribute{
 						Computed:    true,
@@ -140,11 +139,9 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 						Description: `Host on which the LDAP server is running.`,
 					},
 					"ldap_password": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `The password to the LDAP server.` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The password to the LDAP server.`,
 					},
 					"ldap_port": schema.Float64Attribute{
 						Computed:    true,

@@ -83,9 +83,8 @@ func (r *GatewayPluginDatadogTracingResource) Schema(ctx context.Context, req re
 						},
 					},
 					"endpoint": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Computed: true,
+						Optional: true,
 					},
 					"environment": schema.StringAttribute{
 						Computed: true,

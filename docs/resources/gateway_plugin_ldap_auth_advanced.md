@@ -121,7 +121,6 @@ Optional:
 
 - `anonymous` (String) An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`. Note that this value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
 - `bind_dn` (String) The DN to bind to. Used to perform LDAP search of user. This `bind_dn` should have permissions to search for the user being authenticated.
-This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `cache_ttl` (Number) Cache expiry time in seconds.
 - `consumer_by` (List of String) Whether to authenticate consumers based on `username`, `custom_id`, or both.
 - `consumer_optional` (Boolean) Whether consumer mapping is optional. If `consumer_optional=true`, the plugin will not attempt to associate a consumer with the LDAP authenticated user.
@@ -133,8 +132,6 @@ This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secret
 - `hide_credentials` (Boolean) An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request.
 - `keepalive` (Number) An optional value in milliseconds that defines how long an idle connection to LDAP server will live before being closed.
 - `ldap_password` (String) The password to the LDAP server.
-This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-This field is [encrypted](/gateway/keyring/).
 - `ldap_port` (Number) TCP port where the LDAP server is listening. 389 is the default port for non-SSL LDAP and AD. 636 is the port required for SSL LDAP and AD. If `ldaps` is configured, you must use port 636.
 - `ldaps` (Boolean) Set it to `true` to use `ldaps`, a secure protocol (that can be configured to TLS) to connect to the LDAP server. When `ldaps` is configured, you must use port 636. If the `ldap` setting is enabled, ensure the `start_tls` setting is disabled.
 - `log_search_results` (Boolean) Displays all the LDAP search results received from the LDAP server for debugging purposes. Not recommended to be enabled in a production environment.

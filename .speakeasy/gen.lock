@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 9484914e4436306ade0f96c33588b3e7
+  docChecksum: 7280e4141f17400b4d9217aeacfea36b
   docVersion: 2.0.0
   speakeasyVersion: 1.581.1
   generationVersion: 2.656.9
@@ -716,6 +716,7 @@ generatedFiles:
   - internal/provider/types/ai_proxy_advanced_plugin_config.go
   - internal/provider/types/ai_proxy_advanced_plugin_model.go
   - internal/provider/types/ai_proxy_advanced_plugin_options.go
+  - internal/provider/types/ai_proxy_advanced_plugin_redis.go
   - internal/provider/types/ai_proxy_plugin_config.go
   - internal/provider/types/ai_rag_injector_plugin_config.go
   - internal/provider/types/ai_rag_injector_plugin_vectordb.go
@@ -903,6 +904,7 @@ generatedFiles:
   - internal/provider/types/rate_limiting_advanced_plugin_config.go
   - internal/provider/types/rate_limiting_advanced_plugin_redis.go
   - internal/provider/types/rate_limiting_plugin_config.go
+  - internal/provider/types/rate_limiting_plugin_redis.go
   - internal/provider/types/redirect_plugin_config.go
   - internal/provider/types/replace.go
   - internal/provider/types/request.go

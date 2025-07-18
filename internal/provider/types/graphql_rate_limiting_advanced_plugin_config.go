@@ -7,18 +7,18 @@ import (
 )
 
 type GraphqlRateLimitingAdvancedPluginConfig struct {
-	CostStrategy             types.String          `tfsdk:"cost_strategy"`
-	DictionaryName           types.String          `tfsdk:"dictionary_name"`
-	HideClientHeaders        types.Bool            `tfsdk:"hide_client_headers"`
-	Identifier               types.String          `tfsdk:"identifier"`
-	Limit                    []types.Float64       `tfsdk:"limit"`
-	MaxCost                  types.Float64         `tfsdk:"max_cost"`
-	Namespace                types.String          `tfsdk:"namespace"`
-	PassAllDownstreamHeaders types.Bool            `tfsdk:"pass_all_downstream_headers"`
-	Redis                    *PartialRedisEEConfig `tfsdk:"redis"`
-	ScoreFactor              types.Float64         `tfsdk:"score_factor"`
-	Strategy                 types.String          `tfsdk:"strategy"`
-	SyncRate                 types.Float64         `tfsdk:"sync_rate"`
-	WindowSize               []types.Float64       `tfsdk:"window_size"`
-	WindowType               types.String          `tfsdk:"window_type"`
+	CostStrategy             types.String                `tfsdk:"cost_strategy"`
+	DictionaryName           types.String                `tfsdk:"dictionary_name"`
+	HideClientHeaders        types.Bool                  `tfsdk:"hide_client_headers"`
+	Identifier               types.String                `tfsdk:"identifier"`
+	Limit                    []types.Float64             `tfsdk:"limit"`
+	MaxCost                  types.Float64               `tfsdk:"max_cost"`
+	Namespace                types.String                `tfsdk:"namespace"`
+	PassAllDownstreamHeaders types.Bool                  `tfsdk:"pass_all_downstream_headers"`
+	Redis                    *AiProxyAdvancedPluginRedis `tfsdk:"redis"`
+	ScoreFactor              types.Float64               `tfsdk:"score_factor"`
+	Strategy                 types.String                `tfsdk:"strategy"`
+	SyncRate                 types.Float64               `tfsdk:"sync_rate"`
+	WindowSize               []types.Float64             `tfsdk:"window_size"`
+	WindowType               types.String                `tfsdk:"window_type"`
 }

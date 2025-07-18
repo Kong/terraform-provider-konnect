@@ -115,8 +115,6 @@ resource "konnect_gateway_plugin_http_log" "my_gatewaypluginhttplog" {
 Required:
 
 - `http_endpoint` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
-This field is [encrypted](/gateway/keyring/).
-This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
 Optional:
 

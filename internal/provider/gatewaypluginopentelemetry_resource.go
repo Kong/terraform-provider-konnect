@@ -124,10 +124,9 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						Optional: true,
 					},
 					"logs_endpoint": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `A string representing a URL, such as https://example.com/path/to/resource?q=search.` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
 					},
 					"propagation": schema.SingleNestedAttribute{
 						Computed: true,
@@ -280,10 +279,9 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						},
 					},
 					"traces_endpoint": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `A string representing a URL, such as https://example.com/path/to/resource?q=search.` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
 					},
 				},
 			},

@@ -107,7 +107,6 @@ resource "konnect_gateway_plugin_ai_azure_content_safety" "my_gatewaypluginaiazu
 Required:
 
 - `content_safety_url` (String) Full URL, inc protocol, of the Azure Content Safety instance.
-This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 
 Optional:
 
@@ -119,8 +118,6 @@ Optional:
 - `blocklist_names` (List of String) Use these configured blocklists (in Azure Content Services) when inspecting content.
 - `categories` (Attributes List) Array of categories, and their thresholds, to measure on. (see [below for nested schema](#nestedatt--config--categories))
 - `content_safety_key` (String) If `azure_use_managed_identity` is true, set the API key to call Content Safety.
-This field is [encrypted](/gateway/keyring/).
-This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `halt_on_blocklist_hit` (Boolean) Tells Azure to reject the request if any blocklist filter is hit.
 - `output_type` (String) See https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/content-filter#content-filtering-categories. must be one of ["EightSeverityLevels", "FourSeverityLevels"]
 - `reveal_failure_reason` (Boolean) Set true to tell the caller why their request was rejected, if so.

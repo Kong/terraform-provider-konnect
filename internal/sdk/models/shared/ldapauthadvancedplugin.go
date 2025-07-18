@@ -110,7 +110,6 @@ type LdapAuthAdvancedPluginConfig struct {
 	// Base DN as the starting point for the search; e.g., 'dc=example,dc=com'.
 	BaseDn string `json:"base_dn"`
 	// The DN to bind to. Used to perform LDAP search of user. This `bind_dn` should have permissions to search for the user being authenticated.
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	BindDn *string `json:"bind_dn,omitempty"`
 	// Cache expiry time in seconds.
 	CacheTTL *float64 `json:"cache_ttl,omitempty"`
@@ -135,8 +134,6 @@ type LdapAuthAdvancedPluginConfig struct {
 	// Host on which the LDAP server is running.
 	LdapHost string `json:"ldap_host"`
 	// The password to the LDAP server.
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-	// This field is [encrypted](/gateway/keyring/).
 	LdapPassword *string `json:"ldap_password,omitempty"`
 	// TCP port where the LDAP server is listening. 389 is the default port for non-SSL LDAP and AD. 636 is the port required for SSL LDAP and AD. If `ldaps` is configured, you must use port 636.
 	LdapPort *float64 `json:"ldap_port,omitempty"`

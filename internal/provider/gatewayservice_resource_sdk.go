@@ -42,9 +42,11 @@ func (r *GatewayServiceResourceModel) RefreshFromSharedService(ctx context.Conte
 		}
 		r.ReadTimeout = types.Int64PointerValue(resp.ReadTimeout)
 		r.Retries = types.Int64PointerValue(resp.Retries)
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
+		if resp.Tags != nil {
+			r.Tags = make([]types.String, 0, len(resp.Tags))
+			for _, v := range resp.Tags {
+				r.Tags = append(r.Tags, types.StringValue(v))
+			}
 		}
 		if resp.TLSSans == nil {
 			r.TLSSans = nil
@@ -233,9 +235,12 @@ func (r *GatewayServiceResourceModel) ToSharedService(ctx context.Context) (*sha
 	} else {
 		retries = nil
 	}
-	tags := make([]string, 0, len(r.Tags))
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
+	var tags []string
+	if r.Tags != nil {
+		tags = make([]string, 0, len(r.Tags))
+		for _, tagsItem := range r.Tags {
+			tags = append(tags, tagsItem.ValueString())
+		}
 	}
 	var tlsSans *shared.TLSSans
 	if r.TLSSans != nil {

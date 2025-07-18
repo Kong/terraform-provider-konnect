@@ -156,17 +156,14 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						Description: `The client certificate that will be used to authenticate Kong if ` + "`" + `access_token_jwks_uri` + "`" + ` is an https uri that requires mTLS Auth.`,
 					},
 					"access_token_jwks_uri_client_password": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `The client password that will be used to authenticate Kong if ` + "`" + `access_token_jwks_uri` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `access_token_jwks_uri_client_username` + "`" + `` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The client password that will be used to authenticate Kong if ` + "`" + `access_token_jwks_uri` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `access_token_jwks_uri_client_username` + "`" + ``,
 					},
 					"access_token_jwks_uri_client_username": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `The client username that will be used to authenticate Kong if ` + "`" + `access_token_jwks_uri` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `access_token_jwks_uri_client_password` + "`" + `` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The client username that will be used to authenticate Kong if ` + "`" + `access_token_jwks_uri` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `access_token_jwks_uri_client_password` + "`" + ``,
 					},
 					"access_token_jwks_uri_rotate_period": schema.Float64Attribute{
 						Computed:    true,
@@ -184,17 +181,14 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						Description: `The client certificate that will be used to authenticate Kong if ` + "`" + `access_token_keyset` + "`" + ` is an https uri that requires mTLS Auth.`,
 					},
 					"access_token_keyset_client_password": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `The client password that will be used to authenticate Kong if ` + "`" + `access_token_keyset` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `access_token_keyset_client_username` + "`" + `` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The client password that will be used to authenticate Kong if ` + "`" + `access_token_keyset` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `access_token_keyset_client_username` + "`" + ``,
 					},
 					"access_token_keyset_client_username": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `The client username that will be used to authenticate Kong if ` + "`" + `access_token_keyset` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `access_token_keyset_client_password` + "`" + `` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The client username that will be used to authenticate Kong if ` + "`" + `access_token_keyset` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `access_token_keyset_client_password` + "`" + ``,
 					},
 					"access_token_keyset_rotate_period": schema.Float64Attribute{
 						Computed:    true,
@@ -384,17 +378,14 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						Description: `The client certificate that will be used to authenticate Kong if ` + "`" + `access_token_jwks_uri` + "`" + ` is an https uri that requires mTLS Auth.`,
 					},
 					"channel_token_jwks_uri_client_password": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `The client password that will be used to authenticate Kong if ` + "`" + `channel_token_jwks_uri` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `channel_token_jwks_uri_client_username` + "`" + `` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The client password that will be used to authenticate Kong if ` + "`" + `channel_token_jwks_uri` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `channel_token_jwks_uri_client_username` + "`" + ``,
 					},
 					"channel_token_jwks_uri_client_username": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `The client username that will be used to authenticate Kong if ` + "`" + `channel_token_jwks_uri` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `channel_token_jwks_uri_client_password` + "`" + `` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The client username that will be used to authenticate Kong if ` + "`" + `channel_token_jwks_uri` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `channel_token_jwks_uri_client_password` + "`" + ``,
 					},
 					"channel_token_jwks_uri_rotate_period": schema.Float64Attribute{
 						Computed:    true,
@@ -412,17 +403,14 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						Description: `The client certificate that will be used to authenticate Kong if ` + "`" + `channel_token_keyset` + "`" + ` is an https uri that requires mTLS Auth.`,
 					},
 					"channel_token_keyset_client_password": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `The client password that will be used to authenticate Kong if ` + "`" + `channel_token_keyset` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `channel_token_keyset_client_username` + "`" + `` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The client password that will be used to authenticate Kong if ` + "`" + `channel_token_keyset` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `channel_token_keyset_client_username` + "`" + ``,
 					},
 					"channel_token_keyset_client_username": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `The client username that will be used to authenticate Kong if ` + "`" + `channel_token_keyset` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `channel_token_keyset_client_password` + "`" + `` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The client username that will be used to authenticate Kong if ` + "`" + `channel_token_keyset` + "`" + ` is a uri that requires Basic Auth. Should be configured together with ` + "`" + `channel_token_keyset_client_password` + "`" + ``,
 					},
 					"channel_token_keyset_rotate_period": schema.Float64Attribute{
 						Computed:    true,

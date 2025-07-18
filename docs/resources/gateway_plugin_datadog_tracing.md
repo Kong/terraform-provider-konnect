@@ -101,7 +101,7 @@ Optional:
 - `batch_flush_delay` (Number)
 - `batch_span_count` (Number)
 - `connect_timeout` (Number)
-- `endpoint` (String) This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
+- `endpoint` (String)
 - `environment` (String)
 - `read_timeout` (Number)
 - `send_timeout` (Number)

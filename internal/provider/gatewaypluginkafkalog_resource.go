@@ -89,11 +89,9 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 								},
 							},
 							"password": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
-								MarkdownDescription: `Password for SASL authentication.` + "\n" +
-									`This field is [encrypted](/gateway/keyring/).` + "\n" +
-									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+								Computed:    true,
+								Optional:    true,
+								Description: `Password for SASL authentication.`,
 							},
 							"strategy": schema.StringAttribute{
 								Computed:    true,
@@ -109,11 +107,9 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 								Description: `Enable this to indicate ` + "`" + `DelegationToken` + "`" + ` authentication`,
 							},
 							"user": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
-								MarkdownDescription: `Username for SASL authentication.` + "\n" +
-									`This field is [encrypted](/gateway/keyring/).` + "\n" +
-									`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+								Computed:    true,
+								Optional:    true,
+								Description: `Username for SASL authentication.`,
 							},
 						},
 					},
@@ -238,21 +234,17 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"password": schema.StringAttribute{
-														Computed: true,
-														Optional: true,
-														MarkdownDescription: `This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
-															`This field is [encrypted](/gateway/keyring/).` + "\n" +
-															`Not Null`,
+														Computed:    true,
+														Optional:    true,
+														Description: `Not Null`,
 														Validators: []validator.String{
 															speakeasy_stringvalidators.NotNull(),
 														},
 													},
 													"username": schema.StringAttribute{
-														Computed: true,
-														Optional: true,
-														MarkdownDescription: `This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
-															`This field is [encrypted](/gateway/keyring/).` + "\n" +
-															`Not Null`,
+														Computed:    true,
+														Optional:    true,
+														Description: `Not Null`,
 														Validators: []validator.String{
 															speakeasy_stringvalidators.NotNull(),
 														},

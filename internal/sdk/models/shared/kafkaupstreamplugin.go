@@ -134,16 +134,12 @@ type KafkaUpstreamPluginAuthentication struct {
 	// The SASL authentication mechanism.  Supported options: `PLAIN`, `SCRAM-SHA-256`, or `SCRAM-SHA-512`.
 	Mechanism *KafkaUpstreamPluginMechanism `json:"mechanism,omitempty"`
 	// Password for SASL authentication.
-	// This field is [encrypted](/gateway/keyring/).
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	Password *string `json:"password,omitempty"`
 	// The authentication strategy for the plugin, the only option for the value is `sasl`.
 	Strategy *KafkaUpstreamPluginStrategy `json:"strategy,omitempty"`
 	// Enable this to indicate `DelegationToken` authentication.
 	Tokenauth *bool `json:"tokenauth,omitempty"`
 	// Username for SASL authentication.
-	// This field is [encrypted](/gateway/keyring/).
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	User *string `json:"user,omitempty"`
 }
 
@@ -234,11 +230,7 @@ func (e *KafkaUpstreamPluginProducerRequestAcks) UnmarshalJSON(data []byte) erro
 }
 
 type KafkaUpstreamPluginBasic struct {
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-	// This field is [encrypted](/gateway/keyring/).
 	Password string `json:"password"`
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-	// This field is [encrypted](/gateway/keyring/).
 	Username string `json:"username"`
 }
 

@@ -73,10 +73,8 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 						Description: `An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request fails with an authentication failure ` + "`" + `4xx` + "`" + `. Note that this value must refer to the consumer ` + "`" + `id` + "`" + ` or ` + "`" + `username` + "`" + ` attribute, and **not** its ` + "`" + `custom_id` + "`" + `.`,
 					},
 					"authorization_value": schema.StringAttribute{
-						Required: true,
-						MarkdownDescription: `The value to set as the ` + "`" + `Authorization` + "`" + ` header when querying the introspection endpoint. This depends on the OAuth 2.0 server, but usually is the ` + "`" + `client_id` + "`" + ` and ` + "`" + `client_secret` + "`" + ` as a Base64-encoded Basic Auth string (` + "`" + `Basic MG9hNWl...` + "`" + `).` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Required:    true,
+						Description: `The value to set as the ` + "`" + `Authorization` + "`" + ` header when querying the introspection endpoint. This depends on the OAuth 2.0 server, but usually is the ` + "`" + `client_id` + "`" + ` and ` + "`" + `client_secret` + "`" + ` as a Base64-encoded Basic Auth string (` + "`" + `Basic MG9hNWl...` + "`" + `).`,
 					},
 					"consumer_by": schema.StringAttribute{
 						Computed:    true,

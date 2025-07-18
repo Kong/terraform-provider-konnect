@@ -130,16 +130,13 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 						Description: `Array of categories, and their thresholds, to measure on.`,
 					},
 					"content_safety_key": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `If ` + "`" + `azure_use_managed_identity` + "`" + ` is true, set the API key to call Content Safety.` + "\n" +
-							`This field is [encrypted](/gateway/keyring/).` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Computed:    true,
+						Optional:    true,
+						Description: `If ` + "`" + `azure_use_managed_identity` + "`" + ` is true, set the API key to call Content Safety.`,
 					},
 					"content_safety_url": schema.StringAttribute{
-						Required: true,
-						MarkdownDescription: `Full URL, inc protocol, of the Azure Content Safety instance.` + "\n" +
-							`This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+						Required:    true,
+						Description: `Full URL, inc protocol, of the Azure Content Safety instance.`,
 					},
 					"halt_on_blocklist_hit": schema.BoolAttribute{
 						Computed:    true,

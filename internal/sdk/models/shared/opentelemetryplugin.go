@@ -451,7 +451,6 @@ type OpentelemetryPluginConfig struct {
 	Headers                      map[string]any `json:"headers,omitempty"`
 	HTTPResponseHeaderForTraceid *string        `json:"http_response_header_for_traceid,omitempty"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	LogsEndpoint *string                   `json:"logs_endpoint,omitempty"`
 	Propagation  *Propagation              `json:"propagation,omitempty"`
 	Queue        *OpentelemetryPluginQueue `json:"queue,omitempty"`
@@ -465,7 +464,6 @@ type OpentelemetryPluginConfig struct {
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	SendTimeout *int64 `json:"send_timeout,omitempty"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	TracesEndpoint *string `json:"traces_endpoint,omitempty"`
 }
 

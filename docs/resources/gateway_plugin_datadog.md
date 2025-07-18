@@ -123,7 +123,6 @@ Optional:
 - `consumer_tag` (String) String to be attached as tag of the consumer.
 - `flush_timeout` (Number) Optional time in seconds. If `queue_size` > 1, this is the max idle time before sending a log with less than `queue_size` records.
 - `host` (String) A string representing a host name, such as example.com.
-This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 - `metrics` (Attributes List) List of metrics to be logged. (see [below for nested schema](#nestedatt--config--metrics))
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `prefix` (String) String to be attached as a prefix to a metric's name.

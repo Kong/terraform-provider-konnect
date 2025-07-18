@@ -131,7 +131,6 @@ type Oauth2PluginConfig struct {
 	// Specifies a mode of how the Proof Key for Code Exchange (PKCE) should be handled by the plugin.
 	Pkce *Pkce `json:"pkce,omitempty"`
 	// The unique key the plugin has generated when it has been added to the Service.
-	// This field is [encrypted](/gateway/keyring/).
 	ProvisionKey string `json:"provision_key"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
 	Realm *string `json:"realm,omitempty"`

@@ -245,8 +245,6 @@ type HTTPLogPluginConfig struct {
 	// An optional table of headers included in the HTTP message to the upstream server. Values are indexed by header name, and each header name accepts a single string.
 	Headers map[string]any `json:"headers,omitempty"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
-	// This field is [encrypted](/gateway/keyring/).
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	HTTPEndpoint string `json:"http_endpoint"`
 	// An optional value in milliseconds that defines how long an idle connection will live before being closed.
 	Keepalive *float64 `json:"keepalive,omitempty"`

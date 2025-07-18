@@ -78,14 +78,10 @@ func (o *AzureFunctionsPluginPartials) GetPath() *string {
 
 type AzureFunctionsPluginConfig struct {
 	// The apikey to access the Azure resources. If provided, it is injected as the `x-functions-key` header.
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-	// This field is [encrypted](/gateway/keyring/).
 	Apikey *string `json:"apikey,omitempty"`
 	// The Azure app name.
 	Appname string `json:"appname"`
 	// The `clientid` to access the Azure resources. If provided, it is injected as the `x-functions-clientid` header.
-	// This field is [referenceable](/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
-	// This field is [encrypted](/gateway/keyring/).
 	Clientid *string `json:"clientid,omitempty"`
 	// Name of the Azure function to invoke.
 	Functionname string `json:"functionname"`
