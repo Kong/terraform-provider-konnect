@@ -40,7 +40,7 @@ type GatewayPluginOpaResource struct {
 
 // GatewayPluginOpaResourceModel describes the resource data model.
 type GatewayPluginOpaResourceModel struct {
-	Config         *tfTypes.OpaPluginConfig   `tfsdk:"config"`
+	Config         tfTypes.OpaPluginConfig    `tfsdk:"config"`
 	ControlPlaneID types.String               `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                `tfsdk:"created_at"`
 	Enabled        types.Bool                 `tfsdk:"enabled"`
@@ -64,8 +64,7 @@ func (r *GatewayPluginOpaResource) Schema(ctx context.Context, req resource.Sche
 		MarkdownDescription: "GatewayPluginOpa Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"include_body_in_opa_input": schema.BoolAttribute{
 						Computed: true,
@@ -102,8 +101,7 @@ func (r *GatewayPluginOpaResource) Schema(ctx context.Context, req resource.Sche
 						Description: `A string representing a host name, such as example.com.`,
 					},
 					"opa_path": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).`,
 					},
 					"opa_port": schema.Int64Attribute{

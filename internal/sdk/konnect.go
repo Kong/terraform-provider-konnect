@@ -7,14 +7,13 @@ package sdk
 import (
 	"context"
 	"fmt"
-	"net/http"
-	"time"
-
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/config"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/hooks"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/retry"
+	"net/http"
+	"time"
 )
 
 // ServerList contains the list of servers available to the SDK

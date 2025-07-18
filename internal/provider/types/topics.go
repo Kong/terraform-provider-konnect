@@ -7,5 +7,6 @@ import (
 )
 
 type Topics struct {
-	Name types.String `tfsdk:"name"`
+	Name           types.String                         `tfsdk:"name"`
+	SchemaRegistry ConfluentConsumePluginSchemaRegistry `tfsdk:"schema_registry"`
 }

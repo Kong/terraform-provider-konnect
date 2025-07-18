@@ -24,9 +24,11 @@ func (r *GatewayJWTResourceModel) RefreshFromSharedJwt(ctx context.Context, resp
 		r.Key = types.StringPointerValue(resp.Key)
 		r.RsaPublicKey = types.StringPointerValue(resp.RsaPublicKey)
 		r.Secret = types.StringPointerValue(resp.Secret)
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
+		if resp.Tags != nil {
+			r.Tags = make([]types.String, 0, len(resp.Tags))
+			for _, v := range resp.Tags {
+				r.Tags = append(r.Tags, types.StringValue(v))
+			}
 		}
 	}
 
@@ -139,9 +141,12 @@ func (r *GatewayJWTResourceModel) ToSharedJWTWithoutParents(ctx context.Context)
 	} else {
 		secret = nil
 	}
-	tags := make([]string, 0, len(r.Tags))
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
+	var tags []string
+	if r.Tags != nil {
+		tags = make([]string, 0, len(r.Tags))
+		for _, tagsItem := range r.Tags {
+			tags = append(tags, tagsItem.ValueString())
+		}
 	}
 	out := shared.JWTWithoutParents{
 		Algorithm:    algorithm,

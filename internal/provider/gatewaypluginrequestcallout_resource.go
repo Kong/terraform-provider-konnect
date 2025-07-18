@@ -44,21 +44,21 @@ type GatewayPluginRequestCalloutResource struct {
 
 // GatewayPluginRequestCalloutResourceModel describes the resource data model.
 type GatewayPluginRequestCalloutResourceModel struct {
-	Config         *tfTypes.RequestCalloutPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.Set                        `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.Set                        `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                        `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                         `tfsdk:"created_at"`
-	Enabled        types.Bool                          `tfsdk:"enabled"`
-	ID             types.String                        `tfsdk:"id"`
-	InstanceName   types.String                        `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering          `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials                  `tfsdk:"partials"`
-	Protocols      []types.String                      `tfsdk:"protocols"`
-	Route          *tfTypes.Set                        `tfsdk:"route"`
-	Service        *tfTypes.Set                        `tfsdk:"service"`
-	Tags           []types.String                      `tfsdk:"tags"`
-	UpdatedAt      types.Int64                         `tfsdk:"updated_at"`
+	Config         tfTypes.RequestCalloutPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.Set                       `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.Set                       `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                        `tfsdk:"created_at"`
+	Enabled        types.Bool                         `tfsdk:"enabled"`
+	ID             types.String                       `tfsdk:"id"`
+	InstanceName   types.String                       `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials                 `tfsdk:"partials"`
+	Protocols      []types.String                     `tfsdk:"protocols"`
+	Route          *tfTypes.Set                       `tfsdk:"route"`
+	Service        *tfTypes.Set                       `tfsdk:"service"`
+	Tags           []types.String                     `tfsdk:"tags"`
+	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginRequestCalloutResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -70,8 +70,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 		MarkdownDescription: "GatewayPluginRequestCallout Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"cache": schema.SingleNestedAttribute{
 						Computed: true,
@@ -285,8 +284,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 						Description: `Plugin global caching configuration.`,
 					},
 					"callouts": schema.ListNestedAttribute{
-						Computed: true,
-						Optional: true,
+						Required: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
@@ -299,7 +297,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 										"bypass": schema.BoolAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `If true, skips caching the callout response.`,
+											Description: `If ` + "`" + `true` + "`" + `, skips caching the callout response.`,
 										},
 									},
 									Description: `Callout caching configuration. Not Null`,
@@ -311,12 +309,12 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 									Computed:    true,
 									Optional:    true,
 									ElementType: types.StringType,
-									Description: `An array of callout names the current callout depends on.This dependency determines the callout execution order.`,
+									Description: `An array of callout names the current callout depends on. This dependency list determines the callout execution order via a topological sorting algorithm.`,
 								},
 								"name": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `A string identifier for a callout. A callout object is referenceablevia its name in the kong.ctx.shared.callouts.<name>. Not Null`,
+									Description: `A string identifier for a callout. A callout object is referenceable via its name in the ` + "`" + `kong.ctx.shared.callouts.<name>` + "`" + `. Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
 									},
@@ -333,7 +331,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
-													Description: `The custom body fields to be added in the callout HTTP request.Values can contain Lua expressions in the form $(some_lua_code).`,
+													Description: `The custom body fields to be added to the callout HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
 													Validators: []validator.Map{
 														mapvalidator.ValueStringsAre(validators.IsValidJSON()),
 													},
@@ -341,12 +339,12 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 												"decode": schema.BoolAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `If true, decodes the request's body to make it available for customizations.`,
+													Description: `If ` + "`" + `true` + "`" + `, decodes the request's body and make it available for customizations. Only JSON content type is supported.`,
 												},
 												"forward": schema.BoolAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `If true, forwards the incoming request's body to the callout request.`,
+													Description: `If ` + "`" + `true` + "`" + `, forwards the incoming request's body to the callout request.`,
 												},
 											},
 											Description: `Callout request body customizations. Not Null`,
@@ -357,7 +355,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 										"by_lua": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `Lua code that executes before the callout request is made.Standard Lua sandboxing restrictions apply.`,
+											Description: `Lua code that executes before the callout request is made. **Warning** can impact system behavior. Standard Lua sandboxing restrictions apply.`,
 										},
 										"error": schema.SingleNestedAttribute{
 											Computed: true,
@@ -371,7 +369,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 												"error_response_msg": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The error mesasge to respond with if ` + "`" + `on_error` + "`" + ` is ` + "`" + `fail` + "`" + ` or if ` + "`" + `retries` + "`" + ` is achieved.Templating with Lua expressions is supported.`,
+													Description: `The error mesasge to respond with if ` + "`" + `on_error` + "`" + ` is set to ` + "`" + `fail` + "`" + ` or if ` + "`" + `retries` + "`" + ` is achieved. Templating with Lua expressions is supported.`,
 												},
 												"http_statuses": schema.ListAttribute{
 													Computed:    true,
@@ -410,7 +408,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
-													Description: `The custom headers to be added in the callout HTTP request.Values can contain Lua expressions in the form $(some_lua_code).`,
+													Description: `The custom headers to be added in the callout HTTP request. Values can contain Lua expressions in the form ` + "`" + `$(some_lua_expression)` + "`" + `. The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
 													Validators: []validator.Map{
 														mapvalidator.ValueStringsAre(validators.IsValidJSON()),
 													},
@@ -418,7 +416,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 												"forward": schema.BoolAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `If true, forwards the incoming request's headers to the callout request.`,
+													Description: `If ` + "`" + `true` + "`" + `, forwards the incoming request's headers to the callout request.`,
 												},
 											},
 											Description: `Callout request header customizations. Not Null`,
@@ -465,7 +463,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 												"ssl_verify": schema.BoolAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
+													Description: `If set to ` + "`" + `true` + "`" + `, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
 												},
 												"timeouts": schema.SingleNestedAttribute{
 													Computed: true,
@@ -520,7 +518,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
-													Description: `The custom query params to be added in the callout HTTP request.Values can contain Lua expressions in the form $(some_lua_code).`,
+													Description: `The custom query params to be added in the callout HTTP request. Values can contain Lua expressions in the form ` + "`" + `$(some_lua_expression)` + "`" + `. The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
 													Validators: []validator.Map{
 														mapvalidator.ValueStringsAre(validators.IsValidJSON()),
 													},
@@ -528,7 +526,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 												"forward": schema.BoolAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `If true, forwards the incoming request's query params to the callout request.`,
+													Description: `If ` + "`" + `true` + "`" + `, forwards the incoming request's query params to the callout request.`,
 												},
 											},
 											Description: `Callout request query param customizations. Not Null`,
@@ -561,12 +559,12 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 												"decode": schema.BoolAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `If true, decodes the response body before storing into the context. Only JSON is supported.`,
+													Description: `If ` + "`" + `true` + "`" + `, decodes the response body before storing into the context. Only JSON is supported.`,
 												},
 												"store": schema.BoolAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `If false, skips storing the callout response body into kong.ctx.shared.callouts.<name>.response.body.`,
+													Description: `If ` + "`" + `false` + "`" + `, skips storing the callout response body into kong.ctx.shared.callouts.<name>.response.body.`,
 												},
 											},
 											Description: `Not Null`,
@@ -577,7 +575,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 										"by_lua": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `Lua code that executes after the callout request is made, before caching takes place. Standard Lua sandboxing restrictions apply.`,
+											Description: `Lua code that executes after the callout response is received, before caching takes place. Can produce side effects. Standard Lua sandboxing restrictions apply.`,
 										},
 										"headers": schema.SingleNestedAttribute{
 											Computed: true,
@@ -586,7 +584,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 												"store": schema.BoolAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `If false, skips storing the callout response headers intokong.ctx.shared.callouts.<name>.response.headers.`,
+													Description: `If ` + "`" + `false` + "`" + `, skips storing the callout response headers into kong.ctx.shared.callouts.<name>.response.headers.`,
 												},
 											},
 											Description: `Callout response header customizations. Not Null`,
@@ -602,7 +600,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 								},
 							},
 						},
-						Description: `A collection of callout objects, where each object represents an HTTPrequest made in the context of a proxy request.`,
+						Description: `A collection of callout objects, where each object represents an HTTP request made in the context of a proxy request.`,
 					},
 					"upstream": schema.SingleNestedAttribute{
 						Computed: true,
@@ -616,7 +614,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
-										Description: `The custom body fields to be added in the upstream request body. Values can contain Lua expressions in the form $(some_lua_code).`,
+										Description: `The custom body fields to be added in the upstream request body. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
 										Validators: []validator.Map{
 											mapvalidator.ValueStringsAre(validators.IsValidJSON()),
 										},
@@ -624,12 +622,12 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 									"decode": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `If true, decodes the request's body to make it available for upstream by_lua customizations.`,
+										Description: `If ` + "`" + `true` + "`" + `, decodes the request's body to make it available for upstream by_lua customizations. Only JSON content type is supported.`,
 									},
 									"forward": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `If false, skips forwarding the incoming request's body to the upstream request.`,
+										Description: `If ` + "`" + `false` + "`" + `, skips forwarding the incoming request's body to the upstream request.`,
 									},
 								},
 								Description: `Callout request body customizations.`,
@@ -637,7 +635,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 							"by_lua": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Lua code that executes before the upstream request is made. Standard Lua sandboxing restrictions apply.`,
+								Description: `Lua code that executes before the upstream request is made. Can produce side effects. Standard Lua sandboxing restrictions apply.`,
 							},
 							"headers": schema.SingleNestedAttribute{
 								Computed: true,
@@ -647,7 +645,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
-										Description: `The custom headers to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_code).`,
+										Description: `The custom headers to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
 										Validators: []validator.Map{
 											mapvalidator.ValueStringsAre(validators.IsValidJSON()),
 										},
@@ -655,7 +653,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 									"forward": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `If false, does not forward request headers to upstream request.`,
+										Description: `If ` + "`" + `false` + "`" + `, does not forward request headers to upstream request.`,
 									},
 								},
 								Description: `Callout request header customizations.`,
@@ -668,7 +666,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
-										Description: `The custom query params to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_code).`,
+										Description: `The custom query params to be added in the upstream HTTP request. Values can contain Lua expressions in the form ` + "`" + `$(some_lua_expression)` + "`" + `. The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
 										Validators: []validator.Map{
 											mapvalidator.ValueStringsAre(validators.IsValidJSON()),
 										},
@@ -676,7 +674,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 									"forward": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `If false, does not forward request query params to upstream request.`,
+										Description: `If ` + "`" + `false` + "`" + `, does not forward request query params to upstream request.`,
 									},
 								},
 								Description: `Upstream request query param customizations.`,

@@ -535,11 +535,11 @@ type RateLimitingAdvancedPluginConfig struct {
 	// The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`. Note if `identifier` is `consumer-group`, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate.
 	Identifier *RateLimitingAdvancedPluginIdentifier `json:"identifier,omitempty"`
 	// One or more requests-per-window limits to apply. There must be a matching number of window limits and sizes specified.
-	Limit []float64 `json:"limit,omitempty"`
+	Limit []float64 `json:"limit"`
 	// The shared dictionary where concurrency control locks are stored. The default shared dictionary is `kong_locks`. The shared dictionary should be declare in nginx-kong.conf.
 	LockDictionaryName *string `json:"lock_dictionary_name,omitempty"`
 	// The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `dictionary_name`, need to be the same.
-	Namespace *string `json:"namespace,omitempty"`
+	Namespace string `json:"namespace"`
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
 	Path  *string                          `json:"path,omitempty"`
 	Redis *RateLimitingAdvancedPluginRedis `json:"redis,omitempty"`
@@ -550,7 +550,7 @@ type RateLimitingAdvancedPluginConfig struct {
 	// How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 will sync the counters in the specified number of seconds. The minimum allowed interval is 0.02 seconds (20ms).
 	SyncRate *float64 `json:"sync_rate,omitempty"`
 	// One or more window sizes to apply a limit to (defined in seconds). There must be a matching number of window limits and sizes specified.
-	WindowSize []float64 `json:"window_size,omitempty"`
+	WindowSize []float64 `json:"window_size"`
 	// Sets the time window type to either `sliding` (default) or `fixed`. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters.
 	WindowType *RateLimitingAdvancedPluginWindowType `json:"window_type,omitempty"`
 }
@@ -627,7 +627,7 @@ func (o *RateLimitingAdvancedPluginConfig) GetIdentifier() *RateLimitingAdvanced
 
 func (o *RateLimitingAdvancedPluginConfig) GetLimit() []float64 {
 	if o == nil {
-		return nil
+		return []float64{}
 	}
 	return o.Limit
 }
@@ -639,9 +639,9 @@ func (o *RateLimitingAdvancedPluginConfig) GetLockDictionaryName() *string {
 	return o.LockDictionaryName
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetNamespace() *string {
+func (o *RateLimitingAdvancedPluginConfig) GetNamespace() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Namespace
 }
@@ -683,7 +683,7 @@ func (o *RateLimitingAdvancedPluginConfig) GetSyncRate() *float64 {
 
 func (o *RateLimitingAdvancedPluginConfig) GetWindowSize() []float64 {
 	if o == nil {
-		return nil
+		return []float64{}
 	}
 	return o.WindowSize
 }
@@ -789,8 +789,8 @@ type RateLimitingAdvancedPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                            `json:"updated_at,omitempty"`
-	Config    *RateLimitingAdvancedPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                           `json:"updated_at,omitempty"`
+	Config    RateLimitingAdvancedPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *RateLimitingAdvancedPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -874,9 +874,9 @@ func (o *RateLimitingAdvancedPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *RateLimitingAdvancedPlugin) GetConfig() *RateLimitingAdvancedPluginConfig {
+func (o *RateLimitingAdvancedPlugin) GetConfig() RateLimitingAdvancedPluginConfig {
 	if o == nil {
-		return nil
+		return RateLimitingAdvancedPluginConfig{}
 	}
 	return o.Config
 }

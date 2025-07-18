@@ -6,5 +6,5 @@ type UpstreamOauthPluginConfig struct {
 	Behavior *Behavior                 `tfsdk:"behavior"`
 	Cache    *UpstreamOauthPluginCache `tfsdk:"cache"`
 	Client   *Client                   `tfsdk:"client"`
-	Oauth    *Oauth                    `tfsdk:"oauth"`
+	Oauth    Oauth                     `tfsdk:"oauth"`
 }

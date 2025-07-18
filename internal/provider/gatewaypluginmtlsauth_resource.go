@@ -40,19 +40,19 @@ type GatewayPluginMtlsAuthResource struct {
 
 // GatewayPluginMtlsAuthResourceModel describes the resource data model.
 type GatewayPluginMtlsAuthResourceModel struct {
-	Config         *tfTypes.MtlsAuthPluginConfig `tfsdk:"config"`
-	ControlPlaneID types.String                  `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                   `tfsdk:"created_at"`
-	Enabled        types.Bool                    `tfsdk:"enabled"`
-	ID             types.String                  `tfsdk:"id"`
-	InstanceName   types.String                  `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering    `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials            `tfsdk:"partials"`
-	Protocols      []types.String                `tfsdk:"protocols"`
-	Route          *tfTypes.Set                  `tfsdk:"route"`
-	Service        *tfTypes.Set                  `tfsdk:"service"`
-	Tags           []types.String                `tfsdk:"tags"`
-	UpdatedAt      types.Int64                   `tfsdk:"updated_at"`
+	Config         tfTypes.MtlsAuthPluginConfig `tfsdk:"config"`
+	ControlPlaneID types.String                 `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                  `tfsdk:"created_at"`
+	Enabled        types.Bool                   `tfsdk:"enabled"`
+	ID             types.String                 `tfsdk:"id"`
+	InstanceName   types.String                 `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering   `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials           `tfsdk:"partials"`
+	Protocols      []types.String               `tfsdk:"protocols"`
+	Route          *tfTypes.Set                 `tfsdk:"route"`
+	Service        *tfTypes.Set                 `tfsdk:"service"`
+	Tags           []types.String               `tfsdk:"tags"`
+	UpdatedAt      types.Int64                  `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginMtlsAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,8 +64,7 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 		MarkdownDescription: "GatewayPluginMtlsAuth Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"allow_partial_chain": schema.BoolAttribute{
 						Computed:    true,
@@ -86,8 +85,7 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 						},
 					},
 					"ca_certificates": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						ElementType: types.StringType,
 						Description: `List of CA Certificates strings to use as Certificate Authorities (CA) when validating a client certificate. At least one is required but you can specify as many as needed. The value of this array is comprised of primary keys (` + "`" + `id` + "`" + `).`,
 					},

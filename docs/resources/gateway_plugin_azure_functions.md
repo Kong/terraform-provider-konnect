@@ -74,11 +74,11 @@ resource "konnect_gateway_plugin_azure_functions" "my_gatewaypluginazurefunction
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied.
@@ -98,12 +98,15 @@ resource "konnect_gateway_plugin_azure_functions" "my_gatewaypluginazurefunction
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
+Required:
+
+- `appname` (String) The Azure app name.
+- `functionname` (String) Name of the Azure function to invoke.
+
 Optional:
 
 - `apikey` (String) The apikey to access the Azure resources. If provided, it is injected as the `x-functions-key` header.
-- `appname` (String) The Azure app name.
 - `clientid` (String) The `clientid` to access the Azure resources. If provided, it is injected as the `x-functions-clientid` header.
-- `functionname` (String) Name of the Azure function to invoke.
 - `hostdomain` (String) The domain where the function resides.
 - `https` (Boolean) Use of HTTPS to connect with the Azure Functions server.
 - `https_verify` (Boolean) Set to `true` to authenticate the Azure Functions server.

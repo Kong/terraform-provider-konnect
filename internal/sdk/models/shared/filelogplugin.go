@@ -80,7 +80,7 @@ type FileLogPluginConfig struct {
 	// Lua code as a key-value map
 	CustomFieldsByLua map[string]any `json:"custom_fields_by_lua,omitempty"`
 	// The file path of the output log file. The plugin creates the log file if it doesn't exist yet.
-	Path *string `json:"path,omitempty"`
+	Path string `json:"path"`
 	// Determines whether the log file is closed and reopened on every request.
 	Reopen *bool `json:"reopen,omitempty"`
 }
@@ -92,9 +92,9 @@ func (o *FileLogPluginConfig) GetCustomFieldsByLua() map[string]any {
 	return o.CustomFieldsByLua
 }
 
-func (o *FileLogPluginConfig) GetPath() *string {
+func (o *FileLogPluginConfig) GetPath() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Path
 }
@@ -207,8 +207,8 @@ type FileLogPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64               `json:"updated_at,omitempty"`
-	Config    *FileLogPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64              `json:"updated_at,omitempty"`
+	Config    FileLogPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *FileLogPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
@@ -290,9 +290,9 @@ func (o *FileLogPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *FileLogPlugin) GetConfig() *FileLogPluginConfig {
+func (o *FileLogPlugin) GetConfig() FileLogPluginConfig {
 	if o == nil {
-		return nil
+		return FileLogPluginConfig{}
 	}
 	return o.Config
 }

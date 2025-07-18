@@ -80,11 +80,11 @@ type AzureFunctionsPluginConfig struct {
 	// The apikey to access the Azure resources. If provided, it is injected as the `x-functions-key` header.
 	Apikey *string `json:"apikey,omitempty"`
 	// The Azure app name.
-	Appname *string `json:"appname,omitempty"`
+	Appname string `json:"appname"`
 	// The `clientid` to access the Azure resources. If provided, it is injected as the `x-functions-clientid` header.
 	Clientid *string `json:"clientid,omitempty"`
 	// Name of the Azure function to invoke.
-	Functionname *string `json:"functionname,omitempty"`
+	Functionname string `json:"functionname"`
 	// The domain where the function resides.
 	Hostdomain *string `json:"hostdomain,omitempty"`
 	// Use of HTTPS to connect with the Azure Functions server.
@@ -106,9 +106,9 @@ func (o *AzureFunctionsPluginConfig) GetApikey() *string {
 	return o.Apikey
 }
 
-func (o *AzureFunctionsPluginConfig) GetAppname() *string {
+func (o *AzureFunctionsPluginConfig) GetAppname() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Appname
 }
@@ -120,9 +120,9 @@ func (o *AzureFunctionsPluginConfig) GetClientid() *string {
 	return o.Clientid
 }
 
-func (o *AzureFunctionsPluginConfig) GetFunctionname() *string {
+func (o *AzureFunctionsPluginConfig) GetFunctionname() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Functionname
 }
@@ -270,8 +270,8 @@ type AzureFunctionsPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                      `json:"updated_at,omitempty"`
-	Config    *AzureFunctionsPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                     `json:"updated_at,omitempty"`
+	Config    AzureFunctionsPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *AzureFunctionsPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
@@ -353,9 +353,9 @@ func (o *AzureFunctionsPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *AzureFunctionsPlugin) GetConfig() *AzureFunctionsPluginConfig {
+func (o *AzureFunctionsPlugin) GetConfig() AzureFunctionsPluginConfig {
 	if o == nil {
-		return nil
+		return AzureFunctionsPluginConfig{}
 	}
 	return o.Config
 }

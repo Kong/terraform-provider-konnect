@@ -229,6 +229,180 @@ func (e *KafkaLogPluginProducerRequestAcks) UnmarshalJSON(data []byte) error {
 	}
 }
 
+type KafkaLogPluginBasic struct {
+	Password string `json:"password"`
+	Username string `json:"username"`
+}
+
+func (o *KafkaLogPluginBasic) GetPassword() string {
+	if o == nil {
+		return ""
+	}
+	return o.Password
+}
+
+func (o *KafkaLogPluginBasic) GetUsername() string {
+	if o == nil {
+		return ""
+	}
+	return o.Username
+}
+
+// KafkaLogPluginMode - Authentication mode to use with the schema registry.
+type KafkaLogPluginMode string
+
+const (
+	KafkaLogPluginModeBasic KafkaLogPluginMode = "basic"
+	KafkaLogPluginModeNone  KafkaLogPluginMode = "none"
+)
+
+func (e KafkaLogPluginMode) ToPointer() *KafkaLogPluginMode {
+	return &e
+}
+func (e *KafkaLogPluginMode) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "basic":
+		fallthrough
+	case "none":
+		*e = KafkaLogPluginMode(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for KafkaLogPluginMode: %v", v)
+	}
+}
+
+type KafkaLogPluginConfigAuthentication struct {
+	Basic *KafkaLogPluginBasic `json:"basic,omitempty"`
+	// Authentication mode to use with the schema registry.
+	Mode *KafkaLogPluginMode `json:"mode,omitempty"`
+}
+
+func (o *KafkaLogPluginConfigAuthentication) GetBasic() *KafkaLogPluginBasic {
+	if o == nil {
+		return nil
+	}
+	return o.Basic
+}
+
+func (o *KafkaLogPluginConfigAuthentication) GetMode() *KafkaLogPluginMode {
+	if o == nil {
+		return nil
+	}
+	return o.Mode
+}
+
+type KafkaLogPluginKeySchema struct {
+	// The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
+	SchemaVersion *string `json:"schema_version,omitempty"`
+	// The name of the subject
+	SubjectName *string `json:"subject_name,omitempty"`
+}
+
+func (o *KafkaLogPluginKeySchema) GetSchemaVersion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SchemaVersion
+}
+
+func (o *KafkaLogPluginKeySchema) GetSubjectName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SubjectName
+}
+
+type KafkaLogPluginValueSchema struct {
+	// The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
+	SchemaVersion *string `json:"schema_version,omitempty"`
+	// The name of the subject
+	SubjectName *string `json:"subject_name,omitempty"`
+}
+
+func (o *KafkaLogPluginValueSchema) GetSchemaVersion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SchemaVersion
+}
+
+func (o *KafkaLogPluginValueSchema) GetSubjectName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SubjectName
+}
+
+type KafkaLogPluginConfluent struct {
+	Authentication KafkaLogPluginConfigAuthentication `json:"authentication"`
+	KeySchema      *KafkaLogPluginKeySchema           `json:"key_schema,omitempty"`
+	// Set to false to disable SSL certificate verification when connecting to the schema registry.
+	SslVerify *bool `json:"ssl_verify,omitempty"`
+	// The TTL in seconds for the schema registry cache.
+	TTL *float64 `json:"ttl,omitempty"`
+	// The URL of the schema registry.
+	URL         *string                    `json:"url,omitempty"`
+	ValueSchema *KafkaLogPluginValueSchema `json:"value_schema,omitempty"`
+}
+
+func (o *KafkaLogPluginConfluent) GetAuthentication() KafkaLogPluginConfigAuthentication {
+	if o == nil {
+		return KafkaLogPluginConfigAuthentication{}
+	}
+	return o.Authentication
+}
+
+func (o *KafkaLogPluginConfluent) GetKeySchema() *KafkaLogPluginKeySchema {
+	if o == nil {
+		return nil
+	}
+	return o.KeySchema
+}
+
+func (o *KafkaLogPluginConfluent) GetSslVerify() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SslVerify
+}
+
+func (o *KafkaLogPluginConfluent) GetTTL() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TTL
+}
+
+func (o *KafkaLogPluginConfluent) GetURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.URL
+}
+
+func (o *KafkaLogPluginConfluent) GetValueSchema() *KafkaLogPluginValueSchema {
+	if o == nil {
+		return nil
+	}
+	return o.ValueSchema
+}
+
+// KafkaLogPluginSchemaRegistry - The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
+type KafkaLogPluginSchemaRegistry struct {
+	Confluent *KafkaLogPluginConfluent `json:"confluent,omitempty"`
+}
+
+func (o *KafkaLogPluginSchemaRegistry) GetConfluent() *KafkaLogPluginConfluent {
+	if o == nil {
+		return nil
+	}
+	return o.Confluent
+}
+
 type KafkaLogPluginSecurity struct {
 	// UUID of certificate entity for mTLS authentication.
 	CertificateID *string `json:"certificate_id,omitempty"`
@@ -260,6 +434,8 @@ type KafkaLogPluginConfig struct {
 	CustomFieldsByLua map[string]any `json:"custom_fields_by_lua,omitempty"`
 	Keepalive         *int64         `json:"keepalive,omitempty"`
 	KeepaliveEnabled  *bool          `json:"keepalive_enabled,omitempty"`
+	// The request query parameter name that contains the Kafka message key. If specified, messages with the same key will be sent to the same Kafka partition, ensuring consistent ordering.
+	KeyQueryArg *string `json:"key_query_arg,omitempty"`
 	// Flag to enable asynchronous mode.
 	ProducerAsync *bool `json:"producer_async,omitempty"`
 	// Maximum number of messages that can be buffered in memory in asynchronous mode.
@@ -277,12 +453,14 @@ type KafkaLogPluginConfig struct {
 	// Maximum number of retry attempts per single Produce request.
 	ProducerRequestRetriesMaxAttempts *int64 `json:"producer_request_retries_max_attempts,omitempty"`
 	// Time to wait for a Produce response in milliseconds
-	ProducerRequestTimeout *int64                  `json:"producer_request_timeout,omitempty"`
-	Security               *KafkaLogPluginSecurity `json:"security,omitempty"`
+	ProducerRequestTimeout *int64 `json:"producer_request_timeout,omitempty"`
+	// The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
+	SchemaRegistry *KafkaLogPluginSchemaRegistry `json:"schema_registry,omitempty"`
+	Security       *KafkaLogPluginSecurity       `json:"security,omitempty"`
 	// Socket timeout in milliseconds.
 	Timeout *int64 `json:"timeout,omitempty"`
 	// The Kafka topic to publish to.
-	Topic *string `json:"topic,omitempty"`
+	Topic string `json:"topic"`
 }
 
 func (o *KafkaLogPluginConfig) GetAuthentication() *KafkaLogPluginAuthentication {
@@ -325,6 +503,13 @@ func (o *KafkaLogPluginConfig) GetKeepaliveEnabled() *bool {
 		return nil
 	}
 	return o.KeepaliveEnabled
+}
+
+func (o *KafkaLogPluginConfig) GetKeyQueryArg() *string {
+	if o == nil {
+		return nil
+	}
+	return o.KeyQueryArg
 }
 
 func (o *KafkaLogPluginConfig) GetProducerAsync() *bool {
@@ -390,6 +575,13 @@ func (o *KafkaLogPluginConfig) GetProducerRequestTimeout() *int64 {
 	return o.ProducerRequestTimeout
 }
 
+func (o *KafkaLogPluginConfig) GetSchemaRegistry() *KafkaLogPluginSchemaRegistry {
+	if o == nil {
+		return nil
+	}
+	return o.SchemaRegistry
+}
+
 func (o *KafkaLogPluginConfig) GetSecurity() *KafkaLogPluginSecurity {
 	if o == nil {
 		return nil
@@ -404,9 +596,9 @@ func (o *KafkaLogPluginConfig) GetTimeout() *int64 {
 	return o.Timeout
 }
 
-func (o *KafkaLogPluginConfig) GetTopic() *string {
+func (o *KafkaLogPluginConfig) GetTopic() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Topic
 }
@@ -499,8 +691,8 @@ type KafkaLogPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                `json:"updated_at,omitempty"`
-	Config    *KafkaLogPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64               `json:"updated_at,omitempty"`
+	Config    KafkaLogPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *KafkaLogPluginConsumer `json:"consumer"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
@@ -582,9 +774,9 @@ func (o *KafkaLogPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *KafkaLogPlugin) GetConfig() *KafkaLogPluginConfig {
+func (o *KafkaLogPlugin) GetConfig() KafkaLogPluginConfig {
 	if o == nil {
-		return nil
+		return KafkaLogPluginConfig{}
 	}
 	return o.Config
 }

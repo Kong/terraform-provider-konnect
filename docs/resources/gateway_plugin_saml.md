@@ -140,11 +140,11 @@ resource "konnect_gateway_plugin_saml" "my_gatewaypluginsaml" {
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
@@ -163,13 +163,17 @@ resource "konnect_gateway_plugin_saml" "my_gatewaypluginsaml" {
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
+Required:
+
+- `assertion_consumer_path` (String) A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
+- `idp_sso_url` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
+- `issuer` (String) The unique identifier of the IdP application. Formatted as a URL containing information about the IdP so the SP can validate that the SAML assertions it receives are issued from the correct IdP.
+- `session_secret` (String) The session secret. This must be a random string of 32 characters from the base64 alphabet (letters, numbers, `/`, `_` and `+`). It is used as the secret key for encrypting session data as well as state information that is sent to the IdP in the authentication exchange.
+
 Optional:
 
 - `anonymous` (String) An optional string (consumer UUID or username) value to use as an “anonymous” consumer. If not set, a Kong Consumer must exist for the SAML IdP user credentials, mapping the username format to the Kong Consumer username.
-- `assertion_consumer_path` (String) A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
 - `idp_certificate` (String) The public certificate provided by the IdP. This is used to validate responses from the IdP.  Only include the contents of the certificate. Do not include the header (`BEGIN CERTIFICATE`) and footer (`END CERTIFICATE`) lines.
-- `idp_sso_url` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
-- `issuer` (String) The unique identifier of the IdP application. Formatted as a URL containing information about the IdP so the SP can validate that the SAML assertions it receives are issued from the correct IdP.
 - `nameid_format` (String) The requested `NameId` format. Options available are: - `Unspecified` - `EmailAddress` - `Persistent` - `Transient`. must be one of ["EmailAddress", "Persistent", "Transient", "Unspecified"]
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--redis))
 - `request_digest_algorithm` (String) The digest algorithm for Authn requests: - `SHA256` - `SHA1`. must be one of ["SHA1", "SHA256"]
@@ -202,7 +206,6 @@ Optional:
 - `session_request_headers` (List of String)
 - `session_response_headers` (List of String)
 - `session_rolling_timeout` (Number) The session cookie absolute timeout in seconds. Specifies how long the session can be used until it is no longer valid.
-- `session_secret` (String) The session secret. This must be a random string of 32 characters from the base64 alphabet (letters, numbers, `/`, `_` and `+`). It is used as the secret key for encrypting session data as well as state information that is sent to the IdP in the authentication exchange.
 - `session_storage` (String) The session storage for session data: - `cookie`: stores session data with the session cookie. The session cannot be invalidated or revoked without changing the session secret, but is stateless, and doesn't require a database. - `memcached`: stores session data in memcached - `redis`: stores session data in Redis. must be one of ["cookie", "memcache", "memcached", "redis"]
 - `session_store_metadata` (Boolean) Configures whether or not session metadata should be stored. This includes information about the active sessions for the `specific_audience` belonging to a specific subject.
 - `validate_assertion_signature` (Boolean) Enable signature validation for SAML responses.

@@ -70,11 +70,11 @@ resource "konnect_gateway_plugin_udp_log" "my_gatewaypluginudplog" {
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied.
@@ -94,11 +94,14 @@ resource "konnect_gateway_plugin_udp_log" "my_gatewaypluginudplog" {
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
+Required:
+
+- `host` (String) A string representing a host name, such as example.com.
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
+
 Optional:
 
 - `custom_fields_by_lua` (Map of String) Lua code as a key-value map
-- `host` (String) A string representing a host name, such as example.com.
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `timeout` (Number) An optional timeout in milliseconds when sending data to the upstream server.
 
 

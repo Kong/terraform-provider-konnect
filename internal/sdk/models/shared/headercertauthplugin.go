@@ -194,15 +194,15 @@ type HeaderCertAuthPluginConfig struct {
 	// Certificate property to use as the authenticated group. Valid values are `CN` (Common Name) or `DN` (Distinguished Name). Once `skip_consumer_lookup` is applied, any client with a valid certificate can access the Service/API. To restrict usage to only some of the authenticated users, also add the ACL plugin (not covered here) and create allowed or denied groups of users.
 	AuthenticatedGroupBy *AuthenticatedGroupBy `json:"authenticated_group_by,omitempty"`
 	// List of CA Certificates strings to use as Certificate Authorities (CA) when validating a client certificate. At least one is required but you can specify as many as needed. The value of this array is comprised of primary keys (`id`).
-	CaCertificates []string `json:"ca_certificates,omitempty"`
+	CaCertificates []string `json:"ca_certificates"`
 	// Cache expiry time in seconds.
 	CacheTTL *float64 `json:"cache_ttl,omitempty"`
 	// The length of time in milliseconds between refreshes of the revocation check status cache.
 	CertCacheTTL *float64 `json:"cert_cache_ttl,omitempty"`
 	// Format of the certificate header. Supported formats: `base64_encoded`, `url_encoded`.
-	CertificateHeaderFormat *CertificateHeaderFormat `json:"certificate_header_format,omitempty"`
+	CertificateHeaderFormat CertificateHeaderFormat `json:"certificate_header_format"`
 	// Name of the header that contains the certificate, received from the WAF or other L7 downstream proxy.
-	CertificateHeaderName *string `json:"certificate_header_name,omitempty"`
+	CertificateHeaderName string `json:"certificate_header_name"`
 	// Whether to match the subject name of the client-supplied certificate against consumer's `username` and/or `custom_id` attribute. If set to `[]` (the empty array), then auto-matching is disabled.
 	ConsumerBy []ConsumerBy `json:"consumer_by,omitempty"`
 	// The UUID or username of the consumer to use when a trusted client certificate is presented but no consumer matches. Note that this value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
@@ -248,7 +248,7 @@ func (o *HeaderCertAuthPluginConfig) GetAuthenticatedGroupBy() *AuthenticatedGro
 
 func (o *HeaderCertAuthPluginConfig) GetCaCertificates() []string {
 	if o == nil {
-		return nil
+		return []string{}
 	}
 	return o.CaCertificates
 }
@@ -267,16 +267,16 @@ func (o *HeaderCertAuthPluginConfig) GetCertCacheTTL() *float64 {
 	return o.CertCacheTTL
 }
 
-func (o *HeaderCertAuthPluginConfig) GetCertificateHeaderFormat() *CertificateHeaderFormat {
+func (o *HeaderCertAuthPluginConfig) GetCertificateHeaderFormat() CertificateHeaderFormat {
 	if o == nil {
-		return nil
+		return CertificateHeaderFormat("")
 	}
 	return o.CertificateHeaderFormat
 }
 
-func (o *HeaderCertAuthPluginConfig) GetCertificateHeaderName() *string {
+func (o *HeaderCertAuthPluginConfig) GetCertificateHeaderName() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.CertificateHeaderName
 }
@@ -421,8 +421,8 @@ type HeaderCertAuthPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                      `json:"updated_at,omitempty"`
-	Config    *HeaderCertAuthPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                     `json:"updated_at,omitempty"`
+	Config    HeaderCertAuthPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
 	Protocols []HeaderCertAuthPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -502,9 +502,9 @@ func (o *HeaderCertAuthPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *HeaderCertAuthPlugin) GetConfig() *HeaderCertAuthPluginConfig {
+func (o *HeaderCertAuthPlugin) GetConfig() HeaderCertAuthPluginConfig {
 	if o == nil {
-		return nil
+		return HeaderCertAuthPluginConfig{}
 	}
 	return o.Config
 }

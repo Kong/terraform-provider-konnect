@@ -28,6 +28,11 @@ func (r *GatewayPluginAiPromptGuardResourceModel) RefreshFromSharedAiPromptGuard
 			for _, v := range resp.Config.DenyPatterns {
 				r.Config.DenyPatterns = append(r.Config.DenyPatterns, types.StringValue(v))
 			}
+			if resp.Config.GenaiCategory != nil {
+				r.Config.GenaiCategory = types.StringValue(string(*resp.Config.GenaiCategory))
+			} else {
+				r.Config.GenaiCategory = types.StringNull()
+			}
 			if resp.Config.LlmFormat != nil {
 				r.Config.LlmFormat = types.StringValue(string(*resp.Config.LlmFormat))
 			} else {
@@ -110,9 +115,11 @@ func (r *GatewayPluginAiPromptGuardResourceModel) RefreshFromSharedAiPromptGuard
 			r.Service = &tfTypes.Set{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
+		if resp.Tags != nil {
+			r.Tags = make([]types.String, 0, len(resp.Tags))
+			for _, v := range resp.Tags {
+				r.Tags = append(r.Tags, types.StringValue(v))
+			}
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
@@ -283,9 +290,12 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToSharedAiPromptGuardPlugin(ct
 			})
 		}
 	}
-	tags := make([]string, 0, len(r.Tags))
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
+	var tags []string
+	if r.Tags != nil {
+		tags = make([]string, 0, len(r.Tags))
+		for _, tagsItem := range r.Tags {
+			tags = append(tags, tagsItem.ValueString())
+		}
 	}
 	updatedAt := new(int64)
 	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
@@ -309,6 +319,12 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToSharedAiPromptGuardPlugin(ct
 		for _, denyPatternsItem := range r.Config.DenyPatterns {
 			denyPatterns = append(denyPatterns, denyPatternsItem.ValueString())
 		}
+		genaiCategory := new(shared.GenaiCategory)
+		if !r.Config.GenaiCategory.IsUnknown() && !r.Config.GenaiCategory.IsNull() {
+			*genaiCategory = shared.GenaiCategory(r.Config.GenaiCategory.ValueString())
+		} else {
+			genaiCategory = nil
+		}
 		llmFormat := new(shared.AiPromptGuardPluginLlmFormat)
 		if !r.Config.LlmFormat.IsUnknown() && !r.Config.LlmFormat.IsNull() {
 			*llmFormat = shared.AiPromptGuardPluginLlmFormat(r.Config.LlmFormat.ValueString())
@@ -331,6 +347,7 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToSharedAiPromptGuardPlugin(ct
 			AllowAllConversationHistory: allowAllConversationHistory,
 			AllowPatterns:               allowPatterns,
 			DenyPatterns:                denyPatterns,
+			GenaiCategory:               genaiCategory,
 			LlmFormat:                   llmFormat,
 			MatchAllRoles:               matchAllRoles,
 			MaxRequestBodySize:          maxRequestBodySize,

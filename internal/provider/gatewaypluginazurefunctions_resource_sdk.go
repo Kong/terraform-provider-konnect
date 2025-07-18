@@ -15,21 +15,16 @@ func (r *GatewayPluginAzureFunctionsResourceModel) RefreshFromSharedAzureFunctio
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.AzureFunctionsPluginConfig{}
-			r.Config.Apikey = types.StringPointerValue(resp.Config.Apikey)
-			r.Config.Appname = types.StringPointerValue(resp.Config.Appname)
-			r.Config.Clientid = types.StringPointerValue(resp.Config.Clientid)
-			r.Config.Functionname = types.StringPointerValue(resp.Config.Functionname)
-			r.Config.Hostdomain = types.StringPointerValue(resp.Config.Hostdomain)
-			r.Config.HTTPS = types.BoolPointerValue(resp.Config.HTTPS)
-			r.Config.HTTPSVerify = types.BoolPointerValue(resp.Config.HTTPSVerify)
-			r.Config.Keepalive = types.Float64PointerValue(resp.Config.Keepalive)
-			r.Config.Routeprefix = types.StringPointerValue(resp.Config.Routeprefix)
-			r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
-		}
+		r.Config.Apikey = types.StringPointerValue(resp.Config.Apikey)
+		r.Config.Appname = types.StringValue(resp.Config.Appname)
+		r.Config.Clientid = types.StringPointerValue(resp.Config.Clientid)
+		r.Config.Functionname = types.StringValue(resp.Config.Functionname)
+		r.Config.Hostdomain = types.StringPointerValue(resp.Config.Hostdomain)
+		r.Config.HTTPS = types.BoolPointerValue(resp.Config.HTTPS)
+		r.Config.HTTPSVerify = types.BoolPointerValue(resp.Config.HTTPSVerify)
+		r.Config.Keepalive = types.Float64PointerValue(resp.Config.Keepalive)
+		r.Config.Routeprefix = types.StringPointerValue(resp.Config.Routeprefix)
+		r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -98,9 +93,11 @@ func (r *GatewayPluginAzureFunctionsResourceModel) RefreshFromSharedAzureFunctio
 			r.Service = &tfTypes.Set{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
+		if resp.Tags != nil {
+			r.Tags = make([]types.String, 0, len(resp.Tags))
+			for _, v := range resp.Tags {
+				r.Tags = append(r.Tags, types.StringValue(v))
+			}
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
@@ -271,9 +268,12 @@ func (r *GatewayPluginAzureFunctionsResourceModel) ToSharedAzureFunctionsPlugin(
 			})
 		}
 	}
-	tags := make([]string, 0, len(r.Tags))
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
+	var tags []string
+	if r.Tags != nil {
+		tags = make([]string, 0, len(r.Tags))
+		for _, tagsItem := range r.Tags {
+			tags = append(tags, tagsItem.ValueString())
+		}
 	}
 	updatedAt := new(int64)
 	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
@@ -281,80 +281,71 @@ func (r *GatewayPluginAzureFunctionsResourceModel) ToSharedAzureFunctionsPlugin(
 	} else {
 		updatedAt = nil
 	}
-	var config *shared.AzureFunctionsPluginConfig
-	if r.Config != nil {
-		apikey := new(string)
-		if !r.Config.Apikey.IsUnknown() && !r.Config.Apikey.IsNull() {
-			*apikey = r.Config.Apikey.ValueString()
-		} else {
-			apikey = nil
-		}
-		appname := new(string)
-		if !r.Config.Appname.IsUnknown() && !r.Config.Appname.IsNull() {
-			*appname = r.Config.Appname.ValueString()
-		} else {
-			appname = nil
-		}
-		clientid := new(string)
-		if !r.Config.Clientid.IsUnknown() && !r.Config.Clientid.IsNull() {
-			*clientid = r.Config.Clientid.ValueString()
-		} else {
-			clientid = nil
-		}
-		functionname := new(string)
-		if !r.Config.Functionname.IsUnknown() && !r.Config.Functionname.IsNull() {
-			*functionname = r.Config.Functionname.ValueString()
-		} else {
-			functionname = nil
-		}
-		hostdomain := new(string)
-		if !r.Config.Hostdomain.IsUnknown() && !r.Config.Hostdomain.IsNull() {
-			*hostdomain = r.Config.Hostdomain.ValueString()
-		} else {
-			hostdomain = nil
-		}
-		https := new(bool)
-		if !r.Config.HTTPS.IsUnknown() && !r.Config.HTTPS.IsNull() {
-			*https = r.Config.HTTPS.ValueBool()
-		} else {
-			https = nil
-		}
-		httpsVerify := new(bool)
-		if !r.Config.HTTPSVerify.IsUnknown() && !r.Config.HTTPSVerify.IsNull() {
-			*httpsVerify = r.Config.HTTPSVerify.ValueBool()
-		} else {
-			httpsVerify = nil
-		}
-		keepalive := new(float64)
-		if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
-			*keepalive = r.Config.Keepalive.ValueFloat64()
-		} else {
-			keepalive = nil
-		}
-		routeprefix := new(string)
-		if !r.Config.Routeprefix.IsUnknown() && !r.Config.Routeprefix.IsNull() {
-			*routeprefix = r.Config.Routeprefix.ValueString()
-		} else {
-			routeprefix = nil
-		}
-		timeout := new(float64)
-		if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
-			*timeout = r.Config.Timeout.ValueFloat64()
-		} else {
-			timeout = nil
-		}
-		config = &shared.AzureFunctionsPluginConfig{
-			Apikey:       apikey,
-			Appname:      appname,
-			Clientid:     clientid,
-			Functionname: functionname,
-			Hostdomain:   hostdomain,
-			HTTPS:        https,
-			HTTPSVerify:  httpsVerify,
-			Keepalive:    keepalive,
-			Routeprefix:  routeprefix,
-			Timeout:      timeout,
-		}
+	apikey := new(string)
+	if !r.Config.Apikey.IsUnknown() && !r.Config.Apikey.IsNull() {
+		*apikey = r.Config.Apikey.ValueString()
+	} else {
+		apikey = nil
+	}
+	var appname string
+	appname = r.Config.Appname.ValueString()
+
+	clientid := new(string)
+	if !r.Config.Clientid.IsUnknown() && !r.Config.Clientid.IsNull() {
+		*clientid = r.Config.Clientid.ValueString()
+	} else {
+		clientid = nil
+	}
+	var functionname string
+	functionname = r.Config.Functionname.ValueString()
+
+	hostdomain := new(string)
+	if !r.Config.Hostdomain.IsUnknown() && !r.Config.Hostdomain.IsNull() {
+		*hostdomain = r.Config.Hostdomain.ValueString()
+	} else {
+		hostdomain = nil
+	}
+	https := new(bool)
+	if !r.Config.HTTPS.IsUnknown() && !r.Config.HTTPS.IsNull() {
+		*https = r.Config.HTTPS.ValueBool()
+	} else {
+		https = nil
+	}
+	httpsVerify := new(bool)
+	if !r.Config.HTTPSVerify.IsUnknown() && !r.Config.HTTPSVerify.IsNull() {
+		*httpsVerify = r.Config.HTTPSVerify.ValueBool()
+	} else {
+		httpsVerify = nil
+	}
+	keepalive := new(float64)
+	if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
+		*keepalive = r.Config.Keepalive.ValueFloat64()
+	} else {
+		keepalive = nil
+	}
+	routeprefix := new(string)
+	if !r.Config.Routeprefix.IsUnknown() && !r.Config.Routeprefix.IsNull() {
+		*routeprefix = r.Config.Routeprefix.ValueString()
+	} else {
+		routeprefix = nil
+	}
+	timeout := new(float64)
+	if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
+		*timeout = r.Config.Timeout.ValueFloat64()
+	} else {
+		timeout = nil
+	}
+	config := shared.AzureFunctionsPluginConfig{
+		Apikey:       apikey,
+		Appname:      appname,
+		Clientid:     clientid,
+		Functionname: functionname,
+		Hostdomain:   hostdomain,
+		HTTPS:        https,
+		HTTPSVerify:  httpsVerify,
+		Keepalive:    keepalive,
+		Routeprefix:  routeprefix,
+		Timeout:      timeout,
 	}
 	var consumer *shared.AzureFunctionsPluginConsumer
 	if r.Consumer != nil {

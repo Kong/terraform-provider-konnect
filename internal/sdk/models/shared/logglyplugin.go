@@ -258,7 +258,7 @@ type LogglyPluginConfig struct {
 	CustomFieldsByLua map[string]any `json:"custom_fields_by_lua,omitempty"`
 	// A string representing a host name, such as example.com.
 	Host     *string   `json:"host,omitempty"`
-	Key      *string   `json:"key,omitempty"`
+	Key      string    `json:"key"`
 	LogLevel *LogLevel `json:"log_level,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port                 *int64                `json:"port,omitempty"`
@@ -289,9 +289,9 @@ func (o *LogglyPluginConfig) GetHost() *string {
 	return o.Host
 }
 
-func (o *LogglyPluginConfig) GetKey() *string {
+func (o *LogglyPluginConfig) GetKey() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Key
 }
@@ -439,8 +439,8 @@ type LogglyPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64              `json:"updated_at,omitempty"`
-	Config    *LogglyPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64             `json:"updated_at,omitempty"`
+	Config    LogglyPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *LogglyPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
@@ -522,9 +522,9 @@ func (o *LogglyPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *LogglyPlugin) GetConfig() *LogglyPluginConfig {
+func (o *LogglyPlugin) GetConfig() LogglyPluginConfig {
 	if o == nil {
-		return nil
+		return LogglyPluginConfig{}
 	}
 	return o.Config
 }

@@ -13,7 +13,7 @@ type AiRequestTransformerPluginConfig struct {
 	HTTPSProxyHost               types.String `tfsdk:"https_proxy_host"`
 	HTTPSProxyPort               types.Int64  `tfsdk:"https_proxy_port"`
 	HTTPSVerify                  types.Bool   `tfsdk:"https_verify"`
-	Llm                          *Llm         `tfsdk:"llm"`
+	Llm                          Llm          `tfsdk:"llm"`
 	MaxRequestBodySize           types.Int64  `tfsdk:"max_request_body_size"`
 	Prompt                       types.String `tfsdk:"prompt"`
 	TransformationExtractPattern types.String `tfsdk:"transformation_extract_pattern"`

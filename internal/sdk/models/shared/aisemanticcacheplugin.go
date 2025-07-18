@@ -271,6 +271,10 @@ type AiSemanticCachePluginBedrock struct {
 	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
+	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
+	EmbeddingsNormalize *bool `json:"embeddings_normalize,omitempty"`
+	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
+	PerformanceConfigLatency *string `json:"performance_config_latency,omitempty"`
 }
 
 func (o *AiSemanticCachePluginBedrock) GetAwsAssumeRoleArn() *string {
@@ -299,6 +303,20 @@ func (o *AiSemanticCachePluginBedrock) GetAwsStsEndpointURL() *string {
 		return nil
 	}
 	return o.AwsStsEndpointURL
+}
+
+func (o *AiSemanticCachePluginBedrock) GetEmbeddingsNormalize() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EmbeddingsNormalize
+}
+
+func (o *AiSemanticCachePluginBedrock) GetPerformanceConfigLatency() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PerformanceConfigLatency
 }
 
 type AiSemanticCachePluginGemini struct {
@@ -438,16 +456,16 @@ func (e *AiSemanticCachePluginProvider) UnmarshalJSON(data []byte) error {
 
 type AiSemanticCachePluginModel struct {
 	// Model name to execute.
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name"`
 	// Key/value settings for the model
 	Options *AiSemanticCachePluginOptions `json:"options,omitempty"`
 	// AI provider format to use for embeddings API
-	Provider *AiSemanticCachePluginProvider `json:"provider,omitempty"`
+	Provider AiSemanticCachePluginProvider `json:"provider"`
 }
 
-func (o *AiSemanticCachePluginModel) GetName() *string {
+func (o *AiSemanticCachePluginModel) GetName() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Name
 }
@@ -459,16 +477,16 @@ func (o *AiSemanticCachePluginModel) GetOptions() *AiSemanticCachePluginOptions 
 	return o.Options
 }
 
-func (o *AiSemanticCachePluginModel) GetProvider() *AiSemanticCachePluginProvider {
+func (o *AiSemanticCachePluginModel) GetProvider() AiSemanticCachePluginProvider {
 	if o == nil {
-		return nil
+		return AiSemanticCachePluginProvider("")
 	}
 	return o.Provider
 }
 
 type AiSemanticCachePluginEmbeddings struct {
-	Auth  *AiSemanticCachePluginAuth  `json:"auth,omitempty"`
-	Model *AiSemanticCachePluginModel `json:"model,omitempty"`
+	Auth  *AiSemanticCachePluginAuth `json:"auth,omitempty"`
+	Model AiSemanticCachePluginModel `json:"model"`
 }
 
 func (o *AiSemanticCachePluginEmbeddings) GetAuth() *AiSemanticCachePluginAuth {
@@ -478,9 +496,9 @@ func (o *AiSemanticCachePluginEmbeddings) GetAuth() *AiSemanticCachePluginAuth {
 	return o.Auth
 }
 
-func (o *AiSemanticCachePluginEmbeddings) GetModel() *AiSemanticCachePluginModel {
+func (o *AiSemanticCachePluginEmbeddings) GetModel() AiSemanticCachePluginModel {
 	if o == nil {
-		return nil
+		return AiSemanticCachePluginModel{}
 	}
 	return o.Model
 }
@@ -489,9 +507,11 @@ func (o *AiSemanticCachePluginEmbeddings) GetModel() *AiSemanticCachePluginModel
 type AiSemanticCachePluginLlmFormat string
 
 const (
-	AiSemanticCachePluginLlmFormatBedrock AiSemanticCachePluginLlmFormat = "bedrock"
-	AiSemanticCachePluginLlmFormatGemini  AiSemanticCachePluginLlmFormat = "gemini"
-	AiSemanticCachePluginLlmFormatOpenai  AiSemanticCachePluginLlmFormat = "openai"
+	AiSemanticCachePluginLlmFormatBedrock     AiSemanticCachePluginLlmFormat = "bedrock"
+	AiSemanticCachePluginLlmFormatCohere      AiSemanticCachePluginLlmFormat = "cohere"
+	AiSemanticCachePluginLlmFormatGemini      AiSemanticCachePluginLlmFormat = "gemini"
+	AiSemanticCachePluginLlmFormatHuggingface AiSemanticCachePluginLlmFormat = "huggingface"
+	AiSemanticCachePluginLlmFormatOpenai      AiSemanticCachePluginLlmFormat = "openai"
 )
 
 func (e AiSemanticCachePluginLlmFormat) ToPointer() *AiSemanticCachePluginLlmFormat {
@@ -505,7 +525,11 @@ func (e *AiSemanticCachePluginLlmFormat) UnmarshalJSON(data []byte) error {
 	switch v {
 	case "bedrock":
 		fallthrough
+	case "cohere":
+		fallthrough
 	case "gemini":
+		fallthrough
+	case "huggingface":
 		fallthrough
 	case "openai":
 		*e = AiSemanticCachePluginLlmFormat(v)
@@ -976,27 +1000,27 @@ func (e *AiSemanticCachePluginStrategy) UnmarshalJSON(data []byte) error {
 
 type AiSemanticCachePluginVectordb struct {
 	// the desired dimensionality for the vectors
-	Dimensions *int64 `json:"dimensions,omitempty"`
+	Dimensions int64 `json:"dimensions"`
 	// the distance metric to use for vector searches
-	DistanceMetric *AiSemanticCachePluginDistanceMetric `json:"distance_metric,omitempty"`
-	Pgvector       *AiSemanticCachePluginPgvector       `json:"pgvector,omitempty"`
-	Redis          *AiSemanticCachePluginRedis          `json:"redis,omitempty"`
+	DistanceMetric AiSemanticCachePluginDistanceMetric `json:"distance_metric"`
+	Pgvector       *AiSemanticCachePluginPgvector      `json:"pgvector,omitempty"`
+	Redis          *AiSemanticCachePluginRedis         `json:"redis,omitempty"`
 	// which vector database driver to use
-	Strategy *AiSemanticCachePluginStrategy `json:"strategy,omitempty"`
+	Strategy AiSemanticCachePluginStrategy `json:"strategy"`
 	// the default similarity threshold for accepting semantic search results (float)
-	Threshold *float64 `json:"threshold,omitempty"`
+	Threshold float64 `json:"threshold"`
 }
 
-func (o *AiSemanticCachePluginVectordb) GetDimensions() *int64 {
+func (o *AiSemanticCachePluginVectordb) GetDimensions() int64 {
 	if o == nil {
-		return nil
+		return 0
 	}
 	return o.Dimensions
 }
 
-func (o *AiSemanticCachePluginVectordb) GetDistanceMetric() *AiSemanticCachePluginDistanceMetric {
+func (o *AiSemanticCachePluginVectordb) GetDistanceMetric() AiSemanticCachePluginDistanceMetric {
 	if o == nil {
-		return nil
+		return AiSemanticCachePluginDistanceMetric("")
 	}
 	return o.DistanceMetric
 }
@@ -1015,16 +1039,16 @@ func (o *AiSemanticCachePluginVectordb) GetRedis() *AiSemanticCachePluginRedis {
 	return o.Redis
 }
 
-func (o *AiSemanticCachePluginVectordb) GetStrategy() *AiSemanticCachePluginStrategy {
+func (o *AiSemanticCachePluginVectordb) GetStrategy() AiSemanticCachePluginStrategy {
 	if o == nil {
-		return nil
+		return AiSemanticCachePluginStrategy("")
 	}
 	return o.Strategy
 }
 
-func (o *AiSemanticCachePluginVectordb) GetThreshold() *float64 {
+func (o *AiSemanticCachePluginVectordb) GetThreshold() float64 {
 	if o == nil {
-		return nil
+		return 0.0
 	}
 	return o.Threshold
 }
@@ -1033,8 +1057,8 @@ type AiSemanticCachePluginConfig struct {
 	// When enabled, respect the Cache-Control behaviors defined in RFC7234.
 	CacheControl *bool `json:"cache_control,omitempty"`
 	// TTL in seconds of cache entities. Must be a value greater than 0.
-	CacheTTL   *int64                           `json:"cache_ttl,omitempty"`
-	Embeddings *AiSemanticCachePluginEmbeddings `json:"embeddings,omitempty"`
+	CacheTTL   *int64                          `json:"cache_ttl,omitempty"`
+	Embeddings AiSemanticCachePluginEmbeddings `json:"embeddings"`
 	// When enabled, a first check for exact query will be done. It will impact DB size
 	ExactCaching *bool `json:"exact_caching,omitempty"`
 	// Ignore and discard any assistant prompts when Vectorizing the request
@@ -1048,8 +1072,8 @@ type AiSemanticCachePluginConfig struct {
 	// Number of messages in the chat history to Vectorize/Cache
 	MessageCountback *float64 `json:"message_countback,omitempty"`
 	// Halt the LLM request process in case of a caching system failure
-	StopOnFailure *bool                          `json:"stop_on_failure,omitempty"`
-	Vectordb      *AiSemanticCachePluginVectordb `json:"vectordb,omitempty"`
+	StopOnFailure *bool                         `json:"stop_on_failure,omitempty"`
+	Vectordb      AiSemanticCachePluginVectordb `json:"vectordb"`
 }
 
 func (o *AiSemanticCachePluginConfig) GetCacheControl() *bool {
@@ -1066,9 +1090,9 @@ func (o *AiSemanticCachePluginConfig) GetCacheTTL() *int64 {
 	return o.CacheTTL
 }
 
-func (o *AiSemanticCachePluginConfig) GetEmbeddings() *AiSemanticCachePluginEmbeddings {
+func (o *AiSemanticCachePluginConfig) GetEmbeddings() AiSemanticCachePluginEmbeddings {
 	if o == nil {
-		return nil
+		return AiSemanticCachePluginEmbeddings{}
 	}
 	return o.Embeddings
 }
@@ -1122,9 +1146,9 @@ func (o *AiSemanticCachePluginConfig) GetStopOnFailure() *bool {
 	return o.StopOnFailure
 }
 
-func (o *AiSemanticCachePluginConfig) GetVectordb() *AiSemanticCachePluginVectordb {
+func (o *AiSemanticCachePluginConfig) GetVectordb() AiSemanticCachePluginVectordb {
 	if o == nil {
-		return nil
+		return AiSemanticCachePluginVectordb{}
 	}
 	return o.Vectordb
 }
@@ -1223,8 +1247,8 @@ type AiSemanticCachePlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                       `json:"updated_at,omitempty"`
-	Config    *AiSemanticCachePluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                      `json:"updated_at,omitempty"`
+	Config    AiSemanticCachePluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *AiSemanticCachePluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -1308,9 +1332,9 @@ func (o *AiSemanticCachePlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *AiSemanticCachePlugin) GetConfig() *AiSemanticCachePluginConfig {
+func (o *AiSemanticCachePlugin) GetConfig() AiSemanticCachePluginConfig {
 	if o == nil {
-		return nil
+		return AiSemanticCachePluginConfig{}
 	}
 	return o.Config
 }

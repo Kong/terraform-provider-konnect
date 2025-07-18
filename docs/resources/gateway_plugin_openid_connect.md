@@ -524,11 +524,11 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
@@ -546,6 +546,10 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
 
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
+
+Required:
+
+- `issuer` (String) The discovery endpoint (or the issuer identifier). When there is no discovery endpoint, please also configure `config.using_pseudo_issuer=true`.
 
 Optional:
 
@@ -644,7 +648,6 @@ Optional:
 - `introspection_post_args_names` (List of String) Extra post argument names passed to the introspection endpoint.
 - `introspection_post_args_values` (List of String) Extra post argument values passed to the introspection endpoint.
 - `introspection_token_param_name` (String) Designate token's parameter name for introspection.
-- `issuer` (String) The discovery endpoint (or the issuer identifier). When there is no discovery endpoint, please also configure `config.using_pseudo_issuer=true`.
 - `issuers_allowed` (List of String) The issuers allowed to be present in the tokens (`iss` claim).
 - `jwt_session_claim` (String) The claim to match against the JWT session cookie.
 - `jwt_session_cookie` (String) The name of the JWT session cookie.

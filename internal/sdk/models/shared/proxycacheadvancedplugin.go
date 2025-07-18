@@ -464,7 +464,7 @@ type ProxyCacheAdvancedPluginConfig struct {
 	// Number of seconds to keep resources in the storage backend. This value is independent of `cache_ttl` or resource TTLs defined by Cache-Control behaviors.
 	StorageTTL *int64 `json:"storage_ttl,omitempty"`
 	// The backing data store in which to hold cache entities. Accepted values are: `memory` and `redis`.
-	Strategy *ProxyCacheAdvancedPluginStrategy `json:"strategy,omitempty"`
+	Strategy ProxyCacheAdvancedPluginStrategy `json:"strategy"`
 	// Relevant headers considered for the cache key. If undefined, none of the headers are taken into consideration.
 	VaryHeaders []string `json:"vary_headers,omitempty"`
 	// Relevant query parameters considered for the cache key. If undefined, all params are taken into consideration. By default, the max number of params accepted is 100. You can change this value via the `lua_max_post_args` in `kong.conf`.
@@ -548,9 +548,9 @@ func (o *ProxyCacheAdvancedPluginConfig) GetStorageTTL() *int64 {
 	return o.StorageTTL
 }
 
-func (o *ProxyCacheAdvancedPluginConfig) GetStrategy() *ProxyCacheAdvancedPluginStrategy {
+func (o *ProxyCacheAdvancedPluginConfig) GetStrategy() ProxyCacheAdvancedPluginStrategy {
 	if o == nil {
-		return nil
+		return ProxyCacheAdvancedPluginStrategy("")
 	}
 	return o.Strategy
 }
@@ -663,8 +663,8 @@ type ProxyCacheAdvancedPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                          `json:"updated_at,omitempty"`
-	Config    *ProxyCacheAdvancedPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                         `json:"updated_at,omitempty"`
+	Config    ProxyCacheAdvancedPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *ProxyCacheAdvancedPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -748,9 +748,9 @@ func (o *ProxyCacheAdvancedPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *ProxyCacheAdvancedPlugin) GetConfig() *ProxyCacheAdvancedPluginConfig {
+func (o *ProxyCacheAdvancedPlugin) GetConfig() ProxyCacheAdvancedPluginConfig {
 	if o == nil {
-		return nil
+		return ProxyCacheAdvancedPluginConfig{}
 	}
 	return o.Config
 }

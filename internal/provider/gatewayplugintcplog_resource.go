@@ -41,20 +41,20 @@ type GatewayPluginTCPLogResource struct {
 
 // GatewayPluginTCPLogResourceModel describes the resource data model.
 type GatewayPluginTCPLogResourceModel struct {
-	Config         *tfTypes.TCPLogPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.Set                `tfsdk:"consumer"`
-	ControlPlaneID types.String                `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                 `tfsdk:"created_at"`
-	Enabled        types.Bool                  `tfsdk:"enabled"`
-	ID             types.String                `tfsdk:"id"`
-	InstanceName   types.String                `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering  `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials          `tfsdk:"partials"`
-	Protocols      []types.String              `tfsdk:"protocols"`
-	Route          *tfTypes.Set                `tfsdk:"route"`
-	Service        *tfTypes.Set                `tfsdk:"service"`
-	Tags           []types.String              `tfsdk:"tags"`
-	UpdatedAt      types.Int64                 `tfsdk:"updated_at"`
+	Config         tfTypes.TCPLogPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.Set               `tfsdk:"consumer"`
+	ControlPlaneID types.String               `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                `tfsdk:"created_at"`
+	Enabled        types.Bool                 `tfsdk:"enabled"`
+	ID             types.String               `tfsdk:"id"`
+	InstanceName   types.String               `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials         `tfsdk:"partials"`
+	Protocols      []types.String             `tfsdk:"protocols"`
+	Route          *tfTypes.Set               `tfsdk:"route"`
+	Service        *tfTypes.Set               `tfsdk:"service"`
+	Tags           []types.String             `tfsdk:"tags"`
+	UpdatedAt      types.Int64                `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginTCPLogResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -66,8 +66,7 @@ func (r *GatewayPluginTCPLogResource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "GatewayPluginTCPLog Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"custom_fields_by_lua": schema.MapAttribute{
 						Computed:    true,
@@ -79,8 +78,7 @@ func (r *GatewayPluginTCPLogResource) Schema(ctx context.Context, req resource.S
 						},
 					},
 					"host": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `The IP address or host name to send data to.`,
 					},
 					"keepalive": schema.Float64Attribute{
@@ -89,8 +87,7 @@ func (r *GatewayPluginTCPLogResource) Schema(ctx context.Context, req resource.S
 						Description: `An optional value in milliseconds that defines how long an idle connection lives before being closed.`,
 					},
 					"port": schema.Int64Attribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `The port to send data to on the upstream server.`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(65535),

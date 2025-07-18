@@ -19,6 +19,7 @@ type OpentelemetryPluginConfig struct {
 	ReadTimeout                  types.Int64             `tfsdk:"read_timeout"`
 	ResourceAttributes           map[string]types.String `tfsdk:"resource_attributes"`
 	SamplingRate                 types.Float64           `tfsdk:"sampling_rate"`
+	SamplingStrategy             types.String            `tfsdk:"sampling_strategy"`
 	SendTimeout                  types.Int64             `tfsdk:"send_timeout"`
 	TracesEndpoint               types.String            `tfsdk:"traces_endpoint"`
 }

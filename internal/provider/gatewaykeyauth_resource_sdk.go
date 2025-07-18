@@ -17,9 +17,11 @@ func (r *GatewayKeyAuthResourceModel) RefreshFromSharedKeyAuth(ctx context.Conte
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Key = types.StringPointerValue(resp.Key)
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
+		if resp.Tags != nil {
+			r.Tags = make([]types.String, 0, len(resp.Tags))
+			for _, v := range resp.Tags {
+				r.Tags = append(r.Tags, types.StringValue(v))
+			}
 		}
 		r.TTL = types.Int64PointerValue(resp.TTL)
 	}
@@ -115,9 +117,12 @@ func (r *GatewayKeyAuthResourceModel) ToSharedKeyAuthWithoutParents(ctx context.
 	} else {
 		key = nil
 	}
-	tags := make([]string, 0, len(r.Tags))
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
+	var tags []string
+	if r.Tags != nil {
+		tags = make([]string, 0, len(r.Tags))
+		for _, tagsItem := range r.Tags {
+			tags = append(tags, tagsItem.ValueString())
+		}
 	}
 	ttl := new(int64)
 	if !r.TTL.IsUnknown() && !r.TTL.IsNull() {

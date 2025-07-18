@@ -7,18 +7,19 @@ import (
 )
 
 type ConfluentConsumePluginConfig struct {
-	AutoOffsetReset         types.String       `tfsdk:"auto_offset_reset"`
-	BootstrapServers        []BootstrapServers `tfsdk:"bootstrap_servers"`
-	ClusterAPIKey           types.String       `tfsdk:"cluster_api_key"`
-	ClusterAPISecret        types.String       `tfsdk:"cluster_api_secret"`
-	ClusterName             types.String       `tfsdk:"cluster_name"`
-	CommitStrategy          types.String       `tfsdk:"commit_strategy"`
-	ConfluentCloudAPIKey    types.String       `tfsdk:"confluent_cloud_api_key"`
-	ConfluentCloudAPISecret types.String       `tfsdk:"confluent_cloud_api_secret"`
-	Keepalive               types.Int64        `tfsdk:"keepalive"`
-	KeepaliveEnabled        types.Bool         `tfsdk:"keepalive_enabled"`
-	MessageDeserializer     types.String       `tfsdk:"message_deserializer"`
-	Mode                    types.String       `tfsdk:"mode"`
-	Timeout                 types.Int64        `tfsdk:"timeout"`
-	Topics                  []Topics           `tfsdk:"topics"`
+	AutoOffsetReset         types.String                          `tfsdk:"auto_offset_reset"`
+	BootstrapServers        []BootstrapServers                    `tfsdk:"bootstrap_servers"`
+	ClusterAPIKey           types.String                          `tfsdk:"cluster_api_key"`
+	ClusterAPISecret        types.String                          `tfsdk:"cluster_api_secret"`
+	ClusterName             types.String                          `tfsdk:"cluster_name"`
+	CommitStrategy          types.String                          `tfsdk:"commit_strategy"`
+	ConfluentCloudAPIKey    types.String                          `tfsdk:"confluent_cloud_api_key"`
+	ConfluentCloudAPISecret types.String                          `tfsdk:"confluent_cloud_api_secret"`
+	Keepalive               types.Int64                           `tfsdk:"keepalive"`
+	KeepaliveEnabled        types.Bool                            `tfsdk:"keepalive_enabled"`
+	MessageDeserializer     types.String                          `tfsdk:"message_deserializer"`
+	Mode                    types.String                          `tfsdk:"mode"`
+	SchemaRegistry          *ConfluentConsumePluginSchemaRegistry `tfsdk:"schema_registry"`
+	Timeout                 types.Int64                           `tfsdk:"timeout"`
+	Topics                  []Topics                              `tfsdk:"topics"`
 }

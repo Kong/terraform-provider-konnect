@@ -17,9 +17,11 @@ func (r *GatewayTargetResourceModel) RefreshFromSharedTarget(ctx context.Context
 	if resp != nil {
 		r.CreatedAt = types.Float64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
+		if resp.Tags != nil {
+			r.Tags = make([]types.String, 0, len(resp.Tags))
+			for _, v := range resp.Tags {
+				r.Tags = append(r.Tags, types.StringValue(v))
+			}
 		}
 		r.Target = types.StringPointerValue(resp.Target)
 		r.UpdatedAt = types.Float64PointerValue(resp.UpdatedAt)
@@ -117,9 +119,12 @@ func (r *GatewayTargetResourceModel) ToSharedTargetWithoutParents(ctx context.Co
 	} else {
 		id = nil
 	}
-	tags := make([]string, 0, len(r.Tags))
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
+	var tags []string
+	if r.Tags != nil {
+		tags = make([]string, 0, len(r.Tags))
+		for _, tagsItem := range r.Tags {
+			tags = append(tags, tagsItem.ValueString())
+		}
 	}
 	target := new(string)
 	if !r.Target.IsUnknown() && !r.Target.IsNull() {

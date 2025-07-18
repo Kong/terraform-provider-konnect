@@ -657,13 +657,13 @@ type SamlPluginConfig struct {
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer. If not set, a Kong Consumer must exist for the SAML IdP user credentials, mapping the username format to the Kong Consumer username.
 	Anonymous *string `json:"anonymous,omitempty"`
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
-	AssertionConsumerPath *string `json:"assertion_consumer_path,omitempty"`
+	AssertionConsumerPath string `json:"assertion_consumer_path"`
 	// The public certificate provided by the IdP. This is used to validate responses from the IdP.  Only include the contents of the certificate. Do not include the header (`BEGIN CERTIFICATE`) and footer (`END CERTIFICATE`) lines.
 	IdpCertificate *string `json:"idp_certificate,omitempty"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
-	IdpSsoURL *string `json:"idp_sso_url,omitempty"`
+	IdpSsoURL string `json:"idp_sso_url"`
 	// The unique identifier of the IdP application. Formatted as a URL containing information about the IdP so the SP can validate that the SAML assertions it receives are issued from the correct IdP.
-	Issuer *string `json:"issuer,omitempty"`
+	Issuer string `json:"issuer"`
 	// The requested `NameId` format. Options available are: - `Unspecified` - `EmailAddress` - `Persistent` - `Transient`
 	NameidFormat *NameidFormat    `json:"nameid_format,omitempty"`
 	Redis        *SamlPluginRedis `json:"redis,omitempty"`
@@ -726,7 +726,7 @@ type SamlPluginConfig struct {
 	// The session cookie absolute timeout in seconds. Specifies how long the session can be used until it is no longer valid.
 	SessionRollingTimeout *float64 `json:"session_rolling_timeout,omitempty"`
 	// The session secret. This must be a random string of 32 characters from the base64 alphabet (letters, numbers, `/`, `_` and `+`). It is used as the secret key for encrypting session data as well as state information that is sent to the IdP in the authentication exchange.
-	SessionSecret *string `json:"session_secret,omitempty"`
+	SessionSecret string `json:"session_secret"`
 	// The session storage for session data: - `cookie`: stores session data with the session cookie. The session cannot be invalidated or revoked without changing the session secret, but is stateless, and doesn't require a database. - `memcached`: stores session data in memcached - `redis`: stores session data in Redis
 	SessionStorage *SamlPluginSessionStorage `json:"session_storage,omitempty"`
 	// Configures whether or not session metadata should be stored. This includes information about the active sessions for the `specific_audience` belonging to a specific subject.
@@ -742,9 +742,9 @@ func (o *SamlPluginConfig) GetAnonymous() *string {
 	return o.Anonymous
 }
 
-func (o *SamlPluginConfig) GetAssertionConsumerPath() *string {
+func (o *SamlPluginConfig) GetAssertionConsumerPath() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.AssertionConsumerPath
 }
@@ -756,16 +756,16 @@ func (o *SamlPluginConfig) GetIdpCertificate() *string {
 	return o.IdpCertificate
 }
 
-func (o *SamlPluginConfig) GetIdpSsoURL() *string {
+func (o *SamlPluginConfig) GetIdpSsoURL() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.IdpSsoURL
 }
 
-func (o *SamlPluginConfig) GetIssuer() *string {
+func (o *SamlPluginConfig) GetIssuer() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Issuer
 }
@@ -994,9 +994,9 @@ func (o *SamlPluginConfig) GetSessionRollingTimeout() *float64 {
 	return o.SessionRollingTimeout
 }
 
-func (o *SamlPluginConfig) GetSessionSecret() *string {
+func (o *SamlPluginConfig) GetSessionSecret() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.SessionSecret
 }
@@ -1092,8 +1092,8 @@ type SamlPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64            `json:"updated_at,omitempty"`
-	Config    *SamlPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64           `json:"updated_at,omitempty"`
+	Config    SamlPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
 	Protocols []SamlPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -1173,9 +1173,9 @@ func (o *SamlPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *SamlPlugin) GetConfig() *SamlPluginConfig {
+func (o *SamlPlugin) GetConfig() SamlPluginConfig {
 	if o == nil {
-		return nil
+		return SamlPluginConfig{}
 	}
 	return o.Config
 }

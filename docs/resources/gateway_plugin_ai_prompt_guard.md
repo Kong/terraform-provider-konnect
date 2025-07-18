@@ -22,7 +22,8 @@ resource "konnect_gateway_plugin_ai_prompt_guard" "my_gatewaypluginaipromptguard
     deny_patterns = [
       "..."
     ]
-    llm_format            = "gemini"
+    genai_category        = "realtime/generation"
+    llm_format            = "huggingface"
     match_all_roles       = false
     max_request_body_size = 10
   }
@@ -107,9 +108,10 @@ Optional:
 - `allow_all_conversation_history` (Boolean) If true, will ignore all previous chat prompts from the conversation history.
 - `allow_patterns` (List of String) Array of valid regex patterns, or valid questions from the 'user' role in chat.
 - `deny_patterns` (List of String) Array of invalid regex patterns, or invalid questions from the 'user' role in chat.
-- `llm_format` (String) LLM input and output format and schema to use. must be one of ["bedrock", "gemini", "openai"]
+- `genai_category` (String) Generative AI category of the request. must be one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation"]
+- `llm_format` (String) LLM input and output format and schema to use. must be one of ["bedrock", "cohere", "gemini", "huggingface", "openai"]
 - `match_all_roles` (Boolean) If true, will match all roles in addition to 'user' role in conversation history.
-- `max_request_body_size` (Number) max allowed body size allowed to be introspected
+- `max_request_body_size` (Number) max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 
 
 <a id="nestedatt--consumer"></a>

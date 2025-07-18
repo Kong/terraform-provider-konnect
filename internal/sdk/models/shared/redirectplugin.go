@@ -80,7 +80,7 @@ type RedirectPluginConfig struct {
 	// Use the incoming request's path and query string in the redirect URL
 	KeepIncomingPath *bool `json:"keep_incoming_path,omitempty"`
 	// The URL to redirect to
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location"`
 	// The response code to send. Must be an integer between 100 and 599.
 	StatusCode *int64 `json:"status_code,omitempty"`
 }
@@ -92,9 +92,9 @@ func (o *RedirectPluginConfig) GetKeepIncomingPath() *bool {
 	return o.KeepIncomingPath
 }
 
-func (o *RedirectPluginConfig) GetLocation() *string {
+func (o *RedirectPluginConfig) GetLocation() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Location
 }
@@ -200,8 +200,8 @@ type RedirectPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                `json:"updated_at,omitempty"`
-	Config    *RedirectPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64               `json:"updated_at,omitempty"`
+	Config    RedirectPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *RedirectPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -285,9 +285,9 @@ func (o *RedirectPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *RedirectPlugin) GetConfig() *RedirectPluginConfig {
+func (o *RedirectPlugin) GetConfig() RedirectPluginConfig {
 	if o == nil {
-		return nil
+		return RedirectPluginConfig{}
 	}
 	return o.Config
 }

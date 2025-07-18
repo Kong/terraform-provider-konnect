@@ -15,65 +15,106 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		if resp.Config.AutoOffsetReset != nil {
+			r.Config.AutoOffsetReset = types.StringValue(string(*resp.Config.AutoOffsetReset))
 		} else {
-			r.Config = &tfTypes.ConfluentConsumePluginConfig{}
-			if resp.Config.AutoOffsetReset != nil {
-				r.Config.AutoOffsetReset = types.StringValue(string(*resp.Config.AutoOffsetReset))
+			r.Config.AutoOffsetReset = types.StringNull()
+		}
+		r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
+		if len(r.Config.BootstrapServers) > len(resp.Config.BootstrapServers) {
+			r.Config.BootstrapServers = r.Config.BootstrapServers[:len(resp.Config.BootstrapServers)]
+		}
+		for bootstrapServersCount, bootstrapServersItem := range resp.Config.BootstrapServers {
+			var bootstrapServers tfTypes.BootstrapServers
+			bootstrapServers.Host = types.StringValue(bootstrapServersItem.Host)
+			bootstrapServers.Port = types.Int64Value(bootstrapServersItem.Port)
+			if bootstrapServersCount+1 > len(r.Config.BootstrapServers) {
+				r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
 			} else {
-				r.Config.AutoOffsetReset = types.StringNull()
+				r.Config.BootstrapServers[bootstrapServersCount].Host = bootstrapServers.Host
+				r.Config.BootstrapServers[bootstrapServersCount].Port = bootstrapServers.Port
 			}
-			r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
-			if len(r.Config.BootstrapServers) > len(resp.Config.BootstrapServers) {
-				r.Config.BootstrapServers = r.Config.BootstrapServers[:len(resp.Config.BootstrapServers)]
-			}
-			for bootstrapServersCount, bootstrapServersItem := range resp.Config.BootstrapServers {
-				var bootstrapServers tfTypes.BootstrapServers
-				bootstrapServers.Host = types.StringValue(bootstrapServersItem.Host)
-				bootstrapServers.Port = types.Int64Value(bootstrapServersItem.Port)
-				if bootstrapServersCount+1 > len(r.Config.BootstrapServers) {
-					r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
+		}
+		r.Config.ClusterAPIKey = types.StringValue(resp.Config.ClusterAPIKey)
+		r.Config.ClusterAPISecret = types.StringValue(resp.Config.ClusterAPISecret)
+		r.Config.ClusterName = types.StringPointerValue(resp.Config.ClusterName)
+		if resp.Config.CommitStrategy != nil {
+			r.Config.CommitStrategy = types.StringValue(string(*resp.Config.CommitStrategy))
+		} else {
+			r.Config.CommitStrategy = types.StringNull()
+		}
+		r.Config.ConfluentCloudAPIKey = types.StringPointerValue(resp.Config.ConfluentCloudAPIKey)
+		r.Config.ConfluentCloudAPISecret = types.StringPointerValue(resp.Config.ConfluentCloudAPISecret)
+		r.Config.Keepalive = types.Int64PointerValue(resp.Config.Keepalive)
+		r.Config.KeepaliveEnabled = types.BoolPointerValue(resp.Config.KeepaliveEnabled)
+		if resp.Config.MessageDeserializer != nil {
+			r.Config.MessageDeserializer = types.StringValue(string(*resp.Config.MessageDeserializer))
+		} else {
+			r.Config.MessageDeserializer = types.StringNull()
+		}
+		if resp.Config.Mode != nil {
+			r.Config.Mode = types.StringValue(string(*resp.Config.Mode))
+		} else {
+			r.Config.Mode = types.StringNull()
+		}
+		if resp.Config.SchemaRegistry == nil {
+			r.Config.SchemaRegistry = nil
+		} else {
+			r.Config.SchemaRegistry = &tfTypes.ConfluentConsumePluginSchemaRegistry{}
+			if resp.Config.SchemaRegistry.Confluent == nil {
+				r.Config.SchemaRegistry.Confluent = nil
+			} else {
+				r.Config.SchemaRegistry.Confluent = &tfTypes.ConfluentConsumePluginConfluent{}
+				if resp.Config.SchemaRegistry.Confluent.Authentication.Basic == nil {
+					r.Config.SchemaRegistry.Confluent.Authentication.Basic = nil
 				} else {
-					r.Config.BootstrapServers[bootstrapServersCount].Host = bootstrapServers.Host
-					r.Config.BootstrapServers[bootstrapServersCount].Port = bootstrapServers.Port
+					r.Config.SchemaRegistry.Confluent.Authentication.Basic = &tfTypes.Basic{}
+					r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Password)
+					r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Username)
 				}
-			}
-			r.Config.ClusterAPIKey = types.StringPointerValue(resp.Config.ClusterAPIKey)
-			r.Config.ClusterAPISecret = types.StringPointerValue(resp.Config.ClusterAPISecret)
-			r.Config.ClusterName = types.StringPointerValue(resp.Config.ClusterName)
-			if resp.Config.CommitStrategy != nil {
-				r.Config.CommitStrategy = types.StringValue(string(*resp.Config.CommitStrategy))
-			} else {
-				r.Config.CommitStrategy = types.StringNull()
-			}
-			r.Config.ConfluentCloudAPIKey = types.StringPointerValue(resp.Config.ConfluentCloudAPIKey)
-			r.Config.ConfluentCloudAPISecret = types.StringPointerValue(resp.Config.ConfluentCloudAPISecret)
-			r.Config.Keepalive = types.Int64PointerValue(resp.Config.Keepalive)
-			r.Config.KeepaliveEnabled = types.BoolPointerValue(resp.Config.KeepaliveEnabled)
-			if resp.Config.MessageDeserializer != nil {
-				r.Config.MessageDeserializer = types.StringValue(string(*resp.Config.MessageDeserializer))
-			} else {
-				r.Config.MessageDeserializer = types.StringNull()
-			}
-			if resp.Config.Mode != nil {
-				r.Config.Mode = types.StringValue(string(*resp.Config.Mode))
-			} else {
-				r.Config.Mode = types.StringNull()
-			}
-			r.Config.Timeout = types.Int64PointerValue(resp.Config.Timeout)
-			r.Config.Topics = []tfTypes.Topics{}
-			if len(r.Config.Topics) > len(resp.Config.Topics) {
-				r.Config.Topics = r.Config.Topics[:len(resp.Config.Topics)]
-			}
-			for topicsCount, topicsItem := range resp.Config.Topics {
-				var topics tfTypes.Topics
-				topics.Name = types.StringValue(topicsItem.Name)
-				if topicsCount+1 > len(r.Config.Topics) {
-					r.Config.Topics = append(r.Config.Topics, topics)
+				if resp.Config.SchemaRegistry.Confluent.Authentication.Mode != nil {
+					r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringValue(string(*resp.Config.SchemaRegistry.Confluent.Authentication.Mode))
 				} else {
-					r.Config.Topics[topicsCount].Name = topics.Name
+					r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringNull()
 				}
+				r.Config.SchemaRegistry.Confluent.SslVerify = types.BoolPointerValue(resp.Config.SchemaRegistry.Confluent.SslVerify)
+				r.Config.SchemaRegistry.Confluent.TTL = types.Float64PointerValue(resp.Config.SchemaRegistry.Confluent.TTL)
+				r.Config.SchemaRegistry.Confluent.URL = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.URL)
+			}
+		}
+		r.Config.Timeout = types.Int64PointerValue(resp.Config.Timeout)
+		r.Config.Topics = []tfTypes.Topics{}
+		if len(r.Config.Topics) > len(resp.Config.Topics) {
+			r.Config.Topics = r.Config.Topics[:len(resp.Config.Topics)]
+		}
+		for topicsCount, topicsItem := range resp.Config.Topics {
+			var topics tfTypes.Topics
+			topics.Name = types.StringValue(topicsItem.Name)
+			if topicsItem.SchemaRegistry.Confluent == nil {
+				topics.SchemaRegistry.Confluent = nil
+			} else {
+				topics.SchemaRegistry.Confluent = &tfTypes.ConfluentConsumePluginConfluent{}
+				if topicsItem.SchemaRegistry.Confluent.Authentication.Basic == nil {
+					topics.SchemaRegistry.Confluent.Authentication.Basic = nil
+				} else {
+					topics.SchemaRegistry.Confluent.Authentication.Basic = &tfTypes.Basic{}
+					topics.SchemaRegistry.Confluent.Authentication.Basic.Password = types.StringValue(topicsItem.SchemaRegistry.Confluent.Authentication.Basic.Password)
+					topics.SchemaRegistry.Confluent.Authentication.Basic.Username = types.StringValue(topicsItem.SchemaRegistry.Confluent.Authentication.Basic.Username)
+				}
+				if topicsItem.SchemaRegistry.Confluent.Authentication.Mode != nil {
+					topics.SchemaRegistry.Confluent.Authentication.Mode = types.StringValue(string(*topicsItem.SchemaRegistry.Confluent.Authentication.Mode))
+				} else {
+					topics.SchemaRegistry.Confluent.Authentication.Mode = types.StringNull()
+				}
+				topics.SchemaRegistry.Confluent.SslVerify = types.BoolPointerValue(topicsItem.SchemaRegistry.Confluent.SslVerify)
+				topics.SchemaRegistry.Confluent.TTL = types.Float64PointerValue(topicsItem.SchemaRegistry.Confluent.TTL)
+				topics.SchemaRegistry.Confluent.URL = types.StringPointerValue(topicsItem.SchemaRegistry.Confluent.URL)
+			}
+			if topicsCount+1 > len(r.Config.Topics) {
+				r.Config.Topics = append(r.Config.Topics, topics)
+			} else {
+				r.Config.Topics[topicsCount].Name = topics.Name
+				r.Config.Topics[topicsCount].SchemaRegistry = topics.SchemaRegistry
 			}
 		}
 		if resp.Consumer == nil {
@@ -144,9 +185,11 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 			r.Service = &tfTypes.Set{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
+		if resp.Tags != nil {
+			r.Tags = make([]types.String, 0, len(resp.Tags))
+			for _, v := range resp.Tags {
+				r.Tags = append(r.Tags, types.StringValue(v))
+			}
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
@@ -317,9 +360,12 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 			})
 		}
 	}
-	tags := make([]string, 0, len(r.Tags))
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
+	var tags []string
+	if r.Tags != nil {
+		tags = make([]string, 0, len(r.Tags))
+		for _, tagsItem := range r.Tags {
+			tags = append(tags, tagsItem.ValueString())
+		}
 	}
 	updatedAt := new(int64)
 	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
@@ -327,118 +373,220 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 	} else {
 		updatedAt = nil
 	}
-	var config *shared.ConfluentConsumePluginConfig
-	if r.Config != nil {
-		autoOffsetReset := new(shared.AutoOffsetReset)
-		if !r.Config.AutoOffsetReset.IsUnknown() && !r.Config.AutoOffsetReset.IsNull() {
-			*autoOffsetReset = shared.AutoOffsetReset(r.Config.AutoOffsetReset.ValueString())
-		} else {
-			autoOffsetReset = nil
-		}
-		bootstrapServers := make([]shared.ConfluentConsumePluginBootstrapServers, 0, len(r.Config.BootstrapServers))
-		for _, bootstrapServersItem := range r.Config.BootstrapServers {
-			var host string
-			host = bootstrapServersItem.Host.ValueString()
+	autoOffsetReset := new(shared.AutoOffsetReset)
+	if !r.Config.AutoOffsetReset.IsUnknown() && !r.Config.AutoOffsetReset.IsNull() {
+		*autoOffsetReset = shared.AutoOffsetReset(r.Config.AutoOffsetReset.ValueString())
+	} else {
+		autoOffsetReset = nil
+	}
+	bootstrapServers := make([]shared.ConfluentConsumePluginBootstrapServers, 0, len(r.Config.BootstrapServers))
+	for _, bootstrapServersItem := range r.Config.BootstrapServers {
+		var host string
+		host = bootstrapServersItem.Host.ValueString()
 
-			var port int64
-			port = bootstrapServersItem.Port.ValueInt64()
+		var port int64
+		port = bootstrapServersItem.Port.ValueInt64()
 
-			bootstrapServers = append(bootstrapServers, shared.ConfluentConsumePluginBootstrapServers{
-				Host: host,
-				Port: port,
-			})
-		}
-		clusterAPIKey := new(string)
-		if !r.Config.ClusterAPIKey.IsUnknown() && !r.Config.ClusterAPIKey.IsNull() {
-			*clusterAPIKey = r.Config.ClusterAPIKey.ValueString()
-		} else {
-			clusterAPIKey = nil
-		}
-		clusterAPISecret := new(string)
-		if !r.Config.ClusterAPISecret.IsUnknown() && !r.Config.ClusterAPISecret.IsNull() {
-			*clusterAPISecret = r.Config.ClusterAPISecret.ValueString()
-		} else {
-			clusterAPISecret = nil
-		}
-		clusterName := new(string)
-		if !r.Config.ClusterName.IsUnknown() && !r.Config.ClusterName.IsNull() {
-			*clusterName = r.Config.ClusterName.ValueString()
-		} else {
-			clusterName = nil
-		}
-		commitStrategy := new(shared.CommitStrategy)
-		if !r.Config.CommitStrategy.IsUnknown() && !r.Config.CommitStrategy.IsNull() {
-			*commitStrategy = shared.CommitStrategy(r.Config.CommitStrategy.ValueString())
-		} else {
-			commitStrategy = nil
-		}
-		confluentCloudAPIKey := new(string)
-		if !r.Config.ConfluentCloudAPIKey.IsUnknown() && !r.Config.ConfluentCloudAPIKey.IsNull() {
-			*confluentCloudAPIKey = r.Config.ConfluentCloudAPIKey.ValueString()
-		} else {
-			confluentCloudAPIKey = nil
-		}
-		confluentCloudAPISecret := new(string)
-		if !r.Config.ConfluentCloudAPISecret.IsUnknown() && !r.Config.ConfluentCloudAPISecret.IsNull() {
-			*confluentCloudAPISecret = r.Config.ConfluentCloudAPISecret.ValueString()
-		} else {
-			confluentCloudAPISecret = nil
-		}
-		keepalive := new(int64)
-		if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
-			*keepalive = r.Config.Keepalive.ValueInt64()
-		} else {
-			keepalive = nil
-		}
-		keepaliveEnabled := new(bool)
-		if !r.Config.KeepaliveEnabled.IsUnknown() && !r.Config.KeepaliveEnabled.IsNull() {
-			*keepaliveEnabled = r.Config.KeepaliveEnabled.ValueBool()
-		} else {
-			keepaliveEnabled = nil
-		}
-		messageDeserializer := new(shared.MessageDeserializer)
-		if !r.Config.MessageDeserializer.IsUnknown() && !r.Config.MessageDeserializer.IsNull() {
-			*messageDeserializer = shared.MessageDeserializer(r.Config.MessageDeserializer.ValueString())
-		} else {
-			messageDeserializer = nil
-		}
-		mode := new(shared.Mode)
-		if !r.Config.Mode.IsUnknown() && !r.Config.Mode.IsNull() {
-			*mode = shared.Mode(r.Config.Mode.ValueString())
-		} else {
-			mode = nil
-		}
-		timeout := new(int64)
-		if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
-			*timeout = r.Config.Timeout.ValueInt64()
-		} else {
-			timeout = nil
-		}
-		topics := make([]shared.Topics, 0, len(r.Config.Topics))
-		for _, topicsItem := range r.Config.Topics {
-			var name1 string
-			name1 = topicsItem.Name.ValueString()
+		bootstrapServers = append(bootstrapServers, shared.ConfluentConsumePluginBootstrapServers{
+			Host: host,
+			Port: port,
+		})
+	}
+	var clusterAPIKey string
+	clusterAPIKey = r.Config.ClusterAPIKey.ValueString()
 
-			topics = append(topics, shared.Topics{
-				Name: name1,
-			})
+	var clusterAPISecret string
+	clusterAPISecret = r.Config.ClusterAPISecret.ValueString()
+
+	clusterName := new(string)
+	if !r.Config.ClusterName.IsUnknown() && !r.Config.ClusterName.IsNull() {
+		*clusterName = r.Config.ClusterName.ValueString()
+	} else {
+		clusterName = nil
+	}
+	commitStrategy := new(shared.CommitStrategy)
+	if !r.Config.CommitStrategy.IsUnknown() && !r.Config.CommitStrategy.IsNull() {
+		*commitStrategy = shared.CommitStrategy(r.Config.CommitStrategy.ValueString())
+	} else {
+		commitStrategy = nil
+	}
+	confluentCloudAPIKey := new(string)
+	if !r.Config.ConfluentCloudAPIKey.IsUnknown() && !r.Config.ConfluentCloudAPIKey.IsNull() {
+		*confluentCloudAPIKey = r.Config.ConfluentCloudAPIKey.ValueString()
+	} else {
+		confluentCloudAPIKey = nil
+	}
+	confluentCloudAPISecret := new(string)
+	if !r.Config.ConfluentCloudAPISecret.IsUnknown() && !r.Config.ConfluentCloudAPISecret.IsNull() {
+		*confluentCloudAPISecret = r.Config.ConfluentCloudAPISecret.ValueString()
+	} else {
+		confluentCloudAPISecret = nil
+	}
+	keepalive := new(int64)
+	if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
+		*keepalive = r.Config.Keepalive.ValueInt64()
+	} else {
+		keepalive = nil
+	}
+	keepaliveEnabled := new(bool)
+	if !r.Config.KeepaliveEnabled.IsUnknown() && !r.Config.KeepaliveEnabled.IsNull() {
+		*keepaliveEnabled = r.Config.KeepaliveEnabled.ValueBool()
+	} else {
+		keepaliveEnabled = nil
+	}
+	messageDeserializer := new(shared.MessageDeserializer)
+	if !r.Config.MessageDeserializer.IsUnknown() && !r.Config.MessageDeserializer.IsNull() {
+		*messageDeserializer = shared.MessageDeserializer(r.Config.MessageDeserializer.ValueString())
+	} else {
+		messageDeserializer = nil
+	}
+	mode := new(shared.Mode)
+	if !r.Config.Mode.IsUnknown() && !r.Config.Mode.IsNull() {
+		*mode = shared.Mode(r.Config.Mode.ValueString())
+	} else {
+		mode = nil
+	}
+	var schemaRegistry *shared.ConfluentConsumePluginSchemaRegistry
+	if r.Config.SchemaRegistry != nil {
+		var confluent *shared.ConfluentConsumePluginConfluent
+		if r.Config.SchemaRegistry.Confluent != nil {
+			var basic *shared.ConfluentConsumePluginBasic
+			if r.Config.SchemaRegistry.Confluent.Authentication.Basic != nil {
+				var password string
+				password = r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password.ValueString()
+
+				var username string
+				username = r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username.ValueString()
+
+				basic = &shared.ConfluentConsumePluginBasic{
+					Password: password,
+					Username: username,
+				}
+			}
+			mode1 := new(shared.ConfluentConsumePluginMode)
+			if !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsNull() {
+				*mode1 = shared.ConfluentConsumePluginMode(r.Config.SchemaRegistry.Confluent.Authentication.Mode.ValueString())
+			} else {
+				mode1 = nil
+			}
+			authentication := shared.ConfluentConsumePluginAuthentication{
+				Basic: basic,
+				Mode:  mode1,
+			}
+			sslVerify := new(bool)
+			if !r.Config.SchemaRegistry.Confluent.SslVerify.IsUnknown() && !r.Config.SchemaRegistry.Confluent.SslVerify.IsNull() {
+				*sslVerify = r.Config.SchemaRegistry.Confluent.SslVerify.ValueBool()
+			} else {
+				sslVerify = nil
+			}
+			ttl := new(float64)
+			if !r.Config.SchemaRegistry.Confluent.TTL.IsUnknown() && !r.Config.SchemaRegistry.Confluent.TTL.IsNull() {
+				*ttl = r.Config.SchemaRegistry.Confluent.TTL.ValueFloat64()
+			} else {
+				ttl = nil
+			}
+			url := new(string)
+			if !r.Config.SchemaRegistry.Confluent.URL.IsUnknown() && !r.Config.SchemaRegistry.Confluent.URL.IsNull() {
+				*url = r.Config.SchemaRegistry.Confluent.URL.ValueString()
+			} else {
+				url = nil
+			}
+			confluent = &shared.ConfluentConsumePluginConfluent{
+				Authentication: authentication,
+				SslVerify:      sslVerify,
+				TTL:            ttl,
+				URL:            url,
+			}
 		}
-		config = &shared.ConfluentConsumePluginConfig{
-			AutoOffsetReset:         autoOffsetReset,
-			BootstrapServers:        bootstrapServers,
-			ClusterAPIKey:           clusterAPIKey,
-			ClusterAPISecret:        clusterAPISecret,
-			ClusterName:             clusterName,
-			CommitStrategy:          commitStrategy,
-			ConfluentCloudAPIKey:    confluentCloudAPIKey,
-			ConfluentCloudAPISecret: confluentCloudAPISecret,
-			Keepalive:               keepalive,
-			KeepaliveEnabled:        keepaliveEnabled,
-			MessageDeserializer:     messageDeserializer,
-			Mode:                    mode,
-			Timeout:                 timeout,
-			Topics:                  topics,
+		schemaRegistry = &shared.ConfluentConsumePluginSchemaRegistry{
+			Confluent: confluent,
 		}
+	}
+	timeout := new(int64)
+	if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
+		*timeout = r.Config.Timeout.ValueInt64()
+	} else {
+		timeout = nil
+	}
+	topics := make([]shared.Topics, 0, len(r.Config.Topics))
+	for _, topicsItem := range r.Config.Topics {
+		var name1 string
+		name1 = topicsItem.Name.ValueString()
+
+		var confluent1 *shared.ConfluentConsumePluginConfigConfluent
+		if topicsItem.SchemaRegistry.Confluent != nil {
+			var basic1 *shared.ConfluentConsumePluginConfigBasic
+			if topicsItem.SchemaRegistry.Confluent.Authentication.Basic != nil {
+				var password1 string
+				password1 = topicsItem.SchemaRegistry.Confluent.Authentication.Basic.Password.ValueString()
+
+				var username1 string
+				username1 = topicsItem.SchemaRegistry.Confluent.Authentication.Basic.Username.ValueString()
+
+				basic1 = &shared.ConfluentConsumePluginConfigBasic{
+					Password: password1,
+					Username: username1,
+				}
+			}
+			mode2 := new(shared.ConfluentConsumePluginConfigMode)
+			if !topicsItem.SchemaRegistry.Confluent.Authentication.Mode.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.Authentication.Mode.IsNull() {
+				*mode2 = shared.ConfluentConsumePluginConfigMode(topicsItem.SchemaRegistry.Confluent.Authentication.Mode.ValueString())
+			} else {
+				mode2 = nil
+			}
+			authentication1 := shared.ConfluentConsumePluginConfigAuthentication{
+				Basic: basic1,
+				Mode:  mode2,
+			}
+			sslVerify1 := new(bool)
+			if !topicsItem.SchemaRegistry.Confluent.SslVerify.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.SslVerify.IsNull() {
+				*sslVerify1 = topicsItem.SchemaRegistry.Confluent.SslVerify.ValueBool()
+			} else {
+				sslVerify1 = nil
+			}
+			ttl1 := new(float64)
+			if !topicsItem.SchemaRegistry.Confluent.TTL.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.TTL.IsNull() {
+				*ttl1 = topicsItem.SchemaRegistry.Confluent.TTL.ValueFloat64()
+			} else {
+				ttl1 = nil
+			}
+			url1 := new(string)
+			if !topicsItem.SchemaRegistry.Confluent.URL.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.URL.IsNull() {
+				*url1 = topicsItem.SchemaRegistry.Confluent.URL.ValueString()
+			} else {
+				url1 = nil
+			}
+			confluent1 = &shared.ConfluentConsumePluginConfigConfluent{
+				Authentication: authentication1,
+				SslVerify:      sslVerify1,
+				TTL:            ttl1,
+				URL:            url1,
+			}
+		}
+		schemaRegistry1 := shared.ConfluentConsumePluginConfigSchemaRegistry{
+			Confluent: confluent1,
+		}
+		topics = append(topics, shared.Topics{
+			Name:           name1,
+			SchemaRegistry: schemaRegistry1,
+		})
+	}
+	config := shared.ConfluentConsumePluginConfig{
+		AutoOffsetReset:         autoOffsetReset,
+		BootstrapServers:        bootstrapServers,
+		ClusterAPIKey:           clusterAPIKey,
+		ClusterAPISecret:        clusterAPISecret,
+		ClusterName:             clusterName,
+		CommitStrategy:          commitStrategy,
+		ConfluentCloudAPIKey:    confluentCloudAPIKey,
+		ConfluentCloudAPISecret: confluentCloudAPISecret,
+		Keepalive:               keepalive,
+		KeepaliveEnabled:        keepaliveEnabled,
+		MessageDeserializer:     messageDeserializer,
+		Mode:                    mode,
+		SchemaRegistry:          schemaRegistry,
+		Timeout:                 timeout,
+		Topics:                  topics,
 	}
 	var consumer *shared.ConfluentConsumePluginConsumer
 	if r.Consumer != nil {

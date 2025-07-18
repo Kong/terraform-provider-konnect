@@ -40,20 +40,20 @@ type GatewayPluginFileLogResource struct {
 
 // GatewayPluginFileLogResourceModel describes the resource data model.
 type GatewayPluginFileLogResourceModel struct {
-	Config         *tfTypes.FileLogPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.Set                 `tfsdk:"consumer"`
-	ControlPlaneID types.String                 `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                  `tfsdk:"created_at"`
-	Enabled        types.Bool                   `tfsdk:"enabled"`
-	ID             types.String                 `tfsdk:"id"`
-	InstanceName   types.String                 `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering   `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials           `tfsdk:"partials"`
-	Protocols      []types.String               `tfsdk:"protocols"`
-	Route          *tfTypes.Set                 `tfsdk:"route"`
-	Service        *tfTypes.Set                 `tfsdk:"service"`
-	Tags           []types.String               `tfsdk:"tags"`
-	UpdatedAt      types.Int64                  `tfsdk:"updated_at"`
+	Config         tfTypes.FileLogPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.Set                `tfsdk:"consumer"`
+	ControlPlaneID types.String                `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                 `tfsdk:"created_at"`
+	Enabled        types.Bool                  `tfsdk:"enabled"`
+	ID             types.String                `tfsdk:"id"`
+	InstanceName   types.String                `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering  `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials          `tfsdk:"partials"`
+	Protocols      []types.String              `tfsdk:"protocols"`
+	Route          *tfTypes.Set                `tfsdk:"route"`
+	Service        *tfTypes.Set                `tfsdk:"service"`
+	Tags           []types.String              `tfsdk:"tags"`
+	UpdatedAt      types.Int64                 `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginFileLogResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,8 +65,7 @@ func (r *GatewayPluginFileLogResource) Schema(ctx context.Context, req resource.
 		MarkdownDescription: "GatewayPluginFileLog Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"custom_fields_by_lua": schema.MapAttribute{
 						Computed:    true,
@@ -78,8 +77,7 @@ func (r *GatewayPluginFileLogResource) Schema(ctx context.Context, req resource.
 						},
 					},
 					"path": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `The file path of the output log file. The plugin creates the log file if it doesn't exist yet.`,
 					},
 					"reopen": schema.BoolAttribute{

@@ -129,11 +129,11 @@ resource "konnect_gateway_plugin_proxy_cache_advanced" "my_gatewaypluginproxycac
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -154,6 +154,10 @@ resource "konnect_gateway_plugin_proxy_cache_advanced" "my_gatewaypluginproxycac
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
+Required:
+
+- `strategy` (String) The backing data store in which to hold cache entities. Accepted values are: `memory` and `redis`. must be one of ["memory", "redis"]
+
 Optional:
 
 - `bypass_on_err` (Boolean) Unhandled errors while trying to retrieve a cache entry (such as redis down) are resolved with `Bypass`, with the request going upstream.
@@ -167,7 +171,6 @@ Optional:
 - `response_code` (List of Number) Upstream response status code considered cacheable. The integers must be a value between 100 and 900.
 - `response_headers` (Attributes) Caching related diagnostic headers that should be included in cached responses (see [below for nested schema](#nestedatt--config--response_headers))
 - `storage_ttl` (Number) Number of seconds to keep resources in the storage backend. This value is independent of `cache_ttl` or resource TTLs defined by Cache-Control behaviors.
-- `strategy` (String) The backing data store in which to hold cache entities. Accepted values are: `memory` and `redis`. must be one of ["memory", "redis"]
 - `vary_headers` (List of String) Relevant headers considered for the cache key. If undefined, none of the headers are taken into consideration.
 - `vary_query_params` (List of String) Relevant query parameters considered for the cache key. If undefined, all params are taken into consideration. By default, the max number of params accepted is 100. You can change this value via the `lua_max_post_args` in `kong.conf`.
 

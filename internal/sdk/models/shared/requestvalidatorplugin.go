@@ -157,7 +157,7 @@ type ParameterSchema struct {
 	Name string `json:"name"`
 	// Determines whether this parameter is mandatory.
 	Required bool `json:"required"`
-	// Requred when `style` and `explode` are set. This is the schema defining the type used for the parameter. It is validated using `draft4` for JSON Schema draft 4 compliant validator. In addition to being a valid JSON Schema, the parameter schema MUST have a top-level `type` property to enable proper deserialization before validating.
+	// Required when `style` and `explode` are set. This is the schema defining the type used for the parameter. It is validated using `draft4` for JSON Schema draft 4 compliant validator. In addition to being a valid JSON Schema, the parameter schema MUST have a top-level `type` property to enable proper deserialization before validating.
 	Schema *string `json:"schema,omitempty"`
 	// Required when `schema` and `explode` are set. Describes how the parameter value will be deserialized depending on the type of the parameter value.
 	Style *Style `json:"style,omitempty"`
@@ -205,12 +205,16 @@ func (o *ParameterSchema) GetStyle() *Style {
 	return o.Style
 }
 
-// Version - Which validator to use. Supported values are `kong` (default) for using Kong's own schema validator, or `draft4` for using a JSON Schema Draft 4-compliant validator.
+// Version - Which validator to use. Supported values are `kong` (default) for using Kong's own schema validator, or `draft4`, `draft7`, `draft201909`, and `draft202012` for using their respective JSON Schema Draft compliant validators.
 type Version string
 
 const (
-	VersionDraft4 Version = "draft4"
-	VersionKong   Version = "kong"
+	VersionDraft201909 Version = "draft201909"
+	VersionDraft202012 Version = "draft202012"
+	VersionDraft4      Version = "draft4"
+	VersionDraft6      Version = "draft6"
+	VersionDraft7      Version = "draft7"
+	VersionKong        Version = "kong"
 )
 
 func (e Version) ToPointer() *Version {
@@ -222,7 +226,15 @@ func (e *Version) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "draft201909":
+		fallthrough
+	case "draft202012":
+		fallthrough
 	case "draft4":
+		fallthrough
+	case "draft6":
+		fallthrough
+	case "draft7":
 		fallthrough
 	case "kong":
 		*e = Version(v)
@@ -243,7 +255,7 @@ type RequestValidatorPluginConfig struct {
 	ParameterSchema []ParameterSchema `json:"parameter_schema,omitempty"`
 	// If enabled, the plugin returns more verbose and detailed validation errors.
 	VerboseResponse *bool `json:"verbose_response,omitempty"`
-	// Which validator to use. Supported values are `kong` (default) for using Kong's own schema validator, or `draft4` for using a JSON Schema Draft 4-compliant validator.
+	// Which validator to use. Supported values are `kong` (default) for using Kong's own schema validator, or `draft4`, `draft7`, `draft201909`, and `draft202012` for using their respective JSON Schema Draft compliant validators.
 	Version *Version `json:"version,omitempty"`
 }
 

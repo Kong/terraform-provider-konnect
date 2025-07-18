@@ -39,19 +39,19 @@ type GatewayPluginLdapAuthResource struct {
 
 // GatewayPluginLdapAuthResourceModel describes the resource data model.
 type GatewayPluginLdapAuthResourceModel struct {
-	Config         *tfTypes.LdapAuthPluginConfig `tfsdk:"config"`
-	ControlPlaneID types.String                  `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                   `tfsdk:"created_at"`
-	Enabled        types.Bool                    `tfsdk:"enabled"`
-	ID             types.String                  `tfsdk:"id"`
-	InstanceName   types.String                  `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering    `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials            `tfsdk:"partials"`
-	Protocols      []types.String                `tfsdk:"protocols"`
-	Route          *tfTypes.Set                  `tfsdk:"route"`
-	Service        *tfTypes.Set                  `tfsdk:"service"`
-	Tags           []types.String                `tfsdk:"tags"`
-	UpdatedAt      types.Int64                   `tfsdk:"updated_at"`
+	Config         tfTypes.LdapAuthPluginConfig `tfsdk:"config"`
+	ControlPlaneID types.String                 `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                  `tfsdk:"created_at"`
+	Enabled        types.Bool                   `tfsdk:"enabled"`
+	ID             types.String                 `tfsdk:"id"`
+	InstanceName   types.String                 `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering   `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials           `tfsdk:"partials"`
+	Protocols      []types.String               `tfsdk:"protocols"`
+	Route          *tfTypes.Set                 `tfsdk:"route"`
+	Service        *tfTypes.Set                 `tfsdk:"service"`
+	Tags           []types.String               `tfsdk:"tags"`
+	UpdatedAt      types.Int64                  `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginLdapAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -63,8 +63,7 @@ func (r *GatewayPluginLdapAuthResource) Schema(ctx context.Context, req resource
 		MarkdownDescription: "GatewayPluginLdapAuth Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -72,13 +71,11 @@ func (r *GatewayPluginLdapAuthResource) Schema(ctx context.Context, req resource
 						Description: `An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request fails with an authentication failure ` + "`" + `4xx` + "`" + `.`,
 					},
 					"attribute": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `Attribute to be used to search the user; e.g. cn`,
 					},
 					"base_dn": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `Base DN as the starting point for the search; e.g., dc=example,dc=com`,
 					},
 					"cache_ttl": schema.Float64Attribute{
@@ -102,8 +99,7 @@ func (r *GatewayPluginLdapAuthResource) Schema(ctx context.Context, req resource
 						Description: `An optional value in milliseconds that defines how long an idle connection to LDAP server will live before being closed.`,
 					},
 					"ldap_host": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `A string representing a host name, such as example.com.`,
 					},
 					"ldap_port": schema.Int64Attribute{

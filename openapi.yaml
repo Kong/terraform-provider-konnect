@@ -3469,6 +3469,68 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#AiAwsGuardrails':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayPluginAiAwsGuardrails#delete
+      operationId: delete-aiawsguardrails-plugin
+      summary: Delete a AiAwsGuardrails plugin
+      description: Delete a AiAwsGuardrails plugin
+      responses:
+        '204':
+          description: Successfully deleted Plugin or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayPluginAiAwsGuardrails#read
+      operationId: get-aiawsguardrails-plugin
+      summary: Get a AiAwsGuardrails plugin
+      description: Get a AiAwsGuardrails plugin
+      responses:
+        '200':
+          description: AiAwsGuardrails plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiAwsGuardrailsPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Plugins
+    parameters:
+      - $ref: '#/components/parameters/PluginId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayPluginAiAwsGuardrails#update
+      operationId: update-aiawsguardrails-plugin
+      summary: Update a AiAwsGuardrails plugin
+      description: Update a AiAwsGuardrails plugin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiAwsGuardrailsPlugin'
+      responses:
+        '200':
+          description: AiAwsGuardrails plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiAwsGuardrailsPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
   '/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#AiAzureContentSafety':
     delete:
       x-speakeasy-entity-operation:
@@ -3527,6 +3589,68 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AiAzureContentSafetyPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#AiPromptCompressor':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayPluginAiPromptCompressor#delete
+      operationId: delete-aipromptcompressor-plugin
+      summary: Delete a AiPromptCompressor plugin
+      description: Delete a AiPromptCompressor plugin
+      responses:
+        '204':
+          description: Successfully deleted Plugin or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayPluginAiPromptCompressor#read
+      operationId: get-aipromptcompressor-plugin
+      summary: Get a AiPromptCompressor plugin
+      description: Get a AiPromptCompressor plugin
+      responses:
+        '200':
+          description: AiPromptCompressor plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiPromptCompressorPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Plugins
+    parameters:
+      - $ref: '#/components/parameters/PluginId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayPluginAiPromptCompressor#update
+      operationId: update-aipromptcompressor-plugin
+      summary: Update a AiPromptCompressor plugin
+      description: Update a AiPromptCompressor plugin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiPromptCompressorPlugin'
+      responses:
+        '200':
+          description: AiPromptCompressor plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiPromptCompressorPlugin'
         '401':
           $ref: '#/components/responses/HTTP401Error'
       tags:
@@ -4953,6 +5077,68 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DatadogTracingPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#Datakit':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayPluginDatakit#delete
+      operationId: delete-datakit-plugin
+      summary: Delete a Datakit plugin
+      description: Delete a Datakit plugin
+      responses:
+        '204':
+          description: Successfully deleted Plugin or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayPluginDatakit#read
+      operationId: get-datakit-plugin
+      summary: Get a Datakit plugin
+      description: Get a Datakit plugin
+      responses:
+        '200':
+          description: Datakit plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatakitPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Plugins
+    parameters:
+      - $ref: '#/components/parameters/PluginId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayPluginDatakit#update
+      operationId: update-datakit-plugin
+      summary: Update a Datakit plugin
+      description: Update a Datakit plugin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatakitPlugin'
+      responses:
+        '200':
+          description: Datakit plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatakitPlugin'
         '401':
           $ref: '#/components/responses/HTTP401Error'
       tags:
@@ -8429,6 +8615,68 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#SolaceUpstream':
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayPluginSolaceUpstream#delete
+      operationId: delete-solaceupstream-plugin
+      summary: Delete a SolaceUpstream plugin
+      description: Delete a SolaceUpstream plugin
+      responses:
+        '204':
+          description: Successfully deleted Plugin or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayPluginSolaceUpstream#read
+      operationId: get-solaceupstream-plugin
+      summary: Get a SolaceUpstream plugin
+      description: Get a SolaceUpstream plugin
+      responses:
+        '200':
+          description: SolaceUpstream plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolaceUpstreamPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Plugins
+    parameters:
+      - $ref: '#/components/parameters/PluginId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayPluginSolaceUpstream#update
+      operationId: update-solaceupstream-plugin
+      summary: Update a SolaceUpstream plugin
+      description: Update a SolaceUpstream plugin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SolaceUpstreamPlugin'
+      responses:
+        '200':
+          description: SolaceUpstream plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolaceUpstreamPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
   '/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#StandardWebhooks':
     delete:
       x-speakeasy-entity-operation:
@@ -9413,6 +9661,33 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins#AiAwsGuardrails':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayPluginAiAwsGuardrails#create
+      operationId: create-aiawsguardrails-plugin
+      summary: Create a AiAwsGuardrails plugin
+      description: Create a AiAwsGuardrails plugin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiAwsGuardrailsPlugin'
+      responses:
+        '201':
+          description: Created AiAwsGuardrails plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiAwsGuardrailsPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
   '/v2/control-planes/{controlPlaneId}/core-entities/plugins#AiAzureContentSafety':
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
@@ -9436,6 +9711,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AiAzureContentSafetyPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins#AiPromptCompressor':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayPluginAiPromptCompressor#create
+      operationId: create-aipromptcompressor-plugin
+      summary: Create a AiPromptCompressor plugin
+      description: Create a AiPromptCompressor plugin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiPromptCompressorPlugin'
+      responses:
+        '201':
+          description: Created AiPromptCompressor plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiPromptCompressorPlugin'
         '401':
           $ref: '#/components/responses/HTTP401Error'
       tags:
@@ -10057,6 +10359,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DatadogTracingPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins#Datakit':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayPluginDatakit#create
+      operationId: create-datakit-plugin
+      summary: Create a Datakit plugin
+      description: Create a Datakit plugin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatakitPlugin'
+      responses:
+        '201':
+          description: Created Datakit plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatakitPlugin'
         '401':
           $ref: '#/components/responses/HTTP401Error'
       tags:
@@ -11569,6 +11898,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SessionPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins#SolaceUpstream':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-datasource: null
+        terraform-resource: GatewayPluginSolaceUpstream#create
+      operationId: create-solaceupstream-plugin
+      summary: Create a SolaceUpstream plugin
+      description: Create a SolaceUpstream plugin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SolaceUpstreamPlugin'
+      responses:
+        '201':
+          description: Created SolaceUpstream plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolaceUpstreamPlugin'
         '401':
           $ref: '#/components/responses/HTTP401Error'
       tags:
@@ -19386,6 +19742,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
       example:
         consumer:
           id: 84a73fb8-50fc-44a7-a4d5-aa17728ee83f
@@ -19484,6 +19841,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
       example:
         group: foo
         id: b1f34145-0343-41a4-9602-4c69dec2f269
@@ -19713,6 +20071,8 @@ components:
             tos_accepted:
               description: 'If you are using Let''s Encrypt, you must set this to `true` to agree the terms of service.'
               type: boolean
+          required:
+            - account_email
         name:
           type: string
           const: acme
@@ -19727,6 +20087,115 @@ components:
               - https
             type: string
           format: set
+      required:
+        - config
+    AiAwsGuardrailsPlugin:
+      x-speakeasy-entity: GatewayPluginAiAwsGuardrails
+      allOf:
+        - $ref: '#/components/schemas/PluginBase'
+        - $ref: '#/components/schemas/AiAwsGuardrailsPluginConfig'
+    AiAwsGuardrailsPluginConfig:
+      properties:
+        config:
+          type: object
+          properties:
+            aws_access_key_id:
+              description: The AWS access key ID to use for authentication
+              type: string
+            aws_region:
+              description: The AWS region to use for the Bedrock API
+              type: string
+            aws_secret_access_key:
+              description: The AWS secret access key to use for authentication
+              type: string
+            guarding_mode:
+              description: The guardrail mode to use for the request
+              type: string
+              enum:
+                - BOTH
+                - INPUT
+                - OUTPUT
+            guardrails_id:
+              description: The guardrail identifier used in the request to apply the guardrail
+              type: string
+            guardrails_version:
+              description: The guardrail version used in the request to apply the guardrail
+              type: string
+            response_buffer_size:
+              description: The amount of token receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard.
+              type: number
+            stop_on_error:
+              description: Stop processing if an error occurs
+              type: boolean
+            text_source:
+              description: Select where to pick the 'text' for the Content Guard Services request.
+              type: string
+              enum:
+                - concatenate_all_content
+                - concatenate_user_content
+            timeout:
+              description: Connection timeout with the bedrock service
+              type: number
+          required:
+            - aws_region
+            - guardrails_id
+            - guardrails_version
+        consumer:
+          description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        consumer_group:
+          description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        name:
+          type: string
+          const: ai-aws-guardrails
+        protocols:
+          description: A set of strings representing HTTP protocols.
+          type: array
+          items:
+            enum:
+              - grpc
+              - grpcs
+              - http
+              - https
+            type: string
+          format: set
+        route:
+          description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        service:
+          description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+      required:
+        - config
     AiAzureContentSafetyPlugin:
       x-speakeasy-entity: GatewayPluginAiAzureContentSafety
       allOf:
@@ -19795,6 +20264,8 @@ components:
               enum:
                 - concatenate_all_content
                 - concatenate_user_content
+          required:
+            - content_safety_url
         name:
           type: string
           const: ai-azure-content-safety
@@ -19829,6 +20300,121 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
+    AiPromptCompressorPlugin:
+      x-speakeasy-entity: GatewayPluginAiPromptCompressor
+      allOf:
+        - $ref: '#/components/schemas/PluginBase'
+        - $ref: '#/components/schemas/AiPromptCompressorPluginConfig'
+    AiPromptCompressorPluginConfig:
+      properties:
+        config:
+          type: object
+          properties:
+            compression_ranges:
+              description: What value to be used to compress with. The 'value' is interpreted as rate or target_token depending on compressor_type.
+              type: array
+              items:
+                properties:
+                  max_tokens:
+                    type: integer
+                  min_tokens:
+                    type: integer
+                  value:
+                    type: number
+                required:
+                  - max_tokens
+                  - min_tokens
+                  - value
+                type: object
+            compressor_type:
+              description: What compression type to use to compress with
+              type: string
+              enum:
+                - rate
+                - target_token
+            compressor_url:
+              description: The url of the compressor
+              type: string
+            keepalive_timeout:
+              description: The keepalive timeout for the established http connnection
+              type: number
+            log_text_data:
+              description: Log the text data
+              type: boolean
+            message_type:
+              type: array
+              items:
+                enum:
+                  - assistant
+                  - system
+                  - user
+                type: string
+            stop_on_error:
+              description: Stop processing if an error occurs
+              type: boolean
+            timeout:
+              description: Connection timeout with the compressor
+              type: number
+          required:
+            - compression_ranges
+        consumer:
+          description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        consumer_group:
+          description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        name:
+          type: string
+          const: ai-prompt-compressor
+        protocols:
+          description: A set of strings representing HTTP protocols.
+          type: array
+          items:
+            enum:
+              - grpc
+              - grpcs
+              - http
+              - https
+            type: string
+          format: set
+        route:
+          description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        service:
+          description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+      required:
+        - config
     AiPromptDecoratorPlugin:
       x-speakeasy-entity: GatewayPluginAiPromptDecorator
       allOf:
@@ -19844,10 +20430,12 @@ components:
               type: string
               enum:
                 - bedrock
+                - cohere
                 - gemini
+                - huggingface
                 - openai
             max_request_body_size:
-              description: max allowed body size allowed to be introspected
+              description: 'max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx''s client_max_body_size.'
               type: integer
               minimum: 0
             prompts:
@@ -19859,7 +20447,7 @@ components:
                   items:
                     properties:
                       content:
-                        maxLength: 500
+                        maxLength: 100000
                         minLength: 1
                         type: string
                       role:
@@ -19878,7 +20466,7 @@ components:
                   items:
                     properties:
                       content:
-                        maxLength: 500
+                        maxLength: 100000
                         minLength: 1
                         type: string
                       role:
@@ -19974,18 +20562,30 @@ components:
                 minLength: 1
                 type: string
               maxLength: 10
+            genai_category:
+              description: Generative AI category of the request
+              type: string
+              enum:
+                - audio/speech
+                - audio/transcription
+                - image/generation
+                - realtime/generation
+                - text/embeddings
+                - text/generation
             llm_format:
               description: LLM input and output format and schema to use
               type: string
               enum:
                 - bedrock
+                - cohere
                 - gemini
+                - huggingface
                 - openai
             match_all_roles:
               description: 'If true, will match all roles in addition to ''user'' role in conversation history.'
               type: boolean
             max_request_body_size:
-              description: max allowed body size allowed to be introspected
+              description: 'max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx''s client_max_body_size.'
               type: integer
               minimum: 0
         consumer:
@@ -20059,7 +20659,7 @@ components:
               description: Set true to add the original request to the Kong log plugin(s) output.
               type: boolean
             max_request_body_size:
-              description: max allowed body size allowed to be introspected
+              description: 'max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx''s client_max_body_size.'
               type: integer
               minimum: 0
             templates:
@@ -20077,6 +20677,8 @@ components:
                   - name
                   - template
                 type: object
+          required:
+            - templates
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -20131,6 +20733,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     AiProxyAdvancedPlugin:
       x-speakeasy-entity: GatewayPluginAiProxyAdvanced
       allOf:
@@ -20298,6 +20902,12 @@ components:
                             aws_sts_endpoint_url:
                               description: 'If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.'
                               type: string
+                            embeddings_normalize:
+                              description: 'If using AWS providers (Bedrock), set to true to normalize the embeddings.'
+                              type: boolean
+                            performance_config_latency:
+                              description: Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
+                              type: string
                         gemini:
                           type: object
                           properties:
@@ -20339,15 +20949,27 @@ components:
                     - provider
               required:
                 - model
+            genai_category:
+              description: Generative AI category of the request
+              type: string
+              enum:
+                - audio/speech
+                - audio/transcription
+                - image/generation
+                - realtime/generation
+                - text/embeddings
+                - text/generation
             llm_format:
               description: LLM input and output format and schema to use
               type: string
               enum:
                 - bedrock
+                - cohere
                 - gemini
+                - huggingface
                 - openai
             max_request_body_size:
-              description: max allowed body size allowed to be introspected
+              description: 'max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx''s client_max_body_size.'
               type: integer
               minimum: 0
             model_name_header:
@@ -20461,6 +21083,31 @@ components:
                               aws_sts_endpoint_url:
                                 description: 'If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.'
                                 type: string
+                              embeddings_normalize:
+                                description: 'If using AWS providers (Bedrock), set to true to normalize the embeddings.'
+                                type: boolean
+                              performance_config_latency:
+                                description: Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
+                                type: string
+                          cohere:
+                            type: object
+                            properties:
+                              embedding_input_type:
+                                description: The purpose of the input text to calculate embedding vectors.
+                                type: string
+                                enum:
+                                  - classification
+                                  - clustering
+                                  - image
+                                  - search_document
+                                  - search_query
+                              wait_for_model:
+                                description: Wait for the model if it is not ready
+                                type: boolean
+                          embeddings_dimensions:
+                            description: 'If using embeddings models, set the number of dimensions to generate.'
+                            type: integer
+                            minimum: 0
                           gemini:
                             type: object
                             properties:
@@ -20543,12 +21190,23 @@ components:
                     required:
                       - provider
                   route_type:
-                    description: 'The model''s operation implementation, for this provider. Set to `preserve` to pass through without transformation.'
+                    description: 'The model''s operation implementation, for this provider. '
                     type: string
                     enum:
+                      - audio/v1/audio/speech
+                      - audio/v1/audio/transcriptions
+                      - audio/v1/audio/translations
+                      - image/v1/images/edits
+                      - image/v1/images/generations
+                      - llm/v1/assistants
+                      - llm/v1/batches
                       - llm/v1/chat
                       - llm/v1/completions
+                      - llm/v1/embeddings
+                      - llm/v1/files
+                      - llm/v1/responses
                       - preserve
+                      - realtime/v1/realtime
                   weight:
                     description: The weight this target gets within the upstream loadbalancer (1-65535).
                     type: integer
@@ -20749,6 +21407,8 @@ components:
                 - redis
                 - strategy
                 - threshold
+          required:
+            - targets
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -20773,7 +21433,7 @@ components:
           type: string
           const: ai-proxy-advanced
         protocols:
-          description: A set of strings representing HTTP protocols.
+          description: 'A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.'
           type: array
           items:
             enum:
@@ -20781,6 +21441,8 @@ components:
               - grpcs
               - http
               - https
+              - ws
+              - wss
             type: string
           format: set
         route:
@@ -20803,6 +21465,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     AiProxyPlugin:
       x-speakeasy-entity: GatewayPluginAiProxy
       allOf:
@@ -20861,12 +21525,23 @@ components:
                 param_value:
                   description: Specify the full parameter value for 'param_name'.
                   type: string
+            genai_category:
+              description: Generative AI category of the request
+              type: string
+              enum:
+                - audio/speech
+                - audio/transcription
+                - image/generation
+                - text/embeddings
+                - text/generation
             llm_format:
               description: LLM input and output format and schema to use
               type: string
               enum:
                 - bedrock
+                - cohere
                 - gemini
+                - huggingface
                 - openai
             logging:
               type: object
@@ -20878,7 +21553,7 @@ components:
                   description: 'If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.'
                   type: boolean
             max_request_body_size:
-              description: max allowed body size allowed to be introspected
+              description: 'max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx''s client_max_body_size.'
               type: integer
               minimum: 0
             model:
@@ -20918,6 +21593,31 @@ components:
                         aws_sts_endpoint_url:
                           description: 'If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.'
                           type: string
+                        embeddings_normalize:
+                          description: 'If using AWS providers (Bedrock), set to true to normalize the embeddings.'
+                          type: boolean
+                        performance_config_latency:
+                          description: Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
+                          type: string
+                    cohere:
+                      type: object
+                      properties:
+                        embedding_input_type:
+                          description: The purpose of the input text to calculate embedding vectors.
+                          type: string
+                          enum:
+                            - classification
+                            - clustering
+                            - image
+                            - search_document
+                            - search_query
+                        wait_for_model:
+                          description: Wait for the model if it is not ready
+                          type: boolean
+                    embeddings_dimensions:
+                      description: 'If using embeddings models, set the number of dimensions to generate.'
+                      type: integer
+                      minimum: 0
                     gemini:
                       type: object
                       properties:
@@ -20997,6 +21697,8 @@ components:
                     - llama2
                     - mistral
                     - openai
+              required:
+                - provider
             model_name_header:
               description: Display the model name selected in the X-Kong-LLM-Model response header
               type: boolean
@@ -21008,12 +21710,26 @@ components:
                 - always
                 - deny
             route_type:
-              description: 'The model''s operation implementation, for this provider. Set to `preserve` to pass through without transformation.'
+              description: 'The model''s operation implementation, for this provider. '
               type: string
               enum:
+                - audio/v1/audio/speech
+                - audio/v1/audio/transcriptions
+                - audio/v1/audio/translations
+                - image/v1/images/edits
+                - image/v1/images/generations
+                - llm/v1/assistants
+                - llm/v1/batches
                 - llm/v1/chat
                 - llm/v1/completions
+                - llm/v1/embeddings
+                - llm/v1/files
+                - llm/v1/responses
                 - preserve
+                - realtime/v1/realtime
+          required:
+            - model
+            - route_type
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -21038,7 +21754,7 @@ components:
           type: string
           const: ai-proxy
         protocols:
-          description: A set of strings representing HTTP protocols.
+          description: 'A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.'
           type: array
           items:
             enum:
@@ -21046,6 +21762,8 @@ components:
               - grpcs
               - http
               - https
+              - ws
+              - wss
             type: string
           format: set
         route:
@@ -21068,6 +21786,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     AiRagInjectorPlugin:
       x-speakeasy-entity: GatewayPluginAiRagInjector
       allOf:
@@ -21166,6 +21886,12 @@ components:
                             aws_sts_endpoint_url:
                               description: 'If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.'
                               type: string
+                            embeddings_normalize:
+                              description: 'If using AWS providers (Bedrock), set to true to normalize the embeddings.'
+                              type: boolean
+                            performance_config_latency:
+                              description: Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
+                              type: string
                         gemini:
                           type: object
                           properties:
@@ -21202,6 +21928,11 @@ components:
                         - huggingface
                         - mistral
                         - openai
+                  required:
+                    - name
+                    - provider
+              required:
+                - model
             fetch_chunks_count:
               description: The maximum number of chunks to fetch from vectordb
               type: number
@@ -21396,9 +22127,16 @@ components:
                   enum:
                     - pgvector
                     - redis
+              required:
+                - dimensions
+                - distance_metric
+                - strategy
             vectordb_namespace:
               description: The namespace of the vectordb to use for embeddings lookup
               type: string
+          required:
+            - embeddings
+            - vectordb
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -21453,6 +22191,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     AiRateLimitingAdvancedPlugin:
       x-speakeasy-entity: GatewayPluginAiRateLimitingAdvanced
       allOf:
@@ -21501,7 +22241,9 @@ components:
               type: string
               enum:
                 - bedrock
+                - cohere
                 - gemini
+                - huggingface
                 - openai
             llm_providers:
               description: 'The provider config. Takes an array of `name`, `limit` and `window size` values.'
@@ -21537,6 +22279,9 @@ components:
                   - name
                   - window_size
                 type: object
+            namespace:
+              description: 'The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `dictionary_name`, need to be the same.'
+              type: string
             path:
               description: 'A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).'
               type: string
@@ -21689,6 +22434,8 @@ components:
               enum:
                 - fixed
                 - sliding
+          required:
+            - llm_providers
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -21743,6 +22490,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     AiRequestTransformerPlugin:
       x-speakeasy-entity: GatewayPluginAiRequestTransformer
       allOf:
@@ -21872,6 +22621,31 @@ components:
                             aws_sts_endpoint_url:
                               description: 'If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.'
                               type: string
+                            embeddings_normalize:
+                              description: 'If using AWS providers (Bedrock), set to true to normalize the embeddings.'
+                              type: boolean
+                            performance_config_latency:
+                              description: Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
+                              type: string
+                        cohere:
+                          type: object
+                          properties:
+                            embedding_input_type:
+                              description: The purpose of the input text to calculate embedding vectors.
+                              type: string
+                              enum:
+                                - classification
+                                - clustering
+                                - image
+                                - search_document
+                                - search_query
+                            wait_for_model:
+                              description: Wait for the model if it is not ready
+                              type: boolean
+                        embeddings_dimensions:
+                          description: 'If using embeddings models, set the number of dimensions to generate.'
+                          type: integer
+                          minimum: 0
                         gemini:
                           type: object
                           properties:
@@ -21951,15 +22725,31 @@ components:
                         - llama2
                         - mistral
                         - openai
+                  required:
+                    - provider
                 route_type:
-                  description: 'The model''s operation implementation, for this provider. Set to `preserve` to pass through without transformation.'
+                  description: 'The model''s operation implementation, for this provider. '
                   type: string
                   enum:
+                    - audio/v1/audio/speech
+                    - audio/v1/audio/transcriptions
+                    - audio/v1/audio/translations
+                    - image/v1/images/edits
+                    - image/v1/images/generations
+                    - llm/v1/assistants
+                    - llm/v1/batches
                     - llm/v1/chat
                     - llm/v1/completions
+                    - llm/v1/embeddings
+                    - llm/v1/files
+                    - llm/v1/responses
                     - preserve
+                    - realtime/v1/realtime
+              required:
+                - model
+                - route_type
             max_request_body_size:
-              description: max allowed body size allowed to be introspected
+              description: 'max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx''s client_max_body_size.'
               type: integer
               minimum: 0
             prompt:
@@ -21968,6 +22758,9 @@ components:
             transformation_extract_pattern:
               description: 'Defines the regular expression that must match to indicate a successful AI transformation at the request phase. The first match will be set as the outgoing body. If the AI service''s response doesn''t match this pattern, it is marked as a failure.'
               type: string
+          required:
+            - llm
+            - prompt
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
@@ -22012,6 +22805,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     AiResponseTransformerPlugin:
       x-speakeasy-entity: GatewayPluginAiResponseTransformer
       allOf:
@@ -22141,6 +22936,31 @@ components:
                             aws_sts_endpoint_url:
                               description: 'If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.'
                               type: string
+                            embeddings_normalize:
+                              description: 'If using AWS providers (Bedrock), set to true to normalize the embeddings.'
+                              type: boolean
+                            performance_config_latency:
+                              description: Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
+                              type: string
+                        cohere:
+                          type: object
+                          properties:
+                            embedding_input_type:
+                              description: The purpose of the input text to calculate embedding vectors.
+                              type: string
+                              enum:
+                                - classification
+                                - clustering
+                                - image
+                                - search_document
+                                - search_query
+                            wait_for_model:
+                              description: Wait for the model if it is not ready
+                              type: boolean
+                        embeddings_dimensions:
+                          description: 'If using embeddings models, set the number of dimensions to generate.'
+                          type: integer
+                          minimum: 0
                         gemini:
                           type: object
                           properties:
@@ -22220,15 +23040,31 @@ components:
                         - llama2
                         - mistral
                         - openai
+                  required:
+                    - provider
                 route_type:
-                  description: 'The model''s operation implementation, for this provider. Set to `preserve` to pass through without transformation.'
+                  description: 'The model''s operation implementation, for this provider. '
                   type: string
                   enum:
+                    - audio/v1/audio/speech
+                    - audio/v1/audio/transcriptions
+                    - audio/v1/audio/translations
+                    - image/v1/images/edits
+                    - image/v1/images/generations
+                    - llm/v1/assistants
+                    - llm/v1/batches
                     - llm/v1/chat
                     - llm/v1/completions
+                    - llm/v1/embeddings
+                    - llm/v1/files
+                    - llm/v1/responses
                     - preserve
+                    - realtime/v1/realtime
+              required:
+                - model
+                - route_type
             max_request_body_size:
-              description: max allowed body size allowed to be introspected
+              description: 'max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx''s client_max_body_size.'
               type: integer
               minimum: 0
             parse_llm_response_json_instructions:
@@ -22240,6 +23076,9 @@ components:
             transformation_extract_pattern:
               description: 'Defines the regular expression that must match to indicate a successful AI transformation at the response phase. The first match will be set as the returning body. If the AI service''s response doesn''t match this pattern, a failure is returned to the client.'
               type: string
+          required:
+            - llm
+            - prompt
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -22294,6 +23133,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     AiSanitizerPlugin:
       x-speakeasy-entity: GatewayPluginAiSanitizer
       allOf:
@@ -22534,6 +23375,12 @@ components:
                             aws_sts_endpoint_url:
                               description: 'If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.'
                               type: string
+                            embeddings_normalize:
+                              description: 'If using AWS providers (Bedrock), set to true to normalize the embeddings.'
+                              type: boolean
+                            performance_config_latency:
+                              description: Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
+                              type: string
                         gemini:
                           type: object
                           properties:
@@ -22570,6 +23417,11 @@ components:
                         - huggingface
                         - mistral
                         - openai
+                  required:
+                    - name
+                    - provider
+              required:
+                - model
             exact_caching:
               description: 'When enabled, a first check for exact query will be done. It will impact DB size'
               type: boolean
@@ -22587,7 +23439,9 @@ components:
               type: string
               enum:
                 - bedrock
+                - cohere
                 - gemini
+                - huggingface
                 - openai
             message_countback:
               description: Number of messages in the chat history to Vectorize/Cache
@@ -22780,6 +23634,14 @@ components:
                 threshold:
                   description: the default similarity threshold for accepting semantic search results (float)
                   type: number
+              required:
+                - dimensions
+                - distance_metric
+                - strategy
+                - threshold
+          required:
+            - embeddings
+            - vectordb
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -22834,6 +23696,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     AiSemanticPromptGuardPlugin:
       x-speakeasy-entity: GatewayPluginAiSemanticPromptGuard
       allOf:
@@ -22932,6 +23796,12 @@ components:
                             aws_sts_endpoint_url:
                               description: 'If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.'
                               type: string
+                            embeddings_normalize:
+                              description: 'If using AWS providers (Bedrock), set to true to normalize the embeddings.'
+                              type: boolean
+                            performance_config_latency:
+                              description: Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
+                              type: string
                         gemini:
                           type: object
                           properties:
@@ -22968,12 +23838,29 @@ components:
                         - huggingface
                         - mistral
                         - openai
+                  required:
+                    - name
+                    - provider
+              required:
+                - model
+            genai_category:
+              description: Generative AI category of the request
+              type: string
+              enum:
+                - audio/speech
+                - audio/transcription
+                - image/generation
+                - realtime/generation
+                - text/embeddings
+                - text/generation
             llm_format:
               description: LLM input and output format and schema to use
               type: string
               enum:
                 - bedrock
+                - cohere
                 - gemini
+                - huggingface
                 - openai
             rules:
               type: object
@@ -23001,7 +23888,7 @@ components:
                   description: 'If true, will match all roles in addition to ''user'' role in conversation history.'
                   type: boolean
                 max_request_body_size:
-                  description: max allowed body size allowed to be introspected
+                  description: 'max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx''s client_max_body_size.'
                   type: integer
                   minimum: 0
             search:
@@ -23193,6 +24080,14 @@ components:
                 threshold:
                   description: the default similarity threshold for accepting semantic search results (float)
                   type: number
+              required:
+                - dimensions
+                - distance_metric
+                - strategy
+                - threshold
+          required:
+            - embeddings
+            - vectordb
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -23247,6 +24142,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     AwsLambdaPlugin:
       x-speakeasy-entity: GatewayPluginAwsLambda
       allOf:
@@ -23438,6 +24335,9 @@ components:
             timeout:
               description: Timeout in milliseconds before closing a connection to the Azure Functions server.
               type: number
+          required:
+            - appname
+            - functionname
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -23489,6 +24389,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     BasicAuth:
       x-speakeasy-entity: GatewayBasicAuth
       type: object
@@ -23518,6 +24420,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         username:
           type: string
       example:
@@ -23614,6 +24517,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         username:
           type: string
       example:
@@ -23704,6 +24608,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -23866,6 +24771,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -23955,6 +24861,45 @@ components:
               enum:
                 - http-get
                 - server-sent-events
+            schema_registry:
+              description: The plugin-global schema registry configuration.
+              type: object
+              properties:
+                confluent:
+                  type: object
+                  properties:
+                    authentication:
+                      type: object
+                      properties:
+                        basic:
+                          type: object
+                          properties:
+                            password:
+                              type: string
+                            username:
+                              type: string
+                          required:
+                            - password
+                            - username
+                        mode:
+                          description: Authentication mode to use with the schema registry.
+                          type: string
+                          enum:
+                            - basic
+                            - none
+                    ssl_verify:
+                      description: Set to false to disable SSL certificate verification when connecting to the schema registry.
+                      type: boolean
+                    ttl:
+                      description: The TTL in seconds for the schema registry cache.
+                      type: number
+                      maximum: 3600
+                      minimum: 0
+                    url:
+                      description: The URL of the schema registry.
+                      type: string
+                  required:
+                    - authentication
             timeout:
               description: Socket timeout in milliseconds.
               type: integer
@@ -23965,10 +24910,54 @@ components:
                 properties:
                   name:
                     type: string
+                  schema_registry:
+                    description: The plugin-global schema registry configuration.
+                    type: object
+                    properties:
+                      confluent:
+                        type: object
+                        properties:
+                          authentication:
+                            type: object
+                            properties:
+                              basic:
+                                type: object
+                                properties:
+                                  password:
+                                    type: string
+                                  username:
+                                    type: string
+                                required:
+                                  - password
+                                  - username
+                              mode:
+                                description: Authentication mode to use with the schema registry.
+                                type: string
+                                enum:
+                                  - basic
+                                  - none
+                          ssl_verify:
+                            description: Set to false to disable SSL certificate verification when connecting to the schema registry.
+                            type: boolean
+                          ttl:
+                            description: The TTL in seconds for the schema registry cache.
+                            type: number
+                            maximum: 3600
+                            minimum: 0
+                          url:
+                            description: The URL of the schema registry.
+                            type: string
+                        required:
+                          - authentication
                 required:
                   - name
+                  - schema_registry
                 type: object
               minLength: 1
+          required:
+            - cluster_api_key
+            - cluster_api_secret
+            - topics
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -24013,6 +25002,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     ConfluentPlugin:
       x-speakeasy-entity: GatewayPluginConfluent
       allOf:
@@ -24077,6 +25068,9 @@ components:
               type: integer
             keepalive_enabled:
               type: boolean
+            key_query_arg:
+              description: 'The request query parameter name that contains the Kafka message key. If specified, messages with the same key will be sent to the same Kafka partition, ensuring consistent ordering.'
+              type: string
             message_by_lua_functions:
               description: The Lua functions that manipulates the message being sent to the Kafka topic.
               type: array
@@ -24113,6 +25107,71 @@ components:
             producer_request_timeout:
               description: Time to wait for a Produce response in milliseconds.
               type: integer
+            schema_registry:
+              description: The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
+              type: object
+              properties:
+                confluent:
+                  type: object
+                  properties:
+                    authentication:
+                      type: object
+                      properties:
+                        basic:
+                          type: object
+                          properties:
+                            password:
+                              type: string
+                            username:
+                              type: string
+                          required:
+                            - password
+                            - username
+                        mode:
+                          description: Authentication mode to use with the schema registry.
+                          type: string
+                          enum:
+                            - basic
+                            - none
+                    key_schema:
+                      type: object
+                      properties:
+                        schema_version:
+                          description: The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
+                          type: string
+                          match_any:
+                            patterns:
+                              - '^[0-9]+$'
+                              - ^latest$
+                        subject_name:
+                          description: The name of the subject
+                          type: string
+                    ssl_verify:
+                      description: Set to false to disable SSL certificate verification when connecting to the schema registry.
+                      type: boolean
+                    ttl:
+                      description: The TTL in seconds for the schema registry cache.
+                      type: number
+                      maximum: 3600
+                      minimum: 0
+                    url:
+                      description: The URL of the schema registry.
+                      type: string
+                    value_schema:
+                      type: object
+                      properties:
+                        schema_version:
+                          description: The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
+                          type: string
+                          match_any:
+                            patterns:
+                              - '^[0-9]+$'
+                              - ^latest$
+                        subject_name:
+                          description: The name of the subject
+                          type: string
+                  required:
+                    - authentication
             timeout:
               description: Socket timeout in milliseconds.
               type: integer
@@ -24122,6 +25181,10 @@ components:
             topics_query_arg:
               description: The request query parameter name that contains the topics to publish to
               type: string
+          required:
+            - cluster_api_key
+            - cluster_api_secret
+            - topic
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -24166,6 +25229,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     Consumer:
       x-speakeasy-entity: GatewayConsumer
       description: 'The Consumer object represents a consumer - or a user - of a Service. You can either rely on Kong as the primary datastore, or you can map the consumer list with your database to keep consistency between Kong and your existing primary datastore.'
@@ -24187,6 +25252,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -24219,6 +25285,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -24409,6 +25476,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -24677,6 +25745,363 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+    DatakitPlugin:
+      x-speakeasy-entity: GatewayPluginDatakit
+      allOf:
+        - $ref: '#/components/schemas/PluginBase'
+        - $ref: '#/components/schemas/DatakitPluginConfig'
+    DatakitPluginConfig:
+      properties:
+        config:
+          type: object
+          properties:
+            debug:
+              type: boolean
+            nodes:
+              type: array
+              items:
+                description: datakit nodes
+                properties:
+                  name:
+                    description: A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+                    type: string
+                    match_all:
+                      pattern: '^[A-Za-z_][A-Za-z0-9_-]*$'
+                    maxLength: 255
+                    minLength: 1
+                    not_one_of:
+                      - request
+                      - response
+                      - service_request
+                      - service_response
+                  type:
+                    type: string
+                    enum:
+                      - call
+                      - exit
+                      - jq
+                      - property
+                      - static
+                required:
+                  - name
+                  - type
+                subschema_definitions:
+                  call:
+                    description: Make an external HTTP request
+                    properties:
+                      input:
+                        description: call node input
+                        type: string
+                        match_any:
+                          patterns:
+                            - '^[A-Za-z_][A-Za-z0-9_-]*$'
+                            - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
+                        maxLength: 255
+                        minLength: 1
+                        required: false
+                      inputs:
+                        description: call node inputs
+                        type: object
+                        properties:
+                          body:
+                            description: HTTP request body
+                            type: string
+                            match_any:
+                              patterns:
+                                - '^[A-Za-z_][A-Za-z0-9_-]*$'
+                                - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
+                            maxLength: 255
+                            minLength: 1
+                            required: false
+                          headers:
+                            description: HTTP request headers
+                            type: string
+                            match_any:
+                              patterns:
+                                - '^[A-Za-z_][A-Za-z0-9_-]*$'
+                                - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
+                            maxLength: 255
+                            minLength: 1
+                            required: false
+                          query:
+                            description: HTTP request query
+                            type: string
+                            match_any:
+                              patterns:
+                                - '^[A-Za-z_][A-Za-z0-9_-]*$'
+                                - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
+                            maxLength: 255
+                            minLength: 1
+                            required: false
+                        required: false
+                      method:
+                        description: 'A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters.'
+                        type: string
+                        maxLength: 32
+                        minLength: 1
+                        pattern: ^%u+$
+                      output:
+                        description: call node output
+                        type: string
+                        match_any:
+                          patterns:
+                            - '^[A-Za-z_][A-Za-z0-9_-]*$'
+                            - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
+                        maxLength: 255
+                        minLength: 1
+                        required: false
+                      outputs:
+                        description: call node outputs
+                        type: object
+                        properties:
+                          body:
+                            description: HTTP response body
+                            type: string
+                            match_any:
+                              patterns:
+                                - '^[A-Za-z_][A-Za-z0-9_-]*$'
+                                - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
+                            maxLength: 255
+                            minLength: 1
+                            required: false
+                          headers:
+                            description: HTTP response headers
+                            type: string
+                            match_any:
+                              patterns:
+                                - '^[A-Za-z_][A-Za-z0-9_-]*$'
+                                - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
+                            maxLength: 255
+                            minLength: 1
+                            required: false
+                          status:
+                            description: HTTP response status code
+                            type: string
+                            match_any:
+                              patterns:
+                                - '^[A-Za-z_][A-Za-z0-9_-]*$'
+                                - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
+                            maxLength: 255
+                            minLength: 1
+                            required: false
+                        required: false
+                      ssl_server_name:
+                        description: A string representing an SNI (server name indication) value for TLS.
+                        type: string
+                      timeout:
+                        description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+                        type: integer
+                        maximum: 2147483646
+                        minimum: 0
+                      url:
+                        description: 'A string representing a URL, such as https://example.com/path/to/resource?q=search.'
+                        type: string
+                        required: true
+                    type: object
+                  exit:
+                    description: Terminate the request and send a response to the client
+                    properties:
+                      input:
+                        description: exit node input
+                        type: string
+                        match_any:
+                          patterns:
+                            - '^[A-Za-z_][A-Za-z0-9_-]*$'
+                            - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
+                        maxLength: 255
+                        minLength: 1
+                        required: false
+                      inputs:
+                        description: exit node inputs
+                        type: object
+                        properties:
+                          body:
+                            description: HTTP response body
+                            type: string
+                            match_any:
+                              patterns:
+                                - '^[A-Za-z_][A-Za-z0-9_-]*$'
+                                - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
+                            maxLength: 255
+                            minLength: 1
+                            required: false
+                          headers:
+                            description: HTTP response headers
+                            type: string
+                            match_any:
+                              patterns:
+                                - '^[A-Za-z_][A-Za-z0-9_-]*$'
+                                - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
+                            maxLength: 255
+                            minLength: 1
+                            required: false
+                        required: false
+                      status:
+                        description: HTTP status code
+                        type: integer
+                        maximum: 599
+                        minimum: 200
+                      warn_headers_sent:
+                        type: boolean
+                        required: false
+                    type: object
+                  jq:
+                    description: Process data using `jq` syntax
+                    properties:
+                      input:
+                        description: filter input(s)
+                        type: string
+                        match_any:
+                          patterns:
+                            - '^[A-Za-z_][A-Za-z0-9_-]*$'
+                            - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
+                        maxLength: 255
+                        minLength: 1
+                        required: false
+                      inputs:
+                        description: filter input(s)
+                        type: object
+                        additionalProperties: true
+                        required: false
+                      jq:
+                        description: 'The jq filter text. Refer to https://jqlang.org/manual/ for full documentation.'
+                        type: string
+                        maxLength: 10240
+                        minLength: 1
+                        required: true
+                      output:
+                        description: filter output(s)
+                        type: string
+                        match_any:
+                          patterns:
+                            - '^[A-Za-z_][A-Za-z0-9_-]*$'
+                            - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
+                        maxLength: 255
+                        minLength: 1
+                        required: false
+                    type: object
+                  property:
+                    description: Get or set a property
+                    properties:
+                      content_type:
+                        description: 'The expected mime type of the property value. When set to `application/json`, SET operations will JSON-encode input data before writing it, and GET operations will JSON-decode output data after reading it. Otherwise, this setting has no effect.'
+                        type: string
+                        enum:
+                          - application/json
+                          - application/octet-stream
+                          - text/plain
+                        required: false
+                      input:
+                        description: 'Property input source. When connected, this node operates in SET mode and writes input data to the property. Otherwise, the node operates in GET mode and reads the property.'
+                        type: string
+                        match_any:
+                          patterns:
+                            - '^[A-Za-z_][A-Za-z0-9_-]*$'
+                            - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
+                        maxLength: 255
+                        minLength: 1
+                        required: false
+                      output:
+                        description: Property output. This can be connected regardless of whether the node is operating in GET mode or SET mode.
+                        type: string
+                        match_any:
+                          patterns:
+                            - '^[A-Za-z_][A-Za-z0-9_-]*$'
+                            - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
+                        maxLength: 255
+                        minLength: 1
+                        required: false
+                      property:
+                        description: The property name to get/set
+                        type: string
+                        maxLength: 255
+                        minLength: 1
+                        required: true
+                    type: object
+                  static:
+                    description: Produce reusable outputs from statically-configured values
+                    properties:
+                      additionalProperties: {}
+                      output:
+                        description: The entire `.values` map
+                        type: string
+                        match_any:
+                          patterns:
+                            - '^[A-Za-z_][A-Za-z0-9_-]*$'
+                            - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
+                        maxLength: 255
+                        minLength: 1
+                        required: false
+                      outputs:
+                        description: 'Individual items from `.values`, referenced by key'
+                        type: object
+                        additionalProperties: true
+                        required: false
+                    type: object
+                subschema_error: 'unknown node type: %q, expected one of: call, exit, jq, property, static'
+                subschema_key: type
+                subschema_override_parent: true
+                type: object
+              maxLength: 64
+              minLength: 1
+          required:
+            - nodes
+        consumer:
+          description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        consumer_group:
+          description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        name:
+          type: string
+          const: datakit
+        protocols:
+          description: A set of strings representing HTTP protocols.
+          type: array
+          items:
+            enum:
+              - grpc
+              - grpcs
+              - http
+              - https
+            type: string
+          format: set
+        route:
+          description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        service:
+          description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+      required:
+        - config
     DegraphqlPlugin:
       x-speakeasy-entity: GatewayPluginDegraphql
       allOf:
@@ -24744,6 +26169,8 @@ components:
             handle_unknown:
               description: Determines whether to handle unknown status codes by transforming their responses.
               type: boolean
+          required:
+            - functions
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -24788,6 +26215,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     FileLogPlugin:
       x-speakeasy-entity: GatewayPluginFileLog
       allOf:
@@ -24808,6 +26237,8 @@ components:
             reopen:
               description: Determines whether the log file is closed and reopened on every request.
               type: boolean
+          required:
+            - path
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -24859,6 +26290,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     ForwardProxyPlugin:
       x-speakeasy-entity: GatewayPluginForwardProxy
       allOf:
@@ -25206,6 +26639,9 @@ components:
             namespace:
               description: 'The rate limiting namespace to use for this plugin instance. This namespace is used to share rate limiting counters across different instances. If it is not provided, a random UUID is generated. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `window_size`, `dictionary_name`, need to be the same.'
               type: string
+            pass_all_downstream_headers:
+              description: pass all downstream headers to the upstream graphql server in introspection request
+              type: boolean
             redis:
               type: object
               properties:
@@ -25349,6 +26785,10 @@ components:
               enum:
                 - fixed
                 - sliding
+          required:
+            - limit
+            - sync_rate
+            - window_size
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -25393,6 +26833,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     GrpcGatewayPlugin:
       x-speakeasy-entity: GatewayPluginGrpcGateway
       allOf:
@@ -25555,6 +26997,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         username:
           type: string
       example:
@@ -25594,6 +27037,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         username:
           type: string
       example:
@@ -25689,6 +27133,10 @@ components:
             skip_consumer_lookup:
               description: Skip consumer lookup once certificate is trusted against the configured CA list.
               type: boolean
+          required:
+            - ca_certificates
+            - certificate_header_format
+            - certificate_header_name
         name:
           type: string
           const: header-cert-auth
@@ -25723,6 +27171,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     HmacAuthPlugin:
       x-speakeasy-entity: GatewayPluginHmacAuth
       allOf:
@@ -25889,6 +27339,8 @@ components:
             timeout:
               description: An optional timeout in milliseconds when sending data to the upstream server.
               type: number
+          required:
+            - http_endpoint
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -25940,6 +27392,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     InjectionProtectionPlugin:
       x-speakeasy-entity: GatewayPluginInjectionProtection
       allOf:
@@ -26185,6 +27639,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
       example:
         algorithm: HS256
         consumer:
@@ -26254,6 +27709,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
       example:
         algorithm: HS256
         id: 75695322-e8a0-4109-aed4-5416b0308d85
@@ -26473,6 +27929,8 @@ components:
             strict:
               description: 'Defines how the plugin behaves in cases where no token was found in the request. When using `strict` mode, the request requires a token to be present and subsequently raise an error if none could be found.'
               type: boolean
+          required:
+            - key_sets
         name:
           type: string
           const: jwe-decrypt
@@ -26507,6 +27965,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     JwtPlugin:
       x-speakeasy-entity: GatewayPluginJwt
       allOf:
@@ -27088,6 +28548,46 @@ components:
               enum:
                 - http-get
                 - server-sent-events
+                - websocket
+            schema_registry:
+              description: The plugin-global schema registry configuration.
+              type: object
+              properties:
+                confluent:
+                  type: object
+                  properties:
+                    authentication:
+                      type: object
+                      properties:
+                        basic:
+                          type: object
+                          properties:
+                            password:
+                              type: string
+                            username:
+                              type: string
+                          required:
+                            - password
+                            - username
+                        mode:
+                          description: Authentication mode to use with the schema registry.
+                          type: string
+                          enum:
+                            - basic
+                            - none
+                    ssl_verify:
+                      description: Set to false to disable SSL certificate verification when connecting to the schema registry.
+                      type: boolean
+                    ttl:
+                      description: The TTL in seconds for the schema registry cache.
+                      type: number
+                      maximum: 3600
+                      minimum: 0
+                    url:
+                      description: The URL of the schema registry.
+                      type: string
+                  required:
+                    - authentication
             security:
               type: object
               properties:
@@ -27105,10 +28605,53 @@ components:
                 properties:
                   name:
                     type: string
+                  schema_registry:
+                    description: The plugin-global schema registry configuration.
+                    type: object
+                    properties:
+                      confluent:
+                        type: object
+                        properties:
+                          authentication:
+                            type: object
+                            properties:
+                              basic:
+                                type: object
+                                properties:
+                                  password:
+                                    type: string
+                                  username:
+                                    type: string
+                                required:
+                                  - password
+                                  - username
+                              mode:
+                                description: Authentication mode to use with the schema registry.
+                                type: string
+                                enum:
+                                  - basic
+                                  - none
+                          ssl_verify:
+                            description: Set to false to disable SSL certificate verification when connecting to the schema registry.
+                            type: boolean
+                          ttl:
+                            description: The TTL in seconds for the schema registry cache.
+                            type: number
+                            maximum: 3600
+                            minimum: 0
+                          url:
+                            description: The URL of the schema registry.
+                            type: string
+                        required:
+                          - authentication
                 required:
                   - name
+                  - schema_registry
                 type: object
               minLength: 1
+          required:
+            - bootstrap_servers
+            - topics
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -27155,6 +28698,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     KafkaLogPlugin:
       x-speakeasy-entity: GatewayPluginKafkaLog
       allOf:
@@ -27217,6 +28762,9 @@ components:
               type: integer
             keepalive_enabled:
               type: boolean
+            key_query_arg:
+              description: 'The request query parameter name that contains the Kafka message key. If specified, messages with the same key will be sent to the same Kafka partition, ensuring consistent ordering.'
+              type: string
             producer_async:
               description: Flag to enable asynchronous mode.
               type: boolean
@@ -27248,6 +28796,71 @@ components:
             producer_request_timeout:
               description: Time to wait for a Produce response in milliseconds
               type: integer
+            schema_registry:
+              description: The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
+              type: object
+              properties:
+                confluent:
+                  type: object
+                  properties:
+                    authentication:
+                      type: object
+                      properties:
+                        basic:
+                          type: object
+                          properties:
+                            password:
+                              type: string
+                            username:
+                              type: string
+                          required:
+                            - password
+                            - username
+                        mode:
+                          description: Authentication mode to use with the schema registry.
+                          type: string
+                          enum:
+                            - basic
+                            - none
+                    key_schema:
+                      type: object
+                      properties:
+                        schema_version:
+                          description: The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
+                          type: string
+                          match_any:
+                            patterns:
+                              - '^[0-9]+$'
+                              - ^latest$
+                        subject_name:
+                          description: The name of the subject
+                          type: string
+                    ssl_verify:
+                      description: Set to false to disable SSL certificate verification when connecting to the schema registry.
+                      type: boolean
+                    ttl:
+                      description: The TTL in seconds for the schema registry cache.
+                      type: number
+                      maximum: 3600
+                      minimum: 0
+                    url:
+                      description: The URL of the schema registry.
+                      type: string
+                    value_schema:
+                      type: object
+                      properties:
+                        schema_version:
+                          description: The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
+                          type: string
+                          match_any:
+                            patterns:
+                              - '^[0-9]+$'
+                              - ^latest$
+                        subject_name:
+                          description: The name of the subject
+                          type: string
+                  required:
+                    - authentication
             security:
               type: object
               properties:
@@ -27264,6 +28877,8 @@ components:
             topic:
               description: The Kafka topic to publish to.
               type: string
+          required:
+            - topic
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -27310,6 +28925,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     KafkaUpstreamPlugin:
       x-speakeasy-entity: GatewayPluginKafkaUpstream
       allOf:
@@ -27386,6 +29003,9 @@ components:
               type: integer
             keepalive_enabled:
               type: boolean
+            key_query_arg:
+              description: 'The request query parameter name that contains the Kafka message key. If specified, messages with the same key will be sent to the same Kafka partition, ensuring consistent ordering.'
+              type: string
             message_by_lua_functions:
               description: The Lua functions that manipulates the message being sent to the Kafka topic.
               type: array
@@ -27422,6 +29042,71 @@ components:
             producer_request_timeout:
               description: Time to wait for a Produce response in milliseconds.
               type: integer
+            schema_registry:
+              description: The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
+              type: object
+              properties:
+                confluent:
+                  type: object
+                  properties:
+                    authentication:
+                      type: object
+                      properties:
+                        basic:
+                          type: object
+                          properties:
+                            password:
+                              type: string
+                            username:
+                              type: string
+                          required:
+                            - password
+                            - username
+                        mode:
+                          description: Authentication mode to use with the schema registry.
+                          type: string
+                          enum:
+                            - basic
+                            - none
+                    key_schema:
+                      type: object
+                      properties:
+                        schema_version:
+                          description: The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
+                          type: string
+                          match_any:
+                            patterns:
+                              - '^[0-9]+$'
+                              - ^latest$
+                        subject_name:
+                          description: The name of the subject
+                          type: string
+                    ssl_verify:
+                      description: Set to false to disable SSL certificate verification when connecting to the schema registry.
+                      type: boolean
+                    ttl:
+                      description: The TTL in seconds for the schema registry cache.
+                      type: number
+                      maximum: 3600
+                      minimum: 0
+                    url:
+                      description: The URL of the schema registry.
+                      type: string
+                    value_schema:
+                      type: object
+                      properties:
+                        schema_version:
+                          description: The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
+                          type: string
+                          match_any:
+                            patterns:
+                              - '^[0-9]+$'
+                              - ^latest$
+                        subject_name:
+                          description: The name of the subject
+                          type: string
+                  required:
+                    - authentication
             security:
               type: object
               properties:
@@ -27441,6 +29126,8 @@ components:
             topics_query_arg:
               description: The request query parameter name that contains the topics to publish to
               type: string
+          required:
+            - topic
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -27485,6 +29172,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     Key:
       x-speakeasy-entity: GatewayKey
       description: 'A Key object holds a representation of asymmetric keys in various formats. When Kong or a Kong plugin requires a specific public or private key to perform certain operations, it can use this entity.'
@@ -27532,6 +29221,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -27580,6 +29270,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         ttl:
           description: key-auth ttl in seconds
           type: integer
@@ -27781,6 +29472,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         ttl:
           description: key-auth ttl in seconds
           type: integer
@@ -27807,6 +29499,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -27903,6 +29596,10 @@ components:
             verify_ldap_host:
               description: Set to `true` to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the `lua_ssl_trusted_certificate` directive.
               type: boolean
+          required:
+            - attribute
+            - base_dn
+            - ldap_host
         name:
           type: string
           const: ldap-auth-advanced
@@ -27939,6 +29636,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     LdapAuthPlugin:
       x-speakeasy-entity: GatewayPluginLdapAuth
       allOf:
@@ -27993,6 +29692,10 @@ components:
             verify_ldap_host:
               description: Set to `true` to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the `lua_ssl_trusted_certificate` directive.
               type: boolean
+          required:
+            - attribute
+            - base_dn
+            - ldap_host
         name:
           type: string
           const: ldap-auth
@@ -28029,6 +29732,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     LogglyPlugin:
       x-speakeasy-entity: GatewayPluginLoggly
       allOf:
@@ -28103,6 +29808,8 @@ components:
                 type: string
             timeout:
               type: number
+          required:
+            - key
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -28154,6 +29861,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     MTLSAuth:
       x-speakeasy-entity: GatewayMTLSAuth
       type: object
@@ -28190,6 +29899,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
       example:
         ca_certificate:
           id: b2f34145-0343-41a4-9602-4c69dec2f260
@@ -28236,6 +29946,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
       example:
         ca_certificate:
           id: b2f34145-0343-41a4-9602-4c69dec2f260
@@ -28407,6 +30118,8 @@ components:
             skip_consumer_lookup:
               description: Skip consumer lookup once certificate is trusted against the configured CA list.
               type: boolean
+          required:
+            - ca_certificates
         name:
           type: string
           const: mtls-auth
@@ -28441,6 +30154,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     OasValidationPlugin:
       x-speakeasy-entity: GatewayPluginOasValidation
       allOf:
@@ -28496,6 +30211,8 @@ components:
             verbose_response:
               description: 'If set to true, returns a detailed error message for invalid requests & responses. This is useful while testing.'
               type: boolean
+          required:
+            - api_spec
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -28540,6 +30257,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     Oauth2IntrospectionPlugin:
       x-speakeasy-entity: GatewayPluginOauth2Introspection
       allOf:
@@ -28595,6 +30314,9 @@ components:
             ttl:
               description: The TTL in seconds for the introspection response. Set to 0 to disable the expiration.
               type: number
+          required:
+            - authorization_value
+            - introspection_url
         name:
           type: string
           const: oauth-2-introspection
@@ -28629,6 +30351,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     Oauth2Plugin:
       x-speakeasy-entity: GatewayPluginOauth2
       allOf:
@@ -28700,6 +30424,8 @@ components:
             token_expiration:
               description: 'An optional integer value telling the plugin how many seconds a token should last, after which the client will need to refresh the token. Set to `0` to disable the expiration.'
               type: number
+          required:
+            - provision_key
         name:
           type: string
           const: oauth2
@@ -28736,6 +30462,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     OpaPlugin:
       x-speakeasy-entity: GatewayPluginOpa
       allOf:
@@ -28783,6 +30511,8 @@ components:
             ssl_verify:
               description: 'If set to true, the OPA certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate.'
               type: boolean
+          required:
+            - opa_path
         name:
           type: string
           const: opa
@@ -28817,6 +30547,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     OpenidConnectPlugin:
       x-speakeasy-entity: GatewayPluginOpenidConnect
       allOf:
@@ -30140,6 +31872,8 @@ components:
             verify_signature:
               description: Verify signature of tokens.
               type: boolean
+          required:
+            - issuer
           shorthand_fields:
             authorization_cookie_httponly:
               type: boolean
@@ -30244,6 +31978,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     OpentelemetryPlugin:
       x-speakeasy-entity: GatewayPluginOpentelemetry
       allOf:
@@ -30394,6 +32130,12 @@ components:
               type: number
               maximum: 1
               minimum: 0
+            sampling_strategy:
+              description: 'The sampling strategy to use for OTLP `traces`. Set `parent_drop_probability_fallback` if you want parent-based sampling when the parent span contains a `false` sampled flag, and fallback to probability-based sampling otherwise. Set `parent_probability_fallback` if you want parent-based sampling when the parent span contains a valid sampled flag (`true` or `false`), and fallback to probability-based sampling otherwise.'
+              type: string
+              enum:
+                - parent_drop_probability_fallback
+                - parent_probability_fallback
             send_timeout:
               description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
               type: integer
@@ -30482,30 +32224,39 @@ components:
             database:
               description: Database to use for the Redis connection when using the `redis` strategy
               type: integer
+              nullable: true
             host:
               description: Redis host.
               type: string
+              nullable: true
             password:
               description: 'Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.'
               type: string
+              nullable: true
             port:
               description: Redis port.
               type: integer
+              nullable: true
             server_name:
               description: Server name for SSL verification.
               type: string
+              nullable: true
             ssl:
               description: 'If set to true, uses SSL to connect to Redis.'
               type: boolean
+              nullable: true
             ssl_verify:
               description: 'If set to true, verifies the validity of the server SSL certificate.'
               type: boolean
+              nullable: true
             timeout:
               description: Connection timeout.
               type: integer
+              nullable: true
             username:
               description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. Requires Redis v6.0.0+.'
               type: string
+              nullable: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -30520,6 +32271,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         type:
           type: string
           const: redis-ce
@@ -30561,6 +32313,7 @@ components:
             cluster_max_redirections:
               description: Maximum retry attempts for redirection.
               type: integer
+              nullable: true
             cluster_nodes:
               description: Cluster addresses for Redis connections using the `redis` strategy.
               type: array
@@ -30573,39 +32326,51 @@ components:
                     description: Cluster node port.
                     type: integer
                 type: object
+              nullable: true
             connect_timeout:
               description: Connect timeout.
               type: integer
+              nullable: true
             connection_is_proxied:
               description: 'If the connection to Redis is proxied, e.g., Envoy.'
               type: boolean
+              nullable: true
             database:
               description: Database index.
               type: integer
+              nullable: true
             host:
               description: Redis host.
               type: string
+              nullable: true
             keepalive_backlog:
               description: Limits the total number of opened connections for a pool.
               type: integer
+              nullable: true
             keepalive_pool_size:
               description: Size limit for cosocket connection pool per worker process.
               type: integer
+              nullable: true
             password:
               description: 'Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.'
               type: string
+              nullable: true
             port:
               description: The port is only used when the host is set.
               type: integer
+              nullable: true
             read_timeout:
               description: Read timeout.
               type: integer
+              nullable: true
             send_timeout:
               description: Send timeout.
               type: integer
+              nullable: true
             sentinel_master:
               description: Sentinel master to use for Redis connections. Defining this implies using Redis Sentinel.
               type: string
+              nullable: true
             sentinel_nodes:
               description: Sentinel addresses for Redis connections using the `redis` strategy. Array must have at least 1 element.
               type: array
@@ -30618,27 +32383,35 @@ components:
                     description: Sentinel node port.
                     type: integer
                 type: object
+              nullable: true
             sentinel_password:
               description: Sentinel password to authenticate with a Redis Sentinel instance.
               type: string
+              nullable: true
             sentinel_role:
               description: 'Sentinel role to use for Redis connections when `redis` strategy is used, implies using Redis Sentinel.'
               type: string
+              nullable: true
             sentinel_username:
               description: Sentinel username to authenticate with a Redis Sentinel instance. Requires Redis v6.2.0+.
               type: string
+              nullable: true
             server_name:
               description: Server name for SSL verification.
               type: string
+              nullable: true
             ssl:
               description: 'If set to true, uses SSL to connect to Redis.'
               type: boolean
+              nullable: true
             ssl_verify:
               description: 'If set to true, verifies the validity of the server SSL certificate.'
               type: boolean
+              nullable: true
             username:
               description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. Requires Redis v6.0.0+.'
               type: string
+              nullable: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -30653,6 +32426,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         type:
           type: string
           const: redis-ee
@@ -30774,6 +32548,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -30855,6 +32630,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -31345,6 +33121,8 @@ components:
               type: array
               items:
                 type: string
+          required:
+            - strategy
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -31399,6 +33177,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     ProxyCachePlugin:
       x-speakeasy-entity: GatewayPluginProxyCache
       allOf:
@@ -31476,6 +33256,8 @@ components:
               type: array
               items:
                 type: string
+          required:
+            - strategy
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -31537,6 +33319,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     RateLimitingAdvancedPlugin:
       x-speakeasy-entity: GatewayPluginRateLimitingAdvanced
       allOf:
@@ -31760,6 +33544,10 @@ components:
               enum:
                 - fixed
                 - sliding
+          required:
+            - limit
+            - namespace
+            - window_size
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -31814,6 +33602,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     RateLimitingPlugin:
       x-speakeasy-entity: GatewayPluginRateLimiting
       allOf:
@@ -32018,6 +33808,8 @@ components:
               type: integer
               maximum: 599
               minimum: 100
+          required:
+            - location
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -32072,6 +33864,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     RequestCalloutPlugin:
       x-speakeasy-entity: GatewayPluginRequestCallout
       allOf:
@@ -32223,7 +34017,7 @@ components:
                     - 'off'
                     - redis
             callouts:
-              description: 'A collection of callout objects, where each object represents an HTTPrequest made in the context of a proxy request.'
+              description: 'A collection of callout objects, where each object represents an HTTP request made in the context of a proxy request.'
               type: array
               items:
                 properties:
@@ -32232,15 +34026,15 @@ components:
                     type: object
                     properties:
                       bypass:
-                        description: 'If true, skips caching the callout response.'
+                        description: 'If `true`, skips caching the callout response.'
                         type: boolean
                   depends_on:
-                    description: An array of callout names the current callout depends on.This dependency determines the callout execution order.
+                    description: An array of callout names the current callout depends on. This dependency list determines the callout execution order via a topological sorting algorithm.
                     type: array
                     items:
                       type: string
                   name:
-                    description: A string identifier for a callout. A callout object is referenceablevia its name in the kong.ctx.shared.callouts.<name>
+                    description: A string identifier for a callout. A callout object is referenceable via its name in the `kong.ctx.shared.callouts.<name>`
                     type: string
                   request:
                     description: The customizations for the callout request.
@@ -32251,17 +34045,17 @@ components:
                         type: object
                         properties:
                           custom:
-                            description: The custom body fields to be added in the callout HTTP request.Values can contain Lua expressions in the form $(some_lua_code).
+                            description: The custom body fields to be added to the callout HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
                             type: object
                             additionalProperties: true
                           decode:
-                            description: 'If true, decodes the request''s body to make it available for customizations.'
+                            description: 'If `true`, decodes the request''s body and make it available for customizations. Only JSON content type is supported.'
                             type: boolean
                           forward:
-                            description: 'If true, forwards the incoming request''s body to the callout request.'
+                            description: 'If `true`, forwards the incoming request''s body to the callout request.'
                             type: boolean
                       by_lua:
-                        description: Lua code that executes before the callout request is made.Standard Lua sandboxing restrictions apply.
+                        description: Lua code that executes before the callout request is made. **Warning** can impact system behavior. Standard Lua sandboxing restrictions apply.
                         type: string
                       error:
                         description: The error handling policy the plugin will apply to TCP and HTTP errors.
@@ -32271,7 +34065,7 @@ components:
                             description: The error code to respond with if `on_error` is `fail` or if `retries` is achieved.
                             type: integer
                           error_response_msg:
-                            description: The error mesasge to respond with if `on_error` is `fail` or if `retries` is achieved.Templating with Lua expressions is supported.
+                            description: The error mesasge to respond with if `on_error` is set to `fail` or if `retries` is achieved. Templating with Lua expressions is supported.
                             type: string
                           http_statuses:
                             description: The list of HTTP status codes considered errors under the error handling policy.
@@ -32294,11 +34088,11 @@ components:
                         type: object
                         properties:
                           custom:
-                            description: The custom headers to be added in the callout HTTP request.Values can contain Lua expressions in the form $(some_lua_code).
+                            description: The custom headers to be added in the callout HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
                             type: object
                             additionalProperties: true
                           forward:
-                            description: 'If true, forwards the incoming request''s headers to the callout request. '
+                            description: 'If `true`, forwards the incoming request''s headers to the callout request. '
                             type: boolean
                       http_opts:
                         description: HTTP connection parameters.
@@ -32324,7 +34118,7 @@ components:
                             description: The SNI used in the callout request. Defaults to host if omitted.
                             type: string
                           ssl_verify:
-                            description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
+                            description: 'If set to `true`, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
                             type: boolean
                           timeouts:
                             description: Socket timeouts in milliseconds. All or none must be set.
@@ -32354,11 +34148,11 @@ components:
                         type: object
                         properties:
                           custom:
-                            description: The custom query params to be added in the callout HTTP request.Values can contain Lua expressions in the form $(some_lua_code).
+                            description: The custom query params to be added in the callout HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
                             type: object
                             additionalProperties: true
                           forward:
-                            description: 'If true, forwards the incoming request''s query params to the callout request. '
+                            description: 'If `true`, forwards the incoming request''s query params to the callout request. '
                             type: boolean
                       url:
                         description: The URL that will be requested.
@@ -32378,20 +34172,20 @@ components:
                         type: object
                         properties:
                           decode:
-                            description: 'If true, decodes the response body before storing into the context. Only JSON is supported.'
+                            description: 'If `true`, decodes the response body before storing into the context. Only JSON is supported.'
                             type: boolean
                           store:
-                            description: 'If false, skips storing the callout response body into kong.ctx.shared.callouts.<name>.response.body.'
+                            description: 'If `false`, skips storing the callout response body into kong.ctx.shared.callouts.<name>.response.body.'
                             type: boolean
                       by_lua:
-                        description: 'Lua code that executes after the callout request is made, before caching takes place. Standard Lua sandboxing restrictions apply.'
+                        description: 'Lua code that executes after the callout response is received, before caching takes place. Can produce side effects. Standard Lua sandboxing restrictions apply.'
                         type: string
                       headers:
                         description: Callout response header customizations.
                         type: object
                         properties:
                           store:
-                            description: 'If false, skips storing the callout response headers intokong.ctx.shared.callouts.<name>.response.headers.'
+                            description: 'If `false`, skips storing the callout response headers into kong.ctx.shared.callouts.<name>.response.headers.'
                             type: boolean
                     required:
                       - body
@@ -32411,40 +34205,42 @@ components:
                   type: object
                   properties:
                     custom:
-                      description: The custom body fields to be added in the upstream request body. Values can contain Lua expressions in the form $(some_lua_code).
+                      description: The custom body fields to be added in the upstream request body. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
                       type: object
                       additionalProperties: true
                     decode:
-                      description: 'If true, decodes the request''s body to make it available for upstream by_lua customizations.'
+                      description: 'If `true`, decodes the request''s body to make it available for upstream by_lua customizations. Only JSON content type is supported.'
                       type: boolean
                     forward:
-                      description: 'If false, skips forwarding the incoming request''s body to the upstream request.'
+                      description: 'If `false`, skips forwarding the incoming request''s body to the upstream request.'
                       type: boolean
                 by_lua:
-                  description: Lua code that executes before the upstream request is made. Standard Lua sandboxing restrictions apply.
+                  description: Lua code that executes before the upstream request is made. Can produce side effects. Standard Lua sandboxing restrictions apply.
                   type: string
                 headers:
                   description: Callout request header customizations.
                   type: object
                   properties:
                     custom:
-                      description: The custom headers to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_code).
+                      description: The custom headers to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
                       type: object
                       additionalProperties: true
                     forward:
-                      description: 'If false, does not forward request headers to upstream request.'
+                      description: 'If `false`, does not forward request headers to upstream request.'
                       type: boolean
                 query:
                   description: Upstream request query param customizations.
                   type: object
                   properties:
                     custom:
-                      description: The custom query params to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_code).
+                      description: The custom query params to be added in the upstream HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
                       type: object
                       additionalProperties: true
                     forward:
-                      description: 'If false, does not forward request query params to upstream request.'
+                      description: 'If `false`, does not forward request query params to upstream request.'
                       type: boolean
+          required:
+            - callouts
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -32499,6 +34295,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     RequestSizeLimitingPlugin:
       x-speakeasy-entity: GatewayPluginRequestSizeLimiting
       allOf:
@@ -33028,7 +34826,7 @@ components:
                     description: Determines whether this parameter is mandatory.
                     type: boolean
                   schema:
-                    description: 'Requred when `style` and `explode` are set. This is the schema defining the type used for the parameter. It is validated using `draft4` for JSON Schema draft 4 compliant validator. In addition to being a valid JSON Schema, the parameter schema MUST have a top-level `type` property to enable proper deserialization before validating.'
+                    description: 'Required when `style` and `explode` are set. This is the schema defining the type used for the parameter. It is validated using `draft4` for JSON Schema draft 4 compliant validator. In addition to being a valid JSON Schema, the parameter schema MUST have a top-level `type` property to enable proper deserialization before validating.'
                     type: string
                   style:
                     description: Required when `schema` and `explode` are set. Describes how the parameter value will be deserialized depending on the type of the parameter value.
@@ -33050,10 +34848,14 @@ components:
               description: 'If enabled, the plugin returns more verbose and detailed validation errors.'
               type: boolean
             version:
-              description: 'Which validator to use. Supported values are `kong` (default) for using Kong''s own schema validator, or `draft4` for using a JSON Schema Draft 4-compliant validator.'
+              description: 'Which validator to use. Supported values are `kong` (default) for using Kong''s own schema validator, or `draft4`, `draft7`, `draft201909`, and `draft202012` for using their respective JSON Schema Draft compliant validators.'
               type: string
               enum:
+                - draft201909
+                - draft202012
                 - draft4
+                - draft6
+                - draft7
                 - kong
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
@@ -33747,6 +35549,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -33894,6 +35697,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -34002,6 +35806,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -34322,6 +36127,11 @@ components:
             validate_assertion_signature:
               description: Enable signature validation for SAML responses.
               type: boolean
+          required:
+            - assertion_consumer_path
+            - idp_sso_url
+            - issuer
+            - session_secret
           shorthand_fields:
             session_auth_ttl:
               type: number
@@ -34424,6 +36234,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     Service:
       x-speakeasy-entity: GatewayService
       description: 'Service entities, as the name implies, are abstractions of each of your own upstream services. Examples of Services would be a data transformation microservice, a billing API, etc. The main attribute of a Service is its URL (where Kong should proxy traffic to), which can be set as a single string or by specifying its `protocol`, `host`, `port` and `path` individually. Services are associated to Routes (a Service can have many Routes associated with it). Routes are entry-points in Kong and define rules to match client requests. Once a Route is matched, Kong proxies the request to its associated Service. See the [Proxy Reference][proxy-reference] for a detailed explanation of how Kong proxies traffic.'
@@ -34503,6 +36315,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         tls_sans:
           type: object
           nullable: true
@@ -34726,6 +36539,10 @@ components:
               enum:
                 - fixed
                 - sliding
+          required:
+            - limit
+            - namespace
+            - window_size
         name:
           type: string
           const: service-protection
@@ -34750,6 +36567,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     SessionPlugin:
       x-speakeasy-entity: GatewayPluginSession
       allOf:
@@ -34924,6 +36743,182 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+    SolaceUpstreamPlugin:
+      x-speakeasy-entity: GatewayPluginSolaceUpstream
+      allOf:
+        - $ref: '#/components/schemas/PluginBase'
+        - $ref: '#/components/schemas/SolaceUpstreamPluginConfig'
+    SolaceUpstreamPluginConfig:
+      properties:
+        config:
+          type: object
+          properties:
+            message:
+              description: The message related configuration.
+              type: object
+              properties:
+                ack_timeout:
+                  description: 'When using a non-DIRECT guaranteed delivery mode, this property sets the message acknowledgement timeout (waiting time).'
+                  type: integer
+                  maximum: 100000
+                  minimum: 1
+                default_content:
+                  description: 'When not using `forward_method`, `forward_uri`, `forward_headers` or `forward_body`, this sets the message content.'
+                  type: string
+                delivery_mode:
+                  description: Sets the message delivery mode.
+                  type: string
+                  enum:
+                    - DIRECT
+                    - PERSISTENT
+                destinations:
+                  description: The message destinations.
+                  type: array
+                  items:
+                    properties:
+                      name:
+                        description: 'The name of the destination. You can use `$(uri_captures[''topic_name'']` in this field.'
+                        type: string
+                      type:
+                        description: The type of the destination.
+                        type: string
+                        enum:
+                          - QUEUE
+                          - TOPIC
+                    required:
+                      - name
+                    type: object
+                  minLength: 1
+                dmq_eligible:
+                  description: Sets the dead message queue (DMQ) eligible property on the message.
+                  type: boolean
+                forward_body:
+                  description: Include the request body and the body arguments in the message.
+                  type: boolean
+                forward_headers:
+                  description: Include the request headers in the message.
+                  type: boolean
+                forward_method:
+                  description: Include the request method in the message.
+                  type: boolean
+                forward_uri:
+                  description: 'Include the request URI and the URI arguments (as in, query arguments) in the message.'
+                  type: boolean
+                functions:
+                  description: 'The Lua functions that manipulates (or generates) the message being sent to Solace. The `message` variable can be used to access the current message content, and the function can return a new content.'
+                  type: array
+                  items:
+                    type: string
+                priority:
+                  description: Sets the message priority.
+                  type: integer
+                  maximum: 255
+                  minimum: 0
+                sender_id:
+                  description: Allows the application to set the content of the sender identifier.
+                  type: string
+                tracing:
+                  description: 'Enable or disable the tracing. This is primarily used for distributed tracing and message correlation, especially in debugging or tracking message flows across multiple systems.'
+                  type: boolean
+                tracing_sampled:
+                  description: 'Indicates whether the message should be included in distributed tracing (i.e., if it should be "sampled" for the tracing)'
+                  type: boolean
+                ttl:
+                  description: Sets the time to live (TTL) in milliseconds for the message. Setting the time to live to zero disables the TTL for the message.
+                  type: integer
+                  minimum: -1
+              required:
+                - destinations
+            session:
+              description: Session related configuration.
+              type: object
+              properties:
+                authentication:
+                  description: Session authentication related configuration.
+                  type: object
+                  properties:
+                    access_token:
+                      description: The OAuth2 access token used with `OAUTH2` authentication scheme when connecting to an event broker.
+                      type: string
+                    access_token_header:
+                      type: string
+                    id_token:
+                      description: The OpenID Connect ID token used with `OAUTH2` authentication scheme when connecting to an event broker.
+                      type: string
+                    id_token_header:
+                      type: string
+                    password:
+                      description: The password used with `BASIC` authentication scheme when connecting to an event broker.
+                      type: string
+                    scheme:
+                      description: The client authentication scheme used when connection to an event broker.
+                      type: string
+                      enum:
+                        - BASIC
+                        - NONE
+                        - OAUTH2
+                    username:
+                      description: The username used with `BASIC` authentication scheme when connecting to an event broker .
+                      type: string
+                connect_timeout:
+                  description: The timeout period (in milliseconds) for a connect operation to a given host (per host).
+                  type: integer
+                  maximum: 100000
+                  minimum: 100
+                host:
+                  description: 'The IPv4 or IPv6 address or host name to connect to (see: https://docs.solace.com/API-Developer-Online-Ref-Documentation/c/index.html#host-entry).'
+                  type: string
+                properties:
+                  description: Additional Solace session properties (each setting needs to have `SESSION_` prefix).
+                  type: object
+                  additionalProperties: true
+                ssl_validate_certificate:
+                  description: Indicates whether the API should validate server certificates with the trusted certificates.
+                  type: boolean
+                vpn_name:
+                  description: The name of the Message VPN to attempt to join when connecting to an event broker.
+                  type: string
+              required:
+                - host
+          required:
+            - message
+            - session
+        name:
+          type: string
+          const: solace-upstream
+        protocols:
+          description: A set of strings representing HTTP protocols.
+          type: array
+          items:
+            enum:
+              - grpc
+              - grpcs
+              - http
+              - https
+            type: string
+          format: set
+        route:
+          description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        service:
+          description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+      required:
+        - config
     StandardWebhooksPlugin:
       x-speakeasy-entity: GatewayPluginStandardWebhooks
       allOf:
@@ -34941,6 +36936,8 @@ components:
               description: 'Tolerance of the webhook timestamp in seconds. If the webhook timestamp is older than this number of seconds, it will be rejected with a ''400'' response.'
               type: integer
               minimum: -1
+          required:
+            - secret_v1
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
@@ -34985,6 +36982,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     StatsdAdvancedPlugin:
       x-speakeasy-entity: GatewayPluginStatsdAdvanced
       allOf:
@@ -35562,6 +37561,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         target:
           description: 'The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record.'
           type: string
@@ -35607,6 +37607,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         target:
           description: 'The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record.'
           type: string
@@ -35667,6 +37668,9 @@ components:
             tls_sni:
               description: An optional string that defines the SNI (Server Name Indication) hostname to send in the TLS handshake.
               type: string
+          required:
+            - host
+            - port
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -35718,6 +37722,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     TlsHandshakeModifierPlugin:
       x-speakeasy-entity: GatewayPluginTlsHandshakeModifier
       allOf:
@@ -35852,6 +37858,9 @@ components:
             timeout:
               description: An optional timeout in milliseconds when sending data to the upstream server.
               type: number
+          required:
+            - host
+            - port
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -35903,6 +37912,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     Upstream:
       x-speakeasy-entity: GatewayUpstream
       description: 'The upstream object represents a virtual hostname and can be used to loadbalance incoming requests over multiple services (targets). So for example an upstream named `service.v1.xyz` for a Service object whose `host` is `service.v1.xyz`. Requests for this Service would be proxied to the targets defined within the upstream. An upstream also includes a [health checker][healthchecks], which is able to enable and disable targets based on their ability or inability to serve requests. The configuration for the health checker is stored in the upstream object, and applies to all of its targets.'
@@ -36105,6 +38116,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -36453,6 +38465,10 @@ components:
                 username:
                   description: The username to use if `config.oauth.grant_type` is set to `password`.
                   type: string
+              required:
+                - token_endpoint
+          required:
+            - oauth
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -36507,6 +38523,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     UpstreamTimeoutPlugin:
       x-speakeasy-entity: GatewayPluginUpstreamTimeout
       allOf:
@@ -36518,17 +38536,17 @@ components:
           type: object
           properties:
             connect_timeout:
-              description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+              description: An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.
               type: integer
               maximum: 2147483646
               minimum: 0
             read_timeout:
-              description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+              description: An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.
               type: integer
               maximum: 2147483646
               minimum: 0
             send_timeout:
-              description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+              description: An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.
               type: integer
               maximum: 2147483646
               minimum: 0
@@ -36609,6 +38627,7 @@ components:
           type: array
           items:
             type: string
+          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -36664,6 +38683,8 @@ components:
             vault:
               description: A reference to an existing `vault` object within the database. `vault` entities define the connection and authentication parameters used to connect to a Vault HTTP(S) API.
               type: string
+          required:
+            - vault
         name:
           type: string
           const: vault-auth
@@ -36698,6 +38719,8 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      required:
+        - config
     WebsocketSizeLimitPlugin:
       x-speakeasy-entity: GatewayPluginWebsocketSizeLimit
       allOf:

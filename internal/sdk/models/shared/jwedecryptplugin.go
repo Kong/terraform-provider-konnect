@@ -80,7 +80,7 @@ type JweDecryptPluginConfig struct {
 	// The name of the header that is used to set the decrypted value.
 	ForwardHeaderName *string `json:"forward_header_name,omitempty"`
 	// Denote the name or names of all Key Sets that should be inspected when trying to find a suitable key to decrypt the JWE token.
-	KeySets []string `json:"key_sets,omitempty"`
+	KeySets []string `json:"key_sets"`
 	// The name of the header to look for the JWE token.
 	LookupHeaderName *string `json:"lookup_header_name,omitempty"`
 	// Defines how the plugin behaves in cases where no token was found in the request. When using `strict` mode, the request requires a token to be present and subsequently raise an error if none could be found.
@@ -96,7 +96,7 @@ func (o *JweDecryptPluginConfig) GetForwardHeaderName() *string {
 
 func (o *JweDecryptPluginConfig) GetKeySets() []string {
 	if o == nil {
-		return nil
+		return []string{}
 	}
 	return o.KeySets
 }
@@ -185,8 +185,8 @@ type JweDecryptPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                  `json:"updated_at,omitempty"`
-	Config    *JweDecryptPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                 `json:"updated_at,omitempty"`
+	Config    JweDecryptPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
 	Protocols []JweDecryptPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -266,9 +266,9 @@ func (o *JweDecryptPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *JweDecryptPlugin) GetConfig() *JweDecryptPluginConfig {
+func (o *JweDecryptPlugin) GetConfig() JweDecryptPluginConfig {
 	if o == nil {
-		return nil
+		return JweDecryptPluginConfig{}
 	}
 	return o.Config
 }

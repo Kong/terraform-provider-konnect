@@ -13,7 +13,7 @@ type AiResponseTransformerPluginConfig struct {
 	HTTPSProxyHost                   types.String `tfsdk:"https_proxy_host"`
 	HTTPSProxyPort                   types.Int64  `tfsdk:"https_proxy_port"`
 	HTTPSVerify                      types.Bool   `tfsdk:"https_verify"`
-	Llm                              *Llm         `tfsdk:"llm"`
+	Llm                              Llm          `tfsdk:"llm"`
 	MaxRequestBodySize               types.Int64  `tfsdk:"max_request_body_size"`
 	ParseLlmResponseJSONInstructions types.Bool   `tfsdk:"parse_llm_response_json_instructions"`
 	Prompt                           types.String `tfsdk:"prompt"`

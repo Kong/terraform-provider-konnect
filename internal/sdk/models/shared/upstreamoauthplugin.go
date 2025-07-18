@@ -685,7 +685,7 @@ type Oauth struct {
 	// List of scopes to request from the IdP when obtaining a new token.
 	Scopes []string `json:"scopes"`
 	// The token endpoint URI.
-	TokenEndpoint *string `json:"token_endpoint,omitempty"`
+	TokenEndpoint string `json:"token_endpoint"`
 	// Extra headers to be passed in the token endpoint request.
 	TokenHeaders map[string]any `json:"token_headers,omitempty"`
 	// Extra post arguments to be passed in the token endpoint request.
@@ -736,9 +736,9 @@ func (o *Oauth) GetScopes() []string {
 	return o.Scopes
 }
 
-func (o *Oauth) GetTokenEndpoint() *string {
+func (o *Oauth) GetTokenEndpoint() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.TokenEndpoint
 }
@@ -768,7 +768,7 @@ type UpstreamOauthPluginConfig struct {
 	Behavior *Behavior                 `json:"behavior,omitempty"`
 	Cache    *UpstreamOauthPluginCache `json:"cache,omitempty"`
 	Client   *Client                   `json:"client,omitempty"`
-	Oauth    *Oauth                    `json:"oauth,omitempty"`
+	Oauth    Oauth                     `json:"oauth"`
 }
 
 func (o *UpstreamOauthPluginConfig) GetBehavior() *Behavior {
@@ -792,9 +792,9 @@ func (o *UpstreamOauthPluginConfig) GetClient() *Client {
 	return o.Client
 }
 
-func (o *UpstreamOauthPluginConfig) GetOauth() *Oauth {
+func (o *UpstreamOauthPluginConfig) GetOauth() Oauth {
 	if o == nil {
-		return nil
+		return Oauth{}
 	}
 	return o.Oauth
 }
@@ -893,8 +893,8 @@ type UpstreamOauthPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                     `json:"updated_at,omitempty"`
-	Config    *UpstreamOauthPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                    `json:"updated_at,omitempty"`
+	Config    UpstreamOauthPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *UpstreamOauthPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -978,9 +978,9 @@ func (o *UpstreamOauthPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *UpstreamOauthPlugin) GetConfig() *UpstreamOauthPluginConfig {
+func (o *UpstreamOauthPlugin) GetConfig() UpstreamOauthPluginConfig {
 	if o == nil {
-		return nil
+		return UpstreamOauthPluginConfig{}
 	}
 	return o.Config
 }

@@ -17,6 +17,7 @@ type KafkaUpstreamPluginConfig struct {
 	ForwardURI                                   types.Bool                  `tfsdk:"forward_uri"`
 	Keepalive                                    types.Int64                 `tfsdk:"keepalive"`
 	KeepaliveEnabled                             types.Bool                  `tfsdk:"keepalive_enabled"`
+	KeyQueryArg                                  types.String                `tfsdk:"key_query_arg"`
 	MessageByLuaFunctions                        []types.String              `tfsdk:"message_by_lua_functions"`
 	ProducerAsync                                types.Bool                  `tfsdk:"producer_async"`
 	ProducerAsyncBufferingLimitsMessagesInMemory types.Int64                 `tfsdk:"producer_async_buffering_limits_messages_in_memory"`
@@ -27,6 +28,7 @@ type KafkaUpstreamPluginConfig struct {
 	ProducerRequestRetriesBackoffTimeout         types.Int64                 `tfsdk:"producer_request_retries_backoff_timeout"`
 	ProducerRequestRetriesMaxAttempts            types.Int64                 `tfsdk:"producer_request_retries_max_attempts"`
 	ProducerRequestTimeout                       types.Int64                 `tfsdk:"producer_request_timeout"`
+	SchemaRegistry                               *SchemaRegistry             `tfsdk:"schema_registry"`
 	Security                                     *KafkaConsumePluginSecurity `tfsdk:"security"`
 	Timeout                                      types.Int64                 `tfsdk:"timeout"`
 	Topic                                        types.String                `tfsdk:"topic"`

@@ -17,9 +17,11 @@ func (r *GatewayACLResourceModel) RefreshFromSharedACL(ctx context.Context, resp
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Group = types.StringValue(resp.Group)
 		r.ID = types.StringPointerValue(resp.ID)
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
+		if resp.Tags != nil {
+			r.Tags = make([]types.String, 0, len(resp.Tags))
+			for _, v := range resp.Tags {
+				r.Tags = append(r.Tags, types.StringValue(v))
+			}
 		}
 	}
 
@@ -111,9 +113,12 @@ func (r *GatewayACLResourceModel) ToSharedACLWithoutParents(ctx context.Context)
 	} else {
 		id = nil
 	}
-	tags := make([]string, 0, len(r.Tags))
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
+	var tags []string
+	if r.Tags != nil {
+		tags = make([]string, 0, len(r.Tags))
+		for _, tagsItem := range r.Tags {
+			tags = append(tags, tagsItem.ValueString())
+		}
 	}
 	out := shared.ACLWithoutParents{
 		CreatedAt: createdAt,

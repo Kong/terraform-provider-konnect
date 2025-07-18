@@ -40,21 +40,21 @@ type GatewayPluginRateLimitingAdvancedResource struct {
 
 // GatewayPluginRateLimitingAdvancedResourceModel describes the resource data model.
 type GatewayPluginRateLimitingAdvancedResourceModel struct {
-	Config         *tfTypes.RateLimitingAdvancedPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.Set                              `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.Set                              `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                              `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                               `tfsdk:"created_at"`
-	Enabled        types.Bool                                `tfsdk:"enabled"`
-	ID             types.String                              `tfsdk:"id"`
-	InstanceName   types.String                              `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering                `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials                        `tfsdk:"partials"`
-	Protocols      []types.String                            `tfsdk:"protocols"`
-	Route          *tfTypes.Set                              `tfsdk:"route"`
-	Service        *tfTypes.Set                              `tfsdk:"service"`
-	Tags           []types.String                            `tfsdk:"tags"`
-	UpdatedAt      types.Int64                               `tfsdk:"updated_at"`
+	Config         tfTypes.RateLimitingAdvancedPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.Set                             `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.Set                             `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                             `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                              `tfsdk:"created_at"`
+	Enabled        types.Bool                               `tfsdk:"enabled"`
+	ID             types.String                             `tfsdk:"id"`
+	InstanceName   types.String                             `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering               `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials                       `tfsdk:"partials"`
+	Protocols      []types.String                           `tfsdk:"protocols"`
+	Route          *tfTypes.Set                             `tfsdk:"route"`
+	Service        *tfTypes.Set                             `tfsdk:"service"`
+	Tags           []types.String                           `tfsdk:"tags"`
+	UpdatedAt      types.Int64                              `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginRateLimitingAdvancedResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -66,8 +66,7 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 		MarkdownDescription: "GatewayPluginRateLimitingAdvanced Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"compound_identifier": schema.ListAttribute{
 						Computed:    true,
@@ -133,8 +132,7 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 						},
 					},
 					"limit": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						ElementType: types.Float64Type,
 						Description: `One or more requests-per-window limits to apply. There must be a matching number of window limits and sizes specified.`,
 					},
@@ -144,8 +142,7 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 						Description: `The shared dictionary where concurrency control locks are stored. The default shared dictionary is ` + "`" + `kong_locks` + "`" + `. The shared dictionary should be declare in nginx-kong.conf.`,
 					},
 					"namespace": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. ` + "`" + `strategy` + "`" + `, ` + "`" + `redis` + "`" + `, ` + "`" + `sync_rate` + "`" + `, ` + "`" + `dictionary_name` + "`" + `, need to be the same.`,
 					},
 					"path": schema.StringAttribute{
@@ -362,8 +359,7 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 						Description: `How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 will sync the counters in the specified number of seconds. The minimum allowed interval is 0.02 seconds (20ms).`,
 					},
 					"window_size": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						ElementType: types.Float64Type,
 						Description: `One or more window sizes to apply a limit to (defined in seconds). There must be a matching number of window limits and sizes specified.`,
 					},

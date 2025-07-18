@@ -42,20 +42,20 @@ type GatewayPluginLogglyResource struct {
 
 // GatewayPluginLogglyResourceModel describes the resource data model.
 type GatewayPluginLogglyResourceModel struct {
-	Config         *tfTypes.LogglyPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.Set                `tfsdk:"consumer"`
-	ControlPlaneID types.String                `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                 `tfsdk:"created_at"`
-	Enabled        types.Bool                  `tfsdk:"enabled"`
-	ID             types.String                `tfsdk:"id"`
-	InstanceName   types.String                `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering  `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials          `tfsdk:"partials"`
-	Protocols      []types.String              `tfsdk:"protocols"`
-	Route          *tfTypes.Set                `tfsdk:"route"`
-	Service        *tfTypes.Set                `tfsdk:"service"`
-	Tags           []types.String              `tfsdk:"tags"`
-	UpdatedAt      types.Int64                 `tfsdk:"updated_at"`
+	Config         tfTypes.LogglyPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.Set               `tfsdk:"consumer"`
+	ControlPlaneID types.String               `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                `tfsdk:"created_at"`
+	Enabled        types.Bool                 `tfsdk:"enabled"`
+	ID             types.String               `tfsdk:"id"`
+	InstanceName   types.String               `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials         `tfsdk:"partials"`
+	Protocols      []types.String             `tfsdk:"protocols"`
+	Route          *tfTypes.Set               `tfsdk:"route"`
+	Service        *tfTypes.Set               `tfsdk:"service"`
+	Tags           []types.String             `tfsdk:"tags"`
+	UpdatedAt      types.Int64                `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginLogglyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -67,8 +67,7 @@ func (r *GatewayPluginLogglyResource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "GatewayPluginLoggly Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"client_errors_severity": schema.StringAttribute{
 						Computed:    true,
@@ -102,8 +101,7 @@ func (r *GatewayPluginLogglyResource) Schema(ctx context.Context, req resource.S
 						Description: `A string representing a host name, such as example.com.`,
 					},
 					"key": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
+						Required: true,
 					},
 					"log_level": schema.StringAttribute{
 						Computed:    true,

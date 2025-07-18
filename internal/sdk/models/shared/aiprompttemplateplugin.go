@@ -102,10 +102,10 @@ type AiPromptTemplatePluginConfig struct {
 	AllowUntemplatedRequests *bool `json:"allow_untemplated_requests,omitempty"`
 	// Set true to add the original request to the Kong log plugin(s) output.
 	LogOriginalRequest *bool `json:"log_original_request,omitempty"`
-	// max allowed body size allowed to be introspected
+	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 	MaxRequestBodySize *int64 `json:"max_request_body_size,omitempty"`
 	// Array of templates available to the request context.
-	Templates []Templates `json:"templates,omitempty"`
+	Templates []Templates `json:"templates"`
 }
 
 func (o *AiPromptTemplatePluginConfig) GetAllowUntemplatedRequests() *bool {
@@ -131,7 +131,7 @@ func (o *AiPromptTemplatePluginConfig) GetMaxRequestBodySize() *int64 {
 
 func (o *AiPromptTemplatePluginConfig) GetTemplates() []Templates {
 	if o == nil {
-		return nil
+		return []Templates{}
 	}
 	return o.Templates
 }
@@ -230,8 +230,8 @@ type AiPromptTemplatePlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                        `json:"updated_at,omitempty"`
-	Config    *AiPromptTemplatePluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                       `json:"updated_at,omitempty"`
+	Config    AiPromptTemplatePluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *AiPromptTemplatePluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -315,9 +315,9 @@ func (o *AiPromptTemplatePlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *AiPromptTemplatePlugin) GetConfig() *AiPromptTemplatePluginConfig {
+func (o *AiPromptTemplatePlugin) GetConfig() AiPromptTemplatePluginConfig {
 	if o == nil {
-		return nil
+		return AiPromptTemplatePluginConfig{}
 	}
 	return o.Config
 }

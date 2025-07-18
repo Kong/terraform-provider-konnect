@@ -22,8 +22,9 @@ resource "konnect_gateway_plugin_graphql_rate_limiting_advanced" "my_gatewayplug
     limit = [
       1.18
     ]
-    max_cost  = 5.02
-    namespace = "...my_namespace..."
+    max_cost                    = 5.02
+    namespace                   = "...my_namespace..."
+    pass_all_downstream_headers = true
     redis = {
       cluster_max_redirections = 0
       cluster_nodes = [
@@ -113,11 +114,11 @@ resource "konnect_gateway_plugin_graphql_rate_limiting_advanced" "my_gatewayplug
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied.
@@ -137,20 +138,24 @@ resource "konnect_gateway_plugin_graphql_rate_limiting_advanced" "my_gatewayplug
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
+Required:
+
+- `limit` (List of Number) One or more requests-per-window limits to apply.
+- `sync_rate` (Number) How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 syncs the counters in that many number of seconds.
+- `window_size` (List of Number) One or more window sizes to apply a limit to (defined in seconds).
+
 Optional:
 
 - `cost_strategy` (String) Strategy to use to evaluate query costs. Either `default` or `node_quantifier`. must be one of ["default", "node_quantifier"]
 - `dictionary_name` (String) The shared dictionary where counters will be stored until the next sync cycle.
 - `hide_client_headers` (Boolean) Optionally hide informative response headers. Available options: `true` or `false`.
 - `identifier` (String) How to define the rate limit key. Can be `ip`, `credential`, `consumer`. must be one of ["consumer", "credential", "ip"]
-- `limit` (List of Number) One or more requests-per-window limits to apply.
 - `max_cost` (Number) A defined maximum cost per query. 0 means unlimited.
 - `namespace` (String) The rate limiting namespace to use for this plugin instance. This namespace is used to share rate limiting counters across different instances. If it is not provided, a random UUID is generated. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `window_size`, `dictionary_name`, need to be the same.
+- `pass_all_downstream_headers` (Boolean) pass all downstream headers to the upstream graphql server in introspection request
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--redis))
 - `score_factor` (Number) A scoring factor to multiply (or divide) the cost. The `score_factor` must always be greater than 0.
 - `strategy` (String) The rate-limiting strategy to use for retrieving and incrementing the limits. must be one of ["cluster", "redis"]
-- `sync_rate` (Number) How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 syncs the counters in that many number of seconds.
-- `window_size` (List of Number) One or more window sizes to apply a limit to (defined in seconds).
 - `window_type` (String) Sets the time window to either `sliding` or `fixed`. must be one of ["fixed", "sliding"]
 
 <a id="nestedatt--config--redis"></a>

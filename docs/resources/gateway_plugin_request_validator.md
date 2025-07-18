@@ -31,7 +31,7 @@ resource "konnect_gateway_plugin_request_validator" "my_gatewaypluginrequestvali
       }
     ]
     verbose_response = true
-    version          = "kong"
+    version          = "draft6"
   }
   consumer = {
     id = "...my_id..."
@@ -112,7 +112,7 @@ Optional:
 - `content_type_parameter_validation` (Boolean) Determines whether to enable parameters validation of request content-type.
 - `parameter_schema` (Attributes List) Array of parameter validator specification. One of `body_schema` or `parameter_schema` must be specified. (see [below for nested schema](#nestedatt--config--parameter_schema))
 - `verbose_response` (Boolean) If enabled, the plugin returns more verbose and detailed validation errors.
-- `version` (String) Which validator to use. Supported values are `kong` (default) for using Kong's own schema validator, or `draft4` for using a JSON Schema Draft 4-compliant validator. must be one of ["draft4", "kong"]
+- `version` (String) Which validator to use. Supported values are `kong` (default) for using Kong's own schema validator, or `draft4`, `draft7`, `draft201909`, and `draft202012` for using their respective JSON Schema Draft compliant validators. must be one of ["draft201909", "draft202012", "draft4", "draft6", "draft7", "kong"]
 
 <a id="nestedatt--config--parameter_schema"></a>
 ### Nested Schema for `config.parameter_schema`
@@ -123,7 +123,7 @@ Optional:
 - `in` (String) The location of the parameter. Not Null; must be one of ["header", "path", "query"]
 - `name` (String) The name of the parameter. Parameter names are case-sensitive, and correspond to the parameter name used by the `in` property. If `in` is `path`, the `name` field MUST correspond to the named capture group from the configured `route`. Not Null
 - `required` (Boolean) Determines whether this parameter is mandatory. Not Null
-- `schema` (String) Requred when `style` and `explode` are set. This is the schema defining the type used for the parameter. It is validated using `draft4` for JSON Schema draft 4 compliant validator. In addition to being a valid JSON Schema, the parameter schema MUST have a top-level `type` property to enable proper deserialization before validating.
+- `schema` (String) Required when `style` and `explode` are set. This is the schema defining the type used for the parameter. It is validated using `draft4` for JSON Schema draft 4 compliant validator. In addition to being a valid JSON Schema, the parameter schema MUST have a top-level `type` property to enable proper deserialization before validating.
 - `style` (String) Required when `schema` and `explode` are set. Describes how the parameter value will be deserialized depending on the type of the parameter value. must be one of ["deepObject", "form", "label", "matrix", "pipeDelimited", "simple", "spaceDelimited"]
 
 

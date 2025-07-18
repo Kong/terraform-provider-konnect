@@ -193,7 +193,7 @@ type ProxyCachePluginConfig struct {
 	// Number of seconds to keep resources in the storage backend. This value is independent of `cache_ttl` or resource TTLs defined by Cache-Control behaviors.
 	StorageTTL *int64 `json:"storage_ttl,omitempty"`
 	// The backing data store in which to hold cache entities.
-	Strategy *ProxyCachePluginStrategy `json:"strategy,omitempty"`
+	Strategy ProxyCachePluginStrategy `json:"strategy"`
 	// Relevant headers considered for the cache key. If undefined, none of the headers are taken into consideration.
 	VaryHeaders []string `json:"vary_headers,omitempty"`
 	// Relevant query parameters considered for the cache key. If undefined, all params are taken into consideration.
@@ -263,9 +263,9 @@ func (o *ProxyCachePluginConfig) GetStorageTTL() *int64 {
 	return o.StorageTTL
 }
 
-func (o *ProxyCachePluginConfig) GetStrategy() *ProxyCachePluginStrategy {
+func (o *ProxyCachePluginConfig) GetStrategy() ProxyCachePluginStrategy {
 	if o == nil {
-		return nil
+		return ProxyCachePluginStrategy("")
 	}
 	return o.Strategy
 }
@@ -397,8 +397,8 @@ type ProxyCachePlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                  `json:"updated_at,omitempty"`
-	Config    *ProxyCachePluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                 `json:"updated_at,omitempty"`
+	Config    ProxyCachePluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *ProxyCachePluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -482,9 +482,9 @@ func (o *ProxyCachePlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *ProxyCachePlugin) GetConfig() *ProxyCachePluginConfig {
+func (o *ProxyCachePlugin) GetConfig() ProxyCachePluginConfig {
 	if o == nil {
-		return nil
+		return ProxyCachePluginConfig{}
 	}
 	return o.Config
 }

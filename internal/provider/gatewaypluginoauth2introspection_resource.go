@@ -41,19 +41,19 @@ type GatewayPluginOauth2IntrospectionResource struct {
 
 // GatewayPluginOauth2IntrospectionResourceModel describes the resource data model.
 type GatewayPluginOauth2IntrospectionResourceModel struct {
-	Config         *tfTypes.Oauth2IntrospectionPluginConfig `tfsdk:"config"`
-	ControlPlaneID types.String                             `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                              `tfsdk:"created_at"`
-	Enabled        types.Bool                               `tfsdk:"enabled"`
-	ID             types.String                             `tfsdk:"id"`
-	InstanceName   types.String                             `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering               `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials                       `tfsdk:"partials"`
-	Protocols      []types.String                           `tfsdk:"protocols"`
-	Route          *tfTypes.Set                             `tfsdk:"route"`
-	Service        *tfTypes.Set                             `tfsdk:"service"`
-	Tags           []types.String                           `tfsdk:"tags"`
-	UpdatedAt      types.Int64                              `tfsdk:"updated_at"`
+	Config         tfTypes.Oauth2IntrospectionPluginConfig `tfsdk:"config"`
+	ControlPlaneID types.String                            `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                             `tfsdk:"created_at"`
+	Enabled        types.Bool                              `tfsdk:"enabled"`
+	ID             types.String                            `tfsdk:"id"`
+	InstanceName   types.String                            `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering              `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials                      `tfsdk:"partials"`
+	Protocols      []types.String                          `tfsdk:"protocols"`
+	Route          *tfTypes.Set                            `tfsdk:"route"`
+	Service        *tfTypes.Set                            `tfsdk:"service"`
+	Tags           []types.String                          `tfsdk:"tags"`
+	UpdatedAt      types.Int64                             `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginOauth2IntrospectionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,8 +65,7 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 		MarkdownDescription: "GatewayPluginOauth2Introspection Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -74,8 +73,7 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 						Description: `An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request fails with an authentication failure ` + "`" + `4xx` + "`" + `. Note that this value must refer to the consumer ` + "`" + `id` + "`" + ` or ` + "`" + `username` + "`" + ` attribute, and **not** its ` + "`" + `custom_id` + "`" + `.`,
 					},
 					"authorization_value": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `The value to set as the ` + "`" + `Authorization` + "`" + ` header when querying the introspection endpoint. This depends on the OAuth 2.0 server, but usually is the ` + "`" + `client_id` + "`" + ` and ` + "`" + `client_secret` + "`" + ` as a Base64-encoded Basic Auth string (` + "`" + `Basic MG9hNWl...` + "`" + `).`,
 					},
 					"consumer_by": schema.StringAttribute{
@@ -115,8 +113,7 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 						Description: `A boolean indicating whether to forward information about the current downstream request to the introspect endpoint. If true, headers ` + "`" + `X-Request-Path` + "`" + ` and ` + "`" + `X-Request-Http-Method` + "`" + ` will be inserted into the introspect request.`,
 					},
 					"introspection_url": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
 					},
 					"keepalive": schema.Int64Attribute{

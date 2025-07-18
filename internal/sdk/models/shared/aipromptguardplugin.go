@@ -76,13 +76,54 @@ func (o *AiPromptGuardPluginPartials) GetPath() *string {
 	return o.Path
 }
 
+// GenaiCategory - Generative AI category of the request
+type GenaiCategory string
+
+const (
+	GenaiCategoryAudioSpeech        GenaiCategory = "audio/speech"
+	GenaiCategoryAudioTranscription GenaiCategory = "audio/transcription"
+	GenaiCategoryImageGeneration    GenaiCategory = "image/generation"
+	GenaiCategoryRealtimeGeneration GenaiCategory = "realtime/generation"
+	GenaiCategoryTextEmbeddings     GenaiCategory = "text/embeddings"
+	GenaiCategoryTextGeneration     GenaiCategory = "text/generation"
+)
+
+func (e GenaiCategory) ToPointer() *GenaiCategory {
+	return &e
+}
+func (e *GenaiCategory) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "audio/speech":
+		fallthrough
+	case "audio/transcription":
+		fallthrough
+	case "image/generation":
+		fallthrough
+	case "realtime/generation":
+		fallthrough
+	case "text/embeddings":
+		fallthrough
+	case "text/generation":
+		*e = GenaiCategory(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for GenaiCategory: %v", v)
+	}
+}
+
 // AiPromptGuardPluginLlmFormat - LLM input and output format and schema to use
 type AiPromptGuardPluginLlmFormat string
 
 const (
-	AiPromptGuardPluginLlmFormatBedrock AiPromptGuardPluginLlmFormat = "bedrock"
-	AiPromptGuardPluginLlmFormatGemini  AiPromptGuardPluginLlmFormat = "gemini"
-	AiPromptGuardPluginLlmFormatOpenai  AiPromptGuardPluginLlmFormat = "openai"
+	AiPromptGuardPluginLlmFormatBedrock     AiPromptGuardPluginLlmFormat = "bedrock"
+	AiPromptGuardPluginLlmFormatCohere      AiPromptGuardPluginLlmFormat = "cohere"
+	AiPromptGuardPluginLlmFormatGemini      AiPromptGuardPluginLlmFormat = "gemini"
+	AiPromptGuardPluginLlmFormatHuggingface AiPromptGuardPluginLlmFormat = "huggingface"
+	AiPromptGuardPluginLlmFormatOpenai      AiPromptGuardPluginLlmFormat = "openai"
 )
 
 func (e AiPromptGuardPluginLlmFormat) ToPointer() *AiPromptGuardPluginLlmFormat {
@@ -96,7 +137,11 @@ func (e *AiPromptGuardPluginLlmFormat) UnmarshalJSON(data []byte) error {
 	switch v {
 	case "bedrock":
 		fallthrough
+	case "cohere":
+		fallthrough
 	case "gemini":
+		fallthrough
+	case "huggingface":
 		fallthrough
 	case "openai":
 		*e = AiPromptGuardPluginLlmFormat(v)
@@ -113,11 +158,13 @@ type AiPromptGuardPluginConfig struct {
 	AllowPatterns []string `json:"allow_patterns,omitempty"`
 	// Array of invalid regex patterns, or invalid questions from the 'user' role in chat.
 	DenyPatterns []string `json:"deny_patterns,omitempty"`
+	// Generative AI category of the request
+	GenaiCategory *GenaiCategory `json:"genai_category,omitempty"`
 	// LLM input and output format and schema to use
 	LlmFormat *AiPromptGuardPluginLlmFormat `json:"llm_format,omitempty"`
 	// If true, will match all roles in addition to 'user' role in conversation history.
 	MatchAllRoles *bool `json:"match_all_roles,omitempty"`
-	// max allowed body size allowed to be introspected
+	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 	MaxRequestBodySize *int64 `json:"max_request_body_size,omitempty"`
 }
 
@@ -140,6 +187,13 @@ func (o *AiPromptGuardPluginConfig) GetDenyPatterns() []string {
 		return nil
 	}
 	return o.DenyPatterns
+}
+
+func (o *AiPromptGuardPluginConfig) GetGenaiCategory() *GenaiCategory {
+	if o == nil {
+		return nil
+	}
+	return o.GenaiCategory
 }
 
 func (o *AiPromptGuardPluginConfig) GetLlmFormat() *AiPromptGuardPluginLlmFormat {

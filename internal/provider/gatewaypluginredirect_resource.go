@@ -39,21 +39,21 @@ type GatewayPluginRedirectResource struct {
 
 // GatewayPluginRedirectResourceModel describes the resource data model.
 type GatewayPluginRedirectResourceModel struct {
-	Config         *tfTypes.RedirectPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.Set                  `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.Set                  `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                  `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                   `tfsdk:"created_at"`
-	Enabled        types.Bool                    `tfsdk:"enabled"`
-	ID             types.String                  `tfsdk:"id"`
-	InstanceName   types.String                  `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering    `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials            `tfsdk:"partials"`
-	Protocols      []types.String                `tfsdk:"protocols"`
-	Route          *tfTypes.Set                  `tfsdk:"route"`
-	Service        *tfTypes.Set                  `tfsdk:"service"`
-	Tags           []types.String                `tfsdk:"tags"`
-	UpdatedAt      types.Int64                   `tfsdk:"updated_at"`
+	Config         tfTypes.RedirectPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.Set                 `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.Set                 `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                 `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                  `tfsdk:"created_at"`
+	Enabled        types.Bool                   `tfsdk:"enabled"`
+	ID             types.String                 `tfsdk:"id"`
+	InstanceName   types.String                 `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering   `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials           `tfsdk:"partials"`
+	Protocols      []types.String               `tfsdk:"protocols"`
+	Route          *tfTypes.Set                 `tfsdk:"route"`
+	Service        *tfTypes.Set                 `tfsdk:"service"`
+	Tags           []types.String               `tfsdk:"tags"`
+	UpdatedAt      types.Int64                  `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginRedirectResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,8 +65,7 @@ func (r *GatewayPluginRedirectResource) Schema(ctx context.Context, req resource
 		MarkdownDescription: "GatewayPluginRedirect Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"keep_incoming_path": schema.BoolAttribute{
 						Computed:    true,
@@ -74,8 +73,7 @@ func (r *GatewayPluginRedirectResource) Schema(ctx context.Context, req resource
 						Description: `Use the incoming request's path and query string in the redirect URL`,
 					},
 					"location": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `The URL to redirect to`,
 					},
 					"status_code": schema.Int64Attribute{

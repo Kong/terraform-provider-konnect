@@ -79,11 +79,11 @@ resource "konnect_gateway_plugin_oas_validation" "my_gatewaypluginoasvalidation"
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied.
@@ -103,10 +103,13 @@ resource "konnect_gateway_plugin_oas_validation" "my_gatewaypluginoasvalidation"
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
+Required:
+
+- `api_spec` (String) The API specification defined using either Swagger or the OpenAPI. This can be either a JSON or YAML based file. If using a YAML file, the spec needs to be URI-Encoded to preserve the YAML format.
+
 Optional:
 
 - `allowed_header_parameters` (String) List of header parameters in the request that will be ignored when performing HTTP header validation. These are additional headers added to an API request beyond those defined in the API specification.  For example, you might include the HTTP header `User-Agent`, which lets servers and network peers identify the application, operating system, vendor, and/or version of the requesting user agent.
-- `api_spec` (String) The API specification defined using either Swagger or the OpenAPI. This can be either a JSON or YAML based file. If using a YAML file, the spec needs to be URI-Encoded to preserve the YAML format.
 - `api_spec_encoded` (Boolean) Indicates whether the api_spec is URI-Encoded.
 - `custom_base_path` (String) The base path to be used for path match evaluation. This value is ignored if `include_base_path` is set to `false`.
 - `header_parameter_check` (Boolean) If set to true, checks if HTTP header parameters in the request exist in the API specification.

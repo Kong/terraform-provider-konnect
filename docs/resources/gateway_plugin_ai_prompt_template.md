@@ -76,11 +76,11 @@ resource "konnect_gateway_plugin_ai_prompt_template" "my_gatewaypluginaipromptte
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -101,12 +101,15 @@ resource "konnect_gateway_plugin_ai_prompt_template" "my_gatewaypluginaipromptte
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
+Required:
+
+- `templates` (Attributes List) Array of templates available to the request context. (see [below for nested schema](#nestedatt--config--templates))
+
 Optional:
 
 - `allow_untemplated_requests` (Boolean) Set true to allow requests that don't call or match any template.
 - `log_original_request` (Boolean) Set true to add the original request to the Kong log plugin(s) output.
-- `max_request_body_size` (Number) max allowed body size allowed to be introspected
-- `templates` (Attributes List) Array of templates available to the request context. (see [below for nested schema](#nestedatt--config--templates))
+- `max_request_body_size` (Number) max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 
 <a id="nestedatt--config--templates"></a>
 ### Nested Schema for `config.templates`

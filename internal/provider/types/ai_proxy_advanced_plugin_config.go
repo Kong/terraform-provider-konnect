@@ -9,6 +9,7 @@ import (
 type AiProxyAdvancedPluginConfig struct {
 	Balancer           *Balancer    `tfsdk:"balancer"`
 	Embeddings         *Embeddings  `tfsdk:"embeddings"`
+	GenaiCategory      types.String `tfsdk:"genai_category"`
 	LlmFormat          types.String `tfsdk:"llm_format"`
 	MaxRequestBodySize types.Int64  `tfsdk:"max_request_body_size"`
 	ModelNameHeader    types.Bool   `tfsdk:"model_name_header"`

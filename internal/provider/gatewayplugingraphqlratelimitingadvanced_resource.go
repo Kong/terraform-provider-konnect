@@ -40,20 +40,20 @@ type GatewayPluginGraphqlRateLimitingAdvancedResource struct {
 
 // GatewayPluginGraphqlRateLimitingAdvancedResourceModel describes the resource data model.
 type GatewayPluginGraphqlRateLimitingAdvancedResourceModel struct {
-	Config         *tfTypes.GraphqlRateLimitingAdvancedPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.Set                                     `tfsdk:"consumer"`
-	ControlPlaneID types.String                                     `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                                      `tfsdk:"created_at"`
-	Enabled        types.Bool                                       `tfsdk:"enabled"`
-	ID             types.String                                     `tfsdk:"id"`
-	InstanceName   types.String                                     `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering                       `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials                               `tfsdk:"partials"`
-	Protocols      []types.String                                   `tfsdk:"protocols"`
-	Route          *tfTypes.Set                                     `tfsdk:"route"`
-	Service        *tfTypes.Set                                     `tfsdk:"service"`
-	Tags           []types.String                                   `tfsdk:"tags"`
-	UpdatedAt      types.Int64                                      `tfsdk:"updated_at"`
+	Config         tfTypes.GraphqlRateLimitingAdvancedPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.Set                                    `tfsdk:"consumer"`
+	ControlPlaneID types.String                                    `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                                     `tfsdk:"created_at"`
+	Enabled        types.Bool                                      `tfsdk:"enabled"`
+	ID             types.String                                    `tfsdk:"id"`
+	InstanceName   types.String                                    `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering                      `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials                              `tfsdk:"partials"`
+	Protocols      []types.String                                  `tfsdk:"protocols"`
+	Route          *tfTypes.Set                                    `tfsdk:"route"`
+	Service        *tfTypes.Set                                    `tfsdk:"service"`
+	Tags           []types.String                                  `tfsdk:"tags"`
+	UpdatedAt      types.Int64                                     `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,8 +65,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 		MarkdownDescription: "GatewayPluginGraphqlRateLimitingAdvanced Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"cost_strategy": schema.StringAttribute{
 						Computed:    true,
@@ -102,8 +101,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 						},
 					},
 					"limit": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						ElementType: types.Float64Type,
 						Description: `One or more requests-per-window limits to apply.`,
 					},
@@ -116,6 +114,11 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 						Computed:    true,
 						Optional:    true,
 						Description: `The rate limiting namespace to use for this plugin instance. This namespace is used to share rate limiting counters across different instances. If it is not provided, a random UUID is generated. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. ` + "`" + `strategy` + "`" + `, ` + "`" + `redis` + "`" + `, ` + "`" + `sync_rate` + "`" + `, ` + "`" + `window_size` + "`" + `, ` + "`" + `dictionary_name` + "`" + `, need to be the same.`,
+					},
+					"pass_all_downstream_headers": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `pass all downstream headers to the upstream graphql server in introspection request`,
 					},
 					"redis": schema.SingleNestedAttribute{
 						Computed: true,
@@ -310,13 +313,11 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 						},
 					},
 					"sync_rate": schema.Float64Attribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 syncs the counters in that many number of seconds.`,
 					},
 					"window_size": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						ElementType: types.Float64Type,
 						Description: `One or more window sizes to apply a limit to (defined in seconds).`,
 					},

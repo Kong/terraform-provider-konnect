@@ -412,6 +412,33 @@ func (o *OpentelemetryPluginQueue) GetMaxRetryTime() *float64 {
 	return o.MaxRetryTime
 }
 
+// SamplingStrategy - The sampling strategy to use for OTLP `traces`. Set `parent_drop_probability_fallback` if you want parent-based sampling when the parent span contains a `false` sampled flag, and fallback to probability-based sampling otherwise. Set `parent_probability_fallback` if you want parent-based sampling when the parent span contains a valid sampled flag (`true` or `false`), and fallback to probability-based sampling otherwise.
+type SamplingStrategy string
+
+const (
+	SamplingStrategyParentDropProbabilityFallback SamplingStrategy = "parent_drop_probability_fallback"
+	SamplingStrategyParentProbabilityFallback     SamplingStrategy = "parent_probability_fallback"
+)
+
+func (e SamplingStrategy) ToPointer() *SamplingStrategy {
+	return &e
+}
+func (e *SamplingStrategy) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "parent_drop_probability_fallback":
+		fallthrough
+	case "parent_probability_fallback":
+		*e = SamplingStrategy(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for SamplingStrategy: %v", v)
+	}
+}
+
 type OpentelemetryPluginConfig struct {
 	// The delay, in seconds, between two consecutive batches.
 	BatchFlushDelay *int64 `json:"batch_flush_delay,omitempty"`
@@ -432,6 +459,8 @@ type OpentelemetryPluginConfig struct {
 	ResourceAttributes map[string]any `json:"resource_attributes,omitempty"`
 	// Tracing sampling rate for configuring the probability-based sampler. When set, this value supersedes the global `tracing_sampling_rate` setting from kong.conf.
 	SamplingRate *float64 `json:"sampling_rate,omitempty"`
+	// The sampling strategy to use for OTLP `traces`. Set `parent_drop_probability_fallback` if you want parent-based sampling when the parent span contains a `false` sampled flag, and fallback to probability-based sampling otherwise. Set `parent_probability_fallback` if you want parent-based sampling when the parent span contains a valid sampled flag (`true` or `false`), and fallback to probability-based sampling otherwise.
+	SamplingStrategy *SamplingStrategy `json:"sampling_strategy,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	SendTimeout *int64 `json:"send_timeout,omitempty"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
@@ -520,6 +549,13 @@ func (o *OpentelemetryPluginConfig) GetSamplingRate() *float64 {
 		return nil
 	}
 	return o.SamplingRate
+}
+
+func (o *OpentelemetryPluginConfig) GetSamplingStrategy() *SamplingStrategy {
+	if o == nil {
+		return nil
+	}
+	return o.SamplingStrategy
 }
 
 func (o *OpentelemetryPluginConfig) GetSendTimeout() *int64 {

@@ -38,20 +38,20 @@ type GatewayPluginStandardWebhooksResource struct {
 
 // GatewayPluginStandardWebhooksResourceModel describes the resource data model.
 type GatewayPluginStandardWebhooksResourceModel struct {
-	Config         *tfTypes.StandardWebhooksPluginConfig `tfsdk:"config"`
-	ConsumerGroup  *tfTypes.Set                          `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                          `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                           `tfsdk:"created_at"`
-	Enabled        types.Bool                            `tfsdk:"enabled"`
-	ID             types.String                          `tfsdk:"id"`
-	InstanceName   types.String                          `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering            `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials                    `tfsdk:"partials"`
-	Protocols      []types.String                        `tfsdk:"protocols"`
-	Route          *tfTypes.Set                          `tfsdk:"route"`
-	Service        *tfTypes.Set                          `tfsdk:"service"`
-	Tags           []types.String                        `tfsdk:"tags"`
-	UpdatedAt      types.Int64                           `tfsdk:"updated_at"`
+	Config         tfTypes.StandardWebhooksPluginConfig `tfsdk:"config"`
+	ConsumerGroup  *tfTypes.Set                         `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                          `tfsdk:"created_at"`
+	Enabled        types.Bool                           `tfsdk:"enabled"`
+	ID             types.String                         `tfsdk:"id"`
+	InstanceName   types.String                         `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering           `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials                   `tfsdk:"partials"`
+	Protocols      []types.String                       `tfsdk:"protocols"`
+	Route          *tfTypes.Set                         `tfsdk:"route"`
+	Service        *tfTypes.Set                         `tfsdk:"service"`
+	Tags           []types.String                       `tfsdk:"tags"`
+	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginStandardWebhooksResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -63,12 +63,10 @@ func (r *GatewayPluginStandardWebhooksResource) Schema(ctx context.Context, req 
 		MarkdownDescription: "GatewayPluginStandardWebhooks Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"secret_v1": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `Webhook secret`,
 					},
 					"tolerance_second": schema.Int64Attribute{

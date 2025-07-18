@@ -110,8 +110,8 @@ resource "konnect_gateway_plugin_ai_prompt_decorator" "my_gatewaypluginaipromptd
 
 Optional:
 
-- `llm_format` (String) LLM input and output format and schema to use. must be one of ["bedrock", "gemini", "openai"]
-- `max_request_body_size` (Number) max allowed body size allowed to be introspected
+- `llm_format` (String) LLM input and output format and schema to use. must be one of ["bedrock", "cohere", "gemini", "huggingface", "openai"]
+- `max_request_body_size` (Number) max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 - `prompts` (Attributes) (see [below for nested schema](#nestedatt--config--prompts))
 
 <a id="nestedatt--config--prompts"></a>

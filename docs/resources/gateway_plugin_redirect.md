@@ -70,11 +70,11 @@ resource "konnect_gateway_plugin_redirect" "my_gatewaypluginredirect" {
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -95,10 +95,13 @@ resource "konnect_gateway_plugin_redirect" "my_gatewaypluginredirect" {
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
+Required:
+
+- `location` (String) The URL to redirect to
+
 Optional:
 
 - `keep_incoming_path` (Boolean) Use the incoming request's path and query string in the redirect URL
-- `location` (String) The URL to redirect to
 - `status_code` (Number) The response code to send. Must be an integer between 100 and 599.
 
 

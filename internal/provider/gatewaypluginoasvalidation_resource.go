@@ -38,20 +38,20 @@ type GatewayPluginOasValidationResource struct {
 
 // GatewayPluginOasValidationResourceModel describes the resource data model.
 type GatewayPluginOasValidationResourceModel struct {
-	Config         *tfTypes.OasValidationPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.Set                       `tfsdk:"consumer"`
-	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                        `tfsdk:"created_at"`
-	Enabled        types.Bool                         `tfsdk:"enabled"`
-	ID             types.String                       `tfsdk:"id"`
-	InstanceName   types.String                       `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials                 `tfsdk:"partials"`
-	Protocols      []types.String                     `tfsdk:"protocols"`
-	Route          *tfTypes.Set                       `tfsdk:"route"`
-	Service        *tfTypes.Set                       `tfsdk:"service"`
-	Tags           []types.String                     `tfsdk:"tags"`
-	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
+	Config         tfTypes.OasValidationPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.Set                      `tfsdk:"consumer"`
+	ControlPlaneID types.String                      `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                       `tfsdk:"created_at"`
+	Enabled        types.Bool                        `tfsdk:"enabled"`
+	ID             types.String                      `tfsdk:"id"`
+	InstanceName   types.String                      `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering        `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials                `tfsdk:"partials"`
+	Protocols      []types.String                    `tfsdk:"protocols"`
+	Route          *tfTypes.Set                      `tfsdk:"route"`
+	Service        *tfTypes.Set                      `tfsdk:"service"`
+	Tags           []types.String                    `tfsdk:"tags"`
+	UpdatedAt      types.Int64                       `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginOasValidationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -63,8 +63,7 @@ func (r *GatewayPluginOasValidationResource) Schema(ctx context.Context, req res
 		MarkdownDescription: "GatewayPluginOasValidation Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"allowed_header_parameters": schema.StringAttribute{
 						Computed:    true,
@@ -72,8 +71,7 @@ func (r *GatewayPluginOasValidationResource) Schema(ctx context.Context, req res
 						Description: `List of header parameters in the request that will be ignored when performing HTTP header validation. These are additional headers added to an API request beyond those defined in the API specification.  For example, you might include the HTTP header ` + "`" + `User-Agent` + "`" + `, which lets servers and network peers identify the application, operating system, vendor, and/or version of the requesting user agent.`,
 					},
 					"api_spec": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `The API specification defined using either Swagger or the OpenAPI. This can be either a JSON or YAML based file. If using a YAML file, the spec needs to be URI-Encoded to preserve the YAML format.`,
 					},
 					"api_spec_encoded": schema.BoolAttribute{

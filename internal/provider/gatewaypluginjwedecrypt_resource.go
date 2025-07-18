@@ -38,19 +38,19 @@ type GatewayPluginJweDecryptResource struct {
 
 // GatewayPluginJweDecryptResourceModel describes the resource data model.
 type GatewayPluginJweDecryptResourceModel struct {
-	Config         *tfTypes.JweDecryptPluginConfig `tfsdk:"config"`
-	ControlPlaneID types.String                    `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                     `tfsdk:"created_at"`
-	Enabled        types.Bool                      `tfsdk:"enabled"`
-	ID             types.String                    `tfsdk:"id"`
-	InstanceName   types.String                    `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering      `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials              `tfsdk:"partials"`
-	Protocols      []types.String                  `tfsdk:"protocols"`
-	Route          *tfTypes.Set                    `tfsdk:"route"`
-	Service        *tfTypes.Set                    `tfsdk:"service"`
-	Tags           []types.String                  `tfsdk:"tags"`
-	UpdatedAt      types.Int64                     `tfsdk:"updated_at"`
+	Config         tfTypes.JweDecryptPluginConfig `tfsdk:"config"`
+	ControlPlaneID types.String                   `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                    `tfsdk:"created_at"`
+	Enabled        types.Bool                     `tfsdk:"enabled"`
+	ID             types.String                   `tfsdk:"id"`
+	InstanceName   types.String                   `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering     `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials             `tfsdk:"partials"`
+	Protocols      []types.String                 `tfsdk:"protocols"`
+	Route          *tfTypes.Set                   `tfsdk:"route"`
+	Service        *tfTypes.Set                   `tfsdk:"service"`
+	Tags           []types.String                 `tfsdk:"tags"`
+	UpdatedAt      types.Int64                    `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginJweDecryptResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,8 +62,7 @@ func (r *GatewayPluginJweDecryptResource) Schema(ctx context.Context, req resour
 		MarkdownDescription: "GatewayPluginJweDecrypt Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"forward_header_name": schema.StringAttribute{
 						Computed:    true,
@@ -71,8 +70,7 @@ func (r *GatewayPluginJweDecryptResource) Schema(ctx context.Context, req resour
 						Description: `The name of the header that is used to set the decrypted value.`,
 					},
 					"key_sets": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						ElementType: types.StringType,
 						Description: `Denote the name or names of all Key Sets that should be inspected when trying to find a suitable key to decrypt the JWE token.`,
 					},

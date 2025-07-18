@@ -80,7 +80,7 @@ type OasValidationPluginConfig struct {
 	// List of header parameters in the request that will be ignored when performing HTTP header validation. These are additional headers added to an API request beyond those defined in the API specification.  For example, you might include the HTTP header `User-Agent`, which lets servers and network peers identify the application, operating system, vendor, and/or version of the requesting user agent.
 	AllowedHeaderParameters *string `json:"allowed_header_parameters,omitempty"`
 	// The API specification defined using either Swagger or the OpenAPI. This can be either a JSON or YAML based file. If using a YAML file, the spec needs to be URI-Encoded to preserve the YAML format.
-	APISpec *string `json:"api_spec,omitempty"`
+	APISpec string `json:"api_spec"`
 	// Indicates whether the api_spec is URI-Encoded.
 	APISpecEncoded *bool `json:"api_spec_encoded,omitempty"`
 	// The base path to be used for path match evaluation. This value is ignored if `include_base_path` is set to `false`.
@@ -116,9 +116,9 @@ func (o *OasValidationPluginConfig) GetAllowedHeaderParameters() *string {
 	return o.AllowedHeaderParameters
 }
 
-func (o *OasValidationPluginConfig) GetAPISpec() *string {
+func (o *OasValidationPluginConfig) GetAPISpec() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.APISpec
 }
@@ -296,8 +296,8 @@ type OasValidationPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                     `json:"updated_at,omitempty"`
-	Config    *OasValidationPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                    `json:"updated_at,omitempty"`
+	Config    OasValidationPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *OasValidationPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
@@ -379,9 +379,9 @@ func (o *OasValidationPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *OasValidationPlugin) GetConfig() *OasValidationPluginConfig {
+func (o *OasValidationPlugin) GetConfig() OasValidationPluginConfig {
 	if o == nil {
-		return nil
+		return OasValidationPluginConfig{}
 	}
 	return o.Config
 }

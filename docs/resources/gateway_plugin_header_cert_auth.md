@@ -83,11 +83,11 @@ resource "konnect_gateway_plugin_header_cert_auth" "my_gatewaypluginheadercertau
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
@@ -106,16 +106,19 @@ resource "konnect_gateway_plugin_header_cert_auth" "my_gatewaypluginheadercertau
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
+Required:
+
+- `ca_certificates` (List of String) List of CA Certificates strings to use as Certificate Authorities (CA) when validating a client certificate. At least one is required but you can specify as many as needed. The value of this array is comprised of primary keys (`id`).
+- `certificate_header_format` (String) Format of the certificate header. Supported formats: `base64_encoded`, `url_encoded`. must be one of ["base64_encoded", "url_encoded"]
+- `certificate_header_name` (String) Name of the header that contains the certificate, received from the WAF or other L7 downstream proxy.
+
 Optional:
 
 - `allow_partial_chain` (Boolean) Allow certificate verification with only an intermediate certificate. When this is enabled, you don't need to upload the full chain to Kong Certificates.
 - `anonymous` (String) An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request fails with an authentication failure `4xx`. Note that this value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
 - `authenticated_group_by` (String) Certificate property to use as the authenticated group. Valid values are `CN` (Common Name) or `DN` (Distinguished Name). Once `skip_consumer_lookup` is applied, any client with a valid certificate can access the Service/API. To restrict usage to only some of the authenticated users, also add the ACL plugin (not covered here) and create allowed or denied groups of users. must be one of ["CN", "DN"]
-- `ca_certificates` (List of String) List of CA Certificates strings to use as Certificate Authorities (CA) when validating a client certificate. At least one is required but you can specify as many as needed. The value of this array is comprised of primary keys (`id`).
 - `cache_ttl` (Number) Cache expiry time in seconds.
 - `cert_cache_ttl` (Number) The length of time in milliseconds between refreshes of the revocation check status cache.
-- `certificate_header_format` (String) Format of the certificate header. Supported formats: `base64_encoded`, `url_encoded`. must be one of ["base64_encoded", "url_encoded"]
-- `certificate_header_name` (String) Name of the header that contains the certificate, received from the WAF or other L7 downstream proxy.
 - `consumer_by` (List of String) Whether to match the subject name of the client-supplied certificate against consumer's `username` and/or `custom_id` attribute. If set to `[]` (the empty array), then auto-matching is disabled.
 - `default_consumer` (String) The UUID or username of the consumer to use when a trusted client certificate is presented but no consumer matches. Note that this value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
 - `http_proxy_host` (String) A string representing a host name, such as example.com.
