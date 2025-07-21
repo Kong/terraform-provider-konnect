@@ -25,7 +25,7 @@ type TargetWithoutParents struct {
 	// An optional set of strings associated with the Target for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record.
-	Target *string `default:"null" json:"target"`
+	Target *string `json:"target,omitempty"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *float64                      `json:"updated_at,omitempty"`
 	Upstream  *TargetWithoutParentsUpstream `json:"upstream"`

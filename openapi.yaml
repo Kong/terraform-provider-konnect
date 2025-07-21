@@ -14447,8 +14447,6 @@ components:
         minLength: 1
         maxLength: 63
         nullable: true
-        x-speakeasy-param-computed: false
-        default: null
       maxProperties: 50
       title: Labels
     ProxyURL:
@@ -17056,8 +17054,6 @@ components:
         minLength: 1
         maxLength: 63
         nullable: true
-        x-speakeasy-param-computed: false
-        default: null
       maxProperties: 50
       nullable: true
       writeOnly: true
@@ -17077,8 +17073,6 @@ components:
         minLength: 1
         maxLength: 63
         nullable: true
-        x-speakeasy-param-computed: false
-        default: null
       maxProperties: 50
       title: PublicLabelsUpdate
       writeOnly: true
@@ -37435,9 +37429,6 @@ components:
         target:
           description: 'The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record.'
           type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: number
@@ -37483,9 +37474,6 @@ components:
         target:
           description: 'The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record.'
           type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: number
