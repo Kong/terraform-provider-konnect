@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2.12.0
-> Released on ?
+> Released on 2025/07/21
 
 ### Features
 
