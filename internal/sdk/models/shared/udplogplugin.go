@@ -80,9 +80,9 @@ type UDPLogPluginConfig struct {
 	// Lua code as a key-value map
 	CustomFieldsByLua map[string]any `json:"custom_fields_by_lua,omitempty"`
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host string `json:"host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port int64 `json:"port"`
 	// An optional timeout in milliseconds when sending data to the upstream server.
 	Timeout *float64 `json:"timeout,omitempty"`
 }
@@ -94,16 +94,16 @@ func (o *UDPLogPluginConfig) GetCustomFieldsByLua() map[string]any {
 	return o.CustomFieldsByLua
 }
 
-func (o *UDPLogPluginConfig) GetHost() *string {
+func (o *UDPLogPluginConfig) GetHost() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Host
 }
 
-func (o *UDPLogPluginConfig) GetPort() *int64 {
+func (o *UDPLogPluginConfig) GetPort() int64 {
 	if o == nil {
-		return nil
+		return 0
 	}
 	return o.Port
 }
@@ -216,8 +216,8 @@ type UDPLogPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64              `json:"updated_at,omitempty"`
-	Config    *UDPLogPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64             `json:"updated_at,omitempty"`
+	Config    UDPLogPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *UDPLogPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
@@ -299,9 +299,9 @@ func (o *UDPLogPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *UDPLogPlugin) GetConfig() *UDPLogPluginConfig {
+func (o *UDPLogPlugin) GetConfig() UDPLogPluginConfig {
 	if o == nil {
-		return nil
+		return UDPLogPluginConfig{}
 	}
 	return o.Config
 }

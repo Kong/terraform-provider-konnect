@@ -41,7 +41,7 @@ type GatewayPluginSamlResource struct {
 
 // GatewayPluginSamlResourceModel describes the resource data model.
 type GatewayPluginSamlResourceModel struct {
-	Config         *tfTypes.SamlPluginConfig  `tfsdk:"config"`
+	Config         tfTypes.SamlPluginConfig   `tfsdk:"config"`
 	ControlPlaneID types.String               `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                `tfsdk:"created_at"`
 	Enabled        types.Bool                 `tfsdk:"enabled"`
@@ -65,8 +65,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 		MarkdownDescription: "GatewayPluginSaml Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -74,8 +73,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Description: `An optional string (consumer UUID or username) value to use as an “anonymous” consumer. If not set, a Kong Consumer must exist for the SAML IdP user credentials, mapping the username format to the Kong Consumer username.`,
 					},
 					"assertion_consumer_path": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).`,
 					},
 					"idp_certificate": schema.StringAttribute{
@@ -84,13 +82,11 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Description: `The public certificate provided by the IdP. This is used to validate responses from the IdP.  Only include the contents of the certificate. Do not include the header (` + "`" + `BEGIN CERTIFICATE` + "`" + `) and footer (` + "`" + `END CERTIFICATE` + "`" + `) lines.`,
 					},
 					"idp_sso_url": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
 					},
 					"issuer": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `The unique identifier of the IdP application. Formatted as a URL containing information about the IdP so the SP can validate that the SAML assertions it receives are issued from the correct IdP.`,
 					},
 					"nameid_format": schema.StringAttribute{
@@ -480,8 +476,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Description: `The session cookie absolute timeout in seconds. Specifies how long the session can be used until it is no longer valid.`,
 					},
 					"session_secret": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `The session secret. This must be a random string of 32 characters from the base64 alphabet (letters, numbers, ` + "`" + `/` + "`" + `, ` + "`" + `_` + "`" + ` and ` + "`" + `+` + "`" + `). It is used as the secret key for encrypting session data as well as state information that is sent to the IdP in the authentication exchange.`,
 						Validators: []validator.String{
 							stringvalidator.UTF8LengthBetween(32, 32),

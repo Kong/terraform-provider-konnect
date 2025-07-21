@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/float64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -42,20 +43,20 @@ type GatewayPluginConfluentConsumeResource struct {
 
 // GatewayPluginConfluentConsumeResourceModel describes the resource data model.
 type GatewayPluginConfluentConsumeResourceModel struct {
-	Config         *tfTypes.ConfluentConsumePluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.Set                          `tfsdk:"consumer"`
-	ControlPlaneID types.String                          `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                           `tfsdk:"created_at"`
-	Enabled        types.Bool                            `tfsdk:"enabled"`
-	ID             types.String                          `tfsdk:"id"`
-	InstanceName   types.String                          `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering            `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials                    `tfsdk:"partials"`
-	Protocols      []types.String                        `tfsdk:"protocols"`
-	Route          *tfTypes.Set                          `tfsdk:"route"`
-	Service        *tfTypes.Set                          `tfsdk:"service"`
-	Tags           []types.String                        `tfsdk:"tags"`
-	UpdatedAt      types.Int64                           `tfsdk:"updated_at"`
+	Config         tfTypes.ConfluentConsumePluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.Set                         `tfsdk:"consumer"`
+	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                          `tfsdk:"created_at"`
+	Enabled        types.Bool                           `tfsdk:"enabled"`
+	ID             types.String                         `tfsdk:"id"`
+	InstanceName   types.String                         `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering           `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials                   `tfsdk:"partials"`
+	Protocols      []types.String                       `tfsdk:"protocols"`
+	Route          *tfTypes.Set                         `tfsdk:"route"`
+	Service        *tfTypes.Set                         `tfsdk:"service"`
+	Tags           []types.String                       `tfsdk:"tags"`
+	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginConfluentConsumeResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -67,8 +68,7 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 		MarkdownDescription: "GatewayPluginConfluentConsume Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"auto_offset_reset": schema.StringAttribute{
 						Computed:    true,
@@ -111,13 +111,11 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 						Description: `Set of bootstrap brokers in a ` + "`" + `{host: host, port: port}` + "`" + ` list format.`,
 					},
 					"cluster_api_key": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `Username/Apikey for SASL authentication.`,
 					},
 					"cluster_api_secret": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `Password/ApiSecret for SASL authentication.`,
 					},
 					"cluster_name": schema.StringAttribute{
@@ -177,14 +175,87 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 							),
 						},
 					},
+					"schema_registry": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"confluent": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"authentication": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"basic": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"password": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Not Null`,
+														Validators: []validator.String{
+															speakeasy_stringvalidators.NotNull(),
+														},
+													},
+													"username": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Not Null`,
+														Validators: []validator.String{
+															speakeasy_stringvalidators.NotNull(),
+														},
+													},
+												},
+											},
+											"mode": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Authentication mode to use with the schema registry. must be one of ["basic", "none"]`,
+												Validators: []validator.String{
+													stringvalidator.OneOf(
+														"basic",
+														"none",
+													),
+												},
+											},
+										},
+										Description: `Not Null`,
+										Validators: []validator.Object{
+											speakeasy_objectvalidators.NotNull(),
+										},
+									},
+									"ssl_verify": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `Set to false to disable SSL certificate verification when connecting to the schema registry.`,
+									},
+									"ttl": schema.Float64Attribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `The TTL in seconds for the schema registry cache.`,
+										Validators: []validator.Float64{
+											float64validator.AtMost(3600),
+										},
+									},
+									"url": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `The URL of the schema registry.`,
+									},
+								},
+							},
+						},
+						Description: `The plugin-global schema registry configuration.`,
+					},
 					"timeout": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `Socket timeout in milliseconds.`,
 					},
 					"topics": schema.ListNestedAttribute{
-						Computed: true,
-						Optional: true,
+						Required: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
@@ -196,6 +267,83 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 									Description: `Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
+									},
+								},
+								"schema_registry": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"confluent": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"authentication": schema.SingleNestedAttribute{
+													Computed: true,
+													Optional: true,
+													Attributes: map[string]schema.Attribute{
+														"basic": schema.SingleNestedAttribute{
+															Computed: true,
+															Optional: true,
+															Attributes: map[string]schema.Attribute{
+																"password": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `Not Null`,
+																	Validators: []validator.String{
+																		speakeasy_stringvalidators.NotNull(),
+																	},
+																},
+																"username": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `Not Null`,
+																	Validators: []validator.String{
+																		speakeasy_stringvalidators.NotNull(),
+																	},
+																},
+															},
+														},
+														"mode": schema.StringAttribute{
+															Computed:    true,
+															Optional:    true,
+															Description: `Authentication mode to use with the schema registry. must be one of ["basic", "none"]`,
+															Validators: []validator.String{
+																stringvalidator.OneOf(
+																	"basic",
+																	"none",
+																),
+															},
+														},
+													},
+													Description: `Not Null`,
+													Validators: []validator.Object{
+														speakeasy_objectvalidators.NotNull(),
+													},
+												},
+												"ssl_verify": schema.BoolAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `Set to false to disable SSL certificate verification when connecting to the schema registry.`,
+												},
+												"ttl": schema.Float64Attribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The TTL in seconds for the schema registry cache.`,
+													Validators: []validator.Float64{
+														float64validator.AtMost(3600),
+													},
+												},
+												"url": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The URL of the schema registry.`,
+												},
+											},
+										},
+									},
+									Description: `The plugin-global schema registry configuration. Not Null`,
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
 									},
 								},
 							},

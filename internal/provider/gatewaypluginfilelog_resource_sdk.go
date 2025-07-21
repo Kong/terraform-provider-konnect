@@ -16,20 +16,15 @@ func (r *GatewayPluginFileLogResourceModel) RefreshFromSharedFileLogPlugin(ctx c
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.FileLogPluginConfig{}
-			if len(resp.Config.CustomFieldsByLua) > 0 {
-				r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
-				for key, value := range resp.Config.CustomFieldsByLua {
-					result, _ := json.Marshal(value)
-					r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
-				}
+		if len(resp.Config.CustomFieldsByLua) > 0 {
+			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
+			for key, value := range resp.Config.CustomFieldsByLua {
+				result, _ := json.Marshal(value)
+				r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
 			}
-			r.Config.Path = types.StringPointerValue(resp.Config.Path)
-			r.Config.Reopen = types.BoolPointerValue(resp.Config.Reopen)
 		}
+		r.Config.Path = types.StringValue(resp.Config.Path)
+		r.Config.Reopen = types.BoolPointerValue(resp.Config.Reopen)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -98,9 +93,11 @@ func (r *GatewayPluginFileLogResourceModel) RefreshFromSharedFileLogPlugin(ctx c
 			r.Service = &tfTypes.Set{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
+		if resp.Tags != nil {
+			r.Tags = make([]types.String, 0, len(resp.Tags))
+			for _, v := range resp.Tags {
+				r.Tags = append(r.Tags, types.StringValue(v))
+			}
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
@@ -271,9 +268,12 @@ func (r *GatewayPluginFileLogResourceModel) ToSharedFileLogPlugin(ctx context.Co
 			})
 		}
 	}
-	tags := make([]string, 0, len(r.Tags))
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
+	var tags []string
+	if r.Tags != nil {
+		tags = make([]string, 0, len(r.Tags))
+		for _, tagsItem := range r.Tags {
+			tags = append(tags, tagsItem.ValueString())
+		}
 	}
 	updatedAt := new(int64)
 	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
@@ -281,31 +281,25 @@ func (r *GatewayPluginFileLogResourceModel) ToSharedFileLogPlugin(ctx context.Co
 	} else {
 		updatedAt = nil
 	}
-	var config *shared.FileLogPluginConfig
-	if r.Config != nil {
-		customFieldsByLua := make(map[string]interface{})
-		for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
-			var customFieldsByLuaInst interface{}
-			_ = json.Unmarshal([]byte(customFieldsByLuaValue.ValueString()), &customFieldsByLuaInst)
-			customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
-		}
-		path1 := new(string)
-		if !r.Config.Path.IsUnknown() && !r.Config.Path.IsNull() {
-			*path1 = r.Config.Path.ValueString()
-		} else {
-			path1 = nil
-		}
-		reopen := new(bool)
-		if !r.Config.Reopen.IsUnknown() && !r.Config.Reopen.IsNull() {
-			*reopen = r.Config.Reopen.ValueBool()
-		} else {
-			reopen = nil
-		}
-		config = &shared.FileLogPluginConfig{
-			CustomFieldsByLua: customFieldsByLua,
-			Path:              path1,
-			Reopen:            reopen,
-		}
+	customFieldsByLua := make(map[string]interface{})
+	for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
+		var customFieldsByLuaInst interface{}
+		_ = json.Unmarshal([]byte(customFieldsByLuaValue.ValueString()), &customFieldsByLuaInst)
+		customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
+	}
+	var path1 string
+	path1 = r.Config.Path.ValueString()
+
+	reopen := new(bool)
+	if !r.Config.Reopen.IsUnknown() && !r.Config.Reopen.IsNull() {
+		*reopen = r.Config.Reopen.ValueBool()
+	} else {
+		reopen = nil
+	}
+	config := shared.FileLogPluginConfig{
+		CustomFieldsByLua: customFieldsByLua,
+		Path:              path1,
+		Reopen:            reopen,
 	}
 	var consumer *shared.FileLogPluginConsumer
 	if r.Consumer != nil {

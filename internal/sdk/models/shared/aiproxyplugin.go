@@ -232,13 +232,51 @@ func (o *Auth) GetParamValue() *string {
 	return o.ParamValue
 }
 
+// AiProxyPluginGenaiCategory - Generative AI category of the request
+type AiProxyPluginGenaiCategory string
+
+const (
+	AiProxyPluginGenaiCategoryAudioSpeech        AiProxyPluginGenaiCategory = "audio/speech"
+	AiProxyPluginGenaiCategoryAudioTranscription AiProxyPluginGenaiCategory = "audio/transcription"
+	AiProxyPluginGenaiCategoryImageGeneration    AiProxyPluginGenaiCategory = "image/generation"
+	AiProxyPluginGenaiCategoryTextEmbeddings     AiProxyPluginGenaiCategory = "text/embeddings"
+	AiProxyPluginGenaiCategoryTextGeneration     AiProxyPluginGenaiCategory = "text/generation"
+)
+
+func (e AiProxyPluginGenaiCategory) ToPointer() *AiProxyPluginGenaiCategory {
+	return &e
+}
+func (e *AiProxyPluginGenaiCategory) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "audio/speech":
+		fallthrough
+	case "audio/transcription":
+		fallthrough
+	case "image/generation":
+		fallthrough
+	case "text/embeddings":
+		fallthrough
+	case "text/generation":
+		*e = AiProxyPluginGenaiCategory(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AiProxyPluginGenaiCategory: %v", v)
+	}
+}
+
 // AiProxyPluginLlmFormat - LLM input and output format and schema to use
 type AiProxyPluginLlmFormat string
 
 const (
-	AiProxyPluginLlmFormatBedrock AiProxyPluginLlmFormat = "bedrock"
-	AiProxyPluginLlmFormatGemini  AiProxyPluginLlmFormat = "gemini"
-	AiProxyPluginLlmFormatOpenai  AiProxyPluginLlmFormat = "openai"
+	AiProxyPluginLlmFormatBedrock     AiProxyPluginLlmFormat = "bedrock"
+	AiProxyPluginLlmFormatCohere      AiProxyPluginLlmFormat = "cohere"
+	AiProxyPluginLlmFormatGemini      AiProxyPluginLlmFormat = "gemini"
+	AiProxyPluginLlmFormatHuggingface AiProxyPluginLlmFormat = "huggingface"
+	AiProxyPluginLlmFormatOpenai      AiProxyPluginLlmFormat = "openai"
 )
 
 func (e AiProxyPluginLlmFormat) ToPointer() *AiProxyPluginLlmFormat {
@@ -252,7 +290,11 @@ func (e *AiProxyPluginLlmFormat) UnmarshalJSON(data []byte) error {
 	switch v {
 	case "bedrock":
 		fallthrough
+	case "cohere":
+		fallthrough
 	case "gemini":
+		fallthrough
+	case "huggingface":
 		fallthrough
 	case "openai":
 		*e = AiProxyPluginLlmFormat(v)
@@ -292,6 +334,10 @@ type Bedrock struct {
 	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
+	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
+	EmbeddingsNormalize *bool `json:"embeddings_normalize,omitempty"`
+	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
+	PerformanceConfigLatency *string `json:"performance_config_latency,omitempty"`
 }
 
 func (o *Bedrock) GetAwsAssumeRoleArn() *string {
@@ -320,6 +366,77 @@ func (o *Bedrock) GetAwsStsEndpointURL() *string {
 		return nil
 	}
 	return o.AwsStsEndpointURL
+}
+
+func (o *Bedrock) GetEmbeddingsNormalize() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EmbeddingsNormalize
+}
+
+func (o *Bedrock) GetPerformanceConfigLatency() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PerformanceConfigLatency
+}
+
+// EmbeddingInputType - The purpose of the input text to calculate embedding vectors.
+type EmbeddingInputType string
+
+const (
+	EmbeddingInputTypeClassification EmbeddingInputType = "classification"
+	EmbeddingInputTypeClustering     EmbeddingInputType = "clustering"
+	EmbeddingInputTypeImage          EmbeddingInputType = "image"
+	EmbeddingInputTypeSearchDocument EmbeddingInputType = "search_document"
+	EmbeddingInputTypeSearchQuery    EmbeddingInputType = "search_query"
+)
+
+func (e EmbeddingInputType) ToPointer() *EmbeddingInputType {
+	return &e
+}
+func (e *EmbeddingInputType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "classification":
+		fallthrough
+	case "clustering":
+		fallthrough
+	case "image":
+		fallthrough
+	case "search_document":
+		fallthrough
+	case "search_query":
+		*e = EmbeddingInputType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for EmbeddingInputType: %v", v)
+	}
+}
+
+type Cohere struct {
+	// The purpose of the input text to calculate embedding vectors.
+	EmbeddingInputType *EmbeddingInputType `json:"embedding_input_type,omitempty"`
+	// Wait for the model if it is not ready
+	WaitForModel *bool `json:"wait_for_model,omitempty"`
+}
+
+func (o *Cohere) GetEmbeddingInputType() *EmbeddingInputType {
+	if o == nil {
+		return nil
+	}
+	return o.EmbeddingInputType
+}
+
+func (o *Cohere) GetWaitForModel() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.WaitForModel
 }
 
 type Gemini struct {
@@ -439,10 +556,13 @@ type OptionsObj struct {
 	// Deployment ID for Azure OpenAI instances.
 	AzureDeploymentID *string `json:"azure_deployment_id,omitempty"`
 	// Instance name for Azure OpenAI hosted models.
-	AzureInstance *string      `json:"azure_instance,omitempty"`
-	Bedrock       *Bedrock     `json:"bedrock,omitempty"`
-	Gemini        *Gemini      `json:"gemini,omitempty"`
-	Huggingface   *Huggingface `json:"huggingface,omitempty"`
+	AzureInstance *string  `json:"azure_instance,omitempty"`
+	Bedrock       *Bedrock `json:"bedrock,omitempty"`
+	Cohere        *Cohere  `json:"cohere,omitempty"`
+	// If using embeddings models, set the number of dimensions to generate.
+	EmbeddingsDimensions *int64       `json:"embeddings_dimensions,omitempty"`
+	Gemini               *Gemini      `json:"gemini,omitempty"`
+	Huggingface          *Huggingface `json:"huggingface,omitempty"`
 	// Defines the cost per 1M tokens in your prompt.
 	InputCost *float64 `json:"input_cost,omitempty"`
 	// If using llama2 provider, select the upstream message format.
@@ -498,6 +618,20 @@ func (o *OptionsObj) GetBedrock() *Bedrock {
 		return nil
 	}
 	return o.Bedrock
+}
+
+func (o *OptionsObj) GetCohere() *Cohere {
+	if o == nil {
+		return nil
+	}
+	return o.Cohere
+}
+
+func (o *OptionsObj) GetEmbeddingsDimensions() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.EmbeddingsDimensions
 }
 
 func (o *OptionsObj) GetGemini() *Gemini {
@@ -638,7 +772,7 @@ type Model struct {
 	// Key/value settings for the model
 	Options *OptionsObj `json:"options,omitempty"`
 	// AI provider request format - Kong translates requests to and from the specified backend compatible formats.
-	Provider *Provider `json:"provider,omitempty"`
+	Provider Provider `json:"provider"`
 }
 
 func (o *Model) GetName() *string {
@@ -655,9 +789,9 @@ func (o *Model) GetOptions() *OptionsObj {
 	return o.Options
 }
 
-func (o *Model) GetProvider() *Provider {
+func (o *Model) GetProvider() Provider {
 	if o == nil {
-		return nil
+		return Provider("")
 	}
 	return o.Provider
 }
@@ -692,13 +826,24 @@ func (e *ResponseStreaming) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// RouteType - The model's operation implementation, for this provider. Set to `preserve` to pass through without transformation.
+// RouteType - The model's operation implementation, for this provider.
 type RouteType string
 
 const (
-	RouteTypeLlmV1Chat        RouteType = "llm/v1/chat"
-	RouteTypeLlmV1Completions RouteType = "llm/v1/completions"
-	RouteTypePreserve         RouteType = "preserve"
+	RouteTypeAudioV1AudioSpeech         RouteType = "audio/v1/audio/speech"
+	RouteTypeAudioV1AudioTranscriptions RouteType = "audio/v1/audio/transcriptions"
+	RouteTypeAudioV1AudioTranslations   RouteType = "audio/v1/audio/translations"
+	RouteTypeImageV1ImagesEdits         RouteType = "image/v1/images/edits"
+	RouteTypeImageV1ImagesGenerations   RouteType = "image/v1/images/generations"
+	RouteTypeLlmV1Assistants            RouteType = "llm/v1/assistants"
+	RouteTypeLlmV1Batches               RouteType = "llm/v1/batches"
+	RouteTypeLlmV1Chat                  RouteType = "llm/v1/chat"
+	RouteTypeLlmV1Completions           RouteType = "llm/v1/completions"
+	RouteTypeLlmV1Embeddings            RouteType = "llm/v1/embeddings"
+	RouteTypeLlmV1Files                 RouteType = "llm/v1/files"
+	RouteTypeLlmV1Responses             RouteType = "llm/v1/responses"
+	RouteTypePreserve                   RouteType = "preserve"
+	RouteTypeRealtimeV1Realtime         RouteType = "realtime/v1/realtime"
 )
 
 func (e RouteType) ToPointer() *RouteType {
@@ -710,11 +855,33 @@ func (e *RouteType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "audio/v1/audio/speech":
+		fallthrough
+	case "audio/v1/audio/transcriptions":
+		fallthrough
+	case "audio/v1/audio/translations":
+		fallthrough
+	case "image/v1/images/edits":
+		fallthrough
+	case "image/v1/images/generations":
+		fallthrough
+	case "llm/v1/assistants":
+		fallthrough
+	case "llm/v1/batches":
+		fallthrough
 	case "llm/v1/chat":
 		fallthrough
 	case "llm/v1/completions":
 		fallthrough
+	case "llm/v1/embeddings":
+		fallthrough
+	case "llm/v1/files":
+		fallthrough
+	case "llm/v1/responses":
+		fallthrough
 	case "preserve":
+		fallthrough
+	case "realtime/v1/realtime":
 		*e = RouteType(v)
 		return nil
 	default:
@@ -724,18 +891,20 @@ func (e *RouteType) UnmarshalJSON(data []byte) error {
 
 type AiProxyPluginConfig struct {
 	Auth *Auth `json:"auth,omitempty"`
+	// Generative AI category of the request
+	GenaiCategory *AiProxyPluginGenaiCategory `json:"genai_category,omitempty"`
 	// LLM input and output format and schema to use
 	LlmFormat *AiProxyPluginLlmFormat `json:"llm_format,omitempty"`
 	Logging   *Logging                `json:"logging,omitempty"`
-	// max allowed body size allowed to be introspected
+	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 	MaxRequestBodySize *int64 `json:"max_request_body_size,omitempty"`
-	Model              *Model `json:"model,omitempty"`
+	Model              Model  `json:"model"`
 	// Display the model name selected in the X-Kong-LLM-Model response header
 	ModelNameHeader *bool `json:"model_name_header,omitempty"`
 	// Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events.
 	ResponseStreaming *ResponseStreaming `json:"response_streaming,omitempty"`
-	// The model's operation implementation, for this provider. Set to `preserve` to pass through without transformation.
-	RouteType *RouteType `json:"route_type,omitempty"`
+	// The model's operation implementation, for this provider.
+	RouteType RouteType `json:"route_type"`
 }
 
 func (o *AiProxyPluginConfig) GetAuth() *Auth {
@@ -743,6 +912,13 @@ func (o *AiProxyPluginConfig) GetAuth() *Auth {
 		return nil
 	}
 	return o.Auth
+}
+
+func (o *AiProxyPluginConfig) GetGenaiCategory() *AiProxyPluginGenaiCategory {
+	if o == nil {
+		return nil
+	}
+	return o.GenaiCategory
 }
 
 func (o *AiProxyPluginConfig) GetLlmFormat() *AiProxyPluginLlmFormat {
@@ -766,9 +942,9 @@ func (o *AiProxyPluginConfig) GetMaxRequestBodySize() *int64 {
 	return o.MaxRequestBodySize
 }
 
-func (o *AiProxyPluginConfig) GetModel() *Model {
+func (o *AiProxyPluginConfig) GetModel() Model {
 	if o == nil {
-		return nil
+		return Model{}
 	}
 	return o.Model
 }
@@ -787,9 +963,9 @@ func (o *AiProxyPluginConfig) GetResponseStreaming() *ResponseStreaming {
 	return o.ResponseStreaming
 }
 
-func (o *AiProxyPluginConfig) GetRouteType() *RouteType {
+func (o *AiProxyPluginConfig) GetRouteType() RouteType {
 	if o == nil {
-		return nil
+		return RouteType("")
 	}
 	return o.RouteType
 }
@@ -825,6 +1001,8 @@ const (
 	AiProxyPluginProtocolsGrpcs AiProxyPluginProtocols = "grpcs"
 	AiProxyPluginProtocolsHTTP  AiProxyPluginProtocols = "http"
 	AiProxyPluginProtocolsHTTPS AiProxyPluginProtocols = "https"
+	AiProxyPluginProtocolsWs    AiProxyPluginProtocols = "ws"
+	AiProxyPluginProtocolsWss   AiProxyPluginProtocols = "wss"
 )
 
 func (e AiProxyPluginProtocols) ToPointer() *AiProxyPluginProtocols {
@@ -843,6 +1021,10 @@ func (e *AiProxyPluginProtocols) UnmarshalJSON(data []byte) error {
 	case "http":
 		fallthrough
 	case "https":
+		fallthrough
+	case "ws":
+		fallthrough
+	case "wss":
 		*e = AiProxyPluginProtocols(v)
 		return nil
 	default:
@@ -888,13 +1070,13 @@ type AiProxyPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64               `json:"updated_at,omitempty"`
-	Config    *AiProxyPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64              `json:"updated_at,omitempty"`
+	Config    AiProxyPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *AiProxyPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *AiProxyPluginConsumerGroup `json:"consumer_group"`
-	// A set of strings representing HTTP protocols.
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []AiProxyPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *AiProxyPluginRoute `json:"route"`
@@ -973,9 +1155,9 @@ func (o *AiProxyPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *AiProxyPlugin) GetConfig() *AiProxyPluginConfig {
+func (o *AiProxyPlugin) GetConfig() AiProxyPluginConfig {
 	if o == nil {
-		return nil
+		return AiProxyPluginConfig{}
 	}
 	return o.Config
 }

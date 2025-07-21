@@ -15,83 +15,124 @@ func (r *GatewayPluginKafkaConsumeResourceModel) RefreshFromSharedKafkaConsumePl
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		if resp.Config.Authentication == nil {
+			r.Config.Authentication = nil
 		} else {
-			r.Config = &tfTypes.KafkaConsumePluginConfig{}
-			if resp.Config.Authentication == nil {
-				r.Config.Authentication = nil
+			r.Config.Authentication = &tfTypes.Authentication{}
+			if resp.Config.Authentication.Mechanism != nil {
+				r.Config.Authentication.Mechanism = types.StringValue(string(*resp.Config.Authentication.Mechanism))
 			} else {
-				r.Config.Authentication = &tfTypes.Authentication{}
-				if resp.Config.Authentication.Mechanism != nil {
-					r.Config.Authentication.Mechanism = types.StringValue(string(*resp.Config.Authentication.Mechanism))
+				r.Config.Authentication.Mechanism = types.StringNull()
+			}
+			r.Config.Authentication.Password = types.StringPointerValue(resp.Config.Authentication.Password)
+			if resp.Config.Authentication.Strategy != nil {
+				r.Config.Authentication.Strategy = types.StringValue(string(*resp.Config.Authentication.Strategy))
+			} else {
+				r.Config.Authentication.Strategy = types.StringNull()
+			}
+			r.Config.Authentication.Tokenauth = types.BoolPointerValue(resp.Config.Authentication.Tokenauth)
+			r.Config.Authentication.User = types.StringPointerValue(resp.Config.Authentication.User)
+		}
+		if resp.Config.AutoOffsetReset != nil {
+			r.Config.AutoOffsetReset = types.StringValue(string(*resp.Config.AutoOffsetReset))
+		} else {
+			r.Config.AutoOffsetReset = types.StringNull()
+		}
+		r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
+		if len(r.Config.BootstrapServers) > len(resp.Config.BootstrapServers) {
+			r.Config.BootstrapServers = r.Config.BootstrapServers[:len(resp.Config.BootstrapServers)]
+		}
+		for bootstrapServersCount, bootstrapServersItem := range resp.Config.BootstrapServers {
+			var bootstrapServers tfTypes.BootstrapServers
+			bootstrapServers.Host = types.StringValue(bootstrapServersItem.Host)
+			bootstrapServers.Port = types.Int64Value(bootstrapServersItem.Port)
+			if bootstrapServersCount+1 > len(r.Config.BootstrapServers) {
+				r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
+			} else {
+				r.Config.BootstrapServers[bootstrapServersCount].Host = bootstrapServers.Host
+				r.Config.BootstrapServers[bootstrapServersCount].Port = bootstrapServers.Port
+			}
+		}
+		r.Config.ClusterName = types.StringPointerValue(resp.Config.ClusterName)
+		if resp.Config.CommitStrategy != nil {
+			r.Config.CommitStrategy = types.StringValue(string(*resp.Config.CommitStrategy))
+		} else {
+			r.Config.CommitStrategy = types.StringNull()
+		}
+		if resp.Config.MessageDeserializer != nil {
+			r.Config.MessageDeserializer = types.StringValue(string(*resp.Config.MessageDeserializer))
+		} else {
+			r.Config.MessageDeserializer = types.StringNull()
+		}
+		if resp.Config.Mode != nil {
+			r.Config.Mode = types.StringValue(string(*resp.Config.Mode))
+		} else {
+			r.Config.Mode = types.StringNull()
+		}
+		if resp.Config.SchemaRegistry == nil {
+			r.Config.SchemaRegistry = nil
+		} else {
+			r.Config.SchemaRegistry = &tfTypes.ConfluentConsumePluginSchemaRegistry{}
+			if resp.Config.SchemaRegistry.Confluent == nil {
+				r.Config.SchemaRegistry.Confluent = nil
+			} else {
+				r.Config.SchemaRegistry.Confluent = &tfTypes.ConfluentConsumePluginConfluent{}
+				if resp.Config.SchemaRegistry.Confluent.Authentication.Basic == nil {
+					r.Config.SchemaRegistry.Confluent.Authentication.Basic = nil
 				} else {
-					r.Config.Authentication.Mechanism = types.StringNull()
+					r.Config.SchemaRegistry.Confluent.Authentication.Basic = &tfTypes.Basic{}
+					r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Password)
+					r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Username)
 				}
-				r.Config.Authentication.Password = types.StringPointerValue(resp.Config.Authentication.Password)
-				if resp.Config.Authentication.Strategy != nil {
-					r.Config.Authentication.Strategy = types.StringValue(string(*resp.Config.Authentication.Strategy))
+				if resp.Config.SchemaRegistry.Confluent.Authentication.Mode != nil {
+					r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringValue(string(*resp.Config.SchemaRegistry.Confluent.Authentication.Mode))
 				} else {
-					r.Config.Authentication.Strategy = types.StringNull()
+					r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringNull()
 				}
-				r.Config.Authentication.Tokenauth = types.BoolPointerValue(resp.Config.Authentication.Tokenauth)
-				r.Config.Authentication.User = types.StringPointerValue(resp.Config.Authentication.User)
+				r.Config.SchemaRegistry.Confluent.SslVerify = types.BoolPointerValue(resp.Config.SchemaRegistry.Confluent.SslVerify)
+				r.Config.SchemaRegistry.Confluent.TTL = types.Float64PointerValue(resp.Config.SchemaRegistry.Confluent.TTL)
+				r.Config.SchemaRegistry.Confluent.URL = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.URL)
 			}
-			if resp.Config.AutoOffsetReset != nil {
-				r.Config.AutoOffsetReset = types.StringValue(string(*resp.Config.AutoOffsetReset))
+		}
+		if resp.Config.Security == nil {
+			r.Config.Security = nil
+		} else {
+			r.Config.Security = &tfTypes.KafkaConsumePluginSecurity{}
+			r.Config.Security.CertificateID = types.StringPointerValue(resp.Config.Security.CertificateID)
+			r.Config.Security.Ssl = types.BoolPointerValue(resp.Config.Security.Ssl)
+		}
+		r.Config.Topics = []tfTypes.Topics{}
+		if len(r.Config.Topics) > len(resp.Config.Topics) {
+			r.Config.Topics = r.Config.Topics[:len(resp.Config.Topics)]
+		}
+		for topicsCount, topicsItem := range resp.Config.Topics {
+			var topics tfTypes.Topics
+			topics.Name = types.StringValue(topicsItem.Name)
+			if topicsItem.SchemaRegistry.Confluent == nil {
+				topics.SchemaRegistry.Confluent = nil
 			} else {
-				r.Config.AutoOffsetReset = types.StringNull()
-			}
-			r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
-			if len(r.Config.BootstrapServers) > len(resp.Config.BootstrapServers) {
-				r.Config.BootstrapServers = r.Config.BootstrapServers[:len(resp.Config.BootstrapServers)]
-			}
-			for bootstrapServersCount, bootstrapServersItem := range resp.Config.BootstrapServers {
-				var bootstrapServers tfTypes.BootstrapServers
-				bootstrapServers.Host = types.StringValue(bootstrapServersItem.Host)
-				bootstrapServers.Port = types.Int64Value(bootstrapServersItem.Port)
-				if bootstrapServersCount+1 > len(r.Config.BootstrapServers) {
-					r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
+				topics.SchemaRegistry.Confluent = &tfTypes.ConfluentConsumePluginConfluent{}
+				if topicsItem.SchemaRegistry.Confluent.Authentication.Basic == nil {
+					topics.SchemaRegistry.Confluent.Authentication.Basic = nil
 				} else {
-					r.Config.BootstrapServers[bootstrapServersCount].Host = bootstrapServers.Host
-					r.Config.BootstrapServers[bootstrapServersCount].Port = bootstrapServers.Port
+					topics.SchemaRegistry.Confluent.Authentication.Basic = &tfTypes.Basic{}
+					topics.SchemaRegistry.Confluent.Authentication.Basic.Password = types.StringValue(topicsItem.SchemaRegistry.Confluent.Authentication.Basic.Password)
+					topics.SchemaRegistry.Confluent.Authentication.Basic.Username = types.StringValue(topicsItem.SchemaRegistry.Confluent.Authentication.Basic.Username)
 				}
-			}
-			r.Config.ClusterName = types.StringPointerValue(resp.Config.ClusterName)
-			if resp.Config.CommitStrategy != nil {
-				r.Config.CommitStrategy = types.StringValue(string(*resp.Config.CommitStrategy))
-			} else {
-				r.Config.CommitStrategy = types.StringNull()
-			}
-			if resp.Config.MessageDeserializer != nil {
-				r.Config.MessageDeserializer = types.StringValue(string(*resp.Config.MessageDeserializer))
-			} else {
-				r.Config.MessageDeserializer = types.StringNull()
-			}
-			if resp.Config.Mode != nil {
-				r.Config.Mode = types.StringValue(string(*resp.Config.Mode))
-			} else {
-				r.Config.Mode = types.StringNull()
-			}
-			if resp.Config.Security == nil {
-				r.Config.Security = nil
-			} else {
-				r.Config.Security = &tfTypes.KafkaConsumePluginSecurity{}
-				r.Config.Security.CertificateID = types.StringPointerValue(resp.Config.Security.CertificateID)
-				r.Config.Security.Ssl = types.BoolPointerValue(resp.Config.Security.Ssl)
-			}
-			r.Config.Topics = []tfTypes.Topics{}
-			if len(r.Config.Topics) > len(resp.Config.Topics) {
-				r.Config.Topics = r.Config.Topics[:len(resp.Config.Topics)]
-			}
-			for topicsCount, topicsItem := range resp.Config.Topics {
-				var topics tfTypes.Topics
-				topics.Name = types.StringValue(topicsItem.Name)
-				if topicsCount+1 > len(r.Config.Topics) {
-					r.Config.Topics = append(r.Config.Topics, topics)
+				if topicsItem.SchemaRegistry.Confluent.Authentication.Mode != nil {
+					topics.SchemaRegistry.Confluent.Authentication.Mode = types.StringValue(string(*topicsItem.SchemaRegistry.Confluent.Authentication.Mode))
 				} else {
-					r.Config.Topics[topicsCount].Name = topics.Name
+					topics.SchemaRegistry.Confluent.Authentication.Mode = types.StringNull()
 				}
+				topics.SchemaRegistry.Confluent.SslVerify = types.BoolPointerValue(topicsItem.SchemaRegistry.Confluent.SslVerify)
+				topics.SchemaRegistry.Confluent.TTL = types.Float64PointerValue(topicsItem.SchemaRegistry.Confluent.TTL)
+				topics.SchemaRegistry.Confluent.URL = types.StringPointerValue(topicsItem.SchemaRegistry.Confluent.URL)
+			}
+			if topicsCount+1 > len(r.Config.Topics) {
+				r.Config.Topics = append(r.Config.Topics, topics)
+			} else {
+				r.Config.Topics[topicsCount].Name = topics.Name
+				r.Config.Topics[topicsCount].SchemaRegistry = topics.SchemaRegistry
 			}
 		}
 		if resp.Consumer == nil {
@@ -162,9 +203,11 @@ func (r *GatewayPluginKafkaConsumeResourceModel) RefreshFromSharedKafkaConsumePl
 			r.Service = &tfTypes.Set{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
+		if resp.Tags != nil {
+			r.Tags = make([]types.String, 0, len(resp.Tags))
+			for _, v := range resp.Tags {
+				r.Tags = append(r.Tags, types.StringValue(v))
+			}
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
@@ -335,9 +378,12 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 			})
 		}
 	}
-	tags := make([]string, 0, len(r.Tags))
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
+	var tags []string
+	if r.Tags != nil {
+		tags = make([]string, 0, len(r.Tags))
+		for _, tagsItem := range r.Tags {
+			tags = append(tags, tagsItem.ValueString())
+		}
 	}
 	updatedAt := new(int64)
 	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
@@ -345,130 +391,238 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 	} else {
 		updatedAt = nil
 	}
-	var config *shared.KafkaConsumePluginConfig
-	if r.Config != nil {
-		var authentication *shared.Authentication
-		if r.Config.Authentication != nil {
-			mechanism := new(shared.Mechanism)
-			if !r.Config.Authentication.Mechanism.IsUnknown() && !r.Config.Authentication.Mechanism.IsNull() {
-				*mechanism = shared.Mechanism(r.Config.Authentication.Mechanism.ValueString())
-			} else {
-				mechanism = nil
-			}
-			password := new(string)
-			if !r.Config.Authentication.Password.IsUnknown() && !r.Config.Authentication.Password.IsNull() {
-				*password = r.Config.Authentication.Password.ValueString()
-			} else {
-				password = nil
-			}
-			strategy := new(shared.KafkaConsumePluginStrategy)
-			if !r.Config.Authentication.Strategy.IsUnknown() && !r.Config.Authentication.Strategy.IsNull() {
-				*strategy = shared.KafkaConsumePluginStrategy(r.Config.Authentication.Strategy.ValueString())
-			} else {
-				strategy = nil
-			}
-			tokenauth := new(bool)
-			if !r.Config.Authentication.Tokenauth.IsUnknown() && !r.Config.Authentication.Tokenauth.IsNull() {
-				*tokenauth = r.Config.Authentication.Tokenauth.ValueBool()
-			} else {
-				tokenauth = nil
-			}
-			user := new(string)
-			if !r.Config.Authentication.User.IsUnknown() && !r.Config.Authentication.User.IsNull() {
-				*user = r.Config.Authentication.User.ValueString()
-			} else {
-				user = nil
-			}
-			authentication = &shared.Authentication{
-				Mechanism: mechanism,
-				Password:  password,
-				Strategy:  strategy,
-				Tokenauth: tokenauth,
-				User:      user,
-			}
-		}
-		autoOffsetReset := new(shared.KafkaConsumePluginAutoOffsetReset)
-		if !r.Config.AutoOffsetReset.IsUnknown() && !r.Config.AutoOffsetReset.IsNull() {
-			*autoOffsetReset = shared.KafkaConsumePluginAutoOffsetReset(r.Config.AutoOffsetReset.ValueString())
+	var authentication *shared.Authentication
+	if r.Config.Authentication != nil {
+		mechanism := new(shared.Mechanism)
+		if !r.Config.Authentication.Mechanism.IsUnknown() && !r.Config.Authentication.Mechanism.IsNull() {
+			*mechanism = shared.Mechanism(r.Config.Authentication.Mechanism.ValueString())
 		} else {
-			autoOffsetReset = nil
+			mechanism = nil
 		}
-		bootstrapServers := make([]shared.KafkaConsumePluginBootstrapServers, 0, len(r.Config.BootstrapServers))
-		for _, bootstrapServersItem := range r.Config.BootstrapServers {
-			var host string
-			host = bootstrapServersItem.Host.ValueString()
+		password := new(string)
+		if !r.Config.Authentication.Password.IsUnknown() && !r.Config.Authentication.Password.IsNull() {
+			*password = r.Config.Authentication.Password.ValueString()
+		} else {
+			password = nil
+		}
+		strategy := new(shared.KafkaConsumePluginStrategy)
+		if !r.Config.Authentication.Strategy.IsUnknown() && !r.Config.Authentication.Strategy.IsNull() {
+			*strategy = shared.KafkaConsumePluginStrategy(r.Config.Authentication.Strategy.ValueString())
+		} else {
+			strategy = nil
+		}
+		tokenauth := new(bool)
+		if !r.Config.Authentication.Tokenauth.IsUnknown() && !r.Config.Authentication.Tokenauth.IsNull() {
+			*tokenauth = r.Config.Authentication.Tokenauth.ValueBool()
+		} else {
+			tokenauth = nil
+		}
+		user := new(string)
+		if !r.Config.Authentication.User.IsUnknown() && !r.Config.Authentication.User.IsNull() {
+			*user = r.Config.Authentication.User.ValueString()
+		} else {
+			user = nil
+		}
+		authentication = &shared.Authentication{
+			Mechanism: mechanism,
+			Password:  password,
+			Strategy:  strategy,
+			Tokenauth: tokenauth,
+			User:      user,
+		}
+	}
+	autoOffsetReset := new(shared.KafkaConsumePluginAutoOffsetReset)
+	if !r.Config.AutoOffsetReset.IsUnknown() && !r.Config.AutoOffsetReset.IsNull() {
+		*autoOffsetReset = shared.KafkaConsumePluginAutoOffsetReset(r.Config.AutoOffsetReset.ValueString())
+	} else {
+		autoOffsetReset = nil
+	}
+	bootstrapServers := make([]shared.KafkaConsumePluginBootstrapServers, 0, len(r.Config.BootstrapServers))
+	for _, bootstrapServersItem := range r.Config.BootstrapServers {
+		var host string
+		host = bootstrapServersItem.Host.ValueString()
 
-			var port int64
-			port = bootstrapServersItem.Port.ValueInt64()
+		var port int64
+		port = bootstrapServersItem.Port.ValueInt64()
 
-			bootstrapServers = append(bootstrapServers, shared.KafkaConsumePluginBootstrapServers{
-				Host: host,
-				Port: port,
-			})
-		}
-		clusterName := new(string)
-		if !r.Config.ClusterName.IsUnknown() && !r.Config.ClusterName.IsNull() {
-			*clusterName = r.Config.ClusterName.ValueString()
-		} else {
-			clusterName = nil
-		}
-		commitStrategy := new(shared.KafkaConsumePluginCommitStrategy)
-		if !r.Config.CommitStrategy.IsUnknown() && !r.Config.CommitStrategy.IsNull() {
-			*commitStrategy = shared.KafkaConsumePluginCommitStrategy(r.Config.CommitStrategy.ValueString())
-		} else {
-			commitStrategy = nil
-		}
-		messageDeserializer := new(shared.KafkaConsumePluginMessageDeserializer)
-		if !r.Config.MessageDeserializer.IsUnknown() && !r.Config.MessageDeserializer.IsNull() {
-			*messageDeserializer = shared.KafkaConsumePluginMessageDeserializer(r.Config.MessageDeserializer.ValueString())
-		} else {
-			messageDeserializer = nil
-		}
-		mode := new(shared.KafkaConsumePluginMode)
-		if !r.Config.Mode.IsUnknown() && !r.Config.Mode.IsNull() {
-			*mode = shared.KafkaConsumePluginMode(r.Config.Mode.ValueString())
-		} else {
-			mode = nil
-		}
-		var security *shared.KafkaConsumePluginSecurity
-		if r.Config.Security != nil {
-			certificateID := new(string)
-			if !r.Config.Security.CertificateID.IsUnknown() && !r.Config.Security.CertificateID.IsNull() {
-				*certificateID = r.Config.Security.CertificateID.ValueString()
-			} else {
-				certificateID = nil
-			}
-			ssl := new(bool)
-			if !r.Config.Security.Ssl.IsUnknown() && !r.Config.Security.Ssl.IsNull() {
-				*ssl = r.Config.Security.Ssl.ValueBool()
-			} else {
-				ssl = nil
-			}
-			security = &shared.KafkaConsumePluginSecurity{
-				CertificateID: certificateID,
-				Ssl:           ssl,
-			}
-		}
-		topics := make([]shared.KafkaConsumePluginTopics, 0, len(r.Config.Topics))
-		for _, topicsItem := range r.Config.Topics {
-			var name1 string
-			name1 = topicsItem.Name.ValueString()
+		bootstrapServers = append(bootstrapServers, shared.KafkaConsumePluginBootstrapServers{
+			Host: host,
+			Port: port,
+		})
+	}
+	clusterName := new(string)
+	if !r.Config.ClusterName.IsUnknown() && !r.Config.ClusterName.IsNull() {
+		*clusterName = r.Config.ClusterName.ValueString()
+	} else {
+		clusterName = nil
+	}
+	commitStrategy := new(shared.KafkaConsumePluginCommitStrategy)
+	if !r.Config.CommitStrategy.IsUnknown() && !r.Config.CommitStrategy.IsNull() {
+		*commitStrategy = shared.KafkaConsumePluginCommitStrategy(r.Config.CommitStrategy.ValueString())
+	} else {
+		commitStrategy = nil
+	}
+	messageDeserializer := new(shared.KafkaConsumePluginMessageDeserializer)
+	if !r.Config.MessageDeserializer.IsUnknown() && !r.Config.MessageDeserializer.IsNull() {
+		*messageDeserializer = shared.KafkaConsumePluginMessageDeserializer(r.Config.MessageDeserializer.ValueString())
+	} else {
+		messageDeserializer = nil
+	}
+	mode := new(shared.KafkaConsumePluginMode)
+	if !r.Config.Mode.IsUnknown() && !r.Config.Mode.IsNull() {
+		*mode = shared.KafkaConsumePluginMode(r.Config.Mode.ValueString())
+	} else {
+		mode = nil
+	}
+	var schemaRegistry *shared.KafkaConsumePluginSchemaRegistry
+	if r.Config.SchemaRegistry != nil {
+		var confluent *shared.KafkaConsumePluginConfluent
+		if r.Config.SchemaRegistry.Confluent != nil {
+			var basic *shared.KafkaConsumePluginBasic
+			if r.Config.SchemaRegistry.Confluent.Authentication.Basic != nil {
+				var password1 string
+				password1 = r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password.ValueString()
 
-			topics = append(topics, shared.KafkaConsumePluginTopics{
-				Name: name1,
-			})
+				var username string
+				username = r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username.ValueString()
+
+				basic = &shared.KafkaConsumePluginBasic{
+					Password: password1,
+					Username: username,
+				}
+			}
+			mode1 := new(shared.KafkaConsumePluginConfigMode)
+			if !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsNull() {
+				*mode1 = shared.KafkaConsumePluginConfigMode(r.Config.SchemaRegistry.Confluent.Authentication.Mode.ValueString())
+			} else {
+				mode1 = nil
+			}
+			authentication1 := shared.KafkaConsumePluginAuthentication{
+				Basic: basic,
+				Mode:  mode1,
+			}
+			sslVerify := new(bool)
+			if !r.Config.SchemaRegistry.Confluent.SslVerify.IsUnknown() && !r.Config.SchemaRegistry.Confluent.SslVerify.IsNull() {
+				*sslVerify = r.Config.SchemaRegistry.Confluent.SslVerify.ValueBool()
+			} else {
+				sslVerify = nil
+			}
+			ttl := new(float64)
+			if !r.Config.SchemaRegistry.Confluent.TTL.IsUnknown() && !r.Config.SchemaRegistry.Confluent.TTL.IsNull() {
+				*ttl = r.Config.SchemaRegistry.Confluent.TTL.ValueFloat64()
+			} else {
+				ttl = nil
+			}
+			url := new(string)
+			if !r.Config.SchemaRegistry.Confluent.URL.IsUnknown() && !r.Config.SchemaRegistry.Confluent.URL.IsNull() {
+				*url = r.Config.SchemaRegistry.Confluent.URL.ValueString()
+			} else {
+				url = nil
+			}
+			confluent = &shared.KafkaConsumePluginConfluent{
+				Authentication: authentication1,
+				SslVerify:      sslVerify,
+				TTL:            ttl,
+				URL:            url,
+			}
 		}
-		config = &shared.KafkaConsumePluginConfig{
-			Authentication:      authentication,
-			AutoOffsetReset:     autoOffsetReset,
-			BootstrapServers:    bootstrapServers,
-			ClusterName:         clusterName,
-			CommitStrategy:      commitStrategy,
-			MessageDeserializer: messageDeserializer,
-			Mode:                mode,
-			Security:            security,
-			Topics:              topics,
+		schemaRegistry = &shared.KafkaConsumePluginSchemaRegistry{
+			Confluent: confluent,
 		}
+	}
+	var security *shared.KafkaConsumePluginSecurity
+	if r.Config.Security != nil {
+		certificateID := new(string)
+		if !r.Config.Security.CertificateID.IsUnknown() && !r.Config.Security.CertificateID.IsNull() {
+			*certificateID = r.Config.Security.CertificateID.ValueString()
+		} else {
+			certificateID = nil
+		}
+		ssl := new(bool)
+		if !r.Config.Security.Ssl.IsUnknown() && !r.Config.Security.Ssl.IsNull() {
+			*ssl = r.Config.Security.Ssl.ValueBool()
+		} else {
+			ssl = nil
+		}
+		security = &shared.KafkaConsumePluginSecurity{
+			CertificateID: certificateID,
+			Ssl:           ssl,
+		}
+	}
+	topics := make([]shared.KafkaConsumePluginTopics, 0, len(r.Config.Topics))
+	for _, topicsItem := range r.Config.Topics {
+		var name1 string
+		name1 = topicsItem.Name.ValueString()
+
+		var confluent1 *shared.KafkaConsumePluginConfigConfluent
+		if topicsItem.SchemaRegistry.Confluent != nil {
+			var basic1 *shared.KafkaConsumePluginConfigBasic
+			if topicsItem.SchemaRegistry.Confluent.Authentication.Basic != nil {
+				var password2 string
+				password2 = topicsItem.SchemaRegistry.Confluent.Authentication.Basic.Password.ValueString()
+
+				var username1 string
+				username1 = topicsItem.SchemaRegistry.Confluent.Authentication.Basic.Username.ValueString()
+
+				basic1 = &shared.KafkaConsumePluginConfigBasic{
+					Password: password2,
+					Username: username1,
+				}
+			}
+			mode2 := new(shared.KafkaConsumePluginConfigTopicsMode)
+			if !topicsItem.SchemaRegistry.Confluent.Authentication.Mode.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.Authentication.Mode.IsNull() {
+				*mode2 = shared.KafkaConsumePluginConfigTopicsMode(topicsItem.SchemaRegistry.Confluent.Authentication.Mode.ValueString())
+			} else {
+				mode2 = nil
+			}
+			authentication2 := shared.KafkaConsumePluginConfigAuthentication{
+				Basic: basic1,
+				Mode:  mode2,
+			}
+			sslVerify1 := new(bool)
+			if !topicsItem.SchemaRegistry.Confluent.SslVerify.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.SslVerify.IsNull() {
+				*sslVerify1 = topicsItem.SchemaRegistry.Confluent.SslVerify.ValueBool()
+			} else {
+				sslVerify1 = nil
+			}
+			ttl1 := new(float64)
+			if !topicsItem.SchemaRegistry.Confluent.TTL.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.TTL.IsNull() {
+				*ttl1 = topicsItem.SchemaRegistry.Confluent.TTL.ValueFloat64()
+			} else {
+				ttl1 = nil
+			}
+			url1 := new(string)
+			if !topicsItem.SchemaRegistry.Confluent.URL.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.URL.IsNull() {
+				*url1 = topicsItem.SchemaRegistry.Confluent.URL.ValueString()
+			} else {
+				url1 = nil
+			}
+			confluent1 = &shared.KafkaConsumePluginConfigConfluent{
+				Authentication: authentication2,
+				SslVerify:      sslVerify1,
+				TTL:            ttl1,
+				URL:            url1,
+			}
+		}
+		schemaRegistry1 := shared.KafkaConsumePluginConfigSchemaRegistry{
+			Confluent: confluent1,
+		}
+		topics = append(topics, shared.KafkaConsumePluginTopics{
+			Name:           name1,
+			SchemaRegistry: schemaRegistry1,
+		})
+	}
+	config := shared.KafkaConsumePluginConfig{
+		Authentication:      authentication,
+		AutoOffsetReset:     autoOffsetReset,
+		BootstrapServers:    bootstrapServers,
+		ClusterName:         clusterName,
+		CommitStrategy:      commitStrategy,
+		MessageDeserializer: messageDeserializer,
+		Mode:                mode,
+		SchemaRegistry:      schemaRegistry,
+		Security:            security,
+		Topics:              topics,
 	}
 	var consumer *shared.KafkaConsumePluginConsumer
 	if r.Consumer != nil {

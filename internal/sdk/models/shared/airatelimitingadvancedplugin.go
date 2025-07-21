@@ -122,9 +122,11 @@ func (e *Identifier) UnmarshalJSON(data []byte) error {
 type AiRateLimitingAdvancedPluginLlmFormat string
 
 const (
-	AiRateLimitingAdvancedPluginLlmFormatBedrock AiRateLimitingAdvancedPluginLlmFormat = "bedrock"
-	AiRateLimitingAdvancedPluginLlmFormatGemini  AiRateLimitingAdvancedPluginLlmFormat = "gemini"
-	AiRateLimitingAdvancedPluginLlmFormatOpenai  AiRateLimitingAdvancedPluginLlmFormat = "openai"
+	AiRateLimitingAdvancedPluginLlmFormatBedrock     AiRateLimitingAdvancedPluginLlmFormat = "bedrock"
+	AiRateLimitingAdvancedPluginLlmFormatCohere      AiRateLimitingAdvancedPluginLlmFormat = "cohere"
+	AiRateLimitingAdvancedPluginLlmFormatGemini      AiRateLimitingAdvancedPluginLlmFormat = "gemini"
+	AiRateLimitingAdvancedPluginLlmFormatHuggingface AiRateLimitingAdvancedPluginLlmFormat = "huggingface"
+	AiRateLimitingAdvancedPluginLlmFormatOpenai      AiRateLimitingAdvancedPluginLlmFormat = "openai"
 )
 
 func (e AiRateLimitingAdvancedPluginLlmFormat) ToPointer() *AiRateLimitingAdvancedPluginLlmFormat {
@@ -138,7 +140,11 @@ func (e *AiRateLimitingAdvancedPluginLlmFormat) UnmarshalJSON(data []byte) error
 	switch v {
 	case "bedrock":
 		fallthrough
+	case "cohere":
+		fallthrough
 	case "gemini":
+		fallthrough
+	case "huggingface":
 		fallthrough
 	case "openai":
 		*e = AiRateLimitingAdvancedPluginLlmFormat(v)
@@ -603,7 +609,9 @@ type AiRateLimitingAdvancedPluginConfig struct {
 	// LLM input and output format and schema to use
 	LlmFormat *AiRateLimitingAdvancedPluginLlmFormat `json:"llm_format,omitempty"`
 	// The provider config. Takes an array of `name`, `limit` and `window size` values.
-	LlmProviders []LlmProviders `json:"llm_providers,omitempty"`
+	LlmProviders []LlmProviders `json:"llm_providers"`
+	// The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `dictionary_name`, need to be the same.
+	Namespace *string `json:"namespace,omitempty"`
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
 	Path  *string `json:"path,omitempty"`
 	Redis *Redis  `json:"redis,omitempty"`
@@ -686,9 +694,16 @@ func (o *AiRateLimitingAdvancedPluginConfig) GetLlmFormat() *AiRateLimitingAdvan
 
 func (o *AiRateLimitingAdvancedPluginConfig) GetLlmProviders() []LlmProviders {
 	if o == nil {
-		return nil
+		return []LlmProviders{}
 	}
 	return o.LlmProviders
+}
+
+func (o *AiRateLimitingAdvancedPluginConfig) GetNamespace() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Namespace
 }
 
 func (o *AiRateLimitingAdvancedPluginConfig) GetPath() *string {
@@ -841,8 +856,8 @@ type AiRateLimitingAdvancedPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                              `json:"updated_at,omitempty"`
-	Config    *AiRateLimitingAdvancedPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                             `json:"updated_at,omitempty"`
+	Config    AiRateLimitingAdvancedPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *AiRateLimitingAdvancedPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -926,9 +941,9 @@ func (o *AiRateLimitingAdvancedPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *AiRateLimitingAdvancedPlugin) GetConfig() *AiRateLimitingAdvancedPluginConfig {
+func (o *AiRateLimitingAdvancedPlugin) GetConfig() AiRateLimitingAdvancedPluginConfig {
 	if o == nil {
-		return nil
+		return AiRateLimitingAdvancedPluginConfig{}
 	}
 	return o.Config
 }

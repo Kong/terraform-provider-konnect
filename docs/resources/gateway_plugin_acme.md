@@ -120,11 +120,11 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
@@ -141,9 +141,12 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
-Optional:
+Required:
 
 - `account_email` (String) The account identifier. Can be reused in a different plugin instance.
+
+Optional:
+
 - `account_key` (Attributes) The private key associated with the account. (see [below for nested schema](#nestedatt--config--account_key))
 - `allow_any_domain` (Boolean) If set to `true`, the plugin allows all domains and ignores any values in the `domains` list.
 - `api_uri` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.

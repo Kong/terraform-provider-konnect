@@ -558,7 +558,7 @@ func (o *StorageConfig) GetVault() *AcmePluginVault {
 
 type AcmePluginConfig struct {
 	// The account identifier. Can be reused in a different plugin instance.
-	AccountEmail *string `json:"account_email,omitempty"`
+	AccountEmail string `json:"account_email"`
 	// The private key associated with the account.
 	AccountKey *AccountKey `json:"account_key,omitempty"`
 	// If set to `true`, the plugin allows all domains and ignores any values in the `domains` list.
@@ -591,9 +591,9 @@ type AcmePluginConfig struct {
 	TosAccepted *bool `json:"tos_accepted,omitempty"`
 }
 
-func (o *AcmePluginConfig) GetAccountEmail() *string {
+func (o *AcmePluginConfig) GetAccountEmail() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.AccountEmail
 }
@@ -749,8 +749,8 @@ type AcmePlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64            `json:"updated_at,omitempty"`
-	Config    *AcmePluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64           `json:"updated_at,omitempty"`
+	Config    AcmePluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
 	Protocols []AcmePluginProtocols `json:"protocols,omitempty"`
 }
@@ -826,9 +826,9 @@ func (o *AcmePlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *AcmePlugin) GetConfig() *AcmePluginConfig {
+func (o *AcmePlugin) GetConfig() AcmePluginConfig {
 	if o == nil {
-		return nil
+		return AcmePluginConfig{}
 	}
 	return o.Config
 }

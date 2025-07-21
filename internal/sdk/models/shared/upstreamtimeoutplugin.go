@@ -77,11 +77,11 @@ func (o *UpstreamTimeoutPluginPartials) GetPath() *string {
 }
 
 type UpstreamTimeoutPluginConfig struct {
-	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	// An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.
 	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
-	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	// An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.
 	ReadTimeout *int64 `json:"read_timeout,omitempty"`
-	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	// An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.
 	SendTimeout *int64 `json:"send_timeout,omitempty"`
 }
 

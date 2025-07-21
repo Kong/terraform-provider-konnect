@@ -245,7 +245,7 @@ type HTTPLogPluginConfig struct {
 	// An optional table of headers included in the HTTP message to the upstream server. Values are indexed by header name, and each header name accepts a single string.
 	Headers map[string]any `json:"headers,omitempty"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
-	HTTPEndpoint *string `json:"http_endpoint,omitempty"`
+	HTTPEndpoint string `json:"http_endpoint"`
 	// An optional value in milliseconds that defines how long an idle connection will live before being closed.
 	Keepalive *float64 `json:"keepalive,omitempty"`
 	// An optional method used to send data to the HTTP server. Supported values are `POST` (default), `PUT`, and `PATCH`.
@@ -287,9 +287,9 @@ func (o *HTTPLogPluginConfig) GetHeaders() map[string]any {
 	return o.Headers
 }
 
-func (o *HTTPLogPluginConfig) GetHTTPEndpoint() *string {
+func (o *HTTPLogPluginConfig) GetHTTPEndpoint() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.HTTPEndpoint
 }
@@ -437,8 +437,8 @@ type HTTPLogPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64               `json:"updated_at,omitempty"`
-	Config    *HTTPLogPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64              `json:"updated_at,omitempty"`
+	Config    HTTPLogPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *HTTPLogPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
@@ -520,9 +520,9 @@ func (o *HTTPLogPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *HTTPLogPlugin) GetConfig() *HTTPLogPluginConfig {
+func (o *HTTPLogPlugin) GetConfig() HTTPLogPluginConfig {
 	if o == nil {
-		return nil
+		return HTTPLogPluginConfig{}
 	}
 	return o.Config
 }

@@ -151,11 +151,11 @@ resource "konnect_gateway_plugin_upstream_oauth" "my_gatewaypluginupstreamoauth"
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -176,12 +176,35 @@ resource "konnect_gateway_plugin_upstream_oauth" "my_gatewaypluginupstreamoauth"
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
+Required:
+
+- `oauth` (Attributes) (see [below for nested schema](#nestedatt--config--oauth))
+
 Optional:
 
 - `behavior` (Attributes) (see [below for nested schema](#nestedatt--config--behavior))
 - `cache` (Attributes) (see [below for nested schema](#nestedatt--config--cache))
 - `client` (Attributes) (see [below for nested schema](#nestedatt--config--client))
-- `oauth` (Attributes) (see [below for nested schema](#nestedatt--config--oauth))
+
+<a id="nestedatt--config--oauth"></a>
+### Nested Schema for `config.oauth`
+
+Required:
+
+- `token_endpoint` (String) The token endpoint URI.
+
+Optional:
+
+- `audience` (List of String) List of audiences passed to the IdP when obtaining a new token.
+- `client_id` (String) The client ID for the application registration in the IdP.
+- `client_secret` (String) The client secret for the application registration in the IdP.
+- `grant_type` (String) The OAuth grant type to be used. must be one of ["client_credentials", "password"]
+- `password` (String) The password to use if `config.oauth.grant_type` is set to `password`.
+- `scopes` (List of String) List of scopes to request from the IdP when obtaining a new token.
+- `token_headers` (Map of String) Extra headers to be passed in the token endpoint request.
+- `token_post_args` (Map of String) Extra post arguments to be passed in the token endpoint request.
+- `username` (String) The username to use if `config.oauth.grant_type` is set to `password`.
+
 
 <a id="nestedatt--config--behavior"></a>
 ### Nested Schema for `config.behavior`
@@ -278,23 +301,6 @@ Optional:
 - `no_proxy` (String) A comma-separated list of hosts that should not be proxied.
 - `ssl_verify` (Boolean) Whether to verify the certificate presented by the IdP when using HTTPS.
 - `timeout` (Number) Network I/O timeout for requests to the IdP in milliseconds.
-
-
-<a id="nestedatt--config--oauth"></a>
-### Nested Schema for `config.oauth`
-
-Optional:
-
-- `audience` (List of String) List of audiences passed to the IdP when obtaining a new token.
-- `client_id` (String) The client ID for the application registration in the IdP.
-- `client_secret` (String) The client secret for the application registration in the IdP.
-- `grant_type` (String) The OAuth grant type to be used. must be one of ["client_credentials", "password"]
-- `password` (String) The password to use if `config.oauth.grant_type` is set to `password`.
-- `scopes` (List of String) List of scopes to request from the IdP when obtaining a new token.
-- `token_endpoint` (String) The token endpoint URI.
-- `token_headers` (Map of String) Extra headers to be passed in the token endpoint request.
-- `token_post_args` (Map of String) Extra post arguments to be passed in the token endpoint request.
-- `username` (String) The username to use if `config.oauth.grant_type` is set to `password`.
 
 
 

@@ -35,7 +35,8 @@ resource "konnect_gateway_plugin_ai_rate_limiting_advanced" "my_gatewaypluginair
         ]
       }
     ]
-    path = "...my_path..."
+    namespace = "...my_namespace..."
+    path      = "...my_path..."
     redis = {
       cluster_max_redirections = 5
       cluster_nodes = [
@@ -127,11 +128,11 @@ resource "konnect_gateway_plugin_ai_rate_limiting_advanced" "my_gatewaypluginair
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -152,6 +153,10 @@ resource "konnect_gateway_plugin_ai_rate_limiting_advanced" "my_gatewaypluginair
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
+Required:
+
+- `llm_providers` (Attributes List) The provider config. Takes an array of `name`, `limit` and `window size` values. (see [below for nested schema](#nestedatt--config--llm_providers))
+
 Optional:
 
 - `dictionary_name` (String) The shared dictionary where counters are stored. When the plugin is configured to synchronize counter data externally (that is `config.strategy` is `cluster` or `redis` and `config.sync_rate` isn't `-1`), this dictionary serves as a buffer to populate counters in the data store on each synchronization cycle.
@@ -162,8 +167,8 @@ Optional:
 - `header_name` (String) A string representing an HTTP header name.
 - `hide_client_headers` (Boolean) Optionally hide informative response headers that would otherwise provide information about the current status of limits and counters.
 - `identifier` (String) The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`. Note if `identifier` is `consumer-group`, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate. must be one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]
-- `llm_format` (String) LLM input and output format and schema to use. must be one of ["bedrock", "gemini", "openai"]
-- `llm_providers` (Attributes List) The provider config. Takes an array of `name`, `limit` and `window size` values. (see [below for nested schema](#nestedatt--config--llm_providers))
+- `llm_format` (String) LLM input and output format and schema to use. must be one of ["bedrock", "cohere", "gemini", "huggingface", "openai"]
+- `namespace` (String) The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `dictionary_name`, need to be the same.
 - `path` (String) A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--redis))
 - `request_prompt_count_function` (String) If defined, it use custom function to count requests for the request prompt provider

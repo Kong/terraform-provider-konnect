@@ -286,6 +286,7 @@ type KafkaConsumePluginMode string
 const (
 	KafkaConsumePluginModeHTTPGet          KafkaConsumePluginMode = "http-get"
 	KafkaConsumePluginModeServerSentEvents KafkaConsumePluginMode = "server-sent-events"
+	KafkaConsumePluginModeWebsocket        KafkaConsumePluginMode = "websocket"
 )
 
 func (e KafkaConsumePluginMode) ToPointer() *KafkaConsumePluginMode {
@@ -300,11 +301,129 @@ func (e *KafkaConsumePluginMode) UnmarshalJSON(data []byte) error {
 	case "http-get":
 		fallthrough
 	case "server-sent-events":
+		fallthrough
+	case "websocket":
 		*e = KafkaConsumePluginMode(v)
 		return nil
 	default:
 		return fmt.Errorf("invalid value for KafkaConsumePluginMode: %v", v)
 	}
+}
+
+type KafkaConsumePluginBasic struct {
+	Password string `json:"password"`
+	Username string `json:"username"`
+}
+
+func (o *KafkaConsumePluginBasic) GetPassword() string {
+	if o == nil {
+		return ""
+	}
+	return o.Password
+}
+
+func (o *KafkaConsumePluginBasic) GetUsername() string {
+	if o == nil {
+		return ""
+	}
+	return o.Username
+}
+
+// KafkaConsumePluginConfigMode - Authentication mode to use with the schema registry.
+type KafkaConsumePluginConfigMode string
+
+const (
+	KafkaConsumePluginConfigModeBasic KafkaConsumePluginConfigMode = "basic"
+	KafkaConsumePluginConfigModeNone  KafkaConsumePluginConfigMode = "none"
+)
+
+func (e KafkaConsumePluginConfigMode) ToPointer() *KafkaConsumePluginConfigMode {
+	return &e
+}
+func (e *KafkaConsumePluginConfigMode) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "basic":
+		fallthrough
+	case "none":
+		*e = KafkaConsumePluginConfigMode(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for KafkaConsumePluginConfigMode: %v", v)
+	}
+}
+
+type KafkaConsumePluginAuthentication struct {
+	Basic *KafkaConsumePluginBasic `json:"basic,omitempty"`
+	// Authentication mode to use with the schema registry.
+	Mode *KafkaConsumePluginConfigMode `json:"mode,omitempty"`
+}
+
+func (o *KafkaConsumePluginAuthentication) GetBasic() *KafkaConsumePluginBasic {
+	if o == nil {
+		return nil
+	}
+	return o.Basic
+}
+
+func (o *KafkaConsumePluginAuthentication) GetMode() *KafkaConsumePluginConfigMode {
+	if o == nil {
+		return nil
+	}
+	return o.Mode
+}
+
+type KafkaConsumePluginConfluent struct {
+	Authentication KafkaConsumePluginAuthentication `json:"authentication"`
+	// Set to false to disable SSL certificate verification when connecting to the schema registry.
+	SslVerify *bool `json:"ssl_verify,omitempty"`
+	// The TTL in seconds for the schema registry cache.
+	TTL *float64 `json:"ttl,omitempty"`
+	// The URL of the schema registry.
+	URL *string `json:"url,omitempty"`
+}
+
+func (o *KafkaConsumePluginConfluent) GetAuthentication() KafkaConsumePluginAuthentication {
+	if o == nil {
+		return KafkaConsumePluginAuthentication{}
+	}
+	return o.Authentication
+}
+
+func (o *KafkaConsumePluginConfluent) GetSslVerify() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SslVerify
+}
+
+func (o *KafkaConsumePluginConfluent) GetTTL() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TTL
+}
+
+func (o *KafkaConsumePluginConfluent) GetURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.URL
+}
+
+// KafkaConsumePluginSchemaRegistry - The plugin-global schema registry configuration.
+type KafkaConsumePluginSchemaRegistry struct {
+	Confluent *KafkaConsumePluginConfluent `json:"confluent,omitempty"`
+}
+
+func (o *KafkaConsumePluginSchemaRegistry) GetConfluent() *KafkaConsumePluginConfluent {
+	if o == nil {
+		return nil
+	}
+	return o.Confluent
 }
 
 type KafkaConsumePluginSecurity struct {
@@ -328,8 +447,126 @@ func (o *KafkaConsumePluginSecurity) GetSsl() *bool {
 	return o.Ssl
 }
 
+type KafkaConsumePluginConfigBasic struct {
+	Password string `json:"password"`
+	Username string `json:"username"`
+}
+
+func (o *KafkaConsumePluginConfigBasic) GetPassword() string {
+	if o == nil {
+		return ""
+	}
+	return o.Password
+}
+
+func (o *KafkaConsumePluginConfigBasic) GetUsername() string {
+	if o == nil {
+		return ""
+	}
+	return o.Username
+}
+
+// KafkaConsumePluginConfigTopicsMode - Authentication mode to use with the schema registry.
+type KafkaConsumePluginConfigTopicsMode string
+
+const (
+	KafkaConsumePluginConfigTopicsModeBasic KafkaConsumePluginConfigTopicsMode = "basic"
+	KafkaConsumePluginConfigTopicsModeNone  KafkaConsumePluginConfigTopicsMode = "none"
+)
+
+func (e KafkaConsumePluginConfigTopicsMode) ToPointer() *KafkaConsumePluginConfigTopicsMode {
+	return &e
+}
+func (e *KafkaConsumePluginConfigTopicsMode) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "basic":
+		fallthrough
+	case "none":
+		*e = KafkaConsumePluginConfigTopicsMode(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for KafkaConsumePluginConfigTopicsMode: %v", v)
+	}
+}
+
+type KafkaConsumePluginConfigAuthentication struct {
+	Basic *KafkaConsumePluginConfigBasic `json:"basic,omitempty"`
+	// Authentication mode to use with the schema registry.
+	Mode *KafkaConsumePluginConfigTopicsMode `json:"mode,omitempty"`
+}
+
+func (o *KafkaConsumePluginConfigAuthentication) GetBasic() *KafkaConsumePluginConfigBasic {
+	if o == nil {
+		return nil
+	}
+	return o.Basic
+}
+
+func (o *KafkaConsumePluginConfigAuthentication) GetMode() *KafkaConsumePluginConfigTopicsMode {
+	if o == nil {
+		return nil
+	}
+	return o.Mode
+}
+
+type KafkaConsumePluginConfigConfluent struct {
+	Authentication KafkaConsumePluginConfigAuthentication `json:"authentication"`
+	// Set to false to disable SSL certificate verification when connecting to the schema registry.
+	SslVerify *bool `json:"ssl_verify,omitempty"`
+	// The TTL in seconds for the schema registry cache.
+	TTL *float64 `json:"ttl,omitempty"`
+	// The URL of the schema registry.
+	URL *string `json:"url,omitempty"`
+}
+
+func (o *KafkaConsumePluginConfigConfluent) GetAuthentication() KafkaConsumePluginConfigAuthentication {
+	if o == nil {
+		return KafkaConsumePluginConfigAuthentication{}
+	}
+	return o.Authentication
+}
+
+func (o *KafkaConsumePluginConfigConfluent) GetSslVerify() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SslVerify
+}
+
+func (o *KafkaConsumePluginConfigConfluent) GetTTL() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TTL
+}
+
+func (o *KafkaConsumePluginConfigConfluent) GetURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.URL
+}
+
+// KafkaConsumePluginConfigSchemaRegistry - The plugin-global schema registry configuration.
+type KafkaConsumePluginConfigSchemaRegistry struct {
+	Confluent *KafkaConsumePluginConfigConfluent `json:"confluent,omitempty"`
+}
+
+func (o *KafkaConsumePluginConfigSchemaRegistry) GetConfluent() *KafkaConsumePluginConfigConfluent {
+	if o == nil {
+		return nil
+	}
+	return o.Confluent
+}
+
 type KafkaConsumePluginTopics struct {
 	Name string `json:"name"`
+	// The plugin-global schema registry configuration.
+	SchemaRegistry KafkaConsumePluginConfigSchemaRegistry `json:"schema_registry"`
 }
 
 func (o *KafkaConsumePluginTopics) GetName() string {
@@ -339,12 +576,19 @@ func (o *KafkaConsumePluginTopics) GetName() string {
 	return o.Name
 }
 
+func (o *KafkaConsumePluginTopics) GetSchemaRegistry() KafkaConsumePluginConfigSchemaRegistry {
+	if o == nil {
+		return KafkaConsumePluginConfigSchemaRegistry{}
+	}
+	return o.SchemaRegistry
+}
+
 type KafkaConsumePluginConfig struct {
 	Authentication *Authentication `json:"authentication,omitempty"`
 	// The offset to start from when there is no initial offset in the consumer group.
 	AutoOffsetReset *KafkaConsumePluginAutoOffsetReset `json:"auto_offset_reset,omitempty"`
 	// Set of bootstrap brokers in a `{host: host, port: port}` list format.
-	BootstrapServers []KafkaConsumePluginBootstrapServers `json:"bootstrap_servers,omitempty"`
+	BootstrapServers []KafkaConsumePluginBootstrapServers `json:"bootstrap_servers"`
 	// An identifier for the Kafka cluster.
 	ClusterName *string `json:"cluster_name,omitempty"`
 	// The strategy to use for committing offsets.
@@ -352,10 +596,12 @@ type KafkaConsumePluginConfig struct {
 	// The deserializer to use for the consumed messages.
 	MessageDeserializer *KafkaConsumePluginMessageDeserializer `json:"message_deserializer,omitempty"`
 	// The mode of operation for the plugin.
-	Mode     *KafkaConsumePluginMode     `json:"mode,omitempty"`
-	Security *KafkaConsumePluginSecurity `json:"security,omitempty"`
+	Mode *KafkaConsumePluginMode `json:"mode,omitempty"`
+	// The plugin-global schema registry configuration.
+	SchemaRegistry *KafkaConsumePluginSchemaRegistry `json:"schema_registry,omitempty"`
+	Security       *KafkaConsumePluginSecurity       `json:"security,omitempty"`
 	// The Kafka topics and their configuration you want to consume from.
-	Topics []KafkaConsumePluginTopics `json:"topics,omitempty"`
+	Topics []KafkaConsumePluginTopics `json:"topics"`
 }
 
 func (o *KafkaConsumePluginConfig) GetAuthentication() *Authentication {
@@ -374,7 +620,7 @@ func (o *KafkaConsumePluginConfig) GetAutoOffsetReset() *KafkaConsumePluginAutoO
 
 func (o *KafkaConsumePluginConfig) GetBootstrapServers() []KafkaConsumePluginBootstrapServers {
 	if o == nil {
-		return nil
+		return []KafkaConsumePluginBootstrapServers{}
 	}
 	return o.BootstrapServers
 }
@@ -407,6 +653,13 @@ func (o *KafkaConsumePluginConfig) GetMode() *KafkaConsumePluginMode {
 	return o.Mode
 }
 
+func (o *KafkaConsumePluginConfig) GetSchemaRegistry() *KafkaConsumePluginSchemaRegistry {
+	if o == nil {
+		return nil
+	}
+	return o.SchemaRegistry
+}
+
 func (o *KafkaConsumePluginConfig) GetSecurity() *KafkaConsumePluginSecurity {
 	if o == nil {
 		return nil
@@ -416,7 +669,7 @@ func (o *KafkaConsumePluginConfig) GetSecurity() *KafkaConsumePluginSecurity {
 
 func (o *KafkaConsumePluginConfig) GetTopics() []KafkaConsumePluginTopics {
 	if o == nil {
-		return nil
+		return []KafkaConsumePluginTopics{}
 	}
 	return o.Topics
 }
@@ -509,8 +762,8 @@ type KafkaConsumePlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                    `json:"updated_at,omitempty"`
-	Config    *KafkaConsumePluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                   `json:"updated_at,omitempty"`
+	Config    KafkaConsumePluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *KafkaConsumePluginConsumer `json:"consumer"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
@@ -592,9 +845,9 @@ func (o *KafkaConsumePlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *KafkaConsumePlugin) GetConfig() *KafkaConsumePluginConfig {
+func (o *KafkaConsumePlugin) GetConfig() KafkaConsumePluginConfig {
 	if o == nil {
-		return nil
+		return KafkaConsumePluginConfig{}
 	}
 	return o.Config
 }

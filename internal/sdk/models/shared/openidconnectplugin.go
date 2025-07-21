@@ -2163,7 +2163,7 @@ type OpenidConnectPluginConfig struct {
 	// Designate token's parameter name for introspection.
 	IntrospectionTokenParamName *string `json:"introspection_token_param_name,omitempty"`
 	// The discovery endpoint (or the issuer identifier). When there is no discovery endpoint, please also configure `config.using_pseudo_issuer=true`.
-	Issuer *string `json:"issuer,omitempty"`
+	Issuer string `json:"issuer"`
 	// The issuers allowed to be present in the tokens (`iss` claim).
 	IssuersAllowed []string `json:"issuers_allowed,omitempty"`
 	// The claim to match against the JWT session cookie.
@@ -3082,9 +3082,9 @@ func (o *OpenidConnectPluginConfig) GetIntrospectionTokenParamName() *string {
 	return o.IntrospectionTokenParamName
 }
 
-func (o *OpenidConnectPluginConfig) GetIssuer() *string {
+func (o *OpenidConnectPluginConfig) GetIssuer() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Issuer
 }
@@ -4034,8 +4034,8 @@ type OpenidConnectPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                     `json:"updated_at,omitempty"`
-	Config    *OpenidConnectPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                    `json:"updated_at,omitempty"`
+	Config    OpenidConnectPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
 	Protocols []OpenidConnectPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -4115,9 +4115,9 @@ func (o *OpenidConnectPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *OpenidConnectPlugin) GetConfig() *OpenidConnectPluginConfig {
+func (o *OpenidConnectPlugin) GetConfig() OpenidConnectPluginConfig {
 	if o == nil {
-		return nil
+		return OpenidConnectPluginConfig{}
 	}
 	return o.Config
 }

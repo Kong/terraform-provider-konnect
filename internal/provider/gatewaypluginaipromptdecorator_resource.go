@@ -72,11 +72,13 @@ func (r *GatewayPluginAiPromptDecoratorResource) Schema(ctx context.Context, req
 					"llm_format": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `LLM input and output format and schema to use. must be one of ["bedrock", "gemini", "openai"]`,
+						Description: `LLM input and output format and schema to use. must be one of ["bedrock", "cohere", "gemini", "huggingface", "openai"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"bedrock",
+								"cohere",
 								"gemini",
+								"huggingface",
 								"openai",
 							),
 						},
@@ -84,7 +86,7 @@ func (r *GatewayPluginAiPromptDecoratorResource) Schema(ctx context.Context, req
 					"max_request_body_size": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `max allowed body size allowed to be introspected`,
+						Description: `max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.`,
 					},
 					"prompts": schema.SingleNestedAttribute{
 						Computed: true,
@@ -104,7 +106,7 @@ func (r *GatewayPluginAiPromptDecoratorResource) Schema(ctx context.Context, req
 											Description: `Not Null`,
 											Validators: []validator.String{
 												speakeasy_stringvalidators.NotNull(),
-												stringvalidator.UTF8LengthBetween(1, 500),
+												stringvalidator.UTF8LengthBetween(1, 100000),
 											},
 										},
 										"role": schema.StringAttribute{
@@ -137,7 +139,7 @@ func (r *GatewayPluginAiPromptDecoratorResource) Schema(ctx context.Context, req
 											Description: `Not Null`,
 											Validators: []validator.String{
 												speakeasy_stringvalidators.NotNull(),
-												stringvalidator.UTF8LengthBetween(1, 500),
+												stringvalidator.UTF8LengthBetween(1, 100000),
 											},
 										},
 										"role": schema.StringAttribute{

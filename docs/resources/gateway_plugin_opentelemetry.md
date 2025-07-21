@@ -50,9 +50,10 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
     resource_attributes = {
       key = jsonencode("value")
     }
-    sampling_rate   = 0.37
-    send_timeout    = 1637096441
-    traces_endpoint = "...my_traces_endpoint..."
+    sampling_rate     = 0.37
+    sampling_strategy = "parent_drop_probability_fallback"
+    send_timeout      = 1637096441
+    traces_endpoint   = "...my_traces_endpoint..."
   }
   consumer = {
     id = "...my_id..."
@@ -140,6 +141,7 @@ Optional:
 - `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 - `resource_attributes` (Map of String)
 - `sampling_rate` (Number) Tracing sampling rate for configuring the probability-based sampler. When set, this value supersedes the global `tracing_sampling_rate` setting from kong.conf.
+- `sampling_strategy` (String) The sampling strategy to use for OTLP `traces`. Set `parent_drop_probability_fallback` if you want parent-based sampling when the parent span contains a `false` sampled flag, and fallback to probability-based sampling otherwise. Set `parent_probability_fallback` if you want parent-based sampling when the parent span contains a valid sampled flag (`true` or `false`), and fallback to probability-based sampling otherwise. must be one of ["parent_drop_probability_fallback", "parent_probability_fallback"]
 - `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 - `traces_endpoint` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
 

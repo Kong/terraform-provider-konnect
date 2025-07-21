@@ -259,6 +259,17 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 							float64validator.AtMost(1),
 						},
 					},
+					"sampling_strategy": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The sampling strategy to use for OTLP ` + "`" + `traces` + "`" + `. Set ` + "`" + `parent_drop_probability_fallback` + "`" + ` if you want parent-based sampling when the parent span contains a ` + "`" + `false` + "`" + ` sampled flag, and fallback to probability-based sampling otherwise. Set ` + "`" + `parent_probability_fallback` + "`" + ` if you want parent-based sampling when the parent span contains a valid sampled flag (` + "`" + `true` + "`" + ` or ` + "`" + `false` + "`" + `), and fallback to probability-based sampling otherwise. must be one of ["parent_drop_probability_fallback", "parent_probability_fallback"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"parent_drop_probability_fallback",
+								"parent_probability_fallback",
+							),
+						},
+					},
 					"send_timeout": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,

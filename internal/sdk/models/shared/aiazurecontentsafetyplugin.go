@@ -122,18 +122,18 @@ func (e *OutputType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// TextSource - Select where to pick the 'text' for the Azure Content Services request.
-type TextSource string
+// AiAzureContentSafetyPluginTextSource - Select where to pick the 'text' for the Azure Content Services request.
+type AiAzureContentSafetyPluginTextSource string
 
 const (
-	TextSourceConcatenateAllContent  TextSource = "concatenate_all_content"
-	TextSourceConcatenateUserContent TextSource = "concatenate_user_content"
+	AiAzureContentSafetyPluginTextSourceConcatenateAllContent  AiAzureContentSafetyPluginTextSource = "concatenate_all_content"
+	AiAzureContentSafetyPluginTextSourceConcatenateUserContent AiAzureContentSafetyPluginTextSource = "concatenate_user_content"
 )
 
-func (e TextSource) ToPointer() *TextSource {
+func (e AiAzureContentSafetyPluginTextSource) ToPointer() *AiAzureContentSafetyPluginTextSource {
 	return &e
 }
-func (e *TextSource) UnmarshalJSON(data []byte) error {
+func (e *AiAzureContentSafetyPluginTextSource) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -142,10 +142,10 @@ func (e *TextSource) UnmarshalJSON(data []byte) error {
 	case "concatenate_all_content":
 		fallthrough
 	case "concatenate_user_content":
-		*e = TextSource(v)
+		*e = AiAzureContentSafetyPluginTextSource(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for TextSource: %v", v)
+		return fmt.Errorf("invalid value for AiAzureContentSafetyPluginTextSource: %v", v)
 	}
 }
 
@@ -167,7 +167,7 @@ type AiAzureContentSafetyPluginConfig struct {
 	// If `azure_use_managed_identity` is true, set the API key to call Content Safety.
 	ContentSafetyKey *string `json:"content_safety_key,omitempty"`
 	// Full URL, inc protocol, of the Azure Content Safety instance.
-	ContentSafetyURL *string `json:"content_safety_url,omitempty"`
+	ContentSafetyURL string `json:"content_safety_url"`
 	// Tells Azure to reject the request if any blocklist filter is hit.
 	HaltOnBlocklistHit *bool `json:"halt_on_blocklist_hit,omitempty"`
 	// See https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/content-filter#content-filtering-categories
@@ -175,7 +175,7 @@ type AiAzureContentSafetyPluginConfig struct {
 	// Set true to tell the caller why their request was rejected, if so.
 	RevealFailureReason *bool `json:"reveal_failure_reason,omitempty"`
 	// Select where to pick the 'text' for the Azure Content Services request.
-	TextSource *TextSource `json:"text_source,omitempty"`
+	TextSource *AiAzureContentSafetyPluginTextSource `json:"text_source,omitempty"`
 }
 
 func (o *AiAzureContentSafetyPluginConfig) GetAzureAPIVersion() *string {
@@ -234,9 +234,9 @@ func (o *AiAzureContentSafetyPluginConfig) GetContentSafetyKey() *string {
 	return o.ContentSafetyKey
 }
 
-func (o *AiAzureContentSafetyPluginConfig) GetContentSafetyURL() *string {
+func (o *AiAzureContentSafetyPluginConfig) GetContentSafetyURL() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.ContentSafetyURL
 }
@@ -262,7 +262,7 @@ func (o *AiAzureContentSafetyPluginConfig) GetRevealFailureReason() *bool {
 	return o.RevealFailureReason
 }
 
-func (o *AiAzureContentSafetyPluginConfig) GetTextSource() *TextSource {
+func (o *AiAzureContentSafetyPluginConfig) GetTextSource() *AiAzureContentSafetyPluginTextSource {
 	if o == nil {
 		return nil
 	}
@@ -339,8 +339,8 @@ type AiAzureContentSafetyPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                            `json:"updated_at,omitempty"`
-	Config    *AiAzureContentSafetyPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                           `json:"updated_at,omitempty"`
+	Config    AiAzureContentSafetyPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
 	Protocols []AiAzureContentSafetyPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -420,9 +420,9 @@ func (o *AiAzureContentSafetyPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *AiAzureContentSafetyPlugin) GetConfig() *AiAzureContentSafetyPluginConfig {
+func (o *AiAzureContentSafetyPlugin) GetConfig() AiAzureContentSafetyPluginConfig {
 	if o == nil {
-		return nil
+		return AiAzureContentSafetyPluginConfig{}
 	}
 	return o.Config
 }

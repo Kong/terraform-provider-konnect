@@ -24,9 +24,11 @@ func (r *GatewayMTLSAuthResourceModel) RefreshFromSharedMTLSAuth(ctx context.Con
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.SubjectName = types.StringValue(resp.SubjectName)
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
+		if resp.Tags != nil {
+			r.Tags = make([]types.String, 0, len(resp.Tags))
+			for _, v := range resp.Tags {
+				r.Tags = append(r.Tags, types.StringValue(v))
+			}
 		}
 	}
 
@@ -130,9 +132,12 @@ func (r *GatewayMTLSAuthResourceModel) ToSharedMTLSAuthWithoutParents(ctx contex
 	var subjectName string
 	subjectName = r.SubjectName.ValueString()
 
-	tags := make([]string, 0, len(r.Tags))
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
+	var tags []string
+	if r.Tags != nil {
+		tags = make([]string, 0, len(r.Tags))
+		for _, tagsItem := range r.Tags {
+			tags = append(tags, tagsItem.ValueString())
+		}
 	}
 	out := shared.MTLSAuthWithoutParents{
 		CaCertificate: caCertificate,

@@ -7,8 +7,10 @@ import (
 )
 
 type Bedrock struct {
-	AwsAssumeRoleArn   types.String `tfsdk:"aws_assume_role_arn"`
-	AwsRegion          types.String `tfsdk:"aws_region"`
-	AwsRoleSessionName types.String `tfsdk:"aws_role_session_name"`
-	AwsStsEndpointURL  types.String `tfsdk:"aws_sts_endpoint_url"`
+	AwsAssumeRoleArn         types.String `tfsdk:"aws_assume_role_arn"`
+	AwsRegion                types.String `tfsdk:"aws_region"`
+	AwsRoleSessionName       types.String `tfsdk:"aws_role_session_name"`
+	AwsStsEndpointURL        types.String `tfsdk:"aws_sts_endpoint_url"`
+	EmbeddingsNormalize      types.Bool   `tfsdk:"embeddings_normalize"`
+	PerformanceConfigLatency types.String `tfsdk:"performance_config_latency"`
 }

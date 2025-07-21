@@ -77,7 +77,7 @@ func (o *ExitTransformerPluginPartials) GetPath() *string {
 }
 
 type ExitTransformerPluginConfig struct {
-	Functions []string `json:"functions,omitempty"`
+	Functions []string `json:"functions"`
 	// Determines whether to handle unexpected errors by transforming their responses.
 	HandleUnexpected *bool `json:"handle_unexpected,omitempty"`
 	// Determines whether to handle unknown status codes by transforming their responses.
@@ -86,7 +86,7 @@ type ExitTransformerPluginConfig struct {
 
 func (o *ExitTransformerPluginConfig) GetFunctions() []string {
 	if o == nil {
-		return nil
+		return []string{}
 	}
 	return o.Functions
 }
@@ -187,8 +187,8 @@ type ExitTransformerPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                       `json:"updated_at,omitempty"`
-	Config    *ExitTransformerPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                      `json:"updated_at,omitempty"`
+	Config    ExitTransformerPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *ExitTransformerPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
@@ -270,9 +270,9 @@ func (o *ExitTransformerPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *ExitTransformerPlugin) GetConfig() *ExitTransformerPluginConfig {
+func (o *ExitTransformerPlugin) GetConfig() ExitTransformerPluginConfig {
 	if o == nil {
-		return nil
+		return ExitTransformerPluginConfig{}
 	}
 	return o.Config
 }

@@ -85,14 +85,31 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 						ElementType: types.StringType,
 						Description: `Array of invalid regex patterns, or invalid questions from the 'user' role in chat.`,
 					},
+					"genai_category": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Generative AI category of the request. must be one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"audio/speech",
+								"audio/transcription",
+								"image/generation",
+								"realtime/generation",
+								"text/embeddings",
+								"text/generation",
+							),
+						},
+					},
 					"llm_format": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `LLM input and output format and schema to use. must be one of ["bedrock", "gemini", "openai"]`,
+						Description: `LLM input and output format and schema to use. must be one of ["bedrock", "cohere", "gemini", "huggingface", "openai"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"bedrock",
+								"cohere",
 								"gemini",
+								"huggingface",
 								"openai",
 							),
 						},
@@ -105,7 +122,7 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 					"max_request_body_size": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `max allowed body size allowed to be introspected`,
+						Description: `max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.`,
 					},
 				},
 			},
