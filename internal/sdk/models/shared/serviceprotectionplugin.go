@@ -409,11 +409,11 @@ type ServiceProtectionPluginConfig struct {
 	// Optionally hide informative response headers that would otherwise provide information about the current status of limits and counters.
 	HideClientHeaders *bool `json:"hide_client_headers,omitempty"`
 	// One or more requests-per-window limits to apply. There must be a matching number of window limits and sizes specified.
-	Limit []float64 `json:"limit,omitempty"`
+	Limit []float64 `json:"limit"`
 	// The shared dictionary where concurrency control locks are stored. The default shared dictionary is `kong_locks`. The shared dictionary should be declared in nginx-kong.conf.
 	LockDictionaryName *string `json:"lock_dictionary_name,omitempty"`
 	// The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `dictionary_name`, need to be the same.
-	Namespace *string                       `json:"namespace,omitempty"`
+	Namespace string                        `json:"namespace"`
 	Redis     *ServiceProtectionPluginRedis `json:"redis,omitempty"`
 	// The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header.
 	RetryAfterJitterMax *float64 `json:"retry_after_jitter_max,omitempty"`
@@ -422,7 +422,7 @@ type ServiceProtectionPluginConfig struct {
 	// How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 will sync the counters in the specified number of seconds. The minimum allowed interval is 0.02 seconds (20ms).
 	SyncRate *float64 `json:"sync_rate,omitempty"`
 	// One or more window sizes to apply a limit to (defined in seconds). There must be a matching number of window limits and sizes specified.
-	WindowSize []float64 `json:"window_size,omitempty"`
+	WindowSize []float64 `json:"window_size"`
 	// Sets the time window type to either `sliding` (default) or `fixed`. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters.
 	WindowType *ServiceProtectionPluginWindowType `json:"window_type,omitempty"`
 }
@@ -464,7 +464,7 @@ func (o *ServiceProtectionPluginConfig) GetHideClientHeaders() *bool {
 
 func (o *ServiceProtectionPluginConfig) GetLimit() []float64 {
 	if o == nil {
-		return nil
+		return []float64{}
 	}
 	return o.Limit
 }
@@ -476,9 +476,9 @@ func (o *ServiceProtectionPluginConfig) GetLockDictionaryName() *string {
 	return o.LockDictionaryName
 }
 
-func (o *ServiceProtectionPluginConfig) GetNamespace() *string {
+func (o *ServiceProtectionPluginConfig) GetNamespace() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Namespace
 }
@@ -513,7 +513,7 @@ func (o *ServiceProtectionPluginConfig) GetSyncRate() *float64 {
 
 func (o *ServiceProtectionPluginConfig) GetWindowSize() []float64 {
 	if o == nil {
-		return nil
+		return []float64{}
 	}
 	return o.WindowSize
 }
@@ -583,8 +583,8 @@ type ServiceProtectionPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                         `json:"updated_at,omitempty"`
-	Config    *ServiceProtectionPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                        `json:"updated_at,omitempty"`
+	Config    ServiceProtectionPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
 	Protocols []ServiceProtectionPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -662,9 +662,9 @@ func (o *ServiceProtectionPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *ServiceProtectionPlugin) GetConfig() *ServiceProtectionPluginConfig {
+func (o *ServiceProtectionPlugin) GetConfig() ServiceProtectionPluginConfig {
 	if o == nil {
-		return nil
+		return ServiceProtectionPluginConfig{}
 	}
 	return o.Config
 }

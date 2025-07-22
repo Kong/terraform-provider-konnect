@@ -44,21 +44,21 @@ type GatewayPluginAiProxyAdvancedResource struct {
 
 // GatewayPluginAiProxyAdvancedResourceModel describes the resource data model.
 type GatewayPluginAiProxyAdvancedResourceModel struct {
-	Config         *tfTypes.AiProxyAdvancedPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.Set                         `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.Set                         `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                          `tfsdk:"created_at"`
-	Enabled        types.Bool                           `tfsdk:"enabled"`
-	ID             types.String                         `tfsdk:"id"`
-	InstanceName   types.String                         `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering           `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials                   `tfsdk:"partials"`
-	Protocols      []types.String                       `tfsdk:"protocols"`
-	Route          *tfTypes.Set                         `tfsdk:"route"`
-	Service        *tfTypes.Set                         `tfsdk:"service"`
-	Tags           []types.String                       `tfsdk:"tags"`
-	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
+	Config         tfTypes.AiProxyAdvancedPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.Set                        `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.Set                        `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                        `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                         `tfsdk:"created_at"`
+	Enabled        types.Bool                          `tfsdk:"enabled"`
+	ID             types.String                        `tfsdk:"id"`
+	InstanceName   types.String                        `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering          `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials                  `tfsdk:"partials"`
+	Protocols      []types.String                      `tfsdk:"protocols"`
+	Route          *tfTypes.Set                        `tfsdk:"route"`
+	Service        *tfTypes.Set                        `tfsdk:"service"`
+	Tags           []types.String                      `tfsdk:"tags"`
+	UpdatedAt      types.Int64                         `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginAiProxyAdvancedResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -70,8 +70,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 		MarkdownDescription: "GatewayPluginAiProxyAdvanced Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"balancer": schema.SingleNestedAttribute{
 						Computed: true,
@@ -317,6 +316,16 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 														Optional:    true,
 														Description: `If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.`,
 													},
+													"embeddings_normalize": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `If using AWS providers (Bedrock), set to true to normalize the embeddings.`,
+													},
+													"performance_config_latency": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.`,
+													},
 												},
 											},
 											"gemini": schema.SingleNestedAttribute{
@@ -388,14 +397,31 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 							},
 						},
 					},
+					"genai_category": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Generative AI category of the request. must be one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"audio/speech",
+								"audio/transcription",
+								"image/generation",
+								"realtime/generation",
+								"text/embeddings",
+								"text/generation",
+							),
+						},
+					},
 					"llm_format": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `LLM input and output format and schema to use. must be one of ["bedrock", "gemini", "openai"]`,
+						Description: `LLM input and output format and schema to use. must be one of ["bedrock", "cohere", "gemini", "huggingface", "openai"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"bedrock",
+								"cohere",
 								"gemini",
+								"huggingface",
 								"openai",
 							),
 						},
@@ -403,7 +429,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 					"max_request_body_size": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `max allowed body size allowed to be introspected`,
+						Description: `max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.`,
 					},
 					"model_name_header": schema.BoolAttribute{
 						Computed:    true,
@@ -423,8 +449,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 						},
 					},
 					"targets": schema.ListNestedAttribute{
-						Computed: true,
-						Optional: true,
+						Required: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
@@ -594,7 +619,47 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 															Optional:    true,
 															Description: `If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.`,
 														},
+														"embeddings_normalize": schema.BoolAttribute{
+															Computed:    true,
+															Optional:    true,
+															Description: `If using AWS providers (Bedrock), set to true to normalize the embeddings.`,
+														},
+														"performance_config_latency": schema.StringAttribute{
+															Computed:    true,
+															Optional:    true,
+															Description: `Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.`,
+														},
 													},
+												},
+												"cohere": schema.SingleNestedAttribute{
+													Computed: true,
+													Optional: true,
+													Attributes: map[string]schema.Attribute{
+														"embedding_input_type": schema.StringAttribute{
+															Computed:    true,
+															Optional:    true,
+															Description: `The purpose of the input text to calculate embedding vectors. must be one of ["classification", "clustering", "image", "search_document", "search_query"]`,
+															Validators: []validator.String{
+																stringvalidator.OneOf(
+																	"classification",
+																	"clustering",
+																	"image",
+																	"search_document",
+																	"search_query",
+																),
+															},
+														},
+														"wait_for_model": schema.BoolAttribute{
+															Computed:    true,
+															Optional:    true,
+															Description: `Wait for the model if it is not ready`,
+														},
+													},
+												},
+												"embeddings_dimensions": schema.Int64Attribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `If using embeddings models, set the number of dimensions to generate.`,
 												},
 												"gemini": schema.SingleNestedAttribute{
 													Computed: true,
@@ -736,13 +801,24 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 								"route_type": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The model's operation implementation, for this provider. Set to ` + "`" + `preserve` + "`" + ` to pass through without transformation. Not Null; must be one of ["llm/v1/chat", "llm/v1/completions", "preserve"]`,
+									Description: `The model's operation implementation, for this provider. Not Null; must be one of ["audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime"]`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
 										stringvalidator.OneOf(
+											"audio/v1/audio/speech",
+											"audio/v1/audio/transcriptions",
+											"audio/v1/audio/translations",
+											"image/v1/images/edits",
+											"image/v1/images/generations",
+											"llm/v1/assistants",
+											"llm/v1/batches",
 											"llm/v1/chat",
 											"llm/v1/completions",
+											"llm/v1/embeddings",
+											"llm/v1/files",
+											"llm/v1/responses",
 											"preserve",
+											"realtime/v1/realtime",
 										),
 									},
 								},
@@ -1170,7 +1246,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `A set of strings representing HTTP protocols.`,
+				Description: `A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,

@@ -93,9 +93,9 @@ resource "konnect_gateway_plugin_upstream_timeout" "my_gatewaypluginupstreamtime
 
 Optional:
 
-- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.
+- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.
+- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.
 
 
 <a id="nestedatt--consumer"></a>

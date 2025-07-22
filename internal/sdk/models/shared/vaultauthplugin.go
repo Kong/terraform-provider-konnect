@@ -90,7 +90,7 @@ type VaultAuthPluginConfig struct {
 	// If enabled, the plugin will read the request body (if said request has one and its MIME type is supported) and try to find the key in it. Supported MIME types are `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`.
 	TokensInBody *bool `json:"tokens_in_body,omitempty"`
 	// A reference to an existing `vault` object within the database. `vault` entities define the connection and authentication parameters used to connect to a Vault HTTP(S) API.
-	Vault *string `json:"vault,omitempty"`
+	Vault string `json:"vault"`
 }
 
 func (o *VaultAuthPluginConfig) GetAccessTokenName() *string {
@@ -135,9 +135,9 @@ func (o *VaultAuthPluginConfig) GetTokensInBody() *bool {
 	return o.TokensInBody
 }
 
-func (o *VaultAuthPluginConfig) GetVault() *string {
+func (o *VaultAuthPluginConfig) GetVault() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Vault
 }
@@ -212,8 +212,8 @@ type VaultAuthPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                 `json:"updated_at,omitempty"`
-	Config    *VaultAuthPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                `json:"updated_at,omitempty"`
+	Config    VaultAuthPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
 	Protocols []VaultAuthPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -293,9 +293,9 @@ func (o *VaultAuthPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *VaultAuthPlugin) GetConfig() *VaultAuthPluginConfig {
+func (o *VaultAuthPlugin) GetConfig() VaultAuthPluginConfig {
 	if o == nil {
-		return nil
+		return VaultAuthPluginConfig{}
 	}
 	return o.Config
 }

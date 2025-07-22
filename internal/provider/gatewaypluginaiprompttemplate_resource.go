@@ -39,21 +39,21 @@ type GatewayPluginAiPromptTemplateResource struct {
 
 // GatewayPluginAiPromptTemplateResourceModel describes the resource data model.
 type GatewayPluginAiPromptTemplateResourceModel struct {
-	Config         *tfTypes.AiPromptTemplatePluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.Set                          `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.Set                          `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                          `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                           `tfsdk:"created_at"`
-	Enabled        types.Bool                            `tfsdk:"enabled"`
-	ID             types.String                          `tfsdk:"id"`
-	InstanceName   types.String                          `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering            `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials                    `tfsdk:"partials"`
-	Protocols      []types.String                        `tfsdk:"protocols"`
-	Route          *tfTypes.Set                          `tfsdk:"route"`
-	Service        *tfTypes.Set                          `tfsdk:"service"`
-	Tags           []types.String                        `tfsdk:"tags"`
-	UpdatedAt      types.Int64                           `tfsdk:"updated_at"`
+	Config         tfTypes.AiPromptTemplatePluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.Set                         `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.Set                         `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                          `tfsdk:"created_at"`
+	Enabled        types.Bool                           `tfsdk:"enabled"`
+	ID             types.String                         `tfsdk:"id"`
+	InstanceName   types.String                         `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering           `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials                   `tfsdk:"partials"`
+	Protocols      []types.String                       `tfsdk:"protocols"`
+	Route          *tfTypes.Set                         `tfsdk:"route"`
+	Service        *tfTypes.Set                         `tfsdk:"service"`
+	Tags           []types.String                       `tfsdk:"tags"`
+	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginAiPromptTemplateResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,8 +65,7 @@ func (r *GatewayPluginAiPromptTemplateResource) Schema(ctx context.Context, req 
 		MarkdownDescription: "GatewayPluginAiPromptTemplate Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"allow_untemplated_requests": schema.BoolAttribute{
 						Computed:    true,
@@ -81,11 +80,10 @@ func (r *GatewayPluginAiPromptTemplateResource) Schema(ctx context.Context, req 
 					"max_request_body_size": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `max allowed body size allowed to be introspected`,
+						Description: `max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.`,
 					},
 					"templates": schema.ListNestedAttribute{
-						Computed: true,
-						Optional: true,
+						Required: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),

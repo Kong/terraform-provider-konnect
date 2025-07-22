@@ -15,18 +15,13 @@ func (r *GatewayPluginJweDecryptResourceModel) RefreshFromSharedJweDecryptPlugin
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.JweDecryptPluginConfig{}
-			r.Config.ForwardHeaderName = types.StringPointerValue(resp.Config.ForwardHeaderName)
-			r.Config.KeySets = make([]types.String, 0, len(resp.Config.KeySets))
-			for _, v := range resp.Config.KeySets {
-				r.Config.KeySets = append(r.Config.KeySets, types.StringValue(v))
-			}
-			r.Config.LookupHeaderName = types.StringPointerValue(resp.Config.LookupHeaderName)
-			r.Config.Strict = types.BoolPointerValue(resp.Config.Strict)
+		r.Config.ForwardHeaderName = types.StringPointerValue(resp.Config.ForwardHeaderName)
+		r.Config.KeySets = make([]types.String, 0, len(resp.Config.KeySets))
+		for _, v := range resp.Config.KeySets {
+			r.Config.KeySets = append(r.Config.KeySets, types.StringValue(v))
 		}
+		r.Config.LookupHeaderName = types.StringPointerValue(resp.Config.LookupHeaderName)
+		r.Config.Strict = types.BoolPointerValue(resp.Config.Strict)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -89,9 +84,11 @@ func (r *GatewayPluginJweDecryptResourceModel) RefreshFromSharedJweDecryptPlugin
 			r.Service = &tfTypes.Set{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
+		if resp.Tags != nil {
+			r.Tags = make([]types.String, 0, len(resp.Tags))
+			for _, v := range resp.Tags {
+				r.Tags = append(r.Tags, types.StringValue(v))
+			}
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
@@ -262,9 +259,12 @@ func (r *GatewayPluginJweDecryptResourceModel) ToSharedJweDecryptPlugin(ctx cont
 			})
 		}
 	}
-	tags := make([]string, 0, len(r.Tags))
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
+	var tags []string
+	if r.Tags != nil {
+		tags = make([]string, 0, len(r.Tags))
+		for _, tagsItem := range r.Tags {
+			tags = append(tags, tagsItem.ValueString())
+		}
 	}
 	updatedAt := new(int64)
 	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
@@ -272,36 +272,33 @@ func (r *GatewayPluginJweDecryptResourceModel) ToSharedJweDecryptPlugin(ctx cont
 	} else {
 		updatedAt = nil
 	}
-	var config *shared.JweDecryptPluginConfig
-	if r.Config != nil {
-		forwardHeaderName := new(string)
-		if !r.Config.ForwardHeaderName.IsUnknown() && !r.Config.ForwardHeaderName.IsNull() {
-			*forwardHeaderName = r.Config.ForwardHeaderName.ValueString()
-		} else {
-			forwardHeaderName = nil
-		}
-		keySets := make([]string, 0, len(r.Config.KeySets))
-		for _, keySetsItem := range r.Config.KeySets {
-			keySets = append(keySets, keySetsItem.ValueString())
-		}
-		lookupHeaderName := new(string)
-		if !r.Config.LookupHeaderName.IsUnknown() && !r.Config.LookupHeaderName.IsNull() {
-			*lookupHeaderName = r.Config.LookupHeaderName.ValueString()
-		} else {
-			lookupHeaderName = nil
-		}
-		strict := new(bool)
-		if !r.Config.Strict.IsUnknown() && !r.Config.Strict.IsNull() {
-			*strict = r.Config.Strict.ValueBool()
-		} else {
-			strict = nil
-		}
-		config = &shared.JweDecryptPluginConfig{
-			ForwardHeaderName: forwardHeaderName,
-			KeySets:           keySets,
-			LookupHeaderName:  lookupHeaderName,
-			Strict:            strict,
-		}
+	forwardHeaderName := new(string)
+	if !r.Config.ForwardHeaderName.IsUnknown() && !r.Config.ForwardHeaderName.IsNull() {
+		*forwardHeaderName = r.Config.ForwardHeaderName.ValueString()
+	} else {
+		forwardHeaderName = nil
+	}
+	keySets := make([]string, 0, len(r.Config.KeySets))
+	for _, keySetsItem := range r.Config.KeySets {
+		keySets = append(keySets, keySetsItem.ValueString())
+	}
+	lookupHeaderName := new(string)
+	if !r.Config.LookupHeaderName.IsUnknown() && !r.Config.LookupHeaderName.IsNull() {
+		*lookupHeaderName = r.Config.LookupHeaderName.ValueString()
+	} else {
+		lookupHeaderName = nil
+	}
+	strict := new(bool)
+	if !r.Config.Strict.IsUnknown() && !r.Config.Strict.IsNull() {
+		*strict = r.Config.Strict.ValueBool()
+	} else {
+		strict = nil
+	}
+	config := shared.JweDecryptPluginConfig{
+		ForwardHeaderName: forwardHeaderName,
+		KeySets:           keySets,
+		LookupHeaderName:  lookupHeaderName,
+		Strict:            strict,
 	}
 	protocols := make([]shared.JweDecryptPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {

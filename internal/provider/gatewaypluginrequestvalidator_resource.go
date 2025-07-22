@@ -130,7 +130,7 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 								"schema": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Requred when ` + "`" + `style` + "`" + ` and ` + "`" + `explode` + "`" + ` are set. This is the schema defining the type used for the parameter. It is validated using ` + "`" + `draft4` + "`" + ` for JSON Schema draft 4 compliant validator. In addition to being a valid JSON Schema, the parameter schema MUST have a top-level ` + "`" + `type` + "`" + ` property to enable proper deserialization before validating.`,
+									Description: `Required when ` + "`" + `style` + "`" + ` and ` + "`" + `explode` + "`" + ` are set. This is the schema defining the type used for the parameter. It is validated using ` + "`" + `draft4` + "`" + ` for JSON Schema draft 4 compliant validator. In addition to being a valid JSON Schema, the parameter schema MUST have a top-level ` + "`" + `type` + "`" + ` property to enable proper deserialization before validating.`,
 								},
 								"style": schema.StringAttribute{
 									Computed:    true,
@@ -160,10 +160,14 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 					"version": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Which validator to use. Supported values are ` + "`" + `kong` + "`" + ` (default) for using Kong's own schema validator, or ` + "`" + `draft4` + "`" + ` for using a JSON Schema Draft 4-compliant validator. must be one of ["draft4", "kong"]`,
+						Description: `Which validator to use. Supported values are ` + "`" + `kong` + "`" + ` (default) for using Kong's own schema validator, or ` + "`" + `draft4` + "`" + `, ` + "`" + `draft7` + "`" + `, ` + "`" + `draft201909` + "`" + `, and ` + "`" + `draft202012` + "`" + ` for using their respective JSON Schema Draft compliant validators. must be one of ["draft201909", "draft202012", "draft4", "draft6", "draft7", "kong"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
+								"draft201909",
+								"draft202012",
 								"draft4",
+								"draft6",
+								"draft7",
 								"kong",
 							),
 						},

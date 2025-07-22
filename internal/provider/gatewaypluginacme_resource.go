@@ -42,7 +42,7 @@ type GatewayPluginAcmeResource struct {
 
 // GatewayPluginAcmeResourceModel describes the resource data model.
 type GatewayPluginAcmeResourceModel struct {
-	Config         *tfTypes.AcmePluginConfig  `tfsdk:"config"`
+	Config         tfTypes.AcmePluginConfig   `tfsdk:"config"`
 	ControlPlaneID types.String               `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                `tfsdk:"created_at"`
 	Enabled        types.Bool                 `tfsdk:"enabled"`
@@ -64,12 +64,10 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 		MarkdownDescription: "GatewayPluginAcme Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"account_email": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `The account identifier. Can be reused in a different plugin instance.`,
 						Validators: []validator.String{
 							stringvalidator.RegexMatches(regexp.MustCompile(`[a-zA-Z0-9]*[!-/:-@[-`+"`"+`{-~]*@+[a-zA-Z0-9]*%.?[a-zA-Z0-9]*`), "must match pattern "+regexp.MustCompile(`[a-zA-Z0-9]*[!-/:-@[-`+"`"+`{-~]*@+[a-zA-Z0-9]*%.?[a-zA-Z0-9]*`).String()),

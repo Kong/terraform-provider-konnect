@@ -78,14 +78,14 @@ func (o *StandardWebhooksPluginPartials) GetPath() *string {
 
 type StandardWebhooksPluginConfig struct {
 	// Webhook secret
-	SecretV1 *string `json:"secret_v1,omitempty"`
+	SecretV1 string `json:"secret_v1"`
 	// Tolerance of the webhook timestamp in seconds. If the webhook timestamp is older than this number of seconds, it will be rejected with a '400' response.
 	ToleranceSecond *int64 `json:"tolerance_second,omitempty"`
 }
 
-func (o *StandardWebhooksPluginConfig) GetSecretV1() *string {
+func (o *StandardWebhooksPluginConfig) GetSecretV1() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.SecretV1
 }
@@ -179,8 +179,8 @@ type StandardWebhooksPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                        `json:"updated_at,omitempty"`
-	Config    *StandardWebhooksPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                       `json:"updated_at,omitempty"`
+	Config    StandardWebhooksPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *StandardWebhooksPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
@@ -262,9 +262,9 @@ func (o *StandardWebhooksPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *StandardWebhooksPlugin) GetConfig() *StandardWebhooksPluginConfig {
+func (o *StandardWebhooksPlugin) GetConfig() StandardWebhooksPluginConfig {
 	if o == nil {
-		return nil
+		return StandardWebhooksPluginConfig{}
 	}
 	return o.Config
 }

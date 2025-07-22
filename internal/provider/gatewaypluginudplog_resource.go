@@ -41,20 +41,20 @@ type GatewayPluginUDPLogResource struct {
 
 // GatewayPluginUDPLogResourceModel describes the resource data model.
 type GatewayPluginUDPLogResourceModel struct {
-	Config         *tfTypes.UDPLogPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.Set                `tfsdk:"consumer"`
-	ControlPlaneID types.String                `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                 `tfsdk:"created_at"`
-	Enabled        types.Bool                  `tfsdk:"enabled"`
-	ID             types.String                `tfsdk:"id"`
-	InstanceName   types.String                `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering  `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials          `tfsdk:"partials"`
-	Protocols      []types.String              `tfsdk:"protocols"`
-	Route          *tfTypes.Set                `tfsdk:"route"`
-	Service        *tfTypes.Set                `tfsdk:"service"`
-	Tags           []types.String              `tfsdk:"tags"`
-	UpdatedAt      types.Int64                 `tfsdk:"updated_at"`
+	Config         tfTypes.UDPLogPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.Set               `tfsdk:"consumer"`
+	ControlPlaneID types.String               `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                `tfsdk:"created_at"`
+	Enabled        types.Bool                 `tfsdk:"enabled"`
+	ID             types.String               `tfsdk:"id"`
+	InstanceName   types.String               `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials         `tfsdk:"partials"`
+	Protocols      []types.String             `tfsdk:"protocols"`
+	Route          *tfTypes.Set               `tfsdk:"route"`
+	Service        *tfTypes.Set               `tfsdk:"service"`
+	Tags           []types.String             `tfsdk:"tags"`
+	UpdatedAt      types.Int64                `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginUDPLogResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -66,8 +66,7 @@ func (r *GatewayPluginUDPLogResource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "GatewayPluginUDPLog Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"custom_fields_by_lua": schema.MapAttribute{
 						Computed:    true,
@@ -79,13 +78,11 @@ func (r *GatewayPluginUDPLogResource) Schema(ctx context.Context, req resource.S
 						},
 					},
 					"host": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `A string representing a host name, such as example.com.`,
 					},
 					"port": schema.Int64Attribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(65535),

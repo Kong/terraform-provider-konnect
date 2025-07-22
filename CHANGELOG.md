@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.12.0
+> Released on 2025/07/22
+
+### Features
+
+* Add support for new Gateway 3.11 plugins:
+  * ai-aws-guardrails
+  * ai-prompt-compressor
+  * datakit
+  * solace-upstream
+
 ## 2.11.1
 > Released on 2025/07/14
 

@@ -41,10 +41,12 @@ resource "konnect_gateway_plugin_ai_rag_injector" "my_gatewaypluginairaginjector
             instance      = "...my_instance..."
           }
           bedrock = {
-            aws_assume_role_arn   = "...my_aws_assume_role_arn..."
-            aws_region            = "...my_aws_region..."
-            aws_role_session_name = "...my_aws_role_session_name..."
-            aws_sts_endpoint_url  = "...my_aws_sts_endpoint_url..."
+            aws_assume_role_arn        = "...my_aws_assume_role_arn..."
+            aws_region                 = "...my_aws_region..."
+            aws_role_session_name      = "...my_aws_role_session_name..."
+            aws_sts_endpoint_url       = "...my_aws_sts_endpoint_url..."
+            embeddings_normalize       = false
+            performance_config_latency = "...my_performance_config_latency..."
           }
           gemini = {
             api_endpoint = "...my_api_endpoint..."
@@ -169,11 +171,11 @@ resource "konnect_gateway_plugin_ai_rag_injector" "my_gatewaypluginairaginjector
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -194,53 +196,41 @@ resource "konnect_gateway_plugin_ai_rag_injector" "my_gatewaypluginairaginjector
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
-Optional:
+Required:
 
 - `embeddings` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings))
+- `vectordb` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb))
+
+Optional:
+
 - `fetch_chunks_count` (Number) The maximum number of chunks to fetch from vectordb
 - `inject_as_role` (String) must be one of ["assistant", "system", "user"]
 - `inject_template` (String)
 - `stop_on_failure` (Boolean) Halt the LLM request process in case of a vectordb or embeddings service failure
-- `vectordb` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb))
 - `vectordb_namespace` (String) The namespace of the vectordb to use for embeddings lookup
 
 <a id="nestedatt--config--embeddings"></a>
 ### Nested Schema for `config.embeddings`
 
+Required:
+
+- `model` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--model))
+
 Optional:
 
 - `auth` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--auth))
-- `model` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--model))
-
-<a id="nestedatt--config--embeddings--auth"></a>
-### Nested Schema for `config.embeddings.auth`
-
-Optional:
-
-- `allow_override` (Boolean) If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
-- `aws_access_key_id` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
-- `aws_secret_access_key` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
-- `azure_client_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
-- `azure_client_secret` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
-- `azure_tenant_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
-- `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
-- `gcp_service_account_json` (String) Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
-- `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models.
-- `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
-- `header_value` (String) Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
-- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["body", "query"]
-- `param_name` (String) If AI model requires authentication via query parameter, specify its name here.
-- `param_value` (String) Specify the full parameter value for 'param_name'.
-
 
 <a id="nestedatt--config--embeddings--model"></a>
 ### Nested Schema for `config.embeddings.model`
 
-Optional:
+Required:
 
 - `name` (String) Model name to execute.
-- `options` (Attributes) Key/value settings for the model (see [below for nested schema](#nestedatt--config--embeddings--model--options))
 - `provider` (String) AI provider format to use for embeddings API. must be one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "openai"]
+
+Optional:
+
+- `options` (Attributes) Key/value settings for the model (see [below for nested schema](#nestedatt--config--embeddings--model--options))
 
 <a id="nestedatt--config--embeddings--model--options"></a>
 ### Nested Schema for `config.embeddings.model.options`
@@ -272,6 +262,8 @@ Optional:
 - `aws_region` (String) If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
 - `aws_role_session_name` (String) If using AWS providers (Bedrock), set the identifier of the assumed role session.
 - `aws_sts_endpoint_url` (String) If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
+- `embeddings_normalize` (Boolean) If using AWS providers (Bedrock), set to true to normalize the embeddings.
+- `performance_config_latency` (String) Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
 
 
 <a id="nestedatt--config--embeddings--model--options--gemini"></a>
@@ -295,17 +287,41 @@ Optional:
 
 
 
+<a id="nestedatt--config--embeddings--auth"></a>
+### Nested Schema for `config.embeddings.auth`
+
+Optional:
+
+- `allow_override` (Boolean) If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
+- `aws_access_key_id` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
+- `aws_secret_access_key` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
+- `azure_client_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
+- `azure_client_secret` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
+- `azure_tenant_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
+- `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
+- `gcp_service_account_json` (String) Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
+- `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models.
+- `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
+- `header_value` (String) Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
+- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["body", "query"]
+- `param_name` (String) If AI model requires authentication via query parameter, specify its name here.
+- `param_value` (String) Specify the full parameter value for 'param_name'.
+
+
 
 <a id="nestedatt--config--vectordb"></a>
 ### Nested Schema for `config.vectordb`
 
-Optional:
+Required:
 
 - `dimensions` (Number) the desired dimensionality for the vectors
 - `distance_metric` (String) the distance metric to use for vector searches. must be one of ["cosine", "euclidean"]
+- `strategy` (String) which vector database driver to use. must be one of ["pgvector", "redis"]
+
+Optional:
+
 - `pgvector` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb--pgvector))
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb--redis))
-- `strategy` (String) which vector database driver to use. must be one of ["pgvector", "redis"]
 
 <a id="nestedatt--config--vectordb--pgvector"></a>
 ### Nested Schema for `config.vectordb.pgvector`

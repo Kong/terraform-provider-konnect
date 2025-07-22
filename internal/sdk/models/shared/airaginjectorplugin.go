@@ -271,6 +271,10 @@ type AiRagInjectorPluginBedrock struct {
 	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
+	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
+	EmbeddingsNormalize *bool `json:"embeddings_normalize,omitempty"`
+	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
+	PerformanceConfigLatency *string `json:"performance_config_latency,omitempty"`
 }
 
 func (o *AiRagInjectorPluginBedrock) GetAwsAssumeRoleArn() *string {
@@ -299,6 +303,20 @@ func (o *AiRagInjectorPluginBedrock) GetAwsStsEndpointURL() *string {
 		return nil
 	}
 	return o.AwsStsEndpointURL
+}
+
+func (o *AiRagInjectorPluginBedrock) GetEmbeddingsNormalize() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EmbeddingsNormalize
+}
+
+func (o *AiRagInjectorPluginBedrock) GetPerformanceConfigLatency() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PerformanceConfigLatency
 }
 
 type AiRagInjectorPluginGemini struct {
@@ -438,16 +456,16 @@ func (e *AiRagInjectorPluginProvider) UnmarshalJSON(data []byte) error {
 
 type AiRagInjectorPluginModel struct {
 	// Model name to execute.
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name"`
 	// Key/value settings for the model
 	Options *AiRagInjectorPluginOptions `json:"options,omitempty"`
 	// AI provider format to use for embeddings API
-	Provider *AiRagInjectorPluginProvider `json:"provider,omitempty"`
+	Provider AiRagInjectorPluginProvider `json:"provider"`
 }
 
-func (o *AiRagInjectorPluginModel) GetName() *string {
+func (o *AiRagInjectorPluginModel) GetName() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Name
 }
@@ -459,16 +477,16 @@ func (o *AiRagInjectorPluginModel) GetOptions() *AiRagInjectorPluginOptions {
 	return o.Options
 }
 
-func (o *AiRagInjectorPluginModel) GetProvider() *AiRagInjectorPluginProvider {
+func (o *AiRagInjectorPluginModel) GetProvider() AiRagInjectorPluginProvider {
 	if o == nil {
-		return nil
+		return AiRagInjectorPluginProvider("")
 	}
 	return o.Provider
 }
 
 type AiRagInjectorPluginEmbeddings struct {
-	Auth  *AiRagInjectorPluginAuth  `json:"auth,omitempty"`
-	Model *AiRagInjectorPluginModel `json:"model,omitempty"`
+	Auth  *AiRagInjectorPluginAuth `json:"auth,omitempty"`
+	Model AiRagInjectorPluginModel `json:"model"`
 }
 
 func (o *AiRagInjectorPluginEmbeddings) GetAuth() *AiRagInjectorPluginAuth {
@@ -478,9 +496,9 @@ func (o *AiRagInjectorPluginEmbeddings) GetAuth() *AiRagInjectorPluginAuth {
 	return o.Auth
 }
 
-func (o *AiRagInjectorPluginEmbeddings) GetModel() *AiRagInjectorPluginModel {
+func (o *AiRagInjectorPluginEmbeddings) GetModel() AiRagInjectorPluginModel {
 	if o == nil {
-		return nil
+		return AiRagInjectorPluginModel{}
 	}
 	return o.Model
 }
@@ -975,25 +993,25 @@ func (e *AiRagInjectorPluginStrategy) UnmarshalJSON(data []byte) error {
 
 type AiRagInjectorPluginVectordb struct {
 	// the desired dimensionality for the vectors
-	Dimensions *int64 `json:"dimensions,omitempty"`
+	Dimensions int64 `json:"dimensions"`
 	// the distance metric to use for vector searches
-	DistanceMetric *AiRagInjectorPluginDistanceMetric `json:"distance_metric,omitempty"`
-	Pgvector       *AiRagInjectorPluginPgvector       `json:"pgvector,omitempty"`
-	Redis          *AiRagInjectorPluginRedis          `json:"redis,omitempty"`
+	DistanceMetric AiRagInjectorPluginDistanceMetric `json:"distance_metric"`
+	Pgvector       *AiRagInjectorPluginPgvector      `json:"pgvector,omitempty"`
+	Redis          *AiRagInjectorPluginRedis         `json:"redis,omitempty"`
 	// which vector database driver to use
-	Strategy *AiRagInjectorPluginStrategy `json:"strategy,omitempty"`
+	Strategy AiRagInjectorPluginStrategy `json:"strategy"`
 }
 
-func (o *AiRagInjectorPluginVectordb) GetDimensions() *int64 {
+func (o *AiRagInjectorPluginVectordb) GetDimensions() int64 {
 	if o == nil {
-		return nil
+		return 0
 	}
 	return o.Dimensions
 }
 
-func (o *AiRagInjectorPluginVectordb) GetDistanceMetric() *AiRagInjectorPluginDistanceMetric {
+func (o *AiRagInjectorPluginVectordb) GetDistanceMetric() AiRagInjectorPluginDistanceMetric {
 	if o == nil {
-		return nil
+		return AiRagInjectorPluginDistanceMetric("")
 	}
 	return o.DistanceMetric
 }
@@ -1012,29 +1030,29 @@ func (o *AiRagInjectorPluginVectordb) GetRedis() *AiRagInjectorPluginRedis {
 	return o.Redis
 }
 
-func (o *AiRagInjectorPluginVectordb) GetStrategy() *AiRagInjectorPluginStrategy {
+func (o *AiRagInjectorPluginVectordb) GetStrategy() AiRagInjectorPluginStrategy {
 	if o == nil {
-		return nil
+		return AiRagInjectorPluginStrategy("")
 	}
 	return o.Strategy
 }
 
 type AiRagInjectorPluginConfig struct {
-	Embeddings *AiRagInjectorPluginEmbeddings `json:"embeddings,omitempty"`
+	Embeddings AiRagInjectorPluginEmbeddings `json:"embeddings"`
 	// The maximum number of chunks to fetch from vectordb
 	FetchChunksCount *float64      `json:"fetch_chunks_count,omitempty"`
 	InjectAsRole     *InjectAsRole `json:"inject_as_role,omitempty"`
 	InjectTemplate   *string       `json:"inject_template,omitempty"`
 	// Halt the LLM request process in case of a vectordb or embeddings service failure
-	StopOnFailure *bool                        `json:"stop_on_failure,omitempty"`
-	Vectordb      *AiRagInjectorPluginVectordb `json:"vectordb,omitempty"`
+	StopOnFailure *bool                       `json:"stop_on_failure,omitempty"`
+	Vectordb      AiRagInjectorPluginVectordb `json:"vectordb"`
 	// The namespace of the vectordb to use for embeddings lookup
 	VectordbNamespace *string `json:"vectordb_namespace,omitempty"`
 }
 
-func (o *AiRagInjectorPluginConfig) GetEmbeddings() *AiRagInjectorPluginEmbeddings {
+func (o *AiRagInjectorPluginConfig) GetEmbeddings() AiRagInjectorPluginEmbeddings {
 	if o == nil {
-		return nil
+		return AiRagInjectorPluginEmbeddings{}
 	}
 	return o.Embeddings
 }
@@ -1067,9 +1085,9 @@ func (o *AiRagInjectorPluginConfig) GetStopOnFailure() *bool {
 	return o.StopOnFailure
 }
 
-func (o *AiRagInjectorPluginConfig) GetVectordb() *AiRagInjectorPluginVectordb {
+func (o *AiRagInjectorPluginConfig) GetVectordb() AiRagInjectorPluginVectordb {
 	if o == nil {
-		return nil
+		return AiRagInjectorPluginVectordb{}
 	}
 	return o.Vectordb
 }
@@ -1175,8 +1193,8 @@ type AiRagInjectorPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                     `json:"updated_at,omitempty"`
-	Config    *AiRagInjectorPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                    `json:"updated_at,omitempty"`
+	Config    AiRagInjectorPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *AiRagInjectorPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -1260,9 +1278,9 @@ func (o *AiRagInjectorPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *AiRagInjectorPlugin) GetConfig() *AiRagInjectorPluginConfig {
+func (o *AiRagInjectorPlugin) GetConfig() AiRagInjectorPluginConfig {
 	if o == nil {
-		return nil
+		return AiRagInjectorPluginConfig{}
 	}
 	return o.Config
 }

@@ -40,21 +40,21 @@ type GatewayPluginAiRagInjectorResource struct {
 
 // GatewayPluginAiRagInjectorResourceModel describes the resource data model.
 type GatewayPluginAiRagInjectorResourceModel struct {
-	Config         *tfTypes.AiRagInjectorPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.Set                       `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.Set                       `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                        `tfsdk:"created_at"`
-	Enabled        types.Bool                         `tfsdk:"enabled"`
-	ID             types.String                       `tfsdk:"id"`
-	InstanceName   types.String                       `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials                 `tfsdk:"partials"`
-	Protocols      []types.String                     `tfsdk:"protocols"`
-	Route          *tfTypes.Set                       `tfsdk:"route"`
-	Service        *tfTypes.Set                       `tfsdk:"service"`
-	Tags           []types.String                     `tfsdk:"tags"`
-	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
+	Config         tfTypes.AiRagInjectorPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.Set                      `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.Set                      `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                      `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                       `tfsdk:"created_at"`
+	Enabled        types.Bool                        `tfsdk:"enabled"`
+	ID             types.String                      `tfsdk:"id"`
+	InstanceName   types.String                      `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering        `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials                `tfsdk:"partials"`
+	Protocols      []types.String                    `tfsdk:"protocols"`
+	Route          *tfTypes.Set                      `tfsdk:"route"`
+	Service        *tfTypes.Set                      `tfsdk:"service"`
+	Tags           []types.String                    `tfsdk:"tags"`
+	UpdatedAt      types.Int64                       `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginAiRagInjectorResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -66,12 +66,10 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 		MarkdownDescription: "GatewayPluginAiRagInjector Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"embeddings": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
+						Required: true,
 						Attributes: map[string]schema.Attribute{
 							"auth": schema.SingleNestedAttribute{
 								Computed: true,
@@ -156,12 +154,10 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 								},
 							},
 							"model": schema.SingleNestedAttribute{
-								Computed: true,
-								Optional: true,
+								Required: true,
 								Attributes: map[string]schema.Attribute{
 									"name": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
+										Required:    true,
 										Description: `Model name to execute.`,
 									},
 									"options": schema.SingleNestedAttribute{
@@ -217,6 +213,16 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 														Optional:    true,
 														Description: `If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.`,
 													},
+													"embeddings_normalize": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `If using AWS providers (Bedrock), set to true to normalize the embeddings.`,
+													},
+													"performance_config_latency": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.`,
+													},
 												},
 											},
 											"gemini": schema.SingleNestedAttribute{
@@ -265,8 +271,7 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 										Description: `Key/value settings for the model`,
 									},
 									"provider": schema.StringAttribute{
-										Computed:    true,
-										Optional:    true,
+										Required:    true,
 										Description: `AI provider format to use for embeddings API. must be one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "openai"]`,
 										Validators: []validator.String{
 											stringvalidator.OneOf(
@@ -310,17 +315,14 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 						Description: `Halt the LLM request process in case of a vectordb or embeddings service failure`,
 					},
 					"vectordb": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
+						Required: true,
 						Attributes: map[string]schema.Attribute{
 							"dimensions": schema.Int64Attribute{
-								Computed:    true,
-								Optional:    true,
+								Required:    true,
 								Description: `the desired dimensionality for the vectors`,
 							},
 							"distance_metric": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
+								Required:    true,
 								Description: `the distance metric to use for vector searches. must be one of ["cosine", "euclidean"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
@@ -579,8 +581,7 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 								},
 							},
 							"strategy": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
+								Required:    true,
 								Description: `which vector database driver to use. must be one of ["pgvector", "redis"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(

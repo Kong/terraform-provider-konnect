@@ -262,6 +262,10 @@ type AiResponseTransformerPluginBedrock struct {
 	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
+	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
+	EmbeddingsNormalize *bool `json:"embeddings_normalize,omitempty"`
+	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
+	PerformanceConfigLatency *string `json:"performance_config_latency,omitempty"`
 }
 
 func (o *AiResponseTransformerPluginBedrock) GetAwsAssumeRoleArn() *string {
@@ -290,6 +294,77 @@ func (o *AiResponseTransformerPluginBedrock) GetAwsStsEndpointURL() *string {
 		return nil
 	}
 	return o.AwsStsEndpointURL
+}
+
+func (o *AiResponseTransformerPluginBedrock) GetEmbeddingsNormalize() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EmbeddingsNormalize
+}
+
+func (o *AiResponseTransformerPluginBedrock) GetPerformanceConfigLatency() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PerformanceConfigLatency
+}
+
+// AiResponseTransformerPluginEmbeddingInputType - The purpose of the input text to calculate embedding vectors.
+type AiResponseTransformerPluginEmbeddingInputType string
+
+const (
+	AiResponseTransformerPluginEmbeddingInputTypeClassification AiResponseTransformerPluginEmbeddingInputType = "classification"
+	AiResponseTransformerPluginEmbeddingInputTypeClustering     AiResponseTransformerPluginEmbeddingInputType = "clustering"
+	AiResponseTransformerPluginEmbeddingInputTypeImage          AiResponseTransformerPluginEmbeddingInputType = "image"
+	AiResponseTransformerPluginEmbeddingInputTypeSearchDocument AiResponseTransformerPluginEmbeddingInputType = "search_document"
+	AiResponseTransformerPluginEmbeddingInputTypeSearchQuery    AiResponseTransformerPluginEmbeddingInputType = "search_query"
+)
+
+func (e AiResponseTransformerPluginEmbeddingInputType) ToPointer() *AiResponseTransformerPluginEmbeddingInputType {
+	return &e
+}
+func (e *AiResponseTransformerPluginEmbeddingInputType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "classification":
+		fallthrough
+	case "clustering":
+		fallthrough
+	case "image":
+		fallthrough
+	case "search_document":
+		fallthrough
+	case "search_query":
+		*e = AiResponseTransformerPluginEmbeddingInputType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AiResponseTransformerPluginEmbeddingInputType: %v", v)
+	}
+}
+
+type AiResponseTransformerPluginCohere struct {
+	// The purpose of the input text to calculate embedding vectors.
+	EmbeddingInputType *AiResponseTransformerPluginEmbeddingInputType `json:"embedding_input_type,omitempty"`
+	// Wait for the model if it is not ready
+	WaitForModel *bool `json:"wait_for_model,omitempty"`
+}
+
+func (o *AiResponseTransformerPluginCohere) GetEmbeddingInputType() *AiResponseTransformerPluginEmbeddingInputType {
+	if o == nil {
+		return nil
+	}
+	return o.EmbeddingInputType
+}
+
+func (o *AiResponseTransformerPluginCohere) GetWaitForModel() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.WaitForModel
 }
 
 type AiResponseTransformerPluginGemini struct {
@@ -409,10 +484,13 @@ type AiResponseTransformerPluginOptions struct {
 	// Deployment ID for Azure OpenAI instances.
 	AzureDeploymentID *string `json:"azure_deployment_id,omitempty"`
 	// Instance name for Azure OpenAI hosted models.
-	AzureInstance *string                                 `json:"azure_instance,omitempty"`
-	Bedrock       *AiResponseTransformerPluginBedrock     `json:"bedrock,omitempty"`
-	Gemini        *AiResponseTransformerPluginGemini      `json:"gemini,omitempty"`
-	Huggingface   *AiResponseTransformerPluginHuggingface `json:"huggingface,omitempty"`
+	AzureInstance *string                             `json:"azure_instance,omitempty"`
+	Bedrock       *AiResponseTransformerPluginBedrock `json:"bedrock,omitempty"`
+	Cohere        *AiResponseTransformerPluginCohere  `json:"cohere,omitempty"`
+	// If using embeddings models, set the number of dimensions to generate.
+	EmbeddingsDimensions *int64                                  `json:"embeddings_dimensions,omitempty"`
+	Gemini               *AiResponseTransformerPluginGemini      `json:"gemini,omitempty"`
+	Huggingface          *AiResponseTransformerPluginHuggingface `json:"huggingface,omitempty"`
 	// Defines the cost per 1M tokens in your prompt.
 	InputCost *float64 `json:"input_cost,omitempty"`
 	// If using llama2 provider, select the upstream message format.
@@ -468,6 +546,20 @@ func (o *AiResponseTransformerPluginOptions) GetBedrock() *AiResponseTransformer
 		return nil
 	}
 	return o.Bedrock
+}
+
+func (o *AiResponseTransformerPluginOptions) GetCohere() *AiResponseTransformerPluginCohere {
+	if o == nil {
+		return nil
+	}
+	return o.Cohere
+}
+
+func (o *AiResponseTransformerPluginOptions) GetEmbeddingsDimensions() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.EmbeddingsDimensions
 }
 
 func (o *AiResponseTransformerPluginOptions) GetGemini() *AiResponseTransformerPluginGemini {
@@ -608,7 +700,7 @@ type AiResponseTransformerPluginModel struct {
 	// Key/value settings for the model
 	Options *AiResponseTransformerPluginOptions `json:"options,omitempty"`
 	// AI provider request format - Kong translates requests to and from the specified backend compatible formats.
-	Provider *AiResponseTransformerPluginProvider `json:"provider,omitempty"`
+	Provider AiResponseTransformerPluginProvider `json:"provider"`
 }
 
 func (o *AiResponseTransformerPluginModel) GetName() *string {
@@ -625,20 +717,31 @@ func (o *AiResponseTransformerPluginModel) GetOptions() *AiResponseTransformerPl
 	return o.Options
 }
 
-func (o *AiResponseTransformerPluginModel) GetProvider() *AiResponseTransformerPluginProvider {
+func (o *AiResponseTransformerPluginModel) GetProvider() AiResponseTransformerPluginProvider {
 	if o == nil {
-		return nil
+		return AiResponseTransformerPluginProvider("")
 	}
 	return o.Provider
 }
 
-// AiResponseTransformerPluginRouteType - The model's operation implementation, for this provider. Set to `preserve` to pass through without transformation.
+// AiResponseTransformerPluginRouteType - The model's operation implementation, for this provider.
 type AiResponseTransformerPluginRouteType string
 
 const (
-	AiResponseTransformerPluginRouteTypeLlmV1Chat        AiResponseTransformerPluginRouteType = "llm/v1/chat"
-	AiResponseTransformerPluginRouteTypeLlmV1Completions AiResponseTransformerPluginRouteType = "llm/v1/completions"
-	AiResponseTransformerPluginRouteTypePreserve         AiResponseTransformerPluginRouteType = "preserve"
+	AiResponseTransformerPluginRouteTypeAudioV1AudioSpeech         AiResponseTransformerPluginRouteType = "audio/v1/audio/speech"
+	AiResponseTransformerPluginRouteTypeAudioV1AudioTranscriptions AiResponseTransformerPluginRouteType = "audio/v1/audio/transcriptions"
+	AiResponseTransformerPluginRouteTypeAudioV1AudioTranslations   AiResponseTransformerPluginRouteType = "audio/v1/audio/translations"
+	AiResponseTransformerPluginRouteTypeImageV1ImagesEdits         AiResponseTransformerPluginRouteType = "image/v1/images/edits"
+	AiResponseTransformerPluginRouteTypeImageV1ImagesGenerations   AiResponseTransformerPluginRouteType = "image/v1/images/generations"
+	AiResponseTransformerPluginRouteTypeLlmV1Assistants            AiResponseTransformerPluginRouteType = "llm/v1/assistants"
+	AiResponseTransformerPluginRouteTypeLlmV1Batches               AiResponseTransformerPluginRouteType = "llm/v1/batches"
+	AiResponseTransformerPluginRouteTypeLlmV1Chat                  AiResponseTransformerPluginRouteType = "llm/v1/chat"
+	AiResponseTransformerPluginRouteTypeLlmV1Completions           AiResponseTransformerPluginRouteType = "llm/v1/completions"
+	AiResponseTransformerPluginRouteTypeLlmV1Embeddings            AiResponseTransformerPluginRouteType = "llm/v1/embeddings"
+	AiResponseTransformerPluginRouteTypeLlmV1Files                 AiResponseTransformerPluginRouteType = "llm/v1/files"
+	AiResponseTransformerPluginRouteTypeLlmV1Responses             AiResponseTransformerPluginRouteType = "llm/v1/responses"
+	AiResponseTransformerPluginRouteTypePreserve                   AiResponseTransformerPluginRouteType = "preserve"
+	AiResponseTransformerPluginRouteTypeRealtimeV1Realtime         AiResponseTransformerPluginRouteType = "realtime/v1/realtime"
 )
 
 func (e AiResponseTransformerPluginRouteType) ToPointer() *AiResponseTransformerPluginRouteType {
@@ -650,11 +753,33 @@ func (e *AiResponseTransformerPluginRouteType) UnmarshalJSON(data []byte) error 
 		return err
 	}
 	switch v {
+	case "audio/v1/audio/speech":
+		fallthrough
+	case "audio/v1/audio/transcriptions":
+		fallthrough
+	case "audio/v1/audio/translations":
+		fallthrough
+	case "image/v1/images/edits":
+		fallthrough
+	case "image/v1/images/generations":
+		fallthrough
+	case "llm/v1/assistants":
+		fallthrough
+	case "llm/v1/batches":
+		fallthrough
 	case "llm/v1/chat":
 		fallthrough
 	case "llm/v1/completions":
 		fallthrough
+	case "llm/v1/embeddings":
+		fallthrough
+	case "llm/v1/files":
+		fallthrough
+	case "llm/v1/responses":
+		fallthrough
 	case "preserve":
+		fallthrough
+	case "realtime/v1/realtime":
 		*e = AiResponseTransformerPluginRouteType(v)
 		return nil
 	default:
@@ -665,9 +790,9 @@ func (e *AiResponseTransformerPluginRouteType) UnmarshalJSON(data []byte) error 
 type AiResponseTransformerPluginLlm struct {
 	Auth    *AiResponseTransformerPluginAuth    `json:"auth,omitempty"`
 	Logging *AiResponseTransformerPluginLogging `json:"logging,omitempty"`
-	Model   *AiResponseTransformerPluginModel   `json:"model,omitempty"`
-	// The model's operation implementation, for this provider. Set to `preserve` to pass through without transformation.
-	RouteType *AiResponseTransformerPluginRouteType `json:"route_type,omitempty"`
+	Model   AiResponseTransformerPluginModel    `json:"model"`
+	// The model's operation implementation, for this provider.
+	RouteType AiResponseTransformerPluginRouteType `json:"route_type"`
 }
 
 func (o *AiResponseTransformerPluginLlm) GetAuth() *AiResponseTransformerPluginAuth {
@@ -684,16 +809,16 @@ func (o *AiResponseTransformerPluginLlm) GetLogging() *AiResponseTransformerPlug
 	return o.Logging
 }
 
-func (o *AiResponseTransformerPluginLlm) GetModel() *AiResponseTransformerPluginModel {
+func (o *AiResponseTransformerPluginLlm) GetModel() AiResponseTransformerPluginModel {
 	if o == nil {
-		return nil
+		return AiResponseTransformerPluginModel{}
 	}
 	return o.Model
 }
 
-func (o *AiResponseTransformerPluginLlm) GetRouteType() *AiResponseTransformerPluginRouteType {
+func (o *AiResponseTransformerPluginLlm) GetRouteType() AiResponseTransformerPluginRouteType {
 	if o == nil {
-		return nil
+		return AiResponseTransformerPluginRouteType("")
 	}
 	return o.RouteType
 }
@@ -710,14 +835,14 @@ type AiResponseTransformerPluginConfig struct {
 	// An integer representing a port number between 0 and 65535, inclusive.
 	HTTPSProxyPort *int64 `json:"https_proxy_port,omitempty"`
 	// Verify the TLS certificate of the AI upstream service.
-	HTTPSVerify *bool                           `json:"https_verify,omitempty"`
-	Llm         *AiResponseTransformerPluginLlm `json:"llm,omitempty"`
-	// max allowed body size allowed to be introspected
+	HTTPSVerify *bool                          `json:"https_verify,omitempty"`
+	Llm         AiResponseTransformerPluginLlm `json:"llm"`
+	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 	MaxRequestBodySize *int64 `json:"max_request_body_size,omitempty"`
 	// Set true to read specific response format from the LLM, and accordingly set the status code / body / headers that proxy back to the client. You need to engineer your LLM prompt to return the correct format, see plugin docs 'Overview' page for usage instructions.
 	ParseLlmResponseJSONInstructions *bool `json:"parse_llm_response_json_instructions,omitempty"`
 	// Use this prompt to tune the LLM system/assistant message for the returning proxy response (from the upstream), adn what response format you are expecting.
-	Prompt *string `json:"prompt,omitempty"`
+	Prompt string `json:"prompt"`
 	// Defines the regular expression that must match to indicate a successful AI transformation at the response phase. The first match will be set as the returning body. If the AI service's response doesn't match this pattern, a failure is returned to the client.
 	TransformationExtractPattern *string `json:"transformation_extract_pattern,omitempty"`
 }
@@ -764,9 +889,9 @@ func (o *AiResponseTransformerPluginConfig) GetHTTPSVerify() *bool {
 	return o.HTTPSVerify
 }
 
-func (o *AiResponseTransformerPluginConfig) GetLlm() *AiResponseTransformerPluginLlm {
+func (o *AiResponseTransformerPluginConfig) GetLlm() AiResponseTransformerPluginLlm {
 	if o == nil {
-		return nil
+		return AiResponseTransformerPluginLlm{}
 	}
 	return o.Llm
 }
@@ -785,9 +910,9 @@ func (o *AiResponseTransformerPluginConfig) GetParseLlmResponseJSONInstructions(
 	return o.ParseLlmResponseJSONInstructions
 }
 
-func (o *AiResponseTransformerPluginConfig) GetPrompt() *string {
+func (o *AiResponseTransformerPluginConfig) GetPrompt() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Prompt
 }
@@ -893,8 +1018,8 @@ type AiResponseTransformerPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                             `json:"updated_at,omitempty"`
-	Config    *AiResponseTransformerPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                            `json:"updated_at,omitempty"`
+	Config    AiResponseTransformerPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *AiResponseTransformerPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -978,9 +1103,9 @@ func (o *AiResponseTransformerPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *AiResponseTransformerPlugin) GetConfig() *AiResponseTransformerPluginConfig {
+func (o *AiResponseTransformerPlugin) GetConfig() AiResponseTransformerPluginConfig {
 	if o == nil {
-		return nil
+		return AiResponseTransformerPluginConfig{}
 	}
 	return o.Config
 }

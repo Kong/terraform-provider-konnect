@@ -16,9 +16,11 @@ func (r *GatewayBasicAuthResourceModel) RefreshFromSharedBasicAuth(ctx context.C
 	if resp != nil {
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
+		if resp.Tags != nil {
+			r.Tags = make([]types.String, 0, len(resp.Tags))
+			for _, v := range resp.Tags {
+				r.Tags = append(r.Tags, types.StringValue(v))
+			}
 		}
 		r.Username = types.StringValue(resp.Username)
 	}
@@ -111,9 +113,12 @@ func (r *GatewayBasicAuthResourceModel) ToSharedBasicAuthWithoutParents(ctx cont
 	var password string
 	password = r.Password.ValueString()
 
-	tags := make([]string, 0, len(r.Tags))
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
+	var tags []string
+	if r.Tags != nil {
+		tags = make([]string, 0, len(r.Tags))
+		for _, tagsItem := range r.Tags {
+			tags = append(tags, tagsItem.ValueString())
+		}
 	}
 	var username string
 	username = r.Username.ValueString()

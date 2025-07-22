@@ -70,7 +70,7 @@ func (r *GatewayPluginUpstreamTimeoutResource) Schema(ctx context.Context, req r
 					"connect_timeout": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+						Description: `An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(2147483646),
 						},
@@ -78,7 +78,7 @@ func (r *GatewayPluginUpstreamTimeoutResource) Schema(ctx context.Context, req r
 					"read_timeout": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+						Description: `An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(2147483646),
 						},
@@ -86,7 +86,7 @@ func (r *GatewayPluginUpstreamTimeoutResource) Schema(ctx context.Context, req r
 					"send_timeout": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+						Description: `An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(2147483646),
 						},

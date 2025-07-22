@@ -271,6 +271,10 @@ type AiSemanticPromptGuardPluginBedrock struct {
 	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
+	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
+	EmbeddingsNormalize *bool `json:"embeddings_normalize,omitempty"`
+	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
+	PerformanceConfigLatency *string `json:"performance_config_latency,omitempty"`
 }
 
 func (o *AiSemanticPromptGuardPluginBedrock) GetAwsAssumeRoleArn() *string {
@@ -299,6 +303,20 @@ func (o *AiSemanticPromptGuardPluginBedrock) GetAwsStsEndpointURL() *string {
 		return nil
 	}
 	return o.AwsStsEndpointURL
+}
+
+func (o *AiSemanticPromptGuardPluginBedrock) GetEmbeddingsNormalize() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EmbeddingsNormalize
+}
+
+func (o *AiSemanticPromptGuardPluginBedrock) GetPerformanceConfigLatency() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PerformanceConfigLatency
 }
 
 type AiSemanticPromptGuardPluginGemini struct {
@@ -438,16 +456,16 @@ func (e *AiSemanticPromptGuardPluginProvider) UnmarshalJSON(data []byte) error {
 
 type AiSemanticPromptGuardPluginModel struct {
 	// Model name to execute.
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name"`
 	// Key/value settings for the model
 	Options *AiSemanticPromptGuardPluginOptions `json:"options,omitempty"`
 	// AI provider format to use for embeddings API
-	Provider *AiSemanticPromptGuardPluginProvider `json:"provider,omitempty"`
+	Provider AiSemanticPromptGuardPluginProvider `json:"provider"`
 }
 
-func (o *AiSemanticPromptGuardPluginModel) GetName() *string {
+func (o *AiSemanticPromptGuardPluginModel) GetName() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Name
 }
@@ -459,16 +477,16 @@ func (o *AiSemanticPromptGuardPluginModel) GetOptions() *AiSemanticPromptGuardPl
 	return o.Options
 }
 
-func (o *AiSemanticPromptGuardPluginModel) GetProvider() *AiSemanticPromptGuardPluginProvider {
+func (o *AiSemanticPromptGuardPluginModel) GetProvider() AiSemanticPromptGuardPluginProvider {
 	if o == nil {
-		return nil
+		return AiSemanticPromptGuardPluginProvider("")
 	}
 	return o.Provider
 }
 
 type AiSemanticPromptGuardPluginEmbeddings struct {
-	Auth  *AiSemanticPromptGuardPluginAuth  `json:"auth,omitempty"`
-	Model *AiSemanticPromptGuardPluginModel `json:"model,omitempty"`
+	Auth  *AiSemanticPromptGuardPluginAuth `json:"auth,omitempty"`
+	Model AiSemanticPromptGuardPluginModel `json:"model"`
 }
 
 func (o *AiSemanticPromptGuardPluginEmbeddings) GetAuth() *AiSemanticPromptGuardPluginAuth {
@@ -478,20 +496,61 @@ func (o *AiSemanticPromptGuardPluginEmbeddings) GetAuth() *AiSemanticPromptGuard
 	return o.Auth
 }
 
-func (o *AiSemanticPromptGuardPluginEmbeddings) GetModel() *AiSemanticPromptGuardPluginModel {
+func (o *AiSemanticPromptGuardPluginEmbeddings) GetModel() AiSemanticPromptGuardPluginModel {
 	if o == nil {
-		return nil
+		return AiSemanticPromptGuardPluginModel{}
 	}
 	return o.Model
+}
+
+// AiSemanticPromptGuardPluginGenaiCategory - Generative AI category of the request
+type AiSemanticPromptGuardPluginGenaiCategory string
+
+const (
+	AiSemanticPromptGuardPluginGenaiCategoryAudioSpeech        AiSemanticPromptGuardPluginGenaiCategory = "audio/speech"
+	AiSemanticPromptGuardPluginGenaiCategoryAudioTranscription AiSemanticPromptGuardPluginGenaiCategory = "audio/transcription"
+	AiSemanticPromptGuardPluginGenaiCategoryImageGeneration    AiSemanticPromptGuardPluginGenaiCategory = "image/generation"
+	AiSemanticPromptGuardPluginGenaiCategoryRealtimeGeneration AiSemanticPromptGuardPluginGenaiCategory = "realtime/generation"
+	AiSemanticPromptGuardPluginGenaiCategoryTextEmbeddings     AiSemanticPromptGuardPluginGenaiCategory = "text/embeddings"
+	AiSemanticPromptGuardPluginGenaiCategoryTextGeneration     AiSemanticPromptGuardPluginGenaiCategory = "text/generation"
+)
+
+func (e AiSemanticPromptGuardPluginGenaiCategory) ToPointer() *AiSemanticPromptGuardPluginGenaiCategory {
+	return &e
+}
+func (e *AiSemanticPromptGuardPluginGenaiCategory) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "audio/speech":
+		fallthrough
+	case "audio/transcription":
+		fallthrough
+	case "image/generation":
+		fallthrough
+	case "realtime/generation":
+		fallthrough
+	case "text/embeddings":
+		fallthrough
+	case "text/generation":
+		*e = AiSemanticPromptGuardPluginGenaiCategory(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AiSemanticPromptGuardPluginGenaiCategory: %v", v)
+	}
 }
 
 // AiSemanticPromptGuardPluginLlmFormat - LLM input and output format and schema to use
 type AiSemanticPromptGuardPluginLlmFormat string
 
 const (
-	AiSemanticPromptGuardPluginLlmFormatBedrock AiSemanticPromptGuardPluginLlmFormat = "bedrock"
-	AiSemanticPromptGuardPluginLlmFormatGemini  AiSemanticPromptGuardPluginLlmFormat = "gemini"
-	AiSemanticPromptGuardPluginLlmFormatOpenai  AiSemanticPromptGuardPluginLlmFormat = "openai"
+	AiSemanticPromptGuardPluginLlmFormatBedrock     AiSemanticPromptGuardPluginLlmFormat = "bedrock"
+	AiSemanticPromptGuardPluginLlmFormatCohere      AiSemanticPromptGuardPluginLlmFormat = "cohere"
+	AiSemanticPromptGuardPluginLlmFormatGemini      AiSemanticPromptGuardPluginLlmFormat = "gemini"
+	AiSemanticPromptGuardPluginLlmFormatHuggingface AiSemanticPromptGuardPluginLlmFormat = "huggingface"
+	AiSemanticPromptGuardPluginLlmFormatOpenai      AiSemanticPromptGuardPluginLlmFormat = "openai"
 )
 
 func (e AiSemanticPromptGuardPluginLlmFormat) ToPointer() *AiSemanticPromptGuardPluginLlmFormat {
@@ -505,7 +564,11 @@ func (e *AiSemanticPromptGuardPluginLlmFormat) UnmarshalJSON(data []byte) error 
 	switch v {
 	case "bedrock":
 		fallthrough
+	case "cohere":
+		fallthrough
 	case "gemini":
+		fallthrough
+	case "huggingface":
 		fallthrough
 	case "openai":
 		*e = AiSemanticPromptGuardPluginLlmFormat(v)
@@ -524,7 +587,7 @@ type Rules struct {
 	MatchAllConversationHistory *bool `json:"match_all_conversation_history,omitempty"`
 	// If true, will match all roles in addition to 'user' role in conversation history.
 	MatchAllRoles *bool `json:"match_all_roles,omitempty"`
-	// max allowed body size allowed to be introspected
+	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 	MaxRequestBodySize *int64 `json:"max_request_body_size,omitempty"`
 }
 
@@ -1036,27 +1099,27 @@ func (e *AiSemanticPromptGuardPluginStrategy) UnmarshalJSON(data []byte) error {
 
 type AiSemanticPromptGuardPluginVectordb struct {
 	// the desired dimensionality for the vectors
-	Dimensions *int64 `json:"dimensions,omitempty"`
+	Dimensions int64 `json:"dimensions"`
 	// the distance metric to use for vector searches
-	DistanceMetric *AiSemanticPromptGuardPluginDistanceMetric `json:"distance_metric,omitempty"`
-	Pgvector       *AiSemanticPromptGuardPluginPgvector       `json:"pgvector,omitempty"`
-	Redis          *AiSemanticPromptGuardPluginRedis          `json:"redis,omitempty"`
+	DistanceMetric AiSemanticPromptGuardPluginDistanceMetric `json:"distance_metric"`
+	Pgvector       *AiSemanticPromptGuardPluginPgvector      `json:"pgvector,omitempty"`
+	Redis          *AiSemanticPromptGuardPluginRedis         `json:"redis,omitempty"`
 	// which vector database driver to use
-	Strategy *AiSemanticPromptGuardPluginStrategy `json:"strategy,omitempty"`
+	Strategy AiSemanticPromptGuardPluginStrategy `json:"strategy"`
 	// the default similarity threshold for accepting semantic search results (float)
-	Threshold *float64 `json:"threshold,omitempty"`
+	Threshold float64 `json:"threshold"`
 }
 
-func (o *AiSemanticPromptGuardPluginVectordb) GetDimensions() *int64 {
+func (o *AiSemanticPromptGuardPluginVectordb) GetDimensions() int64 {
 	if o == nil {
-		return nil
+		return 0
 	}
 	return o.Dimensions
 }
 
-func (o *AiSemanticPromptGuardPluginVectordb) GetDistanceMetric() *AiSemanticPromptGuardPluginDistanceMetric {
+func (o *AiSemanticPromptGuardPluginVectordb) GetDistanceMetric() AiSemanticPromptGuardPluginDistanceMetric {
 	if o == nil {
-		return nil
+		return AiSemanticPromptGuardPluginDistanceMetric("")
 	}
 	return o.DistanceMetric
 }
@@ -1075,34 +1138,43 @@ func (o *AiSemanticPromptGuardPluginVectordb) GetRedis() *AiSemanticPromptGuardP
 	return o.Redis
 }
 
-func (o *AiSemanticPromptGuardPluginVectordb) GetStrategy() *AiSemanticPromptGuardPluginStrategy {
+func (o *AiSemanticPromptGuardPluginVectordb) GetStrategy() AiSemanticPromptGuardPluginStrategy {
 	if o == nil {
-		return nil
+		return AiSemanticPromptGuardPluginStrategy("")
 	}
 	return o.Strategy
 }
 
-func (o *AiSemanticPromptGuardPluginVectordb) GetThreshold() *float64 {
+func (o *AiSemanticPromptGuardPluginVectordb) GetThreshold() float64 {
 	if o == nil {
-		return nil
+		return 0.0
 	}
 	return o.Threshold
 }
 
 type AiSemanticPromptGuardPluginConfig struct {
-	Embeddings *AiSemanticPromptGuardPluginEmbeddings `json:"embeddings,omitempty"`
+	Embeddings AiSemanticPromptGuardPluginEmbeddings `json:"embeddings"`
+	// Generative AI category of the request
+	GenaiCategory *AiSemanticPromptGuardPluginGenaiCategory `json:"genai_category,omitempty"`
 	// LLM input and output format and schema to use
 	LlmFormat *AiSemanticPromptGuardPluginLlmFormat `json:"llm_format,omitempty"`
 	Rules     *Rules                                `json:"rules,omitempty"`
 	Search    *Search                               `json:"search,omitempty"`
-	Vectordb  *AiSemanticPromptGuardPluginVectordb  `json:"vectordb,omitempty"`
+	Vectordb  AiSemanticPromptGuardPluginVectordb   `json:"vectordb"`
 }
 
-func (o *AiSemanticPromptGuardPluginConfig) GetEmbeddings() *AiSemanticPromptGuardPluginEmbeddings {
+func (o *AiSemanticPromptGuardPluginConfig) GetEmbeddings() AiSemanticPromptGuardPluginEmbeddings {
+	if o == nil {
+		return AiSemanticPromptGuardPluginEmbeddings{}
+	}
+	return o.Embeddings
+}
+
+func (o *AiSemanticPromptGuardPluginConfig) GetGenaiCategory() *AiSemanticPromptGuardPluginGenaiCategory {
 	if o == nil {
 		return nil
 	}
-	return o.Embeddings
+	return o.GenaiCategory
 }
 
 func (o *AiSemanticPromptGuardPluginConfig) GetLlmFormat() *AiSemanticPromptGuardPluginLlmFormat {
@@ -1126,9 +1198,9 @@ func (o *AiSemanticPromptGuardPluginConfig) GetSearch() *Search {
 	return o.Search
 }
 
-func (o *AiSemanticPromptGuardPluginConfig) GetVectordb() *AiSemanticPromptGuardPluginVectordb {
+func (o *AiSemanticPromptGuardPluginConfig) GetVectordb() AiSemanticPromptGuardPluginVectordb {
 	if o == nil {
-		return nil
+		return AiSemanticPromptGuardPluginVectordb{}
 	}
 	return o.Vectordb
 }
@@ -1227,8 +1299,8 @@ type AiSemanticPromptGuardPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                             `json:"updated_at,omitempty"`
-	Config    *AiSemanticPromptGuardPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                            `json:"updated_at,omitempty"`
+	Config    AiSemanticPromptGuardPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *AiSemanticPromptGuardPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -1312,9 +1384,9 @@ func (o *AiSemanticPromptGuardPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *AiSemanticPromptGuardPlugin) GetConfig() *AiSemanticPromptGuardPluginConfig {
+func (o *AiSemanticPromptGuardPlugin) GetConfig() AiSemanticPromptGuardPluginConfig {
 	if o == nil {
-		return nil
+		return AiSemanticPromptGuardPluginConfig{}
 	}
 	return o.Config
 }

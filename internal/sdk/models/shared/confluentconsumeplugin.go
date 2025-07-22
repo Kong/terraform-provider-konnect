@@ -205,8 +205,242 @@ func (e *Mode) UnmarshalJSON(data []byte) error {
 	}
 }
 
+type ConfluentConsumePluginBasic struct {
+	Password string `json:"password"`
+	Username string `json:"username"`
+}
+
+func (o *ConfluentConsumePluginBasic) GetPassword() string {
+	if o == nil {
+		return ""
+	}
+	return o.Password
+}
+
+func (o *ConfluentConsumePluginBasic) GetUsername() string {
+	if o == nil {
+		return ""
+	}
+	return o.Username
+}
+
+// ConfluentConsumePluginMode - Authentication mode to use with the schema registry.
+type ConfluentConsumePluginMode string
+
+const (
+	ConfluentConsumePluginModeBasic ConfluentConsumePluginMode = "basic"
+	ConfluentConsumePluginModeNone  ConfluentConsumePluginMode = "none"
+)
+
+func (e ConfluentConsumePluginMode) ToPointer() *ConfluentConsumePluginMode {
+	return &e
+}
+func (e *ConfluentConsumePluginMode) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "basic":
+		fallthrough
+	case "none":
+		*e = ConfluentConsumePluginMode(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ConfluentConsumePluginMode: %v", v)
+	}
+}
+
+type ConfluentConsumePluginAuthentication struct {
+	Basic *ConfluentConsumePluginBasic `json:"basic,omitempty"`
+	// Authentication mode to use with the schema registry.
+	Mode *ConfluentConsumePluginMode `json:"mode,omitempty"`
+}
+
+func (o *ConfluentConsumePluginAuthentication) GetBasic() *ConfluentConsumePluginBasic {
+	if o == nil {
+		return nil
+	}
+	return o.Basic
+}
+
+func (o *ConfluentConsumePluginAuthentication) GetMode() *ConfluentConsumePluginMode {
+	if o == nil {
+		return nil
+	}
+	return o.Mode
+}
+
+type ConfluentConsumePluginConfluent struct {
+	Authentication ConfluentConsumePluginAuthentication `json:"authentication"`
+	// Set to false to disable SSL certificate verification when connecting to the schema registry.
+	SslVerify *bool `json:"ssl_verify,omitempty"`
+	// The TTL in seconds for the schema registry cache.
+	TTL *float64 `json:"ttl,omitempty"`
+	// The URL of the schema registry.
+	URL *string `json:"url,omitempty"`
+}
+
+func (o *ConfluentConsumePluginConfluent) GetAuthentication() ConfluentConsumePluginAuthentication {
+	if o == nil {
+		return ConfluentConsumePluginAuthentication{}
+	}
+	return o.Authentication
+}
+
+func (o *ConfluentConsumePluginConfluent) GetSslVerify() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SslVerify
+}
+
+func (o *ConfluentConsumePluginConfluent) GetTTL() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TTL
+}
+
+func (o *ConfluentConsumePluginConfluent) GetURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.URL
+}
+
+// ConfluentConsumePluginSchemaRegistry - The plugin-global schema registry configuration.
+type ConfluentConsumePluginSchemaRegistry struct {
+	Confluent *ConfluentConsumePluginConfluent `json:"confluent,omitempty"`
+}
+
+func (o *ConfluentConsumePluginSchemaRegistry) GetConfluent() *ConfluentConsumePluginConfluent {
+	if o == nil {
+		return nil
+	}
+	return o.Confluent
+}
+
+type ConfluentConsumePluginConfigBasic struct {
+	Password string `json:"password"`
+	Username string `json:"username"`
+}
+
+func (o *ConfluentConsumePluginConfigBasic) GetPassword() string {
+	if o == nil {
+		return ""
+	}
+	return o.Password
+}
+
+func (o *ConfluentConsumePluginConfigBasic) GetUsername() string {
+	if o == nil {
+		return ""
+	}
+	return o.Username
+}
+
+// ConfluentConsumePluginConfigMode - Authentication mode to use with the schema registry.
+type ConfluentConsumePluginConfigMode string
+
+const (
+	ConfluentConsumePluginConfigModeBasic ConfluentConsumePluginConfigMode = "basic"
+	ConfluentConsumePluginConfigModeNone  ConfluentConsumePluginConfigMode = "none"
+)
+
+func (e ConfluentConsumePluginConfigMode) ToPointer() *ConfluentConsumePluginConfigMode {
+	return &e
+}
+func (e *ConfluentConsumePluginConfigMode) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "basic":
+		fallthrough
+	case "none":
+		*e = ConfluentConsumePluginConfigMode(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ConfluentConsumePluginConfigMode: %v", v)
+	}
+}
+
+type ConfluentConsumePluginConfigAuthentication struct {
+	Basic *ConfluentConsumePluginConfigBasic `json:"basic,omitempty"`
+	// Authentication mode to use with the schema registry.
+	Mode *ConfluentConsumePluginConfigMode `json:"mode,omitempty"`
+}
+
+func (o *ConfluentConsumePluginConfigAuthentication) GetBasic() *ConfluentConsumePluginConfigBasic {
+	if o == nil {
+		return nil
+	}
+	return o.Basic
+}
+
+func (o *ConfluentConsumePluginConfigAuthentication) GetMode() *ConfluentConsumePluginConfigMode {
+	if o == nil {
+		return nil
+	}
+	return o.Mode
+}
+
+type ConfluentConsumePluginConfigConfluent struct {
+	Authentication ConfluentConsumePluginConfigAuthentication `json:"authentication"`
+	// Set to false to disable SSL certificate verification when connecting to the schema registry.
+	SslVerify *bool `json:"ssl_verify,omitempty"`
+	// The TTL in seconds for the schema registry cache.
+	TTL *float64 `json:"ttl,omitempty"`
+	// The URL of the schema registry.
+	URL *string `json:"url,omitempty"`
+}
+
+func (o *ConfluentConsumePluginConfigConfluent) GetAuthentication() ConfluentConsumePluginConfigAuthentication {
+	if o == nil {
+		return ConfluentConsumePluginConfigAuthentication{}
+	}
+	return o.Authentication
+}
+
+func (o *ConfluentConsumePluginConfigConfluent) GetSslVerify() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SslVerify
+}
+
+func (o *ConfluentConsumePluginConfigConfluent) GetTTL() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TTL
+}
+
+func (o *ConfluentConsumePluginConfigConfluent) GetURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.URL
+}
+
+// ConfluentConsumePluginConfigSchemaRegistry - The plugin-global schema registry configuration.
+type ConfluentConsumePluginConfigSchemaRegistry struct {
+	Confluent *ConfluentConsumePluginConfigConfluent `json:"confluent,omitempty"`
+}
+
+func (o *ConfluentConsumePluginConfigSchemaRegistry) GetConfluent() *ConfluentConsumePluginConfigConfluent {
+	if o == nil {
+		return nil
+	}
+	return o.Confluent
+}
+
 type Topics struct {
 	Name string `json:"name"`
+	// The plugin-global schema registry configuration.
+	SchemaRegistry ConfluentConsumePluginConfigSchemaRegistry `json:"schema_registry"`
 }
 
 func (o *Topics) GetName() string {
@@ -216,15 +450,22 @@ func (o *Topics) GetName() string {
 	return o.Name
 }
 
+func (o *Topics) GetSchemaRegistry() ConfluentConsumePluginConfigSchemaRegistry {
+	if o == nil {
+		return ConfluentConsumePluginConfigSchemaRegistry{}
+	}
+	return o.SchemaRegistry
+}
+
 type ConfluentConsumePluginConfig struct {
 	// The offset to start from when there is no initial offset in the consumer group.
 	AutoOffsetReset *AutoOffsetReset `json:"auto_offset_reset,omitempty"`
 	// Set of bootstrap brokers in a `{host: host, port: port}` list format.
 	BootstrapServers []ConfluentConsumePluginBootstrapServers `json:"bootstrap_servers,omitempty"`
 	// Username/Apikey for SASL authentication.
-	ClusterAPIKey *string `json:"cluster_api_key,omitempty"`
+	ClusterAPIKey string `json:"cluster_api_key"`
 	// Password/ApiSecret for SASL authentication.
-	ClusterAPISecret *string `json:"cluster_api_secret,omitempty"`
+	ClusterAPISecret string `json:"cluster_api_secret"`
 	// An identifier for the Kafka cluster. By default, this field generates a random string. You can also set your own custom cluster identifier.  If more than one Kafka plugin is configured without a `cluster_name` (that is, if the default autogenerated value is removed), these plugins will use the same producer, and by extension, the same cluster. Logs will be sent to the leader of the cluster.
 	ClusterName *string `json:"cluster_name,omitempty"`
 	// The strategy to use for committing offsets.
@@ -240,10 +481,12 @@ type ConfluentConsumePluginConfig struct {
 	MessageDeserializer *MessageDeserializer `json:"message_deserializer,omitempty"`
 	// The mode of operation for the plugin.
 	Mode *Mode `json:"mode,omitempty"`
+	// The plugin-global schema registry configuration.
+	SchemaRegistry *ConfluentConsumePluginSchemaRegistry `json:"schema_registry,omitempty"`
 	// Socket timeout in milliseconds.
 	Timeout *int64 `json:"timeout,omitempty"`
 	// The Kafka topics and their configuration you want to consume from.
-	Topics []Topics `json:"topics,omitempty"`
+	Topics []Topics `json:"topics"`
 }
 
 func (o *ConfluentConsumePluginConfig) GetAutoOffsetReset() *AutoOffsetReset {
@@ -260,16 +503,16 @@ func (o *ConfluentConsumePluginConfig) GetBootstrapServers() []ConfluentConsumeP
 	return o.BootstrapServers
 }
 
-func (o *ConfluentConsumePluginConfig) GetClusterAPIKey() *string {
+func (o *ConfluentConsumePluginConfig) GetClusterAPIKey() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.ClusterAPIKey
 }
 
-func (o *ConfluentConsumePluginConfig) GetClusterAPISecret() *string {
+func (o *ConfluentConsumePluginConfig) GetClusterAPISecret() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.ClusterAPISecret
 }
@@ -330,6 +573,13 @@ func (o *ConfluentConsumePluginConfig) GetMode() *Mode {
 	return o.Mode
 }
 
+func (o *ConfluentConsumePluginConfig) GetSchemaRegistry() *ConfluentConsumePluginSchemaRegistry {
+	if o == nil {
+		return nil
+	}
+	return o.SchemaRegistry
+}
+
 func (o *ConfluentConsumePluginConfig) GetTimeout() *int64 {
 	if o == nil {
 		return nil
@@ -339,7 +589,7 @@ func (o *ConfluentConsumePluginConfig) GetTimeout() *int64 {
 
 func (o *ConfluentConsumePluginConfig) GetTopics() []Topics {
 	if o == nil {
-		return nil
+		return []Topics{}
 	}
 	return o.Topics
 }
@@ -426,8 +676,8 @@ type ConfluentConsumePlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                        `json:"updated_at,omitempty"`
-	Config    *ConfluentConsumePluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                       `json:"updated_at,omitempty"`
+	Config    ConfluentConsumePluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *ConfluentConsumePluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
@@ -509,9 +759,9 @@ func (o *ConfluentConsumePlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *ConfluentConsumePlugin) GetConfig() *ConfluentConsumePluginConfig {
+func (o *ConfluentConsumePlugin) GetConfig() ConfluentConsumePluginConfig {
 	if o == nil {
-		return nil
+		return ConfluentConsumePluginConfig{}
 	}
 	return o.Config
 }

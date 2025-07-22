@@ -38,19 +38,19 @@ type GatewayPluginVaultAuthResource struct {
 
 // GatewayPluginVaultAuthResourceModel describes the resource data model.
 type GatewayPluginVaultAuthResourceModel struct {
-	Config         *tfTypes.VaultAuthPluginConfig `tfsdk:"config"`
-	ControlPlaneID types.String                   `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                    `tfsdk:"created_at"`
-	Enabled        types.Bool                     `tfsdk:"enabled"`
-	ID             types.String                   `tfsdk:"id"`
-	InstanceName   types.String                   `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering     `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials             `tfsdk:"partials"`
-	Protocols      []types.String                 `tfsdk:"protocols"`
-	Route          *tfTypes.Set                   `tfsdk:"route"`
-	Service        *tfTypes.Set                   `tfsdk:"service"`
-	Tags           []types.String                 `tfsdk:"tags"`
-	UpdatedAt      types.Int64                    `tfsdk:"updated_at"`
+	Config         tfTypes.VaultAuthPluginConfig `tfsdk:"config"`
+	ControlPlaneID types.String                  `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                   `tfsdk:"created_at"`
+	Enabled        types.Bool                    `tfsdk:"enabled"`
+	ID             types.String                  `tfsdk:"id"`
+	InstanceName   types.String                  `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering    `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials            `tfsdk:"partials"`
+	Protocols      []types.String                `tfsdk:"protocols"`
+	Route          *tfTypes.Set                  `tfsdk:"route"`
+	Service        *tfTypes.Set                  `tfsdk:"service"`
+	Tags           []types.String                `tfsdk:"tags"`
+	UpdatedAt      types.Int64                   `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginVaultAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,8 +62,7 @@ func (r *GatewayPluginVaultAuthResource) Schema(ctx context.Context, req resourc
 		MarkdownDescription: "GatewayPluginVaultAuth Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"access_token_name": schema.StringAttribute{
 						Computed:    true,
@@ -96,8 +95,7 @@ func (r *GatewayPluginVaultAuthResource) Schema(ctx context.Context, req resourc
 						Description: `If enabled, the plugin will read the request body (if said request has one and its MIME type is supported) and try to find the key in it. Supported MIME types are ` + "`" + `application/www-form-urlencoded` + "`" + `, ` + "`" + `application/json` + "`" + `, and ` + "`" + `multipart/form-data` + "`" + `.`,
 					},
 					"vault": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						Description: `A reference to an existing ` + "`" + `vault` + "`" + ` object within the database. ` + "`" + `vault` + "`" + ` entities define the connection and authentication parameters used to connect to a Vault HTTP(S) API.`,
 					},
 				},

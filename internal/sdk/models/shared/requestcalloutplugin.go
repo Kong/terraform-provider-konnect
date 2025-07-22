@@ -422,7 +422,7 @@ func (o *Cache) GetStrategy() *RequestCalloutPluginStrategy {
 
 // RequestCalloutPluginCache - Callout caching configuration.
 type RequestCalloutPluginCache struct {
-	// If true, skips caching the callout response.
+	// If `true`, skips caching the callout response.
 	Bypass *bool `json:"bypass,omitempty"`
 }
 
@@ -435,11 +435,11 @@ func (o *RequestCalloutPluginCache) GetBypass() *bool {
 
 // RequestCalloutPluginConfigBody - Callout request body customizations.
 type RequestCalloutPluginConfigBody struct {
-	// The custom body fields to be added in the callout HTTP request.Values can contain Lua expressions in the form $(some_lua_code).
+	// The custom body fields to be added to the callout HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
 	Custom map[string]any `json:"custom,omitempty"`
-	// If true, decodes the request's body to make it available for customizations.
+	// If `true`, decodes the request's body and make it available for customizations. Only JSON content type is supported.
 	Decode *bool `json:"decode,omitempty"`
-	// If true, forwards the incoming request's body to the callout request.
+	// If `true`, forwards the incoming request's body to the callout request.
 	Forward *bool `json:"forward,omitempty"`
 }
 
@@ -497,7 +497,7 @@ func (e *OnError) UnmarshalJSON(data []byte) error {
 type Error struct {
 	// The error code to respond with if `on_error` is `fail` or if `retries` is achieved.
 	ErrorResponseCode *int64 `json:"error_response_code,omitempty"`
-	// The error mesasge to respond with if `on_error` is `fail` or if `retries` is achieved.Templating with Lua expressions is supported.
+	// The error mesasge to respond with if `on_error` is set to `fail` or if `retries` is achieved. Templating with Lua expressions is supported.
 	ErrorResponseMsg *string `json:"error_response_msg,omitempty"`
 	// The list of HTTP status codes considered errors under the error handling policy.
 	HTTPStatuses []int64  `json:"http_statuses,omitempty"`
@@ -543,9 +543,9 @@ func (o *Error) GetRetries() *int64 {
 
 // RequestCalloutPluginConfigHeaders - Callout request header customizations.
 type RequestCalloutPluginConfigHeaders struct {
-	// The custom headers to be added in the callout HTTP request.Values can contain Lua expressions in the form $(some_lua_code).
+	// The custom headers to be added in the callout HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
 	Custom map[string]any `json:"custom,omitempty"`
-	// If true, forwards the incoming request's headers to the callout request.
+	// If `true`, forwards the incoming request's headers to the callout request.
 	Forward *bool `json:"forward,omitempty"`
 }
 
@@ -640,7 +640,7 @@ type HTTPOpts struct {
 	Proxy *Proxy `json:"proxy,omitempty"`
 	// The SNI used in the callout request. Defaults to host if omitted.
 	SslServerName *string `json:"ssl_server_name,omitempty"`
-	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
+	// If set to `true`, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
 	SslVerify *bool `json:"ssl_verify,omitempty"`
 	// Socket timeouts in milliseconds. All or none must be set.
 	Timeouts *Timeouts `json:"timeouts,omitempty"`
@@ -676,9 +676,9 @@ func (o *HTTPOpts) GetTimeouts() *Timeouts {
 
 // RequestCalloutPluginQuery - Callout request query param customizations.
 type RequestCalloutPluginQuery struct {
-	// The custom query params to be added in the callout HTTP request.Values can contain Lua expressions in the form $(some_lua_code).
+	// The custom query params to be added in the callout HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
 	Custom map[string]any `json:"custom,omitempty"`
-	// If true, forwards the incoming request's query params to the callout request.
+	// If `true`, forwards the incoming request's query params to the callout request.
 	Forward *bool `json:"forward,omitempty"`
 }
 
@@ -700,7 +700,7 @@ func (o *RequestCalloutPluginQuery) GetForward() *bool {
 type Request struct {
 	// Callout request body customizations.
 	Body RequestCalloutPluginConfigBody `json:"body"`
-	// Lua code that executes before the callout request is made.Standard Lua sandboxing restrictions apply.
+	// Lua code that executes before the callout request is made. **Warning** can impact system behavior. Standard Lua sandboxing restrictions apply.
 	ByLua *string `json:"by_lua,omitempty"`
 	// The error handling policy the plugin will apply to TCP and HTTP errors.
 	Error Error `json:"error"`
@@ -773,9 +773,9 @@ func (o *Request) GetURL() string {
 }
 
 type RequestCalloutPluginBody struct {
-	// If true, decodes the response body before storing into the context. Only JSON is supported.
+	// If `true`, decodes the response body before storing into the context. Only JSON is supported.
 	Decode *bool `json:"decode,omitempty"`
-	// If false, skips storing the callout response body into kong.ctx.shared.callouts.<name>.response.body.
+	// If `false`, skips storing the callout response body into kong.ctx.shared.callouts.<name>.response.body.
 	Store *bool `json:"store,omitempty"`
 }
 
@@ -795,7 +795,7 @@ func (o *RequestCalloutPluginBody) GetStore() *bool {
 
 // RequestCalloutPluginHeaders - Callout response header customizations.
 type RequestCalloutPluginHeaders struct {
-	// If false, skips storing the callout response headers intokong.ctx.shared.callouts.<name>.response.headers.
+	// If `false`, skips storing the callout response headers into kong.ctx.shared.callouts.<name>.response.headers.
 	Store *bool `json:"store,omitempty"`
 }
 
@@ -809,7 +809,7 @@ func (o *RequestCalloutPluginHeaders) GetStore() *bool {
 // Response - Configurations of callout response handling.
 type Response struct {
 	Body RequestCalloutPluginBody `json:"body"`
-	// Lua code that executes after the callout request is made, before caching takes place. Standard Lua sandboxing restrictions apply.
+	// Lua code that executes after the callout response is received, before caching takes place. Can produce side effects. Standard Lua sandboxing restrictions apply.
 	ByLua *string `json:"by_lua,omitempty"`
 	// Callout response header customizations.
 	Headers RequestCalloutPluginHeaders `json:"headers"`
@@ -839,9 +839,9 @@ func (o *Response) GetHeaders() RequestCalloutPluginHeaders {
 type Callouts struct {
 	// Callout caching configuration.
 	Cache RequestCalloutPluginCache `json:"cache"`
-	// An array of callout names the current callout depends on.This dependency determines the callout execution order.
+	// An array of callout names the current callout depends on. This dependency list determines the callout execution order via a topological sorting algorithm.
 	DependsOn []string `json:"depends_on,omitempty"`
-	// A string identifier for a callout. A callout object is referenceablevia its name in the kong.ctx.shared.callouts.<name>
+	// A string identifier for a callout. A callout object is referenceable via its name in the `kong.ctx.shared.callouts.<name>`
 	Name string `json:"name"`
 	// The customizations for the callout request.
 	Request Request `json:"request"`
@@ -886,11 +886,11 @@ func (o *Callouts) GetResponse() Response {
 
 // Body - Callout request body customizations.
 type Body struct {
-	// The custom body fields to be added in the upstream request body. Values can contain Lua expressions in the form $(some_lua_code).
+	// The custom body fields to be added in the upstream request body. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
 	Custom map[string]any `json:"custom,omitempty"`
-	// If true, decodes the request's body to make it available for upstream by_lua customizations.
+	// If `true`, decodes the request's body to make it available for upstream by_lua customizations. Only JSON content type is supported.
 	Decode *bool `json:"decode,omitempty"`
-	// If false, skips forwarding the incoming request's body to the upstream request.
+	// If `false`, skips forwarding the incoming request's body to the upstream request.
 	Forward *bool `json:"forward,omitempty"`
 }
 
@@ -917,9 +917,9 @@ func (o *Body) GetForward() *bool {
 
 // Headers - Callout request header customizations.
 type Headers struct {
-	// The custom headers to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_code).
+	// The custom headers to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
 	Custom map[string]any `json:"custom,omitempty"`
-	// If false, does not forward request headers to upstream request.
+	// If `false`, does not forward request headers to upstream request.
 	Forward *bool `json:"forward,omitempty"`
 }
 
@@ -939,9 +939,9 @@ func (o *Headers) GetForward() *bool {
 
 // Query - Upstream request query param customizations.
 type Query struct {
-	// The custom query params to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_code).
+	// The custom query params to be added in the upstream HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
 	Custom map[string]any `json:"custom,omitempty"`
-	// If false, does not forward request query params to upstream request.
+	// If `false`, does not forward request query params to upstream request.
 	Forward *bool `json:"forward,omitempty"`
 }
 
@@ -963,7 +963,7 @@ func (o *Query) GetForward() *bool {
 type RequestCalloutPluginUpstream struct {
 	// Callout request body customizations.
 	Body *Body `json:"body,omitempty"`
-	// Lua code that executes before the upstream request is made. Standard Lua sandboxing restrictions apply.
+	// Lua code that executes before the upstream request is made. Can produce side effects. Standard Lua sandboxing restrictions apply.
 	ByLua *string `json:"by_lua,omitempty"`
 	// Callout request header customizations.
 	Headers *Headers `json:"headers,omitempty"`
@@ -1002,8 +1002,8 @@ func (o *RequestCalloutPluginUpstream) GetQuery() *Query {
 type RequestCalloutPluginConfig struct {
 	// Plugin global caching configuration.
 	Cache *Cache `json:"cache,omitempty"`
-	// A collection of callout objects, where each object represents an HTTPrequest made in the context of a proxy request.
-	Callouts []Callouts `json:"callouts,omitempty"`
+	// A collection of callout objects, where each object represents an HTTP request made in the context of a proxy request.
+	Callouts []Callouts `json:"callouts"`
 	// Customizations to the upstream request.
 	Upstream *RequestCalloutPluginUpstream `json:"upstream,omitempty"`
 }
@@ -1017,7 +1017,7 @@ func (o *RequestCalloutPluginConfig) GetCache() *Cache {
 
 func (o *RequestCalloutPluginConfig) GetCallouts() []Callouts {
 	if o == nil {
-		return nil
+		return []Callouts{}
 	}
 	return o.Callouts
 }
@@ -1123,8 +1123,8 @@ type RequestCalloutPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                      `json:"updated_at,omitempty"`
-	Config    *RequestCalloutPluginConfig `json:"config,omitempty"`
+	UpdatedAt *int64                     `json:"updated_at,omitempty"`
+	Config    RequestCalloutPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *RequestCalloutPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -1208,9 +1208,9 @@ func (o *RequestCalloutPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *RequestCalloutPlugin) GetConfig() *RequestCalloutPluginConfig {
+func (o *RequestCalloutPlugin) GetConfig() RequestCalloutPluginConfig {
 	if o == nil {
-		return nil
+		return RequestCalloutPluginConfig{}
 	}
 	return o.Config
 }

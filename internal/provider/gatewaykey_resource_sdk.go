@@ -33,9 +33,11 @@ func (r *GatewayKeyResourceModel) RefreshFromSharedKey(ctx context.Context, resp
 			r.Set = &tfTypes.Set{}
 			r.Set.ID = types.StringPointerValue(resp.Set.ID)
 		}
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
+		if resp.Tags != nil {
+			r.Tags = make([]types.String, 0, len(resp.Tags))
+			for _, v := range resp.Tags {
+				r.Tags = append(r.Tags, types.StringValue(v))
+			}
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 		r.X5t = types.StringPointerValue(resp.X5t)
@@ -185,9 +187,12 @@ func (r *GatewayKeyResourceModel) ToSharedKey(ctx context.Context) (*shared.Key,
 			ID: id1,
 		}
 	}
-	tags := make([]string, 0, len(r.Tags))
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
+	var tags []string
+	if r.Tags != nil {
+		tags = make([]string, 0, len(r.Tags))
+		for _, tagsItem := range r.Tags {
+			tags = append(tags, tagsItem.ValueString())
+		}
 	}
 	updatedAt := new(int64)
 	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
