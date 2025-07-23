@@ -108,6 +108,61 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Serverless Cloud Gateways
+  '/v1/cmeks/{cmekId}':
+    parameters:
+      - $ref: '#/components/parameters/cmekId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: CMEK#read
+        terraform-datasource: null
+      operationId: get-cmek
+      summary: Get a CMEK
+      description: Get a customer managed encryption key.
+      responses:
+        '200':
+          $ref: '#/components/responses/CMEK'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - CMEK
+    put:
+      x-speakeasy-entity-operation: 'CMEK#create,update'
+      operationId: put-cmek
+      summary: Create or replace a CMEK
+      description: Create or replace a customer managed encryption key.
+      requestBody:
+        $ref: '#/components/requestBodies/ReplaceCMEK'
+      responses:
+        '200':
+          $ref: '#/components/responses/CMEK'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - CMEK
+    delete:
+      x-speakeasy-entity-operation: CMEK#delete
+      operationId: delete-cmek
+      summary: Delete a CMEK
+      description: 'Delete a customer managed encryption key. Avoid revoking or deleting a KMS key and CMEK that is actively used by Konnect, as this can lead to data loss or service disruptions.'
+      responses:
+        '204':
+          description: Success
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - CMEK
   /v1/mesh/control-planes:
     get:
       x-speakeasy-entity-operation: MeshControlPlanes#get
@@ -14562,6 +14617,18 @@ components:
       description: ID of the of the consumer
       schema:
         type: string
+    cmekId:
+      name: cmekId
+      in: path
+      required: true
+      description: 'Customer Managed Encryption Key identifier. This ID is selected from a predefined, Konnect-specific list of allowed values and uniquely identifies a CMEK configuration within a given organization and Konnect region. While not global in function, these IDs behave like scoped namespaces with enforced uniqueness and enumeration constraints.'
+      schema:
+        type: string
+        example: default
+        default: default
+        enum:
+          - default
+      x-speakeasy-name-override: id
     configStoreId:
       schema:
         type: string
@@ -19660,6 +19727,41 @@ components:
       format: set
       title: RealmConsumerGroups
       x-speakeasy-param-suppress-computed-diff: true
+    KMSARN:
+      description: 'The Amazon Resource Name (ARN) of the Key Management Service (KMS) key to use for encryption and decryption. We recommend using one multi-region key (MRK) per Konnect region to enhance security and compliance, while also supporting failover to other AWS regions.'
+      type: string
+      example: 'arn:aws:kms:us-east-1:123456789012:key/mrk-12345678123412341234123456789012'
+    CMEKName:
+      description: The name of the CMEK. We recommend you match the key's name used in KMS.
+      type: string
+      example: My KMS Key
+      minLength: 1
+    CMEKDescription:
+      description: An optional description of the CMEK.
+      type: string
+      example: My Key Description
+    CMEK:
+      type: object
+      properties:
+        id:
+          type: string
+          x-speakeasy-ignore: true
+        key_arn:
+          $ref: '#/components/schemas/KMSARN'
+        name:
+          $ref: '#/components/schemas/CMEKName'
+        description:
+          $ref: '#/components/schemas/CMEKDescription'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - key_arn
+        - name
+        - created_at
+        - updated_at
     DataPlaneClientCertificate:
       x-speakeasy-entity: GatewayDataPlaneClientCertificate
       type: object
@@ -39835,6 +39937,23 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ConsumerCreateRequest'
+    ReplaceCMEK:
+      description: CMEK to be replaced
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              key_arn:
+                $ref: '#/components/schemas/KMSARN'
+              name:
+                $ref: '#/components/schemas/CMEKName'
+              description:
+                $ref: '#/components/schemas/CMEKDescription'
+            required:
+              - key_arn
+              - name
     DataPlaneClientCertificateRequest:
       content:
         application/json:
@@ -40560,6 +40679,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ConsumerRealm'
+    CMEK:
+      description: A CMEK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CMEK'
     DataPlaneClientCertificateResponse:
       description: Response body for retrieving a dp-client-certificate.
       content:
@@ -40741,6 +40866,8 @@ tags:
   - name: Centrally Managed Keys
     description: |
       Centrally managed consumers use key-auth mechanism to authenticate consumers. Keys refer to the API key credential used by the consumer to authenticate to your services. 
+  - name: CMEK
+    description: 'Customer Managed Encryption Keys (CMEK) are used to encrypt and decrypt sensitive data in Konnect. They allow you to manage your own encryption keys using AWS Key Management Service (KMS). CMEKs provide an additional layer of security and compliance for your Konnect deployments, ensuring that your data is encrypted with keys that you control. Avoid revoking or deleting a KMS key and CMEK that is actively used by Konnect, as this can lead to data loss or service disruptions.'
   - description: DP Certificates
     name: DP Certificates
   - description: Custom Plugin Schemas

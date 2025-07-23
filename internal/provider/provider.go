@@ -149,6 +149,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewCloudGatewayNetworkResource,
 		NewCloudGatewayPrivateDNSResource,
 		NewCloudGatewayTransitGatewayResource,
+		NewCmekResource,
 		NewGatewayACLResource,
 		NewGatewayBasicAuthResource,
 		NewGatewayCACertificateResource,

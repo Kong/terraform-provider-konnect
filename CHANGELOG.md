@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.13.0
+> Released on 2025/??/??
+
+### Features
+* Add support for the `konnect_cmek` resource
+
 ## 2.12.0
 > Released on 2025/07/22
 

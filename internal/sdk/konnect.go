@@ -58,7 +58,9 @@ func Pointer[T any](v T) *T { return &v }
 type Konnect struct {
 	SDKVersion              string
 	ServerlessCloudGateways *ServerlessCloudGateways
-	Mesh                    *Mesh
+	// Customer Managed Encryption Keys (CMEK) are used to encrypt and decrypt sensitive data in Konnect. They allow you to manage your own encryption keys using AWS Key Management Service (KMS). CMEKs provide an additional layer of security and compliance for your Konnect deployments, ensuring that your data is encrypted with keys that you control. Avoid revoking or deleting a KMS key and CMEK that is actively used by Konnect, as this can lead to data loss or service disruptions.
+	Cmek *Cmek
+	Mesh *Mesh
 	// Use a realm to group consumers around an identity, defined by organizational boundaries, such as a production realm or a development realm. Realms are connected to a [geographic region](https://docs.konghq.com/konnect/geo/) in Konnect. Centrally managed consumers defined in realms can be used across multiple control planes.
 	//
 	Realms *Realms
@@ -302,6 +304,7 @@ func New(opts ...SDKOption) *Konnect {
 	}
 
 	sdk.ServerlessCloudGateways = newServerlessCloudGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Cmek = newCmek(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Mesh = newMesh(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Realms = newRealms(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.CentrallyManagedConsumers = newCentrallyManagedConsumers(sdk, sdk.sdkConfiguration, sdk.hooks)
