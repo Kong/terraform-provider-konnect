@@ -7,8 +7,8 @@ import (
 )
 
 type RequestCalloutPluginUpstream struct {
-	Body    *RequestCalloutPluginConfigBody    `tfsdk:"body"`
-	ByLua   types.String                       `tfsdk:"by_lua"`
-	Headers *RequestCalloutPluginConfigHeaders `tfsdk:"headers"`
-	Query   *RequestCalloutPluginConfigHeaders `tfsdk:"query"`
+	Body    *RequestCalloutPluginConfigBody            `tfsdk:"body"`
+	ByLua   types.String                               `tfsdk:"by_lua"`
+	Headers *RequestCalloutPluginConfigCalloutsHeaders `tfsdk:"headers"`
+	Query   *RequestCalloutPluginConfigCalloutsHeaders `tfsdk:"query"`
 }
