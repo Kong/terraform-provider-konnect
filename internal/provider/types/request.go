@@ -7,12 +7,12 @@ import (
 )
 
 type Request struct {
-	Body     RequestCalloutPluginConfigBody    `tfsdk:"body"`
-	ByLua    types.String                      `tfsdk:"by_lua"`
-	Error    Error                             `tfsdk:"error"`
-	Headers  RequestCalloutPluginConfigHeaders `tfsdk:"headers"`
-	HTTPOpts HTTPOpts                          `tfsdk:"http_opts"`
-	Method   types.String                      `tfsdk:"method"`
-	Query    RequestCalloutPluginConfigHeaders `tfsdk:"query"`
-	URL      types.String                      `tfsdk:"url"`
+	Body     RequestCalloutPluginConfigBody            `tfsdk:"body"`
+	ByLua    types.String                              `tfsdk:"by_lua"`
+	Error    Error                                     `tfsdk:"error"`
+	Headers  RequestCalloutPluginConfigCalloutsHeaders `tfsdk:"headers"`
+	HTTPOpts HTTPOpts                                  `tfsdk:"http_opts"`
+	Method   types.String                              `tfsdk:"method"`
+	Query    RequestCalloutPluginConfigCalloutsHeaders `tfsdk:"query"`
+	URL      types.String                              `tfsdk:"url"`
 }

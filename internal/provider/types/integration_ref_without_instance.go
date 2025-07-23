@@ -6,6 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type RequestCalloutPluginHeaders struct {
-	Store types.Bool `tfsdk:"store"`
+type IntegrationRefWithoutInstance struct {
+	DisplayName types.String `tfsdk:"display_name"`
+	Name        types.String `tfsdk:"name"`
 }
