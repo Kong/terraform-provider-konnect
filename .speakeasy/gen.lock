@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 7280e4141f17400b4d9217aeacfea36b
+  docChecksum: f261bb24b9923dec8faf0fd61e97dfc0
   docVersion: 2.0.0
   speakeasyVersion: 1.581.1
   generationVersion: 2.656.9
@@ -63,6 +63,8 @@ generatedFiles:
   - examples/resources/konnect_cloud_gateway_private_dns/resource.tf
   - examples/resources/konnect_cloud_gateway_transit_gateway/import.sh
   - examples/resources/konnect_cloud_gateway_transit_gateway/resource.tf
+  - examples/resources/konnect_cmek/import.sh
+  - examples/resources/konnect_cmek/resource.tf
   - examples/resources/konnect_gateway_acl/import.sh
   - examples/resources/konnect_gateway_acl/resource.tf
   - examples/resources/konnect_gateway_basic_auth/import.sh
@@ -387,6 +389,8 @@ generatedFiles:
   - internal/provider/cloudgatewayprovideraccountlist_data_source_sdk.go
   - internal/provider/cloudgatewaytransitgateway_resource.go
   - internal/provider/cloudgatewaytransitgateway_resource_sdk.go
+  - internal/provider/cmek_resource.go
+  - internal/provider/cmek_resource_sdk.go
   - internal/provider/gatewayacl_resource.go
   - internal/provider/gatewayacl_resource_sdk.go
   - internal/provider/gatewaybasicauth_resource.go
@@ -999,6 +1003,7 @@ generatedFiles:
   - internal/sdk/centrallymanagedkeys.go
   - internal/sdk/certificates.go
   - internal/sdk/cloudgateways.go
+  - internal/sdk/cmek.go
   - internal/sdk/configstores.go
   - internal/sdk/consumergroups.go
   - internal/sdk/consumers.go
@@ -1209,6 +1214,7 @@ generatedFiles:
   - internal/sdk/models/operations/deletecacertificate.go
   - internal/sdk/models/operations/deletecanaryplugin.go
   - internal/sdk/models/operations/deletecertificate.go
+  - internal/sdk/models/operations/deletecmek.go
   - internal/sdk/models/operations/deleteconfigstore.go
   - internal/sdk/models/operations/deleteconfluentconsumeplugin.go
   - internal/sdk/models/operations/deleteconfluentplugin.go
@@ -1361,6 +1367,7 @@ generatedFiles:
   - internal/sdk/models/operations/getcacertificate.go
   - internal/sdk/models/operations/getcanaryplugin.go
   - internal/sdk/models/operations/getcertificate.go
+  - internal/sdk/models/operations/getcmek.go
   - internal/sdk/models/operations/getconfigstore.go
   - internal/sdk/models/operations/getconfiguration.go
   - internal/sdk/models/operations/getconfluentconsumeplugin.go
@@ -1493,6 +1500,7 @@ generatedFiles:
   - internal/sdk/models/operations/postsystemaccountsaccountidassignedroles.go
   - internal/sdk/models/operations/postsystemaccountsidaccesstokens.go
   - internal/sdk/models/operations/postteamsteamidsystemaccounts.go
+  - internal/sdk/models/operations/putcmek.go
   - internal/sdk/models/operations/removeconsumerfromgroup.go
   - internal/sdk/models/operations/removeuserfromteam.go
   - internal/sdk/models/operations/replaceportalproductversion.go
@@ -1705,6 +1713,8 @@ generatedFiles:
   - internal/sdk/models/shared/canaryplugin.go
   - internal/sdk/models/shared/centralizedconsumer.go
   - internal/sdk/models/shared/certificate.go
+  - internal/sdk/models/shared/cmek.go
+  - internal/sdk/models/shared/cmekid.go
   - internal/sdk/models/shared/configstore.go
   - internal/sdk/models/shared/configurationdataplanegroup.go
   - internal/sdk/models/shared/configurationdataplanegroupautoscale.go
@@ -1884,6 +1894,7 @@ generatedFiles:
   - internal/sdk/models/shared/ratelimitingadvancedplugin.go
   - internal/sdk/models/shared/ratelimitingplugin.go
   - internal/sdk/models/shared/redirectplugin.go
+  - internal/sdk/models/shared/replacecmek.go
   - internal/sdk/models/shared/replaceportalproductversionpayload.go
   - internal/sdk/models/shared/requestcalloutplugin.go
   - internal/sdk/models/shared/requestsizelimitingplugin.go
@@ -12815,5 +12826,47 @@ examples:
           application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "solace-upstream", "config": {"message": {"destinations": [{"name": "<value>"}]}, "session": {"host": "soupy-joy.org"}}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 205409}
+  get-cmek:
+    speakeasy-default-get-cmek:
+      parameters:
+        path:
+          cmekId: "default"
+      responses:
+        "200":
+          application/json: {"key_arn": "arn:aws:kms:us-east-1:123456789012:key/mrk-12345678123412341234123456789012", "name": "My KMS Key", "description": "My Key Description", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  put-cmek:
+    speakeasy-default-put-cmek:
+      parameters:
+        path:
+          cmekId: "default"
+      requestBody:
+        application/json: {"key_arn": "arn:aws:kms:us-east-1:123456789012:key/mrk-12345678123412341234123456789012", "name": "My KMS Key", "description": "My Key Description"}
+      responses:
+        "200":
+          application/json: {"key_arn": "arn:aws:kms:us-east-1:123456789012:key/mrk-12345678123412341234123456789012", "name": "My KMS Key", "description": "My Key Description", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 861439, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": [], "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-cmek:
+    speakeasy-default-delete-cmek:
+      parameters:
+        path:
+          cmekId: "default"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
 examplesVersion: 1.0.2
 generatedTests: {}
