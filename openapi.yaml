@@ -108,6 +108,90 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Serverless Cloud Gateways
+  /v1/catalog-services:
+    post:
+      x-speakeasy-entity-operation: CatalogService#create
+      operationId: create-catalog-service
+      summary: Create Service
+      description: Creates a service.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateCatalogServiceRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CatalogServiceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Catalog Services
+  '/v1/catalog-services/{id}':
+    parameters:
+      - name: id
+        in: path
+        description: The `id` of the service.
+        required: true
+        schema:
+          type: string
+          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: CatalogService#read
+        terraform-datasource: null
+      operationId: fetch-catalog-service
+      summary: Fetch Service
+      description: Fetches a service.
+      responses:
+        '200':
+          $ref: '#/components/responses/CatalogServiceResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Catalog Services
+    patch:
+      x-speakeasy-entity-operation: CatalogService#update
+      operationId: update-catalog-service
+      summary: Update Service
+      description: Updates a service.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateCatalogServiceRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/CatalogServiceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Catalog Services
+    delete:
+      x-speakeasy-entity-operation: CatalogService#delete
+      operationId: delete-catalog-service
+      summary: Delete Service
+      description: Deletes a service.
+      responses:
+        '204':
+          description: Service was deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Catalog Services
   '/v1/cmeks/{cmekId}':
     parameters:
       - $ref: '#/components/parameters/cmekId'
@@ -163,6 +247,225 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - CMEK
+  /v1/integration-instances:
+    post:
+      x-speakeasy-entity-operation: IntegrationInstance#create
+      operationId: create-integration-instance
+      summary: Create Integration Instance
+      description: Creates an integration instance.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateIntegrationInstanceRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/IntegrationInstanceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Integration Instances
+  '/v1/integration-instances/{id}':
+    parameters:
+      - name: id
+        in: path
+        description: The `id` of the integration instance.
+        required: true
+        schema:
+          type: string
+          example: 3f51fa25-310a-421d-bd1a-007f859021a3
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IntegrationInstance#read
+        terraform-datasource: null
+      operationId: fetch-integration-instance
+      summary: Fetch Integration Instance
+      description: Fetches a integration instance.
+      responses:
+        '200':
+          $ref: '#/components/responses/IntegrationInstanceResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Integration Instances
+    patch:
+      x-speakeasy-entity-operation: IntegrationInstance#update
+      operationId: update-integration-instance
+      summary: Update Integration Instance
+      description: Updates an integration instance.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateIntegrationInstanceRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/IntegrationInstanceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Integration Instances
+    delete:
+      x-speakeasy-entity-operation: IntegrationInstance#delete
+      operationId: delete-integration-instance
+      summary: Delete Integration Instance
+      description: Deletes an integration instance.
+      responses:
+        '204':
+          description: Integration Instance was deleted successfully.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Integration Instances
+  '/v1/integration-instances/{integrationInstanceId}/auth-config':
+    parameters:
+      - name: integrationInstanceId
+        in: path
+        description: The `id` of the integration instance.
+        required: true
+        schema:
+          type: string
+          example: 3f51fa25-310a-421d-bd1a-007f859021a3
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IntegrationInstanceAuthConfig#read
+        terraform-datasource: null
+      operationId: get-integration-instance-auth-config
+      summary: Get Integration Instance Auth Config
+      description: Fetches auth config scoped to the given integration instance.
+      responses:
+        '200':
+          $ref: '#/components/responses/IntegrationInstanceAuthConfigResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Integration Instance Auth Config
+    put:
+      x-speakeasy-entity-operation: 'IntegrationInstanceAuthConfig#create,update'
+      operationId: upsert-integration-instance-auth-config
+      summary: Upsert Integration Instance Auth Config
+      description: Upserts auth config scoped to the given integration instance.
+      requestBody:
+        $ref: '#/components/requestBodies/UpsertIntegrationInstanceAuthConfigRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/IntegrationInstanceAuthConfigResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Integration Instance Auth Config
+    delete:
+      x-speakeasy-entity-operation: IntegrationInstanceAuthConfig#delete
+      operationId: delete-integration-instance-auth-config
+      summary: Delete Integration Instance Auth Config
+      description: Deletes the auth config scoped to the given integration instance.
+      responses:
+        '204':
+          description: Integration Instance Auth Config was deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Integration Instance Auth Config
+  '/v1/integration-instances/{integrationInstanceId}/auth-credential':
+    parameters:
+      - name: integrationInstanceId
+        in: path
+        description: The `id` of the integration instance.
+        required: true
+        schema:
+          type: string
+          example: 3f51fa25-310a-421d-bd1a-007f859021a3
+    post:
+      x-speakeasy-entity-operation: IntegrationInstanceAuthCredential#create
+      operationId: create-integration-instance-auth-credential
+      summary: Create Integration Instance Auth Credential
+      description: |
+        Creates an auth credential scoped to the given integration instance.
+        Auth credentials are singleton resources that have a 1-to-1 relationship with
+        an integration instance.
+
+        An attempt to create subsequent auth credentials for an instance will result in a 409 response.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateIntegrationInstanceAuthCredentialRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/IntegrationInstanceAuthCredentialResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Integration Instance Auth Credentials
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IntegrationInstanceAuthCredential#read
+        terraform-datasource: null
+      operationId: get-integration-instance-auth-credential
+      summary: Get Integration Instance Auth Credential
+      description: Fetches the auth credential scoped to the given integration instance.
+      responses:
+        '200':
+          $ref: '#/components/responses/IntegrationInstanceAuthCredentialResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Integration Instance Auth Credentials
+    delete:
+      x-speakeasy-entity-operation: IntegrationInstanceAuthCredential#delete
+      operationId: delete-integration-instance-auth-credential
+      summary: Delete Integration Instance Auth Credential
+      description: Deletes the auth credential scoped to the given integration instance.
+      responses:
+        '204':
+          description: Integration Instance Auth Credential was deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Integration Instance Auth Credentials
   /v1/mesh/control-planes:
     get:
       x-speakeasy-entity-operation: MeshControlPlanes#get
@@ -19762,6 +20065,492 @@ components:
         - name
         - created_at
         - updated_at
+    CreateCatalogService:
+      type: object
+      properties:
+        name:
+          description: |
+            The machine name of the Service that uniquely identifies it within the catalog.
+          type: string
+          example: user-svc
+          maxLength: 120
+          minLength: 1
+          pattern: '^[0-9a-z.-]+$'
+        display_name:
+          description: The display name of the Service.
+          type: string
+          example: User Service
+          maxLength: 120
+          minLength: 1
+        description:
+          description: Optionally provide a description of the Service.
+          type: string
+          maxLength: 2048
+          nullable: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        custom_fields:
+          $ref: '#/components/schemas/CustomFields'
+      additionalProperties: false
+      required:
+        - name
+        - display_name
+    UpdateCatalogService:
+      type: object
+      properties:
+        name:
+          description: |
+            The machine name of the Service that uniquely identifies it within the catalog.
+          type: string
+          example: user-svc
+          maxLength: 120
+          minLength: 1
+          pattern: '^[0-9a-z.-]+$'
+        display_name:
+          description: The display name of the Service.
+          type: string
+          example: User Service
+          maxLength: 120
+          minLength: 1
+        description:
+          description: Optionally provide a description of the Service.
+          type: string
+          maxLength: 2048
+          nullable: true
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
+        custom_fields:
+          $ref: '#/components/schemas/CustomFields'
+      additionalProperties: false
+    CatalogService:
+      description: The service object contains information about a Service Catalog service.
+      type: object
+      properties:
+        id:
+          description: The service ID.
+          type: string
+          format: uuid
+          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          readOnly: true
+        name:
+          description: |
+            The machine name of the Service that uniquely identifies it within the catalog.
+          type: string
+          example: user-svc
+          maxLength: 120
+          minLength: 1
+          pattern: '^[0-9a-z.-]+$'
+        display_name:
+          description: The display name of the Service.
+          type: string
+          example: User Service
+          maxLength: 120
+          minLength: 1
+        description:
+          description: Optionally provide a description of the Service.
+          type: string
+          maxLength: 2048
+          nullable: true
+        custom_fields:
+          $ref: '#/components/schemas/CustomFields'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - name
+        - display_name
+        - description
+        - custom_fields
+        - labels
+        - created_at
+        - updated_at
+      title: CatalogService
+    CreateIntegrationInstance:
+      type: object
+      properties:
+        integration_name:
+          description: The type of integration instance to create.
+          type: string
+          example: aws-lambda
+          maxLength: 120
+          minLength: 1
+          pattern: '^[0-9a-z.-]+$'
+        name:
+          description: |
+            The machine name of the integration instance that uniquely identifies it within the catalog.
+          type: string
+          example: aws-lambda-prod
+          maxLength: 120
+          minLength: 1
+          pattern: '^[0-9a-z.-]+$'
+        display_name:
+          description: The display name of the integration instance.
+          type: string
+          example: AWS (prod)
+          maxLength: 120
+          minLength: 1
+        description:
+          description: Optionally provide a description of the integration instance.
+          type: string
+          maxLength: 2048
+          nullable: true
+        config:
+          $ref: '#/components/schemas/IntegrationInstanceConfig'
+      additionalProperties: false
+      required:
+        - integration_name
+        - name
+        - display_name
+        - config
+    UpdateIntegrationInstance:
+      type: object
+      properties:
+        name:
+          description: |
+            The machine name of the integration instance that uniquely identifies it within the catalog.
+          type: string
+          example: aws-lambda-prod
+          maxLength: 120
+          minLength: 1
+          pattern: '^[0-9a-z.-]+$'
+        display_name:
+          description: The display name of the integration instance.
+          type: string
+          example: AWS (prod)
+          maxLength: 120
+          minLength: 1
+        description:
+          description: Optionally provide a description of the integration instance.
+          type: string
+          maxLength: 2048
+          nullable: true
+        config:
+          $ref: '#/components/schemas/IntegrationInstanceConfig'
+      additionalProperties: false
+    IntegrationInstance:
+      description: Information about an integration instance.
+      type: object
+      properties:
+        id:
+          description: The integration instance ID.
+          type: string
+          format: uuid
+          example: 3f51fa25-310a-421d-bd1a-007f859021a3
+          readOnly: true
+        name:
+          description: |
+            The machine name of the integration instance that uniquely identifies it within the catalog.
+          type: string
+          example: aws-lambda-prod
+          maxLength: 120
+          minLength: 1
+          pattern: '^[0-9a-z.-]+$'
+        display_name:
+          description: The display name of the integration instance.
+          type: string
+          example: AWS (prod)
+          maxLength: 120
+          minLength: 1
+        description:
+          description: The description of the integration instance.
+          type: string
+          maxLength: 2048
+          nullable: true
+        integration:
+          $ref: '#/components/schemas/IntegrationRefWithoutInstance'
+        authorized:
+          description: Denotes whether the integration instance has been authorized within the catalog.
+          type: boolean
+          example: true
+          readOnly: true
+        config:
+          $ref: '#/components/schemas/IntegrationInstanceConfig'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - name
+        - display_name
+        - description
+        - integration
+        - authorized
+        - config
+        - created_at
+        - updated_at
+    IntegrationInstanceConfig:
+      description: |
+        JSON object representing configuration specific to the integration instance.
+        The expected schema depends on the integration type and is dynamically registered at runtime.
+      type: object
+      example:
+        account_region: eu
+      default: {}
+      additionalProperties: true
+      x-speakeasy-type-override: any
+    CreateIntegrationInstanceAuthCredential:
+      oneOf:
+        - $ref: '#/components/schemas/CreateMultiKeyAuthCredential'
+      title: CreateIntegrationInstanceAuthCredential
+    IntegrationInstanceAuthCredential:
+      description: Object containing metadata for an integration instance auth credential.
+      oneOf:
+        - $ref: '#/components/schemas/MultiKeyAuthCredential'
+      title: IntegrationInstanceAuthCredential
+    CreateMultiKeyAuthCredential:
+      description: Payload used to create an `Multi Key` credential for an integration instance.
+      type: object
+      properties:
+        type:
+          type: string
+          const: multi_key_auth
+        config:
+          type: object
+          additionalProperties: false
+          properties:
+            headers:
+              description: |
+                A list of header key/value pairs used to transmit API credentials to the integration's external API.
+                Header names are defined by the integration within its `Multi Key` authorization strategy definition.
+              type: array
+              items:
+                type: object
+                required:
+                  - name
+                  - key
+                properties:
+                  name:
+                    description: Name of the request header
+                    type: string
+                  key:
+                    description: The key used to populate the request header
+                    type: string
+              example:
+                - name: x-api-key
+                  key: 9f2a3b4c8d6e7f00112233445566778899aabbccddeeff001122334455667788
+          required:
+            - headers
+          title: CreateMultiKeyAuthCredentialConfig
+          x-speakeasy-param-force-new: true
+          x-speakeasy-param-suppress-computed-diff: true
+      additionalProperties: false
+      required:
+        - type
+        - config
+      writeOnly: true
+      x-speakeasy-name-override: multi_key_auth
+    MultiKeyAuthCredential:
+      description: Represents a credential scoped to an integration instance that supports the `Multi Key` authorization strategy.
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 4f535923-ec24-456c-b4e5-e67f65c8c208
+        integration_instance:
+          $ref: '#/components/schemas/IntegrationInstanceRef'
+        missing_permissions:
+          description: List of detected missing permissions required to enable the full functionality of the given integration instance.
+          type: array
+          items:
+            $ref: '#/components/schemas/MissingPermission'
+        tainted:
+          description: Indicates that the credential is no longer valid and must be replaced with a new valid credential.
+          type: boolean
+          example: false
+        expires_at:
+          description: |
+            Timestamp denoting when the when the credential will expire in RFC-3339 format with a "T" character separating date from time within the field value.
+            When expired, the credential must be replaced with a new valid credential to re-enable full functionality for the given integration instance.
+
+            A `null` value indicates no known expiration time.
+          type: string
+          format: date-time
+          example: '2025-04-01T07:20:50Z'
+          nullable: true
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        type:
+          type: string
+          const: multi_key_auth
+      required:
+        - id
+        - integration_instance
+        - missing_permissions
+        - tainted
+        - expires_at
+        - created_at
+        - type
+      title: MultiKeyAuthCredential
+      x-speakeasy-param-suppress-computed-diff: true
+    MissingPermission:
+      type: object
+      properties:
+        scopes:
+          type: array
+          items:
+            type: string
+            nullable: true
+          example:
+            - 'incident:read'
+        message:
+          description: |
+            Describes the degraded experience of the integration instance due to the missing permission.
+            May also include a message on how to resolve the missing permission.
+          type: string
+      required:
+        - scopes
+        - message
+    UpsertIntegrationInstanceAuthConfig:
+      oneOf:
+        - $ref: '#/components/schemas/UpsertOAuthAuthConfig'
+      title: UpsertIntegrationInstanceAuthConfig
+    IntegrationInstanceAuthConfig:
+      oneOf:
+        - $ref: '#/components/schemas/OAuthAuthConfig'
+      title: IntegrationInstanceAuthConfig
+    UpsertOAuthAuthConfig:
+      type: object
+      properties:
+        type:
+          type: string
+          const: oauth
+        client_id:
+          description: The OAuth client identifier.
+          type: string
+          example: d745213a-b7e8-4998-abe3-41f164001970
+        client_secret:
+          description: The OAuth client secret.
+          type: string
+          example: s3cr3t4p1cl13ntt0k3n1234567890abcdef
+          writeOnly: true
+        authorization_endpoint:
+          description: The URL where users are redirected to authorize access.
+          type: string
+          format: uri
+          example: 'https://identity.service.com/oauth/authorize'
+        token_endpoint:
+          description: The URL used to retrieve access tokens.
+          type: string
+          format: uri
+          example: 'https://identity.service.com/oauth/token'
+      additionalProperties: false
+      required:
+        - type
+        - client_id
+        - client_secret
+        - authorization_endpoint
+        - token_endpoint
+      title: OAuth Config
+      x-speakeasy-name-override: oauth_config
+    OAuthAuthConfig:
+      type: object
+      properties:
+        type:
+          type: string
+          const: oauth
+        client_id:
+          description: The OAuth client identifier.
+          type: string
+          example: d745213a-b7e8-4998-abe3-41f164001970
+        authorization_endpoint:
+          description: The URL where users are redirected to authorize access.
+          type: string
+          format: uri
+          example: 'https://identity.service.com/oauth/authorize'
+        token_endpoint:
+          description: The URL used to retrieve access tokens.
+          type: string
+          format: uri
+          example: 'https://identity.service.com/oauth/token'
+      required:
+        - type
+        - client_id
+        - authorization_endpoint
+        - token_endpoint
+      x-speakeasy-name-override: OauthAuthConfig
+    CustomFields:
+      description: |
+        Map of customizable, catalog-defined fields providing information about a service.
+      type: object
+      example:
+        owner: John Appleseed
+        dashboard:
+          name: On-Call Dashboard
+          link: 'https://my-dashboard-svc.io/dashboards/1'
+      additionalProperties:
+        oneOf:
+          - $ref: '#/components/schemas/TextCustomField'
+          - $ref: '#/components/schemas/NumericCustomField'
+          - $ref: '#/components/schemas/BooleanCustomField'
+          - $ref: '#/components/schemas/UrlCustomField'
+      x-speakeasy-type-override: any
+    TextCustomField:
+      type: string
+      nullable: true
+    NumericCustomField:
+      type: number
+      nullable: true
+    BooleanCustomField:
+      type: boolean
+      nullable: true
+    UrlCustomField:
+      type: object
+      properties:
+        name:
+          description: The human-readable name of the URL link.
+          type: string
+          example: On-Call Dashboard
+        link:
+          description: The href value of the URL link.
+          type: string
+          format: uri-reference
+          example: 'https://my-dashboard-svc.io/dashboards/1'
+      nullable: true
+      required:
+        - name
+        - link
+    IntegrationRefWithoutInstance:
+      description: Short-hand descriptor of an integration that omits instance metadata.
+      type: object
+      properties:
+        name:
+          type: string
+          example: gateway-manager
+        display_name:
+          type: string
+          example: gateway-manager
+      required:
+        - name
+        - display_name
+    IntegrationInstanceRef:
+      description: Short-hand descriptor of an integration instance.
+      type: object
+      properties:
+        id:
+          description: The integration instance ID.
+          type: string
+          format: uuid
+          example: 772b9caf-ddbc-4f4f-8aa4-8dfbbe420351
+        name:
+          description: |
+            The machine name of the integration instance that uniquely identifies it within the catalog.
+          type: string
+          example: aws-lambda-prod
+          pattern: '^[0-9a-z.-]+$'
+        display_name:
+          description: The display name of the integration instance.
+          type: string
+          example: AWS (prod)
+      required:
+        - id
+        - name
+        - display_name
     DataPlaneClientCertificate:
       x-speakeasy-entity: GatewayDataPlaneClientCertificate
       type: object
@@ -39954,6 +40743,42 @@ components:
             required:
               - key_arn
               - name
+    CreateCatalogServiceRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateCatalogService'
+    UpdateCatalogServiceRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateCatalogService'
+    CreateIntegrationInstanceRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateIntegrationInstance'
+    UpdateIntegrationInstanceRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateIntegrationInstance'
+    CreateIntegrationInstanceAuthCredentialRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateIntegrationInstanceAuthCredential'
+    UpsertIntegrationInstanceAuthConfigRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpsertIntegrationInstanceAuthConfig'
     DataPlaneClientCertificateRequest:
       content:
         application/json:
@@ -40685,6 +41510,30 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CMEK'
+    CatalogServiceResponse:
+      description: A response containing a single service object.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CatalogService'
+    IntegrationInstanceResponse:
+      description: A response containing a single integration instance object.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IntegrationInstance'
+    IntegrationInstanceAuthCredentialResponse:
+      description: A response containing an integration instance auth credential.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IntegrationInstanceAuthCredential'
+    IntegrationInstanceAuthConfigResponse:
+      description: A response containing integration instance auth config.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IntegrationInstanceAuthConfig'
     DataPlaneClientCertificateResponse:
       description: Response body for retrieving a dp-client-certificate.
       content:
@@ -40868,6 +41717,47 @@ tags:
       Centrally managed consumers use key-auth mechanism to authenticate consumers. Keys refer to the API key credential used by the consumer to authenticate to your services. 
   - name: CMEK
     description: 'Customer Managed Encryption Keys (CMEK) are used to encrypt and decrypt sensitive data in Konnect. They allow you to manage your own encryption keys using AWS Key Management Service (KMS). CMEKs provide an additional layer of security and compliance for your Konnect deployments, ensuring that your data is encrypted with keys that you control. Avoid revoking or deleting a KMS key and CMEK that is actively used by Konnect, as this can lead to data loss or service disruptions.'
+  - name: Catalog Services
+    description: |
+      Create and maintain a centralized catalog of all services running in your organization.
+      Add custom fields and map resources from across your organization to provide a 360-degree overview of your services.
+
+      Custom fields allow you to surface key information such as:
+      - `Owner`: The person or team responsible for the service
+      - `Product Manager`: The person assigned to guide the service's direction for customer success
+      - `Jira Project`: The Jira project which represents past, present and future work for the service
+
+      Resources are discovered from the integrations you use within your organization to create, operate and manage your services.
+      Mapping the resources relevant to your service will provide a rich view of the service's communication channels, dependencies and more.
+      Types of resources which you can map to a service include:
+      - `Code Repositories:` The software project(s) that make up the service
+      - `Monitors and Dashboards:` Tools providing visibility into the health and performance of the service
+      - `Communication Channels`: Virtual spaces where questions and concerns can be raised about the service
+      - `Incident Management Resources`: Alerts setup within your incident management platform to notify individuals regarding issues with the service
+  - name: Integration Instances
+    description: |
+      An integration instance represents a specific account of the integration which contains the resources used to manage and support your services.
+      Some integrations provide configuration options to customize how it should behave once authorized (see the integration's manifest for details).
+      Konnect-internal integrations are built-in and do not need to be installed.
+
+      Once an integration instance is created, authorize the instance to allow the Service Catalog to discover its resources.
+      Note that deleting an integration instance is a **destructive** operation.
+      When an integration instance is deleted, all its resources and mappings will be deleted from the service catalog.
+      In cases where the integration instance's credentials need to be updated, you may re-authorize the instance to retain all currently discovered resources and mappings.
+      To set up and view a list of all the integrations we support, please view our [documentation](https://developer.konghq.com/service-catalog/integrations/).
+  - name: Integration Instance Auth Credentials
+    description: |
+      Represents the credentials use to authorize an integration instance.
+      You will want to configure the integration instance settings and authorization configuration before authorizing the instance.
+      This will inform the authorization process on how to reach and authorize the account.
+      Once the integration instance is authorized, the system will automatically discover all the relevant resources from the account.
+      The integration instance's auth credentials can be removed or updated while retaining all resources which have already been discovered.
+  - name: Integration Instance Auth Config
+    description: |
+      A integration instance may need to be provided with an auth config before authorizing the instance.
+      Typically an auth config will be required when authorizing against a integration which is hosted within your organization.
+      The integration instance's auth config will inform how the Service Catalog will authorize the integration instance.
+      Note that updating the auth config for an instance which is already authorized will **remove the existing credential**, requiring you to re-authorize the instance.
   - description: DP Certificates
     name: DP Certificates
   - description: Custom Plugin Schemas
