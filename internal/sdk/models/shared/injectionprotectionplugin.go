@@ -324,7 +324,7 @@ type InjectionProtectionPlugin struct {
 	ID           *string                             `json:"id,omitempty"`
 	InstanceName *string                             `default:"null" json:"instance_name"`
 	name         string                              `const:"injection-protection" json:"name"`
-	Ordering     *InjectionProtectionPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *InjectionProtectionPluginOrdering  `json:"ordering"`
 	Partials     []InjectionProtectionPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

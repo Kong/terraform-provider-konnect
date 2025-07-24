@@ -302,7 +302,7 @@ type OasValidationPlugin struct {
 	ID           *string                       `json:"id,omitempty"`
 	InstanceName *string                       `default:"null" json:"instance_name"`
 	name         string                        `const:"oas-validation" json:"name"`
-	Ordering     *OasValidationPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *OasValidationPluginOrdering  `json:"ordering"`
 	Partials     []OasValidationPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

@@ -299,7 +299,7 @@ type Oauth2IntrospectionPlugin struct {
 	ID           *string                             `json:"id,omitempty"`
 	InstanceName *string                             `default:"null" json:"instance_name"`
 	name         string                              `const:"oauth-2-introspection" json:"name"`
-	Ordering     *Oauth2IntrospectionPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *Oauth2IntrospectionPluginOrdering  `json:"ordering"`
 	Partials     []Oauth2IntrospectionPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

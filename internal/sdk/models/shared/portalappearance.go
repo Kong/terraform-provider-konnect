@@ -7,15 +7,15 @@ type PortalAppearance struct {
 	// Select a pre-existing default theme or specify 'custom' to use custom_theme variables.
 	ThemeName *PortalTheme `json:"theme_name,omitempty"`
 	// Groups of variables for configuring visual details of the portal user interface. Set theme_name to 'custom' to use custom values for theme variables.
-	CustomTheme *NullableAppearanceThemeVariables `json:"custom_theme,omitempty"`
+	CustomTheme *NullableAppearanceThemeVariables `json:"custom_theme"`
 	// Font selections to render text in the portal user interface. Must set use_custom_fonts to true to enable using custom font values.
-	CustomFonts *NullableAppearanceFonts `json:"custom_fonts,omitempty"`
+	CustomFonts *NullableAppearanceFonts `json:"custom_fonts"`
 	// If true, fonts in custom_fonts will be used over the theme's default fonts
 	UseCustomFonts *bool `json:"use_custom_fonts,omitempty"`
 	// Values to display for customizable text in the portal user interface
-	Text *NullableAppearanceTextVariables `json:"text,omitempty"`
+	Text *NullableAppearanceTextVariables `json:"text"`
 	// A collection of binary image data to customize images in the portal
-	Images *AppearanceImages `json:"images,omitempty"`
+	Images *AppearanceImages `json:"images"`
 }
 
 func (o *PortalAppearance) GetThemeName() *PortalTheme {

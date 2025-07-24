@@ -188,7 +188,7 @@ type BasicAuthPlugin struct {
 	ID           *string                   `json:"id,omitempty"`
 	InstanceName *string                   `default:"null" json:"instance_name"`
 	name         string                    `const:"basic-auth" json:"name"`
-	Ordering     *BasicAuthPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *BasicAuthPluginOrdering  `json:"ordering"`
 	Partials     []BasicAuthPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

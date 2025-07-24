@@ -276,7 +276,7 @@ type AzureFunctionsPlugin struct {
 	ID           *string                        `json:"id,omitempty"`
 	InstanceName *string                        `default:"null" json:"instance_name"`
 	name         string                         `const:"azure-functions" json:"name"`
-	Ordering     *AzureFunctionsPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *AzureFunctionsPluginOrdering  `json:"ordering"`
 	Partials     []AzureFunctionsPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

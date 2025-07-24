@@ -50,7 +50,7 @@ type Key struct {
 	// The name to associate with the given keys.
 	Name *string `default:"null" json:"name"`
 	// A keypair in PEM format.
-	Pem *Pem `json:"pem,omitempty"`
+	Pem *Pem `json:"pem"`
 	// The id (an UUID) of the key-set with which to associate the key.
 	Set *Set `json:"set"`
 	// An optional set of strings associated with the Key for grouping and filtering.

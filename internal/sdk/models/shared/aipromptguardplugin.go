@@ -263,7 +263,7 @@ type AiPromptGuardPlugin struct {
 	ID           *string                       `json:"id,omitempty"`
 	InstanceName *string                       `default:"null" json:"instance_name"`
 	name         string                        `const:"ai-prompt-guard" json:"name"`
-	Ordering     *AiPromptGuardPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *AiPromptGuardPluginOrdering  `json:"ordering"`
 	Partials     []AiPromptGuardPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

@@ -280,7 +280,7 @@ type OpaPlugin struct {
 	ID           *string             `json:"id,omitempty"`
 	InstanceName *string             `default:"null" json:"instance_name"`
 	name         string              `const:"opa" json:"name"`
-	Ordering     *OpaPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *OpaPluginOrdering  `json:"ordering"`
 	Partials     []OpaPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

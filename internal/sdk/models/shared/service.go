@@ -119,7 +119,7 @@ type Service struct {
 	Retries *int64 `default:"5" json:"retries"`
 	// An optional set of strings associated with the Service for grouping and filtering.
 	Tags    []string `json:"tags,omitempty"`
-	TLSSans *TLSSans `json:"tls_sans,omitempty"`
+	TLSSans *TLSSans `json:"tls_sans"`
 	// Whether to enable verification of upstream server TLS certificate. If set to `null`, then the Nginx default is respected.
 	TLSVerify *bool `default:"null" json:"tls_verify"`
 	// Maximum depth of chain while verifying Upstream server's TLS certificate. If set to `null`, then the Nginx default is respected.

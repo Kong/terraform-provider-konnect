@@ -304,7 +304,7 @@ type ForwardProxyPlugin struct {
 	ID           *string                      `json:"id,omitempty"`
 	InstanceName *string                      `default:"null" json:"instance_name"`
 	name         string                       `const:"forward-proxy" json:"name"`
-	Ordering     *ForwardProxyPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *ForwardProxyPluginOrdering  `json:"ordering"`
 	Partials     []ForwardProxyPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

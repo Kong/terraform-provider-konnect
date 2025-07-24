@@ -164,7 +164,7 @@ type DegraphqlPlugin struct {
 	ID           *string                   `json:"id,omitempty"`
 	InstanceName *string                   `default:"null" json:"instance_name"`
 	name         string                    `const:"degraphql" json:"name"`
-	Ordering     *DegraphqlPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *DegraphqlPluginOrdering  `json:"ordering"`
 	Partials     []DegraphqlPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

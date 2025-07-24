@@ -554,7 +554,7 @@ type KafkaUpstreamPlugin struct {
 	ID           *string                       `json:"id,omitempty"`
 	InstanceName *string                       `default:"null" json:"instance_name"`
 	name         string                        `const:"kafka-upstream" json:"name"`
-	Ordering     *KafkaUpstreamPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *KafkaUpstreamPluginOrdering  `json:"ordering"`
 	Partials     []KafkaUpstreamPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

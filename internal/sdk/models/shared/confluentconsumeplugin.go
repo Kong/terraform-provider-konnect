@@ -432,7 +432,7 @@ type ConfluentConsumePlugin struct {
 	ID           *string                          `json:"id,omitempty"`
 	InstanceName *string                          `default:"null" json:"instance_name"`
 	name         string                           `const:"confluent-consume" json:"name"`
-	Ordering     *ConfluentConsumePluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *ConfluentConsumePluginOrdering  `json:"ordering"`
 	Partials     []ConfluentConsumePluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

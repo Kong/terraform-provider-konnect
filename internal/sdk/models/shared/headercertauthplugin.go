@@ -427,7 +427,7 @@ type HeaderCertAuthPlugin struct {
 	ID           *string                        `json:"id,omitempty"`
 	InstanceName *string                        `default:"null" json:"instance_name"`
 	name         string                         `const:"header-cert-auth" json:"name"`
-	Ordering     *HeaderCertAuthPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *HeaderCertAuthPluginOrdering  `json:"ordering"`
 	Partials     []HeaderCertAuthPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

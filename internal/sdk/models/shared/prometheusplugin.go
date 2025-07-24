@@ -249,7 +249,7 @@ type PrometheusPlugin struct {
 	ID           *string                    `json:"id,omitempty"`
 	InstanceName *string                    `default:"null" json:"instance_name"`
 	name         string                     `const:"prometheus" json:"name"`
-	Ordering     *PrometheusPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *PrometheusPluginOrdering  `json:"ordering"`
 	Partials     []PrometheusPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

@@ -556,7 +556,7 @@ type DatadogPlugin struct {
 	ID           *string                 `json:"id,omitempty"`
 	InstanceName *string                 `default:"null" json:"instance_name"`
 	name         string                  `const:"datadog" json:"name"`
-	Ordering     *DatadogPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *DatadogPluginOrdering  `json:"ordering"`
 	Partials     []DatadogPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

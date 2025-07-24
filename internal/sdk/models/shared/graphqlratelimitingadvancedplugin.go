@@ -691,7 +691,7 @@ type GraphqlRateLimitingAdvancedPlugin struct {
 	ID           *string                                     `json:"id,omitempty"`
 	InstanceName *string                                     `default:"null" json:"instance_name"`
 	name         string                                      `const:"graphql-rate-limiting-advanced" json:"name"`
-	Ordering     *GraphqlRateLimitingAdvancedPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *GraphqlRateLimitingAdvancedPluginOrdering  `json:"ordering"`
 	Partials     []GraphqlRateLimitingAdvancedPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

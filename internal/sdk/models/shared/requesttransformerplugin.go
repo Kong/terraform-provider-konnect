@@ -379,7 +379,7 @@ type RequestTransformerPlugin struct {
 	ID           *string                            `json:"id,omitempty"`
 	InstanceName *string                            `default:"null" json:"instance_name"`
 	name         string                             `const:"request-transformer" json:"name"`
-	Ordering     *RequestTransformerPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *RequestTransformerPluginOrdering  `json:"ordering"`
 	Partials     []RequestTransformerPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

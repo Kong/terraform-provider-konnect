@@ -4106,7 +4106,7 @@ type OpenidConnectPlugin struct {
 	ID           *string                       `json:"id,omitempty"`
 	InstanceName *string                       `default:"null" json:"instance_name"`
 	name         string                        `const:"openid-connect" json:"name"`
-	Ordering     *OpenidConnectPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *OpenidConnectPluginOrdering  `json:"ordering"`
 	Partials     []OpenidConnectPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

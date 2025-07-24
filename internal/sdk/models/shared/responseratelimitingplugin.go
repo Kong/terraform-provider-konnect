@@ -395,7 +395,7 @@ type ResponseRatelimitingPlugin struct {
 	ID           *string                              `json:"id,omitempty"`
 	InstanceName *string                              `default:"null" json:"instance_name"`
 	name         string                               `const:"response-ratelimiting" json:"name"`
-	Ordering     *ResponseRatelimitingPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *ResponseRatelimitingPluginOrdering  `json:"ordering"`
 	Partials     []ResponseRatelimitingPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

@@ -161,7 +161,7 @@ type Plugin struct {
 	InstanceName *string `default:"null" json:"instance_name"`
 	// The name of the Plugin that's going to be added. Currently, the Plugin must be installed in every Kong instance separately.
 	Name     string    `json:"name"`
-	Ordering *Ordering `json:"ordering,omitempty"`
+	Ordering *Ordering `json:"ordering"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []Protocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.

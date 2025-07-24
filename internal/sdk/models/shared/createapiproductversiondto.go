@@ -55,7 +55,7 @@ type CreateAPIProductVersionDTO struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels         map[string]*string     `json:"labels,omitempty"`
-	GatewayService *GatewayServicePayload `json:"gateway_service,omitempty"`
+	GatewayService *GatewayServicePayload `json:"gateway_service"`
 }
 
 func (c CreateAPIProductVersionDTO) MarshalJSON() ([]byte, error) {

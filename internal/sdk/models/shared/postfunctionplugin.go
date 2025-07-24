@@ -243,7 +243,7 @@ type PostFunctionPlugin struct {
 	ID           *string                      `json:"id,omitempty"`
 	InstanceName *string                      `default:"null" json:"instance_name"`
 	name         string                       `const:"post-function" json:"name"`
-	Ordering     *PostFunctionPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *PostFunctionPluginOrdering  `json:"ordering"`
 	Partials     []PostFunctionPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

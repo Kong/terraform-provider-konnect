@@ -206,7 +206,7 @@ type RedirectPlugin struct {
 	ID           *string                  `json:"id,omitempty"`
 	InstanceName *string                  `default:"null" json:"instance_name"`
 	name         string                   `const:"redirect" json:"name"`
-	Ordering     *RedirectPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *RedirectPluginOrdering  `json:"ordering"`
 	Partials     []RedirectPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

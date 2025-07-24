@@ -505,7 +505,7 @@ type KafkaLogPlugin struct {
 	ID           *string                  `json:"id,omitempty"`
 	InstanceName *string                  `default:"null" json:"instance_name"`
 	name         string                   `const:"kafka-log" json:"name"`
-	Ordering     *KafkaLogPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *KafkaLogPluginOrdering  `json:"ordering"`
 	Partials     []KafkaLogPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

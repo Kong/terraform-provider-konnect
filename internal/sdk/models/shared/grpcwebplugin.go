@@ -213,7 +213,7 @@ type GrpcWebPlugin struct {
 	ID           *string                 `json:"id,omitempty"`
 	InstanceName *string                 `default:"null" json:"instance_name"`
 	name         string                  `const:"grpc-web" json:"name"`
-	Ordering     *GrpcWebPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *GrpcWebPluginOrdering  `json:"ordering"`
 	Partials     []GrpcWebPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

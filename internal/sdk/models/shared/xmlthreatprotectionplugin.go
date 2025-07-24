@@ -374,7 +374,7 @@ type XMLThreatProtectionPlugin struct {
 	ID           *string                             `json:"id,omitempty"`
 	InstanceName *string                             `default:"null" json:"instance_name"`
 	name         string                              `const:"xml-threat-protection" json:"name"`
-	Ordering     *XMLThreatProtectionPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *XMLThreatProtectionPluginOrdering  `json:"ordering"`
 	Partials     []XMLThreatProtectionPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

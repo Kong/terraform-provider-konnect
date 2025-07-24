@@ -185,7 +185,7 @@ type TLSHandshakeModifierPlugin struct {
 	ID           *string                              `json:"id,omitempty"`
 	InstanceName *string                              `default:"null" json:"instance_name"`
 	name         string                               `const:"tls-handshake-modifier" json:"name"`
-	Ordering     *TLSHandshakeModifierPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *TLSHandshakeModifierPluginOrdering  `json:"ordering"`
 	Partials     []TLSHandshakeModifierPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

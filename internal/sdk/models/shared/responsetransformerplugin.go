@@ -420,7 +420,7 @@ type ResponseTransformerPlugin struct {
 	ID           *string                             `json:"id,omitempty"`
 	InstanceName *string                             `default:"null" json:"instance_name"`
 	name         string                              `const:"response-transformer" json:"name"`
-	Ordering     *ResponseTransformerPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *ResponseTransformerPluginOrdering  `json:"ordering"`
 	Partials     []ResponseTransformerPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

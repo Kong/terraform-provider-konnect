@@ -1247,7 +1247,7 @@ type AiRagInjectorPlugin struct {
 	ID           *string                       `json:"id,omitempty"`
 	InstanceName *string                       `default:"null" json:"instance_name"`
 	name         string                        `const:"ai-rag-injector" json:"name"`
-	Ordering     *AiRagInjectorPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *AiRagInjectorPluginOrdering  `json:"ordering"`
 	Partials     []AiRagInjectorPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

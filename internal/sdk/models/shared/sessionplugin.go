@@ -569,7 +569,7 @@ type SessionPlugin struct {
 	ID           *string                 `json:"id,omitempty"`
 	InstanceName *string                 `default:"null" json:"instance_name"`
 	name         string                  `const:"session" json:"name"`
-	Ordering     *SessionPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *SessionPluginOrdering  `json:"ordering"`
 	Partials     []SessionPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

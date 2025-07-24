@@ -88,6 +88,10 @@ func (r *GatewayKeyResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"pem": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"private_key": types.StringType,
+					"public_key":  types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"private_key": schema.StringAttribute{
 						Computed: true,

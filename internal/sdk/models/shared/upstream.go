@@ -574,7 +574,7 @@ type Upstream struct {
 	HashOnQueryArg *string `default:"null" json:"hash_on_query_arg"`
 	// The name of the route URI capture to take the value from as hash input. Only required when `hash_on` is set to `uri_capture`.
 	HashOnURICapture *string       `default:"null" json:"hash_on_uri_capture"`
-	Healthchecks     *Healthchecks `json:"healthchecks,omitempty"`
+	Healthchecks     *Healthchecks `json:"healthchecks"`
 	// The hostname to be used as `Host` header when proxying requests through Kong.
 	HostHeader *string `default:"null" json:"host_header"`
 	ID         *string `json:"id,omitempty"`

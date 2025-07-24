@@ -177,6 +177,14 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 			"tls_sans": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"dnsnames": types.ListType{
+						ElemType: types.StringType,
+					},
+					"uris": types.ListType{
+						ElemType: types.StringType,
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"dnsnames": schema.ListAttribute{
 						Computed:    true,

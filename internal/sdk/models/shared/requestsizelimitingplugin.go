@@ -224,7 +224,7 @@ type RequestSizeLimitingPlugin struct {
 	ID           *string                             `json:"id,omitempty"`
 	InstanceName *string                             `default:"null" json:"instance_name"`
 	name         string                              `const:"request-size-limiting" json:"name"`
-	Ordering     *RequestSizeLimitingPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *RequestSizeLimitingPluginOrdering  `json:"ordering"`
 	Partials     []RequestSizeLimitingPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

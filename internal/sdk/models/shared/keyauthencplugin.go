@@ -233,7 +233,7 @@ type KeyAuthEncPlugin struct {
 	ID           *string                    `json:"id,omitempty"`
 	InstanceName *string                    `default:"null" json:"instance_name"`
 	name         string                     `const:"key-auth-enc" json:"name"`
-	Ordering     *KeyAuthEncPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *KeyAuthEncPluginOrdering  `json:"ordering"`
 	Partials     []KeyAuthEncPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

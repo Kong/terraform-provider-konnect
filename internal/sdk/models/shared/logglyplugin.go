@@ -445,7 +445,7 @@ type LogglyPlugin struct {
 	ID           *string                `json:"id,omitempty"`
 	InstanceName *string                `default:"null" json:"instance_name"`
 	name         string                 `const:"loggly" json:"name"`
-	Ordering     *LogglyPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *LogglyPluginOrdering  `json:"ordering"`
 	Partials     []LogglyPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

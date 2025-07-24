@@ -16583,6 +16583,7 @@ components:
           example: FirstVersion
         gateway_service:
           type: object
+          default: null
           additionalProperties: false
           nullable: true
           properties:
@@ -16606,6 +16607,7 @@ components:
           required:
             - id
             - control_plane_id
+          x-speakeasy-param-computed: false
         publish_status:
           description: 'This field is published if the API product version is published to at least one portal. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead.'
           type: string
@@ -16983,11 +16985,13 @@ components:
           format: uuid
           example: e4d9ebb1-26b4-426a-b00e-cb67044f3baf
           deprecated: true
+      default: null
       additionalProperties: false
       nullable: true
       required:
         - id
         - runtime_group_id
+      x-speakeasy-param-computed: false
     GatewayServicePayload:
       type: object
       properties:
@@ -17001,11 +17005,13 @@ components:
           type: string
           format: uuid
           example: e4d9ebb1-26b4-426a-b00e-cb67044f3baf
+      default: null
       additionalProperties: false
       nullable: true
       required:
         - id
         - control_plane_id
+      x-speakeasy-param-computed: false
     PublicLabels:
       description: |
         Public labels store information about an entity that can be used for filtering a list of objects.
@@ -17048,6 +17054,7 @@ components:
       type: object
       example:
         env: test
+      default: null
       additionalProperties:
         type: string
         pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
@@ -17057,6 +17064,7 @@ components:
       maxProperties: 50
       nullable: true
       writeOnly: true
+      x-speakeasy-param-computed: false
     PublicLabelsUpdate:
       description: |
         Public labels store information about an entity that can be used for filtering a list of objects.
@@ -18094,11 +18102,13 @@ components:
             primary_text:
               value: '#FFFFFF'
               description: Text for Primary Button
+      default: null
       additionalProperties: false
       nullable: true
       required:
         - colors
       title: AppearanceThemeVariables
+      x-speakeasy-param-computed: false
     NullableAppearanceFonts:
       description: Font selections to render text in the portal user interface. Must set use_custom_fonts to true to enable using custom font values.
       type: object
@@ -18109,12 +18119,14 @@ components:
           $ref: '#/components/schemas/AppearanceFontName'
         headings:
           $ref: '#/components/schemas/AppearanceFontName'
+      default: null
       additionalProperties: false
       nullable: true
       required:
         - base
         - code
         - headings
+      x-speakeasy-param-computed: false
     AppearanceFontName:
       description: The name of the font to render in the browser.
       type: string
@@ -18149,10 +18161,12 @@ components:
           maxLength: 512
       example:
         data: 'data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+      default: null
       additionalProperties: false
       nullable: true
       required:
         - data
+      x-speakeasy-param-computed: false
     AppearanceImages:
       description: A collection of binary image data to customize images in the portal
       type: object
@@ -18170,8 +18184,10 @@ components:
           data: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
         catalog_cover:
           data: 'data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+      default: null
       additionalProperties: false
       nullable: true
+      x-speakeasy-param-computed: false
     NullableAppearanceTextVariables:
       description: Values to display for customizable text in the portal user interface
       type: object
@@ -18193,10 +18209,12 @@ components:
         catalog:
           welcome_message: Welcome to our service catalog
           primary_header: Find All of Our Services in a Single Place
+      default: null
       additionalProperties: false
       nullable: true
       required:
         - catalog
+      x-speakeasy-param-computed: false
     PortalAppearance:
       type: object
       properties:
@@ -18543,6 +18561,7 @@ components:
           type: boolean
         dcr_provider:
           type: object
+          default: null
           additionalProperties: false
           nullable: true
           properties:
@@ -18558,6 +18577,7 @@ components:
             - id
             - name
             - provider_type
+          x-speakeasy-param-computed: false
         labels:
           $ref: '#/components/schemas/Labels'
         created_at:
@@ -18641,6 +18661,7 @@ components:
           type: boolean
         dcr_provider:
           type: object
+          default: null
           additionalProperties: false
           nullable: true
           properties:
@@ -18656,6 +18677,7 @@ components:
             - id
             - name
             - provider_type
+          x-speakeasy-param-computed: false
         labels:
           $ref: '#/components/schemas/Labels'
         created_at:
@@ -28420,12 +28442,14 @@ components:
         pem:
           description: A keypair in PEM format.
           type: object
+          default: null
           nullable: true
           properties:
             private_key:
               type: string
             public_key:
               type: string
+          x-speakeasy-param-computed: false
         set:
           description: The id (an UUID) of the key-set with which to associate the key.
           type: object
@@ -31974,8 +31998,10 @@ components:
         config:
           description: 'The configuration properties for the Plugin which can be found on the plugins documentation page in the [Kong Hub](https://docs.konghq.com/hub/).'
           type: object
+          default: null
           additionalProperties: true
           nullable: true
+          x-speakeasy-param-computed: false
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -32017,6 +32043,7 @@ components:
           type: string
         ordering:
           type: object
+          default: null
           nullable: true
           properties:
             after:
@@ -32033,6 +32060,7 @@ components:
                   type: array
                   items:
                     type: string
+          x-speakeasy-param-computed: false
         protocols:
           description: 'A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.'
           type: array
@@ -32131,6 +32159,7 @@ components:
           type: string
         ordering:
           type: object
+          default: null
           nullable: true
           properties:
             after:
@@ -32147,6 +32176,7 @@ components:
                   type: array
                   items:
                     type: string
+          x-speakeasy-param-computed: false
         partials:
           type: array
           items:
@@ -35430,11 +35460,13 @@ components:
         headers:
           description: 'One or more lists of values indexed by header name that will cause this Route to match if present in the request. The `Host` header cannot be used with this attribute: hosts should be specified using the `hosts` attribute. When `headers` contains only one value and that value starts with the special prefix `~*`, the value is interpreted as a regular expression.'
           type: object
+          default: null
           additionalProperties:
             items:
               type: string
             type: array
           nullable: true
+          x-speakeasy-param-computed: false
         hosts:
           description: A list of domain names that match this Route. Note that the hosts value is case sensitive.
           type: array
@@ -36244,6 +36276,7 @@ components:
             type: string
         tls_sans:
           type: object
+          default: null
           nullable: true
           properties:
             dnsnames:
@@ -36254,6 +36287,7 @@ components:
               type: array
               items:
                 type: string
+          x-speakeasy-param-computed: false
         tls_verify:
           description: 'Whether to enable verification of upstream server TLS certificate. If set to `null`, then the Nginx default is respected.'
           type: boolean
@@ -37901,6 +37935,7 @@ components:
           x-speakeasy-param-computed: false
         healthchecks:
           type: object
+          default: null
           nullable: true
           properties:
             active:
@@ -38042,6 +38077,7 @@ components:
             threshold:
               type: number
               default: 0
+          x-speakeasy-param-computed: false
         host_header:
           description: The hostname to be used as `Host` header when proxying requests through Kong.
           type: string
@@ -38597,8 +38633,10 @@ components:
         config:
           description: The configuration properties for the Vault which can be found on the vaults' documentation page.
           type: object
+          default: null
           additionalProperties: true
           nullable: true
+          x-speakeasy-param-computed: false
           x-speakeasy-type-override: any
         created_at:
           description: Unix epoch when the resource was created.

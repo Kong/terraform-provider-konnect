@@ -53,10 +53,10 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 <a id="nestedatt--gateway_service"></a>
 ### Nested Schema for `gateway_service`
 
-Optional:
+Required:
 
-- `control_plane_id` (String) The identifier of the control plane that the gateway service resides in. Not Null
-- `id` (String) The identifier of a gateway service associated with the version of the API product. Not Null
+- `control_plane_id` (String) The identifier of the control plane that the gateway service resides in
+- `id` (String) The identifier of a gateway service associated with the version of the API product.
 
 Read-Only:
 

@@ -236,7 +236,7 @@ type AiPromptTemplatePlugin struct {
 	ID           *string                          `json:"id,omitempty"`
 	InstanceName *string                          `default:"null" json:"instance_name"`
 	name         string                           `const:"ai-prompt-template" json:"name"`
-	Ordering     *AiPromptTemplatePluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *AiPromptTemplatePluginOrdering  `json:"ordering"`
 	Partials     []AiPromptTemplatePluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

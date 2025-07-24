@@ -828,7 +828,7 @@ type RateLimitingAdvancedPlugin struct {
 	ID           *string                              `json:"id,omitempty"`
 	InstanceName *string                              `default:"null" json:"instance_name"`
 	name         string                               `const:"rate-limiting-advanced" json:"name"`
-	Ordering     *RateLimitingAdvancedPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *RateLimitingAdvancedPluginOrdering  `json:"ordering"`
 	Partials     []RateLimitingAdvancedPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

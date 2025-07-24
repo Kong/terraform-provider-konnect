@@ -841,7 +841,7 @@ type ZipkinPlugin struct {
 	ID           *string                `json:"id,omitempty"`
 	InstanceName *string                `default:"null" json:"instance_name"`
 	name         string                 `const:"zipkin" json:"name"`
-	Ordering     *ZipkinPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *ZipkinPluginOrdering  `json:"ordering"`
 	Partials     []ZipkinPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

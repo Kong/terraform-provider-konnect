@@ -737,7 +737,7 @@ type StatsdAdvancedPlugin struct {
 	ID           *string                        `json:"id,omitempty"`
 	InstanceName *string                        `default:"null" json:"instance_name"`
 	name         string                         `const:"statsd-advanced" json:"name"`
-	Ordering     *StatsdAdvancedPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *StatsdAdvancedPluginOrdering  `json:"ordering"`
 	Partials     []StatsdAdvancedPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

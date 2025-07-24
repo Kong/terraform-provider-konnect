@@ -185,7 +185,7 @@ type StandardWebhooksPlugin struct {
 	ID           *string                          `json:"id,omitempty"`
 	InstanceName *string                          `default:"null" json:"instance_name"`
 	name         string                           `const:"standard-webhooks" json:"name"`
-	Ordering     *StandardWebhooksPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *StandardWebhooksPluginOrdering  `json:"ordering"`
 	Partials     []StandardWebhooksPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

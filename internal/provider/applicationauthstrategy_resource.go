@@ -8,11 +8,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -151,9 +153,12 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 					},
 					"dcr_provider": schema.SingleNestedAttribute{
 						Computed: true,
-						PlanModifiers: []planmodifier.Object{
-							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-						},
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"display_name":  types.StringType,
+							"id":            types.StringType,
+							"name":          types.StringType,
+							"provider_type": types.StringType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"display_name": schema.StringAttribute{
 								Computed: true,
@@ -406,9 +411,12 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 					},
 					"dcr_provider": schema.SingleNestedAttribute{
 						Computed: true,
-						PlanModifiers: []planmodifier.Object{
-							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-						},
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"display_name":  types.StringType,
+							"id":            types.StringType,
+							"name":          types.StringType,
+							"provider_type": types.StringType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"display_name": schema.StringAttribute{
 								Computed: true,

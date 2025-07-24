@@ -107,7 +107,6 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				Description: `A list of IP destinations of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".`,
 			},
 			"headers": schema.MapAttribute{
-				Computed: true,
 				Optional: true,
 				ElementType: types.ListType{
 					ElemType: types.StringType,

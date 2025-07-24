@@ -166,7 +166,7 @@ type WebsocketSizeLimitPlugin struct {
 	ID           *string                            `json:"id,omitempty"`
 	InstanceName *string                            `default:"null" json:"instance_name"`
 	name         string                             `const:"websocket-size-limit" json:"name"`
-	Ordering     *WebsocketSizeLimitPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *WebsocketSizeLimitPluginOrdering  `json:"ordering"`
 	Partials     []WebsocketSizeLimitPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

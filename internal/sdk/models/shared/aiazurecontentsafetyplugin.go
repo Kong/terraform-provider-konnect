@@ -345,7 +345,7 @@ type AiAzureContentSafetyPlugin struct {
 	ID           *string                              `json:"id,omitempty"`
 	InstanceName *string                              `default:"null" json:"instance_name"`
 	name         string                               `const:"ai-azure-content-safety" json:"name"`
-	Ordering     *AiAzureContentSafetyPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *AiAzureContentSafetyPluginOrdering  `json:"ordering"`
 	Partials     []AiAzureContentSafetyPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

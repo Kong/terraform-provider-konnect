@@ -454,7 +454,7 @@ type HTTPLogPlugin struct {
 	ID           *string                 `json:"id,omitempty"`
 	InstanceName *string                 `default:"null" json:"instance_name"`
 	name         string                  `const:"http-log" json:"name"`
-	Ordering     *HTTPLogPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *HTTPLogPluginOrdering  `json:"ordering"`
 	Partials     []HTTPLogPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

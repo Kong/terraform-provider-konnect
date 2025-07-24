@@ -287,7 +287,7 @@ type LdapAuthPlugin struct {
 	ID           *string                  `json:"id,omitempty"`
 	InstanceName *string                  `default:"null" json:"instance_name"`
 	name         string                   `const:"ldap-auth" json:"name"`
-	Ordering     *LdapAuthPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *LdapAuthPluginOrdering  `json:"ordering"`
 	Partials     []LdapAuthPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

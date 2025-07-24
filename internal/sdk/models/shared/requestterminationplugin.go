@@ -233,7 +233,7 @@ type RequestTerminationPlugin struct {
 	ID           *string                            `json:"id,omitempty"`
 	InstanceName *string                            `default:"null" json:"instance_name"`
 	name         string                             `const:"request-termination" json:"name"`
-	Ordering     *RequestTerminationPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *RequestTerminationPluginOrdering  `json:"ordering"`
 	Partials     []RequestTerminationPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

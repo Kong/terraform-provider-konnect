@@ -222,7 +222,7 @@ type UDPLogPlugin struct {
 	ID           *string                `json:"id,omitempty"`
 	InstanceName *string                `default:"null" json:"instance_name"`
 	name         string                 `const:"udp-log" json:"name"`
-	Ordering     *UDPLogPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *UDPLogPluginOrdering  `json:"ordering"`
 	Partials     []UDPLogPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

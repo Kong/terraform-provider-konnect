@@ -249,7 +249,7 @@ type TCPLogPlugin struct {
 	ID           *string                `json:"id,omitempty"`
 	InstanceName *string                `default:"null" json:"instance_name"`
 	name         string                 `const:"tcp-log" json:"name"`
-	Ordering     *TCPLogPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *TCPLogPluginOrdering  `json:"ordering"`
 	Partials     []TCPLogPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

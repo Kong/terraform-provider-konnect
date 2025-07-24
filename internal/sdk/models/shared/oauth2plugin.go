@@ -352,7 +352,7 @@ type Oauth2Plugin struct {
 	ID           *string                `json:"id,omitempty"`
 	InstanceName *string                `default:"null" json:"instance_name"`
 	name         string                 `const:"oauth2" json:"name"`
-	Ordering     *Oauth2PluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *Oauth2PluginOrdering  `json:"ordering"`
 	Partials     []Oauth2PluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

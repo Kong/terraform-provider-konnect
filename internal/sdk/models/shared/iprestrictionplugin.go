@@ -223,7 +223,7 @@ type IPRestrictionPlugin struct {
 	ID           *string                       `json:"id,omitempty"`
 	InstanceName *string                       `default:"null" json:"instance_name"`
 	name         string                        `const:"ip-restriction" json:"name"`
-	Ordering     *IPRestrictionPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *IPRestrictionPluginOrdering  `json:"ordering"`
 	Partials     []IPRestrictionPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`

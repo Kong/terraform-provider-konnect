@@ -257,7 +257,7 @@ type MockingPlugin struct {
 	ID           *string                 `json:"id,omitempty"`
 	InstanceName *string                 `default:"null" json:"instance_name"`
 	name         string                  `const:"mocking" json:"name"`
-	Ordering     *MockingPluginOrdering  `json:"ordering,omitempty"`
+	Ordering     *MockingPluginOrdering  `json:"ordering"`
 	Partials     []MockingPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
