@@ -198,7 +198,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			if resp.Config.Upstream.Headers == nil {
 				r.Config.Upstream.Headers = nil
 			} else {
-				r.Config.Upstream.Headers = &tfTypes.RequestCalloutPluginConfigHeaders{}
+				r.Config.Upstream.Headers = &tfTypes.RequestCalloutPluginConfigCalloutsHeaders{}
 				if len(resp.Config.Upstream.Headers.Custom) > 0 {
 					r.Config.Upstream.Headers.Custom = make(map[string]types.String, len(resp.Config.Upstream.Headers.Custom))
 					for key4, value4 := range resp.Config.Upstream.Headers.Custom {
@@ -211,7 +211,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			if resp.Config.Upstream.Query == nil {
 				r.Config.Upstream.Query = nil
 			} else {
-				r.Config.Upstream.Query = &tfTypes.RequestCalloutPluginConfigHeaders{}
+				r.Config.Upstream.Query = &tfTypes.RequestCalloutPluginConfigCalloutsHeaders{}
 				if len(resp.Config.Upstream.Query.Custom) > 0 {
 					r.Config.Upstream.Query.Custom = make(map[string]types.String, len(resp.Config.Upstream.Query.Custom))
 					for key5, value5 := range resp.Config.Upstream.Query.Custom {
@@ -789,7 +789,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		} else {
 			forward1 = nil
 		}
-		headers := shared.RequestCalloutPluginConfigHeaders{
+		headers := shared.RequestCalloutPluginConfigCalloutsHeaders{
 			Custom:  custom1,
 			Forward: forward1,
 		}
@@ -933,7 +933,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		} else {
 			store1 = nil
 		}
-		headers1 := shared.RequestCalloutPluginHeaders{
+		headers1 := shared.RequestCalloutPluginConfigHeaders{
 			Store: store1,
 		}
 		response := shared.Response{
@@ -983,7 +983,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		} else {
 			byLua2 = nil
 		}
-		var headers2 *shared.Headers
+		var headers2 *shared.RequestCalloutPluginHeaders
 		if r.Config.Upstream.Headers != nil {
 			custom4 := make(map[string]interface{})
 			for customKey4, customValue4 := range r.Config.Upstream.Headers.Custom {
@@ -997,7 +997,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 			} else {
 				forward4 = nil
 			}
-			headers2 = &shared.Headers{
+			headers2 = &shared.RequestCalloutPluginHeaders{
 				Custom:  custom4,
 				Forward: forward4,
 			}
