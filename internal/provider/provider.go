@@ -300,6 +300,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewCloudGatewayProviderAccountListDataSource,
+		NewGatewayControlPlaneDataSource,
 		NewGatewayControlPlaneListDataSource,
 		NewMeshControlPlanesDataSource,
 		NewPortalListDataSource,

@@ -14,112 +14,96 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ datasource.DataSource = &GatewayControlPlaneListDataSource{}
-var _ datasource.DataSourceWithConfigure = &GatewayControlPlaneListDataSource{}
+var _ datasource.DataSource = &GatewayControlPlaneDataSource{}
+var _ datasource.DataSourceWithConfigure = &GatewayControlPlaneDataSource{}
 
-func NewGatewayControlPlaneListDataSource() datasource.DataSource {
-	return &GatewayControlPlaneListDataSource{}
+func NewGatewayControlPlaneDataSource() datasource.DataSource {
+	return &GatewayControlPlaneDataSource{}
 }
 
-// GatewayControlPlaneListDataSource is the data source implementation.
-type GatewayControlPlaneListDataSource struct {
+// GatewayControlPlaneDataSource is the data source implementation.
+type GatewayControlPlaneDataSource struct {
 	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
-// GatewayControlPlaneListDataSourceModel describes the data model.
-type GatewayControlPlaneListDataSourceModel struct {
-	Data         []tfTypes.ControlPlane                `tfsdk:"data"`
+// GatewayControlPlaneDataSourceModel describes the data model.
+type GatewayControlPlaneDataSourceModel struct {
+	Config       tfTypes.Config                        `tfsdk:"config"`
+	Description  types.String                          `tfsdk:"description"`
 	Filter       *tfTypes.ControlPlaneFilterParameters `queryParam:"style=deepObject,explode=true,name=filter" tfsdk:"filter"`
 	FilterLabels types.String                          `queryParam:"style=form,explode=true,name=labels" tfsdk:"filter_labels"`
-	Meta         tfTypes.PaginatedMeta                 `tfsdk:"meta"`
+	ID           types.String                          `tfsdk:"id"`
+	Labels       map[string]types.String               `tfsdk:"labels"`
+	Name         types.String                          `tfsdk:"name"`
+	Number       types.Float64                         `tfsdk:"number"`
 	PageNumber   types.Int64                           `queryParam:"style=form,explode=true,name=page[number]" tfsdk:"page_number"`
 	PageSize     types.Int64                           `queryParam:"style=form,explode=true,name=page[size]" tfsdk:"page_size"`
+	Size         types.Float64                         `tfsdk:"size"`
 	Sort         types.String                          `queryParam:"style=form,explode=true,name=sort" tfsdk:"sort"`
+	Total        types.Float64                         `tfsdk:"total"`
 }
 
 // Metadata returns the data source type name.
-func (r *GatewayControlPlaneListDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_gateway_control_plane_list"
+func (r *GatewayControlPlaneDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_gateway_control_plane"
 }
 
 // Schema defines the schema for the data source.
-func (r *GatewayControlPlaneListDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (r *GatewayControlPlaneDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "GatewayControlPlaneList DataSource",
+		MarkdownDescription: "GatewayControlPlane DataSource",
 
 		Attributes: map[string]schema.Attribute{
-			"data": schema.ListNestedAttribute{
+			"config": schema.SingleNestedAttribute{
 				Computed: true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"config": schema.SingleNestedAttribute{
-							Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"auth_type": schema.StringAttribute{
+						Computed:    true,
+						Description: `The auth type value of the cluster associated with the Runtime Group.`,
+					},
+					"cloud_gateway": schema.BoolAttribute{
+						Computed:    true,
+						Description: `Whether the Control Plane can be used for cloud-gateways.`,
+					},
+					"cluster_type": schema.StringAttribute{
+						Computed:    true,
+						Description: `The ClusterType value of the cluster associated with the Control Plane.`,
+					},
+					"control_plane_endpoint": schema.StringAttribute{
+						Computed:    true,
+						Description: `Control Plane Endpoint.`,
+					},
+					"proxy_urls": schema.SetNestedAttribute{
+						Computed: true,
+						NestedObject: schema.NestedAttributeObject{
 							Attributes: map[string]schema.Attribute{
-								"auth_type": schema.StringAttribute{
+								"host": schema.StringAttribute{
 									Computed:    true,
-									Description: `The auth type value of the cluster associated with the Runtime Group.`,
+									Description: `Hostname of the proxy URL.`,
 								},
-								"cloud_gateway": schema.BoolAttribute{
+								"port": schema.Int64Attribute{
 									Computed:    true,
-									Description: `Whether the Control Plane can be used for cloud-gateways.`,
+									Description: `Port of the proxy URL.`,
 								},
-								"cluster_type": schema.StringAttribute{
+								"protocol": schema.StringAttribute{
 									Computed:    true,
-									Description: `The ClusterType value of the cluster associated with the Control Plane.`,
-								},
-								"control_plane_endpoint": schema.StringAttribute{
-									Computed:    true,
-									Description: `Control Plane Endpoint.`,
-								},
-								"proxy_urls": schema.SetNestedAttribute{
-									Computed: true,
-									NestedObject: schema.NestedAttributeObject{
-										Attributes: map[string]schema.Attribute{
-											"host": schema.StringAttribute{
-												Computed:    true,
-												Description: `Hostname of the proxy URL.`,
-											},
-											"port": schema.Int64Attribute{
-												Computed:    true,
-												Description: `Port of the proxy URL.`,
-											},
-											"protocol": schema.StringAttribute{
-												Computed:    true,
-												Description: `Protocol of the proxy URL.`,
-											},
-										},
-									},
-									Description: `Array of proxy URLs associated with reaching the data-planes connected to a control-plane.`,
-								},
-								"telemetry_endpoint": schema.StringAttribute{
-									Computed:    true,
-									Description: `Telemetry Endpoint.`,
+									Description: `Protocol of the proxy URL.`,
 								},
 							},
-							Description: `CP configuration object for related access endpoints.`,
 						},
-						"description": schema.StringAttribute{
-							Computed:    true,
-							Description: `The description of the control plane in Konnect.`,
-						},
-						"id": schema.StringAttribute{
-							Computed:    true,
-							Description: `The control plane ID.`,
-						},
-						"labels": schema.MapAttribute{
-							Computed:    true,
-							ElementType: types.StringType,
-							MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
-								`` + "\n" +
-								`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
-						},
-						"name": schema.StringAttribute{
-							Computed:    true,
-							Description: `The name of the control plane.`,
-						},
+						Description: `Array of proxy URLs associated with reaching the data-planes connected to a control-plane.`,
+					},
+					"telemetry_endpoint": schema.StringAttribute{
+						Computed:    true,
+						Description: `Telemetry Endpoint.`,
 					},
 				},
+				Description: `CP configuration object for related access endpoints.`,
+			},
+			"description": schema.StringAttribute{
+				Computed:    true,
+				Description: `The description of the control plane in Konnect.`,
 			},
 			"filter": schema.SingleNestedAttribute{
 				Optional: true,
@@ -174,26 +158,23 @@ func (r *GatewayControlPlaneListDataSource) Schema(ctx context.Context, req data
 				Optional:    true,
 				Description: `Filter control planes in the response by associated labels.`,
 			},
-			"meta": schema.SingleNestedAttribute{
+			"id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The control plane ID.`,
+			},
+			"labels": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
+					`` + "\n" +
+					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
+			},
+			"name": schema.StringAttribute{
+				Computed:    true,
+				Description: `The name of the control plane.`,
+			},
+			"number": schema.Float64Attribute{
 				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"page": schema.SingleNestedAttribute{
-						Computed: true,
-						Attributes: map[string]schema.Attribute{
-							"number": schema.Float64Attribute{
-								Computed: true,
-							},
-							"size": schema.Float64Attribute{
-								Computed: true,
-							},
-							"total": schema.Float64Attribute{
-								Computed: true,
-							},
-						},
-						Description: `Contains pagination query parameters and the total number of objects returned.`,
-					},
-				},
-				Description: `returns the pagination information`,
 			},
 			"page_number": schema.Int64Attribute{
 				Optional:    true,
@@ -203,16 +184,22 @@ func (r *GatewayControlPlaneListDataSource) Schema(ctx context.Context, req data
 				Optional:    true,
 				Description: `The maximum number of items to include per page. The last page of a collection may include fewer items.`,
 			},
+			"size": schema.Float64Attribute{
+				Computed: true,
+			},
 			"sort": schema.StringAttribute{
 				Optional: true,
 				MarkdownDescription: `Sorts a collection of control-planes. Supported sort attributes are:` + "\n" +
 					`  - created_at`,
 			},
+			"total": schema.Float64Attribute{
+				Computed: true,
+			},
 		},
 	}
 }
 
-func (r *GatewayControlPlaneListDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (r *GatewayControlPlaneDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -232,8 +219,8 @@ func (r *GatewayControlPlaneListDataSource) Configure(ctx context.Context, req d
 	r.client = client
 }
 
-func (r *GatewayControlPlaneListDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var data *GatewayControlPlaneListDataSourceModel
+func (r *GatewayControlPlaneDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var data *GatewayControlPlaneDataSourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &item)...)
@@ -272,11 +259,11 @@ func (r *GatewayControlPlaneListDataSource) Read(ctx context.Context, req dataso
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.ListControlPlanesResponse != nil) {
+	if !(res.ListControlPlanesResponse != nil && len(res.ListControlPlanesResponse.Data) > 0) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedListControlPlanesResponse(ctx, res.ListControlPlanesResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedControlPlane(ctx, &res.ListControlPlanesResponse.Data[0])...)
 
 	if resp.Diagnostics.HasError() {
 		return

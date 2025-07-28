@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: f261bb24b9923dec8faf0fd61e97dfc0
+  docChecksum: df65690134acad922a3ad45991590c94
   docVersion: 2.0.0
   speakeasyVersion: 1.581.1
   generationVersion: 2.656.9
@@ -32,6 +32,7 @@ generatedFiles:
   - USAGE.md
   - examples/README.md
   - examples/data-sources/konnect_cloud_gateway_provider_account_list/data-source.tf
+  - examples/data-sources/konnect_gateway_control_plane/data-source.tf
   - examples/data-sources/konnect_gateway_control_plane_list/data-source.tf
   - examples/data-sources/konnect_mesh_control_planes/data-source.tf
   - examples/data-sources/konnect_portal_list/data-source.tf
@@ -407,6 +408,8 @@ generatedFiles:
   - internal/provider/gatewayconsumergroup_resource_sdk.go
   - internal/provider/gatewayconsumergroupmember_resource.go
   - internal/provider/gatewayconsumergroupmember_resource_sdk.go
+  - internal/provider/gatewaycontrolplane_data_source.go
+  - internal/provider/gatewaycontrolplane_data_source_sdk.go
   - internal/provider/gatewaycontrolplane_resource.go
   - internal/provider/gatewaycontrolplane_resource_sdk.go
   - internal/provider/gatewaycontrolplanelist_data_source.go
