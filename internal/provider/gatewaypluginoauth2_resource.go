@@ -40,19 +40,19 @@ type GatewayPluginOauth2Resource struct {
 
 // GatewayPluginOauth2ResourceModel describes the resource data model.
 type GatewayPluginOauth2ResourceModel struct {
-	Config         tfTypes.Oauth2PluginConfig `tfsdk:"config"`
-	ControlPlaneID types.String               `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                `tfsdk:"created_at"`
-	Enabled        types.Bool                 `tfsdk:"enabled"`
-	ID             types.String               `tfsdk:"id"`
-	InstanceName   types.String               `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials         `tfsdk:"partials"`
-	Protocols      []types.String             `tfsdk:"protocols"`
-	Route          *tfTypes.Set               `tfsdk:"route"`
-	Service        *tfTypes.Set               `tfsdk:"service"`
-	Tags           []types.String             `tfsdk:"tags"`
-	UpdatedAt      types.Int64                `tfsdk:"updated_at"`
+	Config         *tfTypes.Oauth2PluginConfig `tfsdk:"config"`
+	ControlPlaneID types.String                `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                 `tfsdk:"created_at"`
+	Enabled        types.Bool                  `tfsdk:"enabled"`
+	ID             types.String                `tfsdk:"id"`
+	InstanceName   types.String                `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering  `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials          `tfsdk:"partials"`
+	Protocols      []types.String              `tfsdk:"protocols"`
+	Route          *tfTypes.Set                `tfsdk:"route"`
+	Service        *tfTypes.Set                `tfsdk:"service"`
+	Tags           []types.String              `tfsdk:"tags"`
+	UpdatedAt      types.Int64                 `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginOauth2Resource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,7 +64,8 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "GatewayPluginOauth2 Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"accept_http_if_already_terminated": schema.BoolAttribute{
 						Computed:    true,
@@ -133,7 +134,8 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 						},
 					},
 					"provision_key": schema.StringAttribute{
-						Required:    true,
+						Computed:    true,
+						Optional:    true,
 						Description: `The unique key the plugin has generated when it has been added to the Service.`,
 					},
 					"realm": schema.StringAttribute{
@@ -185,12 +187,14 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 				Description: `Whether the plugin is applied.`,
 			},
 			"id": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
@@ -229,12 +233,14 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 					},
 					Attributes: map[string]schema.Attribute{
 						"id": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
+							Computed:    true,
+							Optional:    true,
+							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
+							Computed:    true,
+							Optional:    true,
+							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
 							Computed: true,
@@ -242,6 +248,7 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 						},
 					},
 				},
+				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.SetAttribute{
 				Computed:    true,

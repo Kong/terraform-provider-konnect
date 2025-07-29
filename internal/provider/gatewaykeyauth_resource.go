@@ -85,7 +85,7 @@ func (r *GatewayKeyAuthResource) Schema(ctx context.Context, req resource.Schema
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `Requires replacement if changed.`,
+				Description: `A string representing a UUID (universally unique identifier). Requires replacement if changed.`,
 			},
 			"key": schema.StringAttribute{
 				Computed: true,
@@ -104,7 +104,7 @@ func (r *GatewayKeyAuthResource) Schema(ctx context.Context, req resource.Schema
 					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 				},
 				ElementType: types.StringType,
-				Description: `Requires replacement if changed.`,
+				Description: `A set of strings representing tags. Requires replacement if changed.`,
 			},
 			"ttl": schema.Int64Attribute{
 				Computed: true,

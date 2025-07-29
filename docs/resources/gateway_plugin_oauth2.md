@@ -81,32 +81,25 @@ resource "konnect_gateway_plugin_oauth2" "my_gatewaypluginoauth2" {
 
 ### Required
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied.
-- `instance_name` (String)
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
+- `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
 - `protocols` (Set of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
 
-### Read-Only
-
-- `id` (String) The ID of this resource.
-
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
-
-Required:
-
-- `provision_key` (String) The unique key the plugin has generated when it has been added to the Service.
 
 Optional:
 
@@ -122,6 +115,7 @@ Optional:
 - `mandatory_scope` (Boolean) An optional boolean value telling the plugin to require at least one `scope` to be authorized by the end user.
 - `persistent_refresh_token` (Boolean)
 - `pkce` (String) Specifies a mode of how the Proof Key for Code Exchange (PKCE) should be handled by the plugin. must be one of ["lax", "none", "strict"]
+- `provision_key` (String) The unique key the plugin has generated when it has been added to the Service.
 - `realm` (String) When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
 - `refresh_token_ttl` (Number) Time-to-live value for data
 - `reuse_refresh_token` (Boolean) An optional boolean value that indicates whether an OAuth refresh token is reused when refreshing an access token.
@@ -159,8 +153,8 @@ Optional:
 
 Optional:
 
-- `id` (String)
-- `name` (String)
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `name` (String) A unique string representing a UTF-8 encoded name.
 - `path` (String)
 
 

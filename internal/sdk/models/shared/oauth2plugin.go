@@ -50,7 +50,9 @@ func (o *Oauth2PluginOrdering) GetBefore() *Oauth2PluginBefore {
 }
 
 type Oauth2PluginPartials struct {
-	ID   *string `json:"id,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
 }
@@ -131,7 +133,7 @@ type Oauth2PluginConfig struct {
 	// Specifies a mode of how the Proof Key for Code Exchange (PKCE) should be handled by the plugin.
 	Pkce *Pkce `json:"pkce,omitempty"`
 	// The unique key the plugin has generated when it has been added to the Service.
-	ProvisionKey string `json:"provision_key"`
+	ProvisionKey *string `json:"provision_key,omitempty"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
 	Realm *string `json:"realm,omitempty"`
 	// Time-to-live value for data
@@ -228,9 +230,9 @@ func (o *Oauth2PluginConfig) GetPkce() *Pkce {
 	return o.Pkce
 }
 
-func (o *Oauth2PluginConfig) GetProvisionKey() string {
+func (o *Oauth2PluginConfig) GetProvisionKey() *string {
 	if o == nil {
-		return ""
+		return nil
 	}
 	return o.ProvisionKey
 }
@@ -337,17 +339,20 @@ type Oauth2Plugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                  `json:"enabled,omitempty"`
-	ID           *string                `json:"id,omitempty"`
-	InstanceName *string                `json:"instance_name,omitempty"`
-	name         string                 `const:"oauth2" json:"name"`
-	Ordering     *Oauth2PluginOrdering  `json:"ordering,omitempty"`
-	Partials     []Oauth2PluginPartials `json:"partials,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string               `json:"instance_name,omitempty"`
+	name         string                `const:"oauth2" json:"name"`
+	Ordering     *Oauth2PluginOrdering `json:"ordering,omitempty"`
+	// A list of partials to be used by the plugin.
+	Partials []Oauth2PluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64             `json:"updated_at,omitempty"`
-	Config    Oauth2PluginConfig `json:"config"`
+	UpdatedAt *int64              `json:"updated_at,omitempty"`
+	Config    *Oauth2PluginConfig `json:"config,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []Oauth2PluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -427,9 +432,9 @@ func (o *Oauth2Plugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *Oauth2Plugin) GetConfig() Oauth2PluginConfig {
+func (o *Oauth2Plugin) GetConfig() *Oauth2PluginConfig {
 	if o == nil {
-		return Oauth2PluginConfig{}
+		return nil
 	}
 	return o.Config
 }

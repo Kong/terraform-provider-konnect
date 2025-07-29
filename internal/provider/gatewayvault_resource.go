@@ -80,8 +80,9 @@ func (r *GatewayVaultResource) Schema(ctx context.Context, req resource.SchemaRe
 				Description: `The description of the Vault entity.`,
 			},
 			"id": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,

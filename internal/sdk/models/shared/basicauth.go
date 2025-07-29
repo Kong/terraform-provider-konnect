@@ -16,10 +16,12 @@ func (o *BasicAuthConsumer) GetID() *string {
 type BasicAuth struct {
 	Consumer *BasicAuthConsumer `json:"consumer"`
 	// Unix epoch when the resource was created.
-	CreatedAt *int64   `json:"created_at,omitempty"`
-	ID        *string  `json:"id,omitempty"`
-	Tags      []string `json:"tags,omitempty"`
-	Username  string   `json:"username"`
+	CreatedAt *int64 `json:"created_at,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A set of strings representing tags.
+	Tags     []string `json:"tags,omitempty"`
+	Username string   `json:"username"`
 }
 
 func (o *BasicAuth) GetConsumer() *BasicAuthConsumer {
