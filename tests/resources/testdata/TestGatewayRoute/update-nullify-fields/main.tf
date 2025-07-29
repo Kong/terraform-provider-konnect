@@ -38,6 +38,15 @@ resource "konnect_gateway_sni" "my_route_sni" {
   control_plane_id = konnect_gateway_control_plane.routecp.id
 }
 
+resource "konnect_gateway_service" "my_service_for_nullable_route" {
+  name             = "HTTPBin"
+  protocol         = "https"
+  host             = "httpbin.org"
+  port             = 443
+  path             = "/"
+  control_plane_id = konnect_gateway_control_plane.routecp.id
+}
+
 resource "konnect_gateway_route" "my_nullify_route" {
   methods = ["GET"]
   name    = "my-route-name"
@@ -48,6 +57,9 @@ resource "konnect_gateway_route" "my_nullify_route" {
   snis = [
     konnect_gateway_sni.my_route_sni.id
   ]
+  service = {
+    id = konnect_gateway_service.my_service_for_nullable_route.id
+  }
 
   control_plane_id = konnect_gateway_control_plane.routecp.id
 }

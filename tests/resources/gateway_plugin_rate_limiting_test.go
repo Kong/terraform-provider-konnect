@@ -21,12 +21,13 @@ func TestGatewayPluginRateLimiting(t *testing.T) {
 				},
 				{
 					// Update some fields to null
-					Config:             providerConfigUs,
-					ConfigDirectory:    config.TestStepDirectory(),
-					ExpectNonEmptyPlan: true,
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
 					Check: resource.ComposeTestCheckFunc(
 						resource.TestCheckNoResourceAttr("konnect_gateway_plugin_rate_limiting.my_nullable_rate_limiting", "instance_name"),
-						resource.TestCheckNoResourceAttr("konnect_gateway_plugin_rate_limiting.my_nullable_rate_limiting", "partials"),
+						resource.TestCheckNoResourceAttr("konnect_gateway_plugin_rate_limiting.my_nullable_rate_limiting", "service"),
+						resource.TestCheckNoResourceAttr("konnect_gateway_plugin_rate_limiting.my_nullable_rate_limiting", "route"),
+						resource.TestCheckNoResourceAttr("konnect_gateway_plugin_rate_limiting.my_nullable_rate_limiting", "consumer"),
 					),
 				},
 			},

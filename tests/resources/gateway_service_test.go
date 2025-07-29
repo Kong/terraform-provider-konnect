@@ -28,6 +28,8 @@ func TestGatewayService(t *testing.T) {
 						resource.TestCheckNoResourceAttr("konnect_gateway_service.httpbin-nullify", "path"),
 						resource.TestCheckNoResourceAttr("konnect_gateway_service.httpbin-nullify", "ca_certificates"),
 						resource.TestCheckNoResourceAttr("konnect_gateway_service.httpbin-nullify", "tls_verify"),
+						resource.TestCheckNoResourceAttr("konnect_gateway_service.httpbin-nullify", "tls_sans"),
+						resource.TestCheckNoResourceAttr("konnect_gateway_service.httpbin-nullify", "client_certificate"),
 						resource.TestCheckNoResourceAttr("konnect_gateway_service.httpbin-nullify", "tls_verify_depth"),
 					),
 				},

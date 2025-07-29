@@ -28,6 +28,7 @@ func TestGatewayRoute(t *testing.T) {
 						resource.TestCheckNoResourceAttr("konnect_gateway_route.my_nullify_route", "methods"),
 						resource.TestCheckNoResourceAttr("konnect_gateway_route.my_nullify_route", "snis"),
 						resource.TestCheckNoResourceAttr("konnect_gateway_route.my_nullify_route", "hosts"),
+						resource.TestCheckNoResourceAttr("konnect_gateway_route.my_nullify_route", "service"),
 					),
 				},
 			},
