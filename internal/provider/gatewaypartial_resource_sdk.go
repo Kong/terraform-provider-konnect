@@ -38,7 +38,6 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 					r.RedisCe.Tags = append(r.RedisCe.Tags, types.StringValue(v))
 				}
 			}
-			r.RedisCe.Type = types.StringValue(string(resp.PartialRedisCe.Type))
 			r.RedisCe.UpdatedAt = types.Int64PointerValue(resp.PartialRedisCe.UpdatedAt)
 			r.UpdatedAt = r.RedisCe.UpdatedAt
 		}
@@ -109,7 +108,6 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 					r.RedisEe.Tags = append(r.RedisEe.Tags, types.StringValue(v))
 				}
 			}
-			r.RedisEe.Type = types.StringValue(string(resp.PartialRedisEe.Type))
 			r.RedisEe.UpdatedAt = types.Int64PointerValue(resp.PartialRedisEe.UpdatedAt)
 			r.UpdatedAt = r.RedisEe.UpdatedAt
 		}
@@ -294,7 +292,6 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 				tags = append(tags, tagsItem.ValueString())
 			}
 		}
-		typeVar := shared.PartialRedisCeType(r.RedisCe.Type.ValueString())
 		updatedAt := new(int64)
 		if !r.RedisCe.UpdatedAt.IsUnknown() && !r.RedisCe.UpdatedAt.IsNull() {
 			*updatedAt = r.RedisCe.UpdatedAt.ValueInt64()
@@ -307,7 +304,6 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 			ID:        id,
 			Name:      name,
 			Tags:      tags,
-			Type:      typeVar,
 			UpdatedAt: updatedAt,
 		}
 	}
@@ -518,7 +514,6 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 				tags1 = append(tags1, tagsItem1.ValueString())
 			}
 		}
-		typeVar1 := shared.PartialRedisEeType(r.RedisEe.Type.ValueString())
 		updatedAt1 := new(int64)
 		if !r.RedisEe.UpdatedAt.IsUnknown() && !r.RedisEe.UpdatedAt.IsNull() {
 			*updatedAt1 = r.RedisEe.UpdatedAt.ValueInt64()
@@ -531,7 +526,6 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 			ID:        id1,
 			Name:      name1,
 			Tags:      tags1,
-			Type:      typeVar1,
 			UpdatedAt: updatedAt1,
 		}
 	}

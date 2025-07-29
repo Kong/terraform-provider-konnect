@@ -20,7 +20,6 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
-	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -154,15 +153,6 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `A set of strings representing tags.`,
-					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "redis-ce"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("redis-ce"),
-						},
 					},
 					"updated_at": schema.Int64Attribute{
 						Computed:    true,
@@ -356,15 +346,6 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `A set of strings representing tags.`,
-					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "redis-ee"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("redis-ee"),
-						},
 					},
 					"updated_at": schema.Int64Attribute{
 						Computed:    true,
