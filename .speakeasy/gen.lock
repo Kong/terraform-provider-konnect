@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: f261bb24b9923dec8faf0fd61e97dfc0
+  docChecksum: 1697419ee36b47628bbde9e5d85b69f0
   docVersion: 2.0.0
   speakeasyVersion: 1.581.1
   generationVersion: 2.656.9
@@ -49,6 +49,8 @@ generatedFiles:
   - examples/resources/konnect_audit_log/resource.tf
   - examples/resources/konnect_audit_log_destination/import.sh
   - examples/resources/konnect_audit_log_destination/resource.tf
+  - examples/resources/konnect_catalog_service/import.sh
+  - examples/resources/konnect_catalog_service/resource.tf
   - examples/resources/konnect_centralized_consumer/import.sh
   - examples/resources/konnect_centralized_consumer/resource.tf
   - examples/resources/konnect_centralized_consumer_key/import.sh
@@ -319,6 +321,12 @@ generatedFiles:
   - examples/resources/konnect_gateway_upstream/resource.tf
   - examples/resources/konnect_gateway_vault/import.sh
   - examples/resources/konnect_gateway_vault/resource.tf
+  - examples/resources/konnect_integration_instance/import.sh
+  - examples/resources/konnect_integration_instance/resource.tf
+  - examples/resources/konnect_integration_instance_auth_config/import.sh
+  - examples/resources/konnect_integration_instance_auth_config/resource.tf
+  - examples/resources/konnect_integration_instance_auth_credential/import.sh
+  - examples/resources/konnect_integration_instance_auth_credential/resource.tf
   - examples/resources/konnect_mesh_control_plane/import.sh
   - examples/resources/konnect_mesh_control_plane/resource.tf
   - examples/resources/konnect_portal/import.sh
@@ -373,6 +381,8 @@ generatedFiles:
   - internal/provider/auditlog_resource_sdk.go
   - internal/provider/auditlogdestination_resource.go
   - internal/provider/auditlogdestination_resource_sdk.go
+  - internal/provider/catalogservice_resource.go
+  - internal/provider/catalogservice_resource_sdk.go
   - internal/provider/centralizedconsumer_resource.go
   - internal/provider/centralizedconsumer_resource_sdk.go
   - internal/provider/centralizedconsumerkey_resource.go
@@ -649,6 +659,12 @@ generatedFiles:
   - internal/provider/gatewayupstream_resource_sdk.go
   - internal/provider/gatewayvault_resource.go
   - internal/provider/gatewayvault_resource_sdk.go
+  - internal/provider/integrationinstance_resource.go
+  - internal/provider/integrationinstance_resource_sdk.go
+  - internal/provider/integrationinstanceauthconfig_resource.go
+  - internal/provider/integrationinstanceauthconfig_resource_sdk.go
+  - internal/provider/integrationinstanceauthcredential_resource.go
+  - internal/provider/integrationinstanceauthcredential_resource_sdk.go
   - internal/provider/meshcontrolplane_resource.go
   - internal/provider/meshcontrolplane_resource_sdk.go
   - internal/provider/meshcontrolplanes_data_source.go
@@ -802,6 +818,7 @@ generatedFiles:
   - internal/provider/types/control_plane_filter_parameters.go
   - internal/provider/types/correlation_id_plugin_config.go
   - internal/provider/types/cors_plugin_config.go
+  - internal/provider/types/create_multi_key_auth_credential_config.go
   - internal/provider/types/custom_domain_state_metadata.go
   - internal/provider/types/custom_injections.go
   - internal/provider/types/custom_patterns.go
@@ -823,6 +840,7 @@ generatedFiles:
   - internal/provider/types/grpc_gateway_plugin_config.go
   - internal/provider/types/grpc_web_plugin_config.go
   - internal/provider/types/header_cert_auth_plugin_config.go
+  - internal/provider/types/headers.go
   - internal/provider/types/healthchecks.go
   - internal/provider/types/healthy.go
   - internal/provider/types/hmac_auth_plugin_config.go
@@ -832,6 +850,8 @@ generatedFiles:
   - internal/provider/types/id.go
   - internal/provider/types/identity_realms.go
   - internal/provider/types/injection_protection_plugin_config.go
+  - internal/provider/types/integration_instance_ref.go
+  - internal/provider/types/integration_ref_without_instance.go
   - internal/provider/types/ip_restriction_plugin_config.go
   - internal/provider/types/jq_plugin_config.go
   - internal/provider/types/json_threat_protection_plugin_config.go
@@ -859,9 +879,12 @@ generatedFiles:
   - internal/provider/types/message.go
   - internal/provider/types/metadata.go
   - internal/provider/types/metrics.go
+  - internal/provider/types/missing_permission.go
   - internal/provider/types/mocking_plugin_config.go
   - internal/provider/types/model.go
   - internal/provider/types/mtls_auth_plugin_config.go
+  - internal/provider/types/multi_key_auth.go
+  - internal/provider/types/multi_key_auth_credential.go
   - internal/provider/types/name.go
   - internal/provider/types/network_provider_metadata.go
   - internal/provider/types/nodes.go
@@ -872,6 +895,8 @@ generatedFiles:
   - internal/provider/types/oauth.go
   - internal/provider/types/oauth2_introspection_plugin_config.go
   - internal/provider/types/oauth2_plugin_config.go
+  - internal/provider/types/oauth_auth_config.go
+  - internal/provider/types/oauth_config.go
   - internal/provider/types/opa_plugin_config.go
   - internal/provider/types/openid_connect_plugin_config.go
   - internal/provider/types/openid_connect_plugin_redis.go
@@ -916,8 +941,8 @@ generatedFiles:
   - internal/provider/types/request_callout_plugin_cache.go
   - internal/provider/types/request_callout_plugin_config.go
   - internal/provider/types/request_callout_plugin_config_body.go
+  - internal/provider/types/request_callout_plugin_config_callouts_headers.go
   - internal/provider/types/request_callout_plugin_config_headers.go
-  - internal/provider/types/request_callout_plugin_headers.go
   - internal/provider/types/request_callout_plugin_upstream.go
   - internal/provider/types/request_jq_program_options.go
   - internal/provider/types/request_size_limiting_plugin_config.go
@@ -999,6 +1024,7 @@ generatedFiles:
   - internal/sdk/auditlogs.go
   - internal/sdk/basicauthcredentials.go
   - internal/sdk/cacertificates.go
+  - internal/sdk/catalogservices.go
   - internal/sdk/centrallymanagedconsumers.go
   - internal/sdk/centrallymanagedkeys.go
   - internal/sdk/certificates.go
@@ -1014,6 +1040,9 @@ generatedFiles:
   - internal/sdk/docs/models/operations/option.md
   - internal/sdk/dpcertificates.go
   - internal/sdk/hmacauthcredentials.go
+  - internal/sdk/integrationinstanceauthconfig.go
+  - internal/sdk/integrationinstanceauthcredentials.go
+  - internal/sdk/integrationinstances.go
   - internal/sdk/internal/config/sdkconfiguration.go
   - internal/sdk/internal/hooks/hooks.go
   - internal/sdk/internal/utils/contenttype.go
@@ -1066,6 +1095,7 @@ generatedFiles:
   - internal/sdk/models/operations/createbotdetectionplugin.go
   - internal/sdk/models/operations/createcacertificate.go
   - internal/sdk/models/operations/createcanaryplugin.go
+  - internal/sdk/models/operations/createcatalogservice.go
   - internal/sdk/models/operations/createcertificate.go
   - internal/sdk/models/operations/createconfigstore.go
   - internal/sdk/models/operations/createconfiguration.go
@@ -1098,6 +1128,8 @@ generatedFiles:
   - internal/sdk/models/operations/createhmacauthwithconsumer.go
   - internal/sdk/models/operations/createhttplogplugin.go
   - internal/sdk/models/operations/createinjectionprotectionplugin.go
+  - internal/sdk/models/operations/createintegrationinstance.go
+  - internal/sdk/models/operations/createintegrationinstanceauthcredential.go
   - internal/sdk/models/operations/createiprestrictionplugin.go
   - internal/sdk/models/operations/createjqplugin.go
   - internal/sdk/models/operations/createjsonthreatprotectionplugin.go
@@ -1213,6 +1245,7 @@ generatedFiles:
   - internal/sdk/models/operations/deletebotdetectionplugin.go
   - internal/sdk/models/operations/deletecacertificate.go
   - internal/sdk/models/operations/deletecanaryplugin.go
+  - internal/sdk/models/operations/deletecatalogservice.go
   - internal/sdk/models/operations/deletecertificate.go
   - internal/sdk/models/operations/deletecmek.go
   - internal/sdk/models/operations/deleteconfigstore.go
@@ -1244,6 +1277,9 @@ generatedFiles:
   - internal/sdk/models/operations/deletehmacauthwithconsumer.go
   - internal/sdk/models/operations/deletehttplogplugin.go
   - internal/sdk/models/operations/deleteinjectionprotectionplugin.go
+  - internal/sdk/models/operations/deleteintegrationinstance.go
+  - internal/sdk/models/operations/deleteintegrationinstanceauthconfig.go
+  - internal/sdk/models/operations/deleteintegrationinstanceauthcredential.go
   - internal/sdk/models/operations/deleteiprestrictionplugin.go
   - internal/sdk/models/operations/deletejqplugin.go
   - internal/sdk/models/operations/deletejsonthreatprotectionplugin.go
@@ -1333,6 +1369,8 @@ generatedFiles:
   - internal/sdk/models/operations/deletewebsocketvalidatorplugin.go
   - internal/sdk/models/operations/deletexmlthreatprotectionplugin.go
   - internal/sdk/models/operations/deletezipkinplugin.go
+  - internal/sdk/models/operations/fetchcatalogservice.go
+  - internal/sdk/models/operations/fetchintegrationinstance.go
   - internal/sdk/models/operations/fetchpluginschema.go
   - internal/sdk/models/operations/getaclplugin.go
   - internal/sdk/models/operations/getaclwithconsumer.go
@@ -1398,6 +1436,8 @@ generatedFiles:
   - internal/sdk/models/operations/gethmacauthwithconsumer.go
   - internal/sdk/models/operations/gethttplogplugin.go
   - internal/sdk/models/operations/getinjectionprotectionplugin.go
+  - internal/sdk/models/operations/getintegrationinstanceauthconfig.go
+  - internal/sdk/models/operations/getintegrationinstanceauthcredential.go
   - internal/sdk/models/operations/getiprestrictionplugin.go
   - internal/sdk/models/operations/getjqplugin.go
   - internal/sdk/models/operations/getjsonthreatprotectionplugin.go
@@ -1535,6 +1575,7 @@ generatedFiles:
   - internal/sdk/models/operations/updatebasicauthplugin.go
   - internal/sdk/models/operations/updatebotdetectionplugin.go
   - internal/sdk/models/operations/updatecanaryplugin.go
+  - internal/sdk/models/operations/updatecatalogservice.go
   - internal/sdk/models/operations/updateconfigstore.go
   - internal/sdk/models/operations/updateconfluentconsumeplugin.go
   - internal/sdk/models/operations/updateconfluentplugin.go
@@ -1558,6 +1599,7 @@ generatedFiles:
   - internal/sdk/models/operations/updatehmacauthplugin.go
   - internal/sdk/models/operations/updatehttplogplugin.go
   - internal/sdk/models/operations/updateinjectionprotectionplugin.go
+  - internal/sdk/models/operations/updateintegrationinstance.go
   - internal/sdk/models/operations/updateiprestrictionplugin.go
   - internal/sdk/models/operations/updatejqplugin.go
   - internal/sdk/models/operations/updatejsonthreatprotectionplugin.go
@@ -1632,6 +1674,7 @@ generatedFiles:
   - internal/sdk/models/operations/upsertconsumer.go
   - internal/sdk/models/operations/upsertconsumergroup.go
   - internal/sdk/models/operations/upsertcustomplugin.go
+  - internal/sdk/models/operations/upsertintegrationinstanceauthconfig.go
   - internal/sdk/models/operations/upsertkey.go
   - internal/sdk/models/operations/upsertkeyset.go
   - internal/sdk/models/operations/upsertpartial.go
@@ -1711,6 +1754,7 @@ generatedFiles:
   - internal/sdk/models/shared/botdetectionplugin.go
   - internal/sdk/models/shared/cacertificate.go
   - internal/sdk/models/shared/canaryplugin.go
+  - internal/sdk/models/shared/catalogservice.go
   - internal/sdk/models/shared/centralizedconsumer.go
   - internal/sdk/models/shared/certificate.go
   - internal/sdk/models/shared/cmek.go
@@ -1749,11 +1793,14 @@ generatedFiles:
   - internal/sdk/models/shared/createappauthstrategyrequest.go
   - internal/sdk/models/shared/createappauthstrategyresponse.go
   - internal/sdk/models/shared/createauditlogdestination.go
+  - internal/sdk/models/shared/createcatalogservice.go
   - internal/sdk/models/shared/createconfigstore.go
   - internal/sdk/models/shared/createconfigurationdataplanegroup.go
   - internal/sdk/models/shared/createconfigurationrequest.go
   - internal/sdk/models/shared/createcontrolplanerequest.go
   - internal/sdk/models/shared/createcustomdomainrequest.go
+  - internal/sdk/models/shared/createintegrationinstance.go
+  - internal/sdk/models/shared/createintegrationinstanceauthcredential.go
   - internal/sdk/models/shared/createmeshcontrolplanerequest.go
   - internal/sdk/models/shared/createnetworkrequest.go
   - internal/sdk/models/shared/createpluginschemas.go
@@ -1796,6 +1843,11 @@ generatedFiles:
   - internal/sdk/models/shared/httplogplugin.go
   - internal/sdk/models/shared/injectionprotectionplugin.go
   - internal/sdk/models/shared/instancetypename.go
+  - internal/sdk/models/shared/integrationinstance.go
+  - internal/sdk/models/shared/integrationinstanceauthconfig.go
+  - internal/sdk/models/shared/integrationinstanceauthcredential.go
+  - internal/sdk/models/shared/integrationinstanceref.go
+  - internal/sdk/models/shared/integrationrefwithoutinstance.go
   - internal/sdk/models/shared/internalservererror.go
   - internal/sdk/models/shared/invalidparameterchoiceitem.go
   - internal/sdk/models/shared/invalidparameterdependentitem.go
@@ -1839,10 +1891,13 @@ generatedFiles:
   - internal/sdk/models/shared/meshcontrolplanefeature.go
   - internal/sdk/models/shared/meshcontrolplanefeaturehostnamegenerationcreation.go
   - internal/sdk/models/shared/meshcontrolplanefeaturemeshcreation.go
+  - internal/sdk/models/shared/missingpermission.go
   - internal/sdk/models/shared/mockingplugin.go
   - internal/sdk/models/shared/mtlsauth.go
   - internal/sdk/models/shared/mtlsauthplugin.go
   - internal/sdk/models/shared/mtlsauthwithoutparents.go
+  - internal/sdk/models/shared/multikeyauth.go
+  - internal/sdk/models/shared/multikeyauthcredential.go
   - internal/sdk/models/shared/network.go
   - internal/sdk/models/shared/networkcreatestate.go
   - internal/sdk/models/shared/networkprovidermetadata.go
@@ -1855,6 +1910,8 @@ generatedFiles:
   - internal/sdk/models/shared/oasvalidationplugin.go
   - internal/sdk/models/shared/oauth2introspectionplugin.go
   - internal/sdk/models/shared/oauth2plugin.go
+  - internal/sdk/models/shared/oauthauthconfig.go
+  - internal/sdk/models/shared/oauthconfig.go
   - internal/sdk/models/shared/opaplugin.go
   - internal/sdk/models/shared/openidconnectplugin.go
   - internal/sdk/models/shared/opentelemetryplugin.go
@@ -1946,14 +2003,17 @@ generatedFiles:
   - internal/sdk/models/shared/updateappauthstrategyrequest.go
   - internal/sdk/models/shared/updateauditlogdestination.go
   - internal/sdk/models/shared/updateauditlogwebhook.go
+  - internal/sdk/models/shared/updatecatalogservice.go
   - internal/sdk/models/shared/updateconfigstore.go
   - internal/sdk/models/shared/updateconsumerpayload.go
   - internal/sdk/models/shared/updatecontrolplanerequest.go
+  - internal/sdk/models/shared/updateintegrationinstance.go
   - internal/sdk/models/shared/updateportalappearanceresponse.go
   - internal/sdk/models/shared/updateportalrequest.go
   - internal/sdk/models/shared/updatesystemaccount.go
   - internal/sdk/models/shared/updatesystemaccountaccesstoken.go
   - internal/sdk/models/shared/updateteam.go
+  - internal/sdk/models/shared/upsertintegrationinstanceauthconfig.go
   - internal/sdk/models/shared/upstream.go
   - internal/sdk/models/shared/upstreamoauthplugin.go
   - internal/sdk/models/shared/upstreamtimeoutplugin.go
@@ -12861,6 +12921,274 @@ examples:
       parameters:
         path:
           cmekId: "default"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-catalog-service:
+    speakeasy-default-create-catalog-service:
+      requestBody:
+        application/json: {"name": "user-svc", "display_name": "User Service", "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "user-svc", "display_name": "User Service", "description": "alive sunder fat appropriate jealous", "custom_fields": "<value>", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 82640, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  fetch-catalog-service:
+    speakeasy-default-fetch-catalog-service:
+      parameters:
+        path:
+          id: "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
+      responses:
+        "200":
+          application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "user-svc", "display_name": "User Service", "description": "quirkily flood usable equally costume mortally rout gosh", "custom_fields": "<value>", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-catalog-service:
+    speakeasy-default-update-catalog-service:
+      parameters:
+        path:
+          id: "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
+      requestBody:
+        application/json: {"name": "user-svc", "display_name": "User Service", "labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "user-svc", "display_name": "User Service", "description": "which tragic whenever preside", "custom_fields": "<value>", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 446855, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  create-integration-instance:
+    speakeasy-default-create-integration-instance:
+      requestBody:
+        application/json: {"integration_name": "aws-lambda", "name": "aws-lambda-prod", "display_name": "AWS (prod)", "config": {"account_region": "eu"}}
+      responses:
+        "201":
+          application/json: {"id": "3f51fa25-310a-421d-bd1a-007f859021a3", "name": "aws-lambda-prod", "display_name": "AWS (prod)", "description": "needily boo triumphantly who gratefully out actually whether jet next", "integration": {"name": "gateway-manager", "display_name": "gateway-manager"}, "authorized": true, "config": {"account_region": "eu"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 92752, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": [], "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  fetch-integration-instance:
+    speakeasy-default-fetch-integration-instance:
+      parameters:
+        path:
+          id: "3f51fa25-310a-421d-bd1a-007f859021a3"
+      responses:
+        "200":
+          application/json: {"id": "3f51fa25-310a-421d-bd1a-007f859021a3", "name": "aws-lambda-prod", "display_name": "AWS (prod)", "description": "quit deflate toaster upright", "integration": {"name": "gateway-manager", "display_name": "gateway-manager"}, "authorized": true, "config": {"account_region": "eu"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-integration-instance:
+    speakeasy-default-update-integration-instance:
+      parameters:
+        path:
+          id: "3f51fa25-310a-421d-bd1a-007f859021a3"
+      requestBody:
+        application/json: {"name": "aws-lambda-prod", "display_name": "AWS (prod)"}
+      responses:
+        "200":
+          application/json: {"id": "3f51fa25-310a-421d-bd1a-007f859021a3", "name": "aws-lambda-prod", "display_name": "AWS (prod)", "description": "viciously anenst diligent disappointment", "integration": {"name": "gateway-manager", "display_name": "gateway-manager"}, "authorized": true, "config": {"account_region": "eu"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 915697, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>"], "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  delete-integration-instance:
+    speakeasy-default-delete-integration-instance:
+      parameters:
+        path:
+          id: "3f51fa25-310a-421d-bd1a-007f859021a3"
+      responses:
+        "400":
+          application/problem+json: {"status": 431967, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": null, "reason": "is a required field", "dependents": null, "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  get-integration-instance-auth-config:
+    speakeasy-default-get-integration-instance-auth-config:
+      parameters:
+        path:
+          id: "3f51fa25-310a-421d-bd1a-007f859021a3"
+          integrationInstanceId: "3f51fa25-310a-421d-bd1a-007f859021a3"
+      responses:
+        "200":
+          application/json: {"type": "oauth", "client_id": "d745213a-b7e8-4998-abe3-41f164001970", "authorization_endpoint": "https://identity.service.com/oauth/authorize", "token_endpoint": "https://identity.service.com/oauth/token"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-integration-instance-auth-credential:
+    speakeasy-default-create-integration-instance-auth-credential:
+      parameters:
+        path:
+          id: "3f51fa25-310a-421d-bd1a-007f859021a3"
+          integrationInstanceId: "3f51fa25-310a-421d-bd1a-007f859021a3"
+      requestBody:
+        application/json: {"type": "multi_key_auth", "config": {"headers": [{"name": "x-api-key", "key": "9f2a3b4c8d6e7f00112233445566778899aabbccddeeff001122334455667788"}]}}
+      responses:
+        "201":
+          application/json: {"id": "4f535923-ec24-456c-b4e5-e67f65c8c208", "integration_instance": {"id": "772b9caf-ddbc-4f4f-8aa4-8dfbbe420351", "name": "aws-lambda-prod", "display_name": "AWS (prod)"}, "missing_permissions": [{"scopes": ["incident:read"], "message": "<value>"}], "tainted": false, "expires_at": "2025-04-01T07:20:50Z", "created_at": "2022-11-04T20:10:06.927Z", "type": "multi_key_auth"}
+        "400":
+          application/problem+json: {"status": 134717, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  get-integration-instance-auth-credential:
+    speakeasy-default-get-integration-instance-auth-credential:
+      parameters:
+        path:
+          id: "3f51fa25-310a-421d-bd1a-007f859021a3"
+          integrationInstanceId: "3f51fa25-310a-421d-bd1a-007f859021a3"
+      responses:
+        "200":
+          application/json: {"id": "4f535923-ec24-456c-b4e5-e67f65c8c208", "integration_instance": {"id": "772b9caf-ddbc-4f4f-8aa4-8dfbbe420351", "name": "aws-lambda-prod", "display_name": "AWS (prod)"}, "missing_permissions": [{"scopes": ["incident:read"], "message": "<value>"}], "tainted": false, "expires_at": "2025-04-01T07:20:50Z", "created_at": "2022-11-04T20:10:06.927Z", "type": "multi_key_auth"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-resource-mapping:
+    speakeasy-default-create-resource-mapping:
+      requestBody:
+        application/json: {"service": "user-svc", "resource": "4UdXnoaDYYJsH_Ir"}
+      responses:
+        "201":
+          application/json: {"id": "d277faad-ed4e-4c56-a0fb-acce065dee34", "resource": {"id": "4UdXnoaDYYJsH_Ir", "name": "<value>", "integration": {"name": "gateway-manager", "display_name": "gateway-manager", "instance": {"id": "772b9caf-ddbc-4f4f-8aa4-8dfbbe420351", "name": "aws-lambda-prod", "display_name": "AWS (prod)"}}, "type": "gateway_svc", "config": "<value>"}, "service": {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "user-svc", "display_name": "User Service"}, "created_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 519975, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  fetch-resource-mapping:
+    speakeasy-default-fetch-resource-mapping:
+      parameters:
+        path:
+          resourceMappingId: "d277faad-ed4e-4c56-a0fb-acce065dee34"
+      responses:
+        "200":
+          application/json: {"id": "d277faad-ed4e-4c56-a0fb-acce065dee34", "resource": {"id": "4UdXnoaDYYJsH_Ir", "name": "<value>", "integration": {"name": "gateway-manager", "display_name": "gateway-manager", "instance": {"id": "772b9caf-ddbc-4f4f-8aa4-8dfbbe420351", "name": "aws-lambda-prod", "display_name": "AWS (prod)"}}, "type": "gateway_svc", "config": "<value>"}, "service": {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "user-svc", "display_name": "User Service"}, "created_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  delete-resource-mapping:
+    speakeasy-default-delete-resource-mapping:
+      parameters:
+        path:
+          resourceMappingId: "d277faad-ed4e-4c56-a0fb-acce065dee34"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  fetch-resource:
+    speakeasy-default-fetch-resource:
+      parameters:
+        path:
+          id: "AflTNLY0tTQhv2my"
+      responses:
+        "200":
+          application/json: {"id": "4UdXnoaDYYJsH_Ir", "name": "<value>", "integration": {"name": "gateway-manager", "display_name": "gateway-manager", "instance": {"id": "772b9caf-ddbc-4f4f-8aa4-8dfbbe420351", "name": "aws-lambda-prod", "display_name": "AWS (prod)"}}, "type": "gateway_svc", "config": "<value>", "integration_data": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "archived": false, "service_associations": 2, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  delete-catalog-service:
+    speakeasy-default-delete-catalog-service:
+      parameters:
+        path:
+          id: "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  delete-integration-instance-auth-credential:
+    speakeasy-default-delete-integration-instance-auth-credential:
+      parameters:
+        path:
+          integrationInstanceId: "3f51fa25-310a-421d-bd1a-007f859021a3"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  upsert-integration-instance-auth-config:
+    speakeasy-default-upsert-integration-instance-auth-config:
+      parameters:
+        path:
+          integrationInstanceId: "3f51fa25-310a-421d-bd1a-007f859021a3"
+      requestBody:
+        application/json: {"type": "oauth", "client_id": "d745213a-b7e8-4998-abe3-41f164001970", "client_secret": "s3cr3t4p1cl13ntt0k3n1234567890abcdef", "authorization_endpoint": "https://identity.service.com/oauth/authorize", "token_endpoint": "https://identity.service.com/oauth/token"}
+      responses:
+        "200":
+          application/json: {"type": "oauth", "client_id": "d745213a-b7e8-4998-abe3-41f164001970", "authorization_endpoint": "https://identity.service.com/oauth/authorize", "token_endpoint": "https://identity.service.com/oauth/token"}
+        "400":
+          application/problem+json: {"status": 951125, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  delete-integration-instance-auth-config:
+    speakeasy-default-delete-integration-instance-auth-config:
+      parameters:
+        path:
+          integrationInstanceId: "3f51fa25-310a-421d-bd1a-007f859021a3"
       responses:
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}

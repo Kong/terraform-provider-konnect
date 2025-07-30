@@ -6,6 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type RequestCalloutPluginConfigHeaders struct {
-	Store types.Bool `tfsdk:"store"`
+type MissingPermission struct {
+	Message types.String   `tfsdk:"message"`
+	Scopes  []types.String `tfsdk:"scopes"`
 }
