@@ -8,8 +8,10 @@ import (
 )
 
 type Destinations struct {
-	IP   *string `json:"ip,omitempty"`
-	Port *int64  `json:"port,omitempty"`
+	// A string representing an IP address or CIDR block, such as 192.168.1.1 or 192.168.0.0/16.
+	IP *string `json:"ip,omitempty"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `json:"port,omitempty"`
 }
 
 func (o *Destinations) GetIP() *string {
@@ -89,6 +91,7 @@ func (e *PathHandling) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// RouteJSONProtocols - A string representing a protocol, such as HTTP or HTTPS.
 type RouteJSONProtocols string
 
 const (
@@ -152,8 +155,10 @@ func (o *RouteJSONService) GetID() *string {
 }
 
 type Sources struct {
-	IP   *string `json:"ip,omitempty"`
-	Port *int64  `json:"port,omitempty"`
+	// A string representing an IP address or CIDR block, such as 192.168.1.1 or 192.168.0.0/16.
+	IP *string `json:"ip,omitempty"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `json:"port,omitempty"`
 }
 
 func (o *Sources) GetIP() *string {
@@ -182,7 +187,8 @@ type RouteJSON struct {
 	Hosts []string `json:"hosts,omitempty"`
 	// The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the `https` protocol.
 	HTTPSRedirectStatusCode *HTTPSRedirectStatusCode `json:"https_redirect_status_code,omitempty"`
-	ID                      *string                  `json:"id,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
 	// A list of HTTP methods that match this Route.
 	Methods []string `json:"methods,omitempty"`
 	// The name of the Route. Route names must be unique, and they are case sensitive. For example, there can be two different Routes named "test" and "Test".

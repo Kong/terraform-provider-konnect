@@ -10,7 +10,8 @@ type Vault struct {
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// The description of the Vault entity.
 	Description *string `json:"description,omitempty"`
-	ID          *string `json:"id,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
 	// The name of the Vault that's going to be added. Currently, the Vault implementation must be installed in every Kong instance.
 	Name string `json:"name"`
 	// The unique prefix (or identifier) for this Vault configuration. The prefix is used to load the right Vault configuration and implementation when referencing secrets with the other entities.

@@ -86,7 +86,7 @@ func (r *GatewayTargetResource) Schema(ctx context.Context, req resource.SchemaR
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `Requires replacement if changed.`,
+				Description: `A string representing a UUID (universally unique identifier). Requires replacement if changed.`,
 			},
 			"tags": schema.ListAttribute{
 				Computed: true,
@@ -136,7 +136,7 @@ func (r *GatewayTargetResource) Schema(ctx context.Context, req resource.SchemaR
 						Description: `Requires replacement if changed.`,
 					},
 				},
-				Description: `Requires replacement if changed.`,
+				Description: `The unique identifier or the name of the upstream for which to update the target. Requires replacement if changed.`,
 			},
 			"upstream_id": schema.StringAttribute{
 				Required: true,

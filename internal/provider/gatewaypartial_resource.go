@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -41,8 +42,8 @@ type GatewayPartialResourceModel struct {
 	CreatedAt      types.Int64             `tfsdk:"created_at"`
 	ID             types.String            `tfsdk:"id"`
 	Name           types.String            `tfsdk:"name"`
-	RedisCe        *tfTypes.PartialRedisCE `queryParam:"inline" tfsdk:"redis_ce" tfPlanOnly:"true"`
-	RedisEe        *tfTypes.PartialRedisEE `queryParam:"inline" tfsdk:"redis_ee" tfPlanOnly:"true"`
+	RedisCe        *tfTypes.PartialRedisCe `queryParam:"inline" tfsdk:"redis_ce" tfPlanOnly:"true"`
+	RedisEe        *tfTypes.PartialRedisEe `queryParam:"inline" tfsdk:"redis_ee" tfPlanOnly:"true"`
 	UpdatedAt      types.Int64             `tfsdk:"updated_at"`
 }
 
@@ -66,10 +67,12 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"name": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"redis_ce": schema.SingleNestedAttribute{
 				Computed: true,
@@ -87,7 +90,7 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 							"host": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Redis host.`,
+								Description: `A string representing a host name, such as example.com.`,
 							},
 							"password": schema.StringAttribute{
 								Computed:    true,
@@ -97,12 +100,12 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 							"port": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Redis port.`,
+								Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 							},
 							"server_name": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Server name for SSL verification.`,
+								Description: `A string representing an SNI (server name indication) value for TLS.`,
 							},
 							"ssl": schema.BoolAttribute{
 								Computed:    true,
@@ -112,20 +115,20 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 							"ssl_verify": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If set to true, verifies the validity of the server SSL certificate.`,
+								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
 							},
 							"timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Connection timeout.`,
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
 							},
 							"username": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. Requires Redis v6.0.0+.`,
+								Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
 							},
 						},
-						Description: `Redis-CE configuration. Not Null`,
+						Description: `Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -136,17 +139,20 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 						Description: `Unix epoch when the resource was created.`,
 					},
 					"id": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Description: `A string representing a UUID (universally unique identifier).`,
 					},
 					"name": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Description: `A unique string representing a UTF-8 encoded name.`,
 					},
 					"tags": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
+						Description: `A set of strings representing tags.`,
 					},
 					"updated_at": schema.Int64Attribute{
 						Computed:    true,
@@ -184,46 +190,46 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 										"ip": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `Cluster node IP.`,
+											Description: `A string representing a host name, such as example.com.`,
 										},
 										"port": schema.Int64Attribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `Cluster node port.`,
+											Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 										},
 									},
 								},
-								Description: `Cluster addresses for Redis connections using the ` + "`" + `redis` + "`" + ` strategy.`,
+								Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
 							},
 							"connect_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Connect timeout.`,
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
 							},
 							"connection_is_proxied": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If the connection to Redis is proxied, e.g., Envoy.`,
+								Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address.`,
 							},
 							"database": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Database index.`,
+								Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy`,
 							},
 							"host": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Redis host.`,
+								Description: `A string representing a host name, such as example.com.`,
 							},
 							"keepalive_backlog": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Limits the total number of opened connections for a pool.`,
+								Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `keepalive_pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `keepalive_pool_size` + "`" + `.`,
 							},
 							"keepalive_pool_size": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Size limit for cosocket connection pool per worker process.`,
+								Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `keepalive_pool_size` + "`" + ` nor ` + "`" + `keepalive_backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `keepalive_pool_size` + "`" + ` isn't specified but ` + "`" + `keepalive_backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.`,
 							},
 							"password": schema.StringAttribute{
 								Computed:    true,
@@ -233,22 +239,22 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 							"port": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The port is only used when the host is set.`,
+								Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 							},
 							"read_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Read timeout.`,
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
 							},
 							"send_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Send timeout.`,
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
 							},
 							"sentinel_master": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Sentinel master to use for Redis connections. Defining this implies using Redis Sentinel.`,
+								Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
 							},
 							"sentinel_nodes": schema.ListNestedAttribute{
 								Computed: true,
@@ -261,36 +267,43 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 										"host": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `Sentinel node hostname.`,
+											Description: `A string representing a host name, such as example.com.`,
 										},
 										"port": schema.Int64Attribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `Sentinel node port.`,
+											Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 										},
 									},
 								},
-								Description: `Sentinel addresses for Redis connections using the ` + "`" + `redis` + "`" + ` strategy. Array must have at least 1 element.`,
+								Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
 							},
 							"sentinel_password": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Sentinel password to authenticate with a Redis Sentinel instance.`,
+								Description: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.`,
 							},
 							"sentinel_role": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Sentinel role to use for Redis connections when ` + "`" + `redis` + "`" + ` strategy is used, implies using Redis Sentinel.`,
+								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["master", "slave", "any"]`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"master",
+										"slave",
+										"any",
+									),
+								},
 							},
 							"sentinel_username": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Sentinel username to authenticate with a Redis Sentinel instance. Requires Redis v6.2.0+.`,
+								Description: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.`,
 							},
 							"server_name": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Server name for SSL verification.`,
+								Description: `A string representing an SNI (server name indication) value for TLS.`,
 							},
 							"ssl": schema.BoolAttribute{
 								Computed:    true,
@@ -300,15 +313,15 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 							"ssl_verify": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If set to true, verifies the validity of the server SSL certificate.`,
+								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
 							},
 							"username": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. Requires Redis v6.0.0+.`,
+								Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
 							},
 						},
-						Description: `Redis-EE configuration. Not Null`,
+						Description: `Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -319,17 +332,20 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 						Description: `Unix epoch when the resource was created.`,
 					},
 					"id": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Description: `A string representing a UUID (universally unique identifier).`,
 					},
 					"name": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Description: `A unique string representing a UTF-8 encoded name.`,
 					},
 					"tags": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
+						Description: `A set of strings representing tags.`,
 					},
 					"updated_at": schema.Int64Attribute{
 						Computed:    true,

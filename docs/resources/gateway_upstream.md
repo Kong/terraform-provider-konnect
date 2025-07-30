@@ -116,16 +116,13 @@ resource "konnect_gateway_upstream" "my_gatewayupstream" {
 - `hash_on_uri_capture` (String) The name of the route URI capture to take the value from as hash input. Only required when `hash_on` is set to `uri_capture`.
 - `healthchecks` (Attributes) (see [below for nested schema](#nestedatt--healthchecks))
 - `host_header` (String) The hostname to be used as `Host` header when proxying requests through Kong.
+- `id` (String) A string representing a UUID (universally unique identifier).
 - `slots` (Number) The number of slots in the load balancer algorithm. If `algorithm` is set to `round-robin`, this setting determines the maximum number of slots. If `algorithm` is set to `consistent-hashing`, this setting determines the actual number of slots in the algorithm. Accepts an integer in the range `10`-`65536`.
-- `sticky_sessions_cookie` (String)
-- `sticky_sessions_cookie_path` (String)
+- `sticky_sessions_cookie` (String) The cookie name to keep sticky sessions.
+- `sticky_sessions_cookie_path` (String) A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
 - `tags` (List of String) An optional set of strings associated with the Upstream for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
 - `use_srv_name` (Boolean) If set, the balancer will use SRV hostname(if DNS Answer has SRV record) as the proxy upstream `Host`.
-
-### Read-Only
-
-- `id` (String) The ID of this resource.
 
 <a id="nestedatt--client_certificate"></a>
 ### Nested Schema for `client_certificate`
@@ -150,10 +147,10 @@ Optional:
 Optional:
 
 - `concurrency` (Number)
-- `headers` (Map of String)
+- `headers` (Map of String) A map of header names to arrays of header values.
 - `healthy` (Attributes) (see [below for nested schema](#nestedatt--healthchecks--active--healthy))
-- `http_path` (String)
-- `https_sni` (String)
+- `http_path` (String) A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
+- `https_sni` (String) A string representing an SNI (server name indication) value for TLS.
 - `https_verify_certificate` (Boolean)
 - `timeout` (Number)
 - `type` (String) must be one of ["tcp", "http", "https", "grpc", "grpcs"]

@@ -111,7 +111,7 @@ func (r *GatewayMTLSAuthResource) Schema(ctx context.Context, req resource.Schem
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `Requires replacement if changed.`,
+				Description: `A string representing a UUID (universally unique identifier). Requires replacement if changed.`,
 			},
 			"subject_name": schema.StringAttribute{
 				Required: true,
@@ -129,7 +129,7 @@ func (r *GatewayMTLSAuthResource) Schema(ctx context.Context, req resource.Schem
 					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 				},
 				ElementType: types.StringType,
-				Description: `Requires replacement if changed.`,
+				Description: `A set of strings representing tags. Requires replacement if changed.`,
 			},
 		},
 	}

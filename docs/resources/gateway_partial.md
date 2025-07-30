@@ -62,7 +62,7 @@ resource "konnect_gateway_partial" "my_gatewaypartial" {
         }
       ]
       sentinel_password = "...my_sentinel_password..."
-      sentinel_role     = "...my_sentinel_role..."
+      sentinel_role     = "any"
       sentinel_username = "...my_sentinel_username..."
       server_name       = "...my_server_name..."
       ssl               = false
@@ -95,8 +95,8 @@ resource "konnect_gateway_partial" "my_gatewaypartial" {
 ### Read-Only
 
 - `created_at` (Number) Unix epoch when the resource was created.
-- `id` (String) The ID of this resource.
-- `name` (String)
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `name` (String) A unique string representing a UTF-8 encoded name.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
 
 <a id="nestedatt--redis_ce"></a>
@@ -104,11 +104,11 @@ resource "konnect_gateway_partial" "my_gatewaypartial" {
 
 Optional:
 
-- `config` (Attributes) Redis-CE configuration. Not Null (see [below for nested schema](#nestedatt--redis_ce--config))
+- `config` (Attributes) Not Null (see [below for nested schema](#nestedatt--redis_ce--config))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `id` (String)
-- `name` (String)
-- `tags` (List of String)
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `name` (String) A unique string representing a UTF-8 encoded name.
+- `tags` (List of String) A set of strings representing tags.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
 
 <a id="nestedatt--redis_ce--config"></a>
@@ -117,14 +117,14 @@ Optional:
 Optional:
 
 - `database` (Number) Database to use for the Redis connection when using the `redis` strategy
-- `host` (String) Redis host.
+- `host` (String) A string representing a host name, such as example.com.
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-- `port` (Number) Redis port.
-- `server_name` (String) Server name for SSL verification.
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
+- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis.
-- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate.
-- `timeout` (Number) Connection timeout.
-- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. Requires Redis v6.0.0+.
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
+- `timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 
 
 
@@ -133,11 +133,11 @@ Optional:
 
 Optional:
 
-- `config` (Attributes) Redis-EE configuration. Not Null (see [below for nested schema](#nestedatt--redis_ee--config))
+- `config` (Attributes) Not Null (see [below for nested schema](#nestedatt--redis_ee--config))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `id` (String)
-- `name` (String)
-- `tags` (List of String)
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `name` (String) A unique string representing a UTF-8 encoded name.
+- `tags` (List of String) A set of strings representing tags.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
 
 <a id="nestedatt--redis_ee--config"></a>
@@ -146,34 +146,34 @@ Optional:
 Optional:
 
 - `cluster_max_redirections` (Number) Maximum retry attempts for redirection.
-- `cluster_nodes` (Attributes List) Cluster addresses for Redis connections using the `redis` strategy. (see [below for nested schema](#nestedatt--redis_ee--config--cluster_nodes))
-- `connect_timeout` (Number) Connect timeout.
-- `connection_is_proxied` (Boolean) If the connection to Redis is proxied, e.g., Envoy.
-- `database` (Number) Database index.
-- `host` (String) Redis host.
-- `keepalive_backlog` (Number) Limits the total number of opened connections for a pool.
-- `keepalive_pool_size` (Number) Size limit for cosocket connection pool per worker process.
+- `cluster_nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--redis_ee--config--cluster_nodes))
+- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy
+- `host` (String) A string representing a host name, such as example.com.
+- `keepalive_backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
+- `keepalive_pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-- `port` (Number) The port is only used when the host is set.
-- `read_timeout` (Number) Read timeout.
-- `send_timeout` (Number) Send timeout.
-- `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this implies using Redis Sentinel.
-- `sentinel_nodes` (Attributes List) Sentinel addresses for Redis connections using the `redis` strategy. Array must have at least 1 element. (see [below for nested schema](#nestedatt--redis_ee--config--sentinel_nodes))
-- `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance.
-- `sentinel_role` (String) Sentinel role to use for Redis connections when `redis` strategy is used, implies using Redis Sentinel.
-- `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. Requires Redis v6.2.0+.
-- `server_name` (String) Server name for SSL verification.
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
+- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+- `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+- `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--redis_ee--config--sentinel_nodes))
+- `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["master", "slave", "any"]
+- `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis.
-- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate.
-- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. Requires Redis v6.0.0+.
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
+- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 
 <a id="nestedatt--redis_ee--config--cluster_nodes"></a>
 ### Nested Schema for `redis_ee.config.cluster_nodes`
 
 Optional:
 
-- `ip` (String) Cluster node IP.
-- `port` (Number) Cluster node port.
+- `ip` (String) A string representing a host name, such as example.com.
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 
 
 <a id="nestedatt--redis_ee--config--sentinel_nodes"></a>
@@ -181,8 +181,8 @@ Optional:
 
 Optional:
 
-- `host` (String) Sentinel node hostname.
-- `port` (Number) Sentinel node port.
+- `host` (String) A string representing a host name, such as example.com.
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 
 ## Import
 

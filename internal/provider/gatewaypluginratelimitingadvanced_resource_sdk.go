@@ -40,19 +40,19 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 			r.Config.Limit = append(r.Config.Limit, types.Float64Value(v))
 		}
 		r.Config.LockDictionaryName = types.StringPointerValue(resp.Config.LockDictionaryName)
-		r.Config.Namespace = types.StringValue(resp.Config.Namespace)
+		r.Config.Namespace = types.StringPointerValue(resp.Config.Namespace)
 		r.Config.Path = types.StringPointerValue(resp.Config.Path)
 		if resp.Config.Redis == nil {
 			r.Config.Redis = nil
 		} else {
 			r.Config.Redis = &tfTypes.RateLimitingAdvancedPluginRedis{}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
-			r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEEClusterNodes{}
+			r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
 			if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
 				r.Config.Redis.ClusterNodes = r.Config.Redis.ClusterNodes[:len(resp.Config.Redis.ClusterNodes)]
 			}
 			for clusterNodesCount, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
-				var clusterNodes tfTypes.PartialRedisEEClusterNodes
+				var clusterNodes tfTypes.PartialRedisEeClusterNodes
 				clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 				clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
 				if clusterNodesCount+1 > len(r.Config.Redis.ClusterNodes) {
@@ -78,12 +78,12 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 			}
 			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
-			r.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEESentinelNodes{}
+			r.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
 			if len(r.Config.Redis.SentinelNodes) > len(resp.Config.Redis.SentinelNodes) {
 				r.Config.Redis.SentinelNodes = r.Config.Redis.SentinelNodes[:len(resp.Config.Redis.SentinelNodes)]
 			}
 			for sentinelNodesCount, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
-				var sentinelNodes tfTypes.PartialRedisEESentinelNodes
+				var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
 				sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 				sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 				if sentinelNodesCount+1 > len(r.Config.Redis.SentinelNodes) {
@@ -449,9 +449,12 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 	} else {
 		lockDictionaryName = nil
 	}
-	var namespace string
-	namespace = r.Config.Namespace.ValueString()
-
+	namespace := new(string)
+	if !r.Config.Namespace.IsUnknown() && !r.Config.Namespace.IsNull() {
+		*namespace = r.Config.Namespace.ValueString()
+	} else {
+		namespace = nil
+	}
 	path1 := new(string)
 	if !r.Config.Path.IsUnknown() && !r.Config.Path.IsNull() {
 		*path1 = r.Config.Path.ValueString()

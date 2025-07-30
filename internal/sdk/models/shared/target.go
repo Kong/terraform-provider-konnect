@@ -2,6 +2,7 @@
 
 package shared
 
+// TargetUpstream - The unique identifier or the name of the upstream for which to update the target.
 type TargetUpstream struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -17,14 +18,16 @@ func (o *TargetUpstream) GetID() *string {
 type Target struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *float64 `json:"created_at,omitempty"`
-	ID        *string  `json:"id,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
 	// An optional set of strings associated with the Target for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record.
 	Target *string `json:"target,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *float64        `json:"updated_at,omitempty"`
-	Upstream  *TargetUpstream `json:"upstream"`
+	UpdatedAt *float64 `json:"updated_at,omitempty"`
+	// The unique identifier or the name of the upstream for which to update the target.
+	Upstream *TargetUpstream `json:"upstream"`
 	// The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record.
 	Weight *int64 `json:"weight,omitempty"`
 }
