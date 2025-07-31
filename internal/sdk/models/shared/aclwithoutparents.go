@@ -21,7 +21,7 @@ type ACLWithoutParents struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A set of strings representing tags.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 }
 
 func (o *ACLWithoutParents) GetConsumer() *ACLWithoutParentsConsumer {

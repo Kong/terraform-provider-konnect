@@ -13,8 +13,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -69,7 +72,8 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 					"allow_partial_chain": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Allow certificate verification with only an intermediate certificate. When this is enabled, you don't need to upload the full chain to Kong Certificates.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Allow certificate verification with only an intermediate certificate. When this is enabled, you don't need to upload the full chain to Kong Certificates. Default: false`,
 					},
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -79,7 +83,8 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 					"authenticated_group_by": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Certificate property to use as the authenticated group. Valid values are ` + "`" + `CN` + "`" + ` (Common Name) or ` + "`" + `DN` + "`" + ` (Distinguished Name). Once ` + "`" + `skip_consumer_lookup` + "`" + ` is applied, any client with a valid certificate can access the Service/API. To restrict usage to only some of the authenticated users, also add the ACL plugin (not covered here) and create allowed or denied groups of users. must be one of ["CN", "DN"]`,
+						Default:     stringdefault.StaticString(`CN`),
+						Description: `Certificate property to use as the authenticated group. Valid values are ` + "`" + `CN` + "`" + ` (Common Name) or ` + "`" + `DN` + "`" + ` (Distinguished Name). Once ` + "`" + `skip_consumer_lookup` + "`" + ` is applied, any client with a valid certificate can access the Service/API. To restrict usage to only some of the authenticated users, also add the ACL plugin (not covered here) and create allowed or denied groups of users. Default: "CN"; must be one of ["CN", "DN"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf("CN", "DN"),
 						},
@@ -92,12 +97,14 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 					"cache_ttl": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Cache expiry time in seconds.`,
+						Default:     float64default.StaticFloat64(60),
+						Description: `Cache expiry time in seconds. Default: 60`,
 					},
 					"cert_cache_ttl": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The length of time in seconds between refreshes of the revocation check status cache.`,
+						Default:     float64default.StaticFloat64(60000),
+						Description: `The length of time in seconds between refreshes of the revocation check status cache. Default: 60000`,
 					},
 					"consumer_by": schema.ListAttribute{
 						Computed:    true,
@@ -126,7 +133,8 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 					"http_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `HTTP timeout threshold in milliseconds when communicating with the OCSP server or downloading CRL.`,
+						Default:     float64default.StaticFloat64(30000),
+						Description: `HTTP timeout threshold in milliseconds when communicating with the OCSP server or downloading CRL. Default: 30000`,
 					},
 					"https_proxy_host": schema.StringAttribute{
 						Computed:    true,
@@ -144,7 +152,8 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 					"revocation_check_mode": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Controls client certificate revocation check behavior. If set to ` + "`" + `SKIP` + "`" + `, no revocation check is performed. If set to ` + "`" + `IGNORE_CA_ERROR` + "`" + `, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to ` + "`" + `STRICT` + "`" + `, the plugin only treats the certificate as valid when it's able to verify the revocation status. must be one of ["IGNORE_CA_ERROR", "SKIP", "STRICT"]`,
+						Default:     stringdefault.StaticString(`IGNORE_CA_ERROR`),
+						Description: `Controls client certificate revocation check behavior. If set to ` + "`" + `SKIP` + "`" + `, no revocation check is performed. If set to ` + "`" + `IGNORE_CA_ERROR` + "`" + `, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to ` + "`" + `STRICT` + "`" + `, the plugin only treats the certificate as valid when it's able to verify the revocation status. Default: "IGNORE_CA_ERROR"; must be one of ["IGNORE_CA_ERROR", "SKIP", "STRICT"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"IGNORE_CA_ERROR",
@@ -156,12 +165,14 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 					"send_ca_dn": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Sends the distinguished names (DN) of the configured CA list in the TLS handshake message.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Sends the distinguished names (DN) of the configured CA list in the TLS handshake message. Default: false`,
 					},
 					"skip_consumer_lookup": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Skip consumer lookup once certificate is trusted against the configured CA list.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Skip consumer lookup once certificate is trusted against the configured CA list. Default: false`,
 					},
 				},
 			},
@@ -180,7 +191,8 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -188,13 +200,28 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
@@ -221,7 +248,6 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -281,7 +307,6 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

@@ -21,7 +21,7 @@ type HMACAuthWithoutParents struct {
 	ID     *string `json:"id,omitempty"`
 	Secret *string `json:"secret,omitempty"`
 	// A set of strings representing tags.
-	Tags     []string `json:"tags,omitempty"`
+	Tags     []string `json:"tags"`
 	Username string   `json:"username"`
 }
 

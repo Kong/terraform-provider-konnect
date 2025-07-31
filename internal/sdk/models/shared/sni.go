@@ -25,7 +25,7 @@ type Sni struct {
 	// The SNI name to associate with the given certificate.
 	Name string `json:"name"`
 	// An optional set of strings associated with the SNIs for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }

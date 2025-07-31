@@ -13,8 +13,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -78,7 +82,8 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 									"allow_override": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.`,
+										Default:     booldefault.StaticBool(false),
+										Description: `If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin. Default: false`,
 									},
 									"aws_access_key_id": schema.StringAttribute{
 										Computed:    true,
@@ -108,7 +113,8 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 									"azure_use_managed_identity": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.`,
+										Default:     booldefault.StaticBool(false),
+										Description: `Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models. Default: false`,
 									},
 									"gcp_service_account_json": schema.StringAttribute{
 										Computed:    true,
@@ -118,7 +124,8 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 									"gcp_use_service_account": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Use service account auth for GCP-based providers and models.`,
+										Default:     booldefault.StaticBool(false),
+										Description: `Use service account auth for GCP-based providers and models. Default: false`,
 									},
 									"header_name": schema.StringAttribute{
 										Computed:    true,
@@ -171,7 +178,8 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 													"api_version": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
-														Description: `'api-version' for Azure OpenAI instances.`,
+														Default:     stringdefault.StaticString(`2023-05-15`),
+														Description: `'api-version' for Azure OpenAI instances. Default: "2023-05-15"`,
 													},
 													"deployment_id": schema.StringAttribute{
 														Computed:    true,
@@ -216,7 +224,8 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 													"embeddings_normalize": schema.BoolAttribute{
 														Computed:    true,
 														Optional:    true,
-														Description: `If using AWS providers (Bedrock), set to true to normalize the embeddings.`,
+														Default:     booldefault.StaticBool(false),
+														Description: `If using AWS providers (Bedrock), set to true to normalize the embeddings. Default: false`,
 													},
 													"performance_config_latency": schema.StringAttribute{
 														Computed:    true,
@@ -291,12 +300,14 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 					"fetch_chunks_count": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The maximum number of chunks to fetch from vectordb`,
+						Default:     float64default.StaticFloat64(5),
+						Description: `The maximum number of chunks to fetch from vectordb. Default: 5`,
 					},
 					"inject_as_role": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `must be one of ["assistant", "system", "user"]`,
+						Default:     stringdefault.StaticString(`user`),
+						Description: `Default: "user"; must be one of ["assistant", "system", "user"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"assistant",
@@ -308,11 +319,15 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 					"inject_template": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
+						Default: stringdefault.StaticString(`<CONTEXT>` + "\n" +
+							`<PROMPT>`),
+						Description: `Default: "<CONTEXT>\n<PROMPT>"`,
 					},
 					"stop_on_failure": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Halt the LLM request process in case of a vectordb or embeddings service failure`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Halt the LLM request process in case of a vectordb or embeddings service failure. Default: false`,
 					},
 					"vectordb": schema.SingleNestedAttribute{
 						Required: true,
@@ -338,12 +353,14 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 									"database": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `the database of the pgvector database`,
+										Default:     stringdefault.StaticString(`kong-pgvector`),
+										Description: `the database of the pgvector database. Default: "kong-pgvector"`,
 									},
 									"host": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `the host of the pgvector database`,
+										Default:     stringdefault.StaticString(`127.0.0.1`),
+										Description: `the host of the pgvector database. Default: "127.0.0.1"`,
 									},
 									"password": schema.StringAttribute{
 										Computed:    true,
@@ -353,12 +370,14 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 									"port": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `the port of the pgvector database`,
+										Default:     int64default.StaticInt64(5432),
+										Description: `the port of the pgvector database. Default: 5432`,
 									},
 									"ssl": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `whether to use ssl for the pgvector database`,
+										Default:     booldefault.StaticBool(false),
+										Description: `whether to use ssl for the pgvector database. Default: false`,
 									},
 									"ssl_cert": schema.StringAttribute{
 										Computed:    true,
@@ -373,17 +392,20 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 									"ssl_required": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `whether ssl is required for the pgvector database`,
+										Default:     booldefault.StaticBool(false),
+										Description: `whether ssl is required for the pgvector database. Default: false`,
 									},
 									"ssl_verify": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `whether to verify ssl for the pgvector database`,
+										Default:     booldefault.StaticBool(false),
+										Description: `whether to verify ssl for the pgvector database. Default: false`,
 									},
 									"ssl_version": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `the ssl version to use for the pgvector database. must be one of ["any", "tlsv1_2", "tlsv1_3"]`,
+										Default:     stringdefault.StaticString(`tlsv1_2`),
+										Description: `the ssl version to use for the pgvector database. Default: "tlsv1_2"; must be one of ["any", "tlsv1_2", "tlsv1_3"]`,
 										Validators: []validator.String{
 											stringvalidator.OneOf(
 												"any",
@@ -395,12 +417,14 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 									"timeout": schema.Float64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `the timeout of the pgvector database`,
+										Default:     float64default.StaticFloat64(5000),
+										Description: `the timeout of the pgvector database. Default: 5000`,
 									},
 									"user": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `the user of the pgvector database`,
+										Default:     stringdefault.StaticString(`postgres`),
+										Description: `the user of the pgvector database. Default: "postgres"`,
 									},
 								},
 							},
@@ -411,7 +435,8 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 									"cluster_max_redirections": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Maximum retry attempts for redirection.`,
+										Default:     int64default.StaticInt64(5),
+										Description: `Maximum retry attempts for redirection. Default: 5`,
 									},
 									"cluster_nodes": schema.ListNestedAttribute{
 										Computed: true,
@@ -424,12 +449,14 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 												"ip": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `A string representing a host name, such as example.com.`,
+													Default:     stringdefault.StaticString(`127.0.0.1`),
+													Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 												},
 												"port": schema.Int64Attribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+													Default:     int64default.StaticInt64(6379),
+													Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 													Validators: []validator.Int64{
 														int64validator.AtMost(65535),
 													},
@@ -441,7 +468,8 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 									"connect_timeout": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+										Default:     int64default.StaticInt64(2000),
+										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 										Validators: []validator.Int64{
 											int64validator.AtMost(2147483646),
 										},
@@ -449,17 +477,20 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 									"connection_is_proxied": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address.`,
+										Default:     booldefault.StaticBool(false),
+										Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
 									},
 									"database": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy`,
+										Default:     int64default.StaticInt64(0),
+										Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
 									},
 									"host": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `A string representing a host name, such as example.com.`,
+										Default:     stringdefault.StaticString(`127.0.0.1`),
+										Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 									},
 									"keepalive_backlog": schema.Int64Attribute{
 										Computed:    true,
@@ -472,7 +503,8 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 									"keepalive_pool_size": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `keepalive_pool_size` + "`" + ` nor ` + "`" + `keepalive_backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `keepalive_pool_size` + "`" + ` isn't specified but ` + "`" + `keepalive_backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.`,
+										Default:     int64default.StaticInt64(256),
+										Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `keepalive_pool_size` + "`" + ` nor ` + "`" + `keepalive_backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `keepalive_pool_size` + "`" + ` isn't specified but ` + "`" + `keepalive_backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
 										Validators: []validator.Int64{
 											int64validator.Between(1, 2147483646),
 										},
@@ -485,7 +517,8 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 									"port": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+										Default:     int64default.StaticInt64(6379),
+										Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 										Validators: []validator.Int64{
 											int64validator.AtMost(65535),
 										},
@@ -493,7 +526,8 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 									"read_timeout": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+										Default:     int64default.StaticInt64(2000),
+										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 										Validators: []validator.Int64{
 											int64validator.AtMost(2147483646),
 										},
@@ -501,7 +535,8 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 									"send_timeout": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+										Default:     int64default.StaticInt64(2000),
+										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 										Validators: []validator.Int64{
 											int64validator.AtMost(2147483646),
 										},
@@ -522,12 +557,14 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 												"host": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `A string representing a host name, such as example.com.`,
+													Default:     stringdefault.StaticString(`127.0.0.1`),
+													Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 												},
 												"port": schema.Int64Attribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+													Default:     int64default.StaticInt64(6379),
+													Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 													Validators: []validator.Int64{
 														int64validator.AtMost(65535),
 													},
@@ -566,12 +603,14 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 									"ssl": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `If set to true, uses SSL to connect to Redis.`,
+										Default:     booldefault.StaticBool(false),
+										Description: `If set to true, uses SSL to connect to Redis. Default: false`,
 									},
 									"ssl_verify": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
+										Default:     booldefault.StaticBool(false),
+										Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: false`,
 									},
 									"username": schema.StringAttribute{
 										Computed:    true,
@@ -595,7 +634,8 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 					"vectordb_namespace": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The namespace of the vectordb to use for embeddings lookup`,
+						Default:     stringdefault.StaticString(`kong_rag_injector`),
+						Description: `The namespace of the vectordb to use for embeddings lookup. Default: "kong_rag_injector"`,
 					},
 				},
 			},
@@ -642,7 +682,8 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -650,13 +691,28 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
@@ -683,7 +739,6 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -743,7 +798,6 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

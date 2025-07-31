@@ -33,7 +33,7 @@ type MTLSAuthWithoutParents struct {
 	ID          *string `json:"id,omitempty"`
 	SubjectName string  `json:"subject_name"`
 	// A set of strings representing tags.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 }
 
 func (o *MTLSAuthWithoutParents) GetCaCertificate() *MTLSAuthWithoutParentsCaCertificate {

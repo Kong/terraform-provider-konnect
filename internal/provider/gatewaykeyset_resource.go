@@ -67,12 +67,10 @@ func (r *GatewayKeySetResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The name to associate with the given key-set.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `A set of strings representing tags.`,

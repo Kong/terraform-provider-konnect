@@ -81,7 +81,6 @@ func (r *GatewayCustomPluginStreamingResource) Schema(ctx context.Context, req r
 				Description: `The schema for the given custom plugin.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `A set of strings representing tags.`,

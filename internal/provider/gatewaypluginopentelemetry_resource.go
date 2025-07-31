@@ -15,8 +15,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -85,7 +89,8 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 					"connect_timeout": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+						Default:     int64default.StaticInt64(1000),
+						Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 1000`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(2147483646),
 						},
@@ -93,7 +98,8 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 					"header_type": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "ignore", "instana", "jaeger", "ot", "preserve", "w3c"]`,
+						Default:     stringdefault.StaticString(`preserve`),
+						Description: `Default: "preserve"; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "ignore", "instana", "jaeger", "ot", "preserve", "w3c"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"aws",
@@ -178,7 +184,8 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 							"concurrency_limit": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The number of of queue delivery timers. -1 indicates unlimited. must be one of ["-1", "1"]`,
+								Default:     int64default.StaticInt64(1),
+								Description: `The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of ["-1", "1"]`,
 								Validators: []validator.Int64{
 									int64validator.OneOf(-1, 1),
 								},
@@ -186,7 +193,8 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 							"initial_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Time in seconds before the initial retry is made for a failing batch.`,
+								Default:     float64default.StaticFloat64(0.01),
+								Description: `Time in seconds before the initial retry is made for a failing batch. Default: 0.01`,
 								Validators: []validator.Float64{
 									float64validator.AtMost(1000000),
 								},
@@ -194,7 +202,8 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 							"max_batch_size": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Maximum number of entries that can be processed at a time.`,
+								Default:     int64default.StaticInt64(1),
+								Description: `Maximum number of entries that can be processed at a time. Default: 1`,
 								Validators: []validator.Int64{
 									int64validator.Between(1, 1000000),
 								},
@@ -207,7 +216,8 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 							"max_coalescing_delay": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.`,
+								Default:     float64default.StaticFloat64(1),
+								Description: `Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler. Default: 1`,
 								Validators: []validator.Float64{
 									float64validator.AtMost(3600),
 								},
@@ -215,7 +225,8 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 							"max_entries": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Maximum number of entries that can be waiting on the queue.`,
+								Default:     int64default.StaticInt64(10000),
+								Description: `Maximum number of entries that can be waiting on the queue. Default: 10000`,
 								Validators: []validator.Int64{
 									int64validator.Between(1, 1000000),
 								},
@@ -223,7 +234,8 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 							"max_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Maximum time in seconds between retries, caps exponential backoff.`,
+								Default:     float64default.StaticFloat64(60),
+								Description: `Maximum time in seconds between retries, caps exponential backoff. Default: 60`,
 								Validators: []validator.Float64{
 									float64validator.AtMost(1000000),
 								},
@@ -231,14 +243,16 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 							"max_retry_time": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Time in seconds before the queue gives up calling a failed handler for a batch.`,
+								Default:     float64default.StaticFloat64(60),
+								Description: `Time in seconds before the queue gives up calling a failed handler for a batch. Default: 60`,
 							},
 						},
 					},
 					"read_timeout": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+						Default:     int64default.StaticInt64(5000),
+						Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 5000`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(2147483646),
 						},
@@ -262,7 +276,8 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 					"sampling_strategy": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The sampling strategy to use for OTLP ` + "`" + `traces` + "`" + `. Set ` + "`" + `parent_drop_probability_fallback` + "`" + ` if you want parent-based sampling when the parent span contains a ` + "`" + `false` + "`" + ` sampled flag, and fallback to probability-based sampling otherwise. Set ` + "`" + `parent_probability_fallback` + "`" + ` if you want parent-based sampling when the parent span contains a valid sampled flag (` + "`" + `true` + "`" + ` or ` + "`" + `false` + "`" + `), and fallback to probability-based sampling otherwise. must be one of ["parent_drop_probability_fallback", "parent_probability_fallback"]`,
+						Default:     stringdefault.StaticString(`parent_drop_probability_fallback`),
+						Description: `The sampling strategy to use for OTLP ` + "`" + `traces` + "`" + `. Set ` + "`" + `parent_drop_probability_fallback` + "`" + ` if you want parent-based sampling when the parent span contains a ` + "`" + `false` + "`" + ` sampled flag, and fallback to probability-based sampling otherwise. Set ` + "`" + `parent_probability_fallback` + "`" + ` if you want parent-based sampling when the parent span contains a valid sampled flag (` + "`" + `true` + "`" + ` or ` + "`" + `false` + "`" + `), and fallback to probability-based sampling otherwise. Default: "parent_drop_probability_fallback"; must be one of ["parent_drop_probability_fallback", "parent_probability_fallback"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"parent_drop_probability_fallback",
@@ -273,7 +288,8 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 					"send_timeout": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+						Default:     int64default.StaticInt64(5000),
+						Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 5000`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(2147483646),
 						},
@@ -314,7 +330,8 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -322,13 +339,28 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
@@ -355,7 +387,6 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -415,7 +446,6 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

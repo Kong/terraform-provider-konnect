@@ -14,8 +14,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -75,7 +78,8 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 							"ack_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `When using a non-DIRECT guaranteed delivery mode, this property sets the message acknowledgement timeout (waiting time).`,
+								Default:     int64default.StaticInt64(2000),
+								Description: `When using a non-DIRECT guaranteed delivery mode, this property sets the message acknowledgement timeout (waiting time). Default: 2000`,
 								Validators: []validator.Int64{
 									int64validator.Between(1, 100000),
 								},
@@ -88,7 +92,8 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 							"delivery_mode": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Sets the message delivery mode. must be one of ["DIRECT", "PERSISTENT"]`,
+								Default:     stringdefault.StaticString(`DIRECT`),
+								Description: `Sets the message delivery mode. Default: "DIRECT"; must be one of ["DIRECT", "PERSISTENT"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
 										"DIRECT",
@@ -114,7 +119,8 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 										"type": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `The type of the destination. must be one of ["QUEUE", "TOPIC"]`,
+											Default:     stringdefault.StaticString(`QUEUE`),
+											Description: `The type of the destination. Default: "QUEUE"; must be one of ["QUEUE", "TOPIC"]`,
 											Validators: []validator.String{
 												stringvalidator.OneOf(
 													"QUEUE",
@@ -129,27 +135,32 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 							"dmq_eligible": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Sets the dead message queue (DMQ) eligible property on the message.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `Sets the dead message queue (DMQ) eligible property on the message. Default: false`,
 							},
 							"forward_body": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Include the request body and the body arguments in the message.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `Include the request body and the body arguments in the message. Default: false`,
 							},
 							"forward_headers": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Include the request headers in the message.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `Include the request headers in the message. Default: false`,
 							},
 							"forward_method": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Include the request method in the message.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `Include the request method in the message. Default: false`,
 							},
 							"forward_uri": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Include the request URI and the URI arguments (as in, query arguments) in the message.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `Include the request URI and the URI arguments (as in, query arguments) in the message. Default: false`,
 							},
 							"functions": schema.ListAttribute{
 								Computed:    true,
@@ -160,7 +171,8 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 							"priority": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Sets the message priority.`,
+								Default:     int64default.StaticInt64(4),
+								Description: `Sets the message priority. Default: 4`,
 								Validators: []validator.Int64{
 									int64validator.AtMost(255),
 								},
@@ -168,22 +180,26 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 							"sender_id": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Allows the application to set the content of the sender identifier.`,
+								Default:     stringdefault.StaticString(`kong`),
+								Description: `Allows the application to set the content of the sender identifier. Default: "kong"`,
 							},
 							"tracing": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Enable or disable the tracing. This is primarily used for distributed tracing and message correlation, especially in debugging or tracking message flows across multiple systems.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `Enable or disable the tracing. This is primarily used for distributed tracing and message correlation, especially in debugging or tracking message flows across multiple systems. Default: false`,
 							},
 							"tracing_sampled": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Indicates whether the message should be included in distributed tracing (i.e., if it should be "sampled" for the tracing)`,
+								Default:     booldefault.StaticBool(false),
+								Description: `Indicates whether the message should be included in distributed tracing (i.e., if it should be "sampled" for the tracing). Default: false`,
 							},
 							"ttl": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Sets the time to live (TTL) in milliseconds for the message. Setting the time to live to zero disables the TTL for the message.`,
+								Default:     int64default.StaticInt64(0),
+								Description: `Sets the time to live (TTL) in milliseconds for the message. Setting the time to live to zero disables the TTL for the message. Default: 0`,
 							},
 						},
 						Description: `The message related configuration.`,
@@ -221,7 +237,8 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 									"scheme": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `The client authentication scheme used when connection to an event broker. must be one of ["BASIC", "NONE", "OAUTH2"]`,
+										Default:     stringdefault.StaticString(`BASIC`),
+										Description: `The client authentication scheme used when connection to an event broker. Default: "BASIC"; must be one of ["BASIC", "NONE", "OAUTH2"]`,
 										Validators: []validator.String{
 											stringvalidator.OneOf(
 												"BASIC",
@@ -241,7 +258,8 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 							"connect_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The timeout period (in milliseconds) for a connect operation to a given host (per host).`,
+								Default:     int64default.StaticInt64(3000),
+								Description: `The timeout period (in milliseconds) for a connect operation to a given host (per host). Default: 3000`,
 								Validators: []validator.Int64{
 									int64validator.Between(100, 100000),
 								},
@@ -262,7 +280,8 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 							"ssl_validate_certificate": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Indicates whether the API should validate server certificates with the trusted certificates.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `Indicates whether the API should validate server certificates with the trusted certificates. Default: false`,
 							},
 							"vpn_name": schema.StringAttribute{
 								Computed:    true,
@@ -289,7 +308,8 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -297,13 +317,28 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
@@ -330,7 +365,6 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -390,7 +424,6 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

@@ -17,7 +17,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/int64planmodifier"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 )
@@ -95,11 +94,9 @@ func (r *GatewayACLResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `A string representing a UUID (universally unique identifier). Requires replacement if changed.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.List{
 					listplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 				},
 				ElementType: types.StringType,
 				Description: `A set of strings representing tags. Requires replacement if changed.`,

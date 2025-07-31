@@ -14,8 +14,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -114,7 +116,8 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 					"auto_offset_reset": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The offset to start from when there is no initial offset in the consumer group. must be one of ["earliest", "latest"]`,
+						Default:     stringdefault.StaticString(`latest`),
+						Description: `The offset to start from when there is no initial offset in the consumer group. Default: "latest"; must be one of ["earliest", "latest"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"earliest",
@@ -158,7 +161,8 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 					"commit_strategy": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The strategy to use for committing offsets. must be one of ["auto", "off"]`,
+						Default:     stringdefault.StaticString(`auto`),
+						Description: `The strategy to use for committing offsets. Default: "auto"; must be one of ["auto", "off"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"auto",
@@ -169,7 +173,8 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 					"message_deserializer": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The deserializer to use for the consumed messages. must be one of ["json", "noop"]`,
+						Default:     stringdefault.StaticString(`noop`),
+						Description: `The deserializer to use for the consumed messages. Default: "noop"; must be one of ["json", "noop"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"json",
@@ -180,7 +185,8 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 					"mode": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The mode of operation for the plugin. must be one of ["http-get", "server-sent-events", "websocket"]`,
+						Default:     stringdefault.StaticString(`http-get`),
+						Description: `The mode of operation for the plugin. Default: "http-get"; must be one of ["http-get", "server-sent-events", "websocket"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"http-get",
@@ -226,7 +232,8 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 											"mode": schema.StringAttribute{
 												Computed:    true,
 												Optional:    true,
-												Description: `Authentication mode to use with the schema registry. must be one of ["basic", "none"]`,
+												Default:     stringdefault.StaticString(`none`),
+												Description: `Authentication mode to use with the schema registry. Default: "none"; must be one of ["basic", "none"]`,
 												Validators: []validator.String{
 													stringvalidator.OneOf(
 														"basic",
@@ -243,7 +250,8 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 									"ssl_verify": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Set to false to disable SSL certificate verification when connecting to the schema registry.`,
+										Default:     booldefault.StaticBool(true),
+										Description: `Set to false to disable SSL certificate verification when connecting to the schema registry. Default: true`,
 									},
 									"ttl": schema.Float64Attribute{
 										Computed:    true,
@@ -331,7 +339,8 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 														"mode": schema.StringAttribute{
 															Computed:    true,
 															Optional:    true,
-															Description: `Authentication mode to use with the schema registry. must be one of ["basic", "none"]`,
+															Default:     stringdefault.StaticString(`none`),
+															Description: `Authentication mode to use with the schema registry. Default: "none"; must be one of ["basic", "none"]`,
 															Validators: []validator.String{
 																stringvalidator.OneOf(
 																	"basic",
@@ -348,7 +357,8 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 												"ssl_verify": schema.BoolAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `Set to false to disable SSL certificate verification when connecting to the schema registry.`,
+													Default:     booldefault.StaticBool(true),
+													Description: `Set to false to disable SSL certificate verification when connecting to the schema registry. Default: true`,
 												},
 												"ttl": schema.Float64Attribute{
 													Computed:    true,
@@ -406,7 +416,8 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -414,13 +425,28 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
@@ -447,7 +473,6 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -507,7 +532,6 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

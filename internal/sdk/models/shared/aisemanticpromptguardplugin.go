@@ -107,7 +107,7 @@ func (e *AiSemanticPromptGuardPluginParamLocation) UnmarshalJSON(data []byte) er
 
 type AiSemanticPromptGuardPluginAuth struct {
 	// If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
-	AllowOverride *bool `json:"allow_override,omitempty"`
+	AllowOverride *bool `default:"false" json:"allow_override"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
 	AwsAccessKeyID *string `json:"aws_access_key_id,omitempty"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
@@ -119,11 +119,11 @@ type AiSemanticPromptGuardPluginAuth struct {
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
 	AzureTenantID *string `json:"azure_tenant_id,omitempty"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
-	AzureUseManagedIdentity *bool `json:"azure_use_managed_identity,omitempty"`
+	AzureUseManagedIdentity *bool `default:"false" json:"azure_use_managed_identity"`
 	// Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
 	GcpServiceAccountJSON *string `json:"gcp_service_account_json,omitempty"`
 	// Use service account auth for GCP-based providers and models.
-	GcpUseServiceAccount *bool `json:"gcp_use_service_account,omitempty"`
+	GcpUseServiceAccount *bool `default:"false" json:"gcp_use_service_account"`
 	// If AI model requires authentication via Authorization or API key header, specify its name here.
 	HeaderName *string `json:"header_name,omitempty"`
 	// Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
@@ -134,6 +134,17 @@ type AiSemanticPromptGuardPluginAuth struct {
 	ParamName *string `json:"param_name,omitempty"`
 	// Specify the full parameter value for 'param_name'.
 	ParamValue *string `json:"param_value,omitempty"`
+}
+
+func (a AiSemanticPromptGuardPluginAuth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticPromptGuardPluginAuth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiSemanticPromptGuardPluginAuth) GetAllowOverride() *bool {
@@ -236,11 +247,22 @@ func (o *AiSemanticPromptGuardPluginAuth) GetParamValue() *string {
 
 type AiSemanticPromptGuardPluginAzure struct {
 	// 'api-version' for Azure OpenAI instances.
-	APIVersion *string `json:"api_version,omitempty"`
+	APIVersion *string `default:"2023-05-15" json:"api_version"`
 	// Deployment ID for Azure OpenAI instances.
 	DeploymentID *string `json:"deployment_id,omitempty"`
 	// Instance name for Azure OpenAI hosted models.
 	Instance *string `json:"instance,omitempty"`
+}
+
+func (a AiSemanticPromptGuardPluginAzure) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticPromptGuardPluginAzure) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiSemanticPromptGuardPluginAzure) GetAPIVersion() *string {
@@ -274,9 +296,20 @@ type AiSemanticPromptGuardPluginBedrock struct {
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
 	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
-	EmbeddingsNormalize *bool `json:"embeddings_normalize,omitempty"`
+	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
 	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
 	PerformanceConfigLatency *string `json:"performance_config_latency,omitempty"`
+}
+
+func (a AiSemanticPromptGuardPluginBedrock) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticPromptGuardPluginBedrock) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiSemanticPromptGuardPluginBedrock) GetAwsAssumeRoleArn() *string {
@@ -586,11 +619,22 @@ type Rules struct {
 	// List of prompts to deny.
 	DenyPrompts []string `json:"deny_prompts,omitempty"`
 	// If false, will ignore all previous chat prompts from the conversation history.
-	MatchAllConversationHistory *bool `json:"match_all_conversation_history,omitempty"`
+	MatchAllConversationHistory *bool `default:"false" json:"match_all_conversation_history"`
 	// If true, will match all roles in addition to 'user' role in conversation history.
-	MatchAllRoles *bool `json:"match_all_roles,omitempty"`
+	MatchAllRoles *bool `default:"false" json:"match_all_roles"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
-	MaxRequestBodySize *int64 `json:"max_request_body_size,omitempty"`
+	MaxRequestBodySize *int64 `default:"8192" json:"max_request_body_size"`
+}
+
+func (r Rules) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *Rules) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Rules) GetAllowPrompts() []string {
@@ -630,7 +674,18 @@ func (o *Rules) GetMaxRequestBodySize() *int64 {
 
 type Search struct {
 	// Threshold for the similarity score to be considered a match.
-	Threshold *float64 `json:"threshold,omitempty"`
+	Threshold *float64 `default:"0.5" json:"threshold"`
+}
+
+func (s Search) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *Search) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Search) GetThreshold() *float64 {
@@ -699,29 +754,40 @@ func (e *AiSemanticPromptGuardPluginSslVersion) UnmarshalJSON(data []byte) error
 
 type AiSemanticPromptGuardPluginPgvector struct {
 	// the database of the pgvector database
-	Database *string `json:"database,omitempty"`
+	Database *string `default:"kong-pgvector" json:"database"`
 	// the host of the pgvector database
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// the password of the pgvector database
 	Password *string `json:"password,omitempty"`
 	// the port of the pgvector database
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"5432" json:"port"`
 	// whether to use ssl for the pgvector database
-	Ssl *bool `json:"ssl,omitempty"`
+	Ssl *bool `default:"false" json:"ssl"`
 	// the path of ssl cert to use for the pgvector database
 	SslCert *string `json:"ssl_cert,omitempty"`
 	// the path of ssl cert key to use for the pgvector database
 	SslCertKey *string `json:"ssl_cert_key,omitempty"`
 	// whether ssl is required for the pgvector database
-	SslRequired *bool `json:"ssl_required,omitempty"`
+	SslRequired *bool `default:"false" json:"ssl_required"`
 	// whether to verify ssl for the pgvector database
-	SslVerify *bool `json:"ssl_verify,omitempty"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// the ssl version to use for the pgvector database
-	SslVersion *AiSemanticPromptGuardPluginSslVersion `json:"ssl_version,omitempty"`
+	SslVersion *AiSemanticPromptGuardPluginSslVersion `default:"tlsv1_2" json:"ssl_version"`
 	// the timeout of the pgvector database
-	Timeout *float64 `json:"timeout,omitempty"`
+	Timeout *float64 `default:"5000" json:"timeout"`
 	// the user of the pgvector database
-	User *string `json:"user,omitempty"`
+	User *string `default:"postgres" json:"user"`
+}
+
+func (a AiSemanticPromptGuardPluginPgvector) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticPromptGuardPluginPgvector) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiSemanticPromptGuardPluginPgvector) GetDatabase() *string {
@@ -810,9 +876,20 @@ func (o *AiSemanticPromptGuardPluginPgvector) GetUser() *string {
 
 type AiSemanticPromptGuardPluginClusterNodes struct {
 	// A string representing a host name, such as example.com.
-	IP *string `json:"ip,omitempty"`
+	IP *string `default:"127.0.0.1" json:"ip"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (a AiSemanticPromptGuardPluginClusterNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticPromptGuardPluginClusterNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiSemanticPromptGuardPluginClusterNodes) GetIP() *string {
@@ -831,9 +908,20 @@ func (o *AiSemanticPromptGuardPluginClusterNodes) GetPort() *int64 {
 
 type AiSemanticPromptGuardPluginSentinelNodes struct {
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (a AiSemanticPromptGuardPluginSentinelNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticPromptGuardPluginSentinelNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiSemanticPromptGuardPluginSentinelNodes) GetHost() *string {
@@ -882,29 +970,29 @@ func (e *AiSemanticPromptGuardPluginSentinelRole) UnmarshalJSON(data []byte) err
 
 type AiSemanticPromptGuardPluginRedis struct {
 	// Maximum retry attempts for redirection.
-	ClusterMaxRedirections *int64 `json:"cluster_max_redirections,omitempty"`
+	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
 	ClusterNodes []AiSemanticPromptGuardPluginClusterNodes `json:"cluster_nodes,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
+	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
-	ConnectionIsProxied *bool `json:"connection_is_proxied,omitempty"`
+	ConnectionIsProxied *bool `default:"false" json:"connection_is_proxied"`
 	// Database to use for the Redis connection when using the `redis` strategy
-	Database *int64 `json:"database,omitempty"`
+	Database *int64 `default:"0" json:"database"`
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
 	KeepaliveBacklog *int64 `json:"keepalive_backlog,omitempty"`
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
-	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
+	KeepalivePoolSize *int64 `default:"256" json:"keepalive_pool_size"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ReadTimeout *int64 `json:"read_timeout,omitempty"`
+	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	SendTimeout *int64 `json:"send_timeout,omitempty"`
+	SendTimeout *int64 `default:"2000" json:"send_timeout"`
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `json:"sentinel_master,omitempty"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
@@ -918,11 +1006,22 @@ type AiSemanticPromptGuardPluginRedis struct {
 	// A string representing an SNI (server name indication) value for TLS.
 	ServerName *string `json:"server_name,omitempty"`
 	// If set to true, uses SSL to connect to Redis.
-	Ssl *bool `json:"ssl,omitempty"`
+	Ssl *bool `default:"false" json:"ssl"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-	SslVerify *bool `json:"ssl_verify,omitempty"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 	Username *string `json:"username,omitempty"`
+}
+
+func (a AiSemanticPromptGuardPluginRedis) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticPromptGuardPluginRedis) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiSemanticPromptGuardPluginRedis) GetClusterMaxRedirections() *int64 {
@@ -1157,12 +1256,23 @@ func (o *AiSemanticPromptGuardPluginVectordb) GetThreshold() float64 {
 type AiSemanticPromptGuardPluginConfig struct {
 	Embeddings AiSemanticPromptGuardPluginEmbeddings `json:"embeddings"`
 	// Generative AI category of the request
-	GenaiCategory *AiSemanticPromptGuardPluginGenaiCategory `json:"genai_category,omitempty"`
+	GenaiCategory *AiSemanticPromptGuardPluginGenaiCategory `default:"text/generation" json:"genai_category"`
 	// LLM input and output format and schema to use
-	LlmFormat *AiSemanticPromptGuardPluginLlmFormat `json:"llm_format,omitempty"`
+	LlmFormat *AiSemanticPromptGuardPluginLlmFormat `default:"openai" json:"llm_format"`
 	Rules     *Rules                                `json:"rules,omitempty"`
 	Search    *Search                               `json:"search,omitempty"`
 	Vectordb  AiSemanticPromptGuardPluginVectordb   `json:"vectordb"`
+}
+
+func (a AiSemanticPromptGuardPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticPromptGuardPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiSemanticPromptGuardPluginConfig) GetEmbeddings() AiSemanticPromptGuardPluginEmbeddings {
@@ -1292,17 +1402,17 @@ type AiSemanticPromptGuardPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                              `json:"instance_name,omitempty"`
+	InstanceName *string                              `default:"null" json:"instance_name"`
 	name         string                               `const:"ai-semantic-prompt-guard" json:"name"`
-	Ordering     *AiSemanticPromptGuardPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *AiSemanticPromptGuardPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []AiSemanticPromptGuardPluginPartials `json:"partials,omitempty"`
+	Partials []AiSemanticPromptGuardPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                            `json:"updated_at,omitempty"`
 	Config    AiSemanticPromptGuardPluginConfig `json:"config"`
@@ -1311,7 +1421,7 @@ type AiSemanticPromptGuardPlugin struct {
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *AiSemanticPromptGuardPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
-	Protocols []AiSemanticPromptGuardPluginProtocols `json:"protocols,omitempty"`
+	Protocols []AiSemanticPromptGuardPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *AiSemanticPromptGuardPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

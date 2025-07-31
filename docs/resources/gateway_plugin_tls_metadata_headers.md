@@ -73,7 +73,7 @@ resource "konnect_gateway_plugin_tls_metadata_headers" "my_gatewayplugintlsmetad
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -89,12 +89,12 @@ resource "konnect_gateway_plugin_tls_metadata_headers" "my_gatewayplugintlsmetad
 
 Optional:
 
-- `client_cert_fingerprint_header_name` (String) Define the HTTP header name used for the SHA1 fingerprint of the client certificate.
-- `client_cert_header_name` (String) Define the HTTP header name used for the PEM format URL encoded client certificate.
-- `client_cert_issuer_dn_header_name` (String) Define the HTTP header name used for the issuer DN of the client certificate.
-- `client_cert_subject_dn_header_name` (String) Define the HTTP header name used for the subject DN of the client certificate.
-- `client_serial_header_name` (String) Define the HTTP header name used for the serial number of the client certificate.
-- `inject_client_cert_details` (Boolean) Enables TLS client certificate metadata values to be injected into HTTP headers.
+- `client_cert_fingerprint_header_name` (String) Define the HTTP header name used for the SHA1 fingerprint of the client certificate. Default: "X-Client-Cert-Fingerprint"
+- `client_cert_header_name` (String) Define the HTTP header name used for the PEM format URL encoded client certificate. Default: "X-Client-Cert"
+- `client_cert_issuer_dn_header_name` (String) Define the HTTP header name used for the issuer DN of the client certificate. Default: "X-Client-Cert-Issuer-DN"
+- `client_cert_subject_dn_header_name` (String) Define the HTTP header name used for the subject DN of the client certificate. Default: "X-Client-Cert-Subject-DN"
+- `client_serial_header_name` (String) Define the HTTP header name used for the serial number of the client certificate. Default: "X-Client-Cert-Serial"
+- `inject_client_cert_details` (Boolean) Enables TLS client certificate metadata values to be injected into HTTP headers. Default: false
 
 
 <a id="nestedatt--ordering"></a>

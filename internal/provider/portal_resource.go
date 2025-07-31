@@ -89,7 +89,6 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				},
 			},
 			"custom_client_domain": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The custom domain to access a self-hosted customized developer portal client. If this is set, the Konnect-hosted portal will no longer be available.  ` + "`" + `custom_domain` + "`" + ` must be also set for this value to be set. See https://github.com/Kong/konnect-portal for information on how to get started deploying and customizing your own Konnect portal.`,
 				Validators: []validator.String{
@@ -97,7 +96,6 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				},
 			},
 			"custom_domain": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The custom domain to access the developer portal. A CNAME for the portal's default domain must be able to be set for the custom domain for it to be valid. After setting a valid CNAME, an SSL/TLS certificate will be automatically manged for the custom domain, and traffic will be able to use the custom domain to route to the portal's web client and API.`,
 				Validators: []validator.String{
@@ -114,7 +112,6 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Description: `The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a ` + "`" + `custom_domain` + "``" + `.`,
 			},
 			"description": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The description of the portal.`,
 				Validators: []validator.String{

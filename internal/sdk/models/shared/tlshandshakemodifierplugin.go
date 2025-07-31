@@ -104,7 +104,18 @@ func (e *TLSClientCertificate) UnmarshalJSON(data []byte) error {
 
 type TLSHandshakeModifierPluginConfig struct {
 	// TLS Client Certificate
-	TLSClientCertificate *TLSClientCertificate `json:"tls_client_certificate,omitempty"`
+	TLSClientCertificate *TLSClientCertificate `default:"REQUEST" json:"tls_client_certificate"`
+}
+
+func (t TLSHandshakeModifierPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TLSHandshakeModifierPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *TLSHandshakeModifierPluginConfig) GetTLSClientCertificate() *TLSClientCertificate {
@@ -172,22 +183,22 @@ type TLSHandshakeModifierPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                             `json:"instance_name,omitempty"`
+	InstanceName *string                             `default:"null" json:"instance_name"`
 	name         string                              `const:"tls-handshake-modifier" json:"name"`
-	Ordering     *TLSHandshakeModifierPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *TLSHandshakeModifierPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []TLSHandshakeModifierPluginPartials `json:"partials,omitempty"`
+	Partials []TLSHandshakeModifierPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                            `json:"updated_at,omitempty"`
 	Config    *TLSHandshakeModifierPluginConfig `json:"config,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
-	Protocols []TLSHandshakeModifierPluginProtocols `json:"protocols,omitempty"`
+	Protocols []TLSHandshakeModifierPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *TLSHandshakeModifierPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

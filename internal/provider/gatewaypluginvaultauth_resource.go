@@ -11,8 +11,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -67,7 +69,8 @@ func (r *GatewayPluginVaultAuthResource) Schema(ctx context.Context, req resourc
 					"access_token_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Describes an array of comma-separated parameter names where the plugin looks for an access token. The client must send the access token in one of those key names, and the plugin will try to read the credential from a header or the querystring parameter with the same name. The key names can only contain [a-z], [A-Z], [0-9], [_], and [-].`,
+						Default:     stringdefault.StaticString(`access_token`),
+						Description: `Describes an array of comma-separated parameter names where the plugin looks for an access token. The client must send the access token in one of those key names, and the plugin will try to read the credential from a header or the querystring parameter with the same name. The key names can only contain [a-z], [A-Z], [0-9], [_], and [-]. Default: "access_token"`,
 					},
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -77,22 +80,26 @@ func (r *GatewayPluginVaultAuthResource) Schema(ctx context.Context, req resourc
 					"hide_credentials": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional boolean value telling the plugin to show or hide the credential from the upstream service. If ` + "`" + `true` + "`" + `, the plugin will strip the credential from the request (i.e. the header or querystring containing the key) before proxying it.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `An optional boolean value telling the plugin to show or hide the credential from the upstream service. If ` + "`" + `true` + "`" + `, the plugin will strip the credential from the request (i.e. the header or querystring containing the key) before proxying it. Default: false`,
 					},
 					"run_on_preflight": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A boolean value that indicates whether the plugin should run (and try to authenticate) on ` + "`" + `OPTIONS` + "`" + ` preflight requests. If set to ` + "`" + `false` + "`" + `, then ` + "`" + `OPTIONS` + "`" + ` requests will always be allowed.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `A boolean value that indicates whether the plugin should run (and try to authenticate) on ` + "`" + `OPTIONS` + "`" + ` preflight requests. If set to ` + "`" + `false` + "`" + `, then ` + "`" + `OPTIONS` + "`" + ` requests will always be allowed. Default: true`,
 					},
 					"secret_token_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Describes an array of comma-separated parameter names where the plugin looks for a secret token. The client must send the secret in one of those key names, and the plugin will try to read the credential from a header or the querystring parameter with the same name. The key names can only contain [a-z], [A-Z], [0-9], [_], and [-].`,
+						Default:     stringdefault.StaticString(`secret_token`),
+						Description: `Describes an array of comma-separated parameter names where the plugin looks for a secret token. The client must send the secret in one of those key names, and the plugin will try to read the credential from a header or the querystring parameter with the same name. The key names can only contain [a-z], [A-Z], [0-9], [_], and [-]. Default: "secret_token"`,
 					},
 					"tokens_in_body": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If enabled, the plugin will read the request body (if said request has one and its MIME type is supported) and try to find the key in it. Supported MIME types are ` + "`" + `application/www-form-urlencoded` + "`" + `, ` + "`" + `application/json` + "`" + `, and ` + "`" + `multipart/form-data` + "`" + `.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If enabled, the plugin will read the request body (if said request has one and its MIME type is supported) and try to find the key in it. Supported MIME types are ` + "`" + `application/www-form-urlencoded` + "`" + `, ` + "`" + `application/json` + "`" + `, and ` + "`" + `multipart/form-data` + "`" + `. Default: false`,
 					},
 					"vault": schema.StringAttribute{
 						Required:    true,
@@ -115,7 +122,8 @@ func (r *GatewayPluginVaultAuthResource) Schema(ctx context.Context, req resourc
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -123,13 +131,28 @@ func (r *GatewayPluginVaultAuthResource) Schema(ctx context.Context, req resourc
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
@@ -156,7 +179,6 @@ func (r *GatewayPluginVaultAuthResource) Schema(ctx context.Context, req resourc
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -216,7 +238,6 @@ func (r *GatewayPluginVaultAuthResource) Schema(ctx context.Context, req resourc
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

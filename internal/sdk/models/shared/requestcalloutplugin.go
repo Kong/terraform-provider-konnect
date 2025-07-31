@@ -80,7 +80,18 @@ func (o *RequestCalloutPluginPartials) GetPath() *string {
 
 type RequestCalloutPluginMemory struct {
 	// The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. Note that this dictionary currently must be defined manually in the Kong Nginx template.
-	DictionaryName *string `json:"dictionary_name,omitempty"`
+	DictionaryName *string `default:"kong_db_cache" json:"dictionary_name"`
+}
+
+func (r RequestCalloutPluginMemory) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestCalloutPluginMemory) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestCalloutPluginMemory) GetDictionaryName() *string {
@@ -92,9 +103,20 @@ func (o *RequestCalloutPluginMemory) GetDictionaryName() *string {
 
 type RequestCalloutPluginClusterNodes struct {
 	// A string representing a host name, such as example.com.
-	IP *string `json:"ip,omitempty"`
+	IP *string `default:"127.0.0.1" json:"ip"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (r RequestCalloutPluginClusterNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestCalloutPluginClusterNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestCalloutPluginClusterNodes) GetIP() *string {
@@ -113,9 +135,20 @@ func (o *RequestCalloutPluginClusterNodes) GetPort() *int64 {
 
 type RequestCalloutPluginSentinelNodes struct {
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (r RequestCalloutPluginSentinelNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestCalloutPluginSentinelNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestCalloutPluginSentinelNodes) GetHost() *string {
@@ -164,29 +197,29 @@ func (e *RequestCalloutPluginSentinelRole) UnmarshalJSON(data []byte) error {
 
 type RequestCalloutPluginRedis struct {
 	// Maximum retry attempts for redirection.
-	ClusterMaxRedirections *int64 `json:"cluster_max_redirections,omitempty"`
+	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
 	ClusterNodes []RequestCalloutPluginClusterNodes `json:"cluster_nodes,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
+	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
-	ConnectionIsProxied *bool `json:"connection_is_proxied,omitempty"`
+	ConnectionIsProxied *bool `default:"false" json:"connection_is_proxied"`
 	// Database to use for the Redis connection when using the `redis` strategy
-	Database *int64 `json:"database,omitempty"`
+	Database *int64 `default:"0" json:"database"`
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
 	KeepaliveBacklog *int64 `json:"keepalive_backlog,omitempty"`
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
-	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
+	KeepalivePoolSize *int64 `default:"256" json:"keepalive_pool_size"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ReadTimeout *int64 `json:"read_timeout,omitempty"`
+	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	SendTimeout *int64 `json:"send_timeout,omitempty"`
+	SendTimeout *int64 `default:"2000" json:"send_timeout"`
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `json:"sentinel_master,omitempty"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
@@ -200,11 +233,22 @@ type RequestCalloutPluginRedis struct {
 	// A string representing an SNI (server name indication) value for TLS.
 	ServerName *string `json:"server_name,omitempty"`
 	// If set to true, uses SSL to connect to Redis.
-	Ssl *bool `json:"ssl,omitempty"`
+	Ssl *bool `default:"false" json:"ssl"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-	SslVerify *bool `json:"ssl_verify,omitempty"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 	Username *string `json:"username,omitempty"`
+}
+
+func (r RequestCalloutPluginRedis) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestCalloutPluginRedis) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestCalloutPluginRedis) GetClusterMaxRedirections() *int64 {
@@ -387,11 +431,22 @@ func (e *RequestCalloutPluginStrategy) UnmarshalJSON(data []byte) error {
 // Cache - Plugin global caching configuration.
 type Cache struct {
 	// TTL in seconds of cache entities.
-	CacheTTL *int64                      `json:"cache_ttl,omitempty"`
+	CacheTTL *int64                      `default:"300" json:"cache_ttl"`
 	Memory   *RequestCalloutPluginMemory `json:"memory,omitempty"`
 	Redis    *RequestCalloutPluginRedis  `json:"redis,omitempty"`
 	// The backing data store in which to hold cache entities. Accepted values are: `off`, `memory`, and `redis`.
-	Strategy *RequestCalloutPluginStrategy `json:"strategy,omitempty"`
+	Strategy *RequestCalloutPluginStrategy `default:"off" json:"strategy"`
+}
+
+func (c Cache) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *Cache) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Cache) GetCacheTTL() *int64 {
@@ -425,7 +480,18 @@ func (o *Cache) GetStrategy() *RequestCalloutPluginStrategy {
 // RequestCalloutPluginCache - Callout caching configuration.
 type RequestCalloutPluginCache struct {
 	// If `true`, skips caching the callout response.
-	Bypass *bool `json:"bypass,omitempty"`
+	Bypass *bool `default:"false" json:"bypass"`
+}
+
+func (r RequestCalloutPluginCache) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestCalloutPluginCache) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestCalloutPluginCache) GetBypass() *bool {
@@ -440,9 +506,20 @@ type RequestCalloutPluginConfigBody struct {
 	// The custom body fields to be added to the callout HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
 	Custom map[string]any `json:"custom,omitempty"`
 	// If `true`, decodes the request's body and make it available for customizations. Only JSON content type is supported.
-	Decode *bool `json:"decode,omitempty"`
+	Decode *bool `default:"false" json:"decode"`
 	// If `true`, forwards the incoming request's body to the callout request.
-	Forward *bool `json:"forward,omitempty"`
+	Forward *bool `default:"false" json:"forward"`
+}
+
+func (r RequestCalloutPluginConfigBody) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestCalloutPluginConfigBody) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestCalloutPluginConfigBody) GetCustom() map[string]any {
@@ -498,14 +575,25 @@ func (e *OnError) UnmarshalJSON(data []byte) error {
 // Error - The error handling policy the plugin will apply to TCP and HTTP errors.
 type Error struct {
 	// The error code to respond with if `on_error` is `fail` or if `retries` is achieved.
-	ErrorResponseCode *int64 `json:"error_response_code,omitempty"`
+	ErrorResponseCode *int64 `default:"400" json:"error_response_code"`
 	// The error mesasge to respond with if `on_error` is set to `fail` or if `retries` is achieved. Templating with Lua expressions is supported.
-	ErrorResponseMsg *string `json:"error_response_msg,omitempty"`
+	ErrorResponseMsg *string `default:"service callout error" json:"error_response_msg"`
 	// The list of HTTP status codes considered errors under the error handling policy.
 	HTTPStatuses []int64  `json:"http_statuses,omitempty"`
-	OnError      *OnError `json:"on_error,omitempty"`
+	OnError      *OnError `default:"fail" json:"on_error"`
 	// The number of retries the plugin will attempt on TCP and HTTP errors if `on_error` is set to `retry`.
-	Retries *int64 `json:"retries,omitempty"`
+	Retries *int64 `default:"2" json:"retries"`
+}
+
+func (e Error) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *Error) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Error) GetErrorResponseCode() *int64 {
@@ -548,7 +636,18 @@ type RequestCalloutPluginConfigHeaders struct {
 	// The custom headers to be added in the callout HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
 	Custom map[string]any `json:"custom,omitempty"`
 	// If `true`, forwards the incoming request's headers to the callout request.
-	Forward *bool `json:"forward,omitempty"`
+	Forward *bool `default:"false" json:"forward"`
+}
+
+func (r RequestCalloutPluginConfigHeaders) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestCalloutPluginConfigHeaders) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestCalloutPluginConfigHeaders) GetCustom() map[string]any {
@@ -643,9 +742,20 @@ type HTTPOpts struct {
 	// The SNI used in the callout request. Defaults to host if omitted.
 	SslServerName *string `json:"ssl_server_name,omitempty"`
 	// If set to `true`, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-	SslVerify *bool `json:"ssl_verify,omitempty"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Socket timeouts in milliseconds. All or none must be set.
 	Timeouts *Timeouts `json:"timeouts,omitempty"`
+}
+
+func (h HTTPOpts) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HTTPOpts) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *HTTPOpts) GetProxy() *Proxy {
@@ -681,7 +791,18 @@ type RequestCalloutPluginQuery struct {
 	// The custom query params to be added in the callout HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
 	Custom map[string]any `json:"custom,omitempty"`
 	// If `true`, forwards the incoming request's query params to the callout request.
-	Forward *bool `json:"forward,omitempty"`
+	Forward *bool `default:"false" json:"forward"`
+}
+
+func (r RequestCalloutPluginQuery) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestCalloutPluginQuery) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestCalloutPluginQuery) GetCustom() map[string]any {
@@ -711,11 +832,22 @@ type Request struct {
 	// HTTP connection parameters.
 	HTTPOpts HTTPOpts `json:"http_opts"`
 	// The HTTP method that will be requested.
-	Method *string `json:"method,omitempty"`
+	Method *string `default:"GET" json:"method"`
 	// Callout request query param customizations.
 	Query RequestCalloutPluginQuery `json:"query"`
 	// The URL that will be requested.
 	URL string `json:"url"`
+}
+
+func (r Request) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *Request) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Request) GetBody() RequestCalloutPluginConfigBody {
@@ -776,9 +908,20 @@ func (o *Request) GetURL() string {
 
 type RequestCalloutPluginBody struct {
 	// If `true`, decodes the response body before storing into the context. Only JSON is supported.
-	Decode *bool `json:"decode,omitempty"`
+	Decode *bool `default:"false" json:"decode"`
 	// If `false`, skips storing the callout response body into kong.ctx.shared.callouts.<name>.response.body.
-	Store *bool `json:"store,omitempty"`
+	Store *bool `default:"true" json:"store"`
+}
+
+func (r RequestCalloutPluginBody) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestCalloutPluginBody) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestCalloutPluginBody) GetDecode() *bool {
@@ -798,7 +941,18 @@ func (o *RequestCalloutPluginBody) GetStore() *bool {
 // RequestCalloutPluginHeaders - Callout response header customizations.
 type RequestCalloutPluginHeaders struct {
 	// If `false`, skips storing the callout response headers into kong.ctx.shared.callouts.<name>.response.headers.
-	Store *bool `json:"store,omitempty"`
+	Store *bool `default:"true" json:"store"`
+}
+
+func (r RequestCalloutPluginHeaders) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestCalloutPluginHeaders) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestCalloutPluginHeaders) GetStore() *bool {
@@ -891,9 +1045,20 @@ type Body struct {
 	// The custom body fields to be added in the upstream request body. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
 	Custom map[string]any `json:"custom,omitempty"`
 	// If `true`, decodes the request's body to make it available for upstream by_lua customizations. Only JSON content type is supported.
-	Decode *bool `json:"decode,omitempty"`
+	Decode *bool `default:"true" json:"decode"`
 	// If `false`, skips forwarding the incoming request's body to the upstream request.
-	Forward *bool `json:"forward,omitempty"`
+	Forward *bool `default:"true" json:"forward"`
+}
+
+func (b Body) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *Body) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Body) GetCustom() map[string]any {
@@ -922,7 +1087,18 @@ type Headers struct {
 	// The custom headers to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
 	Custom map[string]any `json:"custom,omitempty"`
 	// If `false`, does not forward request headers to upstream request.
-	Forward *bool `json:"forward,omitempty"`
+	Forward *bool `default:"true" json:"forward"`
+}
+
+func (h Headers) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *Headers) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Headers) GetCustom() map[string]any {
@@ -944,7 +1120,18 @@ type Query struct {
 	// The custom query params to be added in the upstream HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
 	Custom map[string]any `json:"custom,omitempty"`
 	// If `false`, does not forward request query params to upstream request.
-	Forward *bool `json:"forward,omitempty"`
+	Forward *bool `default:"true" json:"forward"`
+}
+
+func (q Query) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(q, "", false)
+}
+
+func (q *Query) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &q, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Query) GetCustom() map[string]any {
@@ -1116,17 +1303,17 @@ type RequestCalloutPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                       `json:"instance_name,omitempty"`
+	InstanceName *string                       `default:"null" json:"instance_name"`
 	name         string                        `const:"request-callout" json:"name"`
-	Ordering     *RequestCalloutPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *RequestCalloutPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []RequestCalloutPluginPartials `json:"partials,omitempty"`
+	Partials []RequestCalloutPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                     `json:"updated_at,omitempty"`
 	Config    RequestCalloutPluginConfig `json:"config"`
@@ -1135,7 +1322,7 @@ type RequestCalloutPlugin struct {
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *RequestCalloutPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
-	Protocols []RequestCalloutPluginProtocols `json:"protocols,omitempty"`
+	Protocols []RequestCalloutPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *RequestCalloutPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

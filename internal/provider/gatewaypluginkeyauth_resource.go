@@ -12,6 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -74,7 +75,8 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 					"hide_credentials": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional boolean value telling the plugin to show or hide the credential from the upstream service. If ` + "`" + `true` + "`" + `, the plugin strips the credential from the request.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `An optional boolean value telling the plugin to show or hide the credential from the upstream service. If ` + "`" + `true` + "`" + `, the plugin strips the credential from the request. Default: false`,
 					},
 					"identity_realms": schema.ListNestedAttribute{
 						Computed: true,
@@ -111,17 +113,20 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 					"key_in_body": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If enabled, the plugin reads the request body. Supported MIME types: ` + "`" + `application/www-form-urlencoded` + "`" + `, ` + "`" + `application/json` + "`" + `, and ` + "`" + `multipart/form-data` + "`" + `.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If enabled, the plugin reads the request body. Supported MIME types: ` + "`" + `application/www-form-urlencoded` + "`" + `, ` + "`" + `application/json` + "`" + `, and ` + "`" + `multipart/form-data` + "`" + `. Default: false`,
 					},
 					"key_in_header": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If enabled (default), the plugin reads the request header and tries to find the key in it.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `If enabled (default), the plugin reads the request header and tries to find the key in it. Default: true`,
 					},
 					"key_in_query": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If enabled (default), the plugin reads the query parameter in the request and tries to find the key in it.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `If enabled (default), the plugin reads the query parameter in the request and tries to find the key in it. Default: true`,
 					},
 					"key_names": schema.ListAttribute{
 						Computed:    true,
@@ -137,7 +142,8 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 					"run_on_preflight": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A boolean value that indicates whether the plugin should run (and try to authenticate) on ` + "`" + `OPTIONS` + "`" + ` preflight requests. If set to ` + "`" + `false` + "`" + `, then ` + "`" + `OPTIONS` + "`" + ` requests are always allowed.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `A boolean value that indicates whether the plugin should run (and try to authenticate) on ` + "`" + `OPTIONS` + "`" + ` preflight requests. If set to ` + "`" + `false` + "`" + `, then ` + "`" + `OPTIONS` + "`" + ` requests are always allowed. Default: true`,
 					},
 				},
 			},
@@ -156,7 +162,8 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -164,13 +171,28 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
@@ -197,7 +219,6 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -257,7 +278,6 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

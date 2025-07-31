@@ -179,7 +179,7 @@ resource "konnect_gateway_plugin_ai_rag_injector" "my_gatewaypluginairaginjector
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -200,11 +200,11 @@ Required:
 
 Optional:
 
-- `fetch_chunks_count` (Number) The maximum number of chunks to fetch from vectordb
-- `inject_as_role` (String) must be one of ["assistant", "system", "user"]
-- `inject_template` (String)
-- `stop_on_failure` (Boolean) Halt the LLM request process in case of a vectordb or embeddings service failure
-- `vectordb_namespace` (String) The namespace of the vectordb to use for embeddings lookup
+- `fetch_chunks_count` (Number) The maximum number of chunks to fetch from vectordb. Default: 5
+- `inject_as_role` (String) Default: "user"; must be one of ["assistant", "system", "user"]
+- `inject_template` (String) Default: "<CONTEXT>\n<PROMPT>"
+- `stop_on_failure` (Boolean) Halt the LLM request process in case of a vectordb or embeddings service failure. Default: false
+- `vectordb_namespace` (String) The namespace of the vectordb to use for embeddings lookup. Default: "kong_rag_injector"
 
 <a id="nestedatt--config--embeddings"></a>
 ### Nested Schema for `config.embeddings`
@@ -245,7 +245,7 @@ Optional:
 
 Optional:
 
-- `api_version` (String) 'api-version' for Azure OpenAI instances.
+- `api_version` (String) 'api-version' for Azure OpenAI instances. Default: "2023-05-15"
 - `deployment_id` (String) Deployment ID for Azure OpenAI instances.
 - `instance` (String) Instance name for Azure OpenAI hosted models.
 
@@ -259,7 +259,7 @@ Optional:
 - `aws_region` (String) If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
 - `aws_role_session_name` (String) If using AWS providers (Bedrock), set the identifier of the assumed role session.
 - `aws_sts_endpoint_url` (String) If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
-- `embeddings_normalize` (Boolean) If using AWS providers (Bedrock), set to true to normalize the embeddings.
+- `embeddings_normalize` (Boolean) If using AWS providers (Bedrock), set to true to normalize the embeddings. Default: false
 - `performance_config_latency` (String) Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
 
 
@@ -289,15 +289,15 @@ Optional:
 
 Optional:
 
-- `allow_override` (Boolean) If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
+- `allow_override` (Boolean) If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin. Default: false
 - `aws_access_key_id` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
 - `aws_secret_access_key` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
 - `azure_client_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
 - `azure_client_secret` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
 - `azure_tenant_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
-- `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
+- `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models. Default: false
 - `gcp_service_account_json` (String) Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
-- `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models.
+- `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models. Default: false
 - `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
 - `header_value` (String) Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
 - `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["body", "query"]
@@ -325,18 +325,18 @@ Optional:
 
 Optional:
 
-- `database` (String) the database of the pgvector database
-- `host` (String) the host of the pgvector database
+- `database` (String) the database of the pgvector database. Default: "kong-pgvector"
+- `host` (String) the host of the pgvector database. Default: "127.0.0.1"
 - `password` (String) the password of the pgvector database
-- `port` (Number) the port of the pgvector database
-- `ssl` (Boolean) whether to use ssl for the pgvector database
+- `port` (Number) the port of the pgvector database. Default: 5432
+- `ssl` (Boolean) whether to use ssl for the pgvector database. Default: false
 - `ssl_cert` (String) the path of ssl cert to use for the pgvector database
 - `ssl_cert_key` (String) the path of ssl cert key to use for the pgvector database
-- `ssl_required` (Boolean) whether ssl is required for the pgvector database
-- `ssl_verify` (Boolean) whether to verify ssl for the pgvector database
-- `ssl_version` (String) the ssl version to use for the pgvector database. must be one of ["any", "tlsv1_2", "tlsv1_3"]
-- `timeout` (Number) the timeout of the pgvector database
-- `user` (String) the user of the pgvector database
+- `ssl_required` (Boolean) whether ssl is required for the pgvector database. Default: false
+- `ssl_verify` (Boolean) whether to verify ssl for the pgvector database. Default: false
+- `ssl_version` (String) the ssl version to use for the pgvector database. Default: "tlsv1_2"; must be one of ["any", "tlsv1_2", "tlsv1_3"]
+- `timeout` (Number) the timeout of the pgvector database. Default: 5000
+- `user` (String) the user of the pgvector database. Default: "postgres"
 
 
 <a id="nestedatt--config--vectordb--redis"></a>
@@ -344,26 +344,26 @@ Optional:
 
 Optional:
 
-- `cluster_max_redirections` (Number) Maximum retry attempts for redirection.
+- `cluster_max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
 - `cluster_nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--vectordb--redis--cluster_nodes))
-- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
-- `database` (Number) Database to use for the Redis connection when using the `redis` strategy
-- `host` (String) A string representing a host name, such as example.com.
+- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
 - `keepalive_backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
-- `keepalive_pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
+- `keepalive_pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
-- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--vectordb--redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
 - `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
-- `ssl` (Boolean) If set to true, uses SSL to connect to Redis.
-- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: false
 - `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 
 <a id="nestedatt--config--vectordb--redis--cluster_nodes"></a>
@@ -371,8 +371,8 @@ Optional:
 
 Optional:
 
-- `ip` (String) A string representing a host name, such as example.com.
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
+- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
 
 
 <a id="nestedatt--config--vectordb--redis--sentinel_nodes"></a>
@@ -380,8 +380,8 @@ Optional:
 
 Optional:
 
-- `host` (String) A string representing a host name, such as example.com.
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
 
 
 

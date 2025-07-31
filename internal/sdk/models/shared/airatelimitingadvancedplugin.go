@@ -239,9 +239,20 @@ func (o *LlmProviders) GetWindowSize() []float64 {
 
 type ClusterNodes struct {
 	// A string representing a host name, such as example.com.
-	IP *string `json:"ip,omitempty"`
+	IP *string `default:"127.0.0.1" json:"ip"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (c ClusterNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ClusterNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ClusterNodes) GetIP() *string {
@@ -260,9 +271,20 @@ func (o *ClusterNodes) GetPort() *int64 {
 
 type SentinelNodes struct {
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (s SentinelNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SentinelNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *SentinelNodes) GetHost() *string {
@@ -311,29 +333,29 @@ func (e *SentinelRole) UnmarshalJSON(data []byte) error {
 
 type Redis struct {
 	// Maximum retry attempts for redirection.
-	ClusterMaxRedirections *int64 `json:"cluster_max_redirections,omitempty"`
+	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
 	ClusterNodes []ClusterNodes `json:"cluster_nodes,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
+	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
-	ConnectionIsProxied *bool `json:"connection_is_proxied,omitempty"`
+	ConnectionIsProxied *bool `default:"false" json:"connection_is_proxied"`
 	// Database to use for the Redis connection when using the `redis` strategy
-	Database *int64 `json:"database,omitempty"`
+	Database *int64 `default:"0" json:"database"`
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
 	KeepaliveBacklog *int64 `json:"keepalive_backlog,omitempty"`
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
-	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
+	KeepalivePoolSize *int64 `default:"256" json:"keepalive_pool_size"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ReadTimeout *int64 `json:"read_timeout,omitempty"`
+	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	SendTimeout *int64 `json:"send_timeout,omitempty"`
+	SendTimeout *int64 `default:"2000" json:"send_timeout"`
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `json:"sentinel_master,omitempty"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
@@ -347,11 +369,22 @@ type Redis struct {
 	// A string representing an SNI (server name indication) value for TLS.
 	ServerName *string `json:"server_name,omitempty"`
 	// If set to true, uses SSL to connect to Redis.
-	Ssl *bool `json:"ssl,omitempty"`
+	Ssl *bool `default:"false" json:"ssl"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-	SslVerify *bool `json:"ssl_verify,omitempty"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 	Username *string `json:"username,omitempty"`
+}
+
+func (r Redis) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *Redis) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Redis) GetClusterMaxRedirections() *int64 {
@@ -593,23 +626,23 @@ func (e *WindowType) UnmarshalJSON(data []byte) error {
 
 type AiRateLimitingAdvancedPluginConfig struct {
 	// The shared dictionary where counters are stored. When the plugin is configured to synchronize counter data externally (that is `config.strategy` is `cluster` or `redis` and `config.sync_rate` isn't `-1`), this dictionary serves as a buffer to populate counters in the data store on each synchronization cycle.
-	DictionaryName *string `json:"dictionary_name,omitempty"`
+	DictionaryName *string `default:"kong_rate_limiting_counters" json:"dictionary_name"`
 	// If set to `true`, this doesn't count denied requests (status = `429`). If set to `false`, all requests, including denied ones, are counted. This parameter only affects the `sliding` window_type and the request prompt provider.
-	DisablePenalty *bool `json:"disable_penalty,omitempty"`
+	DisablePenalty *bool `default:"false" json:"disable_penalty"`
 	// Set a custom error code to return when the rate limit is exceeded.
-	ErrorCode *float64 `json:"error_code,omitempty"`
+	ErrorCode *float64 `default:"429" json:"error_code"`
 	// Optionally hide informative response that would otherwise provide information about the provider in the error message.
-	ErrorHideProviders *bool `json:"error_hide_providers,omitempty"`
+	ErrorHideProviders *bool `default:"false" json:"error_hide_providers"`
 	// Set a custom error message to return when the rate limit is exceeded.
-	ErrorMessage *string `json:"error_message,omitempty"`
+	ErrorMessage *string `default:"AI token rate limit exceeded for provider(s): " json:"error_message"`
 	// A string representing an HTTP header name.
 	HeaderName *string `json:"header_name,omitempty"`
 	// Optionally hide informative response headers that would otherwise provide information about the current status of limits and counters.
-	HideClientHeaders *bool `json:"hide_client_headers,omitempty"`
+	HideClientHeaders *bool `default:"false" json:"hide_client_headers"`
 	// The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`. Note if `identifier` is `consumer-group`, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate.
-	Identifier *Identifier `json:"identifier,omitempty"`
+	Identifier *Identifier `default:"consumer" json:"identifier"`
 	// LLM input and output format and schema to use
-	LlmFormat *AiRateLimitingAdvancedPluginLlmFormat `json:"llm_format,omitempty"`
+	LlmFormat *AiRateLimitingAdvancedPluginLlmFormat `default:"openai" json:"llm_format"`
 	// The provider config. Takes an array of `name`, `limit` and `window size` values.
 	LlmProviders []LlmProviders `json:"llm_providers"`
 	// The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `dictionary_name`, need to be the same.
@@ -620,15 +653,26 @@ type AiRateLimitingAdvancedPluginConfig struct {
 	// If defined, it use custom function to count requests for the request prompt provider
 	RequestPromptCountFunction *string `json:"request_prompt_count_function,omitempty"`
 	// The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header.
-	RetryAfterJitterMax *float64 `json:"retry_after_jitter_max,omitempty"`
+	RetryAfterJitterMax *float64 `default:"0" json:"retry_after_jitter_max"`
 	// The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local` and `cluster`.
-	Strategy *Strategy `json:"strategy,omitempty"`
+	Strategy *Strategy `default:"local" json:"strategy"`
 	// How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 will sync the counters in the specified number of seconds. The minimum allowed interval is 0.02 seconds (20ms).
 	SyncRate *float64 `json:"sync_rate,omitempty"`
 	// What tokens to use for cost calculation. Available values are: `total_tokens` `prompt_tokens`, `completion_tokens` or `cost`.
-	TokensCountStrategy *TokensCountStrategy `json:"tokens_count_strategy,omitempty"`
+	TokensCountStrategy *TokensCountStrategy `default:"total_tokens" json:"tokens_count_strategy"`
 	// Sets the time window type to either `sliding` (default) or `fixed`. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters.
-	WindowType *WindowType `json:"window_type,omitempty"`
+	WindowType *WindowType `default:"sliding" json:"window_type"`
+}
+
+func (a AiRateLimitingAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRateLimitingAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiRateLimitingAdvancedPluginConfig) GetDictionaryName() *string {
@@ -849,17 +893,17 @@ type AiRateLimitingAdvancedPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                               `json:"instance_name,omitempty"`
+	InstanceName *string                               `default:"null" json:"instance_name"`
 	name         string                                `const:"ai-rate-limiting-advanced" json:"name"`
-	Ordering     *AiRateLimitingAdvancedPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *AiRateLimitingAdvancedPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []AiRateLimitingAdvancedPluginPartials `json:"partials,omitempty"`
+	Partials []AiRateLimitingAdvancedPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                             `json:"updated_at,omitempty"`
 	Config    AiRateLimitingAdvancedPluginConfig `json:"config"`
@@ -868,7 +912,7 @@ type AiRateLimitingAdvancedPlugin struct {
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *AiRateLimitingAdvancedPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
-	Protocols []AiRateLimitingAdvancedPluginProtocols `json:"protocols,omitempty"`
+	Protocols []AiRateLimitingAdvancedPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *AiRateLimitingAdvancedPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

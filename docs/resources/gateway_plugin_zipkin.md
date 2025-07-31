@@ -114,7 +114,7 @@ resource "konnect_gateway_plugin_zipkin" "my_gatewaypluginzipkin" {
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -130,24 +130,24 @@ resource "konnect_gateway_plugin_zipkin" "my_gatewaypluginzipkin" {
 
 Optional:
 
-- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-- `default_header_type` (String) Allows specifying the type of header to be added to requests with no pre-existing tracing headers and when `config.header_type` is set to `"preserve"`. When `header_type` is set to any other value, `default_header_type` is ignored. must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c"]
+- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `default_header_type` (String) Allows specifying the type of header to be added to requests with no pre-existing tracing headers and when `config.header_type` is set to `"preserve"`. When `header_type` is set to any other value, `default_header_type` is ignored. Default: "b3"; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c"]
 - `default_service_name` (String) Set a default service name to override `unknown-service-name` in the Zipkin spans.
-- `header_type` (String) All HTTP requests going through the plugin are tagged with a tracing HTTP request. This property codifies what kind of tracing header the plugin expects on incoming requests. must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "ignore", "instana", "jaeger", "ot", "preserve", "w3c"]
+- `header_type` (String) All HTTP requests going through the plugin are tagged with a tracing HTTP request. This property codifies what kind of tracing header the plugin expects on incoming requests. Default: "preserve"; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "ignore", "instana", "jaeger", "ot", "preserve", "w3c"]
 - `http_endpoint` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
 - `http_response_header_for_traceid` (String)
-- `http_span_name` (String) Specify whether to include the HTTP path in the span name. must be one of ["method", "method_path"]
-- `include_credential` (Boolean) Specify whether the credential of the currently authenticated consumer should be included in metadata sent to the Zipkin server.
-- `local_service_name` (String) The name of the service as displayed in Zipkin.
-- `phase_duration_flavor` (String) Specify whether to include the duration of each phase as an annotation or a tag. must be one of ["annotations", "tags"]
+- `http_span_name` (String) Specify whether to include the HTTP path in the span name. Default: "method"; must be one of ["method", "method_path"]
+- `include_credential` (Boolean) Specify whether the credential of the currently authenticated consumer should be included in metadata sent to the Zipkin server. Default: true
+- `local_service_name` (String) The name of the service as displayed in Zipkin. Default: "kong"
+- `phase_duration_flavor` (String) Specify whether to include the duration of each phase as an annotation or a tag. Default: "annotations"; must be one of ["annotations", "tags"]
 - `propagation` (Attributes) (see [below for nested schema](#nestedatt--config--propagation))
 - `queue` (Attributes) (see [below for nested schema](#nestedatt--config--queue))
-- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-- `sample_ratio` (Number) How often to sample requests that do not contain trace IDs. Set to `0` to turn sampling off, or to `1` to sample **all** requests.
-- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 5000
+- `sample_ratio` (Number) How often to sample requests that do not contain trace IDs. Set to `0` to turn sampling off, or to `1` to sample **all** requests. Default: 0.001
+- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 5000
 - `static_tags` (Attributes List) The tags specified on this property will be added to the generated request traces. (see [below for nested schema](#nestedatt--config--static_tags))
-- `tags_header` (String) The Zipkin plugin will add extra headers to the tags associated with any HTTP requests that come with a header named as configured by this property.
-- `traceid_byte_count` (Number) The length in bytes of each request's Trace ID. must be one of ["8", "16"]
+- `tags_header` (String) The Zipkin plugin will add extra headers to the tags associated with any HTTP requests that come with a header named as configured by this property. Default: "Zipkin-Tags"
+- `traceid_byte_count` (Number) The length in bytes of each request's Trace ID. Default: 16; must be one of ["8", "16"]
 
 <a id="nestedatt--config--propagation"></a>
 ### Nested Schema for `config.propagation`
@@ -165,14 +165,14 @@ Optional:
 
 Optional:
 
-- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. must be one of ["-1", "1"]
-- `initial_retry_delay` (Number) Time in seconds before the initial retry is made for a failing batch.
-- `max_batch_size` (Number) Maximum number of entries that can be processed at a time.
+- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of ["-1", "1"]
+- `initial_retry_delay` (Number) Time in seconds before the initial retry is made for a failing batch. Default: 0.01
+- `max_batch_size` (Number) Maximum number of entries that can be processed at a time. Default: 1
 - `max_bytes` (Number) Maximum number of bytes that can be waiting on a queue, requires string content.
-- `max_coalescing_delay` (Number) Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.
-- `max_entries` (Number) Maximum number of entries that can be waiting on the queue.
-- `max_retry_delay` (Number) Maximum time in seconds between retries, caps exponential backoff.
-- `max_retry_time` (Number) Time in seconds before the queue gives up calling a failed handler for a batch.
+- `max_coalescing_delay` (Number) Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler. Default: 1
+- `max_entries` (Number) Maximum number of entries that can be waiting on the queue. Default: 10000
+- `max_retry_delay` (Number) Maximum time in seconds between retries, caps exponential backoff. Default: 60
+- `max_retry_time` (Number) Time in seconds before the queue gives up calling a failed handler for a batch. Default: 60
 
 
 <a id="nestedatt--config--static_tags"></a>

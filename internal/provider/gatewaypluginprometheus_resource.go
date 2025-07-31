@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -69,37 +70,44 @@ func (r *GatewayPluginPrometheusResource) Schema(ctx context.Context, req resour
 					"ai_metrics": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A boolean value that determines if ai metrics should be collected. If enabled, the ` + "`" + `ai_llm_requests_total` + "`" + `, ` + "`" + `ai_llm_cost_total` + "`" + ` and ` + "`" + `ai_llm_tokens_total` + "`" + ` metrics will be exported.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `A boolean value that determines if ai metrics should be collected. If enabled, the ` + "`" + `ai_llm_requests_total` + "`" + `, ` + "`" + `ai_llm_cost_total` + "`" + ` and ` + "`" + `ai_llm_tokens_total` + "`" + ` metrics will be exported. Default: false`,
 					},
 					"bandwidth_metrics": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A boolean value that determines if bandwidth metrics should be collected. If enabled, ` + "`" + `bandwidth_bytes` + "`" + ` and ` + "`" + `stream_sessions_total` + "`" + ` metrics will be exported.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `A boolean value that determines if bandwidth metrics should be collected. If enabled, ` + "`" + `bandwidth_bytes` + "`" + ` and ` + "`" + `stream_sessions_total` + "`" + ` metrics will be exported. Default: false`,
 					},
 					"latency_metrics": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A boolean value that determines if latency metrics should be collected. If enabled, ` + "`" + `kong_latency_ms` + "`" + `, ` + "`" + `upstream_latency_ms` + "`" + ` and ` + "`" + `request_latency_ms` + "`" + ` metrics will be exported.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `A boolean value that determines if latency metrics should be collected. If enabled, ` + "`" + `kong_latency_ms` + "`" + `, ` + "`" + `upstream_latency_ms` + "`" + ` and ` + "`" + `request_latency_ms` + "`" + ` metrics will be exported. Default: false`,
 					},
 					"per_consumer": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A boolean value that determines if per-consumer metrics should be collected. If enabled, the ` + "`" + `kong_http_requests_total` + "`" + ` and ` + "`" + `kong_bandwidth_bytes` + "`" + ` metrics fill in the consumer label when available.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `A boolean value that determines if per-consumer metrics should be collected. If enabled, the ` + "`" + `kong_http_requests_total` + "`" + ` and ` + "`" + `kong_bandwidth_bytes` + "`" + ` metrics fill in the consumer label when available. Default: false`,
 					},
 					"status_code_metrics": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A boolean value that determines if status code metrics should be collected. If enabled, ` + "`" + `http_requests_total` + "`" + `, ` + "`" + `stream_sessions_total` + "`" + ` metrics will be exported.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `A boolean value that determines if status code metrics should be collected. If enabled, ` + "`" + `http_requests_total` + "`" + `, ` + "`" + `stream_sessions_total` + "`" + ` metrics will be exported. Default: false`,
 					},
 					"upstream_health_metrics": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A boolean value that determines if upstream metrics should be collected. If enabled, ` + "`" + `upstream_target_health` + "`" + ` metric will be exported.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `A boolean value that determines if upstream metrics should be collected. If enabled, ` + "`" + `upstream_target_health` + "`" + ` metric will be exported. Default: false`,
 					},
 					"wasm_metrics": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A boolean value that determines if Wasm metrics should be collected.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `A boolean value that determines if Wasm metrics should be collected. Default: false`,
 					},
 				},
 			},
@@ -132,7 +140,8 @@ func (r *GatewayPluginPrometheusResource) Schema(ctx context.Context, req resour
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -140,13 +149,28 @@ func (r *GatewayPluginPrometheusResource) Schema(ctx context.Context, req resour
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
@@ -173,7 +197,6 @@ func (r *GatewayPluginPrometheusResource) Schema(ctx context.Context, req resour
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -233,7 +256,6 @@ func (r *GatewayPluginPrometheusResource) Schema(ctx context.Context, req resour
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

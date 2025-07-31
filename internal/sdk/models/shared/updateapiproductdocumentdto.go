@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+)
+
 type UpdateAPIProductDocumentDTOMetadata struct {
 }
 
@@ -10,7 +14,7 @@ type UpdateAPIProductDocumentDTO struct {
 	// Parent document Id. If this value is explicitly set to null, the
 	// document will be put as a top level document at the bottom of the tree.
 	//
-	ParentDocumentID *string `json:"parent_document_id,omitempty"`
+	ParentDocumentID *string `default:"null" json:"parent_document_id"`
 	// document slug. must be unique accross documents belonging to an api product
 	Slug   *string        `json:"slug,omitempty"`
 	Status *PublishStatus `json:"status,omitempty"`
@@ -19,6 +23,17 @@ type UpdateAPIProductDocumentDTO struct {
 	// Can be markdown string content or base64 encoded string
 	Content  *string                              `json:"content,omitempty"`
 	Metadata *UpdateAPIProductDocumentDTOMetadata `json:"metadata,omitempty"`
+}
+
+func (u UpdateAPIProductDocumentDTO) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAPIProductDocumentDTO) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpdateAPIProductDocumentDTO) GetParentDocumentID() *string {

@@ -56,7 +56,7 @@ type UpdateAPIProductVersionDTO struct {
 	// then consumers of the now deprecated verion of the API product will be notified.
 	//
 	Notify         *bool                  `json:"notify,omitempty"`
-	GatewayService *GatewayServicePayload `json:"gateway_service,omitempty"`
+	GatewayService *GatewayServicePayload `json:"gateway_service"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Labels are intended to store **INTERNAL** metadata.

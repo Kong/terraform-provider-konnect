@@ -71,7 +71,6 @@ func (r *GatewayConsumerGroupResource) Schema(ctx context.Context, req resource.
 				Description: `The name of the consumer group.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `A set of strings representing tags.`,

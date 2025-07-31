@@ -79,10 +79,21 @@ func (o *RouteTransformerAdvancedPluginPartials) GetPath() *string {
 }
 
 type RouteTransformerAdvancedPluginConfig struct {
-	EscapePath *bool   `json:"escape_path,omitempty"`
+	EscapePath *bool   `default:"false" json:"escape_path"`
 	Host       *string `json:"host,omitempty"`
 	Path       *string `json:"path,omitempty"`
 	Port       *string `json:"port,omitempty"`
+}
+
+func (r RouteTransformerAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteTransformerAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RouteTransformerAdvancedPluginConfig) GetEscapePath() *bool {
@@ -186,24 +197,24 @@ type RouteTransformerAdvancedPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                                 `json:"instance_name,omitempty"`
+	InstanceName *string                                 `default:"null" json:"instance_name"`
 	name         string                                  `const:"route-transformer-advanced" json:"name"`
-	Ordering     *RouteTransformerAdvancedPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *RouteTransformerAdvancedPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []RouteTransformerAdvancedPluginPartials `json:"partials,omitempty"`
+	Partials []RouteTransformerAdvancedPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                                `json:"updated_at,omitempty"`
 	Config    *RouteTransformerAdvancedPluginConfig `json:"config,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *RouteTransformerAdvancedPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
-	Protocols []RouteTransformerAdvancedPluginProtocols `json:"protocols,omitempty"`
+	Protocols []RouteTransformerAdvancedPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *RouteTransformerAdvancedPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

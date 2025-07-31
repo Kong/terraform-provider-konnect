@@ -82,7 +82,18 @@ type StandardWebhooksPluginConfig struct {
 	// Webhook secret
 	SecretV1 string `json:"secret_v1"`
 	// Tolerance of the webhook timestamp in seconds. If the webhook timestamp is older than this number of seconds, it will be rejected with a '400' response.
-	ToleranceSecond *int64 `json:"tolerance_second,omitempty"`
+	ToleranceSecond *int64 `default:"300" json:"tolerance_second"`
+}
+
+func (s StandardWebhooksPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StandardWebhooksPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *StandardWebhooksPluginConfig) GetSecretV1() string {
@@ -172,24 +183,24 @@ type StandardWebhooksPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                         `json:"instance_name,omitempty"`
+	InstanceName *string                         `default:"null" json:"instance_name"`
 	name         string                          `const:"standard-webhooks" json:"name"`
-	Ordering     *StandardWebhooksPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *StandardWebhooksPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []StandardWebhooksPluginPartials `json:"partials,omitempty"`
+	Partials []StandardWebhooksPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                       `json:"updated_at,omitempty"`
 	Config    StandardWebhooksPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *StandardWebhooksPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
-	Protocols []StandardWebhooksPluginProtocols `json:"protocols,omitempty"`
+	Protocols []StandardWebhooksPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *StandardWebhooksPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

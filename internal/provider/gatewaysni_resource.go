@@ -89,7 +89,6 @@ func (r *GatewaySNIResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `The SNI name to associate with the given certificate.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the SNIs for grouping and filtering.`,

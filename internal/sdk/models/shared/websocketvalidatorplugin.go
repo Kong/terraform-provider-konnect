@@ -382,24 +382,24 @@ type WebsocketValidatorPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                           `json:"instance_name,omitempty"`
+	InstanceName *string                           `default:"null" json:"instance_name"`
 	name         string                            `const:"websocket-validator" json:"name"`
-	Ordering     *WebsocketValidatorPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *WebsocketValidatorPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []WebsocketValidatorPluginPartials `json:"partials,omitempty"`
+	Partials []WebsocketValidatorPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                          `json:"updated_at,omitempty"`
 	Config    *WebsocketValidatorPluginConfig `json:"config,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *WebsocketValidatorPluginConsumer `json:"consumer"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
-	Protocols []WebsocketValidatorPluginProtocols `json:"protocols,omitempty"`
+	Protocols []WebsocketValidatorPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *WebsocketValidatorPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

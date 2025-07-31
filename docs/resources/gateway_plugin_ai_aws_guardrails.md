@@ -85,7 +85,7 @@ resource "konnect_gateway_plugin_ai_aws_guardrails" "my_gatewaypluginaiawsguardr
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -109,11 +109,11 @@ Optional:
 
 - `aws_access_key_id` (String) The AWS access key ID to use for authentication
 - `aws_secret_access_key` (String) The AWS secret access key to use for authentication
-- `guarding_mode` (String) The guardrail mode to use for the request. must be one of ["BOTH", "INPUT", "OUTPUT"]
-- `response_buffer_size` (Number) The amount of token receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard.
-- `stop_on_error` (Boolean) Stop processing if an error occurs
-- `text_source` (String) Select where to pick the 'text' for the Content Guard Services request. must be one of ["concatenate_all_content", "concatenate_user_content"]
-- `timeout` (Number) Connection timeout with the bedrock service
+- `guarding_mode` (String) The guardrail mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]
+- `response_buffer_size` (Number) The amount of token receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard. Default: 100
+- `stop_on_error` (Boolean) Stop processing if an error occurs. Default: true
+- `text_source` (String) Select where to pick the 'text' for the Content Guard Services request. Default: "concatenate_all_content"; must be one of ["concatenate_all_content", "concatenate_user_content"]
+- `timeout` (Number) Connection timeout with the bedrock service. Default: 10000
 
 
 <a id="nestedatt--consumer"></a>

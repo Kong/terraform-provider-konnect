@@ -74,7 +74,7 @@ resource "konnect_gateway_plugin_correlation_id" "my_gatewayplugincorrelationid"
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -90,9 +90,9 @@ resource "konnect_gateway_plugin_correlation_id" "my_gatewayplugincorrelationid"
 
 Optional:
 
-- `echo_downstream` (Boolean) Whether to echo the header back to downstream (the client).
-- `generator` (String) The generator to use for the correlation ID. Accepted values are `uuid`, `uuid#counter`, and `tracker`. See [Generators](#generators). must be one of ["tracker", "uuid", "uuid#counter"]
-- `header_name` (String) The HTTP header name to use for the correlation ID.
+- `echo_downstream` (Boolean) Whether to echo the header back to downstream (the client). Default: false
+- `generator` (String) The generator to use for the correlation ID. Accepted values are `uuid`, `uuid#counter`, and `tracker`. See [Generators](#generators). Default: "uuid#counter"; must be one of ["tracker", "uuid", "uuid#counter"]
+- `header_name` (String) The HTTP header name to use for the correlation ID. Default: "Kong-Request-ID"
 
 
 <a id="nestedatt--consumer"></a>

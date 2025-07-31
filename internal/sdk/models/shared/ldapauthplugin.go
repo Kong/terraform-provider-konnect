@@ -86,27 +86,38 @@ type LdapAuthPluginConfig struct {
 	// Base DN as the starting point for the search; e.g., dc=example,dc=com
 	BaseDn string `json:"base_dn"`
 	// Cache expiry time in seconds.
-	CacheTTL *float64 `json:"cache_ttl,omitempty"`
+	CacheTTL *float64 `default:"60" json:"cache_ttl"`
 	// An optional string to use as part of the Authorization header
-	HeaderType *string `json:"header_type,omitempty"`
+	HeaderType *string `default:"ldap" json:"header_type"`
 	// An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request.
-	HideCredentials *bool `json:"hide_credentials,omitempty"`
+	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// An optional value in milliseconds that defines how long an idle connection to LDAP server will live before being closed.
-	Keepalive *float64 `json:"keepalive,omitempty"`
+	Keepalive *float64 `default:"60000" json:"keepalive"`
 	// A string representing a host name, such as example.com.
 	LdapHost string `json:"ldap_host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	LdapPort *int64 `json:"ldap_port,omitempty"`
+	LdapPort *int64 `default:"389" json:"ldap_port"`
 	// Set to `true` to connect using the LDAPS protocol (LDAP over TLS).  When `ldaps` is configured, you must use port 636. If the `ldap` setting is enabled, ensure the `start_tls` setting is disabled.
-	Ldaps *bool `json:"ldaps,omitempty"`
+	Ldaps *bool `default:"false" json:"ldaps"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
 	Realm *string `json:"realm,omitempty"`
 	// Set it to `true` to issue StartTLS (Transport Layer Security) extended operation over `ldap` connection. If the `start_tls` setting is enabled, ensure the `ldaps` setting is disabled.
-	StartTLS *bool `json:"start_tls,omitempty"`
+	StartTLS *bool `default:"false" json:"start_tls"`
 	// An optional timeout in milliseconds when waiting for connection with LDAP server.
-	Timeout *float64 `json:"timeout,omitempty"`
+	Timeout *float64 `default:"10000" json:"timeout"`
 	// Set to `true` to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the `lua_ssl_trusted_certificate` directive.
-	VerifyLdapHost *bool `json:"verify_ldap_host,omitempty"`
+	VerifyLdapHost *bool `default:"false" json:"verify_ldap_host"`
+}
+
+func (l LdapAuthPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LdapAuthPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *LdapAuthPluginConfig) GetAnonymous() *string {
@@ -274,22 +285,22 @@ type LdapAuthPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                 `json:"instance_name,omitempty"`
+	InstanceName *string                 `default:"null" json:"instance_name"`
 	name         string                  `const:"ldap-auth" json:"name"`
-	Ordering     *LdapAuthPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *LdapAuthPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []LdapAuthPluginPartials `json:"partials,omitempty"`
+	Partials []LdapAuthPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64               `json:"updated_at,omitempty"`
 	Config    LdapAuthPluginConfig `json:"config"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
-	Protocols []LdapAuthPluginProtocols `json:"protocols,omitempty"`
+	Protocols []LdapAuthPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *LdapAuthPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

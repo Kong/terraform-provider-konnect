@@ -63,7 +63,6 @@ func (r *GatewayConsumerResource) Schema(ctx context.Context, req resource.Schem
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"custom_id": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database. You must send either this field or ` + "`" + `username` + "`" + ` with the request.`,
 			},
@@ -73,7 +72,6 @@ func (r *GatewayConsumerResource) Schema(ctx context.Context, req resource.Schem
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Consumer for grouping and filtering.`,
@@ -84,7 +82,6 @@ func (r *GatewayConsumerResource) Schema(ctx context.Context, req resource.Schem
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 			"username": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The unique username of the Consumer. You must send either this field or ` + "`" + `custom_id` + "`" + ` with the request.`,
 			},

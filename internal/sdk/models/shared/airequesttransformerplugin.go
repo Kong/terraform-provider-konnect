@@ -107,7 +107,7 @@ func (e *AiRequestTransformerPluginParamLocation) UnmarshalJSON(data []byte) err
 
 type AiRequestTransformerPluginAuth struct {
 	// If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
-	AllowOverride *bool `json:"allow_override,omitempty"`
+	AllowOverride *bool `default:"false" json:"allow_override"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
 	AwsAccessKeyID *string `json:"aws_access_key_id,omitempty"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
@@ -119,11 +119,11 @@ type AiRequestTransformerPluginAuth struct {
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
 	AzureTenantID *string `json:"azure_tenant_id,omitempty"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
-	AzureUseManagedIdentity *bool `json:"azure_use_managed_identity,omitempty"`
+	AzureUseManagedIdentity *bool `default:"false" json:"azure_use_managed_identity"`
 	// Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
 	GcpServiceAccountJSON *string `json:"gcp_service_account_json,omitempty"`
 	// Use service account auth for GCP-based providers and models.
-	GcpUseServiceAccount *bool `json:"gcp_use_service_account,omitempty"`
+	GcpUseServiceAccount *bool `default:"false" json:"gcp_use_service_account"`
 	// If AI model requires authentication via Authorization or API key header, specify its name here.
 	HeaderName *string `json:"header_name,omitempty"`
 	// Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
@@ -134,6 +134,17 @@ type AiRequestTransformerPluginAuth struct {
 	ParamName *string `json:"param_name,omitempty"`
 	// Specify the full parameter value for 'param_name'.
 	ParamValue *string `json:"param_value,omitempty"`
+}
+
+func (a AiRequestTransformerPluginAuth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRequestTransformerPluginAuth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiRequestTransformerPluginAuth) GetAllowOverride() *bool {
@@ -236,9 +247,20 @@ func (o *AiRequestTransformerPluginAuth) GetParamValue() *string {
 
 type AiRequestTransformerPluginLogging struct {
 	// If enabled, will log the request and response body into the Kong log plugin(s) output.
-	LogPayloads *bool `json:"log_payloads,omitempty"`
+	LogPayloads *bool `default:"false" json:"log_payloads"`
 	// If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.
-	LogStatistics *bool `json:"log_statistics,omitempty"`
+	LogStatistics *bool `default:"false" json:"log_statistics"`
+}
+
+func (a AiRequestTransformerPluginLogging) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRequestTransformerPluginLogging) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiRequestTransformerPluginLogging) GetLogPayloads() *bool {
@@ -265,9 +287,20 @@ type AiRequestTransformerPluginBedrock struct {
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
 	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
-	EmbeddingsNormalize *bool `json:"embeddings_normalize,omitempty"`
+	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
 	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
 	PerformanceConfigLatency *string `json:"performance_config_latency,omitempty"`
+}
+
+func (a AiRequestTransformerPluginBedrock) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRequestTransformerPluginBedrock) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiRequestTransformerPluginBedrock) GetAwsAssumeRoleArn() *string {
@@ -350,9 +383,20 @@ func (e *AiRequestTransformerPluginEmbeddingInputType) UnmarshalJSON(data []byte
 
 type AiRequestTransformerPluginCohere struct {
 	// The purpose of the input text to calculate embedding vectors.
-	EmbeddingInputType *AiRequestTransformerPluginEmbeddingInputType `json:"embedding_input_type,omitempty"`
+	EmbeddingInputType *AiRequestTransformerPluginEmbeddingInputType `default:"classification" json:"embedding_input_type"`
 	// Wait for the model if it is not ready
 	WaitForModel *bool `json:"wait_for_model,omitempty"`
+}
+
+func (a AiRequestTransformerPluginCohere) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRequestTransformerPluginCohere) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiRequestTransformerPluginCohere) GetEmbeddingInputType() *AiRequestTransformerPluginEmbeddingInputType {
@@ -482,7 +526,7 @@ type AiRequestTransformerPluginOptions struct {
 	// Defines the schema/API version, if using Anthropic provider.
 	AnthropicVersion *string `json:"anthropic_version,omitempty"`
 	// 'api-version' for Azure OpenAI instances.
-	AzureAPIVersion *string `json:"azure_api_version,omitempty"`
+	AzureAPIVersion *string `default:"2023-05-15" json:"azure_api_version"`
 	// Deployment ID for Azure OpenAI instances.
 	AzureDeploymentID *string `json:"azure_deployment_id,omitempty"`
 	// Instance name for Azure OpenAI hosted models.
@@ -513,6 +557,17 @@ type AiRequestTransformerPluginOptions struct {
 	UpstreamPath *string `json:"upstream_path,omitempty"`
 	// Manually specify or override the full URL to the AI operation endpoints, when calling (self-)hosted models, or for running via a private endpoint.
 	UpstreamURL *string `json:"upstream_url,omitempty"`
+}
+
+func (a AiRequestTransformerPluginOptions) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRequestTransformerPluginOptions) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiRequestTransformerPluginOptions) GetAnthropicVersion() *string {
@@ -831,20 +886,31 @@ type AiRequestTransformerPluginConfig struct {
 	// An integer representing a port number between 0 and 65535, inclusive.
 	HTTPProxyPort *int64 `json:"http_proxy_port,omitempty"`
 	// Timeout in milliseconds for the AI upstream service.
-	HTTPTimeout *int64 `json:"http_timeout,omitempty"`
+	HTTPTimeout *int64 `default:"60000" json:"http_timeout"`
 	// A string representing a host name, such as example.com.
 	HTTPSProxyHost *string `json:"https_proxy_host,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	HTTPSProxyPort *int64 `json:"https_proxy_port,omitempty"`
 	// Verify the TLS certificate of the AI upstream service.
-	HTTPSVerify *bool `json:"https_verify,omitempty"`
+	HTTPSVerify *bool `default:"true" json:"https_verify"`
 	Llm         Llm   `json:"llm"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
-	MaxRequestBodySize *int64 `json:"max_request_body_size,omitempty"`
+	MaxRequestBodySize *int64 `default:"8192" json:"max_request_body_size"`
 	// Use this prompt to tune the LLM system/assistant message for the incoming proxy request (from the client), and what you are expecting in return.
 	Prompt string `json:"prompt"`
 	// Defines the regular expression that must match to indicate a successful AI transformation at the request phase. The first match will be set as the outgoing body. If the AI service's response doesn't match this pattern, it is marked as a failure.
 	TransformationExtractPattern *string `json:"transformation_extract_pattern,omitempty"`
+}
+
+func (a AiRequestTransformerPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRequestTransformerPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiRequestTransformerPluginConfig) GetHTTPProxyHost() *string {
@@ -990,24 +1056,24 @@ type AiRequestTransformerPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                             `json:"instance_name,omitempty"`
+	InstanceName *string                             `default:"null" json:"instance_name"`
 	name         string                              `const:"ai-request-transformer" json:"name"`
-	Ordering     *AiRequestTransformerPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *AiRequestTransformerPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []AiRequestTransformerPluginPartials `json:"partials,omitempty"`
+	Partials []AiRequestTransformerPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                           `json:"updated_at,omitempty"`
 	Config    AiRequestTransformerPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *AiRequestTransformerPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
-	Protocols []AiRequestTransformerPluginProtocols `json:"protocols,omitempty"`
+	Protocols []AiRequestTransformerPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *AiRequestTransformerPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

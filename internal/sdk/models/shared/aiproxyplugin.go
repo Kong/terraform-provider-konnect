@@ -107,7 +107,7 @@ func (e *ParamLocation) UnmarshalJSON(data []byte) error {
 
 type Auth struct {
 	// If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
-	AllowOverride *bool `json:"allow_override,omitempty"`
+	AllowOverride *bool `default:"false" json:"allow_override"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
 	AwsAccessKeyID *string `json:"aws_access_key_id,omitempty"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
@@ -119,11 +119,11 @@ type Auth struct {
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
 	AzureTenantID *string `json:"azure_tenant_id,omitempty"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
-	AzureUseManagedIdentity *bool `json:"azure_use_managed_identity,omitempty"`
+	AzureUseManagedIdentity *bool `default:"false" json:"azure_use_managed_identity"`
 	// Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
 	GcpServiceAccountJSON *string `json:"gcp_service_account_json,omitempty"`
 	// Use service account auth for GCP-based providers and models.
-	GcpUseServiceAccount *bool `json:"gcp_use_service_account,omitempty"`
+	GcpUseServiceAccount *bool `default:"false" json:"gcp_use_service_account"`
 	// If AI model requires authentication via Authorization or API key header, specify its name here.
 	HeaderName *string `json:"header_name,omitempty"`
 	// Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
@@ -134,6 +134,17 @@ type Auth struct {
 	ParamName *string `json:"param_name,omitempty"`
 	// Specify the full parameter value for 'param_name'.
 	ParamValue *string `json:"param_value,omitempty"`
+}
+
+func (a Auth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *Auth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Auth) GetAllowOverride() *bool {
@@ -308,9 +319,20 @@ func (e *AiProxyPluginLlmFormat) UnmarshalJSON(data []byte) error {
 
 type Logging struct {
 	// If enabled, will log the request and response body into the Kong log plugin(s) output.
-	LogPayloads *bool `json:"log_payloads,omitempty"`
+	LogPayloads *bool `default:"false" json:"log_payloads"`
 	// If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.
-	LogStatistics *bool `json:"log_statistics,omitempty"`
+	LogStatistics *bool `default:"false" json:"log_statistics"`
+}
+
+func (l Logging) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *Logging) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Logging) GetLogPayloads() *bool {
@@ -337,9 +359,20 @@ type Bedrock struct {
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
 	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
-	EmbeddingsNormalize *bool `json:"embeddings_normalize,omitempty"`
+	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
 	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
 	PerformanceConfigLatency *string `json:"performance_config_latency,omitempty"`
+}
+
+func (b Bedrock) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *Bedrock) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Bedrock) GetAwsAssumeRoleArn() *string {
@@ -422,9 +455,20 @@ func (e *EmbeddingInputType) UnmarshalJSON(data []byte) error {
 
 type Cohere struct {
 	// The purpose of the input text to calculate embedding vectors.
-	EmbeddingInputType *EmbeddingInputType `json:"embedding_input_type,omitempty"`
+	EmbeddingInputType *EmbeddingInputType `default:"classification" json:"embedding_input_type"`
 	// Wait for the model if it is not ready
 	WaitForModel *bool `json:"wait_for_model,omitempty"`
+}
+
+func (c Cohere) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *Cohere) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Cohere) GetEmbeddingInputType() *EmbeddingInputType {
@@ -554,7 +598,7 @@ type OptionsObj struct {
 	// Defines the schema/API version, if using Anthropic provider.
 	AnthropicVersion *string `json:"anthropic_version,omitempty"`
 	// 'api-version' for Azure OpenAI instances.
-	AzureAPIVersion *string `json:"azure_api_version,omitempty"`
+	AzureAPIVersion *string `default:"2023-05-15" json:"azure_api_version"`
 	// Deployment ID for Azure OpenAI instances.
 	AzureDeploymentID *string `json:"azure_deployment_id,omitempty"`
 	// Instance name for Azure OpenAI hosted models.
@@ -585,6 +629,17 @@ type OptionsObj struct {
 	UpstreamPath *string `json:"upstream_path,omitempty"`
 	// Manually specify or override the full URL to the AI operation endpoints, when calling (self-)hosted models, or for running via a private endpoint.
 	UpstreamURL *string `json:"upstream_url,omitempty"`
+}
+
+func (o OptionsObj) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OptionsObj) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OptionsObj) GetAnthropicVersion() *string {
@@ -894,19 +949,30 @@ func (e *RouteType) UnmarshalJSON(data []byte) error {
 type AiProxyPluginConfig struct {
 	Auth *Auth `json:"auth,omitempty"`
 	// Generative AI category of the request
-	GenaiCategory *AiProxyPluginGenaiCategory `json:"genai_category,omitempty"`
+	GenaiCategory *AiProxyPluginGenaiCategory `default:"text/generation" json:"genai_category"`
 	// LLM input and output format and schema to use
-	LlmFormat *AiProxyPluginLlmFormat `json:"llm_format,omitempty"`
+	LlmFormat *AiProxyPluginLlmFormat `default:"openai" json:"llm_format"`
 	Logging   *Logging                `json:"logging,omitempty"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
-	MaxRequestBodySize *int64 `json:"max_request_body_size,omitempty"`
+	MaxRequestBodySize *int64 `default:"8192" json:"max_request_body_size"`
 	Model              Model  `json:"model"`
 	// Display the model name selected in the X-Kong-LLM-Model response header
-	ModelNameHeader *bool `json:"model_name_header,omitempty"`
+	ModelNameHeader *bool `default:"true" json:"model_name_header"`
 	// Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events.
-	ResponseStreaming *ResponseStreaming `json:"response_streaming,omitempty"`
+	ResponseStreaming *ResponseStreaming `default:"allow" json:"response_streaming"`
 	// The model's operation implementation, for this provider.
 	RouteType RouteType `json:"route_type"`
+}
+
+func (a AiProxyPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiProxyPluginConfig) GetAuth() *Auth {
@@ -1063,17 +1129,17 @@ type AiProxyPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                `json:"instance_name,omitempty"`
+	InstanceName *string                `default:"null" json:"instance_name"`
 	name         string                 `const:"ai-proxy" json:"name"`
-	Ordering     *AiProxyPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *AiProxyPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []AiProxyPluginPartials `json:"partials,omitempty"`
+	Partials []AiProxyPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64              `json:"updated_at,omitempty"`
 	Config    AiProxyPluginConfig `json:"config"`
@@ -1082,7 +1148,7 @@ type AiProxyPlugin struct {
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *AiProxyPluginConsumerGroup `json:"consumer_group"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
-	Protocols []AiProxyPluginProtocols `json:"protocols,omitempty"`
+	Protocols []AiProxyPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *AiProxyPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

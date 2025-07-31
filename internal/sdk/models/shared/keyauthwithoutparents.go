@@ -21,7 +21,7 @@ type KeyAuthWithoutParents struct {
 	ID  *string `json:"id,omitempty"`
 	Key *string `json:"key,omitempty"`
 	// A set of strings representing tags.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// key-auth ttl in seconds
 	TTL *int64 `json:"ttl,omitempty"`
 }

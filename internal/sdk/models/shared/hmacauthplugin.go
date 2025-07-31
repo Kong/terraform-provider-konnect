@@ -116,15 +116,26 @@ type HmacAuthPluginConfig struct {
 	// An optional string (Consumer UUID or username) value to use as an “anonymous” consumer if authentication fails.
 	Anonymous *string `json:"anonymous,omitempty"`
 	// Clock skew in seconds to prevent replay attacks.
-	ClockSkew *float64 `json:"clock_skew,omitempty"`
+	ClockSkew *float64 `default:"300" json:"clock_skew"`
 	// A list of headers that the client should at least use for HTTP signature creation.
 	EnforceHeaders []string `json:"enforce_headers,omitempty"`
 	// An optional boolean value telling the plugin to show or hide the credential from the upstream service.
-	HideCredentials *bool `json:"hide_credentials,omitempty"`
+	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
 	Realm *string `json:"realm,omitempty"`
 	// A boolean value telling the plugin to enable body validation.
-	ValidateRequestBody *bool `json:"validate_request_body,omitempty"`
+	ValidateRequestBody *bool `default:"false" json:"validate_request_body"`
+}
+
+func (h HmacAuthPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HmacAuthPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *HmacAuthPluginConfig) GetAlgorithms() []Algorithms {
@@ -243,22 +254,22 @@ type HmacAuthPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                 `json:"instance_name,omitempty"`
+	InstanceName *string                 `default:"null" json:"instance_name"`
 	name         string                  `const:"hmac-auth" json:"name"`
-	Ordering     *HmacAuthPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *HmacAuthPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []HmacAuthPluginPartials `json:"partials,omitempty"`
+	Partials []HmacAuthPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                `json:"updated_at,omitempty"`
 	Config    *HmacAuthPluginConfig `json:"config,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
-	Protocols []HmacAuthPluginProtocols `json:"protocols,omitempty"`
+	Protocols []HmacAuthPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *HmacAuthPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

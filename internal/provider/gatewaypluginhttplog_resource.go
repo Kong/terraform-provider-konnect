@@ -15,8 +15,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -73,7 +77,8 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 					"content_type": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Indicates the type of data sent. The only available option is ` + "`" + `application/json` + "`" + `. must be one of ["application/json", "application/json; charset=utf-8"]`,
+						Default:     stringdefault.StaticString(`application/json`),
+						Description: `Indicates the type of data sent. The only available option is ` + "`" + `application/json` + "`" + `. Default: "application/json"; must be one of ["application/json", "application/json; charset=utf-8"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"application/json",
@@ -111,12 +116,14 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 					"keepalive": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional value in milliseconds that defines how long an idle connection will live before being closed.`,
+						Default:     float64default.StaticFloat64(60000),
+						Description: `An optional value in milliseconds that defines how long an idle connection will live before being closed. Default: 60000`,
 					},
 					"method": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional method used to send data to the HTTP server. Supported values are ` + "`" + `POST` + "`" + ` (default), ` + "`" + `PUT` + "`" + `, and ` + "`" + `PATCH` + "`" + `. must be one of ["PATCH", "POST", "PUT"]`,
+						Default:     stringdefault.StaticString(`POST`),
+						Description: `An optional method used to send data to the HTTP server. Supported values are ` + "`" + `POST` + "`" + ` (default), ` + "`" + `PUT` + "`" + `, and ` + "`" + `PATCH` + "`" + `. Default: "POST"; must be one of ["PATCH", "POST", "PUT"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"PATCH",
@@ -132,7 +139,8 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 							"concurrency_limit": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The number of of queue delivery timers. -1 indicates unlimited. must be one of ["-1", "1"]`,
+								Default:     int64default.StaticInt64(1),
+								Description: `The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of ["-1", "1"]`,
 								Validators: []validator.Int64{
 									int64validator.OneOf(-1, 1),
 								},
@@ -140,7 +148,8 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 							"initial_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Time in seconds before the initial retry is made for a failing batch.`,
+								Default:     float64default.StaticFloat64(0.01),
+								Description: `Time in seconds before the initial retry is made for a failing batch. Default: 0.01`,
 								Validators: []validator.Float64{
 									float64validator.AtMost(1000000),
 								},
@@ -148,7 +157,8 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 							"max_batch_size": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Maximum number of entries that can be processed at a time.`,
+								Default:     int64default.StaticInt64(1),
+								Description: `Maximum number of entries that can be processed at a time. Default: 1`,
 								Validators: []validator.Int64{
 									int64validator.Between(1, 1000000),
 								},
@@ -161,7 +171,8 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 							"max_coalescing_delay": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.`,
+								Default:     float64default.StaticFloat64(1),
+								Description: `Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler. Default: 1`,
 								Validators: []validator.Float64{
 									float64validator.AtMost(3600),
 								},
@@ -169,7 +180,8 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 							"max_entries": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Maximum number of entries that can be waiting on the queue.`,
+								Default:     int64default.StaticInt64(10000),
+								Description: `Maximum number of entries that can be waiting on the queue. Default: 10000`,
 								Validators: []validator.Int64{
 									int64validator.Between(1, 1000000),
 								},
@@ -177,7 +189,8 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 							"max_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Maximum time in seconds between retries, caps exponential backoff.`,
+								Default:     float64default.StaticFloat64(60),
+								Description: `Maximum time in seconds between retries, caps exponential backoff. Default: 60`,
 								Validators: []validator.Float64{
 									float64validator.AtMost(1000000),
 								},
@@ -185,7 +198,8 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 							"max_retry_time": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Time in seconds before the queue gives up calling a failed handler for a batch.`,
+								Default:     float64default.StaticFloat64(60),
+								Description: `Time in seconds before the queue gives up calling a failed handler for a batch. Default: 60`,
 							},
 						},
 					},
@@ -202,7 +216,8 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 					"timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional timeout in milliseconds when sending data to the upstream server.`,
+						Default:     float64default.StaticFloat64(10000),
+						Description: `An optional timeout in milliseconds when sending data to the upstream server. Default: 10000`,
 					},
 				},
 			},
@@ -235,7 +250,8 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -243,13 +259,28 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
@@ -276,7 +307,6 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -336,7 +366,6 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

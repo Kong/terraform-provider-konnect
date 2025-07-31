@@ -6,8 +6,8 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-// Certificate - A certificate object represents a public certificate, and can be optionally paired with the corresponding private key. These objects are used by Kong to handle SSL/TLS termination for encrypted requests, or for use as a trusted CA store when validating peer certificate of client/service. Certificates are optionally associated with SNI objects to tie a cert/key pair to one or more hostnames. If intermediate certificates are required in addition to the main certificate, they should be concatenated together into one string according to the following order: main certificate on the top, followed by any intermediates.
-type Certificate struct {
+// CertificateInput - A certificate object represents a public certificate, and can be optionally paired with the corresponding private key. These objects are used by Kong to handle SSL/TLS termination for encrypted requests, or for use as a trusted CA store when validating peer certificate of client/service. Certificates are optionally associated with SNI objects to tie a cert/key pair to one or more hostnames. If intermediate certificates are required in addition to the main certificate, they should be concatenated together into one string according to the following order: main certificate on the top, followed by any intermediates.
+type CertificateInput struct {
 	// PEM-encoded public certificate chain of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).
 	Cert string `json:"cert"`
 	// PEM-encoded public certificate chain of the alternate SSL key pair. This should only be set if you have both RSA and ECDSA types of certificate available and would like Kong to prefer serving using ECDSA certs when client advertises support for it. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).
@@ -19,82 +19,74 @@ type Certificate struct {
 	// PEM-encoded private key of the SSL key pair. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).
 	Key string `json:"key"`
 	// PEM-encoded private key of the alternate SSL key pair. This should only be set if you have both RSA and ECDSA types of certificate available and would like Kong to prefer serving using ECDSA certs when client advertises support for it. This field is _referenceable_, which means it can be securely stored as a [secret](/gateway/latest/plan-and-deploy/security/secrets-management/getting-started) in a vault. References must follow a [specific format](/gateway/latest/plan-and-deploy/security/secrets-management/reference-format).
-	KeyAlt *string  `default:"null" json:"key_alt"`
-	Snis   []string `json:"snis,omitempty"`
+	KeyAlt *string `default:"null" json:"key_alt"`
 	// An optional set of strings associated with the Certificate for grouping and filtering.
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }
 
-func (c Certificate) MarshalJSON() ([]byte, error) {
+func (c CertificateInput) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(c, "", false)
 }
 
-func (c *Certificate) UnmarshalJSON(data []byte) error {
+func (c *CertificateInput) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Certificate) GetCert() string {
+func (o *CertificateInput) GetCert() string {
 	if o == nil {
 		return ""
 	}
 	return o.Cert
 }
 
-func (o *Certificate) GetCertAlt() *string {
+func (o *CertificateInput) GetCertAlt() *string {
 	if o == nil {
 		return nil
 	}
 	return o.CertAlt
 }
 
-func (o *Certificate) GetCreatedAt() *int64 {
+func (o *CertificateInput) GetCreatedAt() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.CreatedAt
 }
 
-func (o *Certificate) GetID() *string {
+func (o *CertificateInput) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-func (o *Certificate) GetKey() string {
+func (o *CertificateInput) GetKey() string {
 	if o == nil {
 		return ""
 	}
 	return o.Key
 }
 
-func (o *Certificate) GetKeyAlt() *string {
+func (o *CertificateInput) GetKeyAlt() *string {
 	if o == nil {
 		return nil
 	}
 	return o.KeyAlt
 }
 
-func (o *Certificate) GetSnis() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Snis
-}
-
-func (o *Certificate) GetTags() []string {
+func (o *CertificateInput) GetTags() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Tags
 }
 
-func (o *Certificate) GetUpdatedAt() *int64 {
+func (o *CertificateInput) GetUpdatedAt() *int64 {
 	if o == nil {
 		return nil
 	}

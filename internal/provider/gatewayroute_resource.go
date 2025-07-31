@@ -13,8 +13,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -85,7 +88,6 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"destinations": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -107,7 +109,6 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				Description: `A list of IP destinations of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".`,
 			},
 			"headers": schema.MapAttribute{
-				Computed: true,
 				Optional: true,
 				ElementType: types.ListType{
 					ElemType: types.StringType,
@@ -115,7 +116,6 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				Description: `One or more lists of values indexed by header name that will cause this Route to match if present in the request. The ` + "`" + `Host` + "`" + ` header cannot be used with this attribute: hosts should be specified using the ` + "`" + `hosts` + "`" + ` attribute. When ` + "`" + `headers` + "`" + ` contains only one value and that value starts with the special prefix ` + "`" + `~*` + "`" + `, the value is interpreted as a regular expression.`,
 			},
 			"hosts": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `A list of domain names that match this Route. Note that the hosts value is case sensitive.`,
@@ -123,7 +123,8 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 			"https_redirect_status_code": schema.Int64Attribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. must be one of ["426", "301", "302", "307", "308"]`,
+				Default:     int64default.StaticInt64(426),
+				Description: `The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. Default: 426; must be one of ["426", "301", "302", "307", "308"]`,
 				Validators: []validator.Int64{
 					int64validator.OneOf(
 						426,
@@ -140,26 +141,24 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"methods": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `A list of HTTP methods that match this Route.`,
 			},
 			"name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The name of the Route. Route names must be unique, and they are case sensitive. For example, there can be two different Routes named "test" and "Test".`,
 			},
 			"path_handling": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Controls how the Service path, Route path and requested path are combined when sending a request to the upstream. See above for a detailed description of each behavior. must be one of ["v0", "v1"]`,
+				Default:     stringdefault.StaticString(`v0`),
+				Description: `Controls how the Service path, Route path and requested path are combined when sending a request to the upstream. See above for a detailed description of each behavior. Default: "v0"; must be one of ["v0", "v1"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf("v0", "v1"),
 				},
 			},
 			"paths": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `A list of paths that match this Route.`,
@@ -167,7 +166,8 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 			"preserve_host": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `When matching a Route via one of the ` + "`" + `hosts` + "`" + ` domain names, use the request ` + "`" + `Host` + "`" + ` header in the upstream request headers. If set to ` + "`" + `false` + "`" + `, the upstream ` + "`" + `Host` + "`" + ` header will be that of the Service's ` + "`" + `host` + "`" + `.`,
+				Default:     booldefault.StaticBool(false),
+				Description: `When matching a Route via one of the ` + "`" + `hosts` + "`" + ` domain names, use the request ` + "`" + `Host` + "`" + ` header in the upstream request headers. If set to ` + "`" + `false` + "`" + `, the upstream ` + "`" + `Host` + "`" + ` header will be that of the Service's ` + "`" + `host` + "`" + `. Default: false`,
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
@@ -178,17 +178,20 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 			"regex_priority": schema.Int64Attribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `A number used to choose which route resolves a given request when several routes match it using regexes simultaneously. When two routes match the path and have the same ` + "`" + `regex_priority` + "`" + `, the older one (lowest ` + "`" + `created_at` + "`" + `) is used. Note that the priority for non-regex routes is different (longer non-regex routes are matched before shorter ones).`,
+				Default:     int64default.StaticInt64(0),
+				Description: `A number used to choose which route resolves a given request when several routes match it using regexes simultaneously. When two routes match the path and have the same ` + "`" + `regex_priority` + "`" + `, the older one (lowest ` + "`" + `created_at` + "`" + `) is used. Note that the priority for non-regex routes is different (longer non-regex routes are matched before shorter ones). Default: 0`,
 			},
 			"request_buffering": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether to enable request body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that receive data with chunked transfer encoding.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether to enable request body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that receive data with chunked transfer encoding. Default: true`,
 			},
 			"response_buffering": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether to enable response body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that send data with chunked transfer encoding.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether to enable response body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that send data with chunked transfer encoding. Default: true`,
 			},
 			"service": schema.SingleNestedAttribute{
 				Computed: true,
@@ -205,13 +208,11 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				Description: `The Service this Route is associated to. This is where the Route proxies traffic to.`,
 			},
 			"snis": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `A list of SNIs that match this Route when using stream routing.`,
 			},
 			"sources": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -235,10 +236,10 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 			"strip_path": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `When matching a Route via one of the ` + "`" + `paths` + "`" + `, strip the matching prefix from the upstream request URL.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `When matching a Route via one of the ` + "`" + `paths` + "`" + `, strip the matching prefix from the upstream request URL. Default: true`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Route for grouping and filtering.`,

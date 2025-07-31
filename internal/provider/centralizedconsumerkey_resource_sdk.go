@@ -115,7 +115,12 @@ func (r *CentralizedConsumerKeyResourceModel) ToOperationsGetConsumerKeyRequest(
 func (r *CentralizedConsumerKeyResourceModel) ToSharedCreateAPIKeyPayload(ctx context.Context) (*shared.CreateAPIKeyPayload, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	typeVar := shared.CreateAPIKeyPayloadType(r.Type.ValueString())
+	typeVar := new(shared.CreateAPIKeyPayloadType)
+	if !r.Type.IsUnknown() && !r.Type.IsNull() {
+		*typeVar = shared.CreateAPIKeyPayloadType(r.Type.ValueString())
+	} else {
+		typeVar = nil
+	}
 	secret := new(string)
 	if !r.Secret.IsUnknown() && !r.Secret.IsNull() {
 		*secret = r.Secret.ValueString()

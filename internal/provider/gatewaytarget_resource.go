@@ -12,6 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
@@ -22,7 +23,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_float64planmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/float64planmodifier"
 	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/int64planmodifier"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
@@ -89,11 +89,9 @@ func (r *GatewayTargetResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `A string representing a UUID (universally unique identifier). Requires replacement if changed.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.List{
 					listplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 				},
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Target for grouping and filtering. Requires replacement if changed.`,
@@ -148,11 +146,12 @@ func (r *GatewayTargetResource) Schema(ctx context.Context, req resource.SchemaR
 			"weight": schema.Int64Attribute{
 				Computed: true,
 				Optional: true,
+				Default:  int64default.StaticInt64(100),
 				PlanModifiers: []planmodifier.Int64{
 					int64planmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
 				},
-				Description: `The weight this target gets within the upstream loadbalancer (` + "`" + `0` + "`" + `-` + "`" + `65535` + "`" + `). If the hostname resolves to an SRV record, the ` + "`" + `weight` + "`" + ` value will be overridden by the value from the DNS record. Requires replacement if changed.`,
+				Description: `The weight this target gets within the upstream loadbalancer (` + "`" + `0` + "`" + `-` + "`" + `65535` + "`" + `). If the hostname resolves to an SRV record, the ` + "`" + `weight` + "`" + ` value will be overridden by the value from the DNS record. Default: 100; Requires replacement if changed.`,
 			},
 		},
 	}

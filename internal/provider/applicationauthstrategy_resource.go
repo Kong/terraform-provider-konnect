@@ -452,11 +452,9 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						},
 					},
 					"dcr_provider_id": schema.StringAttribute{
-						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `Requires replacement if changed.`,
 					},

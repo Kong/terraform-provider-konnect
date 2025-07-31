@@ -16,7 +16,7 @@ type Team struct {
 	// The team description in Konnect.
 	Description *string `json:"description,omitempty"`
 	// Returns True if a user belongs to a `system_team`. System teams are teams that can manage Konnect objects, like "Organization Admin", or "Service"
-	SystemTeam *bool `json:"system_team,omitempty"`
+	SystemTeam *bool `default:"false" json:"system_team"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".

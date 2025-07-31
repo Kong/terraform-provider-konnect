@@ -21,7 +21,7 @@ type BasicAuthWithoutParents struct {
 	ID       *string `json:"id,omitempty"`
 	Password string  `json:"password"`
 	// A set of strings representing tags.
-	Tags     []string `json:"tags,omitempty"`
+	Tags     []string `json:"tags"`
 	Username string   `json:"username"`
 }
 

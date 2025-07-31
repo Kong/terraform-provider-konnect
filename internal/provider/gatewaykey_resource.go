@@ -75,7 +75,6 @@ func (r *GatewayKeyResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"jwk": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A JSON Web Key represented as a string.`,
 			},
@@ -84,13 +83,16 @@ func (r *GatewayKeyResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `A unique identifier for a key.`,
 			},
 			"name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The name to associate with the given keys.`,
 			},
 			"pem": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"private_key": types.StringType,
+					"public_key":  types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"private_key": schema.StringAttribute{
 						Computed: true,
@@ -118,7 +120,6 @@ func (r *GatewayKeyResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `The id (an UUID) of the key-set with which to associate the key.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Key for grouping and filtering.`,
@@ -129,7 +130,6 @@ func (r *GatewayKeyResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 			"x5t": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `X.509 certificate SHA-1 thumbprint.`,
 			},

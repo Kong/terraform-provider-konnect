@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -68,12 +69,14 @@ func (r *GatewayPluginCorsResource) Schema(ctx context.Context, req resource.Sch
 					"allow_origin_absent": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A boolean value that skip cors response headers when origin header of request is empty`,
+						Default:     booldefault.StaticBool(true),
+						Description: `A boolean value that skip cors response headers when origin header of request is empty. Default: true`,
 					},
 					"credentials": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Flag to determine whether the ` + "`" + `Access-Control-Allow-Credentials` + "`" + ` header should be sent with ` + "`" + `true` + "`" + ` as the value.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Flag to determine whether the ` + "`" + `Access-Control-Allow-Credentials` + "`" + ` header should be sent with ` + "`" + `true` + "`" + ` as the value. Default: false`,
 					},
 					"exposed_headers": schema.ListAttribute{
 						Computed:    true,
@@ -107,12 +110,14 @@ func (r *GatewayPluginCorsResource) Schema(ctx context.Context, req resource.Sch
 					"preflight_continue": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A boolean value that instructs the plugin to proxy the ` + "`" + `OPTIONS` + "`" + ` preflight request to the Upstream service.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `A boolean value that instructs the plugin to proxy the ` + "`" + `OPTIONS` + "`" + ` preflight request to the Upstream service. Default: false`,
 					},
 					"private_network": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Flag to determine whether the ` + "`" + `Access-Control-Allow-Private-Network` + "`" + ` header should be sent with ` + "`" + `true` + "`" + ` as the value.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Flag to determine whether the ` + "`" + `Access-Control-Allow-Private-Network` + "`" + ` header should be sent with ` + "`" + `true` + "`" + ` as the value. Default: false`,
 					},
 				},
 			},
@@ -131,7 +136,8 @@ func (r *GatewayPluginCorsResource) Schema(ctx context.Context, req resource.Sch
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -139,13 +145,28 @@ func (r *GatewayPluginCorsResource) Schema(ctx context.Context, req resource.Sch
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
@@ -172,7 +193,6 @@ func (r *GatewayPluginCorsResource) Schema(ctx context.Context, req resource.Sch
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -232,7 +252,6 @@ func (r *GatewayPluginCorsResource) Schema(ctx context.Context, req resource.Sch
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,
