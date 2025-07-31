@@ -8,8 +8,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 )
 
-func TestPortal(t *testing.T) {
-	t.Run("appearance", func(t *testing.T) {
+func TestPortalAppearance(t *testing.T) {
+	t.Run("plan-diff", func(t *testing.T) {
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
@@ -32,4 +32,30 @@ func TestPortal(t *testing.T) {
 			},
 		})
 	})
+
+	/*
+		todo: fix non-empty refresh plan
+			t.Run("update-nullify-fields", func(t *testing.T) {
+				resource.Test(t, resource.TestCase{
+					ProtoV6ProviderFactories: providerFactory,
+					Steps: []resource.TestStep{
+						{
+							Config:          providerConfigUs,
+							ConfigDirectory: config.TestNameDirectory(),
+						},
+						{
+							// Update some fields to null
+							Config:          providerConfigUs,
+							ConfigDirectory: config.TestStepDirectory(),
+							Check: resource.ComposeTestCheckFunc(
+								resource.TestCheckNoResourceAttr("konnect_portal_appearance.nullify_appearance_test", "custom_theme"),
+								resource.TestCheckNoResourceAttr("konnect_portal_appearance.nullify_appearance_test", "custom_fonts"),
+								resource.TestCheckNoResourceAttr("konnect_portal_appearance.nullify_appearance_test", "text"),
+								resource.TestCheckNoResourceAttr("konnect_portal_appearance.nullify_appearance_test", "images"),
+							),
+						},
+					},
+				})
+			})
+	*/
 }
