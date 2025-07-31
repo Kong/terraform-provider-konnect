@@ -19664,10 +19664,10 @@ components:
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         username:
-          description: The unique username of the Consumer.
+          description: The unique username of the Consumer. You must send either this field or `custom_id` with the request.
           type: string
         custom_id:
-          description: Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database.
+          description: Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database. You must send either this field or `username` with the request.
           type: string
           default: null
           nullable: true
