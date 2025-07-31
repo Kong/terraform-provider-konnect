@@ -30,14 +30,14 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			if resp.Config.Cache.Redis == nil {
 				r.Config.Cache.Redis = nil
 			} else {
-				r.Config.Cache.Redis = &tfTypes.AiProxyAdvancedPluginRedis{}
+				r.Config.Cache.Redis = &tfTypes.PartialRedisEeConfig{}
 				r.Config.Cache.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Cache.Redis.ClusterMaxRedirections)
-				r.Config.Cache.Redis.ClusterNodes = []tfTypes.PartialRedisEEClusterNodes{}
+				r.Config.Cache.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
 				if len(r.Config.Cache.Redis.ClusterNodes) > len(resp.Config.Cache.Redis.ClusterNodes) {
 					r.Config.Cache.Redis.ClusterNodes = r.Config.Cache.Redis.ClusterNodes[:len(resp.Config.Cache.Redis.ClusterNodes)]
 				}
 				for clusterNodesCount, clusterNodesItem := range resp.Config.Cache.Redis.ClusterNodes {
-					var clusterNodes tfTypes.PartialRedisEEClusterNodes
+					var clusterNodes tfTypes.PartialRedisEeClusterNodes
 					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
 					if clusterNodesCount+1 > len(r.Config.Cache.Redis.ClusterNodes) {
@@ -58,12 +58,12 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				r.Config.Cache.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ReadTimeout)
 				r.Config.Cache.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.SendTimeout)
 				r.Config.Cache.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Cache.Redis.SentinelMaster)
-				r.Config.Cache.Redis.SentinelNodes = []tfTypes.PartialRedisEESentinelNodes{}
+				r.Config.Cache.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
 				if len(r.Config.Cache.Redis.SentinelNodes) > len(resp.Config.Cache.Redis.SentinelNodes) {
 					r.Config.Cache.Redis.SentinelNodes = r.Config.Cache.Redis.SentinelNodes[:len(resp.Config.Cache.Redis.SentinelNodes)]
 				}
 				for sentinelNodesCount, sentinelNodesItem := range resp.Config.Cache.Redis.SentinelNodes {
-					var sentinelNodes tfTypes.PartialRedisEESentinelNodes
+					var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
 					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 					if sentinelNodesCount+1 > len(r.Config.Cache.Redis.SentinelNodes) {
@@ -198,7 +198,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			if resp.Config.Upstream.Headers == nil {
 				r.Config.Upstream.Headers = nil
 			} else {
-				r.Config.Upstream.Headers = &tfTypes.RequestCalloutPluginConfigCalloutsHeaders{}
+				r.Config.Upstream.Headers = &tfTypes.RequestCalloutPluginConfigHeaders{}
 				if len(resp.Config.Upstream.Headers.Custom) > 0 {
 					r.Config.Upstream.Headers.Custom = make(map[string]types.String, len(resp.Config.Upstream.Headers.Custom))
 					for key4, value4 := range resp.Config.Upstream.Headers.Custom {
@@ -211,7 +211,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			if resp.Config.Upstream.Query == nil {
 				r.Config.Upstream.Query = nil
 			} else {
-				r.Config.Upstream.Query = &tfTypes.RequestCalloutPluginConfigCalloutsHeaders{}
+				r.Config.Upstream.Query = &tfTypes.RequestCalloutPluginConfigHeaders{}
 				if len(resp.Config.Upstream.Query.Custom) > 0 {
 					r.Config.Upstream.Query.Custom = make(map[string]types.String, len(resp.Config.Upstream.Query.Custom))
 					for key5, value5 := range resp.Config.Upstream.Query.Custom {
@@ -789,7 +789,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		} else {
 			forward1 = nil
 		}
-		headers := shared.RequestCalloutPluginConfigCalloutsHeaders{
+		headers := shared.RequestCalloutPluginConfigHeaders{
 			Custom:  custom1,
 			Forward: forward1,
 		}
@@ -933,7 +933,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		} else {
 			store1 = nil
 		}
-		headers1 := shared.RequestCalloutPluginConfigHeaders{
+		headers1 := shared.RequestCalloutPluginHeaders{
 			Store: store1,
 		}
 		response := shared.Response{
@@ -983,7 +983,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		} else {
 			byLua2 = nil
 		}
-		var headers2 *shared.RequestCalloutPluginHeaders
+		var headers2 *shared.Headers
 		if r.Config.Upstream.Headers != nil {
 			custom4 := make(map[string]interface{})
 			for customKey4, customValue4 := range r.Config.Upstream.Headers.Custom {
@@ -997,7 +997,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 			} else {
 				forward4 = nil
 			}
-			headers2 = &shared.RequestCalloutPluginHeaders{
+			headers2 = &shared.Headers{
 				Custom:  custom4,
 				Forward: forward4,
 			}

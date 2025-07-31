@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 1697419ee36b47628bbde9e5d85b69f0
+  docChecksum: 1a30f2bf5335f6c03a1419398f049c85
   docVersion: 2.0.0
   speakeasyVersion: 1.581.1
   generationVersion: 2.656.9
@@ -49,8 +49,6 @@ generatedFiles:
   - examples/resources/konnect_audit_log/resource.tf
   - examples/resources/konnect_audit_log_destination/import.sh
   - examples/resources/konnect_audit_log_destination/resource.tf
-  - examples/resources/konnect_catalog_service/import.sh
-  - examples/resources/konnect_catalog_service/resource.tf
   - examples/resources/konnect_centralized_consumer/import.sh
   - examples/resources/konnect_centralized_consumer/resource.tf
   - examples/resources/konnect_centralized_consumer_key/import.sh
@@ -221,8 +219,6 @@ generatedFiles:
   - examples/resources/konnect_gateway_plugin_mtls_auth/resource.tf
   - examples/resources/konnect_gateway_plugin_oas_validation/import.sh
   - examples/resources/konnect_gateway_plugin_oas_validation/resource.tf
-  - examples/resources/konnect_gateway_plugin_oauth2/import.sh
-  - examples/resources/konnect_gateway_plugin_oauth2/resource.tf
   - examples/resources/konnect_gateway_plugin_oauth2_introspection/import.sh
   - examples/resources/konnect_gateway_plugin_oauth2_introspection/resource.tf
   - examples/resources/konnect_gateway_plugin_opa/import.sh
@@ -321,12 +317,6 @@ generatedFiles:
   - examples/resources/konnect_gateway_upstream/resource.tf
   - examples/resources/konnect_gateway_vault/import.sh
   - examples/resources/konnect_gateway_vault/resource.tf
-  - examples/resources/konnect_integration_instance/import.sh
-  - examples/resources/konnect_integration_instance/resource.tf
-  - examples/resources/konnect_integration_instance_auth_config/import.sh
-  - examples/resources/konnect_integration_instance_auth_config/resource.tf
-  - examples/resources/konnect_integration_instance_auth_credential/import.sh
-  - examples/resources/konnect_integration_instance_auth_credential/resource.tf
   - examples/resources/konnect_mesh_control_plane/import.sh
   - examples/resources/konnect_mesh_control_plane/resource.tf
   - examples/resources/konnect_portal/import.sh
@@ -381,8 +371,6 @@ generatedFiles:
   - internal/provider/auditlog_resource_sdk.go
   - internal/provider/auditlogdestination_resource.go
   - internal/provider/auditlogdestination_resource_sdk.go
-  - internal/provider/catalogservice_resource.go
-  - internal/provider/catalogservice_resource_sdk.go
   - internal/provider/centralizedconsumer_resource.go
   - internal/provider/centralizedconsumer_resource_sdk.go
   - internal/provider/centralizedconsumerkey_resource.go
@@ -559,8 +547,6 @@ generatedFiles:
   - internal/provider/gatewaypluginmtlsauth_resource_sdk.go
   - internal/provider/gatewaypluginoasvalidation_resource.go
   - internal/provider/gatewaypluginoasvalidation_resource_sdk.go
-  - internal/provider/gatewaypluginoauth2_resource.go
-  - internal/provider/gatewaypluginoauth2_resource_sdk.go
   - internal/provider/gatewaypluginoauth2introspection_resource.go
   - internal/provider/gatewaypluginoauth2introspection_resource_sdk.go
   - internal/provider/gatewaypluginopa_resource.go
@@ -659,12 +645,6 @@ generatedFiles:
   - internal/provider/gatewayupstream_resource_sdk.go
   - internal/provider/gatewayvault_resource.go
   - internal/provider/gatewayvault_resource_sdk.go
-  - internal/provider/integrationinstance_resource.go
-  - internal/provider/integrationinstance_resource_sdk.go
-  - internal/provider/integrationinstanceauthconfig_resource.go
-  - internal/provider/integrationinstanceauthconfig_resource_sdk.go
-  - internal/provider/integrationinstanceauthcredential_resource.go
-  - internal/provider/integrationinstanceauthcredential_resource_sdk.go
   - internal/provider/meshcontrolplane_resource.go
   - internal/provider/meshcontrolplane_resource_sdk.go
   - internal/provider/meshcontrolplanes_data_source.go
@@ -736,7 +716,6 @@ generatedFiles:
   - internal/provider/types/ai_proxy_advanced_plugin_config.go
   - internal/provider/types/ai_proxy_advanced_plugin_model.go
   - internal/provider/types/ai_proxy_advanced_plugin_options.go
-  - internal/provider/types/ai_proxy_advanced_plugin_redis.go
   - internal/provider/types/ai_proxy_plugin_config.go
   - internal/provider/types/ai_rag_injector_plugin_config.go
   - internal/provider/types/ai_rag_injector_plugin_vectordb.go
@@ -818,7 +797,6 @@ generatedFiles:
   - internal/provider/types/control_plane_filter_parameters.go
   - internal/provider/types/correlation_id_plugin_config.go
   - internal/provider/types/cors_plugin_config.go
-  - internal/provider/types/create_multi_key_auth_credential_config.go
   - internal/provider/types/custom_domain_state_metadata.go
   - internal/provider/types/custom_injections.go
   - internal/provider/types/custom_patterns.go
@@ -840,7 +818,6 @@ generatedFiles:
   - internal/provider/types/grpc_gateway_plugin_config.go
   - internal/provider/types/grpc_web_plugin_config.go
   - internal/provider/types/header_cert_auth_plugin_config.go
-  - internal/provider/types/headers.go
   - internal/provider/types/healthchecks.go
   - internal/provider/types/healthy.go
   - internal/provider/types/hmac_auth_plugin_config.go
@@ -850,8 +827,6 @@ generatedFiles:
   - internal/provider/types/id.go
   - internal/provider/types/identity_realms.go
   - internal/provider/types/injection_protection_plugin_config.go
-  - internal/provider/types/integration_instance_ref.go
-  - internal/provider/types/integration_ref_without_instance.go
   - internal/provider/types/ip_restriction_plugin_config.go
   - internal/provider/types/jq_plugin_config.go
   - internal/provider/types/json_threat_protection_plugin_config.go
@@ -879,12 +854,9 @@ generatedFiles:
   - internal/provider/types/message.go
   - internal/provider/types/metadata.go
   - internal/provider/types/metrics.go
-  - internal/provider/types/missing_permission.go
   - internal/provider/types/mocking_plugin_config.go
   - internal/provider/types/model.go
   - internal/provider/types/mtls_auth_plugin_config.go
-  - internal/provider/types/multi_key_auth.go
-  - internal/provider/types/multi_key_auth_credential.go
   - internal/provider/types/name.go
   - internal/provider/types/network_provider_metadata.go
   - internal/provider/types/nodes.go
@@ -894,9 +866,6 @@ generatedFiles:
   - internal/provider/types/oas_validation_plugin_config.go
   - internal/provider/types/oauth.go
   - internal/provider/types/oauth2_introspection_plugin_config.go
-  - internal/provider/types/oauth2_plugin_config.go
-  - internal/provider/types/oauth_auth_config.go
-  - internal/provider/types/oauth_config.go
   - internal/provider/types/opa_plugin_config.go
   - internal/provider/types/openid_connect_plugin_config.go
   - internal/provider/types/openid_connect_plugin_redis.go
@@ -933,7 +902,6 @@ generatedFiles:
   - internal/provider/types/rate_limiting_advanced_plugin_config.go
   - internal/provider/types/rate_limiting_advanced_plugin_redis.go
   - internal/provider/types/rate_limiting_plugin_config.go
-  - internal/provider/types/rate_limiting_plugin_redis.go
   - internal/provider/types/redirect_plugin_config.go
   - internal/provider/types/replace.go
   - internal/provider/types/request.go
@@ -941,8 +909,8 @@ generatedFiles:
   - internal/provider/types/request_callout_plugin_cache.go
   - internal/provider/types/request_callout_plugin_config.go
   - internal/provider/types/request_callout_plugin_config_body.go
-  - internal/provider/types/request_callout_plugin_config_callouts_headers.go
   - internal/provider/types/request_callout_plugin_config_headers.go
+  - internal/provider/types/request_callout_plugin_headers.go
   - internal/provider/types/request_callout_plugin_upstream.go
   - internal/provider/types/request_jq_program_options.go
   - internal/provider/types/request_size_limiting_plugin_config.go
@@ -1024,7 +992,6 @@ generatedFiles:
   - internal/sdk/auditlogs.go
   - internal/sdk/basicauthcredentials.go
   - internal/sdk/cacertificates.go
-  - internal/sdk/catalogservices.go
   - internal/sdk/centrallymanagedconsumers.go
   - internal/sdk/centrallymanagedkeys.go
   - internal/sdk/certificates.go
@@ -1040,9 +1007,6 @@ generatedFiles:
   - internal/sdk/docs/models/operations/option.md
   - internal/sdk/dpcertificates.go
   - internal/sdk/hmacauthcredentials.go
-  - internal/sdk/integrationinstanceauthconfig.go
-  - internal/sdk/integrationinstanceauthcredentials.go
-  - internal/sdk/integrationinstances.go
   - internal/sdk/internal/config/sdkconfiguration.go
   - internal/sdk/internal/hooks/hooks.go
   - internal/sdk/internal/utils/contenttype.go
@@ -1095,7 +1059,6 @@ generatedFiles:
   - internal/sdk/models/operations/createbotdetectionplugin.go
   - internal/sdk/models/operations/createcacertificate.go
   - internal/sdk/models/operations/createcanaryplugin.go
-  - internal/sdk/models/operations/createcatalogservice.go
   - internal/sdk/models/operations/createcertificate.go
   - internal/sdk/models/operations/createconfigstore.go
   - internal/sdk/models/operations/createconfiguration.go
@@ -1128,8 +1091,6 @@ generatedFiles:
   - internal/sdk/models/operations/createhmacauthwithconsumer.go
   - internal/sdk/models/operations/createhttplogplugin.go
   - internal/sdk/models/operations/createinjectionprotectionplugin.go
-  - internal/sdk/models/operations/createintegrationinstance.go
-  - internal/sdk/models/operations/createintegrationinstanceauthcredential.go
   - internal/sdk/models/operations/createiprestrictionplugin.go
   - internal/sdk/models/operations/createjqplugin.go
   - internal/sdk/models/operations/createjsonthreatprotectionplugin.go
@@ -1154,7 +1115,6 @@ generatedFiles:
   - internal/sdk/models/operations/createnetwork.go
   - internal/sdk/models/operations/createoasvalidationplugin.go
   - internal/sdk/models/operations/createoauth2introspectionplugin.go
-  - internal/sdk/models/operations/createoauth2plugin.go
   - internal/sdk/models/operations/createopaplugin.go
   - internal/sdk/models/operations/createopenidconnectplugin.go
   - internal/sdk/models/operations/createopentelemetryplugin.go
@@ -1245,7 +1205,6 @@ generatedFiles:
   - internal/sdk/models/operations/deletebotdetectionplugin.go
   - internal/sdk/models/operations/deletecacertificate.go
   - internal/sdk/models/operations/deletecanaryplugin.go
-  - internal/sdk/models/operations/deletecatalogservice.go
   - internal/sdk/models/operations/deletecertificate.go
   - internal/sdk/models/operations/deletecmek.go
   - internal/sdk/models/operations/deleteconfigstore.go
@@ -1277,9 +1236,6 @@ generatedFiles:
   - internal/sdk/models/operations/deletehmacauthwithconsumer.go
   - internal/sdk/models/operations/deletehttplogplugin.go
   - internal/sdk/models/operations/deleteinjectionprotectionplugin.go
-  - internal/sdk/models/operations/deleteintegrationinstance.go
-  - internal/sdk/models/operations/deleteintegrationinstanceauthconfig.go
-  - internal/sdk/models/operations/deleteintegrationinstanceauthcredential.go
   - internal/sdk/models/operations/deleteiprestrictionplugin.go
   - internal/sdk/models/operations/deletejqplugin.go
   - internal/sdk/models/operations/deletejsonthreatprotectionplugin.go
@@ -1305,7 +1261,6 @@ generatedFiles:
   - internal/sdk/models/operations/deletenetwork.go
   - internal/sdk/models/operations/deleteoasvalidationplugin.go
   - internal/sdk/models/operations/deleteoauth2introspectionplugin.go
-  - internal/sdk/models/operations/deleteoauth2plugin.go
   - internal/sdk/models/operations/deleteopaplugin.go
   - internal/sdk/models/operations/deleteopenidconnectplugin.go
   - internal/sdk/models/operations/deleteopentelemetryplugin.go
@@ -1369,8 +1324,6 @@ generatedFiles:
   - internal/sdk/models/operations/deletewebsocketvalidatorplugin.go
   - internal/sdk/models/operations/deletexmlthreatprotectionplugin.go
   - internal/sdk/models/operations/deletezipkinplugin.go
-  - internal/sdk/models/operations/fetchcatalogservice.go
-  - internal/sdk/models/operations/fetchintegrationinstance.go
   - internal/sdk/models/operations/fetchpluginschema.go
   - internal/sdk/models/operations/getaclplugin.go
   - internal/sdk/models/operations/getaclwithconsumer.go
@@ -1436,8 +1389,6 @@ generatedFiles:
   - internal/sdk/models/operations/gethmacauthwithconsumer.go
   - internal/sdk/models/operations/gethttplogplugin.go
   - internal/sdk/models/operations/getinjectionprotectionplugin.go
-  - internal/sdk/models/operations/getintegrationinstanceauthconfig.go
-  - internal/sdk/models/operations/getintegrationinstanceauthcredential.go
   - internal/sdk/models/operations/getiprestrictionplugin.go
   - internal/sdk/models/operations/getjqplugin.go
   - internal/sdk/models/operations/getjsonthreatprotectionplugin.go
@@ -1463,7 +1414,6 @@ generatedFiles:
   - internal/sdk/models/operations/getnetwork.go
   - internal/sdk/models/operations/getoasvalidationplugin.go
   - internal/sdk/models/operations/getoauth2introspectionplugin.go
-  - internal/sdk/models/operations/getoauth2plugin.go
   - internal/sdk/models/operations/getopaplugin.go
   - internal/sdk/models/operations/getopenidconnectplugin.go
   - internal/sdk/models/operations/getopentelemetryplugin.go
@@ -1575,7 +1525,6 @@ generatedFiles:
   - internal/sdk/models/operations/updatebasicauthplugin.go
   - internal/sdk/models/operations/updatebotdetectionplugin.go
   - internal/sdk/models/operations/updatecanaryplugin.go
-  - internal/sdk/models/operations/updatecatalogservice.go
   - internal/sdk/models/operations/updateconfigstore.go
   - internal/sdk/models/operations/updateconfluentconsumeplugin.go
   - internal/sdk/models/operations/updateconfluentplugin.go
@@ -1599,7 +1548,6 @@ generatedFiles:
   - internal/sdk/models/operations/updatehmacauthplugin.go
   - internal/sdk/models/operations/updatehttplogplugin.go
   - internal/sdk/models/operations/updateinjectionprotectionplugin.go
-  - internal/sdk/models/operations/updateintegrationinstance.go
   - internal/sdk/models/operations/updateiprestrictionplugin.go
   - internal/sdk/models/operations/updatejqplugin.go
   - internal/sdk/models/operations/updatejsonthreatprotectionplugin.go
@@ -1619,7 +1567,6 @@ generatedFiles:
   - internal/sdk/models/operations/updatenetwork.go
   - internal/sdk/models/operations/updateoasvalidationplugin.go
   - internal/sdk/models/operations/updateoauth2introspectionplugin.go
-  - internal/sdk/models/operations/updateoauth2plugin.go
   - internal/sdk/models/operations/updateopaplugin.go
   - internal/sdk/models/operations/updateopenidconnectplugin.go
   - internal/sdk/models/operations/updateopentelemetryplugin.go
@@ -1674,7 +1621,6 @@ generatedFiles:
   - internal/sdk/models/operations/upsertconsumer.go
   - internal/sdk/models/operations/upsertconsumergroup.go
   - internal/sdk/models/operations/upsertcustomplugin.go
-  - internal/sdk/models/operations/upsertintegrationinstanceauthconfig.go
   - internal/sdk/models/operations/upsertkey.go
   - internal/sdk/models/operations/upsertkeyset.go
   - internal/sdk/models/operations/upsertpartial.go
@@ -1754,7 +1700,6 @@ generatedFiles:
   - internal/sdk/models/shared/botdetectionplugin.go
   - internal/sdk/models/shared/cacertificate.go
   - internal/sdk/models/shared/canaryplugin.go
-  - internal/sdk/models/shared/catalogservice.go
   - internal/sdk/models/shared/centralizedconsumer.go
   - internal/sdk/models/shared/certificate.go
   - internal/sdk/models/shared/cmek.go
@@ -1793,14 +1738,11 @@ generatedFiles:
   - internal/sdk/models/shared/createappauthstrategyrequest.go
   - internal/sdk/models/shared/createappauthstrategyresponse.go
   - internal/sdk/models/shared/createauditlogdestination.go
-  - internal/sdk/models/shared/createcatalogservice.go
   - internal/sdk/models/shared/createconfigstore.go
   - internal/sdk/models/shared/createconfigurationdataplanegroup.go
   - internal/sdk/models/shared/createconfigurationrequest.go
   - internal/sdk/models/shared/createcontrolplanerequest.go
   - internal/sdk/models/shared/createcustomdomainrequest.go
-  - internal/sdk/models/shared/createintegrationinstance.go
-  - internal/sdk/models/shared/createintegrationinstanceauthcredential.go
   - internal/sdk/models/shared/createmeshcontrolplanerequest.go
   - internal/sdk/models/shared/createnetworkrequest.go
   - internal/sdk/models/shared/createpluginschemas.go
@@ -1843,11 +1785,6 @@ generatedFiles:
   - internal/sdk/models/shared/httplogplugin.go
   - internal/sdk/models/shared/injectionprotectionplugin.go
   - internal/sdk/models/shared/instancetypename.go
-  - internal/sdk/models/shared/integrationinstance.go
-  - internal/sdk/models/shared/integrationinstanceauthconfig.go
-  - internal/sdk/models/shared/integrationinstanceauthcredential.go
-  - internal/sdk/models/shared/integrationinstanceref.go
-  - internal/sdk/models/shared/integrationrefwithoutinstance.go
   - internal/sdk/models/shared/internalservererror.go
   - internal/sdk/models/shared/invalidparameterchoiceitem.go
   - internal/sdk/models/shared/invalidparameterdependentitem.go
@@ -1891,13 +1828,10 @@ generatedFiles:
   - internal/sdk/models/shared/meshcontrolplanefeature.go
   - internal/sdk/models/shared/meshcontrolplanefeaturehostnamegenerationcreation.go
   - internal/sdk/models/shared/meshcontrolplanefeaturemeshcreation.go
-  - internal/sdk/models/shared/missingpermission.go
   - internal/sdk/models/shared/mockingplugin.go
   - internal/sdk/models/shared/mtlsauth.go
   - internal/sdk/models/shared/mtlsauthplugin.go
   - internal/sdk/models/shared/mtlsauthwithoutparents.go
-  - internal/sdk/models/shared/multikeyauth.go
-  - internal/sdk/models/shared/multikeyauthcredential.go
   - internal/sdk/models/shared/network.go
   - internal/sdk/models/shared/networkcreatestate.go
   - internal/sdk/models/shared/networkprovidermetadata.go
@@ -1909,9 +1843,6 @@ generatedFiles:
   - internal/sdk/models/shared/nullableappearancethemevariables.go
   - internal/sdk/models/shared/oasvalidationplugin.go
   - internal/sdk/models/shared/oauth2introspectionplugin.go
-  - internal/sdk/models/shared/oauth2plugin.go
-  - internal/sdk/models/shared/oauthauthconfig.go
-  - internal/sdk/models/shared/oauthconfig.go
   - internal/sdk/models/shared/opaplugin.go
   - internal/sdk/models/shared/openidconnectplugin.go
   - internal/sdk/models/shared/opentelemetryplugin.go
@@ -2003,17 +1934,14 @@ generatedFiles:
   - internal/sdk/models/shared/updateappauthstrategyrequest.go
   - internal/sdk/models/shared/updateauditlogdestination.go
   - internal/sdk/models/shared/updateauditlogwebhook.go
-  - internal/sdk/models/shared/updatecatalogservice.go
   - internal/sdk/models/shared/updateconfigstore.go
   - internal/sdk/models/shared/updateconsumerpayload.go
   - internal/sdk/models/shared/updatecontrolplanerequest.go
-  - internal/sdk/models/shared/updateintegrationinstance.go
   - internal/sdk/models/shared/updateportalappearanceresponse.go
   - internal/sdk/models/shared/updateportalrequest.go
   - internal/sdk/models/shared/updatesystemaccount.go
   - internal/sdk/models/shared/updatesystemaccountaccesstoken.go
   - internal/sdk/models/shared/updateteam.go
-  - internal/sdk/models/shared/upsertintegrationinstanceauthconfig.go
   - internal/sdk/models/shared/upstream.go
   - internal/sdk/models/shared/upstreamoauthplugin.go
   - internal/sdk/models/shared/upstreamtimeoutplugin.go
@@ -3910,7 +3838,7 @@ examples:
         application/json: {"config": {"database": 0, "host": "localhost", "password": "password", "port": 6379, "server_name": "redis", "ssl": false, "ssl_verify": false, "timeout": 2000, "username": "username"}, "type": "redis-ce"}
       responses:
         "201":
-          application/json: {"config": {"cluster_nodes": [{"ip": "192.168.1.10", "port": 6380}], "connect_timeout": 2000, "database": 0, "host": "localhost", "keepalive_pool_size": 256, "password": "password", "port": 6379, "read_timeout": 1000, "send_timeout": 1000, "sentinel_nodes": [{"host": "sentinel1.redis.server", "port": 26379}], "server_name": "redis-ee", "ssl": false, "ssl_verify": false, "username": "username"}, "type": "redis-ee"}
+          application/json: {"config": {"database": 0, "host": "localhost", "password": "password", "port": 6379, "server_name": "redis", "ssl": false, "ssl_verify": false, "timeout": 2000, "username": "username"}, "type": "redis-ce"}
         "401":
           application/json: {"message": "<value>", "status": 415811}
   delete-partial:
@@ -3948,7 +3876,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"config": {"cluster_nodes": [{"ip": "192.168.1.10", "port": 6380}], "connect_timeout": 2000, "database": 0, "host": "localhost", "keepalive_pool_size": 256, "password": "password", "port": 6379, "read_timeout": 1000, "send_timeout": 1000, "sentinel_nodes": [{"host": "sentinel1.redis.server", "port": 26379}], "server_name": "redis-ee", "ssl": false, "ssl_verify": false, "username": "username"}, "type": "redis-ee"}
+          application/json: {"config": {"database": 0, "host": "localhost", "password": "password", "port": 6379, "server_name": "redis", "ssl": false, "ssl_verify": false, "timeout": 2000, "username": "username"}, "type": "redis-ce"}
         "401":
           application/json: {"message": "<value>", "status": 629733}
   upsert-partial:
@@ -3970,7 +3898,7 @@ examples:
           PartialId: ""
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"config": {"cluster_nodes": [{"ip": "192.168.1.10", "port": 6380}], "connect_timeout": 2000, "database": 0, "host": "localhost", "keepalive_pool_size": 256, "password": "password", "port": 6379, "read_timeout": 1000, "send_timeout": 1000, "sentinel_nodes": [{"host": "sentinel1.redis.server", "port": 26379}], "server_name": "redis-ee", "ssl": false, "ssl_verify": false, "username": "username"}, "type": "redis-ee"}
+        application/json: {"config": {"database": 0, "host": "localhost", "password": "password", "port": 6379, "server_name": "redis", "ssl": false, "ssl_verify": false, "timeout": 2000, "username": "username"}, "type": "redis-ce"}
       responses:
         "200":
           application/json: {"config": {"database": 0, "host": "localhost", "password": "password", "port": 6379, "server_name": "redis", "ssl": false, "ssl_verify": false, "timeout": 2000, "username": "username"}, "type": "redis-ce"}
@@ -8322,7 +8250,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "rate-limiting-advanced", "config": {"limit": [3020.94], "namespace": "<value>", "window_size": [2528.48, 6676.72, 4410.69]}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "rate-limiting-advanced", "config": {"limit": [3020.94], "window_size": [2528.48, 6676.72, 4410.69]}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 369253}
   update-ratelimitingadvanced-plugin:
@@ -8344,10 +8272,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "rate-limiting-advanced", "config": {"limit": [7767.61, 1267.71, 903.59], "namespace": "<value>", "window_size": [6415.93, 7987.32, 166.11]}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "rate-limiting-advanced", "config": {"limit": [7767.61, 1267.71, 903.59], "window_size": [6415.93, 7987.32, 166.11]}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "rate-limiting-advanced", "config": {"limit": [2612.76, 8593.22, 4524.37], "namespace": "<value>", "window_size": []}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "rate-limiting-advanced", "config": {"limit": [2612.76, 8593.22, 4524.37], "window_size": []}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 856301}
   delete-redirect-plugin:
@@ -9204,7 +9132,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "service-protection", "config": {"limit": [8664.96, 639.34, 7987.92], "namespace": "<value>", "window_size": [9755.96]}, "protocols": ["grpc", "grpcs", "http", "https"], "service": null}
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "service-protection", "config": {"limit": [8664.96, 639.34, 7987.92], "window_size": [9755.96]}, "protocols": ["grpc", "grpcs", "http", "https"], "service": null}
         "401":
           application/json: {"message": "<value>", "status": 820048}
   update-serviceprotection-plugin:
@@ -9226,10 +9154,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "service-protection", "config": {"limit": [2301.67], "namespace": "<value>", "window_size": [3640.94]}, "protocols": ["grpc", "grpcs", "http", "https"], "service": null}
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "service-protection", "config": {"limit": [2301.67], "window_size": [3640.94]}, "protocols": ["grpc", "grpcs", "http", "https"], "service": null}
       responses:
         "200":
-          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "service-protection", "config": {"limit": [488.72, 6385.53, 1484.7], "namespace": "<value>", "window_size": [429.58, 697.88, 6680.31]}, "protocols": ["grpc", "grpcs", "http", "https"], "service": null}
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "service-protection", "config": {"limit": [488.72, 6385.53, 1484.7], "window_size": [429.58, 697.88, 6680.31]}, "protocols": ["grpc", "grpcs", "http", "https"], "service": null}
         "401":
           application/json: {"message": "<value>", "status": 452211}
   delete-session-plugin:
@@ -11038,10 +10966,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "rate-limiting-advanced", "config": {"limit": [481.69, 1966.64, 2061.56], "namespace": "<value>", "window_size": [139.64, 9425.18, 2892.92]}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "rate-limiting-advanced", "config": {"limit": [481.69, 1966.64, 2061.56], "window_size": [139.64, 9425.18, 2892.92]}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "rate-limiting-advanced", "config": {"limit": [7433.6], "namespace": "<value>", "window_size": [9258.71, 8295.23]}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "rate-limiting-advanced", "config": {"limit": [7433.6], "window_size": [9258.71, 8295.23]}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 923464}
   create-redirect-plugin:
@@ -11206,10 +11134,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "service-protection", "config": {"limit": [6426.87, 2535.28], "namespace": "<value>", "window_size": []}, "protocols": ["grpc", "grpcs", "http", "https"], "service": null}
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "service-protection", "config": {"limit": [6426.87, 2535.28], "window_size": []}, "protocols": ["grpc", "grpcs", "http", "https"], "service": null}
       responses:
         "201":
-          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "service-protection", "config": {"limit": [6125.48, 7951.99, 6273.27], "namespace": "<value>", "window_size": [329.86, 9231.56, 5897.94]}, "protocols": ["grpc", "grpcs", "http", "https"], "service": null}
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "service-protection", "config": {"limit": [6125.48, 7951.99, 6273.27], "window_size": [329.86, 9231.56, 5897.94]}, "protocols": ["grpc", "grpcs", "http", "https"], "service": null}
         "401":
           application/json: {"message": "<value>", "status": 649883}
   create-session-plugin:

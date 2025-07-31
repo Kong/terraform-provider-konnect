@@ -9,8 +9,9 @@ type CACertificate struct {
 	// SHA256 hex digest of the public certificate. This field is read-only and it cannot be set by the caller, the value is automatically computed.
 	CertDigest *string `json:"cert_digest,omitempty"`
 	// Unix epoch when the resource was created.
-	CreatedAt *int64  `json:"created_at,omitempty"`
-	ID        *string `json:"id,omitempty"`
+	CreatedAt *int64 `json:"created_at,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
 	// An optional set of strings associated with the Certificate for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.

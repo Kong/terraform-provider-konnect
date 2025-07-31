@@ -35,13 +35,10 @@ resource "konnect_gateway_key_set" "my_gatewaykeyset" {
 ### Optional
 
 - `created_at` (Number) Unix epoch when the resource was created.
-- `name` (String)
-- `tags` (List of String)
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `name` (String) The name to associate with the given key-set.
+- `tags` (List of String) A set of strings representing tags.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
-
-### Read-Only
-
-- `id` (String) The ID of this resource.
 
 ## Import
 

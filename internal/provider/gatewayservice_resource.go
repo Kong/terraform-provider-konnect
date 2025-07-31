@@ -115,8 +115,9 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 				Description: `The host of the upstream server. Note that the host value is case sensitive.`,
 			},
 			"id": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,
@@ -176,11 +177,13 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
+						Description: `A dnsName for TLS verification.`,
 					},
 					"uris": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
+						Description: `An URI for TLS verification.`,
 					},
 				},
 			},

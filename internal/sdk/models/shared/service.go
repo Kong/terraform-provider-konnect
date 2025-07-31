@@ -71,8 +71,10 @@ func (e *Protocol) UnmarshalJSON(data []byte) error {
 }
 
 type TLSSans struct {
+	// A dnsName for TLS verification.
 	Dnsnames []string `json:"dnsnames,omitempty"`
-	Uris     []string `json:"uris,omitempty"`
+	// An URI for TLS verification.
+	Uris []string `json:"uris,omitempty"`
 }
 
 func (o *TLSSans) GetDnsnames() []string {
@@ -102,8 +104,9 @@ type Service struct {
 	// Whether the Service is active. If set to `false`, the proxy behavior will be as if any routes attached to it do not exist (404). Default: `true`.
 	Enabled *bool `json:"enabled,omitempty"`
 	// The host of the upstream server. Note that the host value is case sensitive.
-	Host string  `json:"host"`
-	ID   *string `json:"id,omitempty"`
+	Host string `json:"host"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
 	// The Service name.
 	Name *string `json:"name,omitempty"`
 	// The path to be used in requests to the upstream server.

@@ -39,8 +39,8 @@ resource "konnect_gateway_basic_auth" "my_gatewaybasicauth" {
 ### Optional
 
 - `created_at` (Number) Unix epoch when the resource was created. Requires replacement if changed.
-- `id` (String) Requires replacement if changed.
-- `tags` (List of String) Requires replacement if changed.
+- `id` (String) A string representing a UUID (universally unique identifier). Requires replacement if changed.
+- `tags` (List of String) A set of strings representing tags. Requires replacement if changed.
 
 ## Import
 

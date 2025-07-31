@@ -58,50 +58,9 @@ func Pointer[T any](v T) *T { return &v }
 type Konnect struct {
 	SDKVersion              string
 	ServerlessCloudGateways *ServerlessCloudGateways
-	// Create and maintain a centralized catalog of all services running in your organization.
-	// Add custom fields and map resources from across your organization to provide a 360-degree overview of your services.
-	//
-	// Custom fields allow you to surface key information such as:
-	// - `Owner`: The person or team responsible for the service
-	// - `Product Manager`: The person assigned to guide the service's direction for customer success
-	// - `Jira Project`: The Jira project which represents past, present and future work for the service
-	//
-	// Resources are discovered from the integrations you use within your organization to create, operate and manage your services.
-	// Mapping the resources relevant to your service will provide a rich view of the service's communication channels, dependencies and more.
-	// Types of resources which you can map to a service include:
-	// - `Code Repositories:` The software project(s) that make up the service
-	// - `Monitors and Dashboards:` Tools providing visibility into the health and performance of the service
-	// - `Communication Channels`: Virtual spaces where questions and concerns can be raised about the service
-	// - `Incident Management Resources`: Alerts setup within your incident management platform to notify individuals regarding issues with the service
-	//
-	CatalogServices *CatalogServices
 	// Customer Managed Encryption Keys (CMEK) are used to encrypt and decrypt sensitive data in Konnect. They allow you to manage your own encryption keys using AWS Key Management Service (KMS). CMEKs provide an additional layer of security and compliance for your Konnect deployments, ensuring that your data is encrypted with keys that you control. Avoid revoking or deleting a KMS key and CMEK that is actively used by Konnect, as this can lead to data loss or service disruptions.
 	Cmek *Cmek
-	// An integration instance represents a specific account of the integration which contains the resources used to manage and support your services.
-	// Some integrations provide configuration options to customize how it should behave once authorized (see the integration's manifest for details).
-	// Konnect-internal integrations are built-in and do not need to be installed.
-	//
-	// Once an integration instance is created, authorize the instance to allow the Service Catalog to discover its resources.
-	// Note that deleting an integration instance is a **destructive** operation.
-	// When an integration instance is deleted, all its resources and mappings will be deleted from the service catalog.
-	// In cases where the integration instance's credentials need to be updated, you may re-authorize the instance to retain all currently discovered resources and mappings.
-	// To set up and view a list of all the integrations we support, please view our [documentation](https://developer.konghq.com/service-catalog/integrations/).
-	//
-	IntegrationInstances *IntegrationInstances
-	// A integration instance may need to be provided with an auth config before authorizing the instance.
-	// Typically an auth config will be required when authorizing against a integration which is hosted within your organization.
-	// The integration instance's auth config will inform how the Service Catalog will authorize the integration instance.
-	// Note that updating the auth config for an instance which is already authorized will **remove the existing credential**, requiring you to re-authorize the instance.
-	//
-	IntegrationInstanceAuthConfig *IntegrationInstanceAuthConfig
-	// Represents the credentials use to authorize an integration instance.
-	// You will want to configure the integration instance settings and authorization configuration before authorizing the instance.
-	// This will inform the authorization process on how to reach and authorize the account.
-	// Once the integration instance is authorized, the system will automatically discover all the relevant resources from the account.
-	// The integration instance's auth credentials can be removed or updated while retaining all resources which have already been discovered.
-	//
-	IntegrationInstanceAuthCredentials *IntegrationInstanceAuthCredentials
-	Mesh                               *Mesh
+	Mesh *Mesh
 	// Use a realm to group consumers around an identity, defined by organizational boundaries, such as a production realm or a development realm. Realms are connected to a [geographic region](https://docs.konghq.com/konnect/geo/) in Konnect. Centrally managed consumers defined in realms can be used across multiple control planes.
 	//
 	Realms *Realms
@@ -345,11 +304,7 @@ func New(opts ...SDKOption) *Konnect {
 	}
 
 	sdk.ServerlessCloudGateways = newServerlessCloudGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.CatalogServices = newCatalogServices(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Cmek = newCmek(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.IntegrationInstances = newIntegrationInstances(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.IntegrationInstanceAuthConfig = newIntegrationInstanceAuthConfig(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.IntegrationInstanceAuthCredentials = newIntegrationInstanceAuthCredentials(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Mesh = newMesh(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Realms = newRealms(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.CentrallyManagedConsumers = newCentrallyManagedConsumers(sdk, sdk.sdkConfiguration, sdk.hooks)

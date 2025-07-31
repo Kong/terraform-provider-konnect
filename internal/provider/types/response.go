@@ -7,7 +7,7 @@ import (
 )
 
 type Response struct {
-	Body    RequestCalloutPluginBody          `tfsdk:"body"`
-	ByLua   types.String                      `tfsdk:"by_lua"`
-	Headers RequestCalloutPluginConfigHeaders `tfsdk:"headers"`
+	Body    RequestCalloutPluginBody    `tfsdk:"body"`
+	ByLua   types.String                `tfsdk:"by_lua"`
+	Headers RequestCalloutPluginHeaders `tfsdk:"headers"`
 }

@@ -101,7 +101,8 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 						Description: `The shared dictionary where concurrency control locks are stored. The default shared dictionary is ` + "`" + `kong_locks` + "`" + `. The shared dictionary should be declared in nginx-kong.conf.`,
 					},
 					"namespace": schema.StringAttribute{
-						Required:    true,
+						Computed:    true,
+						Optional:    true,
 						Description: `The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. ` + "`" + `strategy` + "`" + `, ` + "`" + `redis` + "`" + `, ` + "`" + `sync_rate` + "`" + `, ` + "`" + `dictionary_name` + "`" + `, need to be the same.`,
 					},
 					"redis": schema.SingleNestedAttribute{
@@ -338,12 +339,14 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 				Description: `Whether the plugin is applied.`,
 			},
 			"id": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
@@ -382,12 +385,14 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 					},
 					Attributes: map[string]schema.Attribute{
 						"id": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
+							Computed:    true,
+							Optional:    true,
+							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
+							Computed:    true,
+							Optional:    true,
+							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
 							Computed: true,
@@ -395,6 +400,7 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 						},
 					},
 				},
+				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.SetAttribute{
 				Computed:    true,

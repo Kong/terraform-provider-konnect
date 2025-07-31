@@ -202,6 +202,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
+								Description: `A map of header names to arrays of header values.`,
 							},
 							"healthy": schema.SingleNestedAttribute{
 								Computed: true,
@@ -223,12 +224,14 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 								},
 							},
 							"http_path": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
+								Computed:    true,
+								Optional:    true,
+								Description: `A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).`,
 							},
 							"https_sni": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
+								Computed:    true,
+								Optional:    true,
+								Description: `A string representing an SNI (server name indication) value for TLS.`,
 							},
 							"https_verify_certificate": schema.BoolAttribute{
 								Computed: true,
@@ -351,8 +354,9 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 				Description: `The hostname to be used as ` + "`" + `Host` + "`" + ` header when proxying requests through Kong.`,
 			},
 			"id": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,
@@ -364,12 +368,14 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 				Description: `The number of slots in the load balancer algorithm. If ` + "`" + `algorithm` + "`" + ` is set to ` + "`" + `round-robin` + "`" + `, this setting determines the maximum number of slots. If ` + "`" + `algorithm` + "`" + ` is set to ` + "`" + `consistent-hashing` + "`" + `, this setting determines the actual number of slots in the algorithm. Accepts an integer in the range ` + "`" + `10` + "`" + `-` + "`" + `65536` + "`" + `.`,
 			},
 			"sticky_sessions_cookie": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `The cookie name to keep sticky sessions.`,
 			},
 			"sticky_sessions_cookie_path": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).`,
 			},
 			"tags": schema.ListAttribute{
 				Computed:    true,

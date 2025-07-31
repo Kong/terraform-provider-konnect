@@ -50,7 +50,9 @@ func (o *RequestCalloutPluginOrdering) GetBefore() *RequestCalloutPluginBefore {
 }
 
 type RequestCalloutPluginPartials struct {
-	ID   *string `json:"id,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
 }
@@ -541,22 +543,22 @@ func (o *Error) GetRetries() *int64 {
 	return o.Retries
 }
 
-// RequestCalloutPluginConfigCalloutsHeaders - Callout request header customizations.
-type RequestCalloutPluginConfigCalloutsHeaders struct {
+// RequestCalloutPluginConfigHeaders - Callout request header customizations.
+type RequestCalloutPluginConfigHeaders struct {
 	// The custom headers to be added in the callout HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
 	Custom map[string]any `json:"custom,omitempty"`
 	// If `true`, forwards the incoming request's headers to the callout request.
 	Forward *bool `json:"forward,omitempty"`
 }
 
-func (o *RequestCalloutPluginConfigCalloutsHeaders) GetCustom() map[string]any {
+func (o *RequestCalloutPluginConfigHeaders) GetCustom() map[string]any {
 	if o == nil {
 		return nil
 	}
 	return o.Custom
 }
 
-func (o *RequestCalloutPluginConfigCalloutsHeaders) GetForward() *bool {
+func (o *RequestCalloutPluginConfigHeaders) GetForward() *bool {
 	if o == nil {
 		return nil
 	}
@@ -705,7 +707,7 @@ type Request struct {
 	// The error handling policy the plugin will apply to TCP and HTTP errors.
 	Error Error `json:"error"`
 	// Callout request header customizations.
-	Headers RequestCalloutPluginConfigCalloutsHeaders `json:"headers"`
+	Headers RequestCalloutPluginConfigHeaders `json:"headers"`
 	// HTTP connection parameters.
 	HTTPOpts HTTPOpts `json:"http_opts"`
 	// The HTTP method that will be requested.
@@ -737,9 +739,9 @@ func (o *Request) GetError() Error {
 	return o.Error
 }
 
-func (o *Request) GetHeaders() RequestCalloutPluginConfigCalloutsHeaders {
+func (o *Request) GetHeaders() RequestCalloutPluginConfigHeaders {
 	if o == nil {
-		return RequestCalloutPluginConfigCalloutsHeaders{}
+		return RequestCalloutPluginConfigHeaders{}
 	}
 	return o.Headers
 }
@@ -793,13 +795,13 @@ func (o *RequestCalloutPluginBody) GetStore() *bool {
 	return o.Store
 }
 
-// RequestCalloutPluginConfigHeaders - Callout response header customizations.
-type RequestCalloutPluginConfigHeaders struct {
+// RequestCalloutPluginHeaders - Callout response header customizations.
+type RequestCalloutPluginHeaders struct {
 	// If `false`, skips storing the callout response headers into kong.ctx.shared.callouts.<name>.response.headers.
 	Store *bool `json:"store,omitempty"`
 }
 
-func (o *RequestCalloutPluginConfigHeaders) GetStore() *bool {
+func (o *RequestCalloutPluginHeaders) GetStore() *bool {
 	if o == nil {
 		return nil
 	}
@@ -812,7 +814,7 @@ type Response struct {
 	// Lua code that executes after the callout response is received, before caching takes place. Can produce side effects. Standard Lua sandboxing restrictions apply.
 	ByLua *string `json:"by_lua,omitempty"`
 	// Callout response header customizations.
-	Headers RequestCalloutPluginConfigHeaders `json:"headers"`
+	Headers RequestCalloutPluginHeaders `json:"headers"`
 }
 
 func (o *Response) GetBody() RequestCalloutPluginBody {
@@ -829,9 +831,9 @@ func (o *Response) GetByLua() *string {
 	return o.ByLua
 }
 
-func (o *Response) GetHeaders() RequestCalloutPluginConfigHeaders {
+func (o *Response) GetHeaders() RequestCalloutPluginHeaders {
 	if o == nil {
-		return RequestCalloutPluginConfigHeaders{}
+		return RequestCalloutPluginHeaders{}
 	}
 	return o.Headers
 }
@@ -915,22 +917,22 @@ func (o *Body) GetForward() *bool {
 	return o.Forward
 }
 
-// RequestCalloutPluginHeaders - Callout request header customizations.
-type RequestCalloutPluginHeaders struct {
+// Headers - Callout request header customizations.
+type Headers struct {
 	// The custom headers to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
 	Custom map[string]any `json:"custom,omitempty"`
 	// If `false`, does not forward request headers to upstream request.
 	Forward *bool `json:"forward,omitempty"`
 }
 
-func (o *RequestCalloutPluginHeaders) GetCustom() map[string]any {
+func (o *Headers) GetCustom() map[string]any {
 	if o == nil {
 		return nil
 	}
 	return o.Custom
 }
 
-func (o *RequestCalloutPluginHeaders) GetForward() *bool {
+func (o *Headers) GetForward() *bool {
 	if o == nil {
 		return nil
 	}
@@ -966,7 +968,7 @@ type RequestCalloutPluginUpstream struct {
 	// Lua code that executes before the upstream request is made. Can produce side effects. Standard Lua sandboxing restrictions apply.
 	ByLua *string `json:"by_lua,omitempty"`
 	// Callout request header customizations.
-	Headers *RequestCalloutPluginHeaders `json:"headers,omitempty"`
+	Headers *Headers `json:"headers,omitempty"`
 	// Upstream request query param customizations.
 	Query *Query `json:"query,omitempty"`
 }
@@ -985,7 +987,7 @@ func (o *RequestCalloutPluginUpstream) GetByLua() *string {
 	return o.ByLua
 }
 
-func (o *RequestCalloutPluginUpstream) GetHeaders() *RequestCalloutPluginHeaders {
+func (o *RequestCalloutPluginUpstream) GetHeaders() *Headers {
 	if o == nil {
 		return nil
 	}
@@ -1114,12 +1116,15 @@ type RequestCalloutPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                          `json:"enabled,omitempty"`
-	ID           *string                        `json:"id,omitempty"`
-	InstanceName *string                        `json:"instance_name,omitempty"`
-	name         string                         `const:"request-callout" json:"name"`
-	Ordering     *RequestCalloutPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []RequestCalloutPluginPartials `json:"partials,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string                       `json:"instance_name,omitempty"`
+	name         string                        `const:"request-callout" json:"name"`
+	Ordering     *RequestCalloutPluginOrdering `json:"ordering,omitempty"`
+	// A list of partials to be used by the plugin.
+	Partials []RequestCalloutPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.

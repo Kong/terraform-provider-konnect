@@ -38,12 +38,9 @@ resource "konnect_gateway_ca_certificate" "my_gatewaycacertificate" {
 
 - `cert_digest` (String) SHA256 hex digest of the public certificate. This field is read-only and it cannot be set by the caller, the value is automatically computed.
 - `created_at` (Number) Unix epoch when the resource was created.
+- `id` (String) A string representing a UUID (universally unique identifier).
 - `tags` (List of String) An optional set of strings associated with the Certificate for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
-
-### Read-Only
-
-- `id` (String) The ID of this resource.
 
 ## Import
 
