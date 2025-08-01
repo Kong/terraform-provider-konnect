@@ -71,6 +71,35 @@ func (r *GatewayPluginXMLThreatProtectionResource) Schema(ctx context.Context, r
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"allow_dtd": types.BoolType,
+					"allowed_content_types": types.ListType{
+						ElemType: types.StringType,
+					},
+					"attribute":             types.Int64Type,
+					"bla_max_amplification": types.Float64Type,
+					"bla_threshold":         types.Int64Type,
+					"buffer":                types.Int64Type,
+					"checked_content_types": types.ListType{
+						ElemType: types.StringType,
+					},
+					"comment":         types.Int64Type,
+					"document":        types.Int64Type,
+					"entity":          types.Int64Type,
+					"entityname":      types.Int64Type,
+					"entityproperty":  types.Int64Type,
+					"localname":       types.Int64Type,
+					"max_attributes":  types.Int64Type,
+					"max_children":    types.Int64Type,
+					"max_depth":       types.Int64Type,
+					"max_namespaces":  types.Int64Type,
+					"namespace_aware": types.BoolType,
+					"namespaceuri":    types.Int64Type,
+					"pidata":          types.Int64Type,
+					"pitarget":        types.Int64Type,
+					"prefix":          types.Int64Type,
+					"text":            types.Int64Type,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"allow_dtd": schema.BoolAttribute{
 						Computed:    true,
@@ -283,9 +312,13 @@ func (r *GatewayPluginXMLThreatProtectionResource) Schema(ctx context.Context, r
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -294,9 +327,13 @@ func (r *GatewayPluginXMLThreatProtectionResource) Schema(ctx context.Context, r
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -317,12 +354,10 @@ func (r *GatewayPluginXMLThreatProtectionResource) Schema(ctx context.Context, r
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

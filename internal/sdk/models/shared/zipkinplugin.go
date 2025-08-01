@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type ZipkinPluginAfter struct {
@@ -53,8 +54,19 @@ type ZipkinPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (z ZipkinPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(z, "", false)
+}
+
+func (z *ZipkinPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &z, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ZipkinPluginPartials) GetID() *string {
@@ -450,7 +462,7 @@ type ZipkinPluginQueue struct {
 	// Maximum number of entries that can be processed at a time.
 	MaxBatchSize *int64 `default:"1" json:"max_batch_size"`
 	// Maximum number of bytes that can be waiting on a queue, requires string content.
-	MaxBytes *int64 `json:"max_bytes,omitempty"`
+	MaxBytes *int64 `default:"null" json:"max_bytes"`
 	// Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.
 	MaxCoalescingDelay *float64 `default:"1" json:"max_coalescing_delay"`
 	// Maximum number of entries that can be waiting on the queue.
@@ -580,12 +592,12 @@ type ZipkinPluginConfig struct {
 	// Allows specifying the type of header to be added to requests with no pre-existing tracing headers and when `config.header_type` is set to `"preserve"`. When `header_type` is set to any other value, `default_header_type` is ignored.
 	DefaultHeaderType *DefaultHeaderType `default:"b3" json:"default_header_type"`
 	// Set a default service name to override `unknown-service-name` in the Zipkin spans.
-	DefaultServiceName *string `json:"default_service_name,omitempty"`
+	DefaultServiceName *string `default:"null" json:"default_service_name"`
 	// All HTTP requests going through the plugin are tagged with a tracing HTTP request. This property codifies what kind of tracing header the plugin expects on incoming requests
 	HeaderType *ZipkinPluginHeaderType `default:"preserve" json:"header_type"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
-	HTTPEndpoint                 *string `json:"http_endpoint,omitempty"`
-	HTTPResponseHeaderForTraceid *string `json:"http_response_header_for_traceid,omitempty"`
+	HTTPEndpoint                 *string `default:"null" json:"http_endpoint"`
+	HTTPResponseHeaderForTraceid *string `default:"null" json:"http_response_header_for_traceid"`
 	// Specify whether to include the HTTP path in the span name.
 	HTTPSpanName *HTTPSpanName `default:"method" json:"http_span_name"`
 	// Specify whether the credential of the currently authenticated consumer should be included in metadata sent to the Zipkin server.
@@ -844,7 +856,7 @@ type ZipkinPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string               `default:"null" json:"instance_name"`
-	name         string                `const:"zipkin" json:"name"`
+	name         *string               `const:"zipkin" json:"name"`
 	Ordering     *ZipkinPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []ZipkinPluginPartials `json:"partials"`
@@ -902,8 +914,8 @@ func (o *ZipkinPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *ZipkinPlugin) GetName() string {
-	return "zipkin"
+func (o *ZipkinPlugin) GetName() *string {
+	return types.String("zipkin")
 }
 
 func (o *ZipkinPlugin) GetOrdering() *ZipkinPluginOrdering {

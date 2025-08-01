@@ -72,6 +72,28 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"anonymize": types.ListType{
+						ElemType: types.StringType,
+					},
+					"custom_patterns": types.ListType{
+						ElemType: types.ObjectType{
+							AttrTypes: map[string]attr.Type{
+								`name`:  types.StringType,
+								`regex`: types.StringType,
+								`score`: types.Float64Type,
+							},
+						},
+					},
+					"host":              types.StringType,
+					"keepalive_timeout": types.Float64Type,
+					"port":              types.Float64Type,
+					"recover_redacted":  types.BoolType,
+					"redact_type":       types.StringType,
+					"scheme":            types.StringType,
+					"stop_on_error":     types.BoolType,
+					"timeout":           types.Float64Type,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"anonymize": schema.ListAttribute{
 						Computed:    true,
@@ -80,7 +102,6 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 						Description: `List of types to be anonymized`,
 					},
 					"custom_patterns": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -250,9 +271,13 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -261,9 +286,13 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -284,12 +313,10 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

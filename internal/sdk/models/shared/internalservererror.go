@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
 // InternalServerErrorStatus - The HTTP status code.
@@ -40,7 +41,18 @@ type InternalServerError struct {
 	// The Konnect traceback code
 	Instance string `json:"instance"`
 	// Details about the error.
-	Detail *string `json:"detail,omitempty"`
+	Detail *string `default:"null" json:"detail"`
+}
+
+func (i InternalServerError) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *InternalServerError) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *InternalServerError) GetStatus() InternalServerErrorStatus {

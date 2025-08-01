@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type XMLThreatProtectionPluginAfter struct {
@@ -53,8 +54,19 @@ type XMLThreatProtectionPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (x XMLThreatProtectionPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(x, "", false)
+}
+
+func (x *XMLThreatProtectionPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &x, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *XMLThreatProtectionPluginPartials) GetID() *string {
@@ -377,7 +389,7 @@ type XMLThreatProtectionPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                            `default:"null" json:"instance_name"`
-	name         string                             `const:"xml-threat-protection" json:"name"`
+	name         *string                            `const:"xml-threat-protection" json:"name"`
 	Ordering     *XMLThreatProtectionPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []XMLThreatProtectionPluginPartials `json:"partials"`
@@ -435,8 +447,8 @@ func (o *XMLThreatProtectionPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *XMLThreatProtectionPlugin) GetName() string {
-	return "xml-threat-protection"
+func (o *XMLThreatProtectionPlugin) GetName() *string {
+	return types.String("xml-threat-protection")
 }
 
 func (o *XMLThreatProtectionPlugin) GetOrdering() *XMLThreatProtectionPluginOrdering {

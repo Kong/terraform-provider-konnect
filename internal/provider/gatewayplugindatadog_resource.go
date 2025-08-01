@@ -73,6 +73,42 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"consumer_tag":  types.StringType,
+					"flush_timeout": types.Float64Type,
+					"host":          types.StringType,
+					"metrics": types.ListType{
+						ElemType: types.ObjectType{
+							AttrTypes: map[string]attr.Type{
+								`consumer_identifier`: types.StringType,
+								`name`:                types.StringType,
+								`sample_rate`:         types.Float64Type,
+								`stat_type`:           types.StringType,
+								`tags`: types.ListType{
+									ElemType: types.StringType,
+								},
+							},
+						},
+					},
+					"port":   types.Int64Type,
+					"prefix": types.StringType,
+					"queue": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`concurrency_limit`:    types.Int64Type,
+							`initial_retry_delay`:  types.Float64Type,
+							`max_batch_size`:       types.Int64Type,
+							`max_bytes`:            types.Int64Type,
+							`max_coalescing_delay`: types.Float64Type,
+							`max_entries`:          types.Int64Type,
+							`max_retry_delay`:      types.Float64Type,
+							`max_retry_time`:       types.Float64Type,
+						},
+					},
+					"queue_size":       types.Int64Type,
+					"retry_count":      types.Int64Type,
+					"service_name_tag": types.StringType,
+					"status_tag":       types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"consumer_tag": schema.StringAttribute{
 						Computed:    true,
@@ -81,7 +117,6 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 						Description: `String to be attached as tag of the consumer. Default: "consumer"`,
 					},
 					"flush_timeout": schema.Float64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Optional time in seconds. If ` + "`" + `queue_size` + "`" + ` > 1, this is the max idle time before sending a log with less than ` + "`" + `queue_size` + "`" + ` records.`,
 					},
@@ -128,7 +163,6 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"sample_rate": schema.Float64Attribute{
-									Computed:    true,
 									Optional:    true,
 									Description: `Sampling rate`,
 									Validators: []validator.Float64{
@@ -153,7 +187,6 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"tags": schema.ListAttribute{
-									Computed:    true,
 									Optional:    true,
 									ElementType: types.StringType,
 									Description: `List of tags`,
@@ -180,6 +213,16 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 					"queue": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"concurrency_limit":    types.Int64Type,
+							"initial_retry_delay":  types.Float64Type,
+							"max_batch_size":       types.Int64Type,
+							"max_bytes":            types.Int64Type,
+							"max_coalescing_delay": types.Float64Type,
+							"max_entries":          types.Int64Type,
+							"max_retry_delay":      types.Float64Type,
+							"max_retry_time":       types.Float64Type,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"concurrency_limit": schema.Int64Attribute{
 								Computed:    true,
@@ -209,7 +252,6 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 								},
 							},
 							"max_bytes": schema.Int64Attribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Maximum number of bytes that can be waiting on a queue, requires string content.`,
 							},
@@ -249,12 +291,10 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 						},
 					},
 					"queue_size": schema.Int64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Maximum number of log entries to be sent on each message to the upstream server.`,
 					},
 					"retry_count": schema.Int64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Number of times to retry when sending data to the upstream server.`,
 					},
@@ -336,9 +376,13 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -347,9 +391,13 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -370,12 +418,10 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

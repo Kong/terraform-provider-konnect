@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type AiPromptTemplatePluginAfter struct {
@@ -53,8 +54,19 @@ type AiPromptTemplatePluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (a AiPromptTemplatePluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptTemplatePluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiPromptTemplatePluginPartials) GetID() *string {
@@ -239,7 +251,7 @@ type AiPromptTemplatePlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                         `default:"null" json:"instance_name"`
-	name         string                          `const:"ai-prompt-template" json:"name"`
+	name         *string                         `const:"ai-prompt-template" json:"name"`
 	Ordering     *AiPromptTemplatePluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []AiPromptTemplatePluginPartials `json:"partials"`
@@ -299,8 +311,8 @@ func (o *AiPromptTemplatePlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *AiPromptTemplatePlugin) GetName() string {
-	return "ai-prompt-template"
+func (o *AiPromptTemplatePlugin) GetName() *string {
+	return types.String("ai-prompt-template")
 }
 
 func (o *AiPromptTemplatePlugin) GetOrdering() *AiPromptTemplatePluginOrdering {

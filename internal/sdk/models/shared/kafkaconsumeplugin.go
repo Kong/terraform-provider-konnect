@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type KafkaConsumePluginAfter struct {
@@ -53,8 +54,19 @@ type KafkaConsumePluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (k KafkaConsumePluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaConsumePluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaConsumePluginPartials) GetID() *string {
@@ -136,13 +148,24 @@ type Authentication struct {
 	// The SASL authentication mechanism.  Supported options: `PLAIN` or `SCRAM-SHA-256`.
 	Mechanism *Mechanism `json:"mechanism,omitempty"`
 	// Password for SASL authentication.
-	Password *string `json:"password,omitempty"`
+	Password *string `default:"null" json:"password"`
 	// The authentication strategy for the plugin, the only option for the value is `sasl`.
 	Strategy *KafkaConsumePluginStrategy `json:"strategy,omitempty"`
 	// Enable this to indicate `DelegationToken` authentication
-	Tokenauth *bool `json:"tokenauth,omitempty"`
+	Tokenauth *bool `default:"null" json:"tokenauth"`
 	// Username for SASL authentication.
-	User *string `json:"user,omitempty"`
+	User *string `default:"null" json:"user"`
+}
+
+func (a Authentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *Authentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Authentication) GetMechanism() *Mechanism {
@@ -394,9 +417,9 @@ type KafkaConsumePluginConfluent struct {
 	// Set to false to disable SSL certificate verification when connecting to the schema registry.
 	SslVerify *bool `default:"true" json:"ssl_verify"`
 	// The TTL in seconds for the schema registry cache.
-	TTL *float64 `json:"ttl,omitempty"`
+	TTL *float64 `default:"null" json:"ttl"`
 	// The URL of the schema registry.
-	URL *string `json:"url,omitempty"`
+	URL *string `default:"null" json:"url"`
 }
 
 func (k KafkaConsumePluginConfluent) MarshalJSON() ([]byte, error) {
@@ -452,9 +475,20 @@ func (o *KafkaConsumePluginSchemaRegistry) GetConfluent() *KafkaConsumePluginCon
 
 type KafkaConsumePluginSecurity struct {
 	// UUID of certificate entity for mTLS authentication.
-	CertificateID *string `json:"certificate_id,omitempty"`
+	CertificateID *string `default:"null" json:"certificate_id"`
 	// Enables TLS.
-	Ssl *bool `json:"ssl,omitempty"`
+	Ssl *bool `default:"null" json:"ssl"`
+}
+
+func (k KafkaConsumePluginSecurity) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaConsumePluginSecurity) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaConsumePluginSecurity) GetCertificateID() *string {
@@ -553,9 +587,9 @@ type KafkaConsumePluginConfigConfluent struct {
 	// Set to false to disable SSL certificate verification when connecting to the schema registry.
 	SslVerify *bool `default:"true" json:"ssl_verify"`
 	// The TTL in seconds for the schema registry cache.
-	TTL *float64 `json:"ttl,omitempty"`
+	TTL *float64 `default:"null" json:"ttl"`
 	// The URL of the schema registry.
-	URL *string `json:"url,omitempty"`
+	URL *string `default:"null" json:"url"`
 }
 
 func (k KafkaConsumePluginConfigConfluent) MarshalJSON() ([]byte, error) {
@@ -636,7 +670,7 @@ type KafkaConsumePluginConfig struct {
 	// Set of bootstrap brokers in a `{host: host, port: port}` list format.
 	BootstrapServers []KafkaConsumePluginBootstrapServers `json:"bootstrap_servers"`
 	// An identifier for the Kafka cluster.
-	ClusterName *string `json:"cluster_name,omitempty"`
+	ClusterName *string `default:"null" json:"cluster_name"`
 	// The strategy to use for committing offsets.
 	CommitStrategy *KafkaConsumePluginCommitStrategy `default:"auto" json:"commit_strategy"`
 	// The deserializer to use for the consumed messages.
@@ -815,7 +849,7 @@ type KafkaConsumePlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                     `default:"null" json:"instance_name"`
-	name         string                      `const:"kafka-consume" json:"name"`
+	name         *string                     `const:"kafka-consume" json:"name"`
 	Ordering     *KafkaConsumePluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []KafkaConsumePluginPartials `json:"partials"`
@@ -873,8 +907,8 @@ func (o *KafkaConsumePlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *KafkaConsumePlugin) GetName() string {
-	return "kafka-consume"
+func (o *KafkaConsumePlugin) GetName() *string {
+	return types.String("kafka-consume")
 }
 
 func (o *KafkaConsumePlugin) GetOrdering() *KafkaConsumePluginOrdering {

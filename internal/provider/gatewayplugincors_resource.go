@@ -65,6 +65,25 @@ func (r *GatewayPluginCorsResource) Schema(ctx context.Context, req resource.Sch
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"allow_origin_absent": types.BoolType,
+					"credentials":         types.BoolType,
+					"exposed_headers": types.ListType{
+						ElemType: types.StringType,
+					},
+					"headers": types.ListType{
+						ElemType: types.StringType,
+					},
+					"max_age": types.Float64Type,
+					"methods": types.ListType{
+						ElemType: types.StringType,
+					},
+					"origins": types.ListType{
+						ElemType: types.StringType,
+					},
+					"preflight_continue": types.BoolType,
+					"private_network":    types.BoolType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"allow_origin_absent": schema.BoolAttribute{
 						Computed:    true,
@@ -79,19 +98,16 @@ func (r *GatewayPluginCorsResource) Schema(ctx context.Context, req resource.Sch
 						Description: `Flag to determine whether the ` + "`" + `Access-Control-Allow-Credentials` + "`" + ` header should be sent with ` + "`" + `true` + "`" + ` as the value. Default: false`,
 					},
 					"exposed_headers": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Value for the ` + "`" + `Access-Control-Expose-Headers` + "`" + ` header. If not specified, no custom headers are exposed.`,
 					},
 					"headers": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Value for the ` + "`" + `Access-Control-Allow-Headers` + "`" + ` header.`,
 					},
 					"max_age": schema.Float64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Indicates how long the results of the preflight request can be cached, in ` + "`" + `seconds` + "`" + `.`,
 					},
@@ -102,7 +118,6 @@ func (r *GatewayPluginCorsResource) Schema(ctx context.Context, req resource.Sch
 						Description: `'Value for the ` + "`" + `Access-Control-Allow-Methods` + "`" + ` header. Available options include ` + "`" + `GET` + "`" + `, ` + "`" + `HEAD` + "`" + `, ` + "`" + `PUT` + "`" + `, ` + "`" + `PATCH` + "`" + `, ` + "`" + `POST` + "`" + `, ` + "`" + `DELETE` + "`" + `, ` + "`" + `OPTIONS` + "`" + `, ` + "`" + `TRACE` + "`" + `, ` + "`" + `CONNECT` + "`" + `. By default, all options are allowed.'`,
 					},
 					"origins": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `List of allowed domains for the ` + "`" + `Access-Control-Allow-Origin` + "`" + ` header. If you want to allow all origins, add ` + "`" + `*` + "`" + ` as a single value to this configuration field. The accepted values can either be flat strings or PCRE regexes.`,
@@ -171,9 +186,13 @@ func (r *GatewayPluginCorsResource) Schema(ctx context.Context, req resource.Sch
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -182,9 +201,13 @@ func (r *GatewayPluginCorsResource) Schema(ctx context.Context, req resource.Sch
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -205,12 +228,10 @@ func (r *GatewayPluginCorsResource) Schema(ctx context.Context, req resource.Sch
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

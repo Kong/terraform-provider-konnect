@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type ResponseRatelimitingPluginAfter struct {
@@ -53,8 +54,19 @@ type ResponseRatelimitingPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (r ResponseRatelimitingPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseRatelimitingPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ResponseRatelimitingPluginPartials) GetID() *string {
@@ -143,13 +155,13 @@ type ResponseRatelimitingPluginRedis struct {
 	// Database to use for the Redis connection when using the `redis` strategy
 	Database *int64 `default:"0" json:"database"`
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"null" json:"host"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-	Password *string `json:"password,omitempty"`
+	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `default:"6379" json:"port"`
 	// A string representing an SNI (server name indication) value for TLS.
-	ServerName *string `json:"server_name,omitempty"`
+	ServerName *string `default:"null" json:"server_name"`
 	// If set to true, uses SSL to connect to Redis.
 	Ssl *bool `default:"false" json:"ssl"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
@@ -157,7 +169,7 @@ type ResponseRatelimitingPluginRedis struct {
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	Timeout *int64 `default:"2000" json:"timeout"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
-	Username *string `json:"username,omitempty"`
+	Username *string `default:"null" json:"username"`
 }
 
 func (r ResponseRatelimitingPluginRedis) MarshalJSON() ([]byte, error) {
@@ -398,7 +410,7 @@ type ResponseRatelimitingPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                             `default:"null" json:"instance_name"`
-	name         string                              `const:"response-ratelimiting" json:"name"`
+	name         *string                             `const:"response-ratelimiting" json:"name"`
 	Ordering     *ResponseRatelimitingPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []ResponseRatelimitingPluginPartials `json:"partials"`
@@ -456,8 +468,8 @@ func (o *ResponseRatelimitingPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *ResponseRatelimitingPlugin) GetName() string {
-	return "response-ratelimiting"
+func (o *ResponseRatelimitingPlugin) GetName() *string {
+	return types.String("response-ratelimiting")
 }
 
 func (o *ResponseRatelimitingPlugin) GetOrdering() *ResponseRatelimitingPluginOrdering {

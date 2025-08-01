@@ -15,13 +15,13 @@ type UpdatePortalRequest struct {
 	// The description of the portal.
 	Description *string `default:"null" json:"description"`
 	// Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.
-	IsPublic *bool `json:"is_public,omitempty"`
+	IsPublic *bool `default:"null" json:"is_public"`
 	// Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for products until unless assigned to teams with access to view and consume specific products.
-	RbacEnabled *bool `json:"rbac_enabled,omitempty"`
+	RbacEnabled *bool `default:"null" json:"rbac_enabled"`
 	// Whether the requests from applications to register for products will be automatically approved, or if they will be set to pending until approved by an admin.
-	AutoApproveApplications *bool `json:"auto_approve_applications,omitempty"`
+	AutoApproveApplications *bool `default:"null" json:"auto_approve_applications"`
 	// Whether the developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.
-	AutoApproveDevelopers *bool `json:"auto_approve_developers,omitempty"`
+	AutoApproveDevelopers *bool `default:"null" json:"auto_approve_developers"`
 	// The custom domain to access the developer portal. A CNAME for the portal's default domain must be able to be set for the custom domain for it to be valid. After setting a valid CNAME, an SSL/TLS certificate will be automatically manged for the custom domain, and traffic will be able to use the custom domain to route to the portal's web client and API.
 	CustomDomain *string `default:"null" json:"custom_domain"`
 	// The custom domain to access a self-hosted customized developer portal client. If this is set, the Konnect-hosted portal will no longer be available.  `custom_domain` must be also set for this value to be set. See https://github.com/Kong/konnect-portal for information on how to get started deploying and customizing your own Konnect portal.

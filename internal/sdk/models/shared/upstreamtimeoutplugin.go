@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type UpstreamTimeoutPluginAfter struct {
@@ -53,8 +54,19 @@ type UpstreamTimeoutPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (u UpstreamTimeoutPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamTimeoutPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpstreamTimeoutPluginPartials) GetID() *string {
@@ -80,11 +92,22 @@ func (o *UpstreamTimeoutPluginPartials) GetPath() *string {
 
 type UpstreamTimeoutPluginConfig struct {
 	// An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.
-	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
+	ConnectTimeout *int64 `default:"null" json:"connect_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.
-	ReadTimeout *int64 `json:"read_timeout,omitempty"`
+	ReadTimeout *int64 `default:"null" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.
-	SendTimeout *int64 `json:"send_timeout,omitempty"`
+	SendTimeout *int64 `default:"null" json:"send_timeout"`
+}
+
+func (u UpstreamTimeoutPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamTimeoutPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpstreamTimeoutPluginConfig) GetConnectTimeout() *int64 {
@@ -186,7 +209,7 @@ type UpstreamTimeoutPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                        `default:"null" json:"instance_name"`
-	name         string                         `const:"upstream-timeout" json:"name"`
+	name         *string                        `const:"upstream-timeout" json:"name"`
 	Ordering     *UpstreamTimeoutPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []UpstreamTimeoutPluginPartials `json:"partials"`
@@ -244,8 +267,8 @@ func (o *UpstreamTimeoutPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *UpstreamTimeoutPlugin) GetName() string {
-	return "upstream-timeout"
+func (o *UpstreamTimeoutPlugin) GetName() *string {
+	return types.String("upstream-timeout")
 }
 
 func (o *UpstreamTimeoutPlugin) GetOrdering() *UpstreamTimeoutPluginOrdering {

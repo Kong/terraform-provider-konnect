@@ -73,9 +73,50 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"allow_status_codes": types.ListType{
+						ElemType: types.StringType,
+					},
+					"consumer_identifier_default": types.StringType,
+					"flush_timeout":               types.Float64Type,
+					"host":                        types.StringType,
+					"hostname_in_prefix":          types.BoolType,
+					"metrics": types.ListType{
+						ElemType: types.ObjectType{
+							AttrTypes: map[string]attr.Type{
+								`consumer_identifier`:  types.StringType,
+								`name`:                 types.StringType,
+								`sample_rate`:          types.Float64Type,
+								`service_identifier`:   types.StringType,
+								`stat_type`:            types.StringType,
+								`workspace_identifier`: types.StringType,
+							},
+						},
+					},
+					"port":   types.Int64Type,
+					"prefix": types.StringType,
+					"queue": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`concurrency_limit`:    types.Int64Type,
+							`initial_retry_delay`:  types.Float64Type,
+							`max_batch_size`:       types.Int64Type,
+							`max_bytes`:            types.Int64Type,
+							`max_coalescing_delay`: types.Float64Type,
+							`max_entries`:          types.Int64Type,
+							`max_retry_delay`:      types.Float64Type,
+							`max_retry_time`:       types.Float64Type,
+						},
+					},
+					"queue_size":                   types.Int64Type,
+					"retry_count":                  types.Int64Type,
+					"service_identifier_default":   types.StringType,
+					"tag_style":                    types.StringType,
+					"udp_packet_size":              types.Float64Type,
+					"use_tcp":                      types.BoolType,
+					"workspace_identifier_default": types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"allow_status_codes": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `List of status code ranges that are allowed to be logged in metrics.`,
@@ -94,7 +135,6 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 						},
 					},
 					"flush_timeout": schema.Float64Attribute{
-						Computed: true,
 						Optional: true,
 					},
 					"host": schema.StringAttribute{
@@ -110,7 +150,6 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 						Description: `Default: false`,
 					},
 					"metrics": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -155,7 +194,6 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 									},
 								},
 								"sample_rate": schema.Float64Attribute{
-									Computed:    true,
 									Optional:    true,
 									Description: `Sampling rate`,
 								},
@@ -221,6 +259,16 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 					"queue": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"concurrency_limit":    types.Int64Type,
+							"initial_retry_delay":  types.Float64Type,
+							"max_batch_size":       types.Int64Type,
+							"max_bytes":            types.Int64Type,
+							"max_coalescing_delay": types.Float64Type,
+							"max_entries":          types.Int64Type,
+							"max_retry_delay":      types.Float64Type,
+							"max_retry_time":       types.Float64Type,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"concurrency_limit": schema.Int64Attribute{
 								Computed:    true,
@@ -250,7 +298,6 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 								},
 							},
 							"max_bytes": schema.Int64Attribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Maximum number of bytes that can be waiting on a queue, requires string content.`,
 							},
@@ -290,11 +337,9 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 						},
 					},
 					"queue_size": schema.Int64Attribute{
-						Computed: true,
 						Optional: true,
 					},
 					"retry_count": schema.Int64Attribute{
-						Computed: true,
 						Optional: true,
 					},
 					"service_identifier_default": schema.StringAttribute{
@@ -417,9 +462,13 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -428,9 +477,13 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -451,12 +504,10 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

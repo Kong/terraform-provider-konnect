@@ -68,10 +68,82 @@ func (r *GatewayPluginResponseTransformerResource) Schema(ctx context.Context, r
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"add": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`headers`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`json`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`json_types`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"append": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`headers`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`json`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`json_types`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"remove": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`headers`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`json`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"rename": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`headers`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`json`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"replace": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`headers`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`json`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`json_types`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"add": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"headers": types.ListType{
+								ElemType: types.StringType,
+							},
+							"json": types.ListType{
+								ElemType: types.StringType,
+							},
+							"json_types": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"headers": schema.ListAttribute{
 								Computed:    true,
@@ -98,6 +170,17 @@ func (r *GatewayPluginResponseTransformerResource) Schema(ctx context.Context, r
 					"append": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"headers": types.ListType{
+								ElemType: types.StringType,
+							},
+							"json": types.ListType{
+								ElemType: types.StringType,
+							},
+							"json_types": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"headers": schema.ListAttribute{
 								Computed:    true,
@@ -124,6 +207,14 @@ func (r *GatewayPluginResponseTransformerResource) Schema(ctx context.Context, r
 					"remove": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"headers": types.ListType{
+								ElemType: types.StringType,
+							},
+							"json": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"headers": schema.ListAttribute{
 								Computed:    true,
@@ -142,6 +233,14 @@ func (r *GatewayPluginResponseTransformerResource) Schema(ctx context.Context, r
 					"rename": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"headers": types.ListType{
+								ElemType: types.StringType,
+							},
+							"json": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"headers": schema.ListAttribute{
 								Computed:    true,
@@ -160,6 +259,17 @@ func (r *GatewayPluginResponseTransformerResource) Schema(ctx context.Context, r
 					"replace": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"headers": types.ListType{
+								ElemType: types.StringType,
+							},
+							"json": types.ListType{
+								ElemType: types.StringType,
+							},
+							"json_types": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"headers": schema.ListAttribute{
 								Computed:    true,
@@ -263,9 +373,13 @@ func (r *GatewayPluginResponseTransformerResource) Schema(ctx context.Context, r
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -274,9 +388,13 @@ func (r *GatewayPluginResponseTransformerResource) Schema(ctx context.Context, r
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -297,12 +415,10 @@ func (r *GatewayPluginResponseTransformerResource) Schema(ctx context.Context, r
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

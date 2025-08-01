@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type AiAzureContentSafetyPluginAfter struct {
@@ -53,8 +54,19 @@ type AiAzureContentSafetyPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (a AiAzureContentSafetyPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiAzureContentSafetyPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiAzureContentSafetyPluginPartials) GetID() *string {
@@ -155,11 +167,11 @@ type AiAzureContentSafetyPluginConfig struct {
 	// Sets the ?api-version URL parameter, used for defining the Azure Content Services interchange format.
 	AzureAPIVersion *string `default:"2023-10-01" json:"azure_api_version"`
 	// If `azure_use_managed_identity` is true, set the client ID if required.
-	AzureClientID *string `json:"azure_client_id,omitempty"`
+	AzureClientID *string `default:"null" json:"azure_client_id"`
 	// If `azure_use_managed_identity` is true, set the client secret if required.
-	AzureClientSecret *string `json:"azure_client_secret,omitempty"`
+	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
 	// If `azure_use_managed_identity` is true, set the tenant ID if required.
-	AzureTenantID *string `json:"azure_tenant_id,omitempty"`
+	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// If checked, uses (if set) `azure_client_id`, `azure_client_secret`, and/or `azure_tenant_id` for Azure authentication, via Managed or User-assigned identity
 	AzureUseManagedIdentity *bool `default:"false" json:"azure_use_managed_identity"`
 	// Use these configured blocklists (in Azure Content Services) when inspecting content.
@@ -167,7 +179,7 @@ type AiAzureContentSafetyPluginConfig struct {
 	// Array of categories, and their thresholds, to measure on.
 	Categories []Categories `json:"categories,omitempty"`
 	// If `azure_use_managed_identity` is true, set the API key to call Content Safety.
-	ContentSafetyKey *string `json:"content_safety_key,omitempty"`
+	ContentSafetyKey *string `default:"null" json:"content_safety_key"`
 	// Full URL, inc protocol, of the Azure Content Safety instance.
 	ContentSafetyURL string `json:"content_safety_url"`
 	// Tells Azure to reject the request if any blocklist filter is hit.
@@ -348,7 +360,7 @@ type AiAzureContentSafetyPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                             `default:"null" json:"instance_name"`
-	name         string                              `const:"ai-azure-content-safety" json:"name"`
+	name         *string                             `const:"ai-azure-content-safety" json:"name"`
 	Ordering     *AiAzureContentSafetyPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []AiAzureContentSafetyPluginPartials `json:"partials"`
@@ -404,8 +416,8 @@ func (o *AiAzureContentSafetyPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *AiAzureContentSafetyPlugin) GetName() string {
-	return "ai-azure-content-safety"
+func (o *AiAzureContentSafetyPlugin) GetName() *string {
+	return types.String("ai-azure-content-safety")
 }
 
 func (o *AiAzureContentSafetyPlugin) GetOrdering() *AiAzureContentSafetyPluginOrdering {

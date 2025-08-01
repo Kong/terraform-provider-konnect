@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type CorsPluginAfter struct {
@@ -53,8 +54,19 @@ type CorsPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (c CorsPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CorsPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CorsPluginPartials) GetID() *string {
@@ -135,7 +147,7 @@ type CorsPluginConfig struct {
 	// Value for the `Access-Control-Allow-Headers` header.
 	Headers []string `json:"headers,omitempty"`
 	// Indicates how long the results of the preflight request can be cached, in `seconds`.
-	MaxAge *float64 `json:"max_age,omitempty"`
+	MaxAge *float64 `default:"null" json:"max_age"`
 	// 'Value for the `Access-Control-Allow-Methods` header. Available options include `GET`, `HEAD`, `PUT`, `PATCH`, `POST`, `DELETE`, `OPTIONS`, `TRACE`, `CONNECT`. By default, all options are allowed.'
 	Methods []Methods `json:"methods,omitempty"`
 	// List of allowed domains for the `Access-Control-Allow-Origin` header. If you want to allow all origins, add `*` as a single value to this configuration field. The accepted values can either be flat strings or PCRE regexes.
@@ -286,7 +298,7 @@ type CorsPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string             `default:"null" json:"instance_name"`
-	name         string              `const:"cors" json:"name"`
+	name         *string             `const:"cors" json:"name"`
 	Ordering     *CorsPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []CorsPluginPartials `json:"partials"`
@@ -342,8 +354,8 @@ func (o *CorsPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *CorsPlugin) GetName() string {
-	return "cors"
+func (o *CorsPlugin) GetName() *string {
+	return types.String("cors")
 }
 
 func (o *CorsPlugin) GetOrdering() *CorsPluginOrdering {

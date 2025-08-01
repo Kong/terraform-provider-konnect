@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type RouteByHeaderPluginAfter struct {
@@ -53,8 +54,19 @@ type RouteByHeaderPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (r RouteByHeaderPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteByHeaderPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RouteByHeaderPluginPartials) GetID() *string {
@@ -187,7 +199,7 @@ type RouteByHeaderPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                      `default:"null" json:"instance_name"`
-	name         string                       `const:"route-by-header" json:"name"`
+	name         *string                      `const:"route-by-header" json:"name"`
 	Ordering     *RouteByHeaderPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []RouteByHeaderPluginPartials `json:"partials"`
@@ -245,8 +257,8 @@ func (o *RouteByHeaderPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *RouteByHeaderPlugin) GetName() string {
-	return "route-by-header"
+func (o *RouteByHeaderPlugin) GetName() *string {
+	return types.String("route-by-header")
 }
 
 func (o *RouteByHeaderPlugin) GetOrdering() *RouteByHeaderPluginOrdering {

@@ -73,6 +73,57 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"connect_timeout":                  types.Int64Type,
+					"default_header_type":              types.StringType,
+					"default_service_name":             types.StringType,
+					"header_type":                      types.StringType,
+					"http_endpoint":                    types.StringType,
+					"http_response_header_for_traceid": types.StringType,
+					"http_span_name":                   types.StringType,
+					"include_credential":               types.BoolType,
+					"local_service_name":               types.StringType,
+					"phase_duration_flavor":            types.StringType,
+					"propagation": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`clear`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`default_format`: types.StringType,
+							`extract`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`inject`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"queue": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`concurrency_limit`:    types.Int64Type,
+							`initial_retry_delay`:  types.Float64Type,
+							`max_batch_size`:       types.Int64Type,
+							`max_bytes`:            types.Int64Type,
+							`max_coalescing_delay`: types.Float64Type,
+							`max_entries`:          types.Int64Type,
+							`max_retry_delay`:      types.Float64Type,
+							`max_retry_time`:       types.Float64Type,
+						},
+					},
+					"read_timeout": types.Int64Type,
+					"sample_ratio": types.Float64Type,
+					"send_timeout": types.Int64Type,
+					"static_tags": types.ListType{
+						ElemType: types.ObjectType{
+							AttrTypes: map[string]attr.Type{
+								`name`:  types.StringType,
+								`value`: types.StringType,
+							},
+						},
+					},
+					"tags_header":        types.StringType,
+					"traceid_byte_count": types.Int64Type,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"connect_timeout": schema.Int64Attribute{
 						Computed:    true,
@@ -103,7 +154,6 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 						},
 					},
 					"default_service_name": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Set a default service name to override ` + "`" + `unknown-service-name` + "`" + ` in the Zipkin spans.`,
 					},
@@ -129,12 +179,10 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 						},
 					},
 					"http_endpoint": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
 					},
 					"http_response_header_for_traceid": schema.StringAttribute{
-						Computed: true,
 						Optional: true,
 					},
 					"http_span_name": schema.StringAttribute{
@@ -178,7 +226,6 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"clear": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `Header names to clear after context extraction. This allows to extract the context from a certain header and then remove it from the request, useful when extraction and injection are performed on different header formats and the original header should not be sent to the upstream. If left empty, no headers are cleared.`,
@@ -203,13 +250,11 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 								},
 							},
 							"extract": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `Header formats used to extract tracing context from incoming requests. If multiple values are specified, the first one found will be used for extraction. If left empty, Kong will not extract any tracing context information from incoming requests and generate a trace with no parent and a new trace ID.`,
 							},
 							"inject": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `Header formats used to inject tracing context. The value ` + "`" + `preserve` + "`" + ` will use the same header format as the incoming request. If multiple values are specified, all of them will be used during injection. If left empty, Kong will not inject any tracing context information in outgoing requests.`,
@@ -219,6 +264,16 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 					"queue": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"concurrency_limit":    types.Int64Type,
+							"initial_retry_delay":  types.Float64Type,
+							"max_batch_size":       types.Int64Type,
+							"max_bytes":            types.Int64Type,
+							"max_coalescing_delay": types.Float64Type,
+							"max_entries":          types.Int64Type,
+							"max_retry_delay":      types.Float64Type,
+							"max_retry_time":       types.Float64Type,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"concurrency_limit": schema.Int64Attribute{
 								Computed:    true,
@@ -248,7 +303,6 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 								},
 							},
 							"max_bytes": schema.Int64Attribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Maximum number of bytes that can be waiting on a queue, requires string content.`,
 							},
@@ -315,7 +369,6 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 						},
 					},
 					"static_tags": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -423,9 +476,13 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -434,9 +491,13 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -457,12 +518,10 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

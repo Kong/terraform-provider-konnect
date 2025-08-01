@@ -67,9 +67,13 @@ func (r *GatewayPluginUpstreamTimeoutResource) Schema(ctx context.Context, req r
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"connect_timeout": types.Int64Type,
+					"read_timeout":    types.Int64Type,
+					"send_timeout":    types.Int64Type,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"connect_timeout": schema.Int64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.`,
 						Validators: []validator.Int64{
@@ -77,7 +81,6 @@ func (r *GatewayPluginUpstreamTimeoutResource) Schema(ctx context.Context, req r
 						},
 					},
 					"read_timeout": schema.Int64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.`,
 						Validators: []validator.Int64{
@@ -85,7 +88,6 @@ func (r *GatewayPluginUpstreamTimeoutResource) Schema(ctx context.Context, req r
 						},
 					},
 					"send_timeout": schema.Int64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.`,
 						Validators: []validator.Int64{
@@ -158,9 +160,13 @@ func (r *GatewayPluginUpstreamTimeoutResource) Schema(ctx context.Context, req r
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -169,9 +175,13 @@ func (r *GatewayPluginUpstreamTimeoutResource) Schema(ctx context.Context, req r
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -192,12 +202,10 @@ func (r *GatewayPluginUpstreamTimeoutResource) Schema(ctx context.Context, req r
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

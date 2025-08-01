@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type JwtPluginAfter struct {
@@ -53,8 +54,19 @@ type JwtPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (j JwtPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JwtPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *JwtPluginPartials) GetID() *string {
@@ -106,7 +118,7 @@ func (e *ClaimsToVerify) UnmarshalJSON(data []byte) error {
 
 type JwtPluginConfig struct {
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails.
-	Anonymous *string `json:"anonymous,omitempty"`
+	Anonymous *string `default:"null" json:"anonymous"`
 	// A list of registered claims (according to RFC 7519) that Kong can verify as well. Accepted values: one of exp or nbf.
 	ClaimsToVerify []ClaimsToVerify `json:"claims_to_verify,omitempty"`
 	// A list of cookie names that Kong will inspect to retrieve JWTs.
@@ -118,7 +130,7 @@ type JwtPluginConfig struct {
 	// A value between 0 and 31536000 (365 days) limiting the lifetime of the JWT to maximum_expiration seconds in the future.
 	MaximumExpiration *float64 `default:"0" json:"maximum_expiration"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
-	Realm *string `json:"realm,omitempty"`
+	Realm *string `default:"null" json:"realm"`
 	// A boolean value that indicates whether the plugin should run (and try to authenticate) on OPTIONS preflight requests. If set to false, then OPTIONS requests will always be allowed.
 	RunOnPreflight *bool `default:"true" json:"run_on_preflight"`
 	// If true, the plugin assumes the credential’s secret to be base64 encoded. You will need to create a base64-encoded secret for your Consumer, and sign your JWT with the original secret.
@@ -274,7 +286,7 @@ type JwtPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string            `default:"null" json:"instance_name"`
-	name         string             `const:"jwt" json:"name"`
+	name         *string            `const:"jwt" json:"name"`
 	Ordering     *JwtPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []JwtPluginPartials `json:"partials"`
@@ -330,8 +342,8 @@ func (o *JwtPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *JwtPlugin) GetName() string {
-	return "jwt"
+func (o *JwtPlugin) GetName() *string {
+	return types.String("jwt")
 }
 
 func (o *JwtPlugin) GetOrdering() *JwtPluginOrdering {

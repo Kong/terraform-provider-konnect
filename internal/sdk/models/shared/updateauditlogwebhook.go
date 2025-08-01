@@ -9,9 +9,9 @@ import (
 // UpdateAuditLogWebhook - The request schema to modify an audit log webhook.
 type UpdateAuditLogWebhook struct {
 	// The endpoint that will receive audit log messages.
-	Endpoint *string `json:"endpoint,omitempty"`
+	Endpoint *string `default:"null" json:"endpoint"`
 	// The value to include in the `Authorization` header when sending audit logs to the webhook.
-	Authorization *string `json:"authorization,omitempty"`
+	Authorization *string `default:"null" json:"authorization"`
 	// Indicates if the data should be sent to the webhook.
 	Enabled *bool `default:"false" json:"enabled"`
 	// The output format of each log messages.

@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type AcmePluginAfter struct {
@@ -53,8 +54,19 @@ type AcmePluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (a AcmePluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AcmePluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AcmePluginPartials) GetID() *string {
@@ -83,7 +95,18 @@ type AccountKey struct {
 	// The Key ID.
 	KeyID string `json:"key_id"`
 	// The ID of the key set to associate the Key ID with.
-	KeySet *string `json:"key_set,omitempty"`
+	KeySet *string `default:"null" json:"key_set"`
+}
+
+func (a AccountKey) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AccountKey) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AccountKey) GetKeyID() string {
@@ -195,17 +218,17 @@ func (e *Storage) UnmarshalJSON(data []byte) error {
 
 type Consul struct {
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"null" json:"host"`
 	// Boolean representation of https.
 	HTTPS *bool `default:"false" json:"https"`
 	// KV prefix path.
-	KvPath *string `json:"kv_path,omitempty"`
+	KvPath *string `default:"null" json:"kv_path"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"null" json:"port"`
 	// Timeout in milliseconds.
-	Timeout *float64 `json:"timeout,omitempty"`
+	Timeout *float64 `default:"null" json:"timeout"`
 	// Consul ACL token.
-	Token *string `json:"token,omitempty"`
+	Token *string `default:"null" json:"token"`
 }
 
 func (c Consul) MarshalJSON() ([]byte, error) {
@@ -300,13 +323,13 @@ type AcmePluginRedis struct {
 	// Custom ACME Redis options
 	ExtraOptions *ExtraOptions `json:"extra_options,omitempty"`
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"null" json:"host"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-	Password *string `json:"password,omitempty"`
+	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `default:"6379" json:"port"`
 	// A string representing an SNI (server name indication) value for TLS.
-	ServerName *string `json:"server_name,omitempty"`
+	ServerName *string `default:"null" json:"server_name"`
 	// If set to true, uses SSL to connect to Redis.
 	Ssl *bool `default:"false" json:"ssl"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
@@ -314,7 +337,7 @@ type AcmePluginRedis struct {
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	Timeout *int64 `default:"2000" json:"timeout"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
-	Username *string `json:"username,omitempty"`
+	Username *string `default:"null" json:"username"`
 }
 
 func (a AcmePluginRedis) MarshalJSON() ([]byte, error) {
@@ -452,27 +475,27 @@ type AcmePluginVault struct {
 	// Auth Method, default to token, can be 'token' or 'kubernetes'.
 	AuthMethod *AcmePluginAuthMethod `default:"token" json:"auth_method"`
 	// Vault's authentication path to use.
-	AuthPath *string `json:"auth_path,omitempty"`
+	AuthPath *string `default:"null" json:"auth_path"`
 	// The role to try and assign.
-	AuthRole *string `json:"auth_role,omitempty"`
+	AuthRole *string `default:"null" json:"auth_role"`
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"null" json:"host"`
 	// Boolean representation of https.
 	HTTPS *bool `default:"false" json:"https"`
 	// The path to the JWT.
-	JwtPath *string `json:"jwt_path,omitempty"`
+	JwtPath *string `default:"null" json:"jwt_path"`
 	// KV prefix path.
-	KvPath *string `json:"kv_path,omitempty"`
+	KvPath *string `default:"null" json:"kv_path"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"null" json:"port"`
 	// Timeout in milliseconds.
-	Timeout *float64 `json:"timeout,omitempty"`
+	Timeout *float64 `default:"null" json:"timeout"`
 	// SNI used in request, default to host if omitted.
-	TLSServerName *string `json:"tls_server_name,omitempty"`
+	TLSServerName *string `default:"null" json:"tls_server_name"`
 	// Turn on TLS verification.
 	TLSVerify *bool `default:"true" json:"tls_verify"`
 	// Consul ACL token.
-	Token *string `json:"token,omitempty"`
+	Token *string `default:"null" json:"token"`
 }
 
 func (a AcmePluginVault) MarshalJSON() ([]byte, error) {
@@ -627,16 +650,16 @@ type AcmePluginConfig struct {
 	// An array of strings representing hosts. A valid host is a string containing one or more labels separated by periods, with at most one wildcard label ('*')
 	Domains []string `json:"domains,omitempty"`
 	// External account binding (EAB) base64-encoded URL string of the HMAC key. You usually don't need to set this unless it is explicitly required by the CA.
-	EabHmacKey *string `json:"eab_hmac_key,omitempty"`
+	EabHmacKey *string `default:"null" json:"eab_hmac_key"`
 	// External account binding (EAB) key id. You usually don't need to set this unless it is explicitly required by the CA.
-	EabKid *string `json:"eab_kid,omitempty"`
+	EabKid *string `default:"null" json:"eab_kid"`
 	// A boolean value that controls whether to include the IPv4 address in the common name field of generated certificates.
 	EnableIpv4CommonName *bool `default:"true" json:"enable_ipv4_common_name"`
 	// Minutes to wait for each domain that fails to create a certificate. This applies to both a
 	// new certificate and a renewal certificate.
 	FailBackoffMinutes *float64 `default:"5" json:"fail_backoff_minutes"`
 	// A string value that specifies the preferred certificate chain to use when generating certificates.
-	PreferredChain *string `json:"preferred_chain,omitempty"`
+	PreferredChain *string `default:"null" json:"preferred_chain"`
 	// Days remaining to renew the certificate before it expires.
 	RenewThresholdDays *float64 `default:"14" json:"renew_threshold_days"`
 	// RSA private key size for the certificate. The possible values are 2048, 3072, or 4096.
@@ -813,7 +836,7 @@ type AcmePlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string             `default:"null" json:"instance_name"`
-	name         string              `const:"acme" json:"name"`
+	name         *string             `const:"acme" json:"name"`
 	Ordering     *AcmePluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []AcmePluginPartials `json:"partials"`
@@ -865,8 +888,8 @@ func (o *AcmePlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *AcmePlugin) GetName() string {
-	return "acme"
+func (o *AcmePlugin) GetName() *string {
+	return types.String("acme")
 }
 
 func (o *AcmePlugin) GetOrdering() *AcmePluginOrdering {

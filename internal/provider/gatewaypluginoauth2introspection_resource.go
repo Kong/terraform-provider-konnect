@@ -102,7 +102,6 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 						Description: `A list of custom claims to be forwarded from the introspection response to the upstream request. Claims are forwarded in headers with prefix ` + "`" + `X-Credential-{claim-name}` + "`" + `.`,
 					},
 					"custom_introspection_headers": schema.MapAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `A list of custom headers to be added in the introspection request.`,
@@ -145,7 +144,6 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 						Description: `An optional timeout in milliseconds when sending data to the upstream server. Default: 10000`,
 					},
 					"token_type_hint": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The ` + "`" + `token_type_hint` + "`" + ` value to associate to introspection requests.`,
 					},
@@ -207,9 +205,13 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -218,9 +220,13 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -241,12 +247,10 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

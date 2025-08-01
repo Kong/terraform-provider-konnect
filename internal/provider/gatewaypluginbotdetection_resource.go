@@ -66,6 +66,14 @@ func (r *GatewayPluginBotDetectionResource) Schema(ctx context.Context, req reso
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"allow": types.ListType{
+						ElemType: types.StringType,
+					},
+					"deny": types.ListType{
+						ElemType: types.StringType,
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"allow": schema.ListAttribute{
 						Computed:    true,
@@ -133,9 +141,13 @@ func (r *GatewayPluginBotDetectionResource) Schema(ctx context.Context, req reso
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -144,9 +156,13 @@ func (r *GatewayPluginBotDetectionResource) Schema(ctx context.Context, req reso
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -167,12 +183,10 @@ func (r *GatewayPluginBotDetectionResource) Schema(ctx context.Context, req reso
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

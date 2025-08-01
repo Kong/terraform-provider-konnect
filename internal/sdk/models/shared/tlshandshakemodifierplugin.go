@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type TLSHandshakeModifierPluginAfter struct {
@@ -53,8 +54,19 @@ type TLSHandshakeModifierPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (t TLSHandshakeModifierPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TLSHandshakeModifierPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *TLSHandshakeModifierPluginPartials) GetID() *string {
@@ -188,7 +200,7 @@ type TLSHandshakeModifierPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                             `default:"null" json:"instance_name"`
-	name         string                              `const:"tls-handshake-modifier" json:"name"`
+	name         *string                             `const:"tls-handshake-modifier" json:"name"`
 	Ordering     *TLSHandshakeModifierPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []TLSHandshakeModifierPluginPartials `json:"partials"`
@@ -244,8 +256,8 @@ func (o *TLSHandshakeModifierPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *TLSHandshakeModifierPlugin) GetName() string {
-	return "tls-handshake-modifier"
+func (o *TLSHandshakeModifierPlugin) GetName() *string {
+	return types.String("tls-handshake-modifier")
 }
 
 func (o *TLSHandshakeModifierPlugin) GetOrdering() *TLSHandshakeModifierPluginOrdering {

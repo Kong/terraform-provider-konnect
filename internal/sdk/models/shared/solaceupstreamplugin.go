@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type SolaceUpstreamPluginAfter struct {
@@ -53,8 +54,19 @@ type SolaceUpstreamPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (s SolaceUpstreamPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SolaceUpstreamPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *SolaceUpstreamPluginPartials) GetID() *string {
@@ -169,7 +181,7 @@ type Message struct {
 	// When using a non-DIRECT guaranteed delivery mode, this property sets the message acknowledgement timeout (waiting time).
 	AckTimeout *int64 `default:"2000" json:"ack_timeout"`
 	// When not using `forward_method`, `forward_uri`, `forward_headers` or `forward_body`, this sets the message content.
-	DefaultContent *string `json:"default_content,omitempty"`
+	DefaultContent *string `default:"null" json:"default_content"`
 	// Sets the message delivery mode.
 	DeliveryMode *DeliveryMode `default:"DIRECT" json:"delivery_mode"`
 	// The message destinations.
@@ -347,17 +359,17 @@ func (e *Scheme) UnmarshalJSON(data []byte) error {
 // SolaceUpstreamPluginAuthentication - Session authentication related configuration.
 type SolaceUpstreamPluginAuthentication struct {
 	// The OAuth2 access token used with `OAUTH2` authentication scheme when connecting to an event broker.
-	AccessToken       *string `json:"access_token,omitempty"`
-	AccessTokenHeader *string `json:"access_token_header,omitempty"`
+	AccessToken       *string `default:"null" json:"access_token"`
+	AccessTokenHeader *string `default:"null" json:"access_token_header"`
 	// The OpenID Connect ID token used with `OAUTH2` authentication scheme when connecting to an event broker.
-	IDToken       *string `json:"id_token,omitempty"`
-	IDTokenHeader *string `json:"id_token_header,omitempty"`
+	IDToken       *string `default:"null" json:"id_token"`
+	IDTokenHeader *string `default:"null" json:"id_token_header"`
 	// The password used with `BASIC` authentication scheme when connecting to an event broker.
-	Password *string `json:"password,omitempty"`
+	Password *string `default:"null" json:"password"`
 	// The client authentication scheme used when connection to an event broker.
 	Scheme *Scheme `default:"BASIC" json:"scheme"`
 	// The username used with `BASIC` authentication scheme when connecting to an event broker .
-	Username *string `json:"username,omitempty"`
+	Username *string `default:"null" json:"username"`
 }
 
 func (s SolaceUpstreamPluginAuthentication) MarshalJSON() ([]byte, error) {
@@ -433,7 +445,7 @@ type Session struct {
 	// Indicates whether the API should validate server certificates with the trusted certificates.
 	SslValidateCertificate *bool `default:"false" json:"ssl_validate_certificate"`
 	// The name of the Message VPN to attempt to join when connecting to an event broker.
-	VpnName *string `json:"vpn_name,omitempty"`
+	VpnName *string `default:"null" json:"vpn_name"`
 }
 
 func (s Session) MarshalJSON() ([]byte, error) {
@@ -576,7 +588,7 @@ type SolaceUpstreamPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                       `default:"null" json:"instance_name"`
-	name         string                        `const:"solace-upstream" json:"name"`
+	name         *string                       `const:"solace-upstream" json:"name"`
 	Ordering     *SolaceUpstreamPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []SolaceUpstreamPluginPartials `json:"partials"`
@@ -632,8 +644,8 @@ func (o *SolaceUpstreamPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *SolaceUpstreamPlugin) GetName() string {
-	return "solace-upstream"
+func (o *SolaceUpstreamPlugin) GetName() *string {
+	return types.String("solace-upstream")
 }
 
 func (o *SolaceUpstreamPlugin) GetOrdering() *SolaceUpstreamPluginOrdering {

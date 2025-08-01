@@ -69,14 +69,32 @@ func (r *GatewayPluginJwtResource) Schema(ctx context.Context, req resource.Sche
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"anonymous": types.StringType,
+					"claims_to_verify": types.ListType{
+						ElemType: types.StringType,
+					},
+					"cookie_names": types.ListType{
+						ElemType: types.StringType,
+					},
+					"header_names": types.ListType{
+						ElemType: types.StringType,
+					},
+					"key_claim_name":     types.StringType,
+					"maximum_expiration": types.Float64Type,
+					"realm":              types.StringType,
+					"run_on_preflight":   types.BoolType,
+					"secret_is_base64":   types.BoolType,
+					"uri_param_names": types.ListType{
+						ElemType: types.StringType,
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails.`,
 					},
 					"claims_to_verify": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `A list of registered claims (according to RFC 7519) that Kong can verify as well. Accepted values: one of exp or nbf.`,
@@ -110,7 +128,6 @@ func (r *GatewayPluginJwtResource) Schema(ctx context.Context, req resource.Sche
 						},
 					},
 					"realm": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `When authentication fails the plugin sends ` + "`" + `WWW-Authenticate` + "`" + ` header with ` + "`" + `realm` + "`" + ` attribute value.`,
 					},
@@ -184,9 +201,13 @@ func (r *GatewayPluginJwtResource) Schema(ctx context.Context, req resource.Sche
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -195,9 +216,13 @@ func (r *GatewayPluginJwtResource) Schema(ctx context.Context, req resource.Sche
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -218,12 +243,10 @@ func (r *GatewayPluginJwtResource) Schema(ctx context.Context, req resource.Sche
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

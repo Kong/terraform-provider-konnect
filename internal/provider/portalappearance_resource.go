@@ -276,7 +276,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 										Required: true,
 										Attributes: map[string]schema.Attribute{
 											"description": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												Validators: []validator.String{
 													stringvalidator.UTF8LengthAtMost(512),
@@ -294,7 +293,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 										Required: true,
 										Attributes: map[string]schema.Attribute{
 											"description": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												Validators: []validator.String{
 													stringvalidator.UTF8LengthAtMost(512),
@@ -317,7 +315,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 										Required: true,
 										Attributes: map[string]schema.Attribute{
 											"description": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												Validators: []validator.String{
 													stringvalidator.UTF8LengthAtMost(512),
@@ -335,7 +332,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 										Required: true,
 										Attributes: map[string]schema.Attribute{
 											"description": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												Validators: []validator.String{
 													stringvalidator.UTF8LengthAtMost(512),
@@ -353,7 +349,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 										Required: true,
 										Attributes: map[string]schema.Attribute{
 											"description": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												Validators: []validator.String{
 													stringvalidator.UTF8LengthAtMost(512),
@@ -371,7 +366,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 										Required: true,
 										Attributes: map[string]schema.Attribute{
 											"description": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												Validators: []validator.String{
 													stringvalidator.UTF8LengthAtMost(512),
@@ -389,7 +383,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 										Required: true,
 										Attributes: map[string]schema.Attribute{
 											"description": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												Validators: []validator.String{
 													stringvalidator.UTF8LengthAtMost(512),
@@ -407,7 +400,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 										Required: true,
 										Attributes: map[string]schema.Attribute{
 											"description": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												Validators: []validator.String{
 													stringvalidator.UTF8LengthAtMost(512),
@@ -425,7 +417,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 										Required: true,
 										Attributes: map[string]schema.Attribute{
 											"description": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												Validators: []validator.String{
 													stringvalidator.UTF8LengthAtMost(512),
@@ -448,7 +439,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 										Required: true,
 										Attributes: map[string]schema.Attribute{
 											"description": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												Validators: []validator.String{
 													stringvalidator.UTF8LengthAtMost(512),
@@ -466,7 +456,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 										Required: true,
 										Attributes: map[string]schema.Attribute{
 											"description": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												Validators: []validator.String{
 													stringvalidator.UTF8LengthAtMost(512),
@@ -484,7 +473,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 										Required: true,
 										Attributes: map[string]schema.Attribute{
 											"description": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												Validators: []validator.String{
 													stringvalidator.UTF8LengthAtMost(512),
@@ -502,7 +490,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 										Required: true,
 										Attributes: map[string]schema.Attribute{
 											"description": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												Validators: []validator.String{
 													stringvalidator.UTF8LengthAtMost(512),
@@ -520,7 +507,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 										Required: true,
 										Attributes: map[string]schema.Attribute{
 											"description": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												Validators: []validator.String{
 													stringvalidator.UTF8LengthAtMost(512),
@@ -538,7 +524,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 										Required: true,
 										Attributes: map[string]schema.Attribute{
 											"description": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												Validators: []validator.String{
 													stringvalidator.UTF8LengthAtMost(512),
@@ -556,7 +541,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 										Required: true,
 										Attributes: map[string]schema.Attribute{
 											"description": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												Validators: []validator.String{
 													stringvalidator.UTF8LengthAtMost(512),
@@ -574,7 +558,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 										Required: true,
 										Attributes: map[string]schema.Attribute{
 											"description": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												Validators: []validator.String{
 													stringvalidator.UTF8LengthAtMost(512),
@@ -630,7 +613,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 								},
 							},
 							"filename": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								Validators: []validator.String{
 									stringvalidator.UTF8LengthAtMost(512),
@@ -650,7 +632,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 								},
 							},
 							"filename": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								Validators: []validator.String{
 									stringvalidator.UTF8LengthAtMost(512),
@@ -675,7 +656,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 								},
 							},
 							"filename": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								Validators: []validator.String{
 									stringvalidator.UTF8LengthAtMost(512),
@@ -736,7 +716,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 				},
 			},
 			"use_custom_fonts": schema.BoolAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `If true, fonts in custom_fonts will be used over the theme's default fonts`,
 			},

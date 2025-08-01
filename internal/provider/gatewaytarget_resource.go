@@ -97,11 +97,9 @@ func (r *GatewayTargetResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `An optional set of strings associated with the Target for grouping and filtering. Requires replacement if changed.`,
 			},
 			"target": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the ` + "`" + `port` + "`" + ` value will be overridden by the value from the DNS record. Requires replacement if changed.`,
 			},

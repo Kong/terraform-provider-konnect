@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type ExitTransformerPluginAfter struct {
@@ -53,8 +54,19 @@ type ExitTransformerPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (e ExitTransformerPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *ExitTransformerPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ExitTransformerPluginPartials) GetID() *string {
@@ -196,7 +208,7 @@ type ExitTransformerPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                        `default:"null" json:"instance_name"`
-	name         string                         `const:"exit-transformer" json:"name"`
+	name         *string                        `const:"exit-transformer" json:"name"`
 	Ordering     *ExitTransformerPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []ExitTransformerPluginPartials `json:"partials"`
@@ -254,8 +266,8 @@ func (o *ExitTransformerPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *ExitTransformerPlugin) GetName() string {
-	return "exit-transformer"
+func (o *ExitTransformerPlugin) GetName() *string {
+	return types.String("exit-transformer")
 }
 
 func (o *ExitTransformerPlugin) GetOrdering() *ExitTransformerPluginOrdering {

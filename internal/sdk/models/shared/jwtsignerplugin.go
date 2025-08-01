@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type JwtSignerPluginAfter struct {
@@ -53,8 +54,19 @@ type JwtSignerPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (j JwtSignerPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JwtSignerPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *JwtSignerPluginPartials) GetID() *string {
@@ -314,15 +326,15 @@ type JwtSignerPluginConfig struct {
 	// When you set a value for this parameter, the plugin tries to map an arbitrary claim specified with this configuration parameter (for example, `sub` or `username`) in an access token to Kong consumer entity.
 	AccessTokenConsumerClaim []string `json:"access_token_consumer_claim,omitempty"`
 	// If the introspection endpoint requires client authentication (client being the JWT Signer plugin), you can specify the `Authorization` header's value with this configuration parameter.
-	AccessTokenIntrospectionAuthorization *string `json:"access_token_introspection_authorization,omitempty"`
+	AccessTokenIntrospectionAuthorization *string `default:"null" json:"access_token_introspection_authorization"`
 	// This parameter allows you to pass URL encoded request body arguments. For example: `resource=` or `a=1&b=&c`.
-	AccessTokenIntrospectionBodyArgs *string `json:"access_token_introspection_body_args,omitempty"`
+	AccessTokenIntrospectionBodyArgs *string `default:"null" json:"access_token_introspection_body_args"`
 	// When the plugin tries to do access token introspection results to Kong consumer mapping, it tries to find a matching Kong consumer from properties defined using this configuration parameter. The parameter can take an array of values.
 	AccessTokenIntrospectionConsumerBy []AccessTokenIntrospectionConsumerBy `json:"access_token_introspection_consumer_by,omitempty"`
 	// When you set a value for this parameter, the plugin tries to map an arbitrary claim specified with this configuration parameter (such as `sub` or `username`) in access token introspection results to the Kong consumer entity.
 	AccessTokenIntrospectionConsumerClaim []string `json:"access_token_introspection_consumer_claim,omitempty"`
 	// When you use `opaque` access tokens and you want to turn on access token introspection, you need to specify the OAuth 2.0 introspection endpoint URI with this configuration parameter.
-	AccessTokenIntrospectionEndpoint *string `json:"access_token_introspection_endpoint,omitempty"`
+	AccessTokenIntrospectionEndpoint *string `default:"null" json:"access_token_introspection_endpoint"`
 	// If you need to give `hint` parameter when introspecting an access token, use this parameter to specify the value. By default, the plugin sends `hint=access_token`.
 	AccessTokenIntrospectionHint *string `default:"access_token" json:"access_token_introspection_hint"`
 	// If your introspection endpoint returns an access token in one of the keys (or claims) within the introspection results (`JSON`). If the key cannot be found, the plugin responds with `401 Unauthorized`. Also if the key is found but cannot be decoded as JWT, it also responds with `401 Unauthorized`.
@@ -334,27 +346,27 @@ type JwtSignerPluginConfig struct {
 	// Specify the required values (or scopes) that are checked by an introspection claim/property specified by `config.access_token_introspection_scopes_claim`.
 	AccessTokenIntrospectionScopesRequired []string `json:"access_token_introspection_scopes_required,omitempty"`
 	// Timeout in milliseconds for an introspection request. The plugin tries to introspect twice if the first request fails for some reason. If both requests timeout, then the plugin runs two times the `config.access_token_introspection_timeout` on access token introspection.
-	AccessTokenIntrospectionTimeout *float64 `json:"access_token_introspection_timeout,omitempty"`
+	AccessTokenIntrospectionTimeout *float64 `default:"null" json:"access_token_introspection_timeout"`
 	// The `iss` claim of a signed or re-signed access token is set to this value. Original `iss` claim of the incoming token (possibly introspected) is stored in `original_iss` claim of the newly signed access token.
 	AccessTokenIssuer *string `default:"kong" json:"access_token_issuer"`
 	// Specify the URI where the plugin can fetch the public keys (JWKS) to verify the signature of the access token.
-	AccessTokenJwksURI *string `json:"access_token_jwks_uri,omitempty"`
+	AccessTokenJwksURI *string `default:"null" json:"access_token_jwks_uri"`
 	// The client certificate that will be used to authenticate Kong if `access_token_jwks_uri` is an https uri that requires mTLS Auth.
-	AccessTokenJwksURIClientCertificate *string `json:"access_token_jwks_uri_client_certificate,omitempty"`
+	AccessTokenJwksURIClientCertificate *string `default:"null" json:"access_token_jwks_uri_client_certificate"`
 	// The client password that will be used to authenticate Kong if `access_token_jwks_uri` is a uri that requires Basic Auth. Should be configured together with `access_token_jwks_uri_client_username`
-	AccessTokenJwksURIClientPassword *string `json:"access_token_jwks_uri_client_password,omitempty"`
+	AccessTokenJwksURIClientPassword *string `default:"null" json:"access_token_jwks_uri_client_password"`
 	// The client username that will be used to authenticate Kong if `access_token_jwks_uri` is a uri that requires Basic Auth. Should be configured together with `access_token_jwks_uri_client_password`
-	AccessTokenJwksURIClientUsername *string `json:"access_token_jwks_uri_client_username,omitempty"`
+	AccessTokenJwksURIClientUsername *string `default:"null" json:"access_token_jwks_uri_client_username"`
 	// Specify the period (in seconds) to auto-rotate the jwks for `access_token_jwks_uri`. The default value 0 means no auto-rotation.
 	AccessTokenJwksURIRotatePeriod *float64 `default:"0" json:"access_token_jwks_uri_rotate_period"`
 	// The name of the keyset containing signing keys.
 	AccessTokenKeyset *string `default:"kong" json:"access_token_keyset"`
 	// The client certificate that will be used to authenticate Kong if `access_token_keyset` is an https uri that requires mTLS Auth.
-	AccessTokenKeysetClientCertificate *string `json:"access_token_keyset_client_certificate,omitempty"`
+	AccessTokenKeysetClientCertificate *string `default:"null" json:"access_token_keyset_client_certificate"`
 	// The client password that will be used to authenticate Kong if `access_token_keyset` is a uri that requires Basic Auth. Should be configured together with `access_token_keyset_client_username`
-	AccessTokenKeysetClientPassword *string `json:"access_token_keyset_client_password,omitempty"`
+	AccessTokenKeysetClientPassword *string `default:"null" json:"access_token_keyset_client_password"`
 	// The client username that will be used to authenticate Kong if `access_token_keyset` is a uri that requires Basic Auth. Should be configured together with `access_token_keyset_client_password`
-	AccessTokenKeysetClientUsername *string `json:"access_token_keyset_client_username,omitempty"`
+	AccessTokenKeysetClientUsername *string `default:"null" json:"access_token_keyset_client_username"`
 	// Specify the period (in seconds) to auto-rotate the jwks for `access_token_keyset`. The default value 0 means no auto-rotation.
 	AccessTokenKeysetRotatePeriod *float64 `default:"0" json:"access_token_keyset_rotate_period"`
 	// Adjusts clock skew between the token issuer and Kong. The value is added to the token's `exp` claim before checking token expiry against Kong servers' current time in seconds. You can disable access token `expiry` verification altogether with `config.verify_access_token_expiry`.
@@ -388,17 +400,17 @@ type JwtSignerPluginConfig struct {
 	// When you set a value for this parameter, the plugin tries to map an arbitrary claim specified with this configuration parameter. Kong consumers have an `id`, a `username`, and a `custom_id`. If this parameter is enabled but the mapping fails, such as when there's a non-existent Kong consumer, the plugin responds with `403 Forbidden`.
 	ChannelTokenConsumerClaim []string `json:"channel_token_consumer_claim,omitempty"`
 	// When using `opaque` channel tokens, and you want to turn on channel token introspection, you need to specify the OAuth 2.0 introspection endpoint URI with this configuration parameter. Otherwise the plugin will not try introspection, and instead returns `401 Unauthorized` when using opaque channel tokens.
-	ChannelTokenIntrospectionAuthorization *string `json:"channel_token_introspection_authorization,omitempty"`
+	ChannelTokenIntrospectionAuthorization *string `default:"null" json:"channel_token_introspection_authorization"`
 	// If you need to pass additional body arguments to introspection endpoint when the plugin introspects the opaque channel token, you can use this config parameter to specify them. You should URL encode the value. For example: `resource=` or `a=1&b=&c`.
-	ChannelTokenIntrospectionBodyArgs *string `json:"channel_token_introspection_body_args,omitempty"`
+	ChannelTokenIntrospectionBodyArgs *string `default:"null" json:"channel_token_introspection_body_args"`
 	// When the plugin tries to do channel token introspection results to Kong consumer mapping, it tries to find a matching Kong consumer from properties defined using this configuration parameter. The parameter can take an array of values. Valid values are `id`, `username` and `custom_id`.
 	ChannelTokenIntrospectionConsumerBy []ChannelTokenIntrospectionConsumerBy `json:"channel_token_introspection_consumer_by,omitempty"`
 	// When you set a value for this parameter, the plugin tries to map an arbitrary claim specified with this configuration parameter (such as `sub` or `username`) in channel token introspection results to Kong consumer entity
 	ChannelTokenIntrospectionConsumerClaim []string `json:"channel_token_introspection_consumer_claim,omitempty"`
 	// When you use `opaque` access tokens and you want to turn on access token introspection, you need to specify the OAuth 2.0 introspection endpoint URI with this configuration parameter. Otherwise, the plugin does not try introspection and returns `401 Unauthorized` instead.
-	ChannelTokenIntrospectionEndpoint *string `json:"channel_token_introspection_endpoint,omitempty"`
+	ChannelTokenIntrospectionEndpoint *string `default:"null" json:"channel_token_introspection_endpoint"`
 	// If you need to give `hint` parameter when introspecting a channel token, you can use this parameter to specify the value of such parameter. By default, a `hint` isn't sent with channel token introspection.
-	ChannelTokenIntrospectionHint *string `json:"channel_token_introspection_hint,omitempty"`
+	ChannelTokenIntrospectionHint *string `default:"null" json:"channel_token_introspection_hint"`
 	// If your introspection endpoint returns a channel token in one of the keys (or claims) in the introspection results (`JSON`), the plugin can use that value instead of the introspection results when doing expiry verification and signing of the new token issued by Kong.
 	ChannelTokenIntrospectionJwtClaim []string `json:"channel_token_introspection_jwt_claim,omitempty"`
 	// You can use this parameter to adjust clock skew between the token issuer introspection results and Kong. The value will be added to introspection results (`JSON`) `exp` claim/property before checking token expiry against Kong servers current time (in seconds). You can disable channel token introspection `expiry` verification altogether with `config.verify_channel_token_introspection_expiry`.
@@ -408,27 +420,27 @@ type JwtSignerPluginConfig struct {
 	// Use this parameter to specify the required values (or scopes) that are checked by an introspection claim/property specified by `config.channel_token_introspection_scopes_claim`.
 	ChannelTokenIntrospectionScopesRequired []string `json:"channel_token_introspection_scopes_required,omitempty"`
 	// Timeout in milliseconds for an introspection request. The plugin tries to introspect twice if the first request fails for some reason. If both requests timeout, then the plugin runs two times the `config.access_token_introspection_timeout` on channel token introspection.
-	ChannelTokenIntrospectionTimeout *float64 `json:"channel_token_introspection_timeout,omitempty"`
+	ChannelTokenIntrospectionTimeout *float64 `default:"null" json:"channel_token_introspection_timeout"`
 	// The `iss` claim of the re-signed channel token is set to this value, which is `kong` by default. The original `iss` claim of the incoming token (possibly introspected) is stored in the `original_iss` claim of the newly signed channel token.
 	ChannelTokenIssuer *string `default:"kong" json:"channel_token_issuer"`
 	// If you want to use `config.verify_channel_token_signature`, you must specify the URI where the plugin can fetch the public keys (JWKS) to verify the signature of the channel token. If you don't specify a URI and you pass a JWT token to the plugin, then the plugin responds with `401 Unauthorized`.
-	ChannelTokenJwksURI *string `json:"channel_token_jwks_uri,omitempty"`
+	ChannelTokenJwksURI *string `default:"null" json:"channel_token_jwks_uri"`
 	// The client certificate that will be used to authenticate Kong if `access_token_jwks_uri` is an https uri that requires mTLS Auth.
-	ChannelTokenJwksURIClientCertificate *string `json:"channel_token_jwks_uri_client_certificate,omitempty"`
+	ChannelTokenJwksURIClientCertificate *string `default:"null" json:"channel_token_jwks_uri_client_certificate"`
 	// The client password that will be used to authenticate Kong if `channel_token_jwks_uri` is a uri that requires Basic Auth. Should be configured together with `channel_token_jwks_uri_client_username`
-	ChannelTokenJwksURIClientPassword *string `json:"channel_token_jwks_uri_client_password,omitempty"`
+	ChannelTokenJwksURIClientPassword *string `default:"null" json:"channel_token_jwks_uri_client_password"`
 	// The client username that will be used to authenticate Kong if `channel_token_jwks_uri` is a uri that requires Basic Auth. Should be configured together with `channel_token_jwks_uri_client_password`
-	ChannelTokenJwksURIClientUsername *string `json:"channel_token_jwks_uri_client_username,omitempty"`
+	ChannelTokenJwksURIClientUsername *string `default:"null" json:"channel_token_jwks_uri_client_username"`
 	// Specify the period (in seconds) to auto-rotate the jwks for `channel_token_jwks_uri`. The default value 0 means no auto-rotation.
 	ChannelTokenJwksURIRotatePeriod *float64 `default:"0" json:"channel_token_jwks_uri_rotate_period"`
 	// The name of the keyset containing signing keys.
 	ChannelTokenKeyset *string `default:"kong" json:"channel_token_keyset"`
 	// The client certificate that will be used to authenticate Kong if `channel_token_keyset` is an https uri that requires mTLS Auth.
-	ChannelTokenKeysetClientCertificate *string `json:"channel_token_keyset_client_certificate,omitempty"`
+	ChannelTokenKeysetClientCertificate *string `default:"null" json:"channel_token_keyset_client_certificate"`
 	// The client password that will be used to authenticate Kong if `channel_token_keyset` is a uri that requires Basic Auth. Should be configured together with `channel_token_keyset_client_username`
-	ChannelTokenKeysetClientPassword *string `json:"channel_token_keyset_client_password,omitempty"`
+	ChannelTokenKeysetClientPassword *string `default:"null" json:"channel_token_keyset_client_password"`
 	// The client username that will be used to authenticate Kong if `channel_token_keyset` is a uri that requires Basic Auth. Should be configured together with `channel_token_keyset_client_password`
-	ChannelTokenKeysetClientUsername *string `json:"channel_token_keyset_client_username,omitempty"`
+	ChannelTokenKeysetClientUsername *string `default:"null" json:"channel_token_keyset_client_username"`
 	// Specify the period (in seconds) to auto-rotate the jwks for `channel_token_keyset`. The default value 0 means no auto-rotation.
 	ChannelTokenKeysetRotatePeriod *float64 `default:"0" json:"channel_token_keyset_rotate_period"`
 	// Adjusts clock skew between the token issuer and Kong. The value will be added to token's `exp` claim before checking token expiry against Kong servers current time in seconds. You can disable channel token `expiry` verification altogether with `config.verify_channel_token_expiry`.
@@ -436,7 +448,7 @@ type JwtSignerPluginConfig struct {
 	// If a channel token is not provided or no `config.channel_token_request_header` is specified, the plugin cannot verify the channel token. In that case, the plugin normally responds with `401 Unauthorized` (client didn't send a token) or `500 Unexpected` (a configuration error). Enable this parameter to allow the request to proceed even when there is no channel token to check. If the channel token is provided, then this parameter has no effect
 	ChannelTokenOptional *bool `default:"false" json:"channel_token_optional"`
 	// This parameter tells the name of the header where to look for the channel token. If you don't want to do anything with the channel token, then you can set this to `null` or `""` (empty string).
-	ChannelTokenRequestHeader *string `json:"channel_token_request_header,omitempty"`
+	ChannelTokenRequestHeader *string `default:"null" json:"channel_token_request_header"`
 	// Specify the claim in a channel token to verify against values of `config.channel_token_scopes_required`. This supports nested claims.
 	ChannelTokenScopesClaim []string `json:"channel_token_scopes_claim,omitempty"`
 	// Specify the required values (or scopes) that are checked by a claim specified by `config.channel_token_scopes_claim`.
@@ -444,7 +456,7 @@ type JwtSignerPluginConfig struct {
 	// When this plugin sets the upstream header as specified with `config.channel_token_upstream_header`, it also re-signs the original channel token using private keys of this plugin. Specify the algorithm that is used to sign the token.
 	ChannelTokenSigningAlgorithm *ChannelTokenSigningAlgorithm `default:"RS256" json:"channel_token_signing_algorithm"`
 	// This plugin removes the `config.channel_token_request_header` from the request after reading its value.
-	ChannelTokenUpstreamHeader *string `json:"channel_token_upstream_header,omitempty"`
+	ChannelTokenUpstreamHeader *string `default:"null" json:"channel_token_upstream_header"`
 	// If you want to add or perhaps subtract (using negative value) expiry time of the original channel token, you can specify a value that is added to the original channel token's `exp` claim.
 	ChannelTokenUpstreamLeeway *float64 `default:"0" json:"channel_token_upstream_leeway"`
 	// If you don't want to support opaque access tokens, change this configuration parameter to `false` to disable introspection.
@@ -456,11 +468,11 @@ type JwtSignerPluginConfig struct {
 	// Writes log entries with some added information using `ngx.CRIT` (CRITICAL) level.
 	EnableInstrumentation *bool `default:"false" json:"enable_instrumentation"`
 	// The HTTP header name used to store the original access token.
-	OriginalAccessTokenUpstreamHeader *string `json:"original_access_token_upstream_header,omitempty"`
+	OriginalAccessTokenUpstreamHeader *string `default:"null" json:"original_access_token_upstream_header"`
 	// The HTTP header name used to store the original channel token.
-	OriginalChannelTokenUpstreamHeader *string `json:"original_channel_token_upstream_header,omitempty"`
+	OriginalChannelTokenUpstreamHeader *string `default:"null" json:"original_channel_token_upstream_header"`
 	// When authentication or authorization fails, or there is an unexpected error, the plugin sends an `WWW-Authenticate` header with the `realm` attribute value.
-	Realm *string `json:"realm,omitempty"`
+	Realm *string `default:"null" json:"realm"`
 	// remove claims. It should be an array, and each element is a claim key string.
 	RemoveAccessTokenClaims []string `json:"remove_access_token_claims,omitempty"`
 	// remove claims. It should be an array, and each element is a claim key string.
@@ -1224,7 +1236,7 @@ type JwtSignerPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                  `default:"null" json:"instance_name"`
-	name         string                   `const:"jwt-signer" json:"name"`
+	name         *string                  `const:"jwt-signer" json:"name"`
 	Ordering     *JwtSignerPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []JwtSignerPluginPartials `json:"partials"`
@@ -1280,8 +1292,8 @@ func (o *JwtSignerPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *JwtSignerPlugin) GetName() string {
-	return "jwt-signer"
+func (o *JwtSignerPlugin) GetName() *string {
+	return types.String("jwt-signer")
 }
 
 func (o *JwtSignerPlugin) GetOrdering() *JwtSignerPluginOrdering {

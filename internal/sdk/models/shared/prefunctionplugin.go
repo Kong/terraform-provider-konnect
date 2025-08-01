@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type PreFunctionPluginAfter struct {
@@ -53,8 +54,19 @@ type PreFunctionPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (p PreFunctionPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PreFunctionPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *PreFunctionPluginPartials) GetID() *string {
@@ -246,7 +258,7 @@ type PreFunctionPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                    `default:"null" json:"instance_name"`
-	name         string                     `const:"pre-function" json:"name"`
+	name         *string                    `const:"pre-function" json:"name"`
 	Ordering     *PreFunctionPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []PreFunctionPluginPartials `json:"partials"`
@@ -302,8 +314,8 @@ func (o *PreFunctionPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *PreFunctionPlugin) GetName() string {
-	return "pre-function"
+func (o *PreFunctionPlugin) GetName() *string {
+	return types.String("pre-function")
 }
 
 func (o *PreFunctionPlugin) GetOrdering() *PreFunctionPluginOrdering {

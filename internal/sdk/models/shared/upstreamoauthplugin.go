@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type UpstreamOauthPluginAfter struct {
@@ -53,8 +54,19 @@ type UpstreamOauthPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (u UpstreamOauthPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamOauthPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpstreamOauthPluginPartials) GetID() *string {
@@ -277,11 +289,11 @@ type UpstreamOauthPluginRedis struct {
 	// A string representing a host name, such as example.com.
 	Host *string `default:"127.0.0.1" json:"host"`
 	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
-	KeepaliveBacklog *int64 `json:"keepalive_backlog,omitempty"`
+	KeepaliveBacklog *int64 `default:"null" json:"keepalive_backlog"`
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
 	KeepalivePoolSize *int64 `default:"256" json:"keepalive_pool_size"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-	Password *string `json:"password,omitempty"`
+	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `default:"6379" json:"port"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -289,23 +301,23 @@ type UpstreamOauthPluginRedis struct {
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	SendTimeout *int64 `default:"2000" json:"send_timeout"`
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
-	SentinelMaster *string `json:"sentinel_master,omitempty"`
+	SentinelMaster *string `default:"null" json:"sentinel_master"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
 	SentinelNodes []UpstreamOauthPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-	SentinelPassword *string `json:"sentinel_password,omitempty"`
+	SentinelPassword *string `default:"null" json:"sentinel_password"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
 	SentinelRole *UpstreamOauthPluginSentinelRole `json:"sentinel_role,omitempty"`
 	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
-	SentinelUsername *string `json:"sentinel_username,omitempty"`
+	SentinelUsername *string `default:"null" json:"sentinel_username"`
 	// A string representing an SNI (server name indication) value for TLS.
-	ServerName *string `json:"server_name,omitempty"`
+	ServerName *string `default:"null" json:"server_name"`
 	// If set to true, uses SSL to connect to Redis.
 	Ssl *bool `default:"false" json:"ssl"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
 	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
-	Username *string `json:"username,omitempty"`
+	Username *string `default:"null" json:"username"`
 }
 
 func (u UpstreamOauthPluginRedis) MarshalJSON() ([]byte, error) {
@@ -616,19 +628,19 @@ type Client struct {
 	// The algorithm to use with JWT when using `client_secret_jwt` authentication.
 	ClientSecretJwtAlg *ClientSecretJwtAlg `default:"HS512" json:"client_secret_jwt_alg"`
 	// The proxy to use when making HTTP requests to the IdP.
-	HTTPProxy *string `json:"http_proxy,omitempty"`
+	HTTPProxy *string `default:"null" json:"http_proxy"`
 	// The `Proxy-Authorization` header value to be used with `http_proxy`.
-	HTTPProxyAuthorization *string `json:"http_proxy_authorization,omitempty"`
+	HTTPProxyAuthorization *string `default:"null" json:"http_proxy_authorization"`
 	// The HTTP version used for requests made by this plugin. Supported values: `1.1` for HTTP 1.1 and `1.0` for HTTP 1.0.
 	HTTPVersion *float64 `default:"1.1" json:"http_version"`
 	// The proxy to use when making HTTPS requests to the IdP.
-	HTTPSProxy *string `json:"https_proxy,omitempty"`
+	HTTPSProxy *string `default:"null" json:"https_proxy"`
 	// The `Proxy-Authorization` header value to be used with `https_proxy`.
-	HTTPSProxyAuthorization *string `json:"https_proxy_authorization,omitempty"`
+	HTTPSProxyAuthorization *string `default:"null" json:"https_proxy_authorization"`
 	// Whether to use keepalive connections to the IdP.
 	KeepAlive *bool `default:"true" json:"keep_alive"`
 	// A comma-separated list of hosts that should not be proxied.
-	NoProxy *string `json:"no_proxy,omitempty"`
+	NoProxy *string `default:"null" json:"no_proxy"`
 	// Whether to verify the certificate presented by the IdP when using HTTPS.
 	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Network I/O timeout for requests to the IdP in milliseconds.
@@ -754,13 +766,13 @@ type Oauth struct {
 	// List of audiences passed to the IdP when obtaining a new token.
 	Audience []string `json:"audience,omitempty"`
 	// The client ID for the application registration in the IdP.
-	ClientID *string `json:"client_id,omitempty"`
+	ClientID *string `default:"null" json:"client_id"`
 	// The client secret for the application registration in the IdP.
-	ClientSecret *string `json:"client_secret,omitempty"`
+	ClientSecret *string `default:"null" json:"client_secret"`
 	// The OAuth grant type to be used.
 	GrantType *GrantType `default:"client_credentials" json:"grant_type"`
 	// The password to use if `config.oauth.grant_type` is set to `password`.
-	Password *string `json:"password,omitempty"`
+	Password *string `default:"null" json:"password"`
 	// List of scopes to request from the IdP when obtaining a new token.
 	Scopes []string `json:"scopes"`
 	// The token endpoint URI.
@@ -770,7 +782,7 @@ type Oauth struct {
 	// Extra post arguments to be passed in the token endpoint request.
 	TokenPostArgs map[string]any `json:"token_post_args,omitempty"`
 	// The username to use if `config.oauth.grant_type` is set to `password`.
-	Username *string `json:"username,omitempty"`
+	Username *string `default:"null" json:"username"`
 }
 
 func (o Oauth) MarshalJSON() ([]byte, error) {
@@ -979,7 +991,7 @@ type UpstreamOauthPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                      `default:"null" json:"instance_name"`
-	name         string                       `const:"upstream-oauth" json:"name"`
+	name         *string                      `const:"upstream-oauth" json:"name"`
 	Ordering     *UpstreamOauthPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []UpstreamOauthPluginPartials `json:"partials"`
@@ -1039,8 +1051,8 @@ func (o *UpstreamOauthPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *UpstreamOauthPlugin) GetName() string {
-	return "upstream-oauth"
+func (o *UpstreamOauthPlugin) GetName() *string {
+	return types.String("upstream-oauth")
 }
 
 func (o *UpstreamOauthPlugin) GetOrdering() *UpstreamOauthPluginOrdering {

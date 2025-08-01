@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type SyslogPluginAfter struct {
@@ -53,8 +54,19 @@ type SyslogPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (s SyslogPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SyslogPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *SyslogPluginPartials) GetID() *string {
@@ -496,7 +508,7 @@ type SyslogPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string               `default:"null" json:"instance_name"`
-	name         string                `const:"syslog" json:"name"`
+	name         *string               `const:"syslog" json:"name"`
 	Ordering     *SyslogPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []SyslogPluginPartials `json:"partials"`
@@ -554,8 +566,8 @@ func (o *SyslogPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *SyslogPlugin) GetName() string {
-	return "syslog"
+func (o *SyslogPlugin) GetName() *string {
+	return types.String("syslog")
 }
 
 func (o *SyslogPlugin) GetOrdering() *SyslogPluginOrdering {

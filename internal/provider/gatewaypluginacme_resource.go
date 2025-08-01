@@ -28,7 +28,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
-	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 	"regexp"
 )
 
@@ -82,17 +81,16 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 					"account_key": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"key_id":  types.StringType,
+							"key_set": types.StringType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"key_id": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `The Key ID. Not Null`,
-								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
-								},
+								Required:    true,
+								Description: `The Key ID.`,
 							},
 							"key_set": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `The ID of the key set to associate the Key ID with.`,
 							},
@@ -124,18 +122,15 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 						},
 					},
 					"domains": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `An array of strings representing hosts. A valid host is a string containing one or more labels separated by periods, with at most one wildcard label ('*')`,
 					},
 					"eab_hmac_key": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `External account binding (EAB) base64-encoded URL string of the HMAC key. You usually don't need to set this unless it is explicitly required by the CA.`,
 					},
 					"eab_kid": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `External account binding (EAB) key id. You usually don't need to set this unless it is explicitly required by the CA.`,
 					},
@@ -154,7 +149,6 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 							`Default: 5`,
 					},
 					"preferred_chain": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string value that specifies the preferred certificate chain to use when generating certificates.`,
 					},
@@ -195,13 +189,75 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 					"storage_config": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"consul": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`host`:    types.StringType,
+									`https`:   types.BoolType,
+									`kv_path`: types.StringType,
+									`port`:    types.Int64Type,
+									`timeout`: types.Float64Type,
+									`token`:   types.StringType,
+								},
+							},
+							"kong": types.MapType{
+								ElemType: types.StringType,
+							},
+							"redis": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`database`: types.Int64Type,
+									`extra_options`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`namespace`:  types.StringType,
+											`scan_count`: types.Float64Type,
+										},
+									},
+									`host`:        types.StringType,
+									`password`:    types.StringType,
+									`port`:        types.Int64Type,
+									`server_name`: types.StringType,
+									`ssl`:         types.BoolType,
+									`ssl_verify`:  types.BoolType,
+									`timeout`:     types.Int64Type,
+									`username`:    types.StringType,
+								},
+							},
+							"shm": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`shm_name`: types.StringType,
+								},
+							},
+							"vault": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`auth_method`:     types.StringType,
+									`auth_path`:       types.StringType,
+									`auth_role`:       types.StringType,
+									`host`:            types.StringType,
+									`https`:           types.BoolType,
+									`jwt_path`:        types.StringType,
+									`kv_path`:         types.StringType,
+									`port`:            types.Int64Type,
+									`timeout`:         types.Float64Type,
+									`tls_server_name`: types.StringType,
+									`tls_verify`:      types.BoolType,
+									`token`:           types.StringType,
+								},
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"consul": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"host":    types.StringType,
+									"https":   types.BoolType,
+									"kv_path": types.StringType,
+									"port":    types.Int64Type,
+									"timeout": types.Float64Type,
+									"token":   types.StringType,
+								})),
 								Attributes: map[string]schema.Attribute{
 									"host": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `A string representing a host name, such as example.com.`,
 									},
@@ -212,12 +268,10 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 										Description: `Boolean representation of https. Default: false`,
 									},
 									"kv_path": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `KV prefix path.`,
 									},
 									"port": schema.Int64Attribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 										Validators: []validator.Int64{
@@ -225,19 +279,16 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 										},
 									},
 									"timeout": schema.Float64Attribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Timeout in milliseconds.`,
 									},
 									"token": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Consul ACL token.`,
 									},
 								},
 							},
 							"kong": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								Validators: []validator.Map{
@@ -247,6 +298,23 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 							"redis": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"database": types.Int64Type,
+									"extra_options": types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`namespace`:  types.StringType,
+											`scan_count`: types.Float64Type,
+										},
+									},
+									"host":        types.StringType,
+									"password":    types.StringType,
+									"port":        types.Int64Type,
+									"server_name": types.StringType,
+									"ssl":         types.BoolType,
+									"ssl_verify":  types.BoolType,
+									"timeout":     types.Int64Type,
+									"username":    types.StringType,
+								})),
 								Attributes: map[string]schema.Attribute{
 									"database": schema.Int64Attribute{
 										Computed:    true,
@@ -257,6 +325,10 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 									"extra_options": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
+										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+											"namespace":  types.StringType,
+											"scan_count": types.Float64Type,
+										})),
 										Attributes: map[string]schema.Attribute{
 											"namespace": schema.StringAttribute{
 												Computed:    true,
@@ -274,12 +346,10 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 										Description: `Custom ACME Redis options`,
 									},
 									"host": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `A string representing a host name, such as example.com.`,
 									},
 									"password": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 									},
@@ -293,7 +363,6 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 										},
 									},
 									"server_name": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `A string representing an SNI (server name indication) value for TLS.`,
 									},
@@ -319,7 +388,6 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 										},
 									},
 									"username": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
 									},
@@ -328,6 +396,9 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 							"shm": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"shm_name": types.StringType,
+								})),
 								Attributes: map[string]schema.Attribute{
 									"shm_name": schema.StringAttribute{
 										Computed:    true,
@@ -340,6 +411,20 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 							"vault": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"auth_method":     types.StringType,
+									"auth_path":       types.StringType,
+									"auth_role":       types.StringType,
+									"host":            types.StringType,
+									"https":           types.BoolType,
+									"jwt_path":        types.StringType,
+									"kv_path":         types.StringType,
+									"port":            types.Int64Type,
+									"timeout":         types.Float64Type,
+									"tls_server_name": types.StringType,
+									"tls_verify":      types.BoolType,
+									"token":           types.StringType,
+								})),
 								Attributes: map[string]schema.Attribute{
 									"auth_method": schema.StringAttribute{
 										Computed:    true,
@@ -354,17 +439,14 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 										},
 									},
 									"auth_path": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Vault's authentication path to use.`,
 									},
 									"auth_role": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `The role to try and assign.`,
 									},
 									"host": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `A string representing a host name, such as example.com.`,
 									},
@@ -375,17 +457,14 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 										Description: `Boolean representation of https. Default: false`,
 									},
 									"jwt_path": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `The path to the JWT.`,
 									},
 									"kv_path": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `KV prefix path.`,
 									},
 									"port": schema.Int64Attribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 										Validators: []validator.Int64{
@@ -393,12 +472,10 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 										},
 									},
 									"timeout": schema.Float64Attribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Timeout in milliseconds.`,
 									},
 									"tls_server_name": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `SNI used in request, default to host if omitted.`,
 									},
@@ -409,7 +486,6 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 										Description: `Turn on TLS verification. Default: true`,
 									},
 									"token": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Consul ACL token.`,
 									},
@@ -475,9 +551,13 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -486,9 +566,13 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -509,12 +593,10 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

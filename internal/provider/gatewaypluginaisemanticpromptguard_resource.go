@@ -78,6 +78,22 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 							"auth": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"allow_override":             types.BoolType,
+									"aws_access_key_id":          types.StringType,
+									"aws_secret_access_key":      types.StringType,
+									"azure_client_id":            types.StringType,
+									"azure_client_secret":        types.StringType,
+									"azure_tenant_id":            types.StringType,
+									"azure_use_managed_identity": types.BoolType,
+									"gcp_service_account_json":   types.StringType,
+									"gcp_use_service_account":    types.BoolType,
+									"header_name":                types.StringType,
+									"header_value":               types.StringType,
+									"param_location":             types.StringType,
+									"param_name":                 types.StringType,
+									"param_value":                types.StringType,
+								})),
 								Attributes: map[string]schema.Attribute{
 									"allow_override": schema.BoolAttribute{
 										Computed:    true,
@@ -86,27 +102,22 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										Description: `If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin. Default: false`,
 									},
 									"aws_access_key_id": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.`,
 									},
 									"aws_secret_access_key": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.`,
 									},
 									"azure_client_id": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.`,
 									},
 									"azure_client_secret": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.`,
 									},
 									"azure_tenant_id": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.`,
 									},
@@ -117,7 +128,6 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										Description: `Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models. Default: false`,
 									},
 									"gcp_service_account_json": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable ` + "`" + `GCP_SERVICE_ACCOUNT` + "`" + `.`,
 									},
@@ -128,12 +138,10 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										Description: `Use service account auth for GCP-based providers and models. Default: false`,
 									},
 									"header_name": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `If AI model requires authentication via Authorization or API key header, specify its name here.`,
 									},
 									"header_value": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.`,
 									},
@@ -149,12 +157,10 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										},
 									},
 									"param_name": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `If AI model requires authentication via query parameter, specify its name here.`,
 									},
 									"param_value": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Specify the full parameter value for 'param_name'.`,
 									},
@@ -170,10 +176,42 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 									"options": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
+										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+											"azure": types.ObjectType{
+												AttrTypes: map[string]attr.Type{
+													`api_version`:   types.StringType,
+													`deployment_id`: types.StringType,
+													`instance`:      types.StringType,
+												},
+											},
+											"bedrock": types.ObjectType{
+												AttrTypes: map[string]attr.Type{
+													`aws_assume_role_arn`:        types.StringType,
+													`aws_region`:                 types.StringType,
+													`aws_role_session_name`:      types.StringType,
+													`aws_sts_endpoint_url`:       types.StringType,
+													`embeddings_normalize`:       types.BoolType,
+													`performance_config_latency`: types.StringType,
+												},
+											},
+											"gemini": types.ObjectType{
+												AttrTypes: map[string]attr.Type{
+													`api_endpoint`: types.StringType,
+													`location_id`:  types.StringType,
+													`project_id`:   types.StringType,
+												},
+											},
+											"huggingface": types.ObjectType{
+												AttrTypes: map[string]attr.Type{
+													`use_cache`:      types.BoolType,
+													`wait_for_model`: types.BoolType,
+												},
+											},
+											"upstream_url": types.StringType,
+										})),
 										Attributes: map[string]schema.Attribute{
 											"azure": schema.SingleNestedAttribute{
-												Computed: true,
-												Optional: true,
+												Required: true,
 												Attributes: map[string]schema.Attribute{
 													"api_version": schema.StringAttribute{
 														Computed:    true,
@@ -182,42 +220,40 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 														Description: `'api-version' for Azure OpenAI instances. Default: "2023-05-15"`,
 													},
 													"deployment_id": schema.StringAttribute{
-														Computed:    true,
 														Optional:    true,
 														Description: `Deployment ID for Azure OpenAI instances.`,
 													},
 													"instance": schema.StringAttribute{
-														Computed:    true,
 														Optional:    true,
 														Description: `Instance name for Azure OpenAI hosted models.`,
 													},
-												},
-												Description: `Not Null`,
-												Validators: []validator.Object{
-													speakeasy_objectvalidators.NotNull(),
 												},
 											},
 											"bedrock": schema.SingleNestedAttribute{
 												Computed: true,
 												Optional: true,
+												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+													"aws_assume_role_arn":        types.StringType,
+													"aws_region":                 types.StringType,
+													"aws_role_session_name":      types.StringType,
+													"aws_sts_endpoint_url":       types.StringType,
+													"embeddings_normalize":       types.BoolType,
+													"performance_config_latency": types.StringType,
+												})),
 												Attributes: map[string]schema.Attribute{
 													"aws_assume_role_arn": schema.StringAttribute{
-														Computed:    true,
 														Optional:    true,
 														Description: `If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.`,
 													},
 													"aws_region": schema.StringAttribute{
-														Computed:    true,
 														Optional:    true,
 														Description: `If using AWS providers (Bedrock) you can override the ` + "`" + `AWS_REGION` + "`" + ` environment variable by setting this option.`,
 													},
 													"aws_role_session_name": schema.StringAttribute{
-														Computed:    true,
 														Optional:    true,
 														Description: `If using AWS providers (Bedrock), set the identifier of the assumed role session.`,
 													},
 													"aws_sts_endpoint_url": schema.StringAttribute{
-														Computed:    true,
 														Optional:    true,
 														Description: `If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.`,
 													},
@@ -228,7 +264,6 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 														Description: `If using AWS providers (Bedrock), set to true to normalize the embeddings. Default: false`,
 													},
 													"performance_config_latency": schema.StringAttribute{
-														Computed:    true,
 														Optional:    true,
 														Description: `Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.`,
 													},
@@ -237,19 +272,21 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 											"gemini": schema.SingleNestedAttribute{
 												Computed: true,
 												Optional: true,
+												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+													"api_endpoint": types.StringType,
+													"location_id":  types.StringType,
+													"project_id":   types.StringType,
+												})),
 												Attributes: map[string]schema.Attribute{
 													"api_endpoint": schema.StringAttribute{
-														Computed:    true,
 														Optional:    true,
 														Description: `If running Gemini on Vertex, specify the regional API endpoint (hostname only).`,
 													},
 													"location_id": schema.StringAttribute{
-														Computed:    true,
 														Optional:    true,
 														Description: `If running Gemini on Vertex, specify the location ID.`,
 													},
 													"project_id": schema.StringAttribute{
-														Computed:    true,
 														Optional:    true,
 														Description: `If running Gemini on Vertex, specify the project ID.`,
 													},
@@ -258,21 +295,22 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 											"huggingface": schema.SingleNestedAttribute{
 												Computed: true,
 												Optional: true,
+												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+													"use_cache":      types.BoolType,
+													"wait_for_model": types.BoolType,
+												})),
 												Attributes: map[string]schema.Attribute{
 													"use_cache": schema.BoolAttribute{
-														Computed:    true,
 														Optional:    true,
 														Description: `Use the cache layer on the inference API`,
 													},
 													"wait_for_model": schema.BoolAttribute{
-														Computed:    true,
 														Optional:    true,
 														Description: `Wait for the model if it is not ready`,
 													},
 												},
 											},
 											"upstream_url": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `upstream url for the embeddings`,
 											},
@@ -331,15 +369,24 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 					"rules": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"allow_prompts": types.ListType{
+								ElemType: types.StringType,
+							},
+							"deny_prompts": types.ListType{
+								ElemType: types.StringType,
+							},
+							"match_all_conversation_history": types.BoolType,
+							"match_all_roles":                types.BoolType,
+							"max_request_body_size":          types.Int64Type,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"allow_prompts": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `List of prompts to allow.`,
 							},
 							"deny_prompts": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `List of prompts to deny.`,
@@ -367,6 +414,9 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 					"search": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"threshold": types.Float64Type,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"threshold": schema.Float64Attribute{
 								Computed:    true,
@@ -396,6 +446,20 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 							"pgvector": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"database":     types.StringType,
+									"host":         types.StringType,
+									"password":     types.StringType,
+									"port":         types.Int64Type,
+									"ssl":          types.BoolType,
+									"ssl_cert":     types.StringType,
+									"ssl_cert_key": types.StringType,
+									"ssl_required": types.BoolType,
+									"ssl_verify":   types.BoolType,
+									"ssl_version":  types.StringType,
+									"timeout":      types.Float64Type,
+									"user":         types.StringType,
+								})),
 								Attributes: map[string]schema.Attribute{
 									"database": schema.StringAttribute{
 										Computed:    true,
@@ -410,7 +474,6 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										Description: `the host of the pgvector database. Default: "127.0.0.1"`,
 									},
 									"password": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `the password of the pgvector database`,
 									},
@@ -427,12 +490,10 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										Description: `whether to use ssl for the pgvector database. Default: false`,
 									},
 									"ssl_cert": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `the path of ssl cert to use for the pgvector database`,
 									},
 									"ssl_cert_key": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `the path of ssl cert key to use for the pgvector database`,
 									},
@@ -478,6 +539,43 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 							"redis": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"cluster_max_redirections": types.Int64Type,
+									"cluster_nodes": types.ListType{
+										ElemType: types.ObjectType{
+											AttrTypes: map[string]attr.Type{
+												`ip`:   types.StringType,
+												`port`: types.Int64Type,
+											},
+										},
+									},
+									"connect_timeout":       types.Int64Type,
+									"connection_is_proxied": types.BoolType,
+									"database":              types.Int64Type,
+									"host":                  types.StringType,
+									"keepalive_backlog":     types.Int64Type,
+									"keepalive_pool_size":   types.Int64Type,
+									"password":              types.StringType,
+									"port":                  types.Int64Type,
+									"read_timeout":          types.Int64Type,
+									"send_timeout":          types.Int64Type,
+									"sentinel_master":       types.StringType,
+									"sentinel_nodes": types.ListType{
+										ElemType: types.ObjectType{
+											AttrTypes: map[string]attr.Type{
+												`host`: types.StringType,
+												`port`: types.Int64Type,
+											},
+										},
+									},
+									"sentinel_password": types.StringType,
+									"sentinel_role":     types.StringType,
+									"sentinel_username": types.StringType,
+									"server_name":       types.StringType,
+									"ssl":               types.BoolType,
+									"ssl_verify":        types.BoolType,
+									"username":          types.StringType,
+								})),
 								Attributes: map[string]schema.Attribute{
 									"cluster_max_redirections": schema.Int64Attribute{
 										Computed:    true,
@@ -486,7 +584,6 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										Description: `Maximum retry attempts for redirection. Default: 5`,
 									},
 									"cluster_nodes": schema.ListNestedAttribute{
-										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -540,7 +637,6 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 									},
 									"keepalive_backlog": schema.Int64Attribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `keepalive_pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `keepalive_pool_size` + "`" + `.`,
 										Validators: []validator.Int64{
@@ -557,7 +653,6 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										},
 									},
 									"password": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 									},
@@ -589,12 +684,10 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										},
 									},
 									"sentinel_master": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
 									},
 									"sentinel_nodes": schema.ListNestedAttribute{
-										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -621,7 +714,6 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
 									},
 									"sentinel_password": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.`,
 									},
@@ -638,12 +730,10 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										},
 									},
 									"sentinel_username": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.`,
 									},
 									"server_name": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `A string representing an SNI (server name indication) value for TLS.`,
 									},
@@ -660,7 +750,6 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: false`,
 									},
 									"username": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
 									},
@@ -762,9 +851,13 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -773,9 +866,13 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -796,12 +893,10 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

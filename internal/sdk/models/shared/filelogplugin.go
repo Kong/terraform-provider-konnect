@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type FileLogPluginAfter struct {
@@ -53,8 +54,19 @@ type FileLogPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (f FileLogPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *FileLogPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *FileLogPluginPartials) GetID() *string {
@@ -216,7 +228,7 @@ type FileLogPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                `default:"null" json:"instance_name"`
-	name         string                 `const:"file-log" json:"name"`
+	name         *string                `const:"file-log" json:"name"`
 	Ordering     *FileLogPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []FileLogPluginPartials `json:"partials"`
@@ -274,8 +286,8 @@ func (o *FileLogPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *FileLogPlugin) GetName() string {
-	return "file-log"
+func (o *FileLogPlugin) GetName() *string {
+	return types.String("file-log")
 }
 
 func (o *FileLogPlugin) GetOrdering() *FileLogPluginOrdering {

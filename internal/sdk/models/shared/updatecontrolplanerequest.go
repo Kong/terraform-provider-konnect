@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
 // UpdateControlPlaneRequestAuthType - The auth type value of the cluster associated with the Runtime Group.
@@ -37,9 +38,9 @@ func (e *UpdateControlPlaneRequestAuthType) UnmarshalJSON(data []byte) error {
 // UpdateControlPlaneRequest - The request schema for the update control plane request.
 type UpdateControlPlaneRequest struct {
 	// The name of the control plane.
-	Name *string `json:"name,omitempty"`
+	Name *string `default:"null" json:"name"`
 	// The description of the control plane in Konnect.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"null" json:"description"`
 	// The auth type value of the cluster associated with the Runtime Group.
 	AuthType *UpdateControlPlaneRequestAuthType `json:"auth_type,omitempty"`
 	// Array of proxy URLs associated with reaching the data-planes connected to a control-plane.
@@ -49,6 +50,17 @@ type UpdateControlPlaneRequest struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
+}
+
+func (u UpdateControlPlaneRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateControlPlaneRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpdateControlPlaneRequest) GetName() *string {

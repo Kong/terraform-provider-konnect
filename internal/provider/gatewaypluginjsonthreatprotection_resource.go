@@ -69,6 +69,18 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"allow_duplicate_object_entry_name": types.BoolType,
+					"enforcement_mode":                  types.StringType,
+					"error_message":                     types.StringType,
+					"error_status_code":                 types.Int64Type,
+					"max_array_element_count":           types.Int64Type,
+					"max_body_size":                     types.Int64Type,
+					"max_container_depth":               types.Int64Type,
+					"max_object_entry_count":            types.Int64Type,
+					"max_object_entry_name_length":      types.Int64Type,
+					"max_string_value_length":           types.Int64Type,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"allow_duplicate_object_entry_name": schema.BoolAttribute{
 						Computed:    true,
@@ -209,9 +221,13 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -220,9 +236,13 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -243,12 +263,10 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

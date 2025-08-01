@@ -97,6 +97,9 @@ func (r *GatewayPluginProxyCacheResource) Schema(ctx context.Context, req resour
 					"memory": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"dictionary_name": types.StringType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"dictionary_name": schema.StringAttribute{
 								Computed:    true,
@@ -121,6 +124,11 @@ func (r *GatewayPluginProxyCacheResource) Schema(ctx context.Context, req resour
 					"response_headers": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"age":            types.BoolType,
+							"x_cache_key":    types.BoolType,
+							"x_cache_status": types.BoolType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"age": schema.BoolAttribute{
 								Computed:    true,
@@ -144,7 +152,6 @@ func (r *GatewayPluginProxyCacheResource) Schema(ctx context.Context, req resour
 						Description: `Caching related diagnostic headers that should be included in cached responses`,
 					},
 					"storage_ttl": schema.Int64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Number of seconds to keep resources in the storage backend. This value is independent of ` + "`" + `cache_ttl` + "`" + ` or resource TTLs defined by Cache-Control behaviors.`,
 					},
@@ -156,13 +163,11 @@ func (r *GatewayPluginProxyCacheResource) Schema(ctx context.Context, req resour
 						},
 					},
 					"vary_headers": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Relevant headers considered for the cache key. If undefined, none of the headers are taken into consideration.`,
 					},
 					"vary_query_params": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Relevant query parameters considered for the cache key. If undefined, all params are taken into consideration.`,
@@ -247,9 +252,13 @@ func (r *GatewayPluginProxyCacheResource) Schema(ctx context.Context, req resour
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -258,9 +267,13 @@ func (r *GatewayPluginProxyCacheResource) Schema(ctx context.Context, req resour
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -281,12 +294,10 @@ func (r *GatewayPluginProxyCacheResource) Schema(ctx context.Context, req resour
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

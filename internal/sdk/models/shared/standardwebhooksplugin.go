@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type StandardWebhooksPluginAfter struct {
@@ -53,8 +54,19 @@ type StandardWebhooksPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (s StandardWebhooksPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StandardWebhooksPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *StandardWebhooksPluginPartials) GetID() *string {
@@ -188,7 +200,7 @@ type StandardWebhooksPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                         `default:"null" json:"instance_name"`
-	name         string                          `const:"standard-webhooks" json:"name"`
+	name         *string                         `const:"standard-webhooks" json:"name"`
 	Ordering     *StandardWebhooksPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []StandardWebhooksPluginPartials `json:"partials"`
@@ -246,8 +258,8 @@ func (o *StandardWebhooksPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *StandardWebhooksPlugin) GetName() string {
-	return "standard-webhooks"
+func (o *StandardWebhooksPlugin) GetName() *string {
+	return types.String("standard-webhooks")
 }
 
 func (o *StandardWebhooksPlugin) GetOrdering() *StandardWebhooksPluginOrdering {

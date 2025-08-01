@@ -71,9 +71,37 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"aws_assume_role_arn":       types.StringType,
+					"aws_imds_protocol_version": types.StringType,
+					"aws_key":                   types.StringType,
+					"aws_region":                types.StringType,
+					"aws_role_session_name":     types.StringType,
+					"aws_secret":                types.StringType,
+					"aws_sts_endpoint_url":      types.StringType,
+					"awsgateway_compatible":     types.BoolType,
+					"base64_encode_body":        types.BoolType,
+					"disable_https":             types.BoolType,
+					"empty_arrays_mode":         types.StringType,
+					"forward_request_body":      types.BoolType,
+					"forward_request_headers":   types.BoolType,
+					"forward_request_method":    types.BoolType,
+					"forward_request_uri":       types.BoolType,
+					"function_name":             types.StringType,
+					"host":                      types.StringType,
+					"invocation_type":           types.StringType,
+					"is_proxy_integration":      types.BoolType,
+					"keepalive":                 types.Float64Type,
+					"log_type":                  types.StringType,
+					"port":                      types.Int64Type,
+					"proxy_url":                 types.StringType,
+					"qualifier":                 types.StringType,
+					"skip_large_bodies":         types.BoolType,
+					"timeout":                   types.Float64Type,
+					"unhandled_status":          types.Int64Type,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"aws_assume_role_arn": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The target AWS IAM role ARN used to invoke the Lambda function.`,
 					},
@@ -87,12 +115,10 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 						},
 					},
 					"aws_key": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The AWS key credential to be used when invoking the function.`,
 					},
 					"aws_region": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing a host name, such as example.com.`,
 					},
@@ -103,12 +129,10 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 						Description: `The identifier of the assumed role session. Default: "kong"`,
 					},
 					"aws_secret": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The AWS secret credential to be used when invoking the function.`,
 					},
 					"aws_sts_endpoint_url": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
 					},
@@ -167,12 +191,10 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 						Description: `An optional value that defines whether the original HTTP request URI is sent in the request_uri field of the JSON-encoded request. Default: false`,
 					},
 					"function_name": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The AWS Lambda function to invoke. Both function name and function ARN (including partial) are supported.`,
 					},
 					"host": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing a host name, such as example.com.`,
 					},
@@ -223,12 +245,10 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 						},
 					},
 					"proxy_url": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
 					},
 					"qualifier": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The qualifier to use when invoking the function.`,
 					},
@@ -245,7 +265,6 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 						Description: `An optional timeout in milliseconds when invoking the function. Default: 60000`,
 					},
 					"unhandled_status": schema.Int64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The response status code to use (instead of the default 200, 202, or 204) in the case of an Unhandled Function Error.`,
 						Validators: []validator.Int64{
@@ -318,9 +337,13 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -329,9 +352,13 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -352,12 +379,10 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

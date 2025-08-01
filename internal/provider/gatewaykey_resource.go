@@ -95,11 +95,9 @@ func (r *GatewayKeyResource) Schema(ctx context.Context, req resource.SchemaRequ
 				})),
 				Attributes: map[string]schema.Attribute{
 					"private_key": schema.StringAttribute{
-						Computed: true,
 						Optional: true,
 					},
 					"public_key": schema.StringAttribute{
-						Computed: true,
 						Optional: true,
 					},
 				},

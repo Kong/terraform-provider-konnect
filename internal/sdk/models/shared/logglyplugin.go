@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type LogglyPluginAfter struct {
@@ -53,8 +54,19 @@ type LogglyPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (l LogglyPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LogglyPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *LogglyPluginPartials) GetID() *string {
@@ -448,7 +460,7 @@ type LogglyPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string               `default:"null" json:"instance_name"`
-	name         string                `const:"loggly" json:"name"`
+	name         *string               `const:"loggly" json:"name"`
 	Ordering     *LogglyPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []LogglyPluginPartials `json:"partials"`
@@ -506,8 +518,8 @@ func (o *LogglyPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *LogglyPlugin) GetName() string {
-	return "loggly"
+func (o *LogglyPlugin) GetName() *string {
+	return types.String("loggly")
 }
 
 func (o *LogglyPlugin) GetOrdering() *LogglyPluginOrdering {

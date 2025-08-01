@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type TLSMetadataHeadersPluginAfter struct {
@@ -53,8 +54,19 @@ type TLSMetadataHeadersPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (t TLSMetadataHeadersPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TLSMetadataHeadersPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *TLSMetadataHeadersPluginPartials) GetID() *string {
@@ -209,7 +221,7 @@ type TLSMetadataHeadersPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                           `default:"null" json:"instance_name"`
-	name         string                            `const:"tls-metadata-headers" json:"name"`
+	name         *string                           `const:"tls-metadata-headers" json:"name"`
 	Ordering     *TLSMetadataHeadersPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []TLSMetadataHeadersPluginPartials `json:"partials"`
@@ -265,8 +277,8 @@ func (o *TLSMetadataHeadersPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *TLSMetadataHeadersPlugin) GetName() string {
-	return "tls-metadata-headers"
+func (o *TLSMetadataHeadersPlugin) GetName() *string {
+	return types.String("tls-metadata-headers")
 }
 
 func (o *TLSMetadataHeadersPlugin) GetOrdering() *TLSMetadataHeadersPluginOrdering {

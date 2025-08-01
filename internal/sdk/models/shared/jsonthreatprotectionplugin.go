@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type JSONThreatProtectionPluginAfter struct {
@@ -53,8 +54,19 @@ type JSONThreatProtectionPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (j JSONThreatProtectionPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JSONThreatProtectionPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *JSONThreatProtectionPluginPartials) GetID() *string {
@@ -275,7 +287,7 @@ type JSONThreatProtectionPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                             `default:"null" json:"instance_name"`
-	name         string                              `const:"json-threat-protection" json:"name"`
+	name         *string                             `const:"json-threat-protection" json:"name"`
 	Ordering     *JSONThreatProtectionPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []JSONThreatProtectionPluginPartials `json:"partials"`
@@ -331,8 +343,8 @@ func (o *JSONThreatProtectionPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *JSONThreatProtectionPlugin) GetName() string {
-	return "json-threat-protection"
+func (o *JSONThreatProtectionPlugin) GetName() *string {
+	return types.String("json-threat-protection")
 }
 
 func (o *JSONThreatProtectionPlugin) GetOrdering() *JSONThreatProtectionPluginOrdering {

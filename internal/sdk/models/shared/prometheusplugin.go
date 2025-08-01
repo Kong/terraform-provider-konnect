@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type PrometheusPluginAfter struct {
@@ -53,8 +54,19 @@ type PrometheusPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (p PrometheusPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PrometheusPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *PrometheusPluginPartials) GetID() *string {
@@ -252,7 +264,7 @@ type PrometheusPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                   `default:"null" json:"instance_name"`
-	name         string                    `const:"prometheus" json:"name"`
+	name         *string                   `const:"prometheus" json:"name"`
 	Ordering     *PrometheusPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []PrometheusPluginPartials `json:"partials"`
@@ -310,8 +322,8 @@ func (o *PrometheusPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *PrometheusPlugin) GetName() string {
-	return "prometheus"
+func (o *PrometheusPlugin) GetName() *string {
+	return types.String("prometheus")
 }
 
 func (o *PrometheusPlugin) GetOrdering() *PrometheusPluginOrdering {

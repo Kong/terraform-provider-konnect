@@ -87,7 +87,6 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 						},
 					},
 					"custom_fields_by_lua": schema.MapAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Lua code as a key-value map`,
@@ -96,12 +95,10 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 						},
 					},
 					"flush_timeout": schema.Float64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Optional time in seconds. If ` + "`" + `queue_size` + "`" + ` > 1, this is the max idle time before sending a log with less than ` + "`" + `queue_size` + "`" + ` records.`,
 					},
 					"headers": schema.MapAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `An optional table of headers included in the HTTP message to the upstream server. Values are indexed by header name, and each header name accepts a single string.`,
@@ -135,6 +132,16 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 					"queue": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"concurrency_limit":    types.Int64Type,
+							"initial_retry_delay":  types.Float64Type,
+							"max_batch_size":       types.Int64Type,
+							"max_bytes":            types.Int64Type,
+							"max_coalescing_delay": types.Float64Type,
+							"max_entries":          types.Int64Type,
+							"max_retry_delay":      types.Float64Type,
+							"max_retry_time":       types.Float64Type,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"concurrency_limit": schema.Int64Attribute{
 								Computed:    true,
@@ -164,7 +171,6 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 								},
 							},
 							"max_bytes": schema.Int64Attribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Maximum number of bytes that can be waiting on a queue, requires string content.`,
 							},
@@ -204,12 +210,10 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 						},
 					},
 					"queue_size": schema.Int64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Maximum number of log entries to be sent on each message to the upstream server.`,
 					},
 					"retry_count": schema.Int64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Number of times to retry when sending data to the upstream server.`,
 					},
@@ -285,9 +289,13 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -296,9 +304,13 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -319,12 +331,10 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

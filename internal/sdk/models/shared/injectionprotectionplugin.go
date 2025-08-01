@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type InjectionProtectionPluginAfter struct {
@@ -53,8 +54,19 @@ type InjectionProtectionPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (i InjectionProtectionPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *InjectionProtectionPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *InjectionProtectionPluginPartials) GetID() *string {
@@ -327,7 +339,7 @@ type InjectionProtectionPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                            `default:"null" json:"instance_name"`
-	name         string                             `const:"injection-protection" json:"name"`
+	name         *string                            `const:"injection-protection" json:"name"`
 	Ordering     *InjectionProtectionPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []InjectionProtectionPluginPartials `json:"partials"`
@@ -383,8 +395,8 @@ func (o *InjectionProtectionPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *InjectionProtectionPlugin) GetName() string {
-	return "injection-protection"
+func (o *InjectionProtectionPlugin) GetName() *string {
+	return types.String("injection-protection")
 }
 
 func (o *InjectionProtectionPlugin) GetOrdering() *InjectionProtectionPluginOrdering {

@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+)
+
 // PortalAppearance - Update a portal's appearance settings
 type PortalAppearance struct {
 	// Select a pre-existing default theme or specify 'custom' to use custom_theme variables.
@@ -11,11 +15,22 @@ type PortalAppearance struct {
 	// Font selections to render text in the portal user interface. Must set use_custom_fonts to true to enable using custom font values.
 	CustomFonts *NullableAppearanceFonts `json:"custom_fonts"`
 	// If true, fonts in custom_fonts will be used over the theme's default fonts
-	UseCustomFonts *bool `json:"use_custom_fonts,omitempty"`
+	UseCustomFonts *bool `default:"null" json:"use_custom_fonts"`
 	// Values to display for customizable text in the portal user interface
 	Text *NullableAppearanceTextVariables `json:"text"`
 	// A collection of binary image data to customize images in the portal
 	Images *AppearanceImages `json:"images"`
+}
+
+func (p PortalAppearance) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PortalAppearance) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *PortalAppearance) GetThemeName() *PortalTheme {

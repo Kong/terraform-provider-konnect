@@ -75,14 +75,57 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"batch_flush_delay": types.Int64Type,
+					"batch_span_count":  types.Int64Type,
+					"connect_timeout":   types.Int64Type,
+					"header_type":       types.StringType,
+					"headers": types.MapType{
+						ElemType: types.StringType,
+					},
+					"http_response_header_for_traceid": types.StringType,
+					"logs_endpoint":                    types.StringType,
+					"propagation": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`clear`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`default_format`: types.StringType,
+							`extract`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`inject`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"queue": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`concurrency_limit`:    types.Int64Type,
+							`initial_retry_delay`:  types.Float64Type,
+							`max_batch_size`:       types.Int64Type,
+							`max_bytes`:            types.Int64Type,
+							`max_coalescing_delay`: types.Float64Type,
+							`max_entries`:          types.Int64Type,
+							`max_retry_delay`:      types.Float64Type,
+							`max_retry_time`:       types.Float64Type,
+						},
+					},
+					"read_timeout": types.Int64Type,
+					"resource_attributes": types.MapType{
+						ElemType: types.StringType,
+					},
+					"sampling_rate":     types.Float64Type,
+					"sampling_strategy": types.StringType,
+					"send_timeout":      types.Int64Type,
+					"traces_endpoint":   types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"batch_flush_delay": schema.Int64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The delay, in seconds, between two consecutive batches.`,
 					},
 					"batch_span_count": schema.Int64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The number of spans to be sent in a single batch.`,
 					},
@@ -117,7 +160,6 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						},
 					},
 					"headers": schema.MapAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `The custom headers to be added in the HTTP request sent to the OTLP server. This setting is useful for adding the authentication headers (token) for the APM backend.`,
@@ -126,11 +168,9 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						},
 					},
 					"http_response_header_for_traceid": schema.StringAttribute{
-						Computed: true,
 						Optional: true,
 					},
 					"logs_endpoint": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
 					},
@@ -139,7 +179,6 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"clear": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `Header names to clear after context extraction. This allows to extract the context from a certain header and then remove it from the request, useful when extraction and injection are performed on different header formats and the original header should not be sent to the upstream. If left empty, no headers are cleared.`,
@@ -164,13 +203,11 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 								},
 							},
 							"extract": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `Header formats used to extract tracing context from incoming requests. If multiple values are specified, the first one found will be used for extraction. If left empty, Kong will not extract any tracing context information from incoming requests and generate a trace with no parent and a new trace ID.`,
 							},
 							"inject": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `Header formats used to inject tracing context. The value ` + "`" + `preserve` + "`" + ` will use the same header format as the incoming request. If multiple values are specified, all of them will be used during injection. If left empty, Kong will not inject any tracing context information in outgoing requests.`,
@@ -209,7 +246,6 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 								},
 							},
 							"max_bytes": schema.Int64Attribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Maximum number of bytes that can be waiting on a queue, requires string content.`,
 							},
@@ -258,7 +294,6 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						},
 					},
 					"resource_attributes": schema.MapAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Validators: []validator.Map{
@@ -266,7 +301,6 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						},
 					},
 					"sampling_rate": schema.Float64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Tracing sampling rate for configuring the probability-based sampler. When set, this value supersedes the global ` + "`" + `tracing_sampling_rate` + "`" + ` setting from kong.conf.`,
 						Validators: []validator.Float64{
@@ -295,7 +329,6 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						},
 					},
 					"traces_endpoint": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
 					},
@@ -365,9 +398,13 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -376,9 +413,13 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -399,12 +440,10 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

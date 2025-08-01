@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type DatadogPluginAfter struct {
@@ -53,8 +54,19 @@ type DatadogPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (d DatadogPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatadogPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *DatadogPluginPartials) GetID() *string {
@@ -195,11 +207,22 @@ type Metrics struct {
 	// Datadog metric’s name
 	Name DatadogPluginName `json:"name"`
 	// Sampling rate
-	SampleRate *float64 `json:"sample_rate,omitempty"`
+	SampleRate *float64 `default:"null" json:"sample_rate"`
 	// Determines what sort of event the metric represents
 	StatType StatType `json:"stat_type"`
 	// List of tags
 	Tags []string `json:"tags,omitempty"`
+}
+
+func (m Metrics) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *Metrics) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Metrics) GetConsumerIdentifier() *ConsumerIdentifier {
@@ -272,7 +295,7 @@ type Queue struct {
 	// Maximum number of entries that can be processed at a time.
 	MaxBatchSize *int64 `default:"1" json:"max_batch_size"`
 	// Maximum number of bytes that can be waiting on a queue, requires string content.
-	MaxBytes *int64 `json:"max_bytes,omitempty"`
+	MaxBytes *int64 `default:"null" json:"max_bytes"`
 	// Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.
 	MaxCoalescingDelay *float64 `default:"1" json:"max_coalescing_delay"`
 	// Maximum number of entries that can be waiting on the queue.
@@ -354,7 +377,7 @@ type DatadogPluginConfig struct {
 	// String to be attached as tag of the consumer.
 	ConsumerTag *string `default:"consumer" json:"consumer_tag"`
 	// Optional time in seconds. If `queue_size` > 1, this is the max idle time before sending a log with less than `queue_size` records.
-	FlushTimeout *float64 `json:"flush_timeout,omitempty"`
+	FlushTimeout *float64 `default:"null" json:"flush_timeout"`
 	// A string representing a host name, such as example.com.
 	Host *string `default:"localhost" json:"host"`
 	// List of metrics to be logged.
@@ -365,9 +388,9 @@ type DatadogPluginConfig struct {
 	Prefix *string `default:"kong" json:"prefix"`
 	Queue  *Queue  `json:"queue,omitempty"`
 	// Maximum number of log entries to be sent on each message to the upstream server.
-	QueueSize *int64 `json:"queue_size,omitempty"`
+	QueueSize *int64 `default:"null" json:"queue_size"`
 	// Number of times to retry when sending data to the upstream server.
-	RetryCount *int64 `json:"retry_count,omitempty"`
+	RetryCount *int64 `default:"null" json:"retry_count"`
 	// String to be attached as the name of the service.
 	ServiceNameTag *string `default:"name" json:"service_name_tag"`
 	// String to be attached as the tag of the HTTP status.
@@ -559,7 +582,7 @@ type DatadogPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                `default:"null" json:"instance_name"`
-	name         string                 `const:"datadog" json:"name"`
+	name         *string                `const:"datadog" json:"name"`
 	Ordering     *DatadogPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []DatadogPluginPartials `json:"partials"`
@@ -617,8 +640,8 @@ func (o *DatadogPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *DatadogPlugin) GetName() string {
-	return "datadog"
+func (o *DatadogPlugin) GetName() *string {
+	return types.String("datadog")
 }
 
 func (o *DatadogPlugin) GetOrdering() *DatadogPluginOrdering {

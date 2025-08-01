@@ -111,13 +111,49 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 						Description: `The shared dictionary where concurrency control locks are stored. The default shared dictionary is ` + "`" + `kong_locks` + "`" + `. The shared dictionary should be declared in nginx-kong.conf. Default: "kong_locks"`,
 					},
 					"namespace": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. ` + "`" + `strategy` + "`" + `, ` + "`" + `redis` + "`" + `, ` + "`" + `sync_rate` + "`" + `, ` + "`" + `dictionary_name` + "`" + `, need to be the same.`,
 					},
 					"redis": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"cluster_max_redirections": types.Int64Type,
+							"cluster_nodes": types.ListType{
+								ElemType: types.ObjectType{
+									AttrTypes: map[string]attr.Type{
+										`ip`:   types.StringType,
+										`port`: types.Int64Type,
+									},
+								},
+							},
+							"connect_timeout":       types.Int64Type,
+							"connection_is_proxied": types.BoolType,
+							"database":              types.Int64Type,
+							"host":                  types.StringType,
+							"keepalive_backlog":     types.Int64Type,
+							"keepalive_pool_size":   types.Int64Type,
+							"password":              types.StringType,
+							"port":                  types.Int64Type,
+							"read_timeout":          types.Int64Type,
+							"send_timeout":          types.Int64Type,
+							"sentinel_master":       types.StringType,
+							"sentinel_nodes": types.ListType{
+								ElemType: types.ObjectType{
+									AttrTypes: map[string]attr.Type{
+										`host`: types.StringType,
+										`port`: types.Int64Type,
+									},
+								},
+							},
+							"sentinel_password": types.StringType,
+							"sentinel_role":     types.StringType,
+							"sentinel_username": types.StringType,
+							"server_name":       types.StringType,
+							"ssl":               types.BoolType,
+							"ssl_verify":        types.BoolType,
+							"username":          types.StringType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"cluster_max_redirections": schema.Int64Attribute{
 								Computed:    true,
@@ -126,7 +162,6 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 								Description: `Maximum retry attempts for redirection. Default: 5`,
 							},
 							"cluster_nodes": schema.ListNestedAttribute{
-								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
@@ -180,7 +215,6 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 								Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 							},
 							"keepalive_backlog": schema.Int64Attribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `keepalive_pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `keepalive_pool_size` + "`" + `.`,
 								Validators: []validator.Int64{
@@ -197,7 +231,6 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 								},
 							},
 							"password": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 							},
@@ -229,12 +262,10 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 								},
 							},
 							"sentinel_master": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
 							},
 							"sentinel_nodes": schema.ListNestedAttribute{
-								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
@@ -261,7 +292,6 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 								Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
 							},
 							"sentinel_password": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.`,
 							},
@@ -278,12 +308,10 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 								},
 							},
 							"sentinel_username": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.`,
 							},
 							"server_name": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `A string representing an SNI (server name indication) value for TLS.`,
 							},
@@ -300,7 +328,6 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: false`,
 							},
 							"username": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
 							},
@@ -326,7 +353,6 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 						},
 					},
 					"sync_rate": schema.Float64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 will sync the counters in the specified number of seconds. The minimum allowed interval is 0.02 seconds (20ms).`,
 					},
@@ -399,9 +425,13 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -410,9 +440,13 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -433,12 +467,10 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

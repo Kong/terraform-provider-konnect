@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type RequestSizeLimitingPluginAfter struct {
@@ -53,8 +54,19 @@ type RequestSizeLimitingPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (r RequestSizeLimitingPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestSizeLimitingPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestSizeLimitingPluginPartials) GetID() *string {
@@ -227,7 +239,7 @@ type RequestSizeLimitingPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                            `default:"null" json:"instance_name"`
-	name         string                             `const:"request-size-limiting" json:"name"`
+	name         *string                            `const:"request-size-limiting" json:"name"`
 	Ordering     *RequestSizeLimitingPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []RequestSizeLimitingPluginPartials `json:"partials"`
@@ -285,8 +297,8 @@ func (o *RequestSizeLimitingPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *RequestSizeLimitingPlugin) GetName() string {
-	return "request-size-limiting"
+func (o *RequestSizeLimitingPlugin) GetName() *string {
+	return types.String("request-size-limiting")
 }
 
 func (o *RequestSizeLimitingPlugin) GetOrdering() *RequestSizeLimitingPluginOrdering {

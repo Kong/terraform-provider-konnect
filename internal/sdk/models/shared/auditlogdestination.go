@@ -12,9 +12,9 @@ type AuditLogDestination struct {
 	// The unique ID of the audit log destination.
 	ID *string `json:"id,omitempty"`
 	// The name of the audit log destination.
-	Name *string `json:"name,omitempty"`
+	Name *string `default:"null" json:"name"`
 	// The endpoint that will receive audit log messages.
-	Endpoint *string `json:"endpoint,omitempty"`
+	Endpoint *string `default:"null" json:"endpoint"`
 	// The output format of each log messages.
 	LogFormat *LogFormat `default:"cef" json:"log_format"`
 	// Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.

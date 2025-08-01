@@ -70,6 +70,58 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"bypass_on_err": types.BoolType,
+					"cache_ttl":     types.Int64Type,
+					"memory": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`dictionary_name`: types.StringType,
+						},
+					},
+					"redis": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`cluster_max_redirections`: types.Int64Type,
+							`cluster_nodes`: types.ListType{
+								ElemType: types.ObjectType{
+									AttrTypes: map[string]attr.Type{
+										`ip`:   types.StringType,
+										`port`: types.Int64Type,
+									},
+								},
+							},
+							`connect_timeout`:       types.Int64Type,
+							`connection_is_proxied`: types.BoolType,
+							`database`:              types.Int64Type,
+							`host`:                  types.StringType,
+							`keepalive_backlog`:     types.Int64Type,
+							`keepalive_pool_size`:   types.Int64Type,
+							`password`:              types.StringType,
+							`port`:                  types.Int64Type,
+							`read_timeout`:          types.Int64Type,
+							`send_timeout`:          types.Int64Type,
+							`sentinel_master`:       types.StringType,
+							`sentinel_nodes`: types.ListType{
+								ElemType: types.ObjectType{
+									AttrTypes: map[string]attr.Type{
+										`host`: types.StringType,
+										`port`: types.Int64Type,
+									},
+								},
+							},
+							`sentinel_password`: types.StringType,
+							`sentinel_role`:     types.StringType,
+							`sentinel_username`: types.StringType,
+							`server_name`:       types.StringType,
+							`ssl`:               types.BoolType,
+							`ssl_verify`:        types.BoolType,
+							`username`:          types.StringType,
+						},
+					},
+					"strategy": types.StringType,
+					"vary_headers": types.ListType{
+						ElemType: types.StringType,
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"bypass_on_err": schema.BoolAttribute{
 						Computed:    true,
@@ -86,6 +138,9 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 					"memory": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"dictionary_name": types.StringType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"dictionary_name": schema.StringAttribute{
 								Computed:    true,
@@ -98,6 +153,43 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 					"redis": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"cluster_max_redirections": types.Int64Type,
+							"cluster_nodes": types.ListType{
+								ElemType: types.ObjectType{
+									AttrTypes: map[string]attr.Type{
+										`ip`:   types.StringType,
+										`port`: types.Int64Type,
+									},
+								},
+							},
+							"connect_timeout":       types.Int64Type,
+							"connection_is_proxied": types.BoolType,
+							"database":              types.Int64Type,
+							"host":                  types.StringType,
+							"keepalive_backlog":     types.Int64Type,
+							"keepalive_pool_size":   types.Int64Type,
+							"password":              types.StringType,
+							"port":                  types.Int64Type,
+							"read_timeout":          types.Int64Type,
+							"send_timeout":          types.Int64Type,
+							"sentinel_master":       types.StringType,
+							"sentinel_nodes": types.ListType{
+								ElemType: types.ObjectType{
+									AttrTypes: map[string]attr.Type{
+										`host`: types.StringType,
+										`port`: types.Int64Type,
+									},
+								},
+							},
+							"sentinel_password": types.StringType,
+							"sentinel_role":     types.StringType,
+							"sentinel_username": types.StringType,
+							"server_name":       types.StringType,
+							"ssl":               types.BoolType,
+							"ssl_verify":        types.BoolType,
+							"username":          types.StringType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"cluster_max_redirections": schema.Int64Attribute{
 								Computed:    true,
@@ -106,7 +198,6 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 								Description: `Maximum retry attempts for redirection. Default: 5`,
 							},
 							"cluster_nodes": schema.ListNestedAttribute{
-								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
@@ -160,7 +251,6 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 								Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 							},
 							"keepalive_backlog": schema.Int64Attribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `keepalive_pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `keepalive_pool_size` + "`" + `.`,
 								Validators: []validator.Int64{
@@ -177,7 +267,6 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 								},
 							},
 							"password": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 							},
@@ -209,12 +298,10 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 								},
 							},
 							"sentinel_master": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
 							},
 							"sentinel_nodes": schema.ListNestedAttribute{
-								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
@@ -241,7 +328,6 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 								Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
 							},
 							"sentinel_password": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.`,
 							},
@@ -258,12 +344,10 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 								},
 							},
 							"sentinel_username": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.`,
 							},
 							"server_name": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `A string representing an SNI (server name indication) value for TLS.`,
 							},
@@ -280,7 +364,6 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: false`,
 							},
 							"username": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
 							},
@@ -299,7 +382,6 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 						},
 					},
 					"vary_headers": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Relevant headers considered for the cache key. If undefined, none of the headers are taken into consideration.`,
@@ -370,9 +452,13 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -381,9 +467,13 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -404,12 +494,10 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

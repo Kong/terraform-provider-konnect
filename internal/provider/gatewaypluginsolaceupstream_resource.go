@@ -85,7 +85,6 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 								},
 							},
 							"default_content": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `When not using ` + "`" + `forward_method` + "`" + `, ` + "`" + `forward_uri` + "`" + `, ` + "`" + `forward_headers` + "`" + ` or ` + "`" + `forward_body` + "`" + `, this sets the message content.`,
 							},
@@ -163,7 +162,6 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 								Description: `Include the request URI and the URI arguments (as in, query arguments) in the message. Default: false`,
 							},
 							"functions": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `The Lua functions that manipulates (or generates) the message being sent to Solace. The ` + "`" + `message` + "`" + ` variable can be used to access the current message content, and the function can return a new content.`,
@@ -210,27 +208,31 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 							"authentication": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"access_token":        types.StringType,
+									"access_token_header": types.StringType,
+									"id_token":            types.StringType,
+									"id_token_header":     types.StringType,
+									"password":            types.StringType,
+									"scheme":              types.StringType,
+									"username":            types.StringType,
+								})),
 								Attributes: map[string]schema.Attribute{
 									"access_token": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `The OAuth2 access token used with ` + "`" + `OAUTH2` + "`" + ` authentication scheme when connecting to an event broker.`,
 									},
 									"access_token_header": schema.StringAttribute{
-										Computed: true,
 										Optional: true,
 									},
 									"id_token": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `The OpenID Connect ID token used with ` + "`" + `OAUTH2` + "`" + ` authentication scheme when connecting to an event broker.`,
 									},
 									"id_token_header": schema.StringAttribute{
-										Computed: true,
 										Optional: true,
 									},
 									"password": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `The password used with ` + "`" + `BASIC` + "`" + ` authentication scheme when connecting to an event broker.`,
 									},
@@ -248,7 +250,6 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 										},
 									},
 									"username": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `The username used with ` + "`" + `BASIC` + "`" + ` authentication scheme when connecting to an event broker .`,
 									},
@@ -269,7 +270,6 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 								Description: `The IPv4 or IPv6 address or host name to connect to (see: https://docs.solace.com/API-Developer-Online-Ref-Documentation/c/index.html#host-entry).`,
 							},
 							"properties": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `Additional Solace session properties (each setting needs to have ` + "`" + `SESSION_` + "`" + ` prefix).`,
@@ -284,7 +284,6 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 								Description: `Indicates whether the API should validate server certificates with the trusted certificates. Default: false`,
 							},
 							"vpn_name": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `The name of the Message VPN to attempt to join when connecting to an event broker.`,
 							},
@@ -343,9 +342,13 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -354,9 +357,13 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -377,12 +384,10 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

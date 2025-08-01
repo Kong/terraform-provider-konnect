@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type DatadogTracingPluginAfter struct {
@@ -53,8 +54,19 @@ type DatadogTracingPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (d DatadogTracingPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatadogTracingPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *DatadogTracingPluginPartials) GetID() *string {
@@ -82,7 +94,7 @@ type DatadogTracingPluginConfig struct {
 	BatchFlushDelay *int64  `default:"3" json:"batch_flush_delay"`
 	BatchSpanCount  *int64  `default:"200" json:"batch_span_count"`
 	ConnectTimeout  *int64  `default:"1000" json:"connect_timeout"`
-	Endpoint        *string `json:"endpoint,omitempty"`
+	Endpoint        *string `default:"null" json:"endpoint"`
 	Environment     *string `default:"none" json:"environment"`
 	ReadTimeout     *int64  `default:"5000" json:"read_timeout"`
 	SendTimeout     *int64  `default:"5000" json:"send_timeout"`
@@ -234,7 +246,7 @@ type DatadogTracingPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                       `default:"null" json:"instance_name"`
-	name         string                        `const:"datadog-tracing" json:"name"`
+	name         *string                       `const:"datadog-tracing" json:"name"`
 	Ordering     *DatadogTracingPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []DatadogTracingPluginPartials `json:"partials"`
@@ -292,8 +304,8 @@ func (o *DatadogTracingPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *DatadogTracingPlugin) GetName() string {
-	return "datadog-tracing"
+func (o *DatadogTracingPlugin) GetName() *string {
+	return types.String("datadog-tracing")
 }
 
 func (o *DatadogTracingPlugin) GetOrdering() *DatadogTracingPluginOrdering {

@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type KeyAuthPluginAfter struct {
@@ -53,8 +54,19 @@ type KeyAuthPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (k KeyAuthPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KeyAuthPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KeyAuthPluginPartials) GetID() *string {
@@ -107,8 +119,19 @@ func (e *Scope) UnmarshalJSON(data []byte) error {
 type IdentityRealms struct {
 	// A string representing a UUID (universally unique identifier).
 	ID     *string `json:"id,omitempty"`
-	Region *string `json:"region,omitempty"`
+	Region *string `default:"null" json:"region"`
 	Scope  *Scope  `json:"scope,omitempty"`
+}
+
+func (i IdentityRealms) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *IdentityRealms) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *IdentityRealms) GetID() *string {
@@ -134,7 +157,7 @@ func (o *IdentityRealms) GetScope() *Scope {
 
 type KeyAuthPluginConfig struct {
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`.
-	Anonymous *string `json:"anonymous,omitempty"`
+	Anonymous *string `default:"null" json:"anonymous"`
 	// An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin strips the credential from the request.
 	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// A configuration of Konnect Identity Realms that indicate where to source a consumer from.
@@ -148,7 +171,7 @@ type KeyAuthPluginConfig struct {
 	// Describes an array of parameter names where the plugin will look for a key. The key names may only contain [a-z], [A-Z], [0-9], [_] underscore, and [-] hyphen.
 	KeyNames []string `json:"key_names,omitempty"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
-	Realm *string `json:"realm,omitempty"`
+	Realm *string `default:"null" json:"realm"`
 	// A boolean value that indicates whether the plugin should run (and try to authenticate) on `OPTIONS` preflight requests. If set to `false`, then `OPTIONS` requests are always allowed.
 	RunOnPreflight *bool `default:"true" json:"run_on_preflight"`
 }
@@ -299,7 +322,7 @@ type KeyAuthPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                `default:"null" json:"instance_name"`
-	name         string                 `const:"key-auth" json:"name"`
+	name         *string                `const:"key-auth" json:"name"`
 	Ordering     *KeyAuthPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []KeyAuthPluginPartials `json:"partials"`
@@ -355,8 +378,8 @@ func (o *KeyAuthPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *KeyAuthPlugin) GetName() string {
-	return "key-auth"
+func (o *KeyAuthPlugin) GetName() *string {
+	return types.String("key-auth")
 }
 
 func (o *KeyAuthPlugin) GetOrdering() *KeyAuthPluginOrdering {

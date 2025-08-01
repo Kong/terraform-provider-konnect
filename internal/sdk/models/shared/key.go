@@ -8,8 +8,19 @@ import (
 
 // Pem - A keypair in PEM format.
 type Pem struct {
-	PrivateKey *string `json:"private_key,omitempty"`
-	PublicKey  *string `json:"public_key,omitempty"`
+	PrivateKey *string `default:"null" json:"private_key"`
+	PublicKey  *string `default:"null" json:"public_key"`
+}
+
+func (p Pem) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *Pem) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Pem) GetPrivateKey() *string {

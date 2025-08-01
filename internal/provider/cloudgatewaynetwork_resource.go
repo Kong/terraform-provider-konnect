@@ -137,17 +137,11 @@ func (r *CloudGatewayNetworkResource) Schema(ctx context.Context, req resource.S
 				},
 				Attributes: map[string]schema.Attribute{
 					"subnet_ids": schema.ListAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.List{
-							speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
-						},
+						Computed:    true,
 						ElementType: types.StringType,
 					},
 					"vpc_id": schema.StringAttribute{
 						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
 					},
 				},
 				Description: `Metadata describing attributes returned by cloud-provider for the network.`,

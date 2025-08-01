@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type Oauth2IntrospectionPluginAfter struct {
@@ -53,8 +54,19 @@ type Oauth2IntrospectionPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (o Oauth2IntrospectionPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *Oauth2IntrospectionPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Oauth2IntrospectionPluginPartials) GetID() *string {
@@ -129,7 +141,7 @@ type Oauth2IntrospectionPluginConfig struct {
 	// An optional timeout in milliseconds when sending data to the upstream server.
 	Timeout *int64 `default:"10000" json:"timeout"`
 	// The `token_type_hint` value to associate to introspection requests.
-	TokenTypeHint *string `json:"token_type_hint,omitempty"`
+	TokenTypeHint *string `default:"null" json:"token_type_hint"`
 	// The TTL in seconds for the introspection response. Set to 0 to disable the expiration.
 	TTL *float64 `default:"30" json:"ttl"`
 }
@@ -302,7 +314,7 @@ type Oauth2IntrospectionPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                            `default:"null" json:"instance_name"`
-	name         string                             `const:"oauth-2-introspection" json:"name"`
+	name         *string                            `const:"oauth-2-introspection" json:"name"`
 	Ordering     *Oauth2IntrospectionPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []Oauth2IntrospectionPluginPartials `json:"partials"`
@@ -358,8 +370,8 @@ func (o *Oauth2IntrospectionPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *Oauth2IntrospectionPlugin) GetName() string {
-	return "oauth-2-introspection"
+func (o *Oauth2IntrospectionPlugin) GetName() *string {
+	return types.String("oauth-2-introspection")
 }
 
 func (o *Oauth2IntrospectionPlugin) GetOrdering() *Oauth2IntrospectionPluginOrdering {

@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type JqPluginAfter struct {
@@ -53,8 +54,19 @@ type JqPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (j JqPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JqPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *JqPluginPartials) GetID() *string {
@@ -188,12 +200,23 @@ func (o *ResponseJqProgramOptions) GetSortKeys() *bool {
 
 type JqPluginConfig struct {
 	RequestIfMediaType       []string                  `json:"request_if_media_type,omitempty"`
-	RequestJqProgram         *string                   `json:"request_jq_program,omitempty"`
+	RequestJqProgram         *string                   `default:"null" json:"request_jq_program"`
 	RequestJqProgramOptions  *RequestJqProgramOptions  `json:"request_jq_program_options,omitempty"`
 	ResponseIfMediaType      []string                  `json:"response_if_media_type,omitempty"`
 	ResponseIfStatusCode     []int64                   `json:"response_if_status_code,omitempty"`
-	ResponseJqProgram        *string                   `json:"response_jq_program,omitempty"`
+	ResponseJqProgram        *string                   `default:"null" json:"response_jq_program"`
 	ResponseJqProgramOptions *ResponseJqProgramOptions `json:"response_jq_program_options,omitempty"`
+}
+
+func (j JqPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JqPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *JqPluginConfig) GetRequestIfMediaType() []string {
@@ -323,7 +346,7 @@ type JqPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string           `default:"null" json:"instance_name"`
-	name         string            `const:"jq" json:"name"`
+	name         *string           `const:"jq" json:"name"`
 	Ordering     *JqPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []JqPluginPartials `json:"partials"`
@@ -381,8 +404,8 @@ func (o *JqPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *JqPlugin) GetName() string {
-	return "jq"
+func (o *JqPlugin) GetName() *string {
+	return types.String("jq")
 }
 
 func (o *JqPlugin) GetOrdering() *JqPluginOrdering {

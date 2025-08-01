@@ -20,7 +20,7 @@ type CreateAPIProductDocumentDTO struct {
 	// document title
 	Title string `json:"title"`
 	// Can be markdown string content or base64 encoded string
-	Content *string `json:"content,omitempty"`
+	Content *string `default:"null" json:"content"`
 	// metadata of the document
 	Metadata *Metadata `json:"metadata,omitempty"`
 }

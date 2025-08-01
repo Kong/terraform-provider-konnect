@@ -66,6 +66,15 @@ func (r *GatewayPluginPrometheusResource) Schema(ctx context.Context, req resour
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"ai_metrics":              types.BoolType,
+					"bandwidth_metrics":       types.BoolType,
+					"latency_metrics":         types.BoolType,
+					"per_consumer":            types.BoolType,
+					"status_code_metrics":     types.BoolType,
+					"upstream_health_metrics": types.BoolType,
+					"wasm_metrics":            types.BoolType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"ai_metrics": schema.BoolAttribute{
 						Computed:    true,
@@ -175,9 +184,13 @@ func (r *GatewayPluginPrometheusResource) Schema(ctx context.Context, req resour
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -186,9 +199,13 @@ func (r *GatewayPluginPrometheusResource) Schema(ctx context.Context, req resour
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -209,12 +226,10 @@ func (r *GatewayPluginPrometheusResource) Schema(ctx context.Context, req resour
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

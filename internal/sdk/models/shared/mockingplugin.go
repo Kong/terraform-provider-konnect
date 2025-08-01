@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type MockingPluginAfter struct {
@@ -53,8 +54,19 @@ type MockingPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (m MockingPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MockingPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *MockingPluginPartials) GetID() *string {
@@ -80,11 +92,11 @@ func (o *MockingPluginPartials) GetPath() *string {
 
 type MockingPluginConfig struct {
 	// The contents of the specification file. You must use this option for hybrid or DB-less mode. You can include the full specification as part of the configuration. In Kong Manager, you can copy and paste the contents of the spec directly into the `Config.Api Specification` text field.
-	APISpecification *string `json:"api_specification,omitempty"`
+	APISpecification *string `default:"null" json:"api_specification"`
 	// The path and name of the specification file loaded into Kong Gateway's database. You cannot use this option for DB-less or hybrid mode.
-	APISpecificationFilename *string `json:"api_specification_filename,omitempty"`
+	APISpecificationFilename *string `default:"null" json:"api_specification_filename"`
 	// The base path to be used for path match evaluation. This value is ignored if `include_base_path` is set to `false`.
-	CustomBasePath *string `json:"custom_base_path,omitempty"`
+	CustomBasePath *string `default:"null" json:"custom_base_path"`
 	// Indicates whether to include the base path when performing path match evaluation.
 	IncludeBasePath *bool `default:"false" json:"include_base_path"`
 	// A global list of the HTTP status codes that can only be selected and returned.
@@ -260,7 +272,7 @@ type MockingPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                `default:"null" json:"instance_name"`
-	name         string                 `const:"mocking" json:"name"`
+	name         *string                `const:"mocking" json:"name"`
 	Ordering     *MockingPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []MockingPluginPartials `json:"partials"`
@@ -318,8 +330,8 @@ func (o *MockingPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *MockingPlugin) GetName() string {
-	return "mocking"
+func (o *MockingPlugin) GetName() *string {
+	return types.String("mocking")
 }
 
 func (o *MockingPlugin) GetOrdering() *MockingPluginOrdering {

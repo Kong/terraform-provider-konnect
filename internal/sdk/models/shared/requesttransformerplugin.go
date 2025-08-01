@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type RequestTransformerPluginAfter struct {
@@ -53,8 +54,19 @@ type RequestTransformerPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (r RequestTransformerPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestTransformerPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestTransformerPluginPartials) GetID() *string {
@@ -190,7 +202,18 @@ type Replace struct {
 	Body        []string `json:"body,omitempty"`
 	Headers     []string `json:"headers,omitempty"`
 	Querystring []string `json:"querystring,omitempty"`
-	URI         *string  `json:"uri,omitempty"`
+	URI         *string  `default:"null" json:"uri"`
+}
+
+func (r Replace) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *Replace) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Replace) GetBody() []string {
@@ -225,10 +248,21 @@ type RequestTransformerPluginConfig struct {
 	Add    *Add    `json:"add,omitempty"`
 	Append *Append `json:"append,omitempty"`
 	// A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters.
-	HTTPMethod *string  `json:"http_method,omitempty"`
+	HTTPMethod *string  `default:"null" json:"http_method"`
 	Remove     *Remove  `json:"remove,omitempty"`
 	Rename     *Rename  `json:"rename,omitempty"`
 	Replace    *Replace `json:"replace,omitempty"`
+}
+
+func (r RequestTransformerPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestTransformerPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestTransformerPluginConfig) GetAdd() *Add {
@@ -382,7 +416,7 @@ type RequestTransformerPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                           `default:"null" json:"instance_name"`
-	name         string                            `const:"request-transformer" json:"name"`
+	name         *string                           `const:"request-transformer" json:"name"`
 	Ordering     *RequestTransformerPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []RequestTransformerPluginPartials `json:"partials"`
@@ -442,8 +476,8 @@ func (o *RequestTransformerPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *RequestTransformerPlugin) GetName() string {
-	return "request-transformer"
+func (o *RequestTransformerPlugin) GetName() *string {
+	return types.String("request-transformer")
 }
 
 func (o *RequestTransformerPlugin) GetOrdering() *RequestTransformerPluginOrdering {

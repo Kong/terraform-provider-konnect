@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type KeyAuthEncPluginAfter struct {
@@ -53,8 +54,19 @@ type KeyAuthEncPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (k KeyAuthEncPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KeyAuthEncPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KeyAuthEncPluginPartials) GetID() *string {
@@ -80,7 +92,7 @@ func (o *KeyAuthEncPluginPartials) GetPath() *string {
 
 type KeyAuthEncPluginConfig struct {
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`. Note that this value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
-	Anonymous *string `json:"anonymous,omitempty"`
+	Anonymous *string `default:"null" json:"anonymous"`
 	// An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin strips the credential from the request (i.e., the header, query string, or request body containing the key) before proxying it.
 	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// If enabled, the plugin reads the request body (if said request has one and its MIME type is supported) and tries to find the key in it. Supported MIME types: `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`.
@@ -92,7 +104,7 @@ type KeyAuthEncPluginConfig struct {
 	// Describes an array of parameter names where the plugin will look for a key. The client must send the authentication key in one of those key names, and the plugin will try to read the credential from a header, request body, or query string parameter with the same name.  Key names may only contain [a-z], [A-Z], [0-9], [_] underscore, and [-] hyphen.
 	KeyNames []string `json:"key_names,omitempty"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
-	Realm *string `json:"realm,omitempty"`
+	Realm *string `default:"null" json:"realm"`
 	// A boolean value that indicates whether the plugin should run (and try to authenticate) on `OPTIONS` preflight requests. If set to `false`, then `OPTIONS` requests are always allowed.
 	RunOnPreflight *bool `default:"true" json:"run_on_preflight"`
 }
@@ -236,7 +248,7 @@ type KeyAuthEncPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                   `default:"null" json:"instance_name"`
-	name         string                    `const:"key-auth-enc" json:"name"`
+	name         *string                   `const:"key-auth-enc" json:"name"`
 	Ordering     *KeyAuthEncPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []KeyAuthEncPluginPartials `json:"partials"`
@@ -292,8 +304,8 @@ func (o *KeyAuthEncPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *KeyAuthEncPlugin) GetName() string {
-	return "key-auth-enc"
+func (o *KeyAuthEncPlugin) GetName() *string {
+	return types.String("key-auth-enc")
 }
 
 func (o *KeyAuthEncPlugin) GetOrdering() *KeyAuthEncPluginOrdering {

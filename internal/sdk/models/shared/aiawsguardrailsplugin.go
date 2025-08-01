@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type AiAwsGuardrailsPluginAfter struct {
@@ -53,8 +54,19 @@ type AiAwsGuardrailsPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (a AiAwsGuardrailsPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiAwsGuardrailsPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiAwsGuardrailsPluginPartials) GetID() *string {
@@ -137,11 +149,11 @@ func (e *TextSource) UnmarshalJSON(data []byte) error {
 
 type AiAwsGuardrailsPluginConfig struct {
 	// The AWS access key ID to use for authentication
-	AwsAccessKeyID *string `json:"aws_access_key_id,omitempty"`
+	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
 	// The AWS region to use for the Bedrock API
 	AwsRegion string `json:"aws_region"`
 	// The AWS secret access key to use for authentication
-	AwsSecretAccessKey *string `json:"aws_secret_access_key,omitempty"`
+	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
 	// The guardrail mode to use for the request
 	GuardingMode *GuardingMode `default:"INPUT" json:"guarding_mode"`
 	// The guardrail identifier used in the request to apply the guardrail
@@ -329,7 +341,7 @@ type AiAwsGuardrailsPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                        `default:"null" json:"instance_name"`
-	name         string                         `const:"ai-aws-guardrails" json:"name"`
+	name         *string                        `const:"ai-aws-guardrails" json:"name"`
 	Ordering     *AiAwsGuardrailsPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []AiAwsGuardrailsPluginPartials `json:"partials"`
@@ -389,8 +401,8 @@ func (o *AiAwsGuardrailsPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *AiAwsGuardrailsPlugin) GetName() string {
-	return "ai-aws-guardrails"
+func (o *AiAwsGuardrailsPlugin) GetName() *string {
+	return types.String("ai-aws-guardrails")
 }
 
 func (o *AiAwsGuardrailsPlugin) GetOrdering() *AiAwsGuardrailsPluginOrdering {

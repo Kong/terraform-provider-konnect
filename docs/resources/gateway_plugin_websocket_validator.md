@@ -121,19 +121,19 @@ Optional:
 <a id="nestedatt--config--client--binary"></a>
 ### Nested Schema for `config.client.binary`
 
-Optional:
+Required:
 
-- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`. Not Null
-- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. Not Null; must be "draft4"
+- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`.
+- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. must be "draft4"
 
 
 <a id="nestedatt--config--client--text"></a>
 ### Nested Schema for `config.client.text`
 
-Optional:
+Required:
 
-- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`. Not Null
-- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. Not Null; must be "draft4"
+- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`.
+- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. must be "draft4"
 
 
 
@@ -148,19 +148,19 @@ Optional:
 <a id="nestedatt--config--upstream--binary"></a>
 ### Nested Schema for `config.upstream.binary`
 
-Optional:
+Required:
 
-- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`. Not Null
-- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. Not Null; must be "draft4"
+- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`.
+- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. must be "draft4"
 
 
 <a id="nestedatt--config--upstream--text"></a>
 ### Nested Schema for `config.upstream.text`
 
-Optional:
+Required:
 
-- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`. Not Null
-- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. Not Null; must be "draft4"
+- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`.
+- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. must be "draft4"
 
 
 

@@ -60,7 +60,6 @@ func (r *AuditLogResource) Schema(ctx context.Context, req resource.SchemaReques
 				Description: `Indicates if the data should be sent to the webhook. Default: false`,
 			},
 			"endpoint": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The endpoint that will receive audit log messages.`,
 			},

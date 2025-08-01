@@ -68,6 +68,39 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"absolute_timeout": types.Float64Type,
+					"audience":         types.StringType,
+					"cookie_domain":    types.StringType,
+					"cookie_http_only": types.BoolType,
+					"cookie_name":      types.StringType,
+					"cookie_path":      types.StringType,
+					"cookie_same_site": types.StringType,
+					"cookie_secure":    types.BoolType,
+					"hash_subject":     types.BoolType,
+					"idling_timeout":   types.Float64Type,
+					"logout_methods": types.ListType{
+						ElemType: types.StringType,
+					},
+					"logout_post_arg":           types.StringType,
+					"logout_query_arg":          types.StringType,
+					"read_body_for_logout":      types.BoolType,
+					"remember":                  types.BoolType,
+					"remember_absolute_timeout": types.Float64Type,
+					"remember_cookie_name":      types.StringType,
+					"remember_rolling_timeout":  types.Float64Type,
+					"request_headers": types.ListType{
+						ElemType: types.StringType,
+					},
+					"response_headers": types.ListType{
+						ElemType: types.StringType,
+					},
+					"rolling_timeout": types.Float64Type,
+					"secret":          types.StringType,
+					"stale_ttl":       types.Float64Type,
+					"storage":         types.StringType,
+					"store_metadata":  types.BoolType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"absolute_timeout": schema.Float64Attribute{
 						Computed:    true,
@@ -82,7 +115,6 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 						Description: `The session audience, which is the intended target application. For example ` + "`" + `"my-application"` + "`" + `. Default: "default"`,
 					},
 					"cookie_domain": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The domain with which the cookie is intended to be exchanged.`,
 					},
@@ -185,13 +217,11 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 						Description: `The persistent session rolling timeout window, in seconds. Default: 604800`,
 					},
 					"request_headers": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `List of information to include, as headers, in the response to the downstream.`,
 					},
 					"response_headers": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `List of information to include, as headers, in the response to the downstream.`,
@@ -284,9 +314,13 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -295,9 +329,13 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -318,12 +356,10 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

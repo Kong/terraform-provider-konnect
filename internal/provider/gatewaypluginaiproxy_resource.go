@@ -75,6 +75,22 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 					"auth": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"allow_override":             types.BoolType,
+							"aws_access_key_id":          types.StringType,
+							"aws_secret_access_key":      types.StringType,
+							"azure_client_id":            types.StringType,
+							"azure_client_secret":        types.StringType,
+							"azure_tenant_id":            types.StringType,
+							"azure_use_managed_identity": types.BoolType,
+							"gcp_service_account_json":   types.StringType,
+							"gcp_use_service_account":    types.BoolType,
+							"header_name":                types.StringType,
+							"header_value":               types.StringType,
+							"param_location":             types.StringType,
+							"param_name":                 types.StringType,
+							"param_value":                types.StringType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"allow_override": schema.BoolAttribute{
 								Computed:    true,
@@ -83,27 +99,22 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 								Description: `If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin. Default: false`,
 							},
 							"aws_access_key_id": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.`,
 							},
 							"aws_secret_access_key": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.`,
 							},
 							"azure_client_id": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.`,
 							},
 							"azure_client_secret": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.`,
 							},
 							"azure_tenant_id": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.`,
 							},
@@ -114,7 +125,6 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 								Description: `Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models. Default: false`,
 							},
 							"gcp_service_account_json": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable ` + "`" + `GCP_SERVICE_ACCOUNT` + "`" + `.`,
 							},
@@ -125,12 +135,10 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 								Description: `Use service account auth for GCP-based providers and models. Default: false`,
 							},
 							"header_name": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `If AI model requires authentication via Authorization or API key header, specify its name here.`,
 							},
 							"header_value": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.`,
 							},
@@ -146,12 +154,10 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 								},
 							},
 							"param_name": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `If AI model requires authentication via query parameter, specify its name here.`,
 							},
 							"param_value": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Specify the full parameter value for 'param_name'.`,
 							},
@@ -190,6 +196,10 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 					"logging": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"log_payloads":   types.BoolType,
+							"log_statistics": types.BoolType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"log_payloads": schema.BoolAttribute{
 								Computed:    true,
@@ -215,16 +225,60 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 						Required: true,
 						Attributes: map[string]schema.Attribute{
 							"name": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Model name to execute.`,
 							},
 							"options": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"anthropic_version":   types.StringType,
+									"azure_api_version":   types.StringType,
+									"azure_deployment_id": types.StringType,
+									"azure_instance":      types.StringType,
+									"bedrock": types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`aws_assume_role_arn`:        types.StringType,
+											`aws_region`:                 types.StringType,
+											`aws_role_session_name`:      types.StringType,
+											`aws_sts_endpoint_url`:       types.StringType,
+											`embeddings_normalize`:       types.BoolType,
+											`performance_config_latency`: types.StringType,
+										},
+									},
+									"cohere": types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`embedding_input_type`: types.StringType,
+											`wait_for_model`:       types.BoolType,
+										},
+									},
+									"embeddings_dimensions": types.Int64Type,
+									"gemini": types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`api_endpoint`: types.StringType,
+											`location_id`:  types.StringType,
+											`project_id`:   types.StringType,
+										},
+									},
+									"huggingface": types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`use_cache`:      types.BoolType,
+											`wait_for_model`: types.BoolType,
+										},
+									},
+									"input_cost":     types.Float64Type,
+									"llama2_format":  types.StringType,
+									"max_tokens":     types.Int64Type,
+									"mistral_format": types.StringType,
+									"output_cost":    types.Float64Type,
+									"temperature":    types.Float64Type,
+									"top_k":          types.Int64Type,
+									"top_p":          types.Float64Type,
+									"upstream_path":  types.StringType,
+									"upstream_url":   types.StringType,
+								})),
 								Attributes: map[string]schema.Attribute{
 									"anthropic_version": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Defines the schema/API version, if using Anthropic provider.`,
 									},
@@ -235,36 +289,38 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 										Description: `'api-version' for Azure OpenAI instances. Default: "2023-05-15"`,
 									},
 									"azure_deployment_id": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Deployment ID for Azure OpenAI instances.`,
 									},
 									"azure_instance": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Instance name for Azure OpenAI hosted models.`,
 									},
 									"bedrock": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
+										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+											"aws_assume_role_arn":        types.StringType,
+											"aws_region":                 types.StringType,
+											"aws_role_session_name":      types.StringType,
+											"aws_sts_endpoint_url":       types.StringType,
+											"embeddings_normalize":       types.BoolType,
+											"performance_config_latency": types.StringType,
+										})),
 										Attributes: map[string]schema.Attribute{
 											"aws_assume_role_arn": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.`,
 											},
 											"aws_region": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `If using AWS providers (Bedrock) you can override the ` + "`" + `AWS_REGION` + "`" + ` environment variable by setting this option.`,
 											},
 											"aws_role_session_name": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `If using AWS providers (Bedrock), set the identifier of the assumed role session.`,
 											},
 											"aws_sts_endpoint_url": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.`,
 											},
@@ -275,7 +331,6 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 												Description: `If using AWS providers (Bedrock), set to true to normalize the embeddings. Default: false`,
 											},
 											"performance_config_latency": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.`,
 											},
@@ -284,6 +339,10 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 									"cohere": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
+										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+											"embedding_input_type": types.StringType,
+											"wait_for_model":       types.BoolType,
+										})),
 										Attributes: map[string]schema.Attribute{
 											"embedding_input_type": schema.StringAttribute{
 												Computed:    true,
@@ -301,33 +360,33 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 												},
 											},
 											"wait_for_model": schema.BoolAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `Wait for the model if it is not ready`,
 											},
 										},
 									},
 									"embeddings_dimensions": schema.Int64Attribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `If using embeddings models, set the number of dimensions to generate.`,
 									},
 									"gemini": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
+										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+											"api_endpoint": types.StringType,
+											"location_id":  types.StringType,
+											"project_id":   types.StringType,
+										})),
 										Attributes: map[string]schema.Attribute{
 											"api_endpoint": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `If running Gemini on Vertex, specify the regional API endpoint (hostname only).`,
 											},
 											"location_id": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `If running Gemini on Vertex, specify the location ID.`,
 											},
 											"project_id": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `If running Gemini on Vertex, specify the project ID.`,
 											},
@@ -336,21 +395,22 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 									"huggingface": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
+										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+											"use_cache":      types.BoolType,
+											"wait_for_model": types.BoolType,
+										})),
 										Attributes: map[string]schema.Attribute{
 											"use_cache": schema.BoolAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `Use the cache layer on the inference API`,
 											},
 											"wait_for_model": schema.BoolAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `Wait for the model if it is not ready`,
 											},
 										},
 									},
 									"input_cost": schema.Float64Attribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Defines the cost per 1M tokens in your prompt.`,
 									},
@@ -367,7 +427,6 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 										},
 									},
 									"max_tokens": schema.Int64Attribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Defines the max_tokens, if using chat or completion models.`,
 									},
@@ -383,12 +442,10 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 										},
 									},
 									"output_cost": schema.Float64Attribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Defines the cost per 1M tokens in the output of the AI.`,
 									},
 									"temperature": schema.Float64Attribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Defines the matching temperature, if using chat or completion models.`,
 										Validators: []validator.Float64{
@@ -396,7 +453,6 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 										},
 									},
 									"top_k": schema.Int64Attribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Defines the top-k most likely tokens, if supported.`,
 										Validators: []validator.Int64{
@@ -404,7 +460,6 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 										},
 									},
 									"top_p": schema.Float64Attribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Defines the top-p probability mass, if supported.`,
 										Validators: []validator.Float64{
@@ -412,12 +467,10 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 										},
 									},
 									"upstream_path": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Manually specify or override the AI operation path, used when e.g. using the 'preserve' route_type.`,
 									},
 									"upstream_url": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Manually specify or override the full URL to the AI operation endpoints, when calling (self-)hosted models, or for running via a private endpoint.`,
 									},
@@ -564,9 +617,13 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -575,9 +632,13 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -598,12 +659,10 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

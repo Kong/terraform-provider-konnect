@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type AiPromptDecoratorPluginAfter struct {
@@ -53,8 +54,19 @@ type AiPromptDecoratorPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (a AiPromptDecoratorPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptDecoratorPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiPromptDecoratorPluginPartials) GetID() *string {
@@ -383,7 +395,7 @@ type AiPromptDecoratorPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                          `default:"null" json:"instance_name"`
-	name         string                           `const:"ai-prompt-decorator" json:"name"`
+	name         *string                          `const:"ai-prompt-decorator" json:"name"`
 	Ordering     *AiPromptDecoratorPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []AiPromptDecoratorPluginPartials `json:"partials"`
@@ -443,8 +455,8 @@ func (o *AiPromptDecoratorPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *AiPromptDecoratorPlugin) GetName() string {
-	return "ai-prompt-decorator"
+func (o *AiPromptDecoratorPlugin) GetName() *string {
+	return types.String("ai-prompt-decorator")
 }
 
 func (o *AiPromptDecoratorPlugin) GetOrdering() *AiPromptDecoratorPluginOrdering {

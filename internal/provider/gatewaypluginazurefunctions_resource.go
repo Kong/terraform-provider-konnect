@@ -69,7 +69,6 @@ func (r *GatewayPluginAzureFunctionsResource) Schema(ctx context.Context, req re
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"apikey": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The apikey to access the Azure resources. If provided, it is injected as the ` + "`" + `x-functions-key` + "`" + ` header.`,
 					},
@@ -78,7 +77,6 @@ func (r *GatewayPluginAzureFunctionsResource) Schema(ctx context.Context, req re
 						Description: `The Azure app name.`,
 					},
 					"clientid": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The ` + "`" + `clientid` + "`" + ` to access the Azure resources. If provided, it is injected as the ` + "`" + `x-functions-clientid` + "`" + ` header.`,
 					},
@@ -188,9 +186,13 @@ func (r *GatewayPluginAzureFunctionsResource) Schema(ctx context.Context, req re
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -199,9 +201,13 @@ func (r *GatewayPluginAzureFunctionsResource) Schema(ctx context.Context, req re
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -222,12 +228,10 @@ func (r *GatewayPluginAzureFunctionsResource) Schema(ctx context.Context, req re
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

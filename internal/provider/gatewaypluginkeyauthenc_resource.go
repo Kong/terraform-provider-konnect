@@ -65,9 +65,20 @@ func (r *GatewayPluginKeyAuthEncResource) Schema(ctx context.Context, req resour
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"anonymous":        types.StringType,
+					"hide_credentials": types.BoolType,
+					"key_in_body":      types.BoolType,
+					"key_in_header":    types.BoolType,
+					"key_in_query":     types.BoolType,
+					"key_names": types.ListType{
+						ElemType: types.StringType,
+					},
+					"realm":            types.StringType,
+					"run_on_preflight": types.BoolType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure ` + "`" + `4xx` + "`" + `. Note that this value must refer to the consumer ` + "`" + `id` + "`" + ` or ` + "`" + `username` + "`" + ` attribute, and **not** its ` + "`" + `custom_id` + "`" + `.`,
 					},
@@ -102,7 +113,6 @@ func (r *GatewayPluginKeyAuthEncResource) Schema(ctx context.Context, req resour
 						Description: `Describes an array of parameter names where the plugin will look for a key. The client must send the authentication key in one of those key names, and the plugin will try to read the credential from a header, request body, or query string parameter with the same name.  Key names may only contain [a-z], [A-Z], [0-9], [_] underscore, and [-] hyphen.`,
 					},
 					"realm": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `When authentication fails the plugin sends ` + "`" + `WWW-Authenticate` + "`" + ` header with ` + "`" + `realm` + "`" + ` attribute value.`,
 					},
@@ -164,9 +174,13 @@ func (r *GatewayPluginKeyAuthEncResource) Schema(ctx context.Context, req resour
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -175,9 +189,13 @@ func (r *GatewayPluginKeyAuthEncResource) Schema(ctx context.Context, req resour
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -198,12 +216,10 @@ func (r *GatewayPluginKeyAuthEncResource) Schema(ctx context.Context, req resour
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

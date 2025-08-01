@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type JweDecryptPluginAfter struct {
@@ -53,8 +54,19 @@ type JweDecryptPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (j JweDecryptPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JweDecryptPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *JweDecryptPluginPartials) GetID() *string {
@@ -194,7 +206,7 @@ type JweDecryptPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                   `default:"null" json:"instance_name"`
-	name         string                    `const:"jwe-decrypt" json:"name"`
+	name         *string                   `const:"jwe-decrypt" json:"name"`
 	Ordering     *JweDecryptPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []JweDecryptPluginPartials `json:"partials"`
@@ -250,8 +262,8 @@ func (o *JweDecryptPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *JweDecryptPlugin) GetName() string {
-	return "jwe-decrypt"
+func (o *JweDecryptPlugin) GetName() *string {
+	return types.String("jwe-decrypt")
 }
 
 func (o *JweDecryptPlugin) GetOrdering() *JweDecryptPluginOrdering {

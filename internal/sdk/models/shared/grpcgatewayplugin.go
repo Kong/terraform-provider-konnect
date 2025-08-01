@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type GrpcGatewayPluginAfter struct {
@@ -53,8 +54,19 @@ type GrpcGatewayPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (g GrpcGatewayPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GrpcGatewayPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *GrpcGatewayPluginPartials) GetID() *string {
@@ -80,7 +92,18 @@ func (o *GrpcGatewayPluginPartials) GetPath() *string {
 
 type GrpcGatewayPluginConfig struct {
 	// Describes the gRPC types and methods.
-	Proto *string `json:"proto,omitempty"`
+	Proto *string `default:"null" json:"proto"`
+}
+
+func (g GrpcGatewayPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GrpcGatewayPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *GrpcGatewayPluginConfig) GetProto() *string {
@@ -187,7 +210,7 @@ type GrpcGatewayPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                    `default:"null" json:"instance_name"`
-	name         string                     `const:"grpc-gateway" json:"name"`
+	name         *string                    `const:"grpc-gateway" json:"name"`
 	Ordering     *GrpcGatewayPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []GrpcGatewayPluginPartials `json:"partials"`
@@ -245,8 +268,8 @@ func (o *GrpcGatewayPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *GrpcGatewayPlugin) GetName() string {
-	return "grpc-gateway"
+func (o *GrpcGatewayPlugin) GetName() *string {
+	return types.String("grpc-gateway")
 }
 
 func (o *GrpcGatewayPlugin) GetOrdering() *GrpcGatewayPluginOrdering {

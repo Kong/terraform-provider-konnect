@@ -79,17 +79,14 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 						},
 					},
 					"azure_client_id": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `If ` + "`" + `azure_use_managed_identity` + "`" + ` is true, set the client ID if required.`,
 					},
 					"azure_client_secret": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `If ` + "`" + `azure_use_managed_identity` + "`" + ` is true, set the client secret if required.`,
 					},
 					"azure_tenant_id": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `If ` + "`" + `azure_use_managed_identity` + "`" + ` is true, set the tenant ID if required.`,
 					},
@@ -100,13 +97,11 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 						Description: `If checked, uses (if set) ` + "`" + `azure_client_id` + "`" + `, ` + "`" + `azure_client_secret` + "`" + `, and/or ` + "`" + `azure_tenant_id` + "`" + ` for Azure authentication, via Managed or User-assigned identity. Default: false`,
 					},
 					"blocklist_names": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Use these configured blocklists (in Azure Content Services) when inspecting content.`,
 					},
 					"categories": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -134,7 +129,6 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 						Description: `Array of categories, and their thresholds, to measure on.`,
 					},
 					"content_safety_key": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `If ` + "`" + `azure_use_managed_identity` + "`" + ` is true, set the API key to call Content Safety.`,
 					},
@@ -230,9 +224,13 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -241,9 +239,13 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -264,12 +266,10 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

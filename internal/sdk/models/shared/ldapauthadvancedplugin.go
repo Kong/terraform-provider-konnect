@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type LdapAuthAdvancedPluginAfter struct {
@@ -53,8 +54,19 @@ type LdapAuthAdvancedPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (l LdapAuthAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LdapAuthAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *LdapAuthAdvancedPluginPartials) GetID() *string {
@@ -112,7 +124,7 @@ type LdapAuthAdvancedPluginConfig struct {
 	// Base DN as the starting point for the search; e.g., 'dc=example,dc=com'.
 	BaseDn string `json:"base_dn"`
 	// The DN to bind to. Used to perform LDAP search of user. This `bind_dn` should have permissions to search for the user being authenticated.
-	BindDn *string `json:"bind_dn,omitempty"`
+	BindDn *string `default:"null" json:"bind_dn"`
 	// Cache expiry time in seconds.
 	CacheTTL *float64 `default:"60" json:"cache_ttl"`
 	// Whether to authenticate consumers based on `username`, `custom_id`, or both.
@@ -120,11 +132,11 @@ type LdapAuthAdvancedPluginConfig struct {
 	// Whether consumer mapping is optional. If `consumer_optional=true`, the plugin will not attempt to associate a consumer with the LDAP authenticated user.
 	ConsumerOptional *bool `default:"false" json:"consumer_optional"`
 	// Sets a distinguished name (DN) for the entry where LDAP searches for groups begin. This field is case-insensitive.',dc=com'.
-	GroupBaseDn *string `json:"group_base_dn,omitempty"`
+	GroupBaseDn *string `default:"null" json:"group_base_dn"`
 	// Sets the attribute holding the members of the LDAP group. This field is case-sensitive.
 	GroupMemberAttribute *string `default:"memberOf" json:"group_member_attribute"`
 	// Sets the attribute holding the name of a group, typically called `name` (in Active Directory) or `cn` (in OpenLDAP). This field is case-insensitive.
-	GroupNameAttribute *string `json:"group_name_attribute,omitempty"`
+	GroupNameAttribute *string `default:"null" json:"group_name_attribute"`
 	// The groups required to be present in the LDAP search result for successful authorization. This config parameter works in both **AND** / **OR** cases. - When `["group1 group2"]` are in the same array indices, both `group1` AND `group2` need to be present in the LDAP search result. - When `["group1", "group2"]` are in different array indices, either `group1` OR `group2` need to be present in the LDAP search result.
 	GroupsRequired []string `json:"groups_required,omitempty"`
 	// An optional string to use as part of the Authorization header. By default, a valid Authorization header looks like this: `Authorization: ldap base64(username:password)`. If `header_type` is set to "basic", then the Authorization header would be `Authorization: basic base64(username:password)`. Note that `header_type` can take any string, not just `'ldap'` and `'basic'`.
@@ -136,7 +148,7 @@ type LdapAuthAdvancedPluginConfig struct {
 	// Host on which the LDAP server is running.
 	LdapHost string `json:"ldap_host"`
 	// The password to the LDAP server.
-	LdapPassword *string `json:"ldap_password,omitempty"`
+	LdapPassword *string `default:"null" json:"ldap_password"`
 	// TCP port where the LDAP server is listening. 389 is the default port for non-SSL LDAP and AD. 636 is the port required for SSL LDAP and AD. If `ldaps` is configured, you must use port 636.
 	LdapPort *float64 `default:"389" json:"ldap_port"`
 	// Set it to `true` to use `ldaps`, a secure protocol (that can be configured to TLS) to connect to the LDAP server. When `ldaps` is configured, you must use port 636. If the `ldap` setting is enabled, ensure the `start_tls` setting is disabled.
@@ -144,7 +156,7 @@ type LdapAuthAdvancedPluginConfig struct {
 	// Displays all the LDAP search results received from the LDAP server for debugging purposes. Not recommended to be enabled in a production environment.
 	LogSearchResults *bool `default:"false" json:"log_search_results"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
-	Realm *string `json:"realm,omitempty"`
+	Realm *string `default:"null" json:"realm"`
 	// Set it to `true` to issue StartTLS (Transport Layer Security) extended operation over `ldap` connection. If the `start_tls` setting is enabled, ensure the `ldaps` setting is disabled.
 	StartTLS *bool `default:"false" json:"start_tls"`
 	// An optional timeout in milliseconds when waiting for connection with LDAP server.
@@ -397,7 +409,7 @@ type LdapAuthAdvancedPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                         `default:"null" json:"instance_name"`
-	name         string                          `const:"ldap-auth-advanced" json:"name"`
+	name         *string                         `const:"ldap-auth-advanced" json:"name"`
 	Ordering     *LdapAuthAdvancedPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []LdapAuthAdvancedPluginPartials `json:"partials"`
@@ -453,8 +465,8 @@ func (o *LdapAuthAdvancedPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *LdapAuthAdvancedPlugin) GetName() string {
-	return "ldap-auth-advanced"
+func (o *LdapAuthAdvancedPlugin) GetName() *string {
+	return types.String("ldap-auth-advanced")
 }
 
 func (o *LdapAuthAdvancedPlugin) GetOrdering() *LdapAuthAdvancedPluginOrdering {

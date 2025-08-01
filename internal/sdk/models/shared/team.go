@@ -12,9 +12,9 @@ type Team struct {
 	// The team ID.
 	ID *string `json:"id,omitempty"`
 	// The name of the team.
-	Name *string `json:"name,omitempty"`
+	Name *string `default:"null" json:"name"`
 	// The team description in Konnect.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"null" json:"description"`
 	// Returns True if a user belongs to a `system_team`. System teams are teams that can manage Konnect objects, like "Organization Admin", or "Service"
 	SystemTeam *bool `default:"false" json:"system_team"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.

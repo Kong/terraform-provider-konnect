@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type ProxyCachePluginAfter struct {
@@ -53,8 +54,19 @@ type ProxyCachePluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (p ProxyCachePluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ProxyCachePluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ProxyCachePluginPartials) GetID() *string {
@@ -215,7 +227,7 @@ type ProxyCachePluginConfig struct {
 	// Caching related diagnostic headers that should be included in cached responses
 	ResponseHeaders *ResponseHeaders `json:"response_headers,omitempty"`
 	// Number of seconds to keep resources in the storage backend. This value is independent of `cache_ttl` or resource TTLs defined by Cache-Control behaviors.
-	StorageTTL *int64 `json:"storage_ttl,omitempty"`
+	StorageTTL *int64 `default:"null" json:"storage_ttl"`
 	// The backing data store in which to hold cache entities.
 	Strategy ProxyCachePluginStrategy `json:"strategy"`
 	// Relevant headers considered for the cache key. If undefined, none of the headers are taken into consideration.
@@ -428,7 +440,7 @@ type ProxyCachePlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                   `default:"null" json:"instance_name"`
-	name         string                    `const:"proxy-cache" json:"name"`
+	name         *string                   `const:"proxy-cache" json:"name"`
 	Ordering     *ProxyCachePluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []ProxyCachePluginPartials `json:"partials"`
@@ -488,8 +500,8 @@ func (o *ProxyCachePlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *ProxyCachePlugin) GetName() string {
-	return "proxy-cache"
+func (o *ProxyCachePlugin) GetName() *string {
+	return types.String("proxy-cache")
 }
 
 func (o *ProxyCachePlugin) GetOrdering() *ProxyCachePluginOrdering {

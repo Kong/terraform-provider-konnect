@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type LdapAuthPluginAfter struct {
@@ -53,8 +54,19 @@ type LdapAuthPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (l LdapAuthPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LdapAuthPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *LdapAuthPluginPartials) GetID() *string {
@@ -80,7 +92,7 @@ func (o *LdapAuthPluginPartials) GetPath() *string {
 
 type LdapAuthPluginConfig struct {
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request fails with an authentication failure `4xx`.
-	Anonymous *string `json:"anonymous,omitempty"`
+	Anonymous *string `default:"null" json:"anonymous"`
 	// Attribute to be used to search the user; e.g. cn
 	Attribute string `json:"attribute"`
 	// Base DN as the starting point for the search; e.g., dc=example,dc=com
@@ -100,7 +112,7 @@ type LdapAuthPluginConfig struct {
 	// Set to `true` to connect using the LDAPS protocol (LDAP over TLS).  When `ldaps` is configured, you must use port 636. If the `ldap` setting is enabled, ensure the `start_tls` setting is disabled.
 	Ldaps *bool `default:"false" json:"ldaps"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
-	Realm *string `json:"realm,omitempty"`
+	Realm *string `default:"null" json:"realm"`
 	// Set it to `true` to issue StartTLS (Transport Layer Security) extended operation over `ldap` connection. If the `start_tls` setting is enabled, ensure the `ldaps` setting is disabled.
 	StartTLS *bool `default:"false" json:"start_tls"`
 	// An optional timeout in milliseconds when waiting for connection with LDAP server.
@@ -290,7 +302,7 @@ type LdapAuthPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                 `default:"null" json:"instance_name"`
-	name         string                  `const:"ldap-auth" json:"name"`
+	name         *string                 `const:"ldap-auth" json:"name"`
 	Ordering     *LdapAuthPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []LdapAuthPluginPartials `json:"partials"`
@@ -346,8 +358,8 @@ func (o *LdapAuthPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *LdapAuthPlugin) GetName() string {
-	return "ldap-auth"
+func (o *LdapAuthPlugin) GetName() *string {
+	return types.String("ldap-auth")
 }
 
 func (o *LdapAuthPlugin) GetOrdering() *LdapAuthPluginOrdering {

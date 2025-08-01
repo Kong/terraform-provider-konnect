@@ -70,6 +70,19 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"allow_all_conversation_history": types.BoolType,
+					"allow_patterns": types.ListType{
+						ElemType: types.StringType,
+					},
+					"deny_patterns": types.ListType{
+						ElemType: types.StringType,
+					},
+					"genai_category":        types.StringType,
+					"llm_format":            types.StringType,
+					"match_all_roles":       types.BoolType,
+					"max_request_body_size": types.Int64Type,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"allow_all_conversation_history": schema.BoolAttribute{
 						Computed:    true,
@@ -78,13 +91,11 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 						Description: `If true, will ignore all previous chat prompts from the conversation history. Default: false`,
 					},
 					"allow_patterns": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Array of valid regex patterns, or valid questions from the 'user' role in chat.`,
 					},
 					"deny_patterns": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Array of invalid regex patterns, or invalid questions from the 'user' role in chat.`,
@@ -212,9 +223,13 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -223,9 +238,13 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -246,12 +265,10 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

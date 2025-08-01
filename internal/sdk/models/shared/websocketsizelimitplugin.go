@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type WebsocketSizeLimitPluginAfter struct {
@@ -53,8 +54,19 @@ type WebsocketSizeLimitPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (w WebsocketSizeLimitPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(w, "", false)
+}
+
+func (w *WebsocketSizeLimitPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &w, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *WebsocketSizeLimitPluginPartials) GetID() *string {
@@ -79,8 +91,19 @@ func (o *WebsocketSizeLimitPluginPartials) GetPath() *string {
 }
 
 type WebsocketSizeLimitPluginConfig struct {
-	ClientMaxPayload   *int64 `json:"client_max_payload,omitempty"`
-	UpstreamMaxPayload *int64 `json:"upstream_max_payload,omitempty"`
+	ClientMaxPayload   *int64 `default:"null" json:"client_max_payload"`
+	UpstreamMaxPayload *int64 `default:"null" json:"upstream_max_payload"`
+}
+
+func (w WebsocketSizeLimitPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(w, "", false)
+}
+
+func (w *WebsocketSizeLimitPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &w, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *WebsocketSizeLimitPluginConfig) GetClientMaxPayload() *int64 {
@@ -169,7 +192,7 @@ type WebsocketSizeLimitPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                           `default:"null" json:"instance_name"`
-	name         string                            `const:"websocket-size-limit" json:"name"`
+	name         *string                           `const:"websocket-size-limit" json:"name"`
 	Ordering     *WebsocketSizeLimitPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []WebsocketSizeLimitPluginPartials `json:"partials"`
@@ -227,8 +250,8 @@ func (o *WebsocketSizeLimitPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *WebsocketSizeLimitPlugin) GetName() string {
-	return "websocket-size-limit"
+func (o *WebsocketSizeLimitPlugin) GetName() *string {
+	return types.String("websocket-size-limit")
 }
 
 func (o *WebsocketSizeLimitPlugin) GetOrdering() *WebsocketSizeLimitPluginOrdering {

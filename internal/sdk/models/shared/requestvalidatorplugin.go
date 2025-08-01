@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type RequestValidatorPluginAfter struct {
@@ -53,8 +54,19 @@ type RequestValidatorPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (r RequestValidatorPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestValidatorPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestValidatorPluginPartials) GetID() *string {
@@ -152,7 +164,7 @@ func (e *Style) UnmarshalJSON(data []byte) error {
 
 type ParameterSchema struct {
 	// Required when `schema` and `style` are set. When `explode` is `true`, parameter values of type `array` or `object` generate separate parameters for each value of the array or key-value pair of the map. For other types of parameters, this property has no effect.
-	Explode *bool `json:"explode,omitempty"`
+	Explode *bool `default:"null" json:"explode"`
 	// The location of the parameter.
 	In In `json:"in"`
 	// The name of the parameter. Parameter names are case-sensitive, and correspond to the parameter name used by the `in` property. If `in` is `path`, the `name` field MUST correspond to the named capture group from the configured `route`.
@@ -160,9 +172,20 @@ type ParameterSchema struct {
 	// Determines whether this parameter is mandatory.
 	Required bool `json:"required"`
 	// Required when `style` and `explode` are set. This is the schema defining the type used for the parameter. It is validated using `draft4` for JSON Schema draft 4 compliant validator. In addition to being a valid JSON Schema, the parameter schema MUST have a top-level `type` property to enable proper deserialization before validating.
-	Schema *string `json:"schema,omitempty"`
+	Schema *string `default:"null" json:"schema"`
 	// Required when `schema` and `explode` are set. Describes how the parameter value will be deserialized depending on the type of the parameter value.
 	Style *Style `json:"style,omitempty"`
+}
+
+func (p ParameterSchema) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ParameterSchema) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ParameterSchema) GetExplode() *bool {
@@ -250,7 +273,7 @@ type RequestValidatorPluginConfig struct {
 	// List of allowed content types. The value can be configured with the `charset` parameter. For example, `application/json; charset=UTF-8`.
 	AllowedContentTypes []string `json:"allowed_content_types,omitempty"`
 	// The request body schema specification. One of `body_schema` or `parameter_schema` must be specified.
-	BodySchema *string `json:"body_schema,omitempty"`
+	BodySchema *string `default:"null" json:"body_schema"`
 	// Determines whether to enable parameters validation of request content-type.
 	ContentTypeParameterValidation *bool `default:"true" json:"content_type_parameter_validation"`
 	// Array of parameter validator specification. One of `body_schema` or `parameter_schema` must be specified.
@@ -392,7 +415,7 @@ type RequestValidatorPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                         `default:"null" json:"instance_name"`
-	name         string                          `const:"request-validator" json:"name"`
+	name         *string                         `const:"request-validator" json:"name"`
 	Ordering     *RequestValidatorPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []RequestValidatorPluginPartials `json:"partials"`
@@ -450,8 +473,8 @@ func (o *RequestValidatorPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *RequestValidatorPlugin) GetName() string {
-	return "request-validator"
+func (o *RequestValidatorPlugin) GetName() *string {
+	return types.String("request-validator")
 }
 
 func (o *RequestValidatorPlugin) GetOrdering() *RequestValidatorPluginOrdering {

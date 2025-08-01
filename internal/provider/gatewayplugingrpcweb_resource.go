@@ -67,6 +67,11 @@ func (r *GatewayPluginGrpcWebResource) Schema(ctx context.Context, req resource.
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"allow_origin_header": types.StringType,
+					"pass_stripped_path":  types.BoolType,
+					"proto":               types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"allow_origin_header": schema.StringAttribute{
 						Computed:    true,
@@ -75,12 +80,10 @@ func (r *GatewayPluginGrpcWebResource) Schema(ctx context.Context, req resource.
 						Description: `The value of the ` + "`" + `Access-Control-Allow-Origin` + "`" + ` header in the response to the gRPC-Web client. Default: "*"`,
 					},
 					"pass_stripped_path": schema.BoolAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `If set to ` + "`" + `true` + "`" + ` causes the plugin to pass the stripped request path to the upstream gRPC service.`,
 					},
 					"proto": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `If present, describes the gRPC types and methods. Required to support payload transcoding. When absent, the web client must use application/grpw-web+proto content.`,
 					},
@@ -150,9 +153,13 @@ func (r *GatewayPluginGrpcWebResource) Schema(ctx context.Context, req resource.
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -161,9 +168,13 @@ func (r *GatewayPluginGrpcWebResource) Schema(ctx context.Context, req resource.
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -184,12 +195,10 @@ func (r *GatewayPluginGrpcWebResource) Schema(ctx context.Context, req resource.
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

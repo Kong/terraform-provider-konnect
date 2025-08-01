@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type VaultAuthPluginAfter struct {
@@ -53,8 +54,19 @@ type VaultAuthPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (v VaultAuthPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *VaultAuthPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *VaultAuthPluginPartials) GetID() *string {
@@ -82,7 +94,7 @@ type VaultAuthPluginConfig struct {
 	// Describes an array of comma-separated parameter names where the plugin looks for an access token. The client must send the access token in one of those key names, and the plugin will try to read the credential from a header or the querystring parameter with the same name. The key names can only contain [a-z], [A-Z], [0-9], [_], and [-].
 	AccessTokenName *string `default:"access_token" json:"access_token_name"`
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request fails with an authentication failure `4xx`. Note that this value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
-	Anonymous *string `json:"anonymous,omitempty"`
+	Anonymous *string `default:"null" json:"anonymous"`
 	// An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin will strip the credential from the request (i.e. the header or querystring containing the key) before proxying it.
 	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// A boolean value that indicates whether the plugin should run (and try to authenticate) on `OPTIONS` preflight requests. If set to `false`, then `OPTIONS` requests will always be allowed.
@@ -221,7 +233,7 @@ type VaultAuthPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                  `default:"null" json:"instance_name"`
-	name         string                   `const:"vault-auth" json:"name"`
+	name         *string                  `const:"vault-auth" json:"name"`
 	Ordering     *VaultAuthPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []VaultAuthPluginPartials `json:"partials"`
@@ -277,8 +289,8 @@ func (o *VaultAuthPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *VaultAuthPlugin) GetName() string {
-	return "vault-auth"
+func (o *VaultAuthPlugin) GetName() *string {
+	return types.String("vault-auth")
 }
 
 func (o *VaultAuthPlugin) GetOrdering() *VaultAuthPluginOrdering {

@@ -72,7 +72,6 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `An optional string (consumer UUID or username) value to use as an “anonymous” consumer. If not set, a Kong Consumer must exist for the SAML IdP user credentials, mapping the username format to the Kong Consumer username.`,
 					},
@@ -81,7 +80,6 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Description: `A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).`,
 					},
 					"idp_certificate": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The public certificate provided by the IdP. This is used to validate responses from the IdP.  Only include the contents of the certificate. Do not include the header (` + "`" + `BEGIN CERTIFICATE` + "`" + `) and footer (` + "`" + `END CERTIFICATE` + "`" + `) lines.`,
 					},
@@ -110,6 +108,45 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 					"redis": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"cluster_max_redirections": types.Int64Type,
+							"cluster_nodes": types.ListType{
+								ElemType: types.ObjectType{
+									AttrTypes: map[string]attr.Type{
+										`ip`:   types.StringType,
+										`port`: types.Int64Type,
+									},
+								},
+							},
+							"connect_timeout":       types.Int64Type,
+							"connection_is_proxied": types.BoolType,
+							"database":              types.Int64Type,
+							"host":                  types.StringType,
+							"keepalive_backlog":     types.Int64Type,
+							"keepalive_pool_size":   types.Int64Type,
+							"password":              types.StringType,
+							"port":                  types.Int64Type,
+							"prefix":                types.StringType,
+							"read_timeout":          types.Int64Type,
+							"send_timeout":          types.Int64Type,
+							"sentinel_master":       types.StringType,
+							"sentinel_nodes": types.ListType{
+								ElemType: types.ObjectType{
+									AttrTypes: map[string]attr.Type{
+										`host`: types.StringType,
+										`port`: types.Int64Type,
+									},
+								},
+							},
+							"sentinel_password": types.StringType,
+							"sentinel_role":     types.StringType,
+							"sentinel_username": types.StringType,
+							"server_name":       types.StringType,
+							"socket":            types.StringType,
+							"ssl":               types.BoolType,
+							"ssl_verify":        types.BoolType,
+							"username":          types.StringType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"cluster_max_redirections": schema.Int64Attribute{
 								Computed:    true,
@@ -118,7 +155,6 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 								Description: `Maximum retry attempts for redirection. Default: 5`,
 							},
 							"cluster_nodes": schema.ListNestedAttribute{
-								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
@@ -172,7 +208,6 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 								Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 							},
 							"keepalive_backlog": schema.Int64Attribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `keepalive_pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `keepalive_pool_size` + "`" + `.`,
 								Validators: []validator.Int64{
@@ -189,7 +224,6 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 								},
 							},
 							"password": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 							},
@@ -203,7 +237,6 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 								},
 							},
 							"prefix": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `The Redis session key prefix.`,
 							},
@@ -226,12 +259,10 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 								},
 							},
 							"sentinel_master": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
 							},
 							"sentinel_nodes": schema.ListNestedAttribute{
-								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
@@ -258,7 +289,6 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 								Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
 							},
 							"sentinel_password": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.`,
 							},
@@ -275,17 +305,14 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 								},
 							},
 							"sentinel_username": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.`,
 							},
 							"server_name": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `A string representing an SNI (server name indication) value for TLS.`,
 							},
 							"socket": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `The Redis unix socket path.`,
 							},
@@ -302,7 +329,6 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: false`,
 							},
 							"username": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
 							},
@@ -334,12 +360,10 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						},
 					},
 					"request_signing_certificate": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The certificate for signing requests.`,
 					},
 					"request_signing_key": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The private key for signing requests.  If this parameter is set, requests sent to the IdP are signed.  The ` + "`" + `request_signing_certificate` + "`" + ` parameter must be set as well.`,
 					},
@@ -356,7 +380,6 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						},
 					},
 					"response_encryption_key": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The private encryption key required to decrypt encrypted assertions.`,
 					},
@@ -386,7 +409,6 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Description: `The session audience, for example "my-application". Default: "default"`,
 					},
 					"session_cookie_domain": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The session cookie domain flag.`,
 					},
@@ -423,7 +445,6 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						},
 					},
 					"session_cookie_secure": schema.BoolAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The cookie is only sent to the server when a request is made with the https:scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.`,
 					},
@@ -467,12 +488,10 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						},
 					},
 					"session_memcached_prefix": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The memcached session key prefix.`,
 					},
 					"session_memcached_socket": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The memcached unix socket path.`,
 					},
@@ -501,12 +520,10 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Description: `Persistent session rolling timeout in seconds. Default: 604800`,
 					},
 					"session_request_headers": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 					},
 					"session_response_headers": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 					},
@@ -602,9 +619,13 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -613,9 +634,13 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -636,12 +661,10 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

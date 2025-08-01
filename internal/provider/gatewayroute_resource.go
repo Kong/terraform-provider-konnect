@@ -95,12 +95,10 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 					},
 					Attributes: map[string]schema.Attribute{
 						"ip": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A string representing an IP address or CIDR block, such as 192.168.1.1 or 192.168.0.0/16.`,
 						},
 						"port": schema.Int64Attribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 						},
@@ -220,12 +218,10 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 					},
 					Attributes: map[string]schema.Attribute{
 						"ip": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A string representing an IP address or CIDR block, such as 192.168.1.1 or 192.168.0.0/16.`,
 						},
 						"port": schema.Int64Attribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 						},

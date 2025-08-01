@@ -78,6 +78,16 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 					"behavior": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"idp_error_response_body_template": types.StringType,
+							"idp_error_response_content_type":  types.StringType,
+							"idp_error_response_message":       types.StringType,
+							"idp_error_response_status_code":   types.Int64Type,
+							"purge_token_on_upstream_status_codes": types.ListType{
+								ElemType: types.Int64Type,
+							},
+							"upstream_access_token_header_name": types.StringType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"idp_error_response_body_template": schema.StringAttribute{
 								Computed:    true,
@@ -123,6 +133,55 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 					"cache": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"default_ttl":    types.Float64Type,
+							"eagerly_expire": types.Int64Type,
+							"memory": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`dictionary_name`: types.StringType,
+								},
+							},
+							"redis": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`cluster_max_redirections`: types.Int64Type,
+									`cluster_nodes`: types.ListType{
+										ElemType: types.ObjectType{
+											AttrTypes: map[string]attr.Type{
+												`ip`:   types.StringType,
+												`port`: types.Int64Type,
+											},
+										},
+									},
+									`connect_timeout`:       types.Int64Type,
+									`connection_is_proxied`: types.BoolType,
+									`database`:              types.Int64Type,
+									`host`:                  types.StringType,
+									`keepalive_backlog`:     types.Int64Type,
+									`keepalive_pool_size`:   types.Int64Type,
+									`password`:              types.StringType,
+									`port`:                  types.Int64Type,
+									`read_timeout`:          types.Int64Type,
+									`send_timeout`:          types.Int64Type,
+									`sentinel_master`:       types.StringType,
+									`sentinel_nodes`: types.ListType{
+										ElemType: types.ObjectType{
+											AttrTypes: map[string]attr.Type{
+												`host`: types.StringType,
+												`port`: types.Int64Type,
+											},
+										},
+									},
+									`sentinel_password`: types.StringType,
+									`sentinel_role`:     types.StringType,
+									`sentinel_username`: types.StringType,
+									`server_name`:       types.StringType,
+									`ssl`:               types.BoolType,
+									`ssl_verify`:        types.BoolType,
+									`username`:          types.StringType,
+								},
+							},
+							"strategy": types.StringType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"default_ttl": schema.Float64Attribute{
 								Computed:    true,
@@ -139,6 +198,9 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 							"memory": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"dictionary_name": types.StringType,
+								})),
 								Attributes: map[string]schema.Attribute{
 									"dictionary_name": schema.StringAttribute{
 										Computed:    true,
@@ -151,6 +213,43 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 							"redis": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"cluster_max_redirections": types.Int64Type,
+									"cluster_nodes": types.ListType{
+										ElemType: types.ObjectType{
+											AttrTypes: map[string]attr.Type{
+												`ip`:   types.StringType,
+												`port`: types.Int64Type,
+											},
+										},
+									},
+									"connect_timeout":       types.Int64Type,
+									"connection_is_proxied": types.BoolType,
+									"database":              types.Int64Type,
+									"host":                  types.StringType,
+									"keepalive_backlog":     types.Int64Type,
+									"keepalive_pool_size":   types.Int64Type,
+									"password":              types.StringType,
+									"port":                  types.Int64Type,
+									"read_timeout":          types.Int64Type,
+									"send_timeout":          types.Int64Type,
+									"sentinel_master":       types.StringType,
+									"sentinel_nodes": types.ListType{
+										ElemType: types.ObjectType{
+											AttrTypes: map[string]attr.Type{
+												`host`: types.StringType,
+												`port`: types.Int64Type,
+											},
+										},
+									},
+									"sentinel_password": types.StringType,
+									"sentinel_role":     types.StringType,
+									"sentinel_username": types.StringType,
+									"server_name":       types.StringType,
+									"ssl":               types.BoolType,
+									"ssl_verify":        types.BoolType,
+									"username":          types.StringType,
+								})),
 								Attributes: map[string]schema.Attribute{
 									"cluster_max_redirections": schema.Int64Attribute{
 										Computed:    true,
@@ -159,7 +258,6 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 										Description: `Maximum retry attempts for redirection. Default: 5`,
 									},
 									"cluster_nodes": schema.ListNestedAttribute{
-										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -213,7 +311,6 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 										Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 									},
 									"keepalive_backlog": schema.Int64Attribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `keepalive_pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `keepalive_pool_size` + "`" + `.`,
 										Validators: []validator.Int64{
@@ -230,7 +327,6 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 										},
 									},
 									"password": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 									},
@@ -262,12 +358,10 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 										},
 									},
 									"sentinel_master": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
 									},
 									"sentinel_nodes": schema.ListNestedAttribute{
-										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -294,7 +388,6 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 										Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
 									},
 									"sentinel_password": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.`,
 									},
@@ -311,12 +404,10 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 										},
 									},
 									"sentinel_username": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.`,
 									},
 									"server_name": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `A string representing an SNI (server name indication) value for TLS.`,
 									},
@@ -333,7 +424,6 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 										Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: false`,
 									},
 									"username": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
 									},
@@ -356,6 +446,19 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 					"client": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"auth_method":               types.StringType,
+							"client_secret_jwt_alg":     types.StringType,
+							"http_proxy":                types.StringType,
+							"http_proxy_authorization":  types.StringType,
+							"http_version":              types.Float64Type,
+							"https_proxy":               types.StringType,
+							"https_proxy_authorization": types.StringType,
+							"keep_alive":                types.BoolType,
+							"no_proxy":                  types.StringType,
+							"ssl_verify":                types.BoolType,
+							"timeout":                   types.Int64Type,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"auth_method": schema.StringAttribute{
 								Computed:    true,
@@ -384,12 +487,10 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 								},
 							},
 							"http_proxy": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `The proxy to use when making HTTP requests to the IdP.`,
 							},
 							"http_proxy_authorization": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `The ` + "`" + `Proxy-Authorization` + "`" + ` header value to be used with ` + "`" + `http_proxy` + "`" + `.`,
 							},
@@ -400,12 +501,10 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 								Description: `The HTTP version used for requests made by this plugin. Supported values: ` + "`" + `1.1` + "`" + ` for HTTP 1.1 and ` + "`" + `1.0` + "`" + ` for HTTP 1.0. Default: 1.1`,
 							},
 							"https_proxy": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `The proxy to use when making HTTPS requests to the IdP.`,
 							},
 							"https_proxy_authorization": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `The ` + "`" + `Proxy-Authorization` + "`" + ` header value to be used with ` + "`" + `https_proxy` + "`" + `.`,
 							},
@@ -416,7 +515,6 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 								Description: `Whether to use keepalive connections to the IdP. Default: true`,
 							},
 							"no_proxy": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `A comma-separated list of hosts that should not be proxied.`,
 							},
@@ -448,12 +546,10 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 								Description: `List of audiences passed to the IdP when obtaining a new token.`,
 							},
 							"client_id": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `The client ID for the application registration in the IdP.`,
 							},
 							"client_secret": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `The client secret for the application registration in the IdP.`,
 							},
@@ -470,7 +566,6 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 								},
 							},
 							"password": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `The password to use if ` + "`" + `config.oauth.grant_type` + "`" + ` is set to ` + "`" + `password` + "`" + `.`,
 							},
@@ -486,7 +581,6 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 								Description: `The token endpoint URI.`,
 							},
 							"token_headers": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `Extra headers to be passed in the token endpoint request.`,
@@ -495,7 +589,6 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 								},
 							},
 							"token_post_args": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `Extra post arguments to be passed in the token endpoint request.`,
@@ -504,7 +597,6 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 								},
 							},
 							"username": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `The username to use if ` + "`" + `config.oauth.grant_type` + "`" + ` is set to ` + "`" + `password` + "`" + `.`,
 							},
@@ -590,9 +682,13 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -601,9 +697,13 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -624,12 +724,10 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

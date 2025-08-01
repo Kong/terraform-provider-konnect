@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type RateLimitingPluginAfter struct {
@@ -53,8 +54,19 @@ type RateLimitingPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (r RateLimitingPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RateLimitingPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RateLimitingPluginPartials) GetID() *string {
@@ -155,13 +167,13 @@ type RateLimitingPluginRedis struct {
 	// Database to use for the Redis connection when using the `redis` strategy
 	Database *int64 `default:"0" json:"database"`
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"null" json:"host"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-	Password *string `json:"password,omitempty"`
+	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `default:"6379" json:"port"`
 	// A string representing an SNI (server name indication) value for TLS.
-	ServerName *string `json:"server_name,omitempty"`
+	ServerName *string `default:"null" json:"server_name"`
 	// If set to true, uses SSL to connect to Redis.
 	Ssl *bool `default:"false" json:"ssl"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
@@ -169,7 +181,7 @@ type RateLimitingPluginRedis struct {
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	Timeout *int64 `default:"2000" json:"timeout"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
-	Username *string `json:"username,omitempty"`
+	Username *string `default:"null" json:"username"`
 }
 
 func (r RateLimitingPluginRedis) MarshalJSON() ([]byte, error) {
@@ -248,7 +260,7 @@ func (o *RateLimitingPluginRedis) GetUsername() *string {
 
 type RateLimitingPluginConfig struct {
 	// The number of HTTP requests that can be made per day.
-	Day *float64 `json:"day,omitempty"`
+	Day *float64 `default:"null" json:"day"`
 	// Set a custom error code to return when the rate limit is exceeded.
 	ErrorCode *float64 `default:"429" json:"error_code"`
 	// Set a custom error message to return when the rate limit is exceeded.
@@ -256,29 +268,29 @@ type RateLimitingPluginConfig struct {
 	// A boolean value that determines if the requests should be proxied even if Kong has troubles connecting a third-party data store. If `true`, requests will be proxied anyway, effectively disabling the rate-limiting function until the data store is working again. If `false`, then the clients will see `500` errors.
 	FaultTolerant *bool `default:"true" json:"fault_tolerant"`
 	// A string representing an HTTP header name.
-	HeaderName *string `json:"header_name,omitempty"`
+	HeaderName *string `default:"null" json:"header_name"`
 	// Optionally hide informative response headers.
 	HideClientHeaders *bool `default:"false" json:"hide_client_headers"`
 	// The number of HTTP requests that can be made per hour.
-	Hour *float64 `json:"hour,omitempty"`
+	Hour *float64 `default:"null" json:"hour"`
 	// The entity that is used when aggregating the limits.
 	LimitBy *LimitBy `default:"consumer" json:"limit_by"`
 	// The number of HTTP requests that can be made per minute.
-	Minute *float64 `json:"minute,omitempty"`
+	Minute *float64 `default:"null" json:"minute"`
 	// The number of HTTP requests that can be made per month.
-	Month *float64 `json:"month,omitempty"`
+	Month *float64 `default:"null" json:"month"`
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
-	Path *string `json:"path,omitempty"`
+	Path *string `default:"null" json:"path"`
 	// The rate-limiting policies to use for retrieving and incrementing the limits.
 	Policy *Policy `default:"local" json:"policy"`
 	// Redis configuration
 	Redis *RateLimitingPluginRedis `json:"redis,omitempty"`
 	// The number of HTTP requests that can be made per second.
-	Second *float64 `json:"second,omitempty"`
+	Second *float64 `default:"null" json:"second"`
 	// How often to sync counter data to the central data store. A value of -1 results in synchronous behavior.
 	SyncRate *float64 `default:"-1" json:"sync_rate"`
 	// The number of HTTP requests that can be made per year.
-	Year *float64 `json:"year,omitempty"`
+	Year *float64 `default:"null" json:"year"`
 }
 
 func (r RateLimitingPluginConfig) MarshalJSON() ([]byte, error) {
@@ -494,7 +506,7 @@ type RateLimitingPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                     `default:"null" json:"instance_name"`
-	name         string                      `const:"rate-limiting" json:"name"`
+	name         *string                     `const:"rate-limiting" json:"name"`
 	Ordering     *RateLimitingPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []RateLimitingPluginPartials `json:"partials"`
@@ -554,8 +566,8 @@ func (o *RateLimitingPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *RateLimitingPlugin) GetName() string {
-	return "rate-limiting"
+func (o *RateLimitingPlugin) GetName() *string {
+	return types.String("rate-limiting")
 }
 
 func (o *RateLimitingPlugin) GetOrdering() *RateLimitingPluginOrdering {

@@ -71,7 +71,6 @@ func (r *GatewayPluginTCPLogResource) Schema(ctx context.Context, req resource.S
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"custom_fields_by_lua": schema.MapAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `A list of key-value pairs, where the key is the name of a log field and the value is a chunk of Lua code, whose return value sets or replaces the log field value.`,
@@ -109,7 +108,6 @@ func (r *GatewayPluginTCPLogResource) Schema(ctx context.Context, req resource.S
 						Description: `Indicates whether to perform a TLS handshake against the remote server. Default: false`,
 					},
 					"tls_sni": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `An optional string that defines the SNI (Server Name Indication) hostname to send in the TLS handshake.`,
 					},
@@ -179,9 +177,13 @@ func (r *GatewayPluginTCPLogResource) Schema(ctx context.Context, req resource.S
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -190,9 +192,13 @@ func (r *GatewayPluginTCPLogResource) Schema(ctx context.Context, req resource.S
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -213,12 +219,10 @@ func (r *GatewayPluginTCPLogResource) Schema(ctx context.Context, req resource.S
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

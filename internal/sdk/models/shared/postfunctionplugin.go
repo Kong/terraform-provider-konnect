@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type PostFunctionPluginAfter struct {
@@ -53,8 +54,19 @@ type PostFunctionPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (p PostFunctionPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PostFunctionPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *PostFunctionPluginPartials) GetID() *string {
@@ -246,7 +258,7 @@ type PostFunctionPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                     `default:"null" json:"instance_name"`
-	name         string                      `const:"post-function" json:"name"`
+	name         *string                     `const:"post-function" json:"name"`
 	Ordering     *PostFunctionPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []PostFunctionPluginPartials `json:"partials"`
@@ -302,8 +314,8 @@ func (o *PostFunctionPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *PostFunctionPlugin) GetName() string {
-	return "post-function"
+func (o *PostFunctionPlugin) GetName() *string {
+	return types.String("post-function")
 }
 
 func (o *PostFunctionPlugin) GetOrdering() *PostFunctionPluginOrdering {

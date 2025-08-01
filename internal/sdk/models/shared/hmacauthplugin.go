@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type HmacAuthPluginAfter struct {
@@ -53,8 +54,19 @@ type HmacAuthPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (h HmacAuthPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HmacAuthPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *HmacAuthPluginPartials) GetID() *string {
@@ -114,7 +126,7 @@ type HmacAuthPluginConfig struct {
 	// A list of HMAC digest algorithms that the user wants to support. Allowed values are `hmac-sha1`, `hmac-sha256`, `hmac-sha384`, and `hmac-sha512`
 	Algorithms []Algorithms `json:"algorithms,omitempty"`
 	// An optional string (Consumer UUID or username) value to use as an “anonymous” consumer if authentication fails.
-	Anonymous *string `json:"anonymous,omitempty"`
+	Anonymous *string `default:"null" json:"anonymous"`
 	// Clock skew in seconds to prevent replay attacks.
 	ClockSkew *float64 `default:"300" json:"clock_skew"`
 	// A list of headers that the client should at least use for HTTP signature creation.
@@ -122,7 +134,7 @@ type HmacAuthPluginConfig struct {
 	// An optional boolean value telling the plugin to show or hide the credential from the upstream service.
 	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
-	Realm *string `json:"realm,omitempty"`
+	Realm *string `default:"null" json:"realm"`
 	// A boolean value telling the plugin to enable body validation.
 	ValidateRequestBody *bool `default:"false" json:"validate_request_body"`
 }
@@ -259,7 +271,7 @@ type HmacAuthPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                 `default:"null" json:"instance_name"`
-	name         string                  `const:"hmac-auth" json:"name"`
+	name         *string                 `const:"hmac-auth" json:"name"`
 	Ordering     *HmacAuthPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []HmacAuthPluginPartials `json:"partials"`
@@ -315,8 +327,8 @@ func (o *HmacAuthPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *HmacAuthPlugin) GetName() string {
-	return "hmac-auth"
+func (o *HmacAuthPlugin) GetName() *string {
+	return types.String("hmac-auth")
 }
 
 func (o *HmacAuthPlugin) GetOrdering() *HmacAuthPluginOrdering {

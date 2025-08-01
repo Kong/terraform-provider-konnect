@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type CorrelationIDPluginAfter struct {
@@ -53,8 +54,19 @@ type CorrelationIDPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (c CorrelationIDPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CorrelationIDPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CorrelationIDPluginPartials) GetID() *string {
@@ -227,7 +239,7 @@ type CorrelationIDPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                      `default:"null" json:"instance_name"`
-	name         string                       `const:"correlation-id" json:"name"`
+	name         *string                      `const:"correlation-id" json:"name"`
 	Ordering     *CorrelationIDPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []CorrelationIDPluginPartials `json:"partials"`
@@ -285,8 +297,8 @@ func (o *CorrelationIDPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *CorrelationIDPlugin) GetName() string {
-	return "correlation-id"
+func (o *CorrelationIDPlugin) GetName() *string {
+	return types.String("correlation-id")
 }
 
 func (o *CorrelationIDPlugin) GetOrdering() *CorrelationIDPluginOrdering {

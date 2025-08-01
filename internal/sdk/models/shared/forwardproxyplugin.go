@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type ForwardProxyPluginAfter struct {
@@ -53,8 +54,19 @@ type ForwardProxyPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (f ForwardProxyPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *ForwardProxyPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ForwardProxyPluginPartials) GetID() *string {
@@ -135,18 +147,18 @@ func (e *XHeaders) UnmarshalJSON(data []byte) error {
 type ForwardProxyPluginConfig struct {
 	// The password to authenticate with, if the forward proxy is protected
 	// by basic authentication.
-	AuthPassword *string `json:"auth_password,omitempty"`
+	AuthPassword *string `default:"null" json:"auth_password"`
 	// The username to authenticate with, if the forward proxy is protected
 	// by basic authentication.
-	AuthUsername *string `json:"auth_username,omitempty"`
+	AuthUsername *string `default:"null" json:"auth_username"`
 	// A string representing a host name, such as example.com.
-	HTTPProxyHost *string `json:"http_proxy_host,omitempty"`
+	HTTPProxyHost *string `default:"null" json:"http_proxy_host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	HTTPProxyPort *int64 `json:"http_proxy_port,omitempty"`
+	HTTPProxyPort *int64 `default:"null" json:"http_proxy_port"`
 	// A string representing a host name, such as example.com.
-	HTTPSProxyHost *string `json:"https_proxy_host,omitempty"`
+	HTTPSProxyHost *string `default:"null" json:"https_proxy_host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	HTTPSProxyPort *int64 `json:"https_proxy_port,omitempty"`
+	HTTPSProxyPort *int64 `default:"null" json:"https_proxy_port"`
 	// Whether the server certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate.
 	HTTPSVerify *bool `default:"false" json:"https_verify"`
 	// The proxy scheme to use when connecting. Only `http` is supported.
@@ -307,7 +319,7 @@ type ForwardProxyPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                     `default:"null" json:"instance_name"`
-	name         string                      `const:"forward-proxy" json:"name"`
+	name         *string                     `const:"forward-proxy" json:"name"`
 	Ordering     *ForwardProxyPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []ForwardProxyPluginPartials `json:"partials"`
@@ -365,8 +377,8 @@ func (o *ForwardProxyPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *ForwardProxyPlugin) GetName() string {
-	return "forward-proxy"
+func (o *ForwardProxyPlugin) GetName() *string {
+	return types.String("forward-proxy")
 }
 
 func (o *ForwardProxyPlugin) GetOrdering() *ForwardProxyPluginOrdering {

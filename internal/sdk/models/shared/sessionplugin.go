@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type SessionPluginAfter struct {
@@ -53,8 +54,19 @@ type SessionPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (s SessionPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SessionPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *SessionPluginPartials) GetID() *string {
@@ -255,7 +267,7 @@ type SessionPluginConfig struct {
 	// The session audience, which is the intended target application. For example `"my-application"`.
 	Audience *string `default:"default" json:"audience"`
 	// The domain with which the cookie is intended to be exchanged.
-	CookieDomain *string `json:"cookie_domain,omitempty"`
+	CookieDomain *string `default:"null" json:"cookie_domain"`
 	// Applies the `HttpOnly` tag so that the cookie is sent only to a server.
 	CookieHTTPOnly *bool `default:"true" json:"cookie_http_only"`
 	// The name of the cookie.
@@ -572,7 +584,7 @@ type SessionPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                `default:"null" json:"instance_name"`
-	name         string                 `const:"session" json:"name"`
+	name         *string                `const:"session" json:"name"`
 	Ordering     *SessionPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []SessionPluginPartials `json:"partials"`
@@ -628,8 +640,8 @@ func (o *SessionPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *SessionPlugin) GetName() string {
-	return "session"
+func (o *SessionPlugin) GetName() *string {
+	return types.String("session")
 }
 
 func (o *SessionPlugin) GetOrdering() *SessionPluginOrdering {

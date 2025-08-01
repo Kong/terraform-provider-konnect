@@ -281,7 +281,7 @@ type Active struct {
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
 	HTTPPath *string `default:"/" json:"http_path"`
 	// A string representing an SNI (server name indication) value for TLS.
-	HTTPSSni               *string       `json:"https_sni,omitempty"`
+	HTTPSSni               *string       `default:"null" json:"https_sni"`
 	HTTPSVerifyCertificate *bool         `default:"true" json:"https_verify_certificate"`
 	Timeout                *float64      `default:"1" json:"timeout"`
 	Type                   *UpstreamType `default:"http" json:"type"`

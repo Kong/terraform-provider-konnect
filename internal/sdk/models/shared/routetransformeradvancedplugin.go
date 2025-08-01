@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type RouteTransformerAdvancedPluginAfter struct {
@@ -53,8 +54,19 @@ type RouteTransformerAdvancedPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (r RouteTransformerAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteTransformerAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RouteTransformerAdvancedPluginPartials) GetID() *string {
@@ -80,9 +92,9 @@ func (o *RouteTransformerAdvancedPluginPartials) GetPath() *string {
 
 type RouteTransformerAdvancedPluginConfig struct {
 	EscapePath *bool   `default:"false" json:"escape_path"`
-	Host       *string `json:"host,omitempty"`
-	Path       *string `json:"path,omitempty"`
-	Port       *string `json:"port,omitempty"`
+	Host       *string `default:"null" json:"host"`
+	Path       *string `default:"null" json:"path"`
+	Port       *string `default:"null" json:"port"`
 }
 
 func (r RouteTransformerAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
@@ -202,7 +214,7 @@ type RouteTransformerAdvancedPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                                 `default:"null" json:"instance_name"`
-	name         string                                  `const:"route-transformer-advanced" json:"name"`
+	name         *string                                 `const:"route-transformer-advanced" json:"name"`
 	Ordering     *RouteTransformerAdvancedPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []RouteTransformerAdvancedPluginPartials `json:"partials"`
@@ -260,8 +272,8 @@ func (o *RouteTransformerAdvancedPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *RouteTransformerAdvancedPlugin) GetName() string {
-	return "route-transformer-advanced"
+func (o *RouteTransformerAdvancedPlugin) GetName() *string {
+	return types.String("route-transformer-advanced")
 }
 
 func (o *RouteTransformerAdvancedPlugin) GetOrdering() *RouteTransformerAdvancedPluginOrdering {

@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type AiPromptCompressorPluginAfter struct {
@@ -53,8 +54,19 @@ type AiPromptCompressorPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (a AiPromptCompressorPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptCompressorPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiPromptCompressorPluginPartials) GetID() *string {
@@ -336,7 +348,7 @@ type AiPromptCompressorPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                           `default:"null" json:"instance_name"`
-	name         string                            `const:"ai-prompt-compressor" json:"name"`
+	name         *string                           `const:"ai-prompt-compressor" json:"name"`
 	Ordering     *AiPromptCompressorPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []AiPromptCompressorPluginPartials `json:"partials"`
@@ -396,8 +408,8 @@ func (o *AiPromptCompressorPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *AiPromptCompressorPlugin) GetName() string {
-	return "ai-prompt-compressor"
+func (o *AiPromptCompressorPlugin) GetName() *string {
+	return types.String("ai-prompt-compressor")
 }
 
 func (o *AiPromptCompressorPlugin) GetOrdering() *AiPromptCompressorPluginOrdering {

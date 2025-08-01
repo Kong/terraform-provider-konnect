@@ -66,6 +66,37 @@ func (r *GatewayPluginJqResource) Schema(ctx context.Context, req resource.Schem
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"request_if_media_type": types.ListType{
+						ElemType: types.StringType,
+					},
+					"request_jq_program": types.StringType,
+					"request_jq_program_options": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`ascii_output`:   types.BoolType,
+							`compact_output`: types.BoolType,
+							`join_output`:    types.BoolType,
+							`raw_output`:     types.BoolType,
+							`sort_keys`:      types.BoolType,
+						},
+					},
+					"response_if_media_type": types.ListType{
+						ElemType: types.StringType,
+					},
+					"response_if_status_code": types.ListType{
+						ElemType: types.Int64Type,
+					},
+					"response_jq_program": types.StringType,
+					"response_jq_program_options": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`ascii_output`:   types.BoolType,
+							`compact_output`: types.BoolType,
+							`join_output`:    types.BoolType,
+							`raw_output`:     types.BoolType,
+							`sort_keys`:      types.BoolType,
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"request_if_media_type": schema.ListAttribute{
 						Computed:    true,
@@ -73,12 +104,18 @@ func (r *GatewayPluginJqResource) Schema(ctx context.Context, req resource.Schem
 						ElementType: types.StringType,
 					},
 					"request_jq_program": schema.StringAttribute{
-						Computed: true,
 						Optional: true,
 					},
 					"request_jq_program_options": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"ascii_output":   types.BoolType,
+							"compact_output": types.BoolType,
+							"join_output":    types.BoolType,
+							"raw_output":     types.BoolType,
+							"sort_keys":      types.BoolType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"ascii_output": schema.BoolAttribute{
 								Computed:    true,
@@ -123,12 +160,18 @@ func (r *GatewayPluginJqResource) Schema(ctx context.Context, req resource.Schem
 						ElementType: types.Int64Type,
 					},
 					"response_jq_program": schema.StringAttribute{
-						Computed: true,
 						Optional: true,
 					},
 					"response_jq_program_options": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"ascii_output":   types.BoolType,
+							"compact_output": types.BoolType,
+							"join_output":    types.BoolType,
+							"raw_output":     types.BoolType,
+							"sort_keys":      types.BoolType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"ascii_output": schema.BoolAttribute{
 								Computed:    true,
@@ -228,9 +271,13 @@ func (r *GatewayPluginJqResource) Schema(ctx context.Context, req resource.Schem
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -239,9 +286,13 @@ func (r *GatewayPluginJqResource) Schema(ctx context.Context, req resource.Schem
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -262,12 +313,10 @@ func (r *GatewayPluginJqResource) Schema(ctx context.Context, req resource.Schem
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

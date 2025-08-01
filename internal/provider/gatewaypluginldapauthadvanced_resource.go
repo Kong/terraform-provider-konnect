@@ -82,7 +82,6 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 						Description: `Base DN as the starting point for the search; e.g., 'dc=example,dc=com'.`,
 					},
 					"bind_dn": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The DN to bind to. Used to perform LDAP search of user. This ` + "`" + `bind_dn` + "`" + ` should have permissions to search for the user being authenticated.`,
 					},
@@ -105,7 +104,6 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 						Description: `Whether consumer mapping is optional. If ` + "`" + `consumer_optional=true` + "`" + `, the plugin will not attempt to associate a consumer with the LDAP authenticated user. Default: false`,
 					},
 					"group_base_dn": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Sets a distinguished name (DN) for the entry where LDAP searches for groups begin. This field is case-insensitive.',dc=com'.`,
 					},
@@ -116,12 +114,10 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 						Description: `Sets the attribute holding the members of the LDAP group. This field is case-sensitive. Default: "memberOf"`,
 					},
 					"group_name_attribute": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Sets the attribute holding the name of a group, typically called ` + "`" + `name` + "`" + ` (in Active Directory) or ` + "`" + `cn` + "`" + ` (in OpenLDAP). This field is case-insensitive.`,
 					},
 					"groups_required": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `The groups required to be present in the LDAP search result for successful authorization. This config parameter works in both **AND** / **OR** cases. - When ` + "`" + `["group1 group2"]` + "`" + ` are in the same array indices, both ` + "`" + `group1` + "`" + ` AND ` + "`" + `group2` + "`" + ` need to be present in the LDAP search result. - When ` + "`" + `["group1", "group2"]` + "`" + ` are in different array indices, either ` + "`" + `group1` + "`" + ` OR ` + "`" + `group2` + "`" + ` need to be present in the LDAP search result.`,
@@ -149,7 +145,6 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 						Description: `Host on which the LDAP server is running.`,
 					},
 					"ldap_password": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The password to the LDAP server.`,
 					},
@@ -172,7 +167,6 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 						Description: `Displays all the LDAP search results received from the LDAP server for debugging purposes. Not recommended to be enabled in a production environment. Default: false`,
 					},
 					"realm": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `When authentication fails the plugin sends ` + "`" + `WWW-Authenticate` + "`" + ` header with ` + "`" + `realm` + "`" + ` attribute value.`,
 					},
@@ -246,9 +240,13 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -257,9 +255,13 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -280,12 +282,10 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

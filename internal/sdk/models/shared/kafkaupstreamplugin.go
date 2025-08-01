@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type KafkaUpstreamPluginAfter struct {
@@ -53,8 +54,19 @@ type KafkaUpstreamPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (k KafkaUpstreamPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaUpstreamPluginPartials) GetID() *string {
@@ -136,13 +148,24 @@ type KafkaUpstreamPluginAuthentication struct {
 	// The SASL authentication mechanism.  Supported options: `PLAIN`, `SCRAM-SHA-256`, or `SCRAM-SHA-512`.
 	Mechanism *KafkaUpstreamPluginMechanism `json:"mechanism,omitempty"`
 	// Password for SASL authentication.
-	Password *string `json:"password,omitempty"`
+	Password *string `default:"null" json:"password"`
 	// The authentication strategy for the plugin, the only option for the value is `sasl`.
 	Strategy *KafkaUpstreamPluginStrategy `json:"strategy,omitempty"`
 	// Enable this to indicate `DelegationToken` authentication.
-	Tokenauth *bool `json:"tokenauth,omitempty"`
+	Tokenauth *bool `default:"null" json:"tokenauth"`
 	// Username for SASL authentication.
-	User *string `json:"user,omitempty"`
+	User *string `default:"null" json:"user"`
+}
+
+func (k KafkaUpstreamPluginAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaUpstreamPluginAuthentication) GetMechanism() *KafkaUpstreamPluginMechanism {
@@ -310,9 +333,20 @@ func (o *KafkaUpstreamPluginConfigAuthentication) GetMode() *KafkaUpstreamPlugin
 
 type KafkaUpstreamPluginKeySchema struct {
 	// The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
-	SchemaVersion *string `json:"schema_version,omitempty"`
+	SchemaVersion *string `default:"null" json:"schema_version"`
 	// The name of the subject
-	SubjectName *string `json:"subject_name,omitempty"`
+	SubjectName *string `default:"null" json:"subject_name"`
+}
+
+func (k KafkaUpstreamPluginKeySchema) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginKeySchema) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaUpstreamPluginKeySchema) GetSchemaVersion() *string {
@@ -331,9 +365,20 @@ func (o *KafkaUpstreamPluginKeySchema) GetSubjectName() *string {
 
 type KafkaUpstreamPluginValueSchema struct {
 	// The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
-	SchemaVersion *string `json:"schema_version,omitempty"`
+	SchemaVersion *string `default:"null" json:"schema_version"`
 	// The name of the subject
-	SubjectName *string `json:"subject_name,omitempty"`
+	SubjectName *string `default:"null" json:"subject_name"`
+}
+
+func (k KafkaUpstreamPluginValueSchema) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginValueSchema) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaUpstreamPluginValueSchema) GetSchemaVersion() *string {
@@ -356,9 +401,9 @@ type KafkaUpstreamPluginConfluent struct {
 	// Set to false to disable SSL certificate verification when connecting to the schema registry.
 	SslVerify *bool `default:"true" json:"ssl_verify"`
 	// The TTL in seconds for the schema registry cache.
-	TTL *float64 `json:"ttl,omitempty"`
+	TTL *float64 `default:"null" json:"ttl"`
 	// The URL of the schema registry.
-	URL         *string                         `json:"url,omitempty"`
+	URL         *string                         `default:"null" json:"url"`
 	ValueSchema *KafkaUpstreamPluginValueSchema `json:"value_schema,omitempty"`
 }
 
@@ -429,9 +474,20 @@ func (o *KafkaUpstreamPluginSchemaRegistry) GetConfluent() *KafkaUpstreamPluginC
 
 type KafkaUpstreamPluginSecurity struct {
 	// UUID of certificate entity for mTLS authentication.
-	CertificateID *string `json:"certificate_id,omitempty"`
+	CertificateID *string `default:"null" json:"certificate_id"`
 	// Enables TLS.
-	Ssl *bool `json:"ssl,omitempty"`
+	Ssl *bool `default:"null" json:"ssl"`
+}
+
+func (k KafkaUpstreamPluginSecurity) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginSecurity) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaUpstreamPluginSecurity) GetCertificateID() *string {
@@ -455,7 +511,7 @@ type KafkaUpstreamPluginConfig struct {
 	// Set of bootstrap brokers in a `{host: host, port: port}` list format.
 	BootstrapServers []KafkaUpstreamPluginBootstrapServers `json:"bootstrap_servers,omitempty"`
 	// An identifier for the Kafka cluster. By default, this field generates a random string. You can also set your own custom cluster identifier.  If more than one Kafka plugin is configured without a `cluster_name` (that is, if the default autogenerated value is removed), these plugins will use the same producer, and by extension, the same cluster. Logs will be sent to the leader of the cluster.
-	ClusterName *string `json:"cluster_name,omitempty"`
+	ClusterName *string `default:"null" json:"cluster_name"`
 	// Include the request body in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.
 	ForwardBody *bool `default:"true" json:"forward_body"`
 	// Include the request headers in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.
@@ -468,7 +524,7 @@ type KafkaUpstreamPluginConfig struct {
 	Keepalive        *int64 `default:"60000" json:"keepalive"`
 	KeepaliveEnabled *bool  `default:"false" json:"keepalive_enabled"`
 	// The request query parameter name that contains the Kafka message key. If specified, messages with the same key will be sent to the same Kafka partition, ensuring consistent ordering.
-	KeyQueryArg *string `json:"key_query_arg,omitempty"`
+	KeyQueryArg *string `default:"null" json:"key_query_arg"`
 	// The Lua functions that manipulates the message being sent to the Kafka topic.
 	MessageByLuaFunctions []string `json:"message_by_lua_functions,omitempty"`
 	// Flag to enable asynchronous mode.
@@ -497,7 +553,7 @@ type KafkaUpstreamPluginConfig struct {
 	// The default Kafka topic to publish to if the query parameter defined in the `topics_query_arg` does not exist in the request
 	Topic string `json:"topic"`
 	// The request query parameter name that contains the topics to publish to
-	TopicsQueryArg *string `json:"topics_query_arg,omitempty"`
+	TopicsQueryArg *string `default:"null" json:"topics_query_arg"`
 }
 
 func (k KafkaUpstreamPluginConfig) MarshalJSON() ([]byte, error) {
@@ -771,7 +827,7 @@ type KafkaUpstreamPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                      `default:"null" json:"instance_name"`
-	name         string                       `const:"kafka-upstream" json:"name"`
+	name         *string                      `const:"kafka-upstream" json:"name"`
 	Ordering     *KafkaUpstreamPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []KafkaUpstreamPluginPartials `json:"partials"`
@@ -829,8 +885,8 @@ func (o *KafkaUpstreamPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *KafkaUpstreamPlugin) GetName() string {
-	return "kafka-upstream"
+func (o *KafkaUpstreamPlugin) GetName() *string {
+	return types.String("kafka-upstream")
 }
 
 func (o *KafkaUpstreamPlugin) GetOrdering() *KafkaUpstreamPluginOrdering {

@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type ResponseTransformerAdvancedPluginAfter struct {
@@ -53,8 +54,19 @@ type ResponseTransformerAdvancedPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (r ResponseTransformerAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseTransformerAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ResponseTransformerAdvancedPluginPartials) GetID() *string {
@@ -294,11 +306,22 @@ func (e *ResponseTransformerAdvancedPluginConfigReplaceJSONTypes) UnmarshalJSON(
 
 type ResponseTransformerAdvancedPluginReplace struct {
 	// String with which to replace the entire response body.
-	Body      *string                                                   `json:"body,omitempty"`
+	Body      *string                                                   `default:"null" json:"body"`
 	Headers   []string                                                  `json:"headers,omitempty"`
 	IfStatus  []string                                                  `json:"if_status,omitempty"`
 	JSON      []string                                                  `json:"json,omitempty"`
 	JSONTypes []ResponseTransformerAdvancedPluginConfigReplaceJSONTypes `json:"json_types,omitempty"`
+}
+
+func (r ResponseTransformerAdvancedPluginReplace) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseTransformerAdvancedPluginReplace) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ResponseTransformerAdvancedPluginReplace) GetBody() *string {
@@ -532,7 +555,7 @@ type ResponseTransformerAdvancedPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                                    `default:"null" json:"instance_name"`
-	name         string                                     `const:"response-transformer-advanced" json:"name"`
+	name         *string                                    `const:"response-transformer-advanced" json:"name"`
 	Ordering     *ResponseTransformerAdvancedPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []ResponseTransformerAdvancedPluginPartials `json:"partials"`
@@ -592,8 +615,8 @@ func (o *ResponseTransformerAdvancedPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *ResponseTransformerAdvancedPlugin) GetName() string {
-	return "response-transformer-advanced"
+func (o *ResponseTransformerAdvancedPlugin) GetName() *string {
+	return types.String("response-transformer-advanced")
 }
 
 func (o *ResponseTransformerAdvancedPlugin) GetOrdering() *ResponseTransformerAdvancedPluginOrdering {

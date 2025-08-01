@@ -69,14 +69,20 @@ func (r *GatewayPluginRequestTerminationResource) Schema(ctx context.Context, re
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"body":         types.StringType,
+					"content_type": types.StringType,
+					"echo":         types.BoolType,
+					"message":      types.StringType,
+					"status_code":  types.Int64Type,
+					"trigger":      types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"body": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The raw response body to send. This is mutually exclusive with the ` + "`" + `config.message` + "`" + ` field.`,
 					},
 					"content_type": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Content type of the raw response configured with ` + "`" + `config.body` + "`" + `.`,
 					},
@@ -87,7 +93,6 @@ func (r *GatewayPluginRequestTerminationResource) Schema(ctx context.Context, re
 						Description: `When set, the plugin will echo a copy of the request back to the client. The main usecase for this is debugging. It can be combined with ` + "`" + `trigger` + "`" + ` in order to debug requests on live systems without disturbing real traffic. Default: false`,
 					},
 					"message": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The message to send, if using the default response generator.`,
 					},
@@ -101,7 +106,6 @@ func (r *GatewayPluginRequestTerminationResource) Schema(ctx context.Context, re
 						},
 					},
 					"trigger": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing an HTTP header name.`,
 					},
@@ -185,9 +189,13 @@ func (r *GatewayPluginRequestTerminationResource) Schema(ctx context.Context, re
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -196,9 +204,13 @@ func (r *GatewayPluginRequestTerminationResource) Schema(ctx context.Context, re
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -219,12 +231,10 @@ func (r *GatewayPluginRequestTerminationResource) Schema(ctx context.Context, re
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type HTTPLogPluginAfter struct {
@@ -53,8 +54,19 @@ type HTTPLogPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (h HTTPLogPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HTTPLogPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *HTTPLogPluginPartials) GetID() *string {
@@ -170,7 +182,7 @@ type HTTPLogPluginQueue struct {
 	// Maximum number of entries that can be processed at a time.
 	MaxBatchSize *int64 `default:"1" json:"max_batch_size"`
 	// Maximum number of bytes that can be waiting on a queue, requires string content.
-	MaxBytes *int64 `json:"max_bytes,omitempty"`
+	MaxBytes *int64 `default:"null" json:"max_bytes"`
 	// Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.
 	MaxCoalescingDelay *float64 `default:"1" json:"max_coalescing_delay"`
 	// Maximum number of entries that can be waiting on the queue.
@@ -254,7 +266,7 @@ type HTTPLogPluginConfig struct {
 	// Lua code as a key-value map
 	CustomFieldsByLua map[string]any `json:"custom_fields_by_lua,omitempty"`
 	// Optional time in seconds. If `queue_size` > 1, this is the max idle time before sending a log with less than `queue_size` records.
-	FlushTimeout *float64 `json:"flush_timeout,omitempty"`
+	FlushTimeout *float64 `default:"null" json:"flush_timeout"`
 	// An optional table of headers included in the HTTP message to the upstream server. Values are indexed by header name, and each header name accepts a single string.
 	Headers map[string]any `json:"headers,omitempty"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
@@ -265,9 +277,9 @@ type HTTPLogPluginConfig struct {
 	Method *Method             `default:"POST" json:"method"`
 	Queue  *HTTPLogPluginQueue `json:"queue,omitempty"`
 	// Maximum number of log entries to be sent on each message to the upstream server.
-	QueueSize *int64 `json:"queue_size,omitempty"`
+	QueueSize *int64 `default:"null" json:"queue_size"`
 	// Number of times to retry when sending data to the upstream server.
-	RetryCount *int64 `json:"retry_count,omitempty"`
+	RetryCount *int64 `default:"null" json:"retry_count"`
 	// An optional timeout in milliseconds when sending data to the upstream server.
 	Timeout *float64 `default:"10000" json:"timeout"`
 }
@@ -457,7 +469,7 @@ type HTTPLogPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                `default:"null" json:"instance_name"`
-	name         string                 `const:"http-log" json:"name"`
+	name         *string                `const:"http-log" json:"name"`
 	Ordering     *HTTPLogPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []HTTPLogPluginPartials `json:"partials"`
@@ -515,8 +527,8 @@ func (o *HTTPLogPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *HTTPLogPlugin) GetName() string {
-	return "http-log"
+func (o *HTTPLogPlugin) GetName() *string {
+	return types.String("http-log")
 }
 
 func (o *HTTPLogPlugin) GetOrdering() *HTTPLogPluginOrdering {

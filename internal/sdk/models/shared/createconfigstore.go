@@ -2,9 +2,24 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+)
+
 // CreateConfigStore - The request schema to create a Config Store.
 type CreateConfigStore struct {
-	Name *string `json:"name,omitempty"`
+	Name *string `default:"null" json:"name"`
+}
+
+func (c CreateConfigStore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateConfigStore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CreateConfigStore) GetName() *string {

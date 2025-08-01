@@ -48,10 +48,21 @@ func (e *State) UnmarshalJSON(data []byte) error {
 // StateMetadata - Metadata describing the backing state of the dataplane group and why it may be in an erroneous state.
 type StateMetadata struct {
 	// Reported status of the dataplane group from backing infrastructure.
-	ReportedStatus *string `json:"reported_status,omitempty"`
+	ReportedStatus *string `default:"null" json:"reported_status"`
 	// Reason why the dataplane group may be in an erroneous state, reported from backing infrastructure.
 	//
-	Reason *string `json:"reason,omitempty"`
+	Reason *string `default:"null" json:"reason"`
+}
+
+func (s StateMetadata) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StateMetadata) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *StateMetadata) GetReportedStatus() *string {

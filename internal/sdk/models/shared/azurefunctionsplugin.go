@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type AzureFunctionsPluginAfter struct {
@@ -53,8 +54,19 @@ type AzureFunctionsPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (a AzureFunctionsPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AzureFunctionsPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AzureFunctionsPluginPartials) GetID() *string {
@@ -80,11 +92,11 @@ func (o *AzureFunctionsPluginPartials) GetPath() *string {
 
 type AzureFunctionsPluginConfig struct {
 	// The apikey to access the Azure resources. If provided, it is injected as the `x-functions-key` header.
-	Apikey *string `json:"apikey,omitempty"`
+	Apikey *string `default:"null" json:"apikey"`
 	// The Azure app name.
 	Appname string `json:"appname"`
 	// The `clientid` to access the Azure resources. If provided, it is injected as the `x-functions-clientid` header.
-	Clientid *string `json:"clientid,omitempty"`
+	Clientid *string `default:"null" json:"clientid"`
 	// Name of the Azure function to invoke.
 	Functionname string `json:"functionname"`
 	// The domain where the function resides.
@@ -279,7 +291,7 @@ type AzureFunctionsPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                       `default:"null" json:"instance_name"`
-	name         string                        `const:"azure-functions" json:"name"`
+	name         *string                       `const:"azure-functions" json:"name"`
 	Ordering     *AzureFunctionsPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []AzureFunctionsPluginPartials `json:"partials"`
@@ -337,8 +349,8 @@ func (o *AzureFunctionsPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *AzureFunctionsPlugin) GetName() string {
-	return "azure-functions"
+func (o *AzureFunctionsPlugin) GetName() *string {
+	return types.String("azure-functions")
 }
 
 func (o *AzureFunctionsPlugin) GetOrdering() *AzureFunctionsPluginOrdering {

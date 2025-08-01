@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type UDPLogPluginAfter struct {
@@ -53,8 +54,19 @@ type UDPLogPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (u UDPLogPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UDPLogPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UDPLogPluginPartials) GetID() *string {
@@ -225,7 +237,7 @@ type UDPLogPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string               `default:"null" json:"instance_name"`
-	name         string                `const:"udp-log" json:"name"`
+	name         *string               `const:"udp-log" json:"name"`
 	Ordering     *UDPLogPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []UDPLogPluginPartials `json:"partials"`
@@ -283,8 +295,8 @@ func (o *UDPLogPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *UDPLogPlugin) GetName() string {
-	return "udp-log"
+func (o *UDPLogPlugin) GetName() *string {
+	return types.String("udp-log")
 }
 
 func (o *UDPLogPlugin) GetOrdering() *UDPLogPluginOrdering {

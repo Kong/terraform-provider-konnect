@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type CanaryPluginAfter struct {
@@ -53,8 +54,19 @@ type CanaryPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (c CanaryPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CanaryPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CanaryPluginPartials) GetID() *string {
@@ -126,7 +138,7 @@ func (e *Hash) UnmarshalJSON(data []byte) error {
 
 type CanaryPluginConfig struct {
 	// A string representing an HTTP header name.
-	CanaryByHeaderName *string `json:"canary_by_header_name,omitempty"`
+	CanaryByHeaderName *string `default:"null" json:"canary_by_header_name"`
 	// The duration of the canary release in seconds.
 	Duration *float64 `default:"3600" json:"duration"`
 	// The groups allowed to access the canary release.
@@ -141,21 +153,21 @@ type CanaryPluginConfig struct {
 	// * `header`: The hash will be based on the specified header value.
 	Hash *Hash `default:"consumer" json:"hash"`
 	// A string representing an HTTP header name.
-	HashHeader *string `json:"hash_header,omitempty"`
+	HashHeader *string `default:"null" json:"hash_header"`
 	// The percentage of traffic to be routed to the canary release.
-	Percentage *float64 `json:"percentage,omitempty"`
+	Percentage *float64 `default:"null" json:"percentage"`
 	// Future time in seconds since epoch, when the canary release will start. Ignored when `percentage` is set, or when using `allow` or `deny` in `hash`.
-	Start *float64 `json:"start,omitempty"`
+	Start *float64 `default:"null" json:"start"`
 	// The number of steps for the canary release.
 	Steps *float64 `default:"1000" json:"steps"`
 	// Specifies whether to fallback to the upstream server if the canary release fails.
 	UpstreamFallback *bool `default:"false" json:"upstream_fallback"`
 	// A string representing a host name, such as example.com.
-	UpstreamHost *string `json:"upstream_host,omitempty"`
+	UpstreamHost *string `default:"null" json:"upstream_host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	UpstreamPort *int64 `json:"upstream_port,omitempty"`
+	UpstreamPort *int64 `default:"null" json:"upstream_port"`
 	// The URI of the upstream server to be used for the canary release.
-	UpstreamURI *string `json:"upstream_uri,omitempty"`
+	UpstreamURI *string `default:"null" json:"upstream_uri"`
 }
 
 func (c CanaryPluginConfig) MarshalJSON() ([]byte, error) {
@@ -319,7 +331,7 @@ type CanaryPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string               `default:"null" json:"instance_name"`
-	name         string                `const:"canary" json:"name"`
+	name         *string               `const:"canary" json:"name"`
 	Ordering     *CanaryPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []CanaryPluginPartials `json:"partials"`
@@ -375,8 +387,8 @@ func (o *CanaryPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *CanaryPlugin) GetName() string {
-	return "canary"
+func (o *CanaryPlugin) GetName() *string {
+	return types.String("canary")
 }
 
 func (o *CanaryPlugin) GetOrdering() *CanaryPluginOrdering {

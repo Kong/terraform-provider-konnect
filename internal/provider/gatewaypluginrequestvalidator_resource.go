@@ -70,6 +70,27 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"allowed_content_types": types.ListType{
+						ElemType: types.StringType,
+					},
+					"body_schema":                       types.StringType,
+					"content_type_parameter_validation": types.BoolType,
+					"parameter_schema": types.ListType{
+						ElemType: types.ObjectType{
+							AttrTypes: map[string]attr.Type{
+								`explode`:  types.BoolType,
+								`in`:       types.StringType,
+								`name`:     types.StringType,
+								`required`: types.BoolType,
+								`schema`:   types.StringType,
+								`style`:    types.StringType,
+							},
+						},
+					},
+					"verbose_response": types.BoolType,
+					"version":          types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"allowed_content_types": schema.ListAttribute{
 						Computed:    true,
@@ -78,7 +99,6 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 						Description: `List of allowed content types. The value can be configured with the ` + "`" + `charset` + "`" + ` parameter. For example, ` + "`" + `application/json; charset=UTF-8` + "`" + `.`,
 					},
 					"body_schema": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The request body schema specification. One of ` + "`" + `body_schema` + "`" + ` or ` + "`" + `parameter_schema` + "`" + ` must be specified.`,
 					},
@@ -89,7 +109,6 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 						Description: `Determines whether to enable parameters validation of request content-type. Default: true`,
 					},
 					"parameter_schema": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -97,7 +116,6 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 							},
 							Attributes: map[string]schema.Attribute{
 								"explode": schema.BoolAttribute{
-									Computed:    true,
 									Optional:    true,
 									Description: `Required when ` + "`" + `schema` + "`" + ` and ` + "`" + `style` + "`" + ` are set. When ` + "`" + `explode` + "`" + ` is ` + "`" + `true` + "`" + `, parameter values of type ` + "`" + `array` + "`" + ` or ` + "`" + `object` + "`" + ` generate separate parameters for each value of the array or key-value pair of the map. For other types of parameters, this property has no effect.`,
 								},
@@ -131,7 +149,6 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 									},
 								},
 								"schema": schema.StringAttribute{
-									Computed:    true,
 									Optional:    true,
 									Description: `Required when ` + "`" + `style` + "`" + ` and ` + "`" + `explode` + "`" + ` are set. This is the schema defining the type used for the parameter. It is validated using ` + "`" + `draft4` + "`" + ` for JSON Schema draft 4 compliant validator. In addition to being a valid JSON Schema, the parameter schema MUST have a top-level ` + "`" + `type` + "`" + ` property to enable proper deserialization before validating.`,
 								},
@@ -243,9 +260,13 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -254,9 +275,13 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -277,12 +302,10 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

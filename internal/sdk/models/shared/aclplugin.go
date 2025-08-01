@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type ACLPluginAfter struct {
@@ -53,8 +54,19 @@ type Partials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (p Partials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *Partials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Partials) GetID() *string {
@@ -203,7 +215,7 @@ type ACLPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string            `default:"null" json:"instance_name"`
-	name         string             `const:"acl" json:"name"`
+	name         *string            `const:"acl" json:"name"`
 	Ordering     *ACLPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []Partials `json:"partials"`
@@ -259,8 +271,8 @@ func (o *ACLPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *ACLPlugin) GetName() string {
-	return "acl"
+func (o *ACLPlugin) GetName() *string {
+	return types.String("acl")
 }
 
 func (o *ACLPlugin) GetOrdering() *ACLPluginOrdering {

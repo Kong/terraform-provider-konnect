@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type AwsLambdaPluginAfter struct {
@@ -53,8 +54,19 @@ type AwsLambdaPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (a AwsLambdaPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AwsLambdaPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AwsLambdaPluginPartials) GetID() *string {
@@ -191,19 +203,19 @@ func (e *LogType) UnmarshalJSON(data []byte) error {
 
 type AwsLambdaPluginConfig struct {
 	// The target AWS IAM role ARN used to invoke the Lambda function.
-	AwsAssumeRoleArn *string `json:"aws_assume_role_arn,omitempty"`
+	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
 	// Identifier to select the IMDS protocol version to use: `v1` or `v2`.
 	AwsImdsProtocolVersion *AwsImdsProtocolVersion `default:"v1" json:"aws_imds_protocol_version"`
 	// The AWS key credential to be used when invoking the function.
-	AwsKey *string `json:"aws_key,omitempty"`
+	AwsKey *string `default:"null" json:"aws_key"`
 	// A string representing a host name, such as example.com.
-	AwsRegion *string `json:"aws_region,omitempty"`
+	AwsRegion *string `default:"null" json:"aws_region"`
 	// The identifier of the assumed role session.
 	AwsRoleSessionName *string `default:"kong" json:"aws_role_session_name"`
 	// The AWS secret credential to be used when invoking the function.
-	AwsSecret *string `json:"aws_secret,omitempty"`
+	AwsSecret *string `default:"null" json:"aws_secret"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
-	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
+	AwsStsEndpointURL *string `default:"null" json:"aws_sts_endpoint_url"`
 	// An optional value that defines whether the plugin should wrap requests into the Amazon API gateway.
 	AwsgatewayCompatible *bool `default:"false" json:"awsgateway_compatible"`
 	// An optional value that Base64-encodes the request body.
@@ -220,9 +232,9 @@ type AwsLambdaPluginConfig struct {
 	// An optional value that defines whether the original HTTP request URI is sent in the request_uri field of the JSON-encoded request.
 	ForwardRequestURI *bool `default:"false" json:"forward_request_uri"`
 	// The AWS Lambda function to invoke. Both function name and function ARN (including partial) are supported.
-	FunctionName *string `json:"function_name,omitempty"`
+	FunctionName *string `default:"null" json:"function_name"`
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"null" json:"host"`
 	// The InvocationType to use when invoking the function. Available types are RequestResponse, Event, DryRun.
 	InvocationType *InvocationType `default:"RequestResponse" json:"invocation_type"`
 	// An optional value that defines whether the response format to receive from the Lambda to this format.
@@ -234,15 +246,15 @@ type AwsLambdaPluginConfig struct {
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `default:"443" json:"port"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
-	ProxyURL *string `json:"proxy_url,omitempty"`
+	ProxyURL *string `default:"null" json:"proxy_url"`
 	// The qualifier to use when invoking the function.
-	Qualifier *string `json:"qualifier,omitempty"`
+	Qualifier *string `default:"null" json:"qualifier"`
 	// An optional value that defines whether Kong should send large bodies that are buffered to disk
 	SkipLargeBodies *bool `default:"true" json:"skip_large_bodies"`
 	// An optional timeout in milliseconds when invoking the function.
 	Timeout *float64 `default:"60000" json:"timeout"`
 	// The response status code to use (instead of the default 200, 202, or 204) in the case of an Unhandled Function Error.
-	UnhandledStatus *int64 `json:"unhandled_status,omitempty"`
+	UnhandledStatus *int64 `default:"null" json:"unhandled_status"`
 }
 
 func (a AwsLambdaPluginConfig) MarshalJSON() ([]byte, error) {
@@ -523,7 +535,7 @@ type AwsLambdaPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                  `default:"null" json:"instance_name"`
-	name         string                   `const:"aws-lambda" json:"name"`
+	name         *string                  `const:"aws-lambda" json:"name"`
 	Ordering     *AwsLambdaPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []AwsLambdaPluginPartials `json:"partials"`
@@ -581,8 +593,8 @@ func (o *AwsLambdaPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *AwsLambdaPlugin) GetName() string {
-	return "aws-lambda"
+func (o *AwsLambdaPlugin) GetName() *string {
+	return types.String("aws-lambda")
 }
 
 func (o *AwsLambdaPlugin) GetOrdering() *AwsLambdaPluginOrdering {

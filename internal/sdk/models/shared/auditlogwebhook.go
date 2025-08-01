@@ -10,9 +10,9 @@ import (
 // AuditLogWebhook - Get response for audit log webhook
 type AuditLogWebhook struct {
 	// The endpoint that will receive audit log messages.
-	Endpoint *string `json:"endpoint,omitempty"`
+	Endpoint *string `default:"null" json:"endpoint"`
 	// Indicates whether audit data should be sent to the webhook.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"null" json:"enabled"`
 	// The output format of each log messages.
 	LogFormat *LogFormat `default:"cef" json:"log_format"`
 	// Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.

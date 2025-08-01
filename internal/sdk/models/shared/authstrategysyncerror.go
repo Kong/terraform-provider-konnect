@@ -41,7 +41,7 @@ func (e *Value) UnmarshalJSON(data []byte) error {
 }
 
 type Details struct {
-	Type                 *string  `json:"type,omitempty"`
+	Type                 *string  `default:"null" json:"type"`
 	Message              []string `json:"message,omitempty"`
 	AdditionalProperties any      `additionalProperties:"true" json:"-"`
 }
@@ -109,10 +109,21 @@ func (o *Info) GetAdditionalProperties() any {
 }
 
 type AuthStrategySyncError struct {
-	PluginName *string `json:"plugin_name,omitempty"`
+	PluginName *string `default:"null" json:"plugin_name"`
 	Value      *Value  `json:"value,omitempty"`
 	Message    string  `json:"message"`
 	Info       *Info   `json:"info,omitempty"`
+}
+
+func (a AuthStrategySyncError) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AuthStrategySyncError) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AuthStrategySyncError) GetPluginName() *string {

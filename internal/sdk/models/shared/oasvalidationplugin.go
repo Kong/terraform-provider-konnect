@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type OasValidationPluginAfter struct {
@@ -53,8 +54,19 @@ type OasValidationPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (o OasValidationPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OasValidationPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OasValidationPluginPartials) GetID() *string {
@@ -86,7 +98,7 @@ type OasValidationPluginConfig struct {
 	// Indicates whether the api_spec is URI-Encoded.
 	APISpecEncoded *bool `default:"true" json:"api_spec_encoded"`
 	// The base path to be used for path match evaluation. This value is ignored if `include_base_path` is set to `false`.
-	CustomBasePath *string `json:"custom_base_path,omitempty"`
+	CustomBasePath *string `default:"null" json:"custom_base_path"`
 	// If set to true, checks if HTTP header parameters in the request exist in the API specification.
 	HeaderParameterCheck *bool `default:"false" json:"header_parameter_check"`
 	// Indicates whether to include the base path when performing path match evaluation.
@@ -305,7 +317,7 @@ type OasValidationPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                      `default:"null" json:"instance_name"`
-	name         string                       `const:"oas-validation" json:"name"`
+	name         *string                      `const:"oas-validation" json:"name"`
 	Ordering     *OasValidationPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []OasValidationPluginPartials `json:"partials"`
@@ -363,8 +375,8 @@ func (o *OasValidationPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *OasValidationPlugin) GetName() string {
-	return "oas-validation"
+func (o *OasValidationPlugin) GetName() *string {
+	return types.String("oas-validation")
 }
 
 func (o *OasValidationPlugin) GetOrdering() *OasValidationPluginOrdering {

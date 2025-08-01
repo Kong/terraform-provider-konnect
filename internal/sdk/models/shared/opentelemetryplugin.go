@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type OpentelemetryPluginAfter struct {
@@ -53,8 +54,19 @@ type OpentelemetryPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (o OpentelemetryPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpentelemetryPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OpentelemetryPluginPartials) GetID() *string {
@@ -347,7 +359,7 @@ type OpentelemetryPluginQueue struct {
 	// Maximum number of entries that can be processed at a time.
 	MaxBatchSize *int64 `default:"1" json:"max_batch_size"`
 	// Maximum number of bytes that can be waiting on a queue, requires string content.
-	MaxBytes *int64 `json:"max_bytes,omitempty"`
+	MaxBytes *int64 `default:"null" json:"max_bytes"`
 	// Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.
 	MaxCoalescingDelay *float64 `default:"1" json:"max_coalescing_delay"`
 	// Maximum number of entries that can be waiting on the queue.
@@ -454,30 +466,30 @@ func (e *SamplingStrategy) UnmarshalJSON(data []byte) error {
 
 type OpentelemetryPluginConfig struct {
 	// The delay, in seconds, between two consecutive batches.
-	BatchFlushDelay *int64 `json:"batch_flush_delay,omitempty"`
+	BatchFlushDelay *int64 `default:"null" json:"batch_flush_delay"`
 	// The number of spans to be sent in a single batch.
-	BatchSpanCount *int64 `json:"batch_span_count,omitempty"`
+	BatchSpanCount *int64 `default:"null" json:"batch_span_count"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ConnectTimeout *int64      `default:"1000" json:"connect_timeout"`
 	HeaderType     *HeaderType `default:"preserve" json:"header_type"`
 	// The custom headers to be added in the HTTP request sent to the OTLP server. This setting is useful for adding the authentication headers (token) for the APM backend.
 	Headers                      map[string]any `json:"headers,omitempty"`
-	HTTPResponseHeaderForTraceid *string        `json:"http_response_header_for_traceid,omitempty"`
+	HTTPResponseHeaderForTraceid *string        `default:"null" json:"http_response_header_for_traceid"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
-	LogsEndpoint *string                   `json:"logs_endpoint,omitempty"`
+	LogsEndpoint *string                   `default:"null" json:"logs_endpoint"`
 	Propagation  *Propagation              `json:"propagation,omitempty"`
 	Queue        *OpentelemetryPluginQueue `json:"queue,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout        *int64         `default:"5000" json:"read_timeout"`
 	ResourceAttributes map[string]any `json:"resource_attributes,omitempty"`
 	// Tracing sampling rate for configuring the probability-based sampler. When set, this value supersedes the global `tracing_sampling_rate` setting from kong.conf.
-	SamplingRate *float64 `json:"sampling_rate,omitempty"`
+	SamplingRate *float64 `default:"null" json:"sampling_rate"`
 	// The sampling strategy to use for OTLP `traces`. Set `parent_drop_probability_fallback` if you want parent-based sampling when the parent span contains a `false` sampled flag, and fallback to probability-based sampling otherwise. Set `parent_probability_fallback` if you want parent-based sampling when the parent span contains a valid sampled flag (`true` or `false`), and fallback to probability-based sampling otherwise.
 	SamplingStrategy *SamplingStrategy `default:"parent_drop_probability_fallback" json:"sampling_strategy"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	SendTimeout *int64 `default:"5000" json:"send_timeout"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
-	TracesEndpoint *string `json:"traces_endpoint,omitempty"`
+	TracesEndpoint *string `default:"null" json:"traces_endpoint"`
 }
 
 func (o OpentelemetryPluginConfig) MarshalJSON() ([]byte, error) {
@@ -674,7 +686,7 @@ type OpentelemetryPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                      `default:"null" json:"instance_name"`
-	name         string                       `const:"opentelemetry" json:"name"`
+	name         *string                      `const:"opentelemetry" json:"name"`
 	Ordering     *OpentelemetryPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []OpentelemetryPluginPartials `json:"partials"`
@@ -732,8 +744,8 @@ func (o *OpentelemetryPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *OpentelemetryPlugin) GetName() string {
-	return "opentelemetry"
+func (o *OpentelemetryPlugin) GetName() *string {
+	return types.String("opentelemetry")
 }
 
 func (o *OpentelemetryPlugin) GetOrdering() *OpentelemetryPluginOrdering {

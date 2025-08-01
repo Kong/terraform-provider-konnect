@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type TCPLogPluginAfter struct {
@@ -53,8 +54,19 @@ type TCPLogPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (t TCPLogPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TCPLogPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *TCPLogPluginPartials) GetID() *string {
@@ -92,7 +104,7 @@ type TCPLogPluginConfig struct {
 	// Indicates whether to perform a TLS handshake against the remote server.
 	TLS *bool `default:"false" json:"tls"`
 	// An optional string that defines the SNI (Server Name Indication) hostname to send in the TLS handshake.
-	TLSSni *string `json:"tls_sni,omitempty"`
+	TLSSni *string `default:"null" json:"tls_sni"`
 }
 
 func (t TCPLogPluginConfig) MarshalJSON() ([]byte, error) {
@@ -252,7 +264,7 @@ type TCPLogPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string               `default:"null" json:"instance_name"`
-	name         string                `const:"tcp-log" json:"name"`
+	name         *string               `const:"tcp-log" json:"name"`
 	Ordering     *TCPLogPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []TCPLogPluginPartials `json:"partials"`
@@ -310,8 +322,8 @@ func (o *TCPLogPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *TCPLogPlugin) GetName() string {
-	return "tcp-log"
+func (o *TCPLogPlugin) GetName() *string {
+	return types.String("tcp-log")
 }
 
 func (o *TCPLogPlugin) GetOrdering() *TCPLogPluginOrdering {

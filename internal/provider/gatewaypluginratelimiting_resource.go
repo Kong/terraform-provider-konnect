@@ -72,9 +72,38 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"day":                 types.Float64Type,
+					"error_code":          types.Float64Type,
+					"error_message":       types.StringType,
+					"fault_tolerant":      types.BoolType,
+					"header_name":         types.StringType,
+					"hide_client_headers": types.BoolType,
+					"hour":                types.Float64Type,
+					"limit_by":            types.StringType,
+					"minute":              types.Float64Type,
+					"month":               types.Float64Type,
+					"path":                types.StringType,
+					"policy":              types.StringType,
+					"redis": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`database`:    types.Int64Type,
+							`host`:        types.StringType,
+							`password`:    types.StringType,
+							`port`:        types.Int64Type,
+							`server_name`: types.StringType,
+							`ssl`:         types.BoolType,
+							`ssl_verify`:  types.BoolType,
+							`timeout`:     types.Int64Type,
+							`username`:    types.StringType,
+						},
+					},
+					"second":    types.Float64Type,
+					"sync_rate": types.Float64Type,
+					"year":      types.Float64Type,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"day": schema.Float64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The number of HTTP requests that can be made per day.`,
 					},
@@ -97,7 +126,6 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 						Description: `A boolean value that determines if the requests should be proxied even if Kong has troubles connecting a third-party data store. If ` + "`" + `true` + "`" + `, requests will be proxied anyway, effectively disabling the rate-limiting function until the data store is working again. If ` + "`" + `false` + "`" + `, then the clients will see ` + "`" + `500` + "`" + ` errors. Default: true`,
 					},
 					"header_name": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing an HTTP header name.`,
 					},
@@ -108,7 +136,6 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 						Description: `Optionally hide informative response headers. Default: false`,
 					},
 					"hour": schema.Float64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The number of HTTP requests that can be made per hour.`,
 					},
@@ -130,17 +157,14 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 						},
 					},
 					"minute": schema.Float64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The number of HTTP requests that can be made per minute.`,
 					},
 					"month": schema.Float64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The number of HTTP requests that can be made per month.`,
 					},
 					"path": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).`,
 					},
@@ -160,6 +184,17 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 					"redis": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"database":    types.Int64Type,
+							"host":        types.StringType,
+							"password":    types.StringType,
+							"port":        types.Int64Type,
+							"server_name": types.StringType,
+							"ssl":         types.BoolType,
+							"ssl_verify":  types.BoolType,
+							"timeout":     types.Int64Type,
+							"username":    types.StringType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"database": schema.Int64Attribute{
 								Computed:    true,
@@ -168,12 +203,10 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 								Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
 							},
 							"host": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `A string representing a host name, such as example.com.`,
 							},
 							"password": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 							},
@@ -187,7 +220,6 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 								},
 							},
 							"server_name": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `A string representing an SNI (server name indication) value for TLS.`,
 							},
@@ -213,7 +245,6 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 								},
 							},
 							"username": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
 							},
@@ -221,7 +252,6 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 						Description: `Redis configuration`,
 					},
 					"second": schema.Float64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The number of HTTP requests that can be made per second.`,
 					},
@@ -232,7 +262,6 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 						Description: `How often to sync counter data to the central data store. A value of -1 results in synchronous behavior. Default: -1`,
 					},
 					"year": schema.Float64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The number of HTTP requests that can be made per year.`,
 					},
@@ -316,9 +345,13 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -327,9 +360,13 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -350,12 +387,10 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

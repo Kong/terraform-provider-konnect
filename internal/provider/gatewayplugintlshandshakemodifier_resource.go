@@ -67,6 +67,9 @@ func (r *GatewayPluginTLSHandshakeModifierResource) Schema(ctx context.Context, 
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"tls_client_certificate": types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"tls_client_certificate": schema.StringAttribute{
 						Computed:    true,
@@ -129,9 +132,13 @@ func (r *GatewayPluginTLSHandshakeModifierResource) Schema(ctx context.Context, 
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -140,9 +147,13 @@ func (r *GatewayPluginTLSHandshakeModifierResource) Schema(ctx context.Context, 
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -163,12 +174,10 @@ func (r *GatewayPluginTLSHandshakeModifierResource) Schema(ctx context.Context, 
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

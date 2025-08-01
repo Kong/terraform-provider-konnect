@@ -65,9 +65,19 @@ func (r *GatewayPluginACLResource) Schema(ctx context.Context, req resource.Sche
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"allow": types.ListType{
+						ElemType: types.StringType,
+					},
+					"always_use_authenticated_groups": types.BoolType,
+					"deny": types.ListType{
+						ElemType: types.StringType,
+					},
+					"hide_groups_header":      types.BoolType,
+					"include_consumer_groups": types.BoolType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"allow": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Arbitrary group names that are allowed to consume the service or route. One of ` + "`" + `config.allow` + "`" + ` or ` + "`" + `config.deny` + "`" + ` must be specified.`,
@@ -79,7 +89,6 @@ func (r *GatewayPluginACLResource) Schema(ctx context.Context, req resource.Sche
 						Description: `If enabled (` + "`" + `true` + "`" + `), the authenticated groups will always be used even when an authenticated consumer already exists. If the authenticated groups don't exist, it will fallback to use the groups associated with the consumer. By default the authenticated groups will only be used when there is no consumer or the consumer is anonymous. Default: false`,
 					},
 					"deny": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Arbitrary group names that are not allowed to consume the service or route. One of ` + "`" + `config.allow` + "`" + ` or ` + "`" + `config.deny` + "`" + ` must be specified.`,
@@ -148,9 +157,13 @@ func (r *GatewayPluginACLResource) Schema(ctx context.Context, req resource.Sche
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -159,9 +172,13 @@ func (r *GatewayPluginACLResource) Schema(ctx context.Context, req resource.Sche
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -182,12 +199,10 @@ func (r *GatewayPluginACLResource) Schema(ctx context.Context, req resource.Sche
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

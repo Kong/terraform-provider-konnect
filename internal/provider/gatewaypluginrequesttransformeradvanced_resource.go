@@ -70,10 +70,110 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"add": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`body`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`headers`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`json_types`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`querystring`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"allow": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`body`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"append": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`body`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`headers`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`json_types`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`querystring`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"dots_in_keys": types.BoolType,
+					"http_method":  types.StringType,
+					"remove": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`body`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`headers`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`querystring`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"rename": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`body`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`headers`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`querystring`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"replace": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`body`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`headers`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`json_types`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`querystring`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`uri`: types.StringType,
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"add": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"body": types.ListType{
+								ElemType: types.StringType,
+							},
+							"headers": types.ListType{
+								ElemType: types.StringType,
+							},
+							"json_types": types.ListType{
+								ElemType: types.StringType,
+							},
+							"querystring": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"body": schema.ListAttribute{
 								Computed:    true,
@@ -104,9 +204,13 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 					"allow": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"body": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"body": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -115,6 +219,20 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 					"append": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"body": types.ListType{
+								ElemType: types.StringType,
+							},
+							"headers": types.ListType{
+								ElemType: types.StringType,
+							},
+							"json_types": types.ListType{
+								ElemType: types.StringType,
+							},
+							"querystring": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"body": schema.ListAttribute{
 								Computed:    true,
@@ -149,7 +267,6 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 						Description: `Specify whether dots (for example, ` + "`" + `customers.info.phone` + "`" + `) should be treated as part of a property name or used to descend into nested JSON objects.  See [Arrays and nested objects](#arrays-and-nested-objects). Default: true`,
 					},
 					"http_method": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters.`,
 						Validators: []validator.String{
@@ -159,6 +276,17 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 					"remove": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"body": types.ListType{
+								ElemType: types.StringType,
+							},
+							"headers": types.ListType{
+								ElemType: types.StringType,
+							},
+							"querystring": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"body": schema.ListAttribute{
 								Computed:    true,
@@ -183,6 +311,17 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 					"rename": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"body": types.ListType{
+								ElemType: types.StringType,
+							},
+							"headers": types.ListType{
+								ElemType: types.StringType,
+							},
+							"querystring": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"body": schema.ListAttribute{
 								Computed:    true,
@@ -207,6 +346,21 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 					"replace": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"body": types.ListType{
+								ElemType: types.StringType,
+							},
+							"headers": types.ListType{
+								ElemType: types.StringType,
+							},
+							"json_types": types.ListType{
+								ElemType: types.StringType,
+							},
+							"querystring": types.ListType{
+								ElemType: types.StringType,
+							},
+							"uri": types.StringType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"body": schema.ListAttribute{
 								Computed:    true,
@@ -233,7 +387,6 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 								ElementType: types.StringType,
 							},
 							"uri": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 							},
 						},
@@ -318,9 +471,13 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -329,9 +486,13 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -352,12 +513,10 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

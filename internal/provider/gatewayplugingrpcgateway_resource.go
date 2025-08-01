@@ -66,9 +66,11 @@ func (r *GatewayPluginGrpcGatewayResource) Schema(ctx context.Context, req resou
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"proto": types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"proto": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Describes the gRPC types and methods.`,
 					},
@@ -138,9 +140,13 @@ func (r *GatewayPluginGrpcGatewayResource) Schema(ctx context.Context, req resou
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -149,9 +155,13 @@ func (r *GatewayPluginGrpcGatewayResource) Schema(ctx context.Context, req resou
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -172,12 +182,10 @@ func (r *GatewayPluginGrpcGatewayResource) Schema(ctx context.Context, req resou
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

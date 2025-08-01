@@ -72,6 +72,30 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"block_on_first_violation": types.BoolType,
+					"fault_tolerant":           types.BoolType,
+					"header_name":              types.StringType,
+					"hide_client_headers":      types.BoolType,
+					"limit_by":                 types.StringType,
+					"limits": types.MapType{
+						ElemType: types.StringType,
+					},
+					"policy": types.StringType,
+					"redis": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`database`:    types.Int64Type,
+							`host`:        types.StringType,
+							`password`:    types.StringType,
+							`port`:        types.Int64Type,
+							`server_name`: types.StringType,
+							`ssl`:         types.BoolType,
+							`ssl_verify`:  types.BoolType,
+							`timeout`:     types.Int64Type,
+							`username`:    types.StringType,
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"block_on_first_violation": schema.BoolAttribute{
 						Computed:    true,
@@ -111,7 +135,6 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 						},
 					},
 					"limits": schema.MapAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `A map that defines rate limits for the plugin.`,
@@ -135,6 +158,17 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 					"redis": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"database":    types.Int64Type,
+							"host":        types.StringType,
+							"password":    types.StringType,
+							"port":        types.Int64Type,
+							"server_name": types.StringType,
+							"ssl":         types.BoolType,
+							"ssl_verify":  types.BoolType,
+							"timeout":     types.Int64Type,
+							"username":    types.StringType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"database": schema.Int64Attribute{
 								Computed:    true,
@@ -143,12 +177,10 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 								Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
 							},
 							"host": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `A string representing a host name, such as example.com.`,
 							},
 							"password": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 							},
@@ -162,7 +194,6 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 								},
 							},
 							"server_name": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `A string representing an SNI (server name indication) value for TLS.`,
 							},
@@ -188,7 +219,6 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 								},
 							},
 							"username": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
 							},
@@ -261,9 +291,13 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -272,9 +306,13 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -295,12 +333,10 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

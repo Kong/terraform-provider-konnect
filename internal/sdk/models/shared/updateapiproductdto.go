@@ -9,7 +9,7 @@ import (
 // UpdateAPIProductDTO - The request schema for updating an API product.
 type UpdateAPIProductDTO struct {
 	// The name for the API product.
-	Name *string `json:"name,omitempty"`
+	Name *string `default:"null" json:"name"`
 	// The description of the API product.
 	Description *string `default:"null" json:"description"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.

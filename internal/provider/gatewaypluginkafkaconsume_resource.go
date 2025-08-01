@@ -75,6 +75,13 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 					"authentication": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"mechanism": types.StringType,
+							"password":  types.StringType,
+							"strategy":  types.StringType,
+							"tokenauth": types.BoolType,
+							"user":      types.StringType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"mechanism": schema.StringAttribute{
 								Computed:    true,
@@ -89,7 +96,6 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 								},
 							},
 							"password": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Password for SASL authentication.`,
 							},
@@ -102,12 +108,10 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 								},
 							},
 							"tokenauth": schema.BoolAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Enable this to indicate ` + "`" + `DelegationToken` + "`" + ` authentication`,
 							},
 							"user": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Username for SASL authentication.`,
 							},
@@ -154,7 +158,6 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 						Description: `Set of bootstrap brokers in a ` + "`" + `{host: host, port: port}` + "`" + ` list format.`,
 					},
 					"cluster_name": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `An identifier for the Kafka cluster.`,
 					},
@@ -198,34 +201,63 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 					"schema_registry": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"confluent": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`authentication`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`basic`: types.ObjectType{
+												AttrTypes: map[string]attr.Type{
+													`password`: types.StringType,
+													`username`: types.StringType,
+												},
+											},
+											`mode`: types.StringType,
+										},
+									},
+									`ssl_verify`: types.BoolType,
+									`ttl`:        types.Float64Type,
+									`url`:        types.StringType,
+								},
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"confluent": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"authentication": types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`basic`: types.ObjectType{
+												AttrTypes: map[string]attr.Type{
+													`password`: types.StringType,
+													`username`: types.StringType,
+												},
+											},
+											`mode`: types.StringType,
+										},
+									},
+									"ssl_verify": types.BoolType,
+									"ttl":        types.Float64Type,
+									"url":        types.StringType,
+								})),
 								Attributes: map[string]schema.Attribute{
 									"authentication": schema.SingleNestedAttribute{
-										Computed: true,
-										Optional: true,
+										Required: true,
 										Attributes: map[string]schema.Attribute{
 											"basic": schema.SingleNestedAttribute{
 												Computed: true,
 												Optional: true,
+												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+													"password": types.StringType,
+													"username": types.StringType,
+												})),
 												Attributes: map[string]schema.Attribute{
 													"password": schema.StringAttribute{
-														Computed:    true,
-														Optional:    true,
-														Description: `Not Null`,
-														Validators: []validator.String{
-															speakeasy_stringvalidators.NotNull(),
-														},
+														Required: true,
 													},
 													"username": schema.StringAttribute{
-														Computed:    true,
-														Optional:    true,
-														Description: `Not Null`,
-														Validators: []validator.String{
-															speakeasy_stringvalidators.NotNull(),
-														},
+														Required: true,
 													},
 												},
 											},
@@ -242,10 +274,6 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 												},
 											},
 										},
-										Description: `Not Null`,
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
-										},
 									},
 									"ssl_verify": schema.BoolAttribute{
 										Computed:    true,
@@ -254,7 +282,6 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 										Description: `Set to false to disable SSL certificate verification when connecting to the schema registry. Default: true`,
 									},
 									"ttl": schema.Float64Attribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `The TTL in seconds for the schema registry cache.`,
 										Validators: []validator.Float64{
@@ -262,7 +289,6 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 										},
 									},
 									"url": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `The URL of the schema registry.`,
 									},
@@ -274,14 +300,16 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 					"security": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"certificate_id": types.StringType,
+							"ssl":            types.BoolType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"certificate_id": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `UUID of certificate entity for mTLS authentication.`,
 							},
 							"ssl": schema.BoolAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Enables TLS.`,
 							},
@@ -309,6 +337,22 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 										"confluent": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
+											Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+												"authentication": types.ObjectType{
+													AttrTypes: map[string]attr.Type{
+														`basic`: types.ObjectType{
+															AttrTypes: map[string]attr.Type{
+																`password`: types.StringType,
+																`username`: types.StringType,
+															},
+														},
+														`mode`: types.StringType,
+													},
+												},
+												"ssl_verify": types.BoolType,
+												"ttl":        types.Float64Type,
+												"url":        types.StringType,
+											})),
 											Attributes: map[string]schema.Attribute{
 												"authentication": schema.SingleNestedAttribute{
 													Computed: true,
@@ -317,6 +361,10 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 														"basic": schema.SingleNestedAttribute{
 															Computed: true,
 															Optional: true,
+															Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+																"password": types.StringType,
+																"username": types.StringType,
+															})),
 															Attributes: map[string]schema.Attribute{
 																"password": schema.StringAttribute{
 																	Computed:    true,
@@ -361,7 +409,6 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 													Description: `Set to false to disable SSL certificate verification when connecting to the schema registry. Default: true`,
 												},
 												"ttl": schema.Float64Attribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `The TTL in seconds for the schema registry cache.`,
 													Validators: []validator.Float64{
@@ -369,7 +416,6 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 													},
 												},
 												"url": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `The URL of the schema registry.`,
 												},
@@ -451,9 +497,13 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -462,9 +512,13 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -485,12 +539,10 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

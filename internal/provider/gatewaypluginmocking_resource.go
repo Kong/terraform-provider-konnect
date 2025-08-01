@@ -67,19 +67,30 @@ func (r *GatewayPluginMockingResource) Schema(ctx context.Context, req resource.
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"api_specification":          types.StringType,
+					"api_specification_filename": types.StringType,
+					"custom_base_path":           types.StringType,
+					"include_base_path":          types.BoolType,
+					"included_status_codes": types.ListType{
+						ElemType: types.Int64Type,
+					},
+					"max_delay_time":     types.Float64Type,
+					"min_delay_time":     types.Float64Type,
+					"random_delay":       types.BoolType,
+					"random_examples":    types.BoolType,
+					"random_status_code": types.BoolType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"api_specification": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The contents of the specification file. You must use this option for hybrid or DB-less mode. You can include the full specification as part of the configuration. In Kong Manager, you can copy and paste the contents of the spec directly into the ` + "`" + `Config.Api Specification` + "`" + ` text field.`,
 					},
 					"api_specification_filename": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The path and name of the specification file loaded into Kong Gateway's database. You cannot use this option for DB-less or hybrid mode.`,
 					},
 					"custom_base_path": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The base path to be used for path match evaluation. This value is ignored if ` + "`" + `include_base_path` + "`" + ` is set to ` + "`" + `false` + "`" + `.`,
 					},
@@ -90,7 +101,6 @@ func (r *GatewayPluginMockingResource) Schema(ctx context.Context, req resource.
 						Description: `Indicates whether to include the base path when performing path match evaluation. Default: false`,
 					},
 					"included_status_codes": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.Int64Type,
 						Description: `A global list of the HTTP status codes that can only be selected and returned.`,
@@ -191,9 +201,13 @@ func (r *GatewayPluginMockingResource) Schema(ctx context.Context, req resource.
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -202,9 +216,13 @@ func (r *GatewayPluginMockingResource) Schema(ctx context.Context, req resource.
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -225,12 +243,10 @@ func (r *GatewayPluginMockingResource) Schema(ctx context.Context, req resource.
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

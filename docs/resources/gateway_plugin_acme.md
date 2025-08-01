@@ -165,9 +165,12 @@ Default: 5
 <a id="nestedatt--config--account_key"></a>
 ### Nested Schema for `config.account_key`
 
+Required:
+
+- `key_id` (String) The Key ID.
+
 Optional:
 
-- `key_id` (String) The Key ID. Not Null
 - `key_set` (String) The ID of the key set to associate the Key ID with.
 
 

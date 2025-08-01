@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type RequestTransformerAdvancedPluginAfter struct {
@@ -53,8 +54,19 @@ type RequestTransformerAdvancedPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (r RequestTransformerAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestTransformerAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestTransformerAdvancedPluginPartials) GetID() *string {
@@ -305,7 +317,18 @@ type RequestTransformerAdvancedPluginReplace struct {
 	Headers     []string                                          `json:"headers,omitempty"`
 	JSONTypes   []RequestTransformerAdvancedPluginConfigJSONTypes `json:"json_types,omitempty"`
 	Querystring []string                                          `json:"querystring,omitempty"`
-	URI         *string                                           `json:"uri,omitempty"`
+	URI         *string                                           `default:"null" json:"uri"`
+}
+
+func (r RequestTransformerAdvancedPluginReplace) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestTransformerAdvancedPluginReplace) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestTransformerAdvancedPluginReplace) GetBody() []string {
@@ -350,7 +373,7 @@ type RequestTransformerAdvancedPluginConfig struct {
 	// Specify whether dots (for example, `customers.info.phone`) should be treated as part of a property name or used to descend into nested JSON objects.  See [Arrays and nested objects](#arrays-and-nested-objects).
 	DotsInKeys *bool `default:"true" json:"dots_in_keys"`
 	// A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters.
-	HTTPMethod *string                                  `json:"http_method,omitempty"`
+	HTTPMethod *string                                  `default:"null" json:"http_method"`
 	Remove     *RequestTransformerAdvancedPluginRemove  `json:"remove,omitempty"`
 	Rename     *RequestTransformerAdvancedPluginRename  `json:"rename,omitempty"`
 	Replace    *RequestTransformerAdvancedPluginReplace `json:"replace,omitempty"`
@@ -513,7 +536,7 @@ type RequestTransformerAdvancedPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                                   `default:"null" json:"instance_name"`
-	name         string                                    `const:"request-transformer-advanced" json:"name"`
+	name         *string                                   `const:"request-transformer-advanced" json:"name"`
 	Ordering     *RequestTransformerAdvancedPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []RequestTransformerAdvancedPluginPartials `json:"partials"`
@@ -573,8 +596,8 @@ func (o *RequestTransformerAdvancedPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *RequestTransformerAdvancedPlugin) GetName() string {
-	return "request-transformer-advanced"
+func (o *RequestTransformerAdvancedPlugin) GetName() *string {
+	return types.String("request-transformer-advanced")
 }
 
 func (o *RequestTransformerAdvancedPlugin) GetOrdering() *RequestTransformerAdvancedPluginOrdering {

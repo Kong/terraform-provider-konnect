@@ -67,26 +67,32 @@ func (r *GatewayPluginIPRestrictionResource) Schema(ctx context.Context, req res
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"allow": types.ListType{
+						ElemType: types.StringType,
+					},
+					"deny": types.ListType{
+						ElemType: types.StringType,
+					},
+					"message": types.StringType,
+					"status":  types.Float64Type,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"allow": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `List of IPs or CIDR ranges to allow. One of ` + "`" + `config.allow` + "`" + ` or ` + "`" + `config.deny` + "`" + ` must be specified.`,
 					},
 					"deny": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `List of IPs or CIDR ranges to deny. One of ` + "`" + `config.allow` + "`" + ` or ` + "`" + `config.deny` + "`" + ` must be specified.`,
 					},
 					"message": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The message to send as a response body to rejected requests.`,
 					},
 					"status": schema.Float64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The HTTP status of the requests that will be rejected by the plugin.`,
 					},
@@ -170,9 +176,13 @@ func (r *GatewayPluginIPRestrictionResource) Schema(ctx context.Context, req res
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -181,9 +191,13 @@ func (r *GatewayPluginIPRestrictionResource) Schema(ctx context.Context, req res
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -204,12 +218,10 @@ func (r *GatewayPluginIPRestrictionResource) Schema(ctx context.Context, req res
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

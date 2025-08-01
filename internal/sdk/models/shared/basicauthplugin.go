@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type BasicAuthPluginAfter struct {
@@ -53,8 +54,19 @@ type BasicAuthPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (b BasicAuthPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BasicAuthPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *BasicAuthPluginPartials) GetID() *string {
@@ -80,7 +92,7 @@ func (o *BasicAuthPluginPartials) GetPath() *string {
 
 type BasicAuthPluginConfig struct {
 	// An optional string (Consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`. Please note that this value must refer to the Consumer `id` or `username` attribute, and **not** its `custom_id`.
-	Anonymous *string `json:"anonymous,omitempty"`
+	Anonymous *string `default:"null" json:"anonymous"`
 	// An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin will strip the credential from the request (i.e. the `Authorization` header) before proxying it.
 	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
@@ -191,7 +203,7 @@ type BasicAuthPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                  `default:"null" json:"instance_name"`
-	name         string                   `const:"basic-auth" json:"name"`
+	name         *string                  `const:"basic-auth" json:"name"`
 	Ordering     *BasicAuthPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []BasicAuthPluginPartials `json:"partials"`
@@ -247,8 +259,8 @@ func (o *BasicAuthPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *BasicAuthPlugin) GetName() string {
-	return "basic-auth"
+func (o *BasicAuthPlugin) GetName() *string {
+	return types.String("basic-auth")
 }
 
 func (o *BasicAuthPlugin) GetOrdering() *BasicAuthPluginOrdering {

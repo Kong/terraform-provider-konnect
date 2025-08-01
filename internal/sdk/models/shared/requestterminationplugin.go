@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type RequestTerminationPluginAfter struct {
@@ -53,8 +54,19 @@ type RequestTerminationPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (r RequestTerminationPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestTerminationPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestTerminationPluginPartials) GetID() *string {
@@ -80,17 +92,17 @@ func (o *RequestTerminationPluginPartials) GetPath() *string {
 
 type RequestTerminationPluginConfig struct {
 	// The raw response body to send. This is mutually exclusive with the `config.message` field.
-	Body *string `json:"body,omitempty"`
+	Body *string `default:"null" json:"body"`
 	// Content type of the raw response configured with `config.body`.
-	ContentType *string `json:"content_type,omitempty"`
+	ContentType *string `default:"null" json:"content_type"`
 	// When set, the plugin will echo a copy of the request back to the client. The main usecase for this is debugging. It can be combined with `trigger` in order to debug requests on live systems without disturbing real traffic.
 	Echo *bool `default:"false" json:"echo"`
 	// The message to send, if using the default response generator.
-	Message *string `json:"message,omitempty"`
+	Message *string `default:"null" json:"message"`
 	// The response code to send. Must be an integer between 100 and 599.
 	StatusCode *int64 `default:"503" json:"status_code"`
 	// A string representing an HTTP header name.
-	Trigger *string `json:"trigger,omitempty"`
+	Trigger *string `default:"null" json:"trigger"`
 }
 
 func (r RequestTerminationPluginConfig) MarshalJSON() ([]byte, error) {
@@ -236,7 +248,7 @@ type RequestTerminationPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                           `default:"null" json:"instance_name"`
-	name         string                            `const:"request-termination" json:"name"`
+	name         *string                           `const:"request-termination" json:"name"`
 	Ordering     *RequestTerminationPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []RequestTerminationPluginPartials `json:"partials"`
@@ -296,8 +308,8 @@ func (o *RequestTerminationPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *RequestTerminationPlugin) GetName() string {
-	return "request-termination"
+func (o *RequestTerminationPlugin) GetName() *string {
+	return types.String("request-termination")
 }
 
 func (o *RequestTerminationPlugin) GetOrdering() *RequestTerminationPluginOrdering {

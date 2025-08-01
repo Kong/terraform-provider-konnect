@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type DatakitPluginAfter struct {
@@ -53,8 +54,19 @@ type DatakitPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (d DatakitPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatakitPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *DatakitPluginPartials) GetID() *string {
@@ -254,7 +266,7 @@ type DatakitPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                `default:"null" json:"instance_name"`
-	name         string                 `const:"datakit" json:"name"`
+	name         *string                `const:"datakit" json:"name"`
 	Ordering     *DatakitPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []DatakitPluginPartials `json:"partials"`
@@ -314,8 +326,8 @@ func (o *DatakitPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *DatakitPlugin) GetName() string {
-	return "datakit"
+func (o *DatakitPlugin) GetName() *string {
+	return types.String("datakit")
 }
 
 func (o *DatakitPlugin) GetOrdering() *DatakitPluginOrdering {

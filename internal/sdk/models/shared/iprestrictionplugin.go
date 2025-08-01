@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type IPRestrictionPluginAfter struct {
@@ -53,8 +54,19 @@ type IPRestrictionPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (i IPRestrictionPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *IPRestrictionPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *IPRestrictionPluginPartials) GetID() *string {
@@ -84,9 +96,20 @@ type IPRestrictionPluginConfig struct {
 	// List of IPs or CIDR ranges to deny. One of `config.allow` or `config.deny` must be specified.
 	Deny []string `json:"deny,omitempty"`
 	// The message to send as a response body to rejected requests.
-	Message *string `json:"message,omitempty"`
+	Message *string `default:"null" json:"message"`
 	// The HTTP status of the requests that will be rejected by the plugin.
-	Status *float64 `json:"status,omitempty"`
+	Status *float64 `default:"null" json:"status"`
+}
+
+func (i IPRestrictionPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *IPRestrictionPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *IPRestrictionPluginConfig) GetAllow() []string {
@@ -226,7 +249,7 @@ type IPRestrictionPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                      `default:"null" json:"instance_name"`
-	name         string                       `const:"ip-restriction" json:"name"`
+	name         *string                      `const:"ip-restriction" json:"name"`
 	Ordering     *IPRestrictionPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []IPRestrictionPluginPartials `json:"partials"`
@@ -286,8 +309,8 @@ func (o *IPRestrictionPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *IPRestrictionPlugin) GetName() string {
-	return "ip-restriction"
+func (o *IPRestrictionPlugin) GetName() *string {
+	return types.String("ip-restriction")
 }
 
 func (o *IPRestrictionPlugin) GetOrdering() *IPRestrictionPluginOrdering {

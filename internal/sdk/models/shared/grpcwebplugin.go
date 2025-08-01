@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type GrpcWebPluginAfter struct {
@@ -53,8 +54,19 @@ type GrpcWebPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (g GrpcWebPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GrpcWebPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *GrpcWebPluginPartials) GetID() *string {
@@ -82,9 +94,9 @@ type GrpcWebPluginConfig struct {
 	// The value of the `Access-Control-Allow-Origin` header in the response to the gRPC-Web client.
 	AllowOriginHeader *string `default:"*" json:"allow_origin_header"`
 	// If set to `true` causes the plugin to pass the stripped request path to the upstream gRPC service.
-	PassStrippedPath *bool `json:"pass_stripped_path,omitempty"`
+	PassStrippedPath *bool `default:"null" json:"pass_stripped_path"`
 	// If present, describes the gRPC types and methods. Required to support payload transcoding. When absent, the web client must use application/grpw-web+proto content.
-	Proto *string `json:"proto,omitempty"`
+	Proto *string `default:"null" json:"proto"`
 }
 
 func (g GrpcWebPluginConfig) MarshalJSON() ([]byte, error) {
@@ -216,7 +228,7 @@ type GrpcWebPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                `default:"null" json:"instance_name"`
-	name         string                 `const:"grpc-web" json:"name"`
+	name         *string                `const:"grpc-web" json:"name"`
 	Ordering     *GrpcWebPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []GrpcWebPluginPartials `json:"partials"`
@@ -274,8 +286,8 @@ func (o *GrpcWebPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *GrpcWebPlugin) GetName() string {
-	return "grpc-web"
+func (o *GrpcWebPlugin) GetName() *string {
+	return types.String("grpc-web")
 }
 
 func (o *GrpcWebPlugin) GetOrdering() *GrpcWebPluginOrdering {

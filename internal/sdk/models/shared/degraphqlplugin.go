@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type DegraphqlPluginAfter struct {
@@ -53,8 +54,19 @@ type DegraphqlPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (d DegraphqlPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DegraphqlPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *DegraphqlPluginPartials) GetID() *string {
@@ -167,7 +179,7 @@ type DegraphqlPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                  `default:"null" json:"instance_name"`
-	name         string                   `const:"degraphql" json:"name"`
+	name         *string                  `const:"degraphql" json:"name"`
 	Ordering     *DegraphqlPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []DegraphqlPluginPartials `json:"partials"`
@@ -223,8 +235,8 @@ func (o *DegraphqlPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *DegraphqlPlugin) GetName() string {
-	return "degraphql"
+func (o *DegraphqlPlugin) GetName() *string {
+	return types.String("degraphql")
 }
 
 func (o *DegraphqlPlugin) GetOrdering() *DegraphqlPluginOrdering {

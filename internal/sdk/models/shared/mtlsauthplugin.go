@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type MtlsAuthPluginAfter struct {
@@ -53,8 +54,19 @@ type MtlsAuthPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (m MtlsAuthPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MtlsAuthPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *MtlsAuthPluginPartials) GetID() *string {
@@ -165,7 +177,7 @@ type MtlsAuthPluginConfig struct {
 	// Allow certificate verification with only an intermediate certificate. When this is enabled, you don't need to upload the full chain to Kong Certificates.
 	AllowPartialChain *bool `default:"false" json:"allow_partial_chain"`
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request fails with an authentication failure `4xx`. Note that this value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
-	Anonymous *string `json:"anonymous,omitempty"`
+	Anonymous *string `default:"null" json:"anonymous"`
 	// Certificate property to use as the authenticated group. Valid values are `CN` (Common Name) or `DN` (Distinguished Name). Once `skip_consumer_lookup` is applied, any client with a valid certificate can access the Service/API. To restrict usage to only some of the authenticated users, also add the ACL plugin (not covered here) and create allowed or denied groups of users.
 	AuthenticatedGroupBy *MtlsAuthPluginAuthenticatedGroupBy `default:"CN" json:"authenticated_group_by"`
 	// List of CA Certificates strings to use as Certificate Authorities (CA) when validating a client certificate. At least one is required but you can specify as many as needed. The value of this array is comprised of primary keys (`id`).
@@ -177,17 +189,17 @@ type MtlsAuthPluginConfig struct {
 	// Whether to match the subject name of the client-supplied certificate against consumer's `username` and/or `custom_id` attribute. If set to `[]` (the empty array), then auto-matching is disabled.
 	ConsumerBy []MtlsAuthPluginConsumerBy `json:"consumer_by,omitempty"`
 	// The UUID or username of the consumer to use when a trusted client certificate is presented but no consumer matches. Note that this value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
-	DefaultConsumer *string `json:"default_consumer,omitempty"`
+	DefaultConsumer *string `default:"null" json:"default_consumer"`
 	// A string representing a host name, such as example.com.
-	HTTPProxyHost *string `json:"http_proxy_host,omitempty"`
+	HTTPProxyHost *string `default:"null" json:"http_proxy_host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	HTTPProxyPort *int64 `json:"http_proxy_port,omitempty"`
+	HTTPProxyPort *int64 `default:"null" json:"http_proxy_port"`
 	// HTTP timeout threshold in milliseconds when communicating with the OCSP server or downloading CRL.
 	HTTPTimeout *float64 `default:"30000" json:"http_timeout"`
 	// A string representing a host name, such as example.com.
-	HTTPSProxyHost *string `json:"https_proxy_host,omitempty"`
+	HTTPSProxyHost *string `default:"null" json:"https_proxy_host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	HTTPSProxyPort *int64 `json:"https_proxy_port,omitempty"`
+	HTTPSProxyPort *int64 `default:"null" json:"https_proxy_port"`
 	// Controls client certificate revocation check behavior. If set to `SKIP`, no revocation check is performed. If set to `IGNORE_CA_ERROR`, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to `STRICT`, the plugin only treats the certificate as valid when it's able to verify the revocation status.
 	RevocationCheckMode *MtlsAuthPluginRevocationCheckMode `default:"IGNORE_CA_ERROR" json:"revocation_check_mode"`
 	// Sends the distinguished names (DN) of the configured CA list in the TLS handshake message.
@@ -385,7 +397,7 @@ type MtlsAuthPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                 `default:"null" json:"instance_name"`
-	name         string                  `const:"mtls-auth" json:"name"`
+	name         *string                 `const:"mtls-auth" json:"name"`
 	Ordering     *MtlsAuthPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []MtlsAuthPluginPartials `json:"partials"`
@@ -441,8 +453,8 @@ func (o *MtlsAuthPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *MtlsAuthPlugin) GetName() string {
-	return "mtls-auth"
+func (o *MtlsAuthPlugin) GetName() *string {
+	return types.String("mtls-auth")
 }
 
 func (o *MtlsAuthPlugin) GetOrdering() *MtlsAuthPluginOrdering {

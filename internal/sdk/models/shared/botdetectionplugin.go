@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type BotDetectionPluginAfter struct {
@@ -53,8 +54,19 @@ type BotDetectionPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (b BotDetectionPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BotDetectionPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *BotDetectionPluginPartials) GetID() *string {
@@ -165,7 +177,7 @@ type BotDetectionPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                     `default:"null" json:"instance_name"`
-	name         string                      `const:"bot-detection" json:"name"`
+	name         *string                     `const:"bot-detection" json:"name"`
 	Ordering     *BotDetectionPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []BotDetectionPluginPartials `json:"partials"`
@@ -221,8 +233,8 @@ func (o *BotDetectionPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *BotDetectionPlugin) GetName() string {
-	return "bot-detection"
+func (o *BotDetectionPlugin) GetName() *string {
+	return types.String("bot-detection")
 }
 
 func (o *BotDetectionPlugin) GetOrdering() *BotDetectionPluginOrdering {

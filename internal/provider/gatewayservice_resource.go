@@ -187,13 +187,11 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 				})),
 				Attributes: map[string]schema.Attribute{
 					"dnsnames": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `A dnsName for TLS verification.`,
 					},
 					"uris": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `An URI for TLS verification.`,

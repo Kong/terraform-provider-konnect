@@ -10,9 +10,20 @@ import (
 
 type Destinations struct {
 	// A string representing an IP address or CIDR block, such as 192.168.1.1 or 192.168.0.0/16.
-	IP *string `json:"ip,omitempty"`
+	IP *string `default:"null" json:"ip"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"null" json:"port"`
+}
+
+func (d Destinations) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *Destinations) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Destinations) GetIP() *string {
@@ -157,9 +168,20 @@ func (o *RouteJSONService) GetID() *string {
 
 type Sources struct {
 	// A string representing an IP address or CIDR block, such as 192.168.1.1 or 192.168.0.0/16.
-	IP *string `json:"ip,omitempty"`
+	IP *string `default:"null" json:"ip"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"null" json:"port"`
+}
+
+func (s Sources) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *Sources) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Sources) GetIP() *string {

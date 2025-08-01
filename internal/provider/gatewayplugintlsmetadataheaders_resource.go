@@ -66,6 +66,14 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Schema(ctx context.Context, re
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"client_cert_fingerprint_header_name": types.StringType,
+					"client_cert_header_name":             types.StringType,
+					"client_cert_issuer_dn_header_name":   types.StringType,
+					"client_cert_subject_dn_header_name":  types.StringType,
+					"client_serial_header_name":           types.StringType,
+					"inject_client_cert_details":          types.BoolType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"client_cert_fingerprint_header_name": schema.StringAttribute{
 						Computed:    true,
@@ -155,9 +163,13 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Schema(ctx context.Context, re
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -166,9 +178,13 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Schema(ctx context.Context, re
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -189,12 +205,10 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Schema(ctx context.Context, re
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

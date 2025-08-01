@@ -55,22 +55,18 @@ func (r *PortalAuthResource) Schema(ctx context.Context, req resource.SchemaRequ
 		MarkdownDescription: "PortalAuth Resource",
 		Attributes: map[string]schema.Attribute{
 			"basic_auth_enabled": schema.BoolAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The organization has basic auth enabled.`,
 			},
 			"idp_mapping_enabled": schema.BoolAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Whether IdP groups determine the Konnect Portal teams a developer has. This will soon replace oidc_team_mapping_enabled.`,
 			},
 			"konnect_mapping_enabled": schema.BoolAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Whether a Konnect Identity Admin assigns teams to a developer.`,
 			},
 			"oidc_auth_enabled": schema.BoolAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The organization has OIDC disabled.`,
 			},
@@ -149,7 +145,6 @@ func (r *PortalAuthResource) Schema(ctx context.Context, req resource.SchemaRequ
 				ElementType: types.StringType,
 			},
 			"oidc_team_mapping_enabled": schema.BoolAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Whether IdP groups determine the Konnect Portal teams a developer has.`,
 			},
@@ -158,7 +153,6 @@ func (r *PortalAuthResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `ID of the portal.`,
 			},
 			"saml_auth_enabled": schema.BoolAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The portal has SAML enabled or disabled.`,
 			},

@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type AiSemanticCachePluginAfter struct {
@@ -53,8 +54,19 @@ type AiSemanticCachePluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (a AiSemanticCachePluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticCachePluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiSemanticCachePluginPartials) GetID() *string {
@@ -109,31 +121,31 @@ type AiSemanticCachePluginAuth struct {
 	// If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
 	AllowOverride *bool `default:"false" json:"allow_override"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
-	AwsAccessKeyID *string `json:"aws_access_key_id,omitempty"`
+	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
-	AwsSecretAccessKey *string `json:"aws_secret_access_key,omitempty"`
+	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
-	AzureClientID *string `json:"azure_client_id,omitempty"`
+	AzureClientID *string `default:"null" json:"azure_client_id"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
-	AzureClientSecret *string `json:"azure_client_secret,omitempty"`
+	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
-	AzureTenantID *string `json:"azure_tenant_id,omitempty"`
+	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
 	AzureUseManagedIdentity *bool `default:"false" json:"azure_use_managed_identity"`
 	// Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
-	GcpServiceAccountJSON *string `json:"gcp_service_account_json,omitempty"`
+	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
 	// Use service account auth for GCP-based providers and models.
 	GcpUseServiceAccount *bool `default:"false" json:"gcp_use_service_account"`
 	// If AI model requires authentication via Authorization or API key header, specify its name here.
-	HeaderName *string `json:"header_name,omitempty"`
+	HeaderName *string `default:"null" json:"header_name"`
 	// Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
-	HeaderValue *string `json:"header_value,omitempty"`
+	HeaderValue *string `default:"null" json:"header_value"`
 	// Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
 	ParamLocation *AiSemanticCachePluginParamLocation `json:"param_location,omitempty"`
 	// If AI model requires authentication via query parameter, specify its name here.
-	ParamName *string `json:"param_name,omitempty"`
+	ParamName *string `default:"null" json:"param_name"`
 	// Specify the full parameter value for 'param_name'.
-	ParamValue *string `json:"param_value,omitempty"`
+	ParamValue *string `default:"null" json:"param_value"`
 }
 
 func (a AiSemanticCachePluginAuth) MarshalJSON() ([]byte, error) {
@@ -249,9 +261,9 @@ type AiSemanticCachePluginAzure struct {
 	// 'api-version' for Azure OpenAI instances.
 	APIVersion *string `default:"2023-05-15" json:"api_version"`
 	// Deployment ID for Azure OpenAI instances.
-	DeploymentID *string `json:"deployment_id,omitempty"`
+	DeploymentID *string `default:"null" json:"deployment_id"`
 	// Instance name for Azure OpenAI hosted models.
-	Instance *string `json:"instance,omitempty"`
+	Instance *string `default:"null" json:"instance"`
 }
 
 func (a AiSemanticCachePluginAzure) MarshalJSON() ([]byte, error) {
@@ -288,17 +300,17 @@ func (o *AiSemanticCachePluginAzure) GetInstance() *string {
 
 type AiSemanticCachePluginBedrock struct {
 	// If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.
-	AwsAssumeRoleArn *string `json:"aws_assume_role_arn,omitempty"`
+	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
 	// If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
-	AwsRegion *string `json:"aws_region,omitempty"`
+	AwsRegion *string `default:"null" json:"aws_region"`
 	// If using AWS providers (Bedrock), set the identifier of the assumed role session.
-	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
+	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
-	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
+	AwsStsEndpointURL *string `default:"null" json:"aws_sts_endpoint_url"`
 	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
 	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
 	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
-	PerformanceConfigLatency *string `json:"performance_config_latency,omitempty"`
+	PerformanceConfigLatency *string `default:"null" json:"performance_config_latency"`
 }
 
 func (a AiSemanticCachePluginBedrock) MarshalJSON() ([]byte, error) {
@@ -356,11 +368,22 @@ func (o *AiSemanticCachePluginBedrock) GetPerformanceConfigLatency() *string {
 
 type AiSemanticCachePluginGemini struct {
 	// If running Gemini on Vertex, specify the regional API endpoint (hostname only).
-	APIEndpoint *string `json:"api_endpoint,omitempty"`
+	APIEndpoint *string `default:"null" json:"api_endpoint"`
 	// If running Gemini on Vertex, specify the location ID.
-	LocationID *string `json:"location_id,omitempty"`
+	LocationID *string `default:"null" json:"location_id"`
 	// If running Gemini on Vertex, specify the project ID.
-	ProjectID *string `json:"project_id,omitempty"`
+	ProjectID *string `default:"null" json:"project_id"`
+}
+
+func (a AiSemanticCachePluginGemini) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticCachePluginGemini) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiSemanticCachePluginGemini) GetAPIEndpoint() *string {
@@ -386,9 +409,20 @@ func (o *AiSemanticCachePluginGemini) GetProjectID() *string {
 
 type AiSemanticCachePluginHuggingface struct {
 	// Use the cache layer on the inference API
-	UseCache *bool `json:"use_cache,omitempty"`
+	UseCache *bool `default:"null" json:"use_cache"`
 	// Wait for the model if it is not ready
-	WaitForModel *bool `json:"wait_for_model,omitempty"`
+	WaitForModel *bool `default:"null" json:"wait_for_model"`
+}
+
+func (a AiSemanticCachePluginHuggingface) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticCachePluginHuggingface) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiSemanticCachePluginHuggingface) GetUseCache() *bool {
@@ -412,7 +446,18 @@ type AiSemanticCachePluginOptions struct {
 	Gemini      *AiSemanticCachePluginGemini      `json:"gemini,omitempty"`
 	Huggingface *AiSemanticCachePluginHuggingface `json:"huggingface,omitempty"`
 	// upstream url for the embeddings
-	UpstreamURL *string `json:"upstream_url,omitempty"`
+	UpstreamURL *string `default:"null" json:"upstream_url"`
+}
+
+func (a AiSemanticCachePluginOptions) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticCachePluginOptions) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiSemanticCachePluginOptions) GetAzure() AiSemanticCachePluginAzure {
@@ -637,15 +682,15 @@ type AiSemanticCachePluginPgvector struct {
 	// the host of the pgvector database
 	Host *string `default:"127.0.0.1" json:"host"`
 	// the password of the pgvector database
-	Password *string `json:"password,omitempty"`
+	Password *string `default:"null" json:"password"`
 	// the port of the pgvector database
 	Port *int64 `default:"5432" json:"port"`
 	// whether to use ssl for the pgvector database
 	Ssl *bool `default:"false" json:"ssl"`
 	// the path of ssl cert to use for the pgvector database
-	SslCert *string `json:"ssl_cert,omitempty"`
+	SslCert *string `default:"null" json:"ssl_cert"`
 	// the path of ssl cert key to use for the pgvector database
-	SslCertKey *string `json:"ssl_cert_key,omitempty"`
+	SslCertKey *string `default:"null" json:"ssl_cert_key"`
 	// whether ssl is required for the pgvector database
 	SslRequired *bool `default:"false" json:"ssl_required"`
 	// whether to verify ssl for the pgvector database
@@ -861,11 +906,11 @@ type AiSemanticCachePluginRedis struct {
 	// A string representing a host name, such as example.com.
 	Host *string `default:"127.0.0.1" json:"host"`
 	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
-	KeepaliveBacklog *int64 `json:"keepalive_backlog,omitempty"`
+	KeepaliveBacklog *int64 `default:"null" json:"keepalive_backlog"`
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
 	KeepalivePoolSize *int64 `default:"256" json:"keepalive_pool_size"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-	Password *string `json:"password,omitempty"`
+	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `default:"6379" json:"port"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -873,23 +918,23 @@ type AiSemanticCachePluginRedis struct {
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	SendTimeout *int64 `default:"2000" json:"send_timeout"`
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
-	SentinelMaster *string `json:"sentinel_master,omitempty"`
+	SentinelMaster *string `default:"null" json:"sentinel_master"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
 	SentinelNodes []AiSemanticCachePluginSentinelNodes `json:"sentinel_nodes,omitempty"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-	SentinelPassword *string `json:"sentinel_password,omitempty"`
+	SentinelPassword *string `default:"null" json:"sentinel_password"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
 	SentinelRole *AiSemanticCachePluginSentinelRole `json:"sentinel_role,omitempty"`
 	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
-	SentinelUsername *string `json:"sentinel_username,omitempty"`
+	SentinelUsername *string `default:"null" json:"sentinel_username"`
 	// A string representing an SNI (server name indication) value for TLS.
-	ServerName *string `json:"server_name,omitempty"`
+	ServerName *string `default:"null" json:"server_name"`
 	// If set to true, uses SSL to connect to Redis.
 	Ssl *bool `default:"false" json:"ssl"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
 	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
-	Username *string `json:"username,omitempty"`
+	Username *string `default:"null" json:"username"`
 }
 
 func (a AiSemanticCachePluginRedis) MarshalJSON() ([]byte, error) {
@@ -1333,7 +1378,7 @@ type AiSemanticCachePlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                        `default:"null" json:"instance_name"`
-	name         string                         `const:"ai-semantic-cache" json:"name"`
+	name         *string                        `const:"ai-semantic-cache" json:"name"`
 	Ordering     *AiSemanticCachePluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []AiSemanticCachePluginPartials `json:"partials"`
@@ -1393,8 +1438,8 @@ func (o *AiSemanticCachePlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *AiSemanticCachePlugin) GetName() string {
-	return "ai-semantic-cache"
+func (o *AiSemanticCachePlugin) GetName() *string {
+	return types.String("ai-semantic-cache")
 }
 
 func (o *AiSemanticCachePlugin) GetOrdering() *AiSemanticCachePluginOrdering {

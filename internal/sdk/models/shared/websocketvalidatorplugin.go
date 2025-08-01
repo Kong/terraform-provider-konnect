@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type WebsocketValidatorPluginAfter struct {
@@ -53,8 +54,19 @@ type WebsocketValidatorPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (w WebsocketValidatorPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(w, "", false)
+}
+
+func (w *WebsocketValidatorPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &w, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *WebsocketValidatorPluginPartials) GetID() *string {
@@ -387,7 +399,7 @@ type WebsocketValidatorPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                           `default:"null" json:"instance_name"`
-	name         string                            `const:"websocket-validator" json:"name"`
+	name         *string                           `const:"websocket-validator" json:"name"`
 	Ordering     *WebsocketValidatorPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []WebsocketValidatorPluginPartials `json:"partials"`
@@ -445,8 +457,8 @@ func (o *WebsocketValidatorPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *WebsocketValidatorPlugin) GetName() string {
-	return "websocket-validator"
+func (o *WebsocketValidatorPlugin) GetName() *string {
+	return types.String("websocket-validator")
 }
 
 func (o *WebsocketValidatorPlugin) GetOrdering() *WebsocketValidatorPluginOrdering {

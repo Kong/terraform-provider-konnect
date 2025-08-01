@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type StatsdAdvancedPluginAfter struct {
@@ -53,8 +54,19 @@ type StatsdAdvancedPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (s StatsdAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StatsdAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *StatsdAdvancedPluginPartials) GetID() *string {
@@ -301,10 +313,21 @@ func (e *StatsdAdvancedPluginWorkspaceIdentifier) UnmarshalJSON(data []byte) err
 type StatsdAdvancedPluginMetrics struct {
 	ConsumerIdentifier  *StatsdAdvancedPluginConsumerIdentifier  `json:"consumer_identifier,omitempty"`
 	Name                StatsdAdvancedPluginName                 `json:"name"`
-	SampleRate          *float64                                 `json:"sample_rate,omitempty"`
+	SampleRate          *float64                                 `default:"null" json:"sample_rate"`
 	ServiceIdentifier   *StatsdAdvancedPluginServiceIdentifier   `json:"service_identifier,omitempty"`
 	StatType            StatsdAdvancedPluginStatType             `json:"stat_type"`
 	WorkspaceIdentifier *StatsdAdvancedPluginWorkspaceIdentifier `json:"workspace_identifier,omitempty"`
+}
+
+func (s StatsdAdvancedPluginMetrics) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StatsdAdvancedPluginMetrics) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *StatsdAdvancedPluginMetrics) GetConsumerIdentifier() *StatsdAdvancedPluginConsumerIdentifier {
@@ -384,7 +407,7 @@ type StatsdAdvancedPluginQueue struct {
 	// Maximum number of entries that can be processed at a time.
 	MaxBatchSize *int64 `default:"1" json:"max_batch_size"`
 	// Maximum number of bytes that can be waiting on a queue, requires string content.
-	MaxBytes *int64 `json:"max_bytes,omitempty"`
+	MaxBytes *int64 `default:"null" json:"max_bytes"`
 	// Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.
 	MaxCoalescingDelay *float64 `default:"1" json:"max_coalescing_delay"`
 	// Maximum number of entries that can be waiting on the queue.
@@ -740,7 +763,7 @@ type StatsdAdvancedPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                       `default:"null" json:"instance_name"`
-	name         string                        `const:"statsd-advanced" json:"name"`
+	name         *string                       `const:"statsd-advanced" json:"name"`
 	Ordering     *StatsdAdvancedPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []StatsdAdvancedPluginPartials `json:"partials"`
@@ -798,8 +821,8 @@ func (o *StatsdAdvancedPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *StatsdAdvancedPlugin) GetName() string {
-	return "statsd-advanced"
+func (o *StatsdAdvancedPlugin) GetName() *string {
+	return types.String("statsd-advanced")
 }
 
 func (o *StatsdAdvancedPlugin) GetOrdering() *StatsdAdvancedPluginOrdering {

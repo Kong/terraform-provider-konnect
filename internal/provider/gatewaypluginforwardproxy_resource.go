@@ -69,26 +69,33 @@ func (r *GatewayPluginForwardProxyResource) Schema(ctx context.Context, req reso
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"auth_password":    types.StringType,
+					"auth_username":    types.StringType,
+					"http_proxy_host":  types.StringType,
+					"http_proxy_port":  types.Int64Type,
+					"https_proxy_host": types.StringType,
+					"https_proxy_port": types.Int64Type,
+					"https_verify":     types.BoolType,
+					"proxy_scheme":     types.StringType,
+					"x_headers":        types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"auth_password": schema.StringAttribute{
-						Computed: true,
 						Optional: true,
 						MarkdownDescription: `The password to authenticate with, if the forward proxy is protected` + "\n" +
 							`by basic authentication.`,
 					},
 					"auth_username": schema.StringAttribute{
-						Computed: true,
 						Optional: true,
 						MarkdownDescription: `The username to authenticate with, if the forward proxy is protected` + "\n" +
 							`by basic authentication.`,
 					},
 					"http_proxy_host": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing a host name, such as example.com.`,
 					},
 					"http_proxy_port": schema.Int64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 						Validators: []validator.Int64{
@@ -96,12 +103,10 @@ func (r *GatewayPluginForwardProxyResource) Schema(ctx context.Context, req reso
 						},
 					},
 					"https_proxy_host": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing a host name, such as example.com.`,
 					},
 					"https_proxy_port": schema.Int64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 						Validators: []validator.Int64{
@@ -202,9 +207,13 @@ func (r *GatewayPluginForwardProxyResource) Schema(ctx context.Context, req reso
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -213,9 +222,13 @@ func (r *GatewayPluginForwardProxyResource) Schema(ctx context.Context, req reso
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -236,12 +249,10 @@ func (r *GatewayPluginForwardProxyResource) Schema(ctx context.Context, req reso
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},

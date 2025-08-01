@@ -13,7 +13,7 @@ type CreateAuditLogDestination struct {
 	// The endpoint that will receive audit log messages.
 	Endpoint string `json:"endpoint"`
 	// The value to include in the `Authorization` header when sending audit logs to the webhook.
-	Authorization *string `json:"authorization,omitempty"`
+	Authorization *string `default:"null" json:"authorization"`
 	// The output format of each log messages.
 	LogFormat *LogFormat `default:"cef" json:"log_format"`
 	// Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.

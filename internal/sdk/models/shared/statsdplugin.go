@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type StatsdPluginAfter struct {
@@ -53,8 +54,19 @@ type StatsdPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (s StatsdPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StatsdPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *StatsdPluginPartials) GetID() *string {
@@ -308,13 +320,24 @@ type StatsdPluginMetrics struct {
 	// StatsD metric’s name.
 	Name StatsdPluginName `json:"name"`
 	// Sampling rate
-	SampleRate *float64 `json:"sample_rate,omitempty"`
+	SampleRate *float64 `default:"null" json:"sample_rate"`
 	// Service detail.
 	ServiceIdentifier *ServiceIdentifier `json:"service_identifier,omitempty"`
 	// Determines what sort of event a metric represents.
 	StatType StatsdPluginStatType `json:"stat_type"`
 	// Workspace detail.
 	WorkspaceIdentifier *WorkspaceIdentifier `json:"workspace_identifier,omitempty"`
+}
+
+func (s StatsdPluginMetrics) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StatsdPluginMetrics) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *StatsdPluginMetrics) GetConsumerIdentifier() *StatsdPluginConsumerIdentifier {
@@ -394,7 +417,7 @@ type StatsdPluginQueue struct {
 	// Maximum number of entries that can be processed at a time.
 	MaxBatchSize *int64 `default:"1" json:"max_batch_size"`
 	// Maximum number of bytes that can be waiting on a queue, requires string content.
-	MaxBytes *int64 `json:"max_bytes,omitempty"`
+	MaxBytes *int64 `default:"null" json:"max_bytes"`
 	// Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.
 	MaxCoalescingDelay *float64 `default:"1" json:"max_coalescing_delay"`
 	// Maximum number of entries that can be waiting on the queue.
@@ -566,7 +589,7 @@ type StatsdPluginConfig struct {
 	// List of status code ranges that are allowed to be logged in metrics.
 	AllowStatusCodes          []string                   `json:"allow_status_codes,omitempty"`
 	ConsumerIdentifierDefault *ConsumerIdentifierDefault `default:"custom_id" json:"consumer_identifier_default"`
-	FlushTimeout              *float64                   `json:"flush_timeout,omitempty"`
+	FlushTimeout              *float64                   `default:"null" json:"flush_timeout"`
 	// The IP address or hostname of StatsD server to send data to.
 	Host             *string `default:"localhost" json:"host"`
 	HostnameInPrefix *bool   `default:"false" json:"hostname_in_prefix"`
@@ -577,8 +600,8 @@ type StatsdPluginConfig struct {
 	// String to prefix to each metric's name.
 	Prefix                     *string                     `default:"kong" json:"prefix"`
 	Queue                      *StatsdPluginQueue          `json:"queue,omitempty"`
-	QueueSize                  *int64                      `json:"queue_size,omitempty"`
-	RetryCount                 *int64                      `json:"retry_count,omitempty"`
+	QueueSize                  *int64                      `default:"null" json:"queue_size"`
+	RetryCount                 *int64                      `default:"null" json:"retry_count"`
 	ServiceIdentifierDefault   *ServiceIdentifierDefault   `default:"service_name_or_host" json:"service_identifier_default"`
 	TagStyle                   *TagStyle                   `json:"tag_style,omitempty"`
 	UDPPacketSize              *float64                    `default:"0" json:"udp_packet_size"`
@@ -806,7 +829,7 @@ type StatsdPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string               `default:"null" json:"instance_name"`
-	name         string                `const:"statsd" json:"name"`
+	name         *string               `const:"statsd" json:"name"`
 	Ordering     *StatsdPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []StatsdPluginPartials `json:"partials"`
@@ -864,8 +887,8 @@ func (o *StatsdPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *StatsdPlugin) GetName() string {
-	return "statsd"
+func (o *StatsdPlugin) GetName() *string {
+	return types.String("statsd")
 }
 
 func (o *StatsdPlugin) GetOrdering() *StatsdPluginOrdering {
