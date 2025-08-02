@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type Headers struct {
-	Key  types.String `tfsdk:"key"`
-	Name types.String `tfsdk:"name"`
+type Destinations struct {
+	IP   types.String `tfsdk:"ip"`
+	Port types.Int64  `tfsdk:"port"`
 }

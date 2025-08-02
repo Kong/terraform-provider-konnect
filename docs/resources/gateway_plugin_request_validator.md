@@ -88,19 +88,16 @@ resource "konnect_gateway_plugin_request_validator" "my_gatewaypluginrequestvali
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
-- `instance_name` (String)
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
+- `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
 - `protocols` (Set of String) A set of strings representing HTTP protocols.
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
-
-### Read-Only
-
-- `id` (String) The ID of this resource.
 
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
@@ -109,10 +106,10 @@ Optional:
 
 - `allowed_content_types` (List of String) List of allowed content types. The value can be configured with the `charset` parameter. For example, `application/json; charset=UTF-8`.
 - `body_schema` (String) The request body schema specification. One of `body_schema` or `parameter_schema` must be specified.
-- `content_type_parameter_validation` (Boolean) Determines whether to enable parameters validation of request content-type.
+- `content_type_parameter_validation` (Boolean) Determines whether to enable parameters validation of request content-type. Default: true
 - `parameter_schema` (Attributes List) Array of parameter validator specification. One of `body_schema` or `parameter_schema` must be specified. (see [below for nested schema](#nestedatt--config--parameter_schema))
-- `verbose_response` (Boolean) If enabled, the plugin returns more verbose and detailed validation errors.
-- `version` (String) Which validator to use. Supported values are `kong` (default) for using Kong's own schema validator, or `draft4`, `draft7`, `draft201909`, and `draft202012` for using their respective JSON Schema Draft compliant validators. must be one of ["draft201909", "draft202012", "draft4", "draft6", "draft7", "kong"]
+- `verbose_response` (Boolean) If enabled, the plugin returns more verbose and detailed validation errors. Default: false
+- `version` (String) Which validator to use. Supported values are `kong` (default) for using Kong's own schema validator, or `draft4`, `draft7`, `draft201909`, and `draft202012` for using their respective JSON Schema Draft compliant validators. Default: "kong"; must be one of ["draft201909", "draft202012", "draft4", "draft6", "draft7", "kong"]
 
 <a id="nestedatt--config--parameter_schema"></a>
 ### Nested Schema for `config.parameter_schema`
@@ -166,8 +163,8 @@ Optional:
 
 Optional:
 
-- `id` (String)
-- `name` (String)
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `name` (String) A unique string representing a UTF-8 encoded name.
 - `path` (String)
 
 

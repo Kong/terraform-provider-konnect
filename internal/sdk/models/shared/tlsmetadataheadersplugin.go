@@ -6,10 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type TLSMetadataHeadersPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *TLSMetadataHeadersPluginAfter) GetAccess() []string {
@@ -20,7 +21,7 @@ func (o *TLSMetadataHeadersPluginAfter) GetAccess() []string {
 }
 
 type TLSMetadataHeadersPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *TLSMetadataHeadersPluginBefore) GetAccess() []string {
@@ -31,8 +32,8 @@ func (o *TLSMetadataHeadersPluginBefore) GetAccess() []string {
 }
 
 type TLSMetadataHeadersPluginOrdering struct {
-	After  *TLSMetadataHeadersPluginAfter  `json:"after,omitempty"`
-	Before *TLSMetadataHeadersPluginBefore `json:"before,omitempty"`
+	After  *TLSMetadataHeadersPluginAfter  `json:"after"`
+	Before *TLSMetadataHeadersPluginBefore `json:"before"`
 }
 
 func (o *TLSMetadataHeadersPluginOrdering) GetAfter() *TLSMetadataHeadersPluginAfter {
@@ -50,9 +51,22 @@ func (o *TLSMetadataHeadersPluginOrdering) GetBefore() *TLSMetadataHeadersPlugin
 }
 
 type TLSMetadataHeadersPluginPartials struct {
-	ID   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (t TLSMetadataHeadersPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TLSMetadataHeadersPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *TLSMetadataHeadersPluginPartials) GetID() *string {
@@ -78,17 +92,28 @@ func (o *TLSMetadataHeadersPluginPartials) GetPath() *string {
 
 type TLSMetadataHeadersPluginConfig struct {
 	// Define the HTTP header name used for the SHA1 fingerprint of the client certificate.
-	ClientCertFingerprintHeaderName *string `json:"client_cert_fingerprint_header_name,omitempty"`
+	ClientCertFingerprintHeaderName *string `default:"X-Client-Cert-Fingerprint" json:"client_cert_fingerprint_header_name"`
 	// Define the HTTP header name used for the PEM format URL encoded client certificate.
-	ClientCertHeaderName *string `json:"client_cert_header_name,omitempty"`
+	ClientCertHeaderName *string `default:"X-Client-Cert" json:"client_cert_header_name"`
 	// Define the HTTP header name used for the issuer DN of the client certificate.
-	ClientCertIssuerDnHeaderName *string `json:"client_cert_issuer_dn_header_name,omitempty"`
+	ClientCertIssuerDnHeaderName *string `default:"X-Client-Cert-Issuer-DN" json:"client_cert_issuer_dn_header_name"`
 	// Define the HTTP header name used for the subject DN of the client certificate.
-	ClientCertSubjectDnHeaderName *string `json:"client_cert_subject_dn_header_name,omitempty"`
+	ClientCertSubjectDnHeaderName *string `default:"X-Client-Cert-Subject-DN" json:"client_cert_subject_dn_header_name"`
 	// Define the HTTP header name used for the serial number of the client certificate.
-	ClientSerialHeaderName *string `json:"client_serial_header_name,omitempty"`
+	ClientSerialHeaderName *string `default:"X-Client-Cert-Serial" json:"client_serial_header_name"`
 	// Enables TLS client certificate metadata values to be injected into HTTP headers.
-	InjectClientCertDetails *bool `json:"inject_client_cert_details,omitempty"`
+	InjectClientCertDetails *bool `default:"false" json:"inject_client_cert_details"`
+}
+
+func (t TLSMetadataHeadersPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TLSMetadataHeadersPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *TLSMetadataHeadersPluginConfig) GetClientCertFingerprintHeaderName() *string {
@@ -191,19 +216,22 @@ type TLSMetadataHeadersPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                              `json:"enabled,omitempty"`
-	ID           *string                            `json:"id,omitempty"`
-	InstanceName *string                            `json:"instance_name,omitempty"`
-	name         string                             `const:"tls-metadata-headers" json:"name"`
-	Ordering     *TLSMetadataHeadersPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []TLSMetadataHeadersPluginPartials `json:"partials,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string                           `default:"null" json:"instance_name"`
+	name         *string                           `const:"tls-metadata-headers" json:"name"`
+	Ordering     *TLSMetadataHeadersPluginOrdering `json:"ordering"`
+	// A list of partials to be used by the plugin.
+	Partials []TLSMetadataHeadersPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                          `json:"updated_at,omitempty"`
-	Config    *TLSMetadataHeadersPluginConfig `json:"config,omitempty"`
+	Config    *TLSMetadataHeadersPluginConfig `json:"config"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
-	Protocols []TLSMetadataHeadersPluginProtocols `json:"protocols,omitempty"`
+	Protocols []TLSMetadataHeadersPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *TLSMetadataHeadersPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -249,8 +277,8 @@ func (o *TLSMetadataHeadersPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *TLSMetadataHeadersPlugin) GetName() string {
-	return "tls-metadata-headers"
+func (o *TLSMetadataHeadersPlugin) GetName() *string {
+	return types.String("tls-metadata-headers")
 }
 
 func (o *TLSMetadataHeadersPlugin) GetOrdering() *TLSMetadataHeadersPluginOrdering {

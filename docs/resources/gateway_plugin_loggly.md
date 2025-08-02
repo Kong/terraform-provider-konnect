@@ -85,19 +85,16 @@ resource "konnect_gateway_plugin_loggly" "my_gatewaypluginloggly" {
 
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
-- `instance_name` (String)
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
+- `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
 - `protocols` (Set of String) A set of strings representing protocols.
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
-
-### Read-Only
-
-- `id` (String) The ID of this resource.
 
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
@@ -108,15 +105,15 @@ Required:
 
 Optional:
 
-- `client_errors_severity` (String) must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
+- `client_errors_severity` (String) Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
 - `custom_fields_by_lua` (Map of String) Lua code as a key-value map
-- `host` (String) A string representing a host name, such as example.com.
-- `log_level` (String) must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
-- `server_errors_severity` (String) must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
-- `successful_severity` (String) must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
+- `host` (String) A string representing a host name, such as example.com. Default: "logs-01.loggly.com"
+- `log_level` (String) Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 514
+- `server_errors_severity` (String) Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
+- `successful_severity` (String) Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
 - `tags` (List of String)
-- `timeout` (Number)
+- `timeout` (Number) Default: 10000
 
 
 <a id="nestedatt--consumer"></a>
@@ -157,8 +154,8 @@ Optional:
 
 Optional:
 
-- `id` (String)
-- `name` (String)
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `name` (String) A unique string representing a UTF-8 encoded name.
 - `path` (String)
 
 

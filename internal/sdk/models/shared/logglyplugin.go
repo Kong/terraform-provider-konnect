@@ -6,10 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type LogglyPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *LogglyPluginAfter) GetAccess() []string {
@@ -20,7 +21,7 @@ func (o *LogglyPluginAfter) GetAccess() []string {
 }
 
 type LogglyPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *LogglyPluginBefore) GetAccess() []string {
@@ -31,8 +32,8 @@ func (o *LogglyPluginBefore) GetAccess() []string {
 }
 
 type LogglyPluginOrdering struct {
-	After  *LogglyPluginAfter  `json:"after,omitempty"`
-	Before *LogglyPluginBefore `json:"before,omitempty"`
+	After  *LogglyPluginAfter  `json:"after"`
+	Before *LogglyPluginBefore `json:"before"`
 }
 
 func (o *LogglyPluginOrdering) GetAfter() *LogglyPluginAfter {
@@ -50,9 +51,22 @@ func (o *LogglyPluginOrdering) GetBefore() *LogglyPluginBefore {
 }
 
 type LogglyPluginPartials struct {
-	ID   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (l LogglyPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LogglyPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *LogglyPluginPartials) GetID() *string {
@@ -253,19 +267,30 @@ func (e *SuccessfulSeverity) UnmarshalJSON(data []byte) error {
 }
 
 type LogglyPluginConfig struct {
-	ClientErrorsSeverity *ClientErrorsSeverity `json:"client_errors_severity,omitempty"`
+	ClientErrorsSeverity *ClientErrorsSeverity `default:"info" json:"client_errors_severity"`
 	// Lua code as a key-value map
 	CustomFieldsByLua map[string]any `json:"custom_fields_by_lua,omitempty"`
 	// A string representing a host name, such as example.com.
-	Host     *string   `json:"host,omitempty"`
+	Host     *string   `default:"logs-01.loggly.com" json:"host"`
 	Key      string    `json:"key"`
-	LogLevel *LogLevel `json:"log_level,omitempty"`
+	LogLevel *LogLevel `default:"info" json:"log_level"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port                 *int64                `json:"port,omitempty"`
-	ServerErrorsSeverity *ServerErrorsSeverity `json:"server_errors_severity,omitempty"`
-	SuccessfulSeverity   *SuccessfulSeverity   `json:"successful_severity,omitempty"`
+	Port                 *int64                `default:"514" json:"port"`
+	ServerErrorsSeverity *ServerErrorsSeverity `default:"info" json:"server_errors_severity"`
+	SuccessfulSeverity   *SuccessfulSeverity   `default:"info" json:"successful_severity"`
 	Tags                 []string              `json:"tags,omitempty"`
-	Timeout              *float64              `json:"timeout,omitempty"`
+	Timeout              *float64              `default:"10000" json:"timeout"`
+}
+
+func (l LogglyPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LogglyPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *LogglyPluginConfig) GetClientErrorsSeverity() *ClientErrorsSeverity {
@@ -430,21 +455,24 @@ type LogglyPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                  `json:"enabled,omitempty"`
-	ID           *string                `json:"id,omitempty"`
-	InstanceName *string                `json:"instance_name,omitempty"`
-	name         string                 `const:"loggly" json:"name"`
-	Ordering     *LogglyPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []LogglyPluginPartials `json:"partials,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string               `default:"null" json:"instance_name"`
+	name         *string               `const:"loggly" json:"name"`
+	Ordering     *LogglyPluginOrdering `json:"ordering"`
+	// A list of partials to be used by the plugin.
+	Partials []LogglyPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64             `json:"updated_at,omitempty"`
 	Config    LogglyPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *LogglyPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
-	Protocols []LogglyPluginProtocols `json:"protocols,omitempty"`
+	Protocols []LogglyPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *LogglyPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -490,8 +518,8 @@ func (o *LogglyPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *LogglyPlugin) GetName() string {
-	return "loggly"
+func (o *LogglyPlugin) GetName() *string {
+	return types.String("loggly")
 }
 
 func (o *LogglyPlugin) GetOrdering() *LogglyPluginOrdering {

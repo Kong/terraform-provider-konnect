@@ -10,8 +10,8 @@ import (
 // PortalTeamResponse - Details about a developer team.
 type PortalTeamResponse struct {
 	ID          *string    `json:"id,omitempty"`
-	Name        *string    `json:"name,omitempty"`
-	Description *string    `json:"description,omitempty"`
+	Name        *string    `default:"null" json:"name"`
+	Description *string    `default:"null" json:"description"`
 	CreatedAt   *time.Time `json:"created_at,omitempty"`
 	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
 }

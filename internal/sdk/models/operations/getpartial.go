@@ -69,16 +69,16 @@ func (o *GetPartialResponse) GetPartial() *shared.Partial {
 	return o.Partial
 }
 
-func (o *GetPartialResponse) GetPartialRedisCe() *shared.PartialRedisCE {
+func (o *GetPartialResponse) GetPartialRedisCe() *shared.PartialRedisCe {
 	if v := o.GetPartial(); v != nil {
-		return v.PartialRedisCE
+		return v.PartialRedisCe
 	}
 	return nil
 }
 
-func (o *GetPartialResponse) GetPartialRedisEe() *shared.PartialRedisEE {
+func (o *GetPartialResponse) GetPartialRedisEe() *shared.PartialRedisEe {
 	if v := o.GetPartial(); v != nil {
-		return v.PartialRedisEE
+		return v.PartialRedisEe
 	}
 	return nil
 }

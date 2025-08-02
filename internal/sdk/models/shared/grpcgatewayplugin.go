@@ -6,10 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type GrpcGatewayPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *GrpcGatewayPluginAfter) GetAccess() []string {
@@ -20,7 +21,7 @@ func (o *GrpcGatewayPluginAfter) GetAccess() []string {
 }
 
 type GrpcGatewayPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *GrpcGatewayPluginBefore) GetAccess() []string {
@@ -31,8 +32,8 @@ func (o *GrpcGatewayPluginBefore) GetAccess() []string {
 }
 
 type GrpcGatewayPluginOrdering struct {
-	After  *GrpcGatewayPluginAfter  `json:"after,omitempty"`
-	Before *GrpcGatewayPluginBefore `json:"before,omitempty"`
+	After  *GrpcGatewayPluginAfter  `json:"after"`
+	Before *GrpcGatewayPluginBefore `json:"before"`
 }
 
 func (o *GrpcGatewayPluginOrdering) GetAfter() *GrpcGatewayPluginAfter {
@@ -50,9 +51,22 @@ func (o *GrpcGatewayPluginOrdering) GetBefore() *GrpcGatewayPluginBefore {
 }
 
 type GrpcGatewayPluginPartials struct {
-	ID   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (g GrpcGatewayPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GrpcGatewayPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *GrpcGatewayPluginPartials) GetID() *string {
@@ -78,7 +92,18 @@ func (o *GrpcGatewayPluginPartials) GetPath() *string {
 
 type GrpcGatewayPluginConfig struct {
 	// Describes the gRPC types and methods.
-	Proto *string `json:"proto,omitempty"`
+	Proto *string `default:"null" json:"proto"`
+}
+
+func (g GrpcGatewayPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GrpcGatewayPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *GrpcGatewayPluginConfig) GetProto() *string {
@@ -180,21 +205,24 @@ type GrpcGatewayPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                       `json:"enabled,omitempty"`
-	ID           *string                     `json:"id,omitempty"`
-	InstanceName *string                     `json:"instance_name,omitempty"`
-	name         string                      `const:"grpc-gateway" json:"name"`
-	Ordering     *GrpcGatewayPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []GrpcGatewayPluginPartials `json:"partials,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string                    `default:"null" json:"instance_name"`
+	name         *string                    `const:"grpc-gateway" json:"name"`
+	Ordering     *GrpcGatewayPluginOrdering `json:"ordering"`
+	// A list of partials to be used by the plugin.
+	Partials []GrpcGatewayPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                   `json:"updated_at,omitempty"`
-	Config    *GrpcGatewayPluginConfig `json:"config,omitempty"`
+	Config    *GrpcGatewayPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *GrpcGatewayPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
-	Protocols []GrpcGatewayPluginProtocols `json:"protocols,omitempty"`
+	Protocols []GrpcGatewayPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *GrpcGatewayPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -240,8 +268,8 @@ func (o *GrpcGatewayPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *GrpcGatewayPlugin) GetName() string {
-	return "grpc-gateway"
+func (o *GrpcGatewayPlugin) GetName() *string {
+	return types.String("grpc-gateway")
 }
 
 func (o *GrpcGatewayPlugin) GetOrdering() *GrpcGatewayPluginOrdering {

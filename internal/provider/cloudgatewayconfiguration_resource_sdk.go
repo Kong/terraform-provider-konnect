@@ -44,9 +44,11 @@ func (r *CloudGatewayConfigurationResourceModel) RefreshFromSharedConfigurationM
 			}
 			dataplaneGroups.CloudGatewayNetworkID = types.StringValue(dataplaneGroupsItem.CloudGatewayNetworkID)
 			dataplaneGroups.CreatedAt = types.StringValue(typeconvert.TimeToString(dataplaneGroupsItem.CreatedAt))
-			dataplaneGroups.EgressIPAddresses = make([]types.String, 0, len(dataplaneGroupsItem.EgressIPAddresses))
-			for _, v := range dataplaneGroupsItem.EgressIPAddresses {
-				dataplaneGroups.EgressIPAddresses = append(dataplaneGroups.EgressIPAddresses, types.StringValue(v))
+			if dataplaneGroupsItem.EgressIPAddresses != nil {
+				dataplaneGroups.EgressIPAddresses = make([]types.String, 0, len(dataplaneGroupsItem.EgressIPAddresses))
+				for _, v := range dataplaneGroupsItem.EgressIPAddresses {
+					dataplaneGroups.EgressIPAddresses = append(dataplaneGroups.EgressIPAddresses, types.StringValue(v))
+				}
 			}
 			dataplaneGroups.Environment = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
 			for environmentCount, environmentItem := range dataplaneGroupsItem.Environment {
@@ -61,9 +63,11 @@ func (r *CloudGatewayConfigurationResourceModel) RefreshFromSharedConfigurationM
 				}
 			}
 			dataplaneGroups.ID = types.StringValue(dataplaneGroupsItem.ID)
-			dataplaneGroups.PrivateIPAddresses = make([]types.String, 0, len(dataplaneGroupsItem.PrivateIPAddresses))
-			for _, v := range dataplaneGroupsItem.PrivateIPAddresses {
-				dataplaneGroups.PrivateIPAddresses = append(dataplaneGroups.PrivateIPAddresses, types.StringValue(v))
+			if dataplaneGroupsItem.PrivateIPAddresses != nil {
+				dataplaneGroups.PrivateIPAddresses = make([]types.String, 0, len(dataplaneGroupsItem.PrivateIPAddresses))
+				for _, v := range dataplaneGroupsItem.PrivateIPAddresses {
+					dataplaneGroups.PrivateIPAddresses = append(dataplaneGroups.PrivateIPAddresses, types.StringValue(v))
+				}
 			}
 			dataplaneGroups.Provider = types.StringValue(string(dataplaneGroupsItem.Provider))
 			dataplaneGroups.Region = types.StringValue(dataplaneGroupsItem.Region)

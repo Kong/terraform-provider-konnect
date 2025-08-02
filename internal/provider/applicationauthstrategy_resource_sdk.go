@@ -21,9 +21,11 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			r.KeyAuth = &tfTypes.AppAuthStrategyKeyAuthRequest{}
 			r.KeyAuth.Active = types.BoolValue(resp.AppAuthStrategyKeyAuthResponse.Active)
 			r.Active = r.KeyAuth.Active
-			r.KeyAuth.Configs.KeyAuth.KeyNames = make([]types.String, 0, len(resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames))
-			for _, v := range resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames {
-				r.KeyAuth.Configs.KeyAuth.KeyNames = append(r.KeyAuth.Configs.KeyAuth.KeyNames, types.StringValue(v))
+			if resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames != nil {
+				r.KeyAuth.Configs.KeyAuth.KeyNames = make([]types.String, 0, len(resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames))
+				for _, v := range resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames {
+					r.KeyAuth.Configs.KeyAuth.KeyNames = append(r.KeyAuth.Configs.KeyAuth.KeyNames, types.StringValue(v))
+				}
 			}
 			r.KeyAuth.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AppAuthStrategyKeyAuthResponse.CreatedAt))
 			if resp.AppAuthStrategyKeyAuthResponse.DcrProvider == nil {
@@ -163,9 +165,12 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 		displayName = r.KeyAuth.DisplayName.ValueString()
 
 		strategyType := shared.StrategyType(r.KeyAuth.StrategyType.ValueString())
-		keyNames := make([]string, 0, len(r.KeyAuth.Configs.KeyAuth.KeyNames))
-		for _, keyNamesItem := range r.KeyAuth.Configs.KeyAuth.KeyNames {
-			keyNames = append(keyNames, keyNamesItem.ValueString())
+		var keyNames []string
+		if r.KeyAuth.Configs.KeyAuth.KeyNames != nil {
+			keyNames = make([]string, 0, len(r.KeyAuth.Configs.KeyAuth.KeyNames))
+			for _, keyNamesItem := range r.KeyAuth.Configs.KeyAuth.KeyNames {
+				keyNames = append(keyNames, keyNamesItem.ValueString())
+			}
 		}
 		keyAuth := shared.AppAuthStrategyConfigKeyAuth{
 			KeyNames: keyNames,

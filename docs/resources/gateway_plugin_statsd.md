@@ -107,19 +107,16 @@ resource "konnect_gateway_plugin_statsd" "my_gatewaypluginstatsd" {
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
-- `instance_name` (String)
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
+- `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
 - `protocols` (Set of String) A set of strings representing protocols.
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
-
-### Read-Only
-
-- `id` (String) The ID of this resource.
 
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
@@ -127,21 +124,21 @@ resource "konnect_gateway_plugin_statsd" "my_gatewaypluginstatsd" {
 Optional:
 
 - `allow_status_codes` (List of String) List of status code ranges that are allowed to be logged in metrics.
-- `consumer_identifier_default` (String) must be one of ["consumer_id", "custom_id", "username"]
+- `consumer_identifier_default` (String) Default: "custom_id"; must be one of ["consumer_id", "custom_id", "username"]
 - `flush_timeout` (Number)
-- `host` (String) The IP address or hostname of StatsD server to send data to.
-- `hostname_in_prefix` (Boolean)
+- `host` (String) The IP address or hostname of StatsD server to send data to. Default: "localhost"
+- `hostname_in_prefix` (Boolean) Default: false
 - `metrics` (Attributes List) List of metrics to be logged. (see [below for nested schema](#nestedatt--config--metrics))
-- `port` (Number) The port of StatsD server to send data to.
-- `prefix` (String) String to prefix to each metric's name.
+- `port` (Number) The port of StatsD server to send data to. Default: 8125
+- `prefix` (String) String to prefix to each metric's name. Default: "kong"
 - `queue` (Attributes) (see [below for nested schema](#nestedatt--config--queue))
 - `queue_size` (Number)
 - `retry_count` (Number)
-- `service_identifier_default` (String) must be one of ["service_host", "service_id", "service_name", "service_name_or_host"]
+- `service_identifier_default` (String) Default: "service_name_or_host"; must be one of ["service_host", "service_id", "service_name", "service_name_or_host"]
 - `tag_style` (String) must be one of ["dogstatsd", "influxdb", "librato", "signalfx"]
-- `udp_packet_size` (Number)
-- `use_tcp` (Boolean)
-- `workspace_identifier_default` (String) must be one of ["workspace_id", "workspace_name"]
+- `udp_packet_size` (Number) Default: 0
+- `use_tcp` (Boolean) Default: false
+- `workspace_identifier_default` (String) Default: "workspace_id"; must be one of ["workspace_id", "workspace_name"]
 
 <a id="nestedatt--config--metrics"></a>
 ### Nested Schema for `config.metrics`
@@ -161,14 +158,14 @@ Optional:
 
 Optional:
 
-- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. must be one of ["-1", "1"]
-- `initial_retry_delay` (Number) Time in seconds before the initial retry is made for a failing batch.
-- `max_batch_size` (Number) Maximum number of entries that can be processed at a time.
+- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of ["-1", "1"]
+- `initial_retry_delay` (Number) Time in seconds before the initial retry is made for a failing batch. Default: 0.01
+- `max_batch_size` (Number) Maximum number of entries that can be processed at a time. Default: 1
 - `max_bytes` (Number) Maximum number of bytes that can be waiting on a queue, requires string content.
-- `max_coalescing_delay` (Number) Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.
-- `max_entries` (Number) Maximum number of entries that can be waiting on the queue.
-- `max_retry_delay` (Number) Maximum time in seconds between retries, caps exponential backoff.
-- `max_retry_time` (Number) Time in seconds before the queue gives up calling a failed handler for a batch.
+- `max_coalescing_delay` (Number) Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler. Default: 1
+- `max_entries` (Number) Maximum number of entries that can be waiting on the queue. Default: 10000
+- `max_retry_delay` (Number) Maximum time in seconds between retries, caps exponential backoff. Default: 60
+- `max_retry_time` (Number) Time in seconds before the queue gives up calling a failed handler for a batch. Default: 60
 
 
 
@@ -210,8 +207,8 @@ Optional:
 
 Optional:
 
-- `id` (String)
-- `name` (String)
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `name` (String) A unique string representing a UTF-8 encoded name.
 - `path` (String)
 
 

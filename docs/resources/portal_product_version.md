@@ -67,7 +67,7 @@ Read-Only:
 - `available_scopes` (List of String) Possible developer selectable scopes for an application. Only present when using DCR Provider that supports it.
 - `credential_type` (String) must be one of ["client_credentials", "self_managed_client_credentials"]
 - `id` (String) The Application Auth Strategy ID.
-- `name` (String)
+- `name` (String) Default: "name"
 
 
 <a id="nestedatt--auth_strategies--key_auth"></a>
@@ -78,7 +78,7 @@ Read-Only:
 - `credential_type` (String) must be "key_auth"
 - `id` (String) The Application Auth Strategy ID.
 - `key_names` (List of String)
-- `name` (String)
+- `name` (String) Default: "name"
 
 ## Import
 

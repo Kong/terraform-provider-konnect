@@ -86,19 +86,16 @@ resource "konnect_gateway_plugin_oas_validation" "my_gatewaypluginoasvalidation"
 
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
-- `instance_name` (String)
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
+- `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
 - `protocols` (Set of String) A set of strings representing HTTP protocols.
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
-
-### Read-Only
-
-- `id` (String) The ID of this resource.
 
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
@@ -109,20 +106,20 @@ Required:
 
 Optional:
 
-- `allowed_header_parameters` (String) List of header parameters in the request that will be ignored when performing HTTP header validation. These are additional headers added to an API request beyond those defined in the API specification.  For example, you might include the HTTP header `User-Agent`, which lets servers and network peers identify the application, operating system, vendor, and/or version of the requesting user agent.
-- `api_spec_encoded` (Boolean) Indicates whether the api_spec is URI-Encoded.
+- `allowed_header_parameters` (String) List of header parameters in the request that will be ignored when performing HTTP header validation. These are additional headers added to an API request beyond those defined in the API specification.  For example, you might include the HTTP header `User-Agent`, which lets servers and network peers identify the application, operating system, vendor, and/or version of the requesting user agent. Default: "Host,Content-Type,User-Agent,Accept,Content-Length"
+- `api_spec_encoded` (Boolean) Indicates whether the api_spec is URI-Encoded. Default: true
 - `custom_base_path` (String) The base path to be used for path match evaluation. This value is ignored if `include_base_path` is set to `false`.
-- `header_parameter_check` (Boolean) If set to true, checks if HTTP header parameters in the request exist in the API specification.
-- `include_base_path` (Boolean) Indicates whether to include the base path when performing path match evaluation.
-- `notify_only_request_validation_failure` (Boolean) If set to true, notifications via event hooks are enabled, but request based validation failures don't affect the request flow.
-- `notify_only_response_body_validation_failure` (Boolean) If set to true, notifications via event hooks are enabled, but response validation failures don't affect the response flow.
-- `query_parameter_check` (Boolean) If set to true, checks if query parameters in the request exist in the API specification.
-- `validate_request_body` (Boolean) If set to true, validates the request body content against the API specification.
-- `validate_request_header_params` (Boolean) If set to true, validates HTTP header parameters against the API specification.
-- `validate_request_query_params` (Boolean) If set to true, validates query parameters against the API specification.
-- `validate_request_uri_params` (Boolean) If set to true, validates URI parameters in the request against the API specification.
-- `validate_response_body` (Boolean) If set to true, validates the response from the upstream services against the API specification. If validation fails, it results in an `HTTP 406 Not Acceptable` status code.
-- `verbose_response` (Boolean) If set to true, returns a detailed error message for invalid requests & responses. This is useful while testing.
+- `header_parameter_check` (Boolean) If set to true, checks if HTTP header parameters in the request exist in the API specification. Default: false
+- `include_base_path` (Boolean) Indicates whether to include the base path when performing path match evaluation. Default: false
+- `notify_only_request_validation_failure` (Boolean) If set to true, notifications via event hooks are enabled, but request based validation failures don't affect the request flow. Default: false
+- `notify_only_response_body_validation_failure` (Boolean) If set to true, notifications via event hooks are enabled, but response validation failures don't affect the response flow. Default: false
+- `query_parameter_check` (Boolean) If set to true, checks if query parameters in the request exist in the API specification. Default: false
+- `validate_request_body` (Boolean) If set to true, validates the request body content against the API specification. Default: true
+- `validate_request_header_params` (Boolean) If set to true, validates HTTP header parameters against the API specification. Default: true
+- `validate_request_query_params` (Boolean) If set to true, validates query parameters against the API specification. Default: true
+- `validate_request_uri_params` (Boolean) If set to true, validates URI parameters in the request against the API specification. Default: true
+- `validate_response_body` (Boolean) If set to true, validates the response from the upstream services against the API specification. If validation fails, it results in an `HTTP 406 Not Acceptable` status code. Default: false
+- `verbose_response` (Boolean) If set to true, returns a detailed error message for invalid requests & responses. This is useful while testing. Default: false
 
 
 <a id="nestedatt--consumer"></a>
@@ -163,8 +160,8 @@ Optional:
 
 Optional:
 
-- `id` (String)
-- `name` (String)
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `name` (String) A unique string representing a UTF-8 encoded name.
 - `path` (String)
 
 

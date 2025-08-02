@@ -25,31 +25,33 @@ func (r *GatewayPluginRequestValidatorResourceModel) RefreshFromSharedRequestVal
 			}
 			r.Config.BodySchema = types.StringPointerValue(resp.Config.BodySchema)
 			r.Config.ContentTypeParameterValidation = types.BoolPointerValue(resp.Config.ContentTypeParameterValidation)
-			r.Config.ParameterSchema = []tfTypes.ParameterSchema{}
-			if len(r.Config.ParameterSchema) > len(resp.Config.ParameterSchema) {
-				r.Config.ParameterSchema = r.Config.ParameterSchema[:len(resp.Config.ParameterSchema)]
-			}
-			for parameterSchemaCount, parameterSchemaItem := range resp.Config.ParameterSchema {
-				var parameterSchema tfTypes.ParameterSchema
-				parameterSchema.Explode = types.BoolPointerValue(parameterSchemaItem.Explode)
-				parameterSchema.In = types.StringValue(string(parameterSchemaItem.In))
-				parameterSchema.Name = types.StringValue(parameterSchemaItem.Name)
-				parameterSchema.Required = types.BoolValue(parameterSchemaItem.Required)
-				parameterSchema.Schema = types.StringPointerValue(parameterSchemaItem.Schema)
-				if parameterSchemaItem.Style != nil {
-					parameterSchema.Style = types.StringValue(string(*parameterSchemaItem.Style))
-				} else {
-					parameterSchema.Style = types.StringNull()
+			if resp.Config.ParameterSchema != nil {
+				r.Config.ParameterSchema = []tfTypes.ParameterSchema{}
+				if len(r.Config.ParameterSchema) > len(resp.Config.ParameterSchema) {
+					r.Config.ParameterSchema = r.Config.ParameterSchema[:len(resp.Config.ParameterSchema)]
 				}
-				if parameterSchemaCount+1 > len(r.Config.ParameterSchema) {
-					r.Config.ParameterSchema = append(r.Config.ParameterSchema, parameterSchema)
-				} else {
-					r.Config.ParameterSchema[parameterSchemaCount].Explode = parameterSchema.Explode
-					r.Config.ParameterSchema[parameterSchemaCount].In = parameterSchema.In
-					r.Config.ParameterSchema[parameterSchemaCount].Name = parameterSchema.Name
-					r.Config.ParameterSchema[parameterSchemaCount].Required = parameterSchema.Required
-					r.Config.ParameterSchema[parameterSchemaCount].Schema = parameterSchema.Schema
-					r.Config.ParameterSchema[parameterSchemaCount].Style = parameterSchema.Style
+				for parameterSchemaCount, parameterSchemaItem := range resp.Config.ParameterSchema {
+					var parameterSchema tfTypes.ParameterSchema
+					parameterSchema.Explode = types.BoolPointerValue(parameterSchemaItem.Explode)
+					parameterSchema.In = types.StringValue(string(parameterSchemaItem.In))
+					parameterSchema.Name = types.StringValue(parameterSchemaItem.Name)
+					parameterSchema.Required = types.BoolValue(parameterSchemaItem.Required)
+					parameterSchema.Schema = types.StringPointerValue(parameterSchemaItem.Schema)
+					if parameterSchemaItem.Style != nil {
+						parameterSchema.Style = types.StringValue(string(*parameterSchemaItem.Style))
+					} else {
+						parameterSchema.Style = types.StringNull()
+					}
+					if parameterSchemaCount+1 > len(r.Config.ParameterSchema) {
+						r.Config.ParameterSchema = append(r.Config.ParameterSchema, parameterSchema)
+					} else {
+						r.Config.ParameterSchema[parameterSchemaCount].Explode = parameterSchema.Explode
+						r.Config.ParameterSchema[parameterSchemaCount].In = parameterSchema.In
+						r.Config.ParameterSchema[parameterSchemaCount].Name = parameterSchema.Name
+						r.Config.ParameterSchema[parameterSchemaCount].Required = parameterSchema.Required
+						r.Config.ParameterSchema[parameterSchemaCount].Schema = parameterSchema.Schema
+						r.Config.ParameterSchema[parameterSchemaCount].Style = parameterSchema.Style
+					}
 				}
 			}
 			r.Config.VerboseResponse = types.BoolPointerValue(resp.Config.VerboseResponse)
@@ -77,18 +79,22 @@ func (r *GatewayPluginRequestValidatorResourceModel) RefreshFromSharedRequestVal
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -250,9 +256,12 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlu
 	if r.Ordering != nil {
 		var after *shared.RequestValidatorPluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.RequestValidatorPluginAfter{
 				Access: access,
@@ -260,9 +269,12 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlu
 		}
 		var before *shared.RequestValidatorPluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.RequestValidatorPluginBefore{
 				Access: access1,
@@ -333,41 +345,44 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlu
 		} else {
 			contentTypeParameterValidation = nil
 		}
-		parameterSchema := make([]shared.ParameterSchema, 0, len(r.Config.ParameterSchema))
-		for _, parameterSchemaItem := range r.Config.ParameterSchema {
-			explode := new(bool)
-			if !parameterSchemaItem.Explode.IsUnknown() && !parameterSchemaItem.Explode.IsNull() {
-				*explode = parameterSchemaItem.Explode.ValueBool()
-			} else {
-				explode = nil
-			}
-			in := shared.In(parameterSchemaItem.In.ValueString())
-			var name1 string
-			name1 = parameterSchemaItem.Name.ValueString()
+		var parameterSchema []shared.ParameterSchema
+		if r.Config.ParameterSchema != nil {
+			parameterSchema = make([]shared.ParameterSchema, 0, len(r.Config.ParameterSchema))
+			for _, parameterSchemaItem := range r.Config.ParameterSchema {
+				explode := new(bool)
+				if !parameterSchemaItem.Explode.IsUnknown() && !parameterSchemaItem.Explode.IsNull() {
+					*explode = parameterSchemaItem.Explode.ValueBool()
+				} else {
+					explode = nil
+				}
+				in := shared.In(parameterSchemaItem.In.ValueString())
+				var name1 string
+				name1 = parameterSchemaItem.Name.ValueString()
 
-			var required bool
-			required = parameterSchemaItem.Required.ValueBool()
+				var required bool
+				required = parameterSchemaItem.Required.ValueBool()
 
-			schema := new(string)
-			if !parameterSchemaItem.Schema.IsUnknown() && !parameterSchemaItem.Schema.IsNull() {
-				*schema = parameterSchemaItem.Schema.ValueString()
-			} else {
-				schema = nil
+				schema := new(string)
+				if !parameterSchemaItem.Schema.IsUnknown() && !parameterSchemaItem.Schema.IsNull() {
+					*schema = parameterSchemaItem.Schema.ValueString()
+				} else {
+					schema = nil
+				}
+				style := new(shared.Style)
+				if !parameterSchemaItem.Style.IsUnknown() && !parameterSchemaItem.Style.IsNull() {
+					*style = shared.Style(parameterSchemaItem.Style.ValueString())
+				} else {
+					style = nil
+				}
+				parameterSchema = append(parameterSchema, shared.ParameterSchema{
+					Explode:  explode,
+					In:       in,
+					Name:     name1,
+					Required: required,
+					Schema:   schema,
+					Style:    style,
+				})
 			}
-			style := new(shared.Style)
-			if !parameterSchemaItem.Style.IsUnknown() && !parameterSchemaItem.Style.IsNull() {
-				*style = shared.Style(parameterSchemaItem.Style.ValueString())
-			} else {
-				style = nil
-			}
-			parameterSchema = append(parameterSchema, shared.ParameterSchema{
-				Explode:  explode,
-				In:       in,
-				Name:     name1,
-				Required: required,
-				Schema:   schema,
-				Style:    style,
-			})
 		}
 		verboseResponse := new(bool)
 		if !r.Config.VerboseResponse.IsUnknown() && !r.Config.VerboseResponse.IsNull() {

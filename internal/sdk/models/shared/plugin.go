@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
 // PluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -19,6 +20,7 @@ func (o *PluginConsumer) GetID() *string {
 	return o.ID
 }
 
+// PluginConsumerGroup - If set, the plugin will activate only for requests where the specified group has been authenticated
 type PluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -31,7 +33,7 @@ func (o *PluginConsumerGroup) GetID() *string {
 }
 
 type After struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *After) GetAccess() []string {
@@ -42,7 +44,7 @@ func (o *After) GetAccess() []string {
 }
 
 type Before struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *Before) GetAccess() []string {
@@ -53,8 +55,8 @@ func (o *Before) GetAccess() []string {
 }
 
 type Ordering struct {
-	After  *After  `json:"after,omitempty"`
-	Before *Before `json:"before,omitempty"`
+	After  *After  `json:"after"`
+	Before *Before `json:"before"`
 }
 
 func (o *Ordering) GetAfter() *After {
@@ -71,6 +73,7 @@ func (o *Ordering) GetBefore() *Before {
 	return o.Before
 }
 
+// Protocols - A string representing a protocol, such as HTTP or HTTPS.
 type Protocols string
 
 const (
@@ -150,17 +153,20 @@ type Plugin struct {
 	// The configuration properties for the Plugin which can be found on the plugins documentation page in the [Kong Hub](https://docs.konghq.com/hub/).
 	Config map[string]any `json:"config,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *PluginConsumer      `json:"consumer"`
+	Consumer *PluginConsumer `json:"consumer"`
+	// If set, the plugin will activate only for requests where the specified group has been authenticated
 	ConsumerGroup *PluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool   `json:"enabled,omitempty"`
-	ID           *string `json:"id,omitempty"`
-	InstanceName *string `json:"instance_name,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string `default:"null" json:"instance_name"`
 	// The name of the Plugin that's going to be added. Currently, the Plugin must be installed in every Kong instance separately.
 	Name     string    `json:"name"`
-	Ordering *Ordering `json:"ordering,omitempty"`
+	Ordering *Ordering `json:"ordering"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []Protocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
@@ -168,9 +174,20 @@ type Plugin struct {
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *PluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
+}
+
+func (p Plugin) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *Plugin) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Plugin) GetConfig() map[string]any {

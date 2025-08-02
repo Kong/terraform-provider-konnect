@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
 // AssignedRoleEntityRegion - Region of the entity.
@@ -51,13 +52,24 @@ type AssignedRole struct {
 	// The ID of the role assignment.
 	ID *string `json:"id,omitempty"`
 	// Name of the role being assigned.
-	RoleName *string `json:"role_name,omitempty"`
+	RoleName *string `default:"null" json:"role_name"`
 	// A RBAC entity ID.
-	EntityID *string `json:"entity_id,omitempty"`
+	EntityID *string `default:"null" json:"entity_id"`
 	// Name of the entity type the role is being assigned to.
-	EntityTypeName *string `json:"entity_type_name,omitempty"`
+	EntityTypeName *string `default:"null" json:"entity_type_name"`
 	// Region of the entity.
 	EntityRegion *AssignedRoleEntityRegion `json:"entity_region,omitempty"`
+}
+
+func (a AssignedRole) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AssignedRole) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AssignedRole) GetID() *string {

@@ -6,10 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type ExitTransformerPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ExitTransformerPluginAfter) GetAccess() []string {
@@ -20,7 +21,7 @@ func (o *ExitTransformerPluginAfter) GetAccess() []string {
 }
 
 type ExitTransformerPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ExitTransformerPluginBefore) GetAccess() []string {
@@ -31,8 +32,8 @@ func (o *ExitTransformerPluginBefore) GetAccess() []string {
 }
 
 type ExitTransformerPluginOrdering struct {
-	After  *ExitTransformerPluginAfter  `json:"after,omitempty"`
-	Before *ExitTransformerPluginBefore `json:"before,omitempty"`
+	After  *ExitTransformerPluginAfter  `json:"after"`
+	Before *ExitTransformerPluginBefore `json:"before"`
 }
 
 func (o *ExitTransformerPluginOrdering) GetAfter() *ExitTransformerPluginAfter {
@@ -50,9 +51,22 @@ func (o *ExitTransformerPluginOrdering) GetBefore() *ExitTransformerPluginBefore
 }
 
 type ExitTransformerPluginPartials struct {
-	ID   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (e ExitTransformerPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *ExitTransformerPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ExitTransformerPluginPartials) GetID() *string {
@@ -79,9 +93,20 @@ func (o *ExitTransformerPluginPartials) GetPath() *string {
 type ExitTransformerPluginConfig struct {
 	Functions []string `json:"functions"`
 	// Determines whether to handle unexpected errors by transforming their responses.
-	HandleUnexpected *bool `json:"handle_unexpected,omitempty"`
+	HandleUnexpected *bool `default:"false" json:"handle_unexpected"`
 	// Determines whether to handle unknown status codes by transforming their responses.
-	HandleUnknown *bool `json:"handle_unknown,omitempty"`
+	HandleUnknown *bool `default:"false" json:"handle_unknown"`
+}
+
+func (e ExitTransformerPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *ExitTransformerPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ExitTransformerPluginConfig) GetFunctions() []string {
@@ -178,21 +203,24 @@ type ExitTransformerPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                           `json:"enabled,omitempty"`
-	ID           *string                         `json:"id,omitempty"`
-	InstanceName *string                         `json:"instance_name,omitempty"`
-	name         string                          `const:"exit-transformer" json:"name"`
-	Ordering     *ExitTransformerPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []ExitTransformerPluginPartials `json:"partials,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string                        `default:"null" json:"instance_name"`
+	name         *string                        `const:"exit-transformer" json:"name"`
+	Ordering     *ExitTransformerPluginOrdering `json:"ordering"`
+	// A list of partials to be used by the plugin.
+	Partials []ExitTransformerPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                      `json:"updated_at,omitempty"`
 	Config    ExitTransformerPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *ExitTransformerPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
-	Protocols []ExitTransformerPluginProtocols `json:"protocols,omitempty"`
+	Protocols []ExitTransformerPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *ExitTransformerPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -238,8 +266,8 @@ func (o *ExitTransformerPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *ExitTransformerPlugin) GetName() string {
-	return "exit-transformer"
+func (o *ExitTransformerPlugin) GetName() *string {
+	return types.String("exit-transformer")
 }
 
 func (o *ExitTransformerPlugin) GetOrdering() *ExitTransformerPluginOrdering {

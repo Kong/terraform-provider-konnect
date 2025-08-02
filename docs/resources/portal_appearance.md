@@ -142,217 +142,268 @@ resource "konnect_portal_appearance" "my_portalappearance" {
 <a id="nestedatt--custom_fonts"></a>
 ### Nested Schema for `custom_fonts`
 
-Optional:
+Required:
 
-- `base` (String) The name of the font to render in the browser. Not Null; must be one of ["Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono"]
-- `code` (String) The name of the font to render in the browser. Not Null; must be one of ["Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono"]
-- `headings` (String) The name of the font to render in the browser. Not Null; must be one of ["Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono"]
+- `base` (String) The name of the font to render in the browser. must be one of ["Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono"]
+- `code` (String) The name of the font to render in the browser. must be one of ["Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono"]
+- `headings` (String) The name of the font to render in the browser. must be one of ["Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono"]
 
 
 <a id="nestedatt--custom_theme"></a>
 ### Nested Schema for `custom_theme`
 
-Optional:
+Required:
 
-- `colors` (Attributes) Not Null (see [below for nested schema](#nestedatt--custom_theme--colors))
+- `colors` (Attributes) (see [below for nested schema](#nestedatt--custom_theme--colors))
 
 <a id="nestedatt--custom_theme--colors"></a>
 ### Nested Schema for `custom_theme.colors`
 
-Optional:
+Required:
 
-- `button` (Attributes) Not Null (see [below for nested schema](#nestedatt--custom_theme--colors--button))
-- `section` (Attributes) Not Null (see [below for nested schema](#nestedatt--custom_theme--colors--section))
-- `text` (Attributes) Not Null (see [below for nested schema](#nestedatt--custom_theme--colors--text))
+- `button` (Attributes) (see [below for nested schema](#nestedatt--custom_theme--colors--button))
+- `section` (Attributes) (see [below for nested schema](#nestedatt--custom_theme--colors--section))
+- `text` (Attributes) (see [below for nested schema](#nestedatt--custom_theme--colors--text))
 
 <a id="nestedatt--custom_theme--colors--button"></a>
 ### Nested Schema for `custom_theme.colors.button`
 
-Optional:
+Required:
 
-- `primary_fill` (Attributes) Not Null (see [below for nested schema](#nestedatt--custom_theme--colors--button--primary_fill))
-- `primary_text` (Attributes) Not Null (see [below for nested schema](#nestedatt--custom_theme--colors--button--primary_text))
+- `primary_fill` (Attributes) (see [below for nested schema](#nestedatt--custom_theme--colors--button--primary_fill))
+- `primary_text` (Attributes) (see [below for nested schema](#nestedatt--custom_theme--colors--button--primary_text))
 
 <a id="nestedatt--custom_theme--colors--button--primary_fill"></a>
 ### Nested Schema for `custom_theme.colors.button.primary_fill`
 
+Required:
+
+- `value` (String)
+
 Optional:
 
 - `description` (String)
-- `value` (String) Not Null
 
 
 <a id="nestedatt--custom_theme--colors--button--primary_text"></a>
 ### Nested Schema for `custom_theme.colors.button.primary_text`
 
+Required:
+
+- `value` (String)
+
 Optional:
 
 - `description` (String)
-- `value` (String) Not Null
 
 
 
 <a id="nestedatt--custom_theme--colors--section"></a>
 ### Nested Schema for `custom_theme.colors.section`
 
-Optional:
+Required:
 
-- `accent` (Attributes) Not Null (see [below for nested schema](#nestedatt--custom_theme--colors--section--accent))
-- `body` (Attributes) Not Null (see [below for nested schema](#nestedatt--custom_theme--colors--section--body))
-- `footer` (Attributes) Not Null (see [below for nested schema](#nestedatt--custom_theme--colors--section--footer))
-- `header` (Attributes) Not Null (see [below for nested schema](#nestedatt--custom_theme--colors--section--header))
-- `hero` (Attributes) Not Null (see [below for nested schema](#nestedatt--custom_theme--colors--section--hero))
-- `stroke` (Attributes) Not Null (see [below for nested schema](#nestedatt--custom_theme--colors--section--stroke))
-- `tertiary` (Attributes) Not Null (see [below for nested schema](#nestedatt--custom_theme--colors--section--tertiary))
+- `accent` (Attributes) (see [below for nested schema](#nestedatt--custom_theme--colors--section--accent))
+- `body` (Attributes) (see [below for nested schema](#nestedatt--custom_theme--colors--section--body))
+- `footer` (Attributes) (see [below for nested schema](#nestedatt--custom_theme--colors--section--footer))
+- `header` (Attributes) (see [below for nested schema](#nestedatt--custom_theme--colors--section--header))
+- `hero` (Attributes) (see [below for nested schema](#nestedatt--custom_theme--colors--section--hero))
+- `stroke` (Attributes) (see [below for nested schema](#nestedatt--custom_theme--colors--section--stroke))
+- `tertiary` (Attributes) (see [below for nested schema](#nestedatt--custom_theme--colors--section--tertiary))
 
 <a id="nestedatt--custom_theme--colors--section--accent"></a>
 ### Nested Schema for `custom_theme.colors.section.accent`
 
+Required:
+
+- `value` (String)
+
 Optional:
 
 - `description` (String)
-- `value` (String) Not Null
 
 
 <a id="nestedatt--custom_theme--colors--section--body"></a>
 ### Nested Schema for `custom_theme.colors.section.body`
 
+Required:
+
+- `value` (String)
+
 Optional:
 
 - `description` (String)
-- `value` (String) Not Null
 
 
 <a id="nestedatt--custom_theme--colors--section--footer"></a>
 ### Nested Schema for `custom_theme.colors.section.footer`
 
+Required:
+
+- `value` (String)
+
 Optional:
 
 - `description` (String)
-- `value` (String) Not Null
 
 
 <a id="nestedatt--custom_theme--colors--section--header"></a>
 ### Nested Schema for `custom_theme.colors.section.header`
 
+Required:
+
+- `value` (String)
+
 Optional:
 
 - `description` (String)
-- `value` (String) Not Null
 
 
 <a id="nestedatt--custom_theme--colors--section--hero"></a>
 ### Nested Schema for `custom_theme.colors.section.hero`
 
+Required:
+
+- `value` (String)
+
 Optional:
 
 - `description` (String)
-- `value` (String) Not Null
 
 
 <a id="nestedatt--custom_theme--colors--section--stroke"></a>
 ### Nested Schema for `custom_theme.colors.section.stroke`
 
+Required:
+
+- `value` (String)
+
 Optional:
 
 - `description` (String)
-- `value` (String) Not Null
 
 
 <a id="nestedatt--custom_theme--colors--section--tertiary"></a>
 ### Nested Schema for `custom_theme.colors.section.tertiary`
 
+Required:
+
+- `value` (String)
+
 Optional:
 
 - `description` (String)
-- `value` (String) Not Null
 
 
 
 <a id="nestedatt--custom_theme--colors--text"></a>
 ### Nested Schema for `custom_theme.colors.text`
 
-Optional:
+Required:
 
-- `accent` (Attributes) Not Null (see [below for nested schema](#nestedatt--custom_theme--colors--text--accent))
-- `footer` (Attributes) Not Null (see [below for nested schema](#nestedatt--custom_theme--colors--text--footer))
-- `header` (Attributes) Not Null (see [below for nested schema](#nestedatt--custom_theme--colors--text--header))
-- `headings` (Attributes) Not Null (see [below for nested schema](#nestedatt--custom_theme--colors--text--headings))
-- `hero` (Attributes) Not Null (see [below for nested schema](#nestedatt--custom_theme--colors--text--hero))
-- `link` (Attributes) Not Null (see [below for nested schema](#nestedatt--custom_theme--colors--text--link))
-- `primary` (Attributes) Not Null (see [below for nested schema](#nestedatt--custom_theme--colors--text--primary))
-- `secondary` (Attributes) Not Null (see [below for nested schema](#nestedatt--custom_theme--colors--text--secondary))
+- `accent` (Attributes) (see [below for nested schema](#nestedatt--custom_theme--colors--text--accent))
+- `footer` (Attributes) (see [below for nested schema](#nestedatt--custom_theme--colors--text--footer))
+- `header` (Attributes) (see [below for nested schema](#nestedatt--custom_theme--colors--text--header))
+- `headings` (Attributes) (see [below for nested schema](#nestedatt--custom_theme--colors--text--headings))
+- `hero` (Attributes) (see [below for nested schema](#nestedatt--custom_theme--colors--text--hero))
+- `link` (Attributes) (see [below for nested schema](#nestedatt--custom_theme--colors--text--link))
+- `primary` (Attributes) (see [below for nested schema](#nestedatt--custom_theme--colors--text--primary))
+- `secondary` (Attributes) (see [below for nested schema](#nestedatt--custom_theme--colors--text--secondary))
 
 <a id="nestedatt--custom_theme--colors--text--accent"></a>
 ### Nested Schema for `custom_theme.colors.text.accent`
 
+Required:
+
+- `value` (String)
+
 Optional:
 
 - `description` (String)
-- `value` (String) Not Null
 
 
 <a id="nestedatt--custom_theme--colors--text--footer"></a>
 ### Nested Schema for `custom_theme.colors.text.footer`
 
+Required:
+
+- `value` (String)
+
 Optional:
 
 - `description` (String)
-- `value` (String) Not Null
 
 
 <a id="nestedatt--custom_theme--colors--text--header"></a>
 ### Nested Schema for `custom_theme.colors.text.header`
 
+Required:
+
+- `value` (String)
+
 Optional:
 
 - `description` (String)
-- `value` (String) Not Null
 
 
 <a id="nestedatt--custom_theme--colors--text--headings"></a>
 ### Nested Schema for `custom_theme.colors.text.headings`
 
+Required:
+
+- `value` (String)
+
 Optional:
 
 - `description` (String)
-- `value` (String) Not Null
 
 
 <a id="nestedatt--custom_theme--colors--text--hero"></a>
 ### Nested Schema for `custom_theme.colors.text.hero`
 
+Required:
+
+- `value` (String)
+
 Optional:
 
 - `description` (String)
-- `value` (String) Not Null
 
 
 <a id="nestedatt--custom_theme--colors--text--link"></a>
 ### Nested Schema for `custom_theme.colors.text.link`
 
+Required:
+
+- `value` (String)
+
 Optional:
 
 - `description` (String)
-- `value` (String) Not Null
 
 
 <a id="nestedatt--custom_theme--colors--text--primary"></a>
 ### Nested Schema for `custom_theme.colors.text.primary`
 
+Required:
+
+- `value` (String)
+
 Optional:
 
 - `description` (String)
-- `value` (String) Not Null
 
 
 <a id="nestedatt--custom_theme--colors--text--secondary"></a>
 ### Nested Schema for `custom_theme.colors.text.secondary`
 
+Required:
+
+- `value` (String)
+
 Optional:
 
 - `description` (String)
-- `value` (String) Not Null
 
 
 
@@ -370,27 +421,36 @@ Optional:
 <a id="nestedatt--images--catalog_cover"></a>
 ### Nested Schema for `images.catalog_cover`
 
+Required:
+
+- `data` (String) must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>
+
 Optional:
 
-- `data` (String) must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>. Not Null
 - `filename` (String)
 
 
 <a id="nestedatt--images--favicon"></a>
 ### Nested Schema for `images.favicon`
 
+Required:
+
+- `data` (String) must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>
+
 Optional:
 
-- `data` (String) must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>. Not Null
 - `filename` (String)
 
 
 <a id="nestedatt--images--logo"></a>
 ### Nested Schema for `images.logo`
 
+Required:
+
+- `data` (String) must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>
+
 Optional:
 
-- `data` (String) must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>. Not Null
 - `filename` (String)
 
 
@@ -398,17 +458,17 @@ Optional:
 <a id="nestedatt--text"></a>
 ### Nested Schema for `text`
 
-Optional:
+Required:
 
-- `catalog` (Attributes) Not Null (see [below for nested schema](#nestedatt--text--catalog))
+- `catalog` (Attributes) (see [below for nested schema](#nestedatt--text--catalog))
 
 <a id="nestedatt--text--catalog"></a>
 ### Nested Schema for `text.catalog`
 
-Optional:
+Required:
 
-- `primary_header` (String) Not Null
-- `welcome_message` (String) Not Null
+- `primary_header` (String)
+- `welcome_message` (String)
 
 ## Import
 

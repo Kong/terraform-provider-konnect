@@ -14,8 +14,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -75,34 +79,124 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 					"cache": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"cache_ttl": types.Int64Type,
+							"memory": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`dictionary_name`: types.StringType,
+								},
+							},
+							"redis": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`cluster_max_redirections`: types.Int64Type,
+									`cluster_nodes`: types.ListType{
+										ElemType: types.ObjectType{
+											AttrTypes: map[string]attr.Type{
+												`ip`:   types.StringType,
+												`port`: types.Int64Type,
+											},
+										},
+									},
+									`connect_timeout`:       types.Int64Type,
+									`connection_is_proxied`: types.BoolType,
+									`database`:              types.Int64Type,
+									`host`:                  types.StringType,
+									`keepalive_backlog`:     types.Int64Type,
+									`keepalive_pool_size`:   types.Int64Type,
+									`password`:              types.StringType,
+									`port`:                  types.Int64Type,
+									`read_timeout`:          types.Int64Type,
+									`send_timeout`:          types.Int64Type,
+									`sentinel_master`:       types.StringType,
+									`sentinel_nodes`: types.ListType{
+										ElemType: types.ObjectType{
+											AttrTypes: map[string]attr.Type{
+												`host`: types.StringType,
+												`port`: types.Int64Type,
+											},
+										},
+									},
+									`sentinel_password`: types.StringType,
+									`sentinel_role`:     types.StringType,
+									`sentinel_username`: types.StringType,
+									`server_name`:       types.StringType,
+									`ssl`:               types.BoolType,
+									`ssl_verify`:        types.BoolType,
+									`username`:          types.StringType,
+								},
+							},
+							"strategy": types.StringType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"cache_ttl": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `TTL in seconds of cache entities.`,
+								Default:     int64default.StaticInt64(300),
+								Description: `TTL in seconds of cache entities. Default: 300`,
 							},
 							"memory": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"dictionary_name": types.StringType,
+								})),
 								Attributes: map[string]schema.Attribute{
 									"dictionary_name": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. Note that this dictionary currently must be defined manually in the Kong Nginx template.`,
+										Default:     stringdefault.StaticString(`kong_db_cache`),
+										Description: `The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. Note that this dictionary currently must be defined manually in the Kong Nginx template. Default: "kong_db_cache"`,
 									},
 								},
 							},
 							"redis": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"cluster_max_redirections": types.Int64Type,
+									"cluster_nodes": types.ListType{
+										ElemType: types.ObjectType{
+											AttrTypes: map[string]attr.Type{
+												`ip`:   types.StringType,
+												`port`: types.Int64Type,
+											},
+										},
+									},
+									"connect_timeout":       types.Int64Type,
+									"connection_is_proxied": types.BoolType,
+									"database":              types.Int64Type,
+									"host":                  types.StringType,
+									"keepalive_backlog":     types.Int64Type,
+									"keepalive_pool_size":   types.Int64Type,
+									"password":              types.StringType,
+									"port":                  types.Int64Type,
+									"read_timeout":          types.Int64Type,
+									"send_timeout":          types.Int64Type,
+									"sentinel_master":       types.StringType,
+									"sentinel_nodes": types.ListType{
+										ElemType: types.ObjectType{
+											AttrTypes: map[string]attr.Type{
+												`host`: types.StringType,
+												`port`: types.Int64Type,
+											},
+										},
+									},
+									"sentinel_password": types.StringType,
+									"sentinel_role":     types.StringType,
+									"sentinel_username": types.StringType,
+									"server_name":       types.StringType,
+									"ssl":               types.BoolType,
+									"ssl_verify":        types.BoolType,
+									"username":          types.StringType,
+								})),
 								Attributes: map[string]schema.Attribute{
 									"cluster_max_redirections": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Maximum retry attempts for redirection.`,
+										Default:     int64default.StaticInt64(5),
+										Description: `Maximum retry attempts for redirection. Default: 5`,
 									},
 									"cluster_nodes": schema.ListNestedAttribute{
-										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -112,12 +206,14 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 												"ip": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `A string representing a host name, such as example.com.`,
+													Default:     stringdefault.StaticString(`127.0.0.1`),
+													Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 												},
 												"port": schema.Int64Attribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+													Default:     int64default.StaticInt64(6379),
+													Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 													Validators: []validator.Int64{
 														int64validator.AtMost(65535),
 													},
@@ -129,7 +225,8 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 									"connect_timeout": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+										Default:     int64default.StaticInt64(2000),
+										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 										Validators: []validator.Int64{
 											int64validator.AtMost(2147483646),
 										},
@@ -137,20 +234,22 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 									"connection_is_proxied": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address.`,
+										Default:     booldefault.StaticBool(false),
+										Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
 									},
 									"database": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy`,
+										Default:     int64default.StaticInt64(0),
+										Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
 									},
 									"host": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `A string representing a host name, such as example.com.`,
+										Default:     stringdefault.StaticString(`127.0.0.1`),
+										Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 									},
 									"keepalive_backlog": schema.Int64Attribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `keepalive_pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `keepalive_pool_size` + "`" + `.`,
 										Validators: []validator.Int64{
@@ -160,20 +259,21 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 									"keepalive_pool_size": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `keepalive_pool_size` + "`" + ` nor ` + "`" + `keepalive_backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `keepalive_pool_size` + "`" + ` isn't specified but ` + "`" + `keepalive_backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.`,
+										Default:     int64default.StaticInt64(256),
+										Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `keepalive_pool_size` + "`" + ` nor ` + "`" + `keepalive_backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `keepalive_pool_size` + "`" + ` isn't specified but ` + "`" + `keepalive_backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
 										Validators: []validator.Int64{
 											int64validator.Between(1, 2147483646),
 										},
 									},
 									"password": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 									},
 									"port": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+										Default:     int64default.StaticInt64(6379),
+										Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 										Validators: []validator.Int64{
 											int64validator.AtMost(65535),
 										},
@@ -181,7 +281,8 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 									"read_timeout": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+										Default:     int64default.StaticInt64(2000),
+										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 										Validators: []validator.Int64{
 											int64validator.AtMost(2147483646),
 										},
@@ -189,18 +290,17 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 									"send_timeout": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+										Default:     int64default.StaticInt64(2000),
+										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 										Validators: []validator.Int64{
 											int64validator.AtMost(2147483646),
 										},
 									},
 									"sentinel_master": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
 									},
 									"sentinel_nodes": schema.ListNestedAttribute{
-										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -210,12 +310,14 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 												"host": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `A string representing a host name, such as example.com.`,
+													Default:     stringdefault.StaticString(`127.0.0.1`),
+													Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 												},
 												"port": schema.Int64Attribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+													Default:     int64default.StaticInt64(6379),
+													Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 													Validators: []validator.Int64{
 														int64validator.AtMost(65535),
 													},
@@ -225,7 +327,6 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 										Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
 									},
 									"sentinel_password": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.`,
 									},
@@ -242,27 +343,26 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 										},
 									},
 									"sentinel_username": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.`,
 									},
 									"server_name": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `A string representing an SNI (server name indication) value for TLS.`,
 									},
 									"ssl": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `If set to true, uses SSL to connect to Redis.`,
+										Default:     booldefault.StaticBool(false),
+										Description: `If set to true, uses SSL to connect to Redis. Default: false`,
 									},
 									"ssl_verify": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
+										Default:     booldefault.StaticBool(false),
+										Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: false`,
 									},
 									"username": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
 									},
@@ -271,7 +371,8 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 							"strategy": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The backing data store in which to hold cache entities. Accepted values are: ` + "`" + `off` + "`" + `, ` + "`" + `memory` + "`" + `, and ` + "`" + `redis` + "`" + `. must be one of ["memory", "off", "redis"]`,
+								Default:     stringdefault.StaticString(`off`),
+								Description: `The backing data store in which to hold cache entities. Accepted values are: ` + "`" + `off` + "`" + `, ` + "`" + `memory` + "`" + `, and ` + "`" + `redis` + "`" + `. Default: "off"; must be one of ["memory", "off", "redis"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
 										"memory",
@@ -297,7 +398,8 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 										"bypass": schema.BoolAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `If ` + "`" + `true` + "`" + `, skips caching the callout response.`,
+											Default:     booldefault.StaticBool(false),
+											Description: `If ` + "`" + `true` + "`" + `, skips caching the callout response. Default: false`,
 										},
 									},
 									Description: `Callout caching configuration. Not Null`,
@@ -308,6 +410,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 								"depends_on": schema.ListAttribute{
 									Computed:    true,
 									Optional:    true,
+									Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 									ElementType: types.StringType,
 									Description: `An array of callout names the current callout depends on. This dependency list determines the callout execution order via a topological sorting algorithm.`,
 								},
@@ -328,7 +431,6 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"custom": schema.MapAttribute{
-													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													Description: `The custom body fields to be added to the callout HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
@@ -339,12 +441,14 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 												"decode": schema.BoolAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `If ` + "`" + `true` + "`" + `, decodes the request's body and make it available for customizations. Only JSON content type is supported.`,
+													Default:     booldefault.StaticBool(false),
+													Description: `If ` + "`" + `true` + "`" + `, decodes the request's body and make it available for customizations. Only JSON content type is supported. Default: false`,
 												},
 												"forward": schema.BoolAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `If ` + "`" + `true` + "`" + `, forwards the incoming request's body to the callout request.`,
+													Default:     booldefault.StaticBool(false),
+													Description: `If ` + "`" + `true` + "`" + `, forwards the incoming request's body to the callout request. Default: false`,
 												},
 											},
 											Description: `Callout request body customizations. Not Null`,
@@ -353,7 +457,6 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 											},
 										},
 										"by_lua": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Lua code that executes before the callout request is made. **Warning** can impact system behavior. Standard Lua sandboxing restrictions apply.`,
 										},
@@ -364,15 +467,16 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 												"error_response_code": schema.Int64Attribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The error code to respond with if ` + "`" + `on_error` + "`" + ` is ` + "`" + `fail` + "`" + ` or if ` + "`" + `retries` + "`" + ` is achieved.`,
+													Default:     int64default.StaticInt64(400),
+													Description: `The error code to respond with if ` + "`" + `on_error` + "`" + ` is ` + "`" + `fail` + "`" + ` or if ` + "`" + `retries` + "`" + ` is achieved. Default: 400`,
 												},
 												"error_response_msg": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The error mesasge to respond with if ` + "`" + `on_error` + "`" + ` is set to ` + "`" + `fail` + "`" + ` or if ` + "`" + `retries` + "`" + ` is achieved. Templating with Lua expressions is supported.`,
+													Default:     stringdefault.StaticString(`service callout error`),
+													Description: `The error mesasge to respond with if ` + "`" + `on_error` + "`" + ` is set to ` + "`" + `fail` + "`" + ` or if ` + "`" + `retries` + "`" + ` is achieved. Templating with Lua expressions is supported. Default: "service callout error"`,
 												},
 												"http_statuses": schema.ListAttribute{
-													Computed:    true,
 													Optional:    true,
 													ElementType: types.Int64Type,
 													Description: `The list of HTTP status codes considered errors under the error handling policy.`,
@@ -380,7 +484,8 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 												"on_error": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `must be one of ["continue", "fail", "retry"]`,
+													Default:     stringdefault.StaticString(`fail`),
+													Description: `Default: "fail"; must be one of ["continue", "fail", "retry"]`,
 													Validators: []validator.String{
 														stringvalidator.OneOf(
 															"continue",
@@ -392,7 +497,8 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 												"retries": schema.Int64Attribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The number of retries the plugin will attempt on TCP and HTTP errors if ` + "`" + `on_error` + "`" + ` is set to ` + "`" + `retry` + "`" + `.`,
+													Default:     int64default.StaticInt64(2),
+													Description: `The number of retries the plugin will attempt on TCP and HTTP errors if ` + "`" + `on_error` + "`" + ` is set to ` + "`" + `retry` + "`" + `. Default: 2`,
 												},
 											},
 											Description: `The error handling policy the plugin will apply to TCP and HTTP errors. Not Null`,
@@ -405,7 +511,6 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"custom": schema.MapAttribute{
-													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													Description: `The custom headers to be added in the callout HTTP request. Values can contain Lua expressions in the form ` + "`" + `$(some_lua_expression)` + "`" + `. The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
@@ -416,7 +521,8 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 												"forward": schema.BoolAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `If ` + "`" + `true` + "`" + `, forwards the incoming request's headers to the callout request.`,
+													Default:     booldefault.StaticBool(false),
+													Description: `If ` + "`" + `true` + "`" + `, forwards the incoming request's headers to the callout request. Default: false`,
 												},
 											},
 											Description: `Callout request header customizations. Not Null`,
@@ -431,24 +537,26 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 												"proxy": schema.SingleNestedAttribute{
 													Computed: true,
 													Optional: true,
+													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+														"auth_password": types.StringType,
+														"auth_username": types.StringType,
+														"http_proxy":    types.StringType,
+														"https_proxy":   types.StringType,
+													})),
 													Attributes: map[string]schema.Attribute{
 														"auth_password": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `The password to authenticate with, if the forward proxy is protected by basic authentication.`,
 														},
 														"auth_username": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `The username to authenticate with, if the forward proxy is protected by basic authentication.`,
 														},
 														"http_proxy": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `The HTTP proxy URL. This proxy server will be used for HTTP requests.`,
 														},
 														"https_proxy": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `The HTTPS proxy URL. This proxy server will be used for HTTPS requests.`,
 														},
@@ -456,21 +564,25 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 													Description: `Proxy settings.`,
 												},
 												"ssl_server_name": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `The SNI used in the callout request. Defaults to host if omitted.`,
 												},
 												"ssl_verify": schema.BoolAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `If set to ` + "`" + `true` + "`" + `, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
+													Default:     booldefault.StaticBool(false),
+													Description: `If set to ` + "`" + `true` + "`" + `, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: false`,
 												},
 												"timeouts": schema.SingleNestedAttribute{
 													Computed: true,
 													Optional: true,
+													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+														"connect": types.Int64Type,
+														"read":    types.Int64Type,
+														"write":   types.Int64Type,
+													})),
 													Attributes: map[string]schema.Attribute{
 														"connect": schema.Int64Attribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `The socket connect timeout.`,
 															Validators: []validator.Int64{
@@ -478,7 +590,6 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 															},
 														},
 														"read": schema.Int64Attribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `The socket read timeout.`,
 															Validators: []validator.Int64{
@@ -486,7 +597,6 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 															},
 														},
 														"write": schema.Int64Attribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `The socket write timeout.`,
 															Validators: []validator.Int64{
@@ -505,7 +615,8 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 										"method": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `The HTTP method that will be requested.`,
+											Default:     stringdefault.StaticString(`GET`),
+											Description: `The HTTP method that will be requested. Default: "GET"`,
 											Validators: []validator.String{
 												stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Z]+$`), "must match pattern "+regexp.MustCompile(`^[A-Z]+$`).String()),
 											},
@@ -515,7 +626,6 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"custom": schema.MapAttribute{
-													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													Description: `The custom query params to be added in the callout HTTP request. Values can contain Lua expressions in the form ` + "`" + `$(some_lua_expression)` + "`" + `. The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
@@ -526,7 +636,8 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 												"forward": schema.BoolAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `If ` + "`" + `true` + "`" + `, forwards the incoming request's query params to the callout request.`,
+													Default:     booldefault.StaticBool(false),
+													Description: `If ` + "`" + `true` + "`" + `, forwards the incoming request's query params to the callout request. Default: false`,
 												},
 											},
 											Description: `Callout request query param customizations. Not Null`,
@@ -559,12 +670,14 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 												"decode": schema.BoolAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `If ` + "`" + `true` + "`" + `, decodes the response body before storing into the context. Only JSON is supported.`,
+													Default:     booldefault.StaticBool(false),
+													Description: `If ` + "`" + `true` + "`" + `, decodes the response body before storing into the context. Only JSON is supported. Default: false`,
 												},
 												"store": schema.BoolAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `If ` + "`" + `false` + "`" + `, skips storing the callout response body into kong.ctx.shared.callouts.<name>.response.body.`,
+													Default:     booldefault.StaticBool(true),
+													Description: `If ` + "`" + `false` + "`" + `, skips storing the callout response body into kong.ctx.shared.callouts.<name>.response.body. Default: true`,
 												},
 											},
 											Description: `Not Null`,
@@ -573,7 +686,6 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 											},
 										},
 										"by_lua": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Lua code that executes after the callout response is received, before caching takes place. Can produce side effects. Standard Lua sandboxing restrictions apply.`,
 										},
@@ -584,7 +696,8 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 												"store": schema.BoolAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `If ` + "`" + `false` + "`" + `, skips storing the callout response headers into kong.ctx.shared.callouts.<name>.response.headers.`,
+													Default:     booldefault.StaticBool(true),
+													Description: `If ` + "`" + `false` + "`" + `, skips storing the callout response headers into kong.ctx.shared.callouts.<name>.response.headers. Default: true`,
 												},
 											},
 											Description: `Callout response header customizations. Not Null`,
@@ -605,13 +718,47 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 					"upstream": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"body": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`custom`: types.MapType{
+										ElemType: types.StringType,
+									},
+									`decode`:  types.BoolType,
+									`forward`: types.BoolType,
+								},
+							},
+							"by_lua": types.StringType,
+							"headers": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`custom`: types.MapType{
+										ElemType: types.StringType,
+									},
+									`forward`: types.BoolType,
+								},
+							},
+							"query": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`custom`: types.MapType{
+										ElemType: types.StringType,
+									},
+									`forward`: types.BoolType,
+								},
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"body": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"custom": types.MapType{
+										ElemType: types.StringType,
+									},
+									"decode":  types.BoolType,
+									"forward": types.BoolType,
+								})),
 								Attributes: map[string]schema.Attribute{
 									"custom": schema.MapAttribute{
-										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `The custom body fields to be added in the upstream request body. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
@@ -622,27 +769,33 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 									"decode": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `If ` + "`" + `true` + "`" + `, decodes the request's body to make it available for upstream by_lua customizations. Only JSON content type is supported.`,
+										Default:     booldefault.StaticBool(true),
+										Description: `If ` + "`" + `true` + "`" + `, decodes the request's body to make it available for upstream by_lua customizations. Only JSON content type is supported. Default: true`,
 									},
 									"forward": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `If ` + "`" + `false` + "`" + `, skips forwarding the incoming request's body to the upstream request.`,
+										Default:     booldefault.StaticBool(true),
+										Description: `If ` + "`" + `false` + "`" + `, skips forwarding the incoming request's body to the upstream request. Default: true`,
 									},
 								},
 								Description: `Callout request body customizations.`,
 							},
 							"by_lua": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Lua code that executes before the upstream request is made. Can produce side effects. Standard Lua sandboxing restrictions apply.`,
 							},
 							"headers": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"custom": types.MapType{
+										ElemType: types.StringType,
+									},
+									"forward": types.BoolType,
+								})),
 								Attributes: map[string]schema.Attribute{
 									"custom": schema.MapAttribute{
-										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `The custom headers to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
@@ -653,7 +806,8 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 									"forward": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `If ` + "`" + `false` + "`" + `, does not forward request headers to upstream request.`,
+										Default:     booldefault.StaticBool(true),
+										Description: `If ` + "`" + `false` + "`" + `, does not forward request headers to upstream request. Default: true`,
 									},
 								},
 								Description: `Callout request header customizations.`,
@@ -661,9 +815,14 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 							"query": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"custom": types.MapType{
+										ElemType: types.StringType,
+									},
+									"forward": types.BoolType,
+								})),
 								Attributes: map[string]schema.Attribute{
 									"custom": schema.MapAttribute{
-										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `The custom query params to be added in the upstream HTTP request. Values can contain Lua expressions in the form ` + "`" + `$(some_lua_expression)` + "`" + `. The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
@@ -674,7 +833,8 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 									"forward": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `If ` + "`" + `false` + "`" + `, does not forward request query params to upstream request.`,
+										Default:     booldefault.StaticBool(true),
+										Description: `If ` + "`" + `false` + "`" + `, does not forward request query params to upstream request. Default: true`,
 									},
 								},
 								Description: `Upstream request query param customizations.`,
@@ -727,26 +887,48 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Optional:    true,
+				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -755,9 +937,13 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -766,7 +952,6 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -774,19 +959,20 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 					},
 					Attributes: map[string]schema.Attribute{
 						"id": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
+							Computed:    true,
+							Optional:    true,
+							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
+							Optional:    true,
+							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},
 				},
+				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.SetAttribute{
 				Computed:    true,
@@ -823,7 +1009,6 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

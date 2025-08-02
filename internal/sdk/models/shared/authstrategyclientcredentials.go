@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
 type AuthStrategyClientCredentialsCredentialType string
@@ -37,11 +38,22 @@ func (e *AuthStrategyClientCredentialsCredentialType) UnmarshalJSON(data []byte)
 type AuthStrategyClientCredentials struct {
 	// The Application Auth Strategy ID.
 	ID             string                                      `json:"id"`
-	Name           string                                      `json:"name"`
+	Name           *string                                     `default:"name" json:"name"`
 	CredentialType AuthStrategyClientCredentialsCredentialType `json:"credential_type"`
 	AuthMethods    []string                                    `json:"auth_methods"`
 	// Possible developer selectable scopes for an application. Only present when using DCR Provider that supports it.
 	AvailableScopes []string `json:"available_scopes,omitempty"`
+}
+
+func (a AuthStrategyClientCredentials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AuthStrategyClientCredentials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AuthStrategyClientCredentials) GetID() string {
@@ -51,9 +63,9 @@ func (o *AuthStrategyClientCredentials) GetID() string {
 	return o.ID
 }
 
-func (o *AuthStrategyClientCredentials) GetName() string {
+func (o *AuthStrategyClientCredentials) GetName() *string {
 	if o == nil {
-		return ""
+		return nil
 	}
 	return o.Name
 }

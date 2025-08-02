@@ -65,7 +65,6 @@ func (r *APIProductDocumentResource) Schema(ctx context.Context, req resource.Sc
 			},
 			"content": schema.StringAttribute{
 				CustomType:  encodedstring.Base64OrPlainInputType{},
-				Computed:    true,
 				Optional:    true,
 				Description: `Can be markdown string content or base64 encoded string`,
 			},
@@ -89,7 +88,6 @@ func (r *APIProductDocumentResource) Schema(ctx context.Context, req resource.Sc
 				Description: `metadata of the document`,
 			},
 			"parent_document_id": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `parent document id`,
 			},

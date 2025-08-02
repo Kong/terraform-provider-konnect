@@ -48,10 +48,21 @@ func (e *State) UnmarshalJSON(data []byte) error {
 // StateMetadata - Metadata describing the backing state of the dataplane group and why it may be in an erroneous state.
 type StateMetadata struct {
 	// Reported status of the dataplane group from backing infrastructure.
-	ReportedStatus *string `json:"reported_status,omitempty"`
+	ReportedStatus *string `default:"null" json:"reported_status"`
 	// Reason why the dataplane group may be in an erroneous state, reported from backing infrastructure.
 	//
-	Reason *string `json:"reason,omitempty"`
+	Reason *string `default:"null" json:"reason"`
+}
+
+func (s StateMetadata) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StateMetadata) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *StateMetadata) GetReportedStatus() *string {
@@ -87,10 +98,10 @@ type ConfigurationDataPlaneGroup struct {
 	StateMetadata *StateMetadata `json:"state_metadata,omitempty"`
 	// List of private IP addresses of the internal load balancer that proxies traffic to this data-plane group.
 	//
-	PrivateIPAddresses []string `json:"private_ip_addresses,omitempty"`
+	PrivateIPAddresses []string `json:"private_ip_addresses"`
 	// List of egress IP addresses for the network that this data-plane group runs on.
 	//
-	EgressIPAddresses []string `json:"egress_ip_addresses,omitempty"`
+	EgressIPAddresses []string `json:"egress_ip_addresses"`
 	// An RFC-3339 timestamp representation of data-plane group creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An RFC-3339 timestamp representation of data-plane group update date.

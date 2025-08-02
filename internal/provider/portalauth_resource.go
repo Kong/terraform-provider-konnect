@@ -8,6 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
@@ -54,22 +55,18 @@ func (r *PortalAuthResource) Schema(ctx context.Context, req resource.SchemaRequ
 		MarkdownDescription: "PortalAuth Resource",
 		Attributes: map[string]schema.Attribute{
 			"basic_auth_enabled": schema.BoolAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The organization has basic auth enabled.`,
 			},
 			"idp_mapping_enabled": schema.BoolAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Whether IdP groups determine the Konnect Portal teams a developer has. This will soon replace oidc_team_mapping_enabled.`,
 			},
 			"konnect_mapping_enabled": schema.BoolAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Whether a Konnect Identity Admin assigns teams to a developer.`,
 			},
 			"oidc_auth_enabled": schema.BoolAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The organization has OIDC disabled.`,
 			},
@@ -77,13 +74,22 @@ func (r *PortalAuthResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"email": schema.StringAttribute{
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     stringdefault.StaticString(`email`),
+						Description: `Default: "email"`,
 					},
 					"groups": schema.StringAttribute{
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     stringdefault.StaticString(`groups`),
+						Description: `Default: "groups"`,
 					},
 					"name": schema.StringAttribute{
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     stringdefault.StaticString(`name`),
+						Description: `Default: "name"`,
 					},
 				},
 				Description: `Mappings from a portal developer atribute to an Identity Provider claim.`,
@@ -101,13 +107,19 @@ func (r *PortalAuthResource) Schema(ctx context.Context, req resource.SchemaRequ
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"email": schema.StringAttribute{
-								Computed: true,
+								Computed:    true,
+								Default:     stringdefault.StaticString(`email`),
+								Description: `Default: "email"`,
 							},
 							"groups": schema.StringAttribute{
-								Computed: true,
+								Computed:    true,
+								Default:     stringdefault.StaticString(`groups`),
+								Description: `Default: "groups"`,
 							},
 							"name": schema.StringAttribute{
-								Computed: true,
+								Computed:    true,
+								Default:     stringdefault.StaticString(`name`),
+								Description: `Default: "name"`,
 							},
 						},
 						Description: `Mappings from a portal developer atribute to an Identity Provider claim.`,
@@ -133,7 +145,6 @@ func (r *PortalAuthResource) Schema(ctx context.Context, req resource.SchemaRequ
 				ElementType: types.StringType,
 			},
 			"oidc_team_mapping_enabled": schema.BoolAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Whether IdP groups determine the Konnect Portal teams a developer has.`,
 			},
@@ -142,7 +153,6 @@ func (r *PortalAuthResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `ID of the portal.`,
 			},
 			"saml_auth_enabled": schema.BoolAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The portal has SAML enabled or disabled.`,
 			},

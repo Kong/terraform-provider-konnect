@@ -9,8 +9,8 @@ import (
 
 // CreateSystemAccountAccessToken - The request body to create a system account access token.
 type CreateSystemAccountAccessToken struct {
-	Name      *string    `json:"name,omitempty"`
-	ExpiresAt *time.Time `json:"expires_at,omitempty"`
+	Name      *string    `default:"null" json:"name"`
+	ExpiresAt *time.Time `default:"null" json:"expires_at"`
 }
 
 func (c CreateSystemAccountAccessToken) MarshalJSON() ([]byte, error) {

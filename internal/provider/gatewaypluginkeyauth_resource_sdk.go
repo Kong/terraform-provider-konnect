@@ -21,25 +21,27 @@ func (r *GatewayPluginKeyAuthResourceModel) RefreshFromSharedKeyAuthPlugin(ctx c
 			r.Config = &tfTypes.KeyAuthPluginConfig{}
 			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
 			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
-			r.Config.IdentityRealms = []tfTypes.IdentityRealms{}
-			if len(r.Config.IdentityRealms) > len(resp.Config.IdentityRealms) {
-				r.Config.IdentityRealms = r.Config.IdentityRealms[:len(resp.Config.IdentityRealms)]
-			}
-			for identityRealmsCount, identityRealmsItem := range resp.Config.IdentityRealms {
-				var identityRealms tfTypes.IdentityRealms
-				identityRealms.ID = types.StringPointerValue(identityRealmsItem.ID)
-				identityRealms.Region = types.StringPointerValue(identityRealmsItem.Region)
-				if identityRealmsItem.Scope != nil {
-					identityRealms.Scope = types.StringValue(string(*identityRealmsItem.Scope))
-				} else {
-					identityRealms.Scope = types.StringNull()
+			if resp.Config.IdentityRealms != nil {
+				r.Config.IdentityRealms = []tfTypes.IdentityRealms{}
+				if len(r.Config.IdentityRealms) > len(resp.Config.IdentityRealms) {
+					r.Config.IdentityRealms = r.Config.IdentityRealms[:len(resp.Config.IdentityRealms)]
 				}
-				if identityRealmsCount+1 > len(r.Config.IdentityRealms) {
-					r.Config.IdentityRealms = append(r.Config.IdentityRealms, identityRealms)
-				} else {
-					r.Config.IdentityRealms[identityRealmsCount].ID = identityRealms.ID
-					r.Config.IdentityRealms[identityRealmsCount].Region = identityRealms.Region
-					r.Config.IdentityRealms[identityRealmsCount].Scope = identityRealms.Scope
+				for identityRealmsCount, identityRealmsItem := range resp.Config.IdentityRealms {
+					var identityRealms tfTypes.IdentityRealms
+					identityRealms.ID = types.StringPointerValue(identityRealmsItem.ID)
+					identityRealms.Region = types.StringPointerValue(identityRealmsItem.Region)
+					if identityRealmsItem.Scope != nil {
+						identityRealms.Scope = types.StringValue(string(*identityRealmsItem.Scope))
+					} else {
+						identityRealms.Scope = types.StringNull()
+					}
+					if identityRealmsCount+1 > len(r.Config.IdentityRealms) {
+						r.Config.IdentityRealms = append(r.Config.IdentityRealms, identityRealms)
+					} else {
+						r.Config.IdentityRealms[identityRealmsCount].ID = identityRealms.ID
+						r.Config.IdentityRealms[identityRealmsCount].Region = identityRealms.Region
+						r.Config.IdentityRealms[identityRealmsCount].Scope = identityRealms.Scope
+					}
 				}
 			}
 			r.Config.KeyInBody = types.BoolPointerValue(resp.Config.KeyInBody)
@@ -64,18 +66,22 @@ func (r *GatewayPluginKeyAuthResourceModel) RefreshFromSharedKeyAuthPlugin(ctx c
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -237,9 +243,12 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin(ctx context.Co
 	if r.Ordering != nil {
 		var after *shared.KeyAuthPluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.KeyAuthPluginAfter{
 				Access: access,
@@ -247,9 +256,12 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin(ctx context.Co
 		}
 		var before *shared.KeyAuthPluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.KeyAuthPluginBefore{
 				Access: access1,
@@ -316,31 +328,34 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin(ctx context.Co
 		} else {
 			hideCredentials = nil
 		}
-		identityRealms := make([]shared.IdentityRealms, 0, len(r.Config.IdentityRealms))
-		for _, identityRealmsItem := range r.Config.IdentityRealms {
-			id2 := new(string)
-			if !identityRealmsItem.ID.IsUnknown() && !identityRealmsItem.ID.IsNull() {
-				*id2 = identityRealmsItem.ID.ValueString()
-			} else {
-				id2 = nil
+		var identityRealms []shared.IdentityRealms
+		if r.Config.IdentityRealms != nil {
+			identityRealms = make([]shared.IdentityRealms, 0, len(r.Config.IdentityRealms))
+			for _, identityRealmsItem := range r.Config.IdentityRealms {
+				id2 := new(string)
+				if !identityRealmsItem.ID.IsUnknown() && !identityRealmsItem.ID.IsNull() {
+					*id2 = identityRealmsItem.ID.ValueString()
+				} else {
+					id2 = nil
+				}
+				region := new(string)
+				if !identityRealmsItem.Region.IsUnknown() && !identityRealmsItem.Region.IsNull() {
+					*region = identityRealmsItem.Region.ValueString()
+				} else {
+					region = nil
+				}
+				scope := new(shared.Scope)
+				if !identityRealmsItem.Scope.IsUnknown() && !identityRealmsItem.Scope.IsNull() {
+					*scope = shared.Scope(identityRealmsItem.Scope.ValueString())
+				} else {
+					scope = nil
+				}
+				identityRealms = append(identityRealms, shared.IdentityRealms{
+					ID:     id2,
+					Region: region,
+					Scope:  scope,
+				})
 			}
-			region := new(string)
-			if !identityRealmsItem.Region.IsUnknown() && !identityRealmsItem.Region.IsNull() {
-				*region = identityRealmsItem.Region.ValueString()
-			} else {
-				region = nil
-			}
-			scope := new(shared.Scope)
-			if !identityRealmsItem.Scope.IsUnknown() && !identityRealmsItem.Scope.IsNull() {
-				*scope = shared.Scope(identityRealmsItem.Scope.ValueString())
-			} else {
-				scope = nil
-			}
-			identityRealms = append(identityRealms, shared.IdentityRealms{
-				ID:     id2,
-				Region: region,
-				Scope:  scope,
-			})
 		}
 		keyInBody := new(bool)
 		if !r.Config.KeyInBody.IsUnknown() && !r.Config.KeyInBody.IsNull() {

@@ -6,10 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type ResponseTransformerAdvancedPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ResponseTransformerAdvancedPluginAfter) GetAccess() []string {
@@ -20,7 +21,7 @@ func (o *ResponseTransformerAdvancedPluginAfter) GetAccess() []string {
 }
 
 type ResponseTransformerAdvancedPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ResponseTransformerAdvancedPluginBefore) GetAccess() []string {
@@ -31,8 +32,8 @@ func (o *ResponseTransformerAdvancedPluginBefore) GetAccess() []string {
 }
 
 type ResponseTransformerAdvancedPluginOrdering struct {
-	After  *ResponseTransformerAdvancedPluginAfter  `json:"after,omitempty"`
-	Before *ResponseTransformerAdvancedPluginBefore `json:"before,omitempty"`
+	After  *ResponseTransformerAdvancedPluginAfter  `json:"after"`
+	Before *ResponseTransformerAdvancedPluginBefore `json:"before"`
 }
 
 func (o *ResponseTransformerAdvancedPluginOrdering) GetAfter() *ResponseTransformerAdvancedPluginAfter {
@@ -50,9 +51,22 @@ func (o *ResponseTransformerAdvancedPluginOrdering) GetBefore() *ResponseTransfo
 }
 
 type ResponseTransformerAdvancedPluginPartials struct {
-	ID   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (r ResponseTransformerAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseTransformerAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ResponseTransformerAdvancedPluginPartials) GetID() *string {
@@ -141,7 +155,7 @@ func (o *ResponseTransformerAdvancedPluginAdd) GetJSONTypes() []ResponseTransfor
 }
 
 type ResponseTransformerAdvancedPluginAllow struct {
-	JSON []string `json:"json,omitempty"`
+	JSON []string `json:"json"`
 }
 
 func (o *ResponseTransformerAdvancedPluginAllow) GetJSON() []string {
@@ -292,11 +306,22 @@ func (e *ResponseTransformerAdvancedPluginConfigReplaceJSONTypes) UnmarshalJSON(
 
 type ResponseTransformerAdvancedPluginReplace struct {
 	// String with which to replace the entire response body.
-	Body      *string                                                   `json:"body,omitempty"`
+	Body      *string                                                   `default:"null" json:"body"`
 	Headers   []string                                                  `json:"headers,omitempty"`
 	IfStatus  []string                                                  `json:"if_status,omitempty"`
 	JSON      []string                                                  `json:"json,omitempty"`
 	JSONTypes []ResponseTransformerAdvancedPluginConfigReplaceJSONTypes `json:"json_types,omitempty"`
+}
+
+func (r ResponseTransformerAdvancedPluginReplace) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseTransformerAdvancedPluginReplace) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ResponseTransformerAdvancedPluginReplace) GetBody() *string {
@@ -362,15 +387,26 @@ func (o *Transform) GetJSON() []string {
 }
 
 type ResponseTransformerAdvancedPluginConfig struct {
-	Add    *ResponseTransformerAdvancedPluginAdd    `json:"add,omitempty"`
-	Allow  *ResponseTransformerAdvancedPluginAllow  `json:"allow,omitempty"`
-	Append *ResponseTransformerAdvancedPluginAppend `json:"append,omitempty"`
+	Add    *ResponseTransformerAdvancedPluginAdd    `json:"add"`
+	Allow  *ResponseTransformerAdvancedPluginAllow  `json:"allow"`
+	Append *ResponseTransformerAdvancedPluginAppend `json:"append"`
 	// Whether dots (for example, `customers.info.phone`) should be treated as part of a property name or used to descend into nested JSON objects..
-	DotsInKeys *bool                                     `json:"dots_in_keys,omitempty"`
-	Remove     *ResponseTransformerAdvancedPluginRemove  `json:"remove,omitempty"`
-	Rename     *ResponseTransformerAdvancedPluginRename  `json:"rename,omitempty"`
-	Replace    *ResponseTransformerAdvancedPluginReplace `json:"replace,omitempty"`
-	Transform  *Transform                                `json:"transform,omitempty"`
+	DotsInKeys *bool                                     `default:"true" json:"dots_in_keys"`
+	Remove     *ResponseTransformerAdvancedPluginRemove  `json:"remove"`
+	Rename     *ResponseTransformerAdvancedPluginRename  `json:"rename"`
+	Replace    *ResponseTransformerAdvancedPluginReplace `json:"replace"`
+	Transform  *Transform                                `json:"transform"`
+}
+
+func (r ResponseTransformerAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseTransformerAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ResponseTransformerAdvancedPluginConfig) GetAdd() *ResponseTransformerAdvancedPluginAdd {
@@ -514,23 +550,26 @@ type ResponseTransformerAdvancedPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                                       `json:"enabled,omitempty"`
-	ID           *string                                     `json:"id,omitempty"`
-	InstanceName *string                                     `json:"instance_name,omitempty"`
-	name         string                                      `const:"response-transformer-advanced" json:"name"`
-	Ordering     *ResponseTransformerAdvancedPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []ResponseTransformerAdvancedPluginPartials `json:"partials,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string                                    `default:"null" json:"instance_name"`
+	name         *string                                    `const:"response-transformer-advanced" json:"name"`
+	Ordering     *ResponseTransformerAdvancedPluginOrdering `json:"ordering"`
+	// A list of partials to be used by the plugin.
+	Partials []ResponseTransformerAdvancedPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                                   `json:"updated_at,omitempty"`
-	Config    *ResponseTransformerAdvancedPluginConfig `json:"config,omitempty"`
+	Config    *ResponseTransformerAdvancedPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *ResponseTransformerAdvancedPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *ResponseTransformerAdvancedPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
-	Protocols []ResponseTransformerAdvancedPluginProtocols `json:"protocols,omitempty"`
+	Protocols []ResponseTransformerAdvancedPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *ResponseTransformerAdvancedPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -576,8 +615,8 @@ func (o *ResponseTransformerAdvancedPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *ResponseTransformerAdvancedPlugin) GetName() string {
-	return "response-transformer-advanced"
+func (o *ResponseTransformerAdvancedPlugin) GetName() *string {
+	return types.String("response-transformer-advanced")
 }
 
 func (o *ResponseTransformerAdvancedPlugin) GetOrdering() *ResponseTransformerAdvancedPluginOrdering {

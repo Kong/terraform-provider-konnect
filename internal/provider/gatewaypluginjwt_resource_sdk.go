@@ -20,9 +20,11 @@ func (r *GatewayPluginJwtResourceModel) RefreshFromSharedJwtPlugin(ctx context.C
 		} else {
 			r.Config = &tfTypes.JwtPluginConfig{}
 			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-			r.Config.ClaimsToVerify = make([]types.String, 0, len(resp.Config.ClaimsToVerify))
-			for _, v := range resp.Config.ClaimsToVerify {
-				r.Config.ClaimsToVerify = append(r.Config.ClaimsToVerify, types.StringValue(string(v)))
+			if resp.Config.ClaimsToVerify != nil {
+				r.Config.ClaimsToVerify = make([]types.String, 0, len(resp.Config.ClaimsToVerify))
+				for _, v := range resp.Config.ClaimsToVerify {
+					r.Config.ClaimsToVerify = append(r.Config.ClaimsToVerify, types.StringValue(string(v)))
+				}
 			}
 			r.Config.CookieNames = make([]types.String, 0, len(resp.Config.CookieNames))
 			for _, v := range resp.Config.CookieNames {
@@ -54,18 +56,22 @@ func (r *GatewayPluginJwtResourceModel) RefreshFromSharedJwtPlugin(ctx context.C
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -227,9 +233,12 @@ func (r *GatewayPluginJwtResourceModel) ToSharedJwtPlugin(ctx context.Context) (
 	if r.Ordering != nil {
 		var after *shared.JwtPluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.JwtPluginAfter{
 				Access: access,
@@ -237,9 +246,12 @@ func (r *GatewayPluginJwtResourceModel) ToSharedJwtPlugin(ctx context.Context) (
 		}
 		var before *shared.JwtPluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.JwtPluginBefore{
 				Access: access1,
@@ -300,9 +312,12 @@ func (r *GatewayPluginJwtResourceModel) ToSharedJwtPlugin(ctx context.Context) (
 		} else {
 			anonymous = nil
 		}
-		claimsToVerify := make([]shared.ClaimsToVerify, 0, len(r.Config.ClaimsToVerify))
-		for _, claimsToVerifyItem := range r.Config.ClaimsToVerify {
-			claimsToVerify = append(claimsToVerify, shared.ClaimsToVerify(claimsToVerifyItem.ValueString()))
+		var claimsToVerify []shared.ClaimsToVerify
+		if r.Config.ClaimsToVerify != nil {
+			claimsToVerify = make([]shared.ClaimsToVerify, 0, len(r.Config.ClaimsToVerify))
+			for _, claimsToVerifyItem := range r.Config.ClaimsToVerify {
+				claimsToVerify = append(claimsToVerify, shared.ClaimsToVerify(claimsToVerifyItem.ValueString()))
+			}
 		}
 		cookieNames := make([]string, 0, len(r.Config.CookieNames))
 		for _, cookieNamesItem := range r.Config.CookieNames {

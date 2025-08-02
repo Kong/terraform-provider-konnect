@@ -76,19 +76,16 @@ resource "konnect_gateway_plugin_acl" "my_gatewaypluginacl" {
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
-- `instance_name` (String)
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
+- `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
 - `protocols` (Set of String) A set of strings representing HTTP protocols.
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
-
-### Read-Only
-
-- `id` (String) The ID of this resource.
 
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
@@ -96,10 +93,10 @@ resource "konnect_gateway_plugin_acl" "my_gatewaypluginacl" {
 Optional:
 
 - `allow` (List of String) Arbitrary group names that are allowed to consume the service or route. One of `config.allow` or `config.deny` must be specified.
-- `always_use_authenticated_groups` (Boolean) If enabled (`true`), the authenticated groups will always be used even when an authenticated consumer already exists. If the authenticated groups don't exist, it will fallback to use the groups associated with the consumer. By default the authenticated groups will only be used when there is no consumer or the consumer is anonymous.
+- `always_use_authenticated_groups` (Boolean) If enabled (`true`), the authenticated groups will always be used even when an authenticated consumer already exists. If the authenticated groups don't exist, it will fallback to use the groups associated with the consumer. By default the authenticated groups will only be used when there is no consumer or the consumer is anonymous. Default: false
 - `deny` (List of String) Arbitrary group names that are not allowed to consume the service or route. One of `config.allow` or `config.deny` must be specified.
-- `hide_groups_header` (Boolean) If enabled (`true`), prevents the `X-Consumer-Groups` header from being sent in the request to the upstream service.
-- `include_consumer_groups` (Boolean) If enabled (`true`), allows the consumer-groups to be used in the `allow|deny` fields
+- `hide_groups_header` (Boolean) If enabled (`true`), prevents the `X-Consumer-Groups` header from being sent in the request to the upstream service. Default: false
+- `include_consumer_groups` (Boolean) If enabled (`true`), allows the consumer-groups to be used in the `allow|deny` fields. Default: false
 
 
 <a id="nestedatt--ordering"></a>
@@ -132,8 +129,8 @@ Optional:
 
 Optional:
 
-- `id` (String)
-- `name` (String)
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `name` (String) A unique string representing a UTF-8 encoded name.
 - `path` (String)
 
 

@@ -2,10 +2,25 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+)
+
 // Pem - A keypair in PEM format.
 type Pem struct {
-	PrivateKey *string `json:"private_key,omitempty"`
-	PublicKey  *string `json:"public_key,omitempty"`
+	PrivateKey *string `default:"null" json:"private_key"`
+	PublicKey  *string `default:"null" json:"public_key"`
+}
+
+func (p Pem) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *Pem) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Pem) GetPrivateKey() *string {
@@ -37,23 +52,36 @@ func (o *Set) GetID() *string {
 // A Key object holds a representation of asymmetric keys in various formats. When Kong or a Kong plugin requires a specific public or private key to perform certain operations, it can use this entity.
 type Key struct {
 	// Unix epoch when the resource was created.
-	CreatedAt *int64  `json:"created_at,omitempty"`
-	ID        *string `json:"id,omitempty"`
+	CreatedAt *int64 `json:"created_at,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
 	// A JSON Web Key represented as a string.
-	Jwk *string `json:"jwk,omitempty"`
+	Jwk *string `default:"null" json:"jwk"`
 	// A unique identifier for a key.
 	Kid string `json:"kid"`
 	// The name to associate with the given keys.
-	Name *string `json:"name,omitempty"`
+	Name *string `default:"null" json:"name"`
 	// A keypair in PEM format.
-	Pem *Pem `json:"pem,omitempty"`
+	Pem *Pem `json:"pem"`
 	// The id (an UUID) of the key-set with which to associate the key.
 	Set *Set `json:"set"`
 	// An optional set of strings associated with the Key for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64  `json:"updated_at,omitempty"`
-	X5t       *string `json:"x5t,omitempty"`
+	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	// X.509 certificate SHA-1 thumbprint.
+	X5t *string `default:"null" json:"x5t"`
+}
+
+func (k Key) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *Key) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Key) GetCreatedAt() *int64 {

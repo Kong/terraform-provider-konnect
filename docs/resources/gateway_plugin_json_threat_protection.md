@@ -77,35 +77,32 @@ resource "konnect_gateway_plugin_json_threat_protection" "my_gatewaypluginjsonth
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
-- `instance_name` (String)
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
+- `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
 - `protocols` (Set of String) A set of strings representing HTTP protocols.
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
 
-### Read-Only
-
-- `id` (String) The ID of this resource.
-
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
 Optional:
 
-- `allow_duplicate_object_entry_name` (Boolean) Allow or disallow duplicate object entry name.
-- `enforcement_mode` (String) Enforcement mode of the security policy. must be one of ["block", "log_only"]
-- `error_message` (String) The response message when validation fails
-- `error_status_code` (Number) The response status code when validation fails.
-- `max_array_element_count` (Number) Max number of elements in an array. -1 means unlimited.
-- `max_body_size` (Number) Max size of the request body. -1 means unlimited.
-- `max_container_depth` (Number) Max nested depth of objects and arrays. -1 means unlimited.
-- `max_object_entry_count` (Number) Max number of entries in an object. -1 means unlimited.
-- `max_object_entry_name_length` (Number) Max string length of object name. -1 means unlimited.
-- `max_string_value_length` (Number) Max string value length. -1 means unlimited.
+- `allow_duplicate_object_entry_name` (Boolean) Allow or disallow duplicate object entry name. Default: true
+- `enforcement_mode` (String) Enforcement mode of the security policy. Default: "block"; must be one of ["block", "log_only"]
+- `error_message` (String) The response message when validation fails. Default: "Bad Request"
+- `error_status_code` (Number) The response status code when validation fails. Default: 400
+- `max_array_element_count` (Number) Max number of elements in an array. -1 means unlimited. Default: -1
+- `max_body_size` (Number) Max size of the request body. -1 means unlimited. Default: 8192
+- `max_container_depth` (Number) Max nested depth of objects and arrays. -1 means unlimited. Default: -1
+- `max_object_entry_count` (Number) Max number of entries in an object. -1 means unlimited. Default: -1
+- `max_object_entry_name_length` (Number) Max string length of object name. -1 means unlimited. Default: -1
+- `max_string_value_length` (Number) Max string value length. -1 means unlimited. Default: -1
 
 
 <a id="nestedatt--ordering"></a>
@@ -138,8 +135,8 @@ Optional:
 
 Optional:
 
-- `id` (String)
-- `name` (String)
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `name` (String) A unique string representing a UTF-8 encoded name.
 - `path` (String)
 
 

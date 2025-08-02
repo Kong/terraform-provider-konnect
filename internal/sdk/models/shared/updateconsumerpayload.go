@@ -10,11 +10,11 @@ type UpdateConsumerPayload struct {
 	// The unique username of the Consumer.
 	Username *string `json:"username,omitempty"`
 	// Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database.
-	CustomID *string `json:"custom_id,omitempty"`
+	CustomID *string `default:"null" json:"custom_id"`
 	// A list of consumer groups that the Consumer is in.
 	// If `consumer_groups` are provided on the Consumer object _and_ on the Realm, the Consumer will be placed in all defined consumer groups.
 	//
-	ConsumerGroups []string `json:"consumer_groups,omitempty"`
+	ConsumerGroups []string `json:"consumer_groups"`
 	// Type of the consumer.
 	//
 	Type *ConsumerType `default:"proxy" json:"type"`
