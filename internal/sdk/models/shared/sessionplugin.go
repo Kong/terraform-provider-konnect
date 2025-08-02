@@ -10,7 +10,7 @@ import (
 )
 
 type SessionPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *SessionPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *SessionPluginAfter) GetAccess() []string {
 }
 
 type SessionPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *SessionPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *SessionPluginBefore) GetAccess() []string {
 }
 
 type SessionPluginOrdering struct {
-	After  *SessionPluginAfter  `json:"after,omitempty"`
-	Before *SessionPluginBefore `json:"before,omitempty"`
+	After  *SessionPluginAfter  `json:"after"`
+	Before *SessionPluginBefore `json:"before"`
 }
 
 func (o *SessionPluginOrdering) GetAfter() *SessionPluginAfter {
@@ -298,9 +298,9 @@ type SessionPluginConfig struct {
 	// The persistent session rolling timeout window, in seconds.
 	RememberRollingTimeout *float64 `default:"604800" json:"remember_rolling_timeout"`
 	// List of information to include, as headers, in the response to the downstream.
-	RequestHeaders []RequestHeaders `json:"request_headers,omitempty"`
+	RequestHeaders []RequestHeaders `json:"request_headers"`
 	// List of information to include, as headers, in the response to the downstream.
-	ResponseHeaders []SessionPluginResponseHeaders `json:"response_headers,omitempty"`
+	ResponseHeaders []SessionPluginResponseHeaders `json:"response_headers"`
 	// The session cookie rolling timeout, in seconds. Specifies how long the session can be used until it needs to be renewed.
 	RollingTimeout *float64 `default:"3600" json:"rolling_timeout"`
 	// The secret that is used in keyed HMAC generation.
@@ -592,7 +592,7 @@ type SessionPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64               `json:"updated_at,omitempty"`
-	Config    *SessionPluginConfig `json:"config,omitempty"`
+	Config    *SessionPluginConfig `json:"config"`
 	// A set of strings representing protocols.
 	Protocols []SessionPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

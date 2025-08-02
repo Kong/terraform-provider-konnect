@@ -10,7 +10,7 @@ import (
 )
 
 type GrpcGatewayPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *GrpcGatewayPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *GrpcGatewayPluginAfter) GetAccess() []string {
 }
 
 type GrpcGatewayPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *GrpcGatewayPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *GrpcGatewayPluginBefore) GetAccess() []string {
 }
 
 type GrpcGatewayPluginOrdering struct {
-	After  *GrpcGatewayPluginAfter  `json:"after,omitempty"`
-	Before *GrpcGatewayPluginBefore `json:"before,omitempty"`
+	After  *GrpcGatewayPluginAfter  `json:"after"`
+	Before *GrpcGatewayPluginBefore `json:"before"`
 }
 
 func (o *GrpcGatewayPluginOrdering) GetAfter() *GrpcGatewayPluginAfter {
@@ -218,7 +218,7 @@ type GrpcGatewayPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                   `json:"updated_at,omitempty"`
-	Config    *GrpcGatewayPluginConfig `json:"config,omitempty"`
+	Config    *GrpcGatewayPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *GrpcGatewayPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.

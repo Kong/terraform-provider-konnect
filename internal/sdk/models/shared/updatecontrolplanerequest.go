@@ -40,7 +40,7 @@ type UpdateControlPlaneRequest struct {
 	// The name of the control plane.
 	Name *string `default:"null" json:"name"`
 	// The description of the control plane in Konnect.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 	// The auth type value of the cluster associated with the Runtime Group.
 	AuthType *UpdateControlPlaneRequestAuthType `json:"auth_type,omitempty"`
 	// Array of proxy URLs associated with reaching the data-planes connected to a control-plane.

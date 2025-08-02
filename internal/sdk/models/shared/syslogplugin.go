@@ -10,7 +10,7 @@ import (
 )
 
 type SyslogPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *SyslogPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *SyslogPluginAfter) GetAccess() []string {
 }
 
 type SyslogPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *SyslogPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *SyslogPluginBefore) GetAccess() []string {
 }
 
 type SyslogPluginOrdering struct {
-	After  *SyslogPluginAfter  `json:"after,omitempty"`
-	Before *SyslogPluginBefore `json:"before,omitempty"`
+	After  *SyslogPluginAfter  `json:"after"`
+	Before *SyslogPluginBefore `json:"before"`
 }
 
 func (o *SyslogPluginOrdering) GetAfter() *SyslogPluginAfter {
@@ -516,7 +516,7 @@ type SyslogPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64              `json:"updated_at,omitempty"`
-	Config    *SyslogPluginConfig `json:"config,omitempty"`
+	Config    *SyslogPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *SyslogPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.

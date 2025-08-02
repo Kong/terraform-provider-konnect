@@ -10,7 +10,7 @@ import (
 )
 
 type InjectionProtectionPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *InjectionProtectionPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *InjectionProtectionPluginAfter) GetAccess() []string {
 }
 
 type InjectionProtectionPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *InjectionProtectionPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *InjectionProtectionPluginBefore) GetAccess() []string {
 }
 
 type InjectionProtectionPluginOrdering struct {
-	After  *InjectionProtectionPluginAfter  `json:"after,omitempty"`
-	Before *InjectionProtectionPluginBefore `json:"before,omitempty"`
+	After  *InjectionProtectionPluginAfter  `json:"after"`
+	Before *InjectionProtectionPluginBefore `json:"before"`
 }
 
 func (o *InjectionProtectionPluginOrdering) GetAfter() *InjectionProtectionPluginAfter {
@@ -207,7 +207,7 @@ func (e *Locations) UnmarshalJSON(data []byte) error {
 
 type InjectionProtectionPluginConfig struct {
 	// Custom regexes to check for.
-	CustomInjections []CustomInjections `json:"custom_injections,omitempty"`
+	CustomInjections []CustomInjections `json:"custom_injections"`
 	// Enforcement mode of the security policy.
 	EnforcementMode *EnforcementMode `default:"block" json:"enforcement_mode"`
 	// The response message when validation fails
@@ -347,7 +347,7 @@ type InjectionProtectionPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                           `json:"updated_at,omitempty"`
-	Config    *InjectionProtectionPluginConfig `json:"config,omitempty"`
+	Config    *InjectionProtectionPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
 	Protocols []InjectionProtectionPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

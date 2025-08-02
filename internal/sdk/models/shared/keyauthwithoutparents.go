@@ -14,7 +14,7 @@ func (o *KeyAuthWithoutParentsConsumer) GetID() *string {
 }
 
 type KeyAuthWithoutParents struct {
-	Consumer *KeyAuthWithoutParentsConsumer `json:"consumer"`
+	Consumer *KeyAuthWithoutParentsConsumer `json:"consumer,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// A string representing a UUID (universally unique identifier).

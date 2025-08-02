@@ -110,7 +110,7 @@ func (o *JWTConsumer) GetID() *string {
 
 type Jwt struct {
 	Algorithm *JWTAlgorithm `default:"HS256" json:"algorithm"`
-	Consumer  *JWTConsumer  `json:"consumer"`
+	Consumer  *JWTConsumer  `json:"consumer,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// A string representing a UUID (universally unique identifier).

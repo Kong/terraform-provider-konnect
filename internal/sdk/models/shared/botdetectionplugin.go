@@ -10,7 +10,7 @@ import (
 )
 
 type BotDetectionPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *BotDetectionPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *BotDetectionPluginAfter) GetAccess() []string {
 }
 
 type BotDetectionPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *BotDetectionPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *BotDetectionPluginBefore) GetAccess() []string {
 }
 
 type BotDetectionPluginOrdering struct {
-	After  *BotDetectionPluginAfter  `json:"after,omitempty"`
-	Before *BotDetectionPluginBefore `json:"before,omitempty"`
+	After  *BotDetectionPluginAfter  `json:"after"`
+	Before *BotDetectionPluginBefore `json:"before"`
 }
 
 func (o *BotDetectionPluginOrdering) GetAfter() *BotDetectionPluginAfter {
@@ -185,7 +185,7 @@ type BotDetectionPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                    `json:"updated_at,omitempty"`
-	Config    *BotDetectionPluginConfig `json:"config,omitempty"`
+	Config    *BotDetectionPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
 	Protocols []BotDetectionPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

@@ -73,9 +73,9 @@ func (e *Protocol) UnmarshalJSON(data []byte) error {
 
 type TLSSans struct {
 	// A dnsName for TLS verification.
-	Dnsnames []string `json:"dnsnames,omitempty"`
+	Dnsnames []string `json:"dnsnames"`
 	// An URI for TLS verification.
-	Uris []string `json:"uris,omitempty"`
+	Uris []string `json:"uris"`
 }
 
 func (o *TLSSans) GetDnsnames() []string {

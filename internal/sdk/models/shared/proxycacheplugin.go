@@ -10,7 +10,7 @@ import (
 )
 
 type ProxyCachePluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ProxyCachePluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *ProxyCachePluginAfter) GetAccess() []string {
 }
 
 type ProxyCachePluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ProxyCachePluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *ProxyCachePluginBefore) GetAccess() []string {
 }
 
 type ProxyCachePluginOrdering struct {
-	After  *ProxyCachePluginAfter  `json:"after,omitempty"`
-	Before *ProxyCachePluginBefore `json:"before,omitempty"`
+	After  *ProxyCachePluginAfter  `json:"after"`
+	Before *ProxyCachePluginBefore `json:"before"`
 }
 
 func (o *ProxyCachePluginOrdering) GetAfter() *ProxyCachePluginAfter {
@@ -219,21 +219,21 @@ type ProxyCachePluginConfig struct {
 	// Upstream response content types considered cacheable. The plugin performs an **exact match** against each specified value.
 	ContentType   []string                `json:"content_type,omitempty"`
 	IgnoreURICase *bool                   `default:"false" json:"ignore_uri_case"`
-	Memory        *ProxyCachePluginMemory `json:"memory,omitempty"`
+	Memory        *ProxyCachePluginMemory `json:"memory"`
 	// Downstream request methods considered cacheable.
 	RequestMethod []RequestMethod `json:"request_method,omitempty"`
 	// Upstream response status code considered cacheable.
 	ResponseCode []int64 `json:"response_code,omitempty"`
 	// Caching related diagnostic headers that should be included in cached responses
-	ResponseHeaders *ResponseHeaders `json:"response_headers,omitempty"`
+	ResponseHeaders *ResponseHeaders `json:"response_headers"`
 	// Number of seconds to keep resources in the storage backend. This value is independent of `cache_ttl` or resource TTLs defined by Cache-Control behaviors.
 	StorageTTL *int64 `default:"null" json:"storage_ttl"`
 	// The backing data store in which to hold cache entities.
 	Strategy ProxyCachePluginStrategy `json:"strategy"`
 	// Relevant headers considered for the cache key. If undefined, none of the headers are taken into consideration.
-	VaryHeaders []string `json:"vary_headers,omitempty"`
+	VaryHeaders []string `json:"vary_headers"`
 	// Relevant query parameters considered for the cache key. If undefined, all params are taken into consideration.
-	VaryQueryParams []string `json:"vary_query_params,omitempty"`
+	VaryQueryParams []string `json:"vary_query_params"`
 }
 
 func (p ProxyCachePluginConfig) MarshalJSON() ([]byte, error) {

@@ -10,7 +10,7 @@ import (
 )
 
 type GrpcWebPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *GrpcWebPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *GrpcWebPluginAfter) GetAccess() []string {
 }
 
 type GrpcWebPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *GrpcWebPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *GrpcWebPluginBefore) GetAccess() []string {
 }
 
 type GrpcWebPluginOrdering struct {
-	After  *GrpcWebPluginAfter  `json:"after,omitempty"`
-	Before *GrpcWebPluginBefore `json:"before,omitempty"`
+	After  *GrpcWebPluginAfter  `json:"after"`
+	Before *GrpcWebPluginBefore `json:"before"`
 }
 
 func (o *GrpcWebPluginOrdering) GetAfter() *GrpcWebPluginAfter {
@@ -236,7 +236,7 @@ type GrpcWebPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64               `json:"updated_at,omitempty"`
-	Config    *GrpcWebPluginConfig `json:"config,omitempty"`
+	Config    *GrpcWebPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *GrpcWebPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.

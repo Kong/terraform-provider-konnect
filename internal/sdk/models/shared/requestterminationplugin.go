@@ -10,7 +10,7 @@ import (
 )
 
 type RequestTerminationPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *RequestTerminationPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *RequestTerminationPluginAfter) GetAccess() []string {
 }
 
 type RequestTerminationPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *RequestTerminationPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *RequestTerminationPluginBefore) GetAccess() []string {
 }
 
 type RequestTerminationPluginOrdering struct {
-	After  *RequestTerminationPluginAfter  `json:"after,omitempty"`
-	Before *RequestTerminationPluginBefore `json:"before,omitempty"`
+	After  *RequestTerminationPluginAfter  `json:"after"`
+	Before *RequestTerminationPluginBefore `json:"before"`
 }
 
 func (o *RequestTerminationPluginOrdering) GetAfter() *RequestTerminationPluginAfter {
@@ -256,7 +256,7 @@ type RequestTerminationPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                          `json:"updated_at,omitempty"`
-	Config    *RequestTerminationPluginConfig `json:"config,omitempty"`
+	Config    *RequestTerminationPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *RequestTerminationPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups

@@ -10,7 +10,7 @@ import (
 )
 
 type SolaceUpstreamPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *SolaceUpstreamPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *SolaceUpstreamPluginAfter) GetAccess() []string {
 }
 
 type SolaceUpstreamPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *SolaceUpstreamPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *SolaceUpstreamPluginBefore) GetAccess() []string {
 }
 
 type SolaceUpstreamPluginOrdering struct {
-	After  *SolaceUpstreamPluginAfter  `json:"after,omitempty"`
-	Before *SolaceUpstreamPluginBefore `json:"before,omitempty"`
+	After  *SolaceUpstreamPluginAfter  `json:"after"`
+	Before *SolaceUpstreamPluginBefore `json:"before"`
 }
 
 func (o *SolaceUpstreamPluginOrdering) GetAfter() *SolaceUpstreamPluginAfter {
@@ -197,7 +197,7 @@ type Message struct {
 	// Include the request URI and the URI arguments (as in, query arguments) in the message.
 	ForwardURI *bool `default:"false" json:"forward_uri"`
 	// The Lua functions that manipulates (or generates) the message being sent to Solace. The `message` variable can be used to access the current message content, and the function can return a new content.
-	Functions []string `json:"functions,omitempty"`
+	Functions []string `json:"functions"`
 	// Sets the message priority.
 	Priority *int64 `default:"4" json:"priority"`
 	// Allows the application to set the content of the sender identifier.
@@ -435,7 +435,7 @@ func (o *SolaceUpstreamPluginAuthentication) GetUsername() *string {
 // Session related configuration.
 type Session struct {
 	// Session authentication related configuration.
-	Authentication *SolaceUpstreamPluginAuthentication `json:"authentication,omitempty"`
+	Authentication *SolaceUpstreamPluginAuthentication `json:"authentication"`
 	// The timeout period (in milliseconds) for a connect operation to a given host (per host).
 	ConnectTimeout *int64 `default:"3000" json:"connect_timeout"`
 	// The IPv4 or IPv6 address or host name to connect to (see: https://docs.solace.com/API-Developer-Online-Ref-Documentation/c/index.html#host-entry).

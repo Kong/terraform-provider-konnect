@@ -10,7 +10,7 @@ import (
 )
 
 type WebsocketSizeLimitPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *WebsocketSizeLimitPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *WebsocketSizeLimitPluginAfter) GetAccess() []string {
 }
 
 type WebsocketSizeLimitPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *WebsocketSizeLimitPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *WebsocketSizeLimitPluginBefore) GetAccess() []string {
 }
 
 type WebsocketSizeLimitPluginOrdering struct {
-	After  *WebsocketSizeLimitPluginAfter  `json:"after,omitempty"`
-	Before *WebsocketSizeLimitPluginBefore `json:"before,omitempty"`
+	After  *WebsocketSizeLimitPluginAfter  `json:"after"`
+	Before *WebsocketSizeLimitPluginBefore `json:"before"`
 }
 
 func (o *WebsocketSizeLimitPluginOrdering) GetAfter() *WebsocketSizeLimitPluginAfter {
@@ -200,7 +200,7 @@ type WebsocketSizeLimitPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                          `json:"updated_at,omitempty"`
-	Config    *WebsocketSizeLimitPluginConfig `json:"config,omitempty"`
+	Config    *WebsocketSizeLimitPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *WebsocketSizeLimitPluginConsumer `json:"consumer"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.

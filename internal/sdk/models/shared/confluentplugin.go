@@ -10,7 +10,7 @@ import (
 )
 
 type ConfluentPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ConfluentPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *ConfluentPluginAfter) GetAccess() []string {
 }
 
 type ConfluentPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ConfluentPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *ConfluentPluginBefore) GetAccess() []string {
 }
 
 type ConfluentPluginOrdering struct {
-	After  *ConfluentPluginAfter  `json:"after,omitempty"`
-	Before *ConfluentPluginBefore `json:"before,omitempty"`
+	After  *ConfluentPluginAfter  `json:"after"`
+	Before *ConfluentPluginBefore `json:"before"`
 }
 
 func (o *ConfluentPluginOrdering) GetAfter() *ConfluentPluginAfter {
@@ -188,7 +188,7 @@ func (e *ConfluentPluginMode) UnmarshalJSON(data []byte) error {
 }
 
 type ConfluentPluginAuthentication struct {
-	Basic *Basic `json:"basic,omitempty"`
+	Basic *Basic `json:"basic"`
 	// Authentication mode to use with the schema registry.
 	Mode *ConfluentPluginMode `default:"none" json:"mode"`
 }
@@ -284,14 +284,14 @@ func (o *ValueSchema) GetSubjectName() *string {
 
 type Confluent struct {
 	Authentication ConfluentPluginAuthentication `json:"authentication"`
-	KeySchema      *KeySchema                    `json:"key_schema,omitempty"`
+	KeySchema      *KeySchema                    `json:"key_schema"`
 	// Set to false to disable SSL certificate verification when connecting to the schema registry.
 	SslVerify *bool `default:"true" json:"ssl_verify"`
 	// The TTL in seconds for the schema registry cache.
 	TTL *float64 `default:"null" json:"ttl"`
 	// The URL of the schema registry.
 	URL         *string      `default:"null" json:"url"`
-	ValueSchema *ValueSchema `json:"value_schema,omitempty"`
+	ValueSchema *ValueSchema `json:"value_schema"`
 }
 
 func (c Confluent) MarshalJSON() ([]byte, error) {
@@ -349,7 +349,7 @@ func (o *Confluent) GetValueSchema() *ValueSchema {
 
 // SchemaRegistry - The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
 type SchemaRegistry struct {
-	Confluent *Confluent `json:"confluent,omitempty"`
+	Confluent *Confluent `json:"confluent"`
 }
 
 func (o *SchemaRegistry) GetConfluent() *Confluent {
@@ -361,9 +361,9 @@ func (o *SchemaRegistry) GetConfluent() *Confluent {
 
 type ConfluentPluginConfig struct {
 	// The list of allowed topic names to which messages can be sent. The default topic configured in the `topic` field is always allowed, regardless of its inclusion in `allowed_topics`.
-	AllowedTopics []string `json:"allowed_topics,omitempty"`
+	AllowedTopics []string `json:"allowed_topics"`
 	// Set of bootstrap brokers in a `{host: host, port: port}` list format.
-	BootstrapServers []BootstrapServers `json:"bootstrap_servers,omitempty"`
+	BootstrapServers []BootstrapServers `json:"bootstrap_servers"`
 	// Username/Apikey for SASL authentication.
 	ClusterAPIKey string `json:"cluster_api_key"`
 	// Password/ApiSecret for SASL authentication.
@@ -388,7 +388,7 @@ type ConfluentPluginConfig struct {
 	// The request query parameter name that contains the Kafka message key. If specified, messages with the same key will be sent to the same Kafka partition, ensuring consistent ordering.
 	KeyQueryArg *string `default:"null" json:"key_query_arg"`
 	// The Lua functions that manipulates the message being sent to the Kafka topic.
-	MessageByLuaFunctions []string `json:"message_by_lua_functions,omitempty"`
+	MessageByLuaFunctions []string `json:"message_by_lua_functions"`
 	// Flag to enable asynchronous mode.
 	ProducerAsync *bool `default:"true" json:"producer_async"`
 	// Maximum number of messages that can be buffered in memory in asynchronous mode.
@@ -408,7 +408,7 @@ type ConfluentPluginConfig struct {
 	// Time to wait for a Produce response in milliseconds.
 	ProducerRequestTimeout *int64 `default:"2000" json:"producer_request_timeout"`
 	// The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
-	SchemaRegistry *SchemaRegistry `json:"schema_registry,omitempty"`
+	SchemaRegistry *SchemaRegistry `json:"schema_registry"`
 	// Socket timeout in milliseconds.
 	Timeout *int64 `default:"10000" json:"timeout"`
 	// The default Kafka topic to publish to if the query parameter defined in the `topics_query_arg` does not exist in the request

@@ -23,21 +23,23 @@ func (r *GatewayPluginAiSanitizerResourceModel) RefreshFromSharedAiSanitizerPlug
 			for _, v := range resp.Config.Anonymize {
 				r.Config.Anonymize = append(r.Config.Anonymize, types.StringValue(string(v)))
 			}
-			r.Config.CustomPatterns = []tfTypes.CustomPatterns{}
-			if len(r.Config.CustomPatterns) > len(resp.Config.CustomPatterns) {
-				r.Config.CustomPatterns = r.Config.CustomPatterns[:len(resp.Config.CustomPatterns)]
-			}
-			for customPatternsCount, customPatternsItem := range resp.Config.CustomPatterns {
-				var customPatterns tfTypes.CustomPatterns
-				customPatterns.Name = types.StringValue(customPatternsItem.Name)
-				customPatterns.Regex = types.StringValue(customPatternsItem.Regex)
-				customPatterns.Score = types.Float64PointerValue(customPatternsItem.Score)
-				if customPatternsCount+1 > len(r.Config.CustomPatterns) {
-					r.Config.CustomPatterns = append(r.Config.CustomPatterns, customPatterns)
-				} else {
-					r.Config.CustomPatterns[customPatternsCount].Name = customPatterns.Name
-					r.Config.CustomPatterns[customPatternsCount].Regex = customPatterns.Regex
-					r.Config.CustomPatterns[customPatternsCount].Score = customPatterns.Score
+			if resp.Config.CustomPatterns != nil {
+				r.Config.CustomPatterns = []tfTypes.CustomPatterns{}
+				if len(r.Config.CustomPatterns) > len(resp.Config.CustomPatterns) {
+					r.Config.CustomPatterns = r.Config.CustomPatterns[:len(resp.Config.CustomPatterns)]
+				}
+				for customPatternsCount, customPatternsItem := range resp.Config.CustomPatterns {
+					var customPatterns tfTypes.CustomPatterns
+					customPatterns.Name = types.StringValue(customPatternsItem.Name)
+					customPatterns.Regex = types.StringValue(customPatternsItem.Regex)
+					customPatterns.Score = types.Float64PointerValue(customPatternsItem.Score)
+					if customPatternsCount+1 > len(r.Config.CustomPatterns) {
+						r.Config.CustomPatterns = append(r.Config.CustomPatterns, customPatterns)
+					} else {
+						r.Config.CustomPatterns[customPatternsCount].Name = customPatterns.Name
+						r.Config.CustomPatterns[customPatternsCount].Regex = customPatterns.Regex
+						r.Config.CustomPatterns[customPatternsCount].Score = customPatterns.Score
+					}
 				}
 			}
 			r.Config.Host = types.StringPointerValue(resp.Config.Host)
@@ -77,18 +79,22 @@ func (r *GatewayPluginAiSanitizerResourceModel) RefreshFromSharedAiSanitizerPlug
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -250,9 +256,12 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToSharedAiSanitizerPlugin(ctx co
 	if r.Ordering != nil {
 		var after *shared.AiSanitizerPluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.AiSanitizerPluginAfter{
 				Access: access,
@@ -260,9 +269,12 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToSharedAiSanitizerPlugin(ctx co
 		}
 		var before *shared.AiSanitizerPluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.AiSanitizerPluginBefore{
 				Access: access1,
@@ -321,25 +333,28 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToSharedAiSanitizerPlugin(ctx co
 		for _, anonymizeItem := range r.Config.Anonymize {
 			anonymize = append(anonymize, shared.Anonymize(anonymizeItem.ValueString()))
 		}
-		customPatterns := make([]shared.CustomPatterns, 0, len(r.Config.CustomPatterns))
-		for _, customPatternsItem := range r.Config.CustomPatterns {
-			var name1 string
-			name1 = customPatternsItem.Name.ValueString()
+		var customPatterns []shared.CustomPatterns
+		if r.Config.CustomPatterns != nil {
+			customPatterns = make([]shared.CustomPatterns, 0, len(r.Config.CustomPatterns))
+			for _, customPatternsItem := range r.Config.CustomPatterns {
+				var name1 string
+				name1 = customPatternsItem.Name.ValueString()
 
-			var regex string
-			regex = customPatternsItem.Regex.ValueString()
+				var regex string
+				regex = customPatternsItem.Regex.ValueString()
 
-			score := new(float64)
-			if !customPatternsItem.Score.IsUnknown() && !customPatternsItem.Score.IsNull() {
-				*score = customPatternsItem.Score.ValueFloat64()
-			} else {
-				score = nil
+				score := new(float64)
+				if !customPatternsItem.Score.IsUnknown() && !customPatternsItem.Score.IsNull() {
+					*score = customPatternsItem.Score.ValueFloat64()
+				} else {
+					score = nil
+				}
+				customPatterns = append(customPatterns, shared.CustomPatterns{
+					Name:  name1,
+					Regex: regex,
+					Score: score,
+				})
 			}
-			customPatterns = append(customPatterns, shared.CustomPatterns{
-				Name:  name1,
-				Regex: regex,
-				Score: score,
-			})
 		}
 		host := new(string)
 		if !r.Config.Host.IsUnknown() && !r.Config.Host.IsNull() {

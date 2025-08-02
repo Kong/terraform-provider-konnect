@@ -10,7 +10,7 @@ import (
 )
 
 type AiPromptGuardPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiPromptGuardPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *AiPromptGuardPluginAfter) GetAccess() []string {
 }
 
 type AiPromptGuardPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiPromptGuardPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *AiPromptGuardPluginBefore) GetAccess() []string {
 }
 
 type AiPromptGuardPluginOrdering struct {
-	After  *AiPromptGuardPluginAfter  `json:"after,omitempty"`
-	Before *AiPromptGuardPluginBefore `json:"before,omitempty"`
+	After  *AiPromptGuardPluginAfter  `json:"after"`
+	Before *AiPromptGuardPluginBefore `json:"before"`
 }
 
 func (o *AiPromptGuardPluginOrdering) GetAfter() *AiPromptGuardPluginAfter {
@@ -169,9 +169,9 @@ type AiPromptGuardPluginConfig struct {
 	// If true, will ignore all previous chat prompts from the conversation history.
 	AllowAllConversationHistory *bool `default:"false" json:"allow_all_conversation_history"`
 	// Array of valid regex patterns, or valid questions from the 'user' role in chat.
-	AllowPatterns []string `json:"allow_patterns,omitempty"`
+	AllowPatterns []string `json:"allow_patterns"`
 	// Array of invalid regex patterns, or invalid questions from the 'user' role in chat.
-	DenyPatterns []string `json:"deny_patterns,omitempty"`
+	DenyPatterns []string `json:"deny_patterns"`
 	// Generative AI category of the request
 	GenaiCategory *GenaiCategory `default:"text/generation" json:"genai_category"`
 	// LLM input and output format and schema to use
@@ -340,7 +340,7 @@ type AiPromptGuardPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                     `json:"updated_at,omitempty"`
-	Config    *AiPromptGuardPluginConfig `json:"config,omitempty"`
+	Config    *AiPromptGuardPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *AiPromptGuardPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups

@@ -10,7 +10,7 @@ import (
 )
 
 type JwtPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *JwtPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *JwtPluginAfter) GetAccess() []string {
 }
 
 type JwtPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *JwtPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *JwtPluginBefore) GetAccess() []string {
 }
 
 type JwtPluginOrdering struct {
-	After  *JwtPluginAfter  `json:"after,omitempty"`
-	Before *JwtPluginBefore `json:"before,omitempty"`
+	After  *JwtPluginAfter  `json:"after"`
+	Before *JwtPluginBefore `json:"before"`
 }
 
 func (o *JwtPluginOrdering) GetAfter() *JwtPluginAfter {
@@ -120,7 +120,7 @@ type JwtPluginConfig struct {
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails.
 	Anonymous *string `default:"null" json:"anonymous"`
 	// A list of registered claims (according to RFC 7519) that Kong can verify as well. Accepted values: one of exp or nbf.
-	ClaimsToVerify []ClaimsToVerify `json:"claims_to_verify,omitempty"`
+	ClaimsToVerify []ClaimsToVerify `json:"claims_to_verify"`
 	// A list of cookie names that Kong will inspect to retrieve JWTs.
 	CookieNames []string `json:"cookie_names,omitempty"`
 	// A list of HTTP header names that Kong will inspect to retrieve JWTs.
@@ -294,7 +294,7 @@ type JwtPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64           `json:"updated_at,omitempty"`
-	Config    *JwtPluginConfig `json:"config,omitempty"`
+	Config    *JwtPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
 	Protocols []JwtPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

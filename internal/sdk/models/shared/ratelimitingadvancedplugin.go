@@ -10,7 +10,7 @@ import (
 )
 
 type RateLimitingAdvancedPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *RateLimitingAdvancedPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *RateLimitingAdvancedPluginAfter) GetAccess() []string {
 }
 
 type RateLimitingAdvancedPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *RateLimitingAdvancedPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *RateLimitingAdvancedPluginBefore) GetAccess() []string {
 }
 
 type RateLimitingAdvancedPluginOrdering struct {
-	After  *RateLimitingAdvancedPluginAfter  `json:"after,omitempty"`
-	Before *RateLimitingAdvancedPluginBefore `json:"before,omitempty"`
+	After  *RateLimitingAdvancedPluginAfter  `json:"after"`
+	Before *RateLimitingAdvancedPluginBefore `json:"before"`
 }
 
 func (o *RateLimitingAdvancedPluginOrdering) GetAfter() *RateLimitingAdvancedPluginAfter {
@@ -295,7 +295,7 @@ type RateLimitingAdvancedPluginRedis struct {
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
-	ClusterNodes []RateLimitingAdvancedPluginClusterNodes `json:"cluster_nodes,omitempty"`
+	ClusterNodes []RateLimitingAdvancedPluginClusterNodes `json:"cluster_nodes"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
@@ -321,7 +321,7 @@ type RateLimitingAdvancedPluginRedis struct {
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `default:"null" json:"sentinel_master"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
-	SentinelNodes []RateLimitingAdvancedPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
+	SentinelNodes []RateLimitingAdvancedPluginSentinelNodes `json:"sentinel_nodes"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
 	SentinelPassword *string `default:"null" json:"sentinel_password"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -562,9 +562,9 @@ func (e *RateLimitingAdvancedPluginWindowType) UnmarshalJSON(data []byte) error 
 
 type RateLimitingAdvancedPluginConfig struct {
 	// Similar to `identifer`, but supports combining multiple items. The priority of `compound_identifier` is higher than `identifier`, which means if `compound_identifer` is set, it will be used, otherwise `identifier` will be used.
-	CompoundIdentifier []CompoundIdentifier `json:"compound_identifier,omitempty"`
+	CompoundIdentifier []CompoundIdentifier `json:"compound_identifier"`
 	// List of consumer groups allowed to override the rate limiting settings for the given Route or Service. Required if `enforce_consumer_groups` is set to `true`.
-	ConsumerGroups []string `json:"consumer_groups,omitempty"`
+	ConsumerGroups []string `json:"consumer_groups"`
 	// The shared dictionary where counters are stored. When the plugin is configured to synchronize counter data externally (that is `config.strategy` is `cluster` or `redis` and `config.sync_rate` isn't `-1`), this dictionary serves as a buffer to populate counters in the data store on each synchronization cycle.
 	DictionaryName *string `default:"kong_rate_limiting_counters" json:"dictionary_name"`
 	// If set to `true`, this doesn't count denied requests (status = `429`). If set to `false`, all requests, including denied ones, are counted. This parameter only affects the `sliding` window_type.
@@ -589,7 +589,7 @@ type RateLimitingAdvancedPluginConfig struct {
 	Namespace *string `default:"null" json:"namespace"`
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
 	Path  *string                          `default:"null" json:"path"`
-	Redis *RateLimitingAdvancedPluginRedis `json:"redis,omitempty"`
+	Redis *RateLimitingAdvancedPluginRedis `json:"redis"`
 	// The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header.
 	RetryAfterJitterMax *float64 `default:"0" json:"retry_after_jitter_max"`
 	// The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local` and `cluster`.

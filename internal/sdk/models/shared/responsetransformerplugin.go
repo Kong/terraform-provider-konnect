@@ -10,7 +10,7 @@ import (
 )
 
 type ResponseTransformerPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ResponseTransformerPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *ResponseTransformerPluginAfter) GetAccess() []string {
 }
 
 type ResponseTransformerPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ResponseTransformerPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *ResponseTransformerPluginBefore) GetAccess() []string {
 }
 
 type ResponseTransformerPluginOrdering struct {
-	After  *ResponseTransformerPluginAfter  `json:"after,omitempty"`
-	Before *ResponseTransformerPluginBefore `json:"before,omitempty"`
+	After  *ResponseTransformerPluginAfter  `json:"after"`
+	Before *ResponseTransformerPluginBefore `json:"before"`
 }
 
 func (o *ResponseTransformerPluginOrdering) GetAfter() *ResponseTransformerPluginAfter {
@@ -303,11 +303,11 @@ func (o *ResponseTransformerPluginReplace) GetJSONTypes() []ResponseTransformerP
 }
 
 type ResponseTransformerPluginConfig struct {
-	Add     *ResponseTransformerPluginAdd     `json:"add,omitempty"`
-	Append  *ResponseTransformerPluginAppend  `json:"append,omitempty"`
-	Remove  *ResponseTransformerPluginRemove  `json:"remove,omitempty"`
-	Rename  *ResponseTransformerPluginRename  `json:"rename,omitempty"`
-	Replace *ResponseTransformerPluginReplace `json:"replace,omitempty"`
+	Add     *ResponseTransformerPluginAdd     `json:"add"`
+	Append  *ResponseTransformerPluginAppend  `json:"append"`
+	Remove  *ResponseTransformerPluginRemove  `json:"remove"`
+	Rename  *ResponseTransformerPluginRename  `json:"rename"`
+	Replace *ResponseTransformerPluginReplace `json:"replace"`
 }
 
 func (o *ResponseTransformerPluginConfig) GetAdd() *ResponseTransformerPluginAdd {
@@ -443,7 +443,7 @@ type ResponseTransformerPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                           `json:"updated_at,omitempty"`
-	Config    *ResponseTransformerPluginConfig `json:"config,omitempty"`
+	Config    *ResponseTransformerPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *ResponseTransformerPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups

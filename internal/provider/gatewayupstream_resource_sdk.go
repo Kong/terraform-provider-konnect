@@ -54,7 +54,7 @@ func (r *GatewayUpstreamResourceModel) RefreshFromSharedUpstream(ctx context.Con
 			} else {
 				r.Healthchecks.Active = &tfTypes.Active{}
 				r.Healthchecks.Active.Concurrency = types.Int64PointerValue(resp.Healthchecks.Active.Concurrency)
-				if len(resp.Healthchecks.Active.Headers) > 0 {
+				if resp.Healthchecks.Active.Headers != nil {
 					r.Healthchecks.Active.Headers = make(map[string]types.String, len(resp.Healthchecks.Active.Headers))
 					for key, value := range resp.Healthchecks.Active.Headers {
 						r.Healthchecks.Active.Headers[key] = types.StringValue(value)

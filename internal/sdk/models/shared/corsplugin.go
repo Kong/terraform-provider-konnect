@@ -10,7 +10,7 @@ import (
 )
 
 type CorsPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *CorsPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *CorsPluginAfter) GetAccess() []string {
 }
 
 type CorsPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *CorsPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *CorsPluginBefore) GetAccess() []string {
 }
 
 type CorsPluginOrdering struct {
-	After  *CorsPluginAfter  `json:"after,omitempty"`
-	Before *CorsPluginBefore `json:"before,omitempty"`
+	After  *CorsPluginAfter  `json:"after"`
+	Before *CorsPluginBefore `json:"before"`
 }
 
 func (o *CorsPluginOrdering) GetAfter() *CorsPluginAfter {
@@ -143,15 +143,15 @@ type CorsPluginConfig struct {
 	// Flag to determine whether the `Access-Control-Allow-Credentials` header should be sent with `true` as the value.
 	Credentials *bool `default:"false" json:"credentials"`
 	// Value for the `Access-Control-Expose-Headers` header. If not specified, no custom headers are exposed.
-	ExposedHeaders []string `json:"exposed_headers,omitempty"`
+	ExposedHeaders []string `json:"exposed_headers"`
 	// Value for the `Access-Control-Allow-Headers` header.
-	Headers []string `json:"headers,omitempty"`
+	Headers []string `json:"headers"`
 	// Indicates how long the results of the preflight request can be cached, in `seconds`.
 	MaxAge *float64 `default:"null" json:"max_age"`
 	// 'Value for the `Access-Control-Allow-Methods` header. Available options include `GET`, `HEAD`, `PUT`, `PATCH`, `POST`, `DELETE`, `OPTIONS`, `TRACE`, `CONNECT`. By default, all options are allowed.'
 	Methods []Methods `json:"methods,omitempty"`
 	// List of allowed domains for the `Access-Control-Allow-Origin` header. If you want to allow all origins, add `*` as a single value to this configuration field. The accepted values can either be flat strings or PCRE regexes.
-	Origins []string `json:"origins,omitempty"`
+	Origins []string `json:"origins"`
 	// A boolean value that instructs the plugin to proxy the `OPTIONS` preflight request to the Upstream service.
 	PreflightContinue *bool `default:"false" json:"preflight_continue"`
 	// Flag to determine whether the `Access-Control-Allow-Private-Network` header should be sent with `true` as the value.
@@ -306,7 +306,7 @@ type CorsPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64            `json:"updated_at,omitempty"`
-	Config    *CorsPluginConfig `json:"config,omitempty"`
+	Config    *CorsPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
 	Protocols []CorsPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

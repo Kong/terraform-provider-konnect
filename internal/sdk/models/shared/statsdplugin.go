@@ -10,7 +10,7 @@ import (
 )
 
 type StatsdPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *StatsdPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *StatsdPluginAfter) GetAccess() []string {
 }
 
 type StatsdPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *StatsdPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *StatsdPluginBefore) GetAccess() []string {
 }
 
 type StatsdPluginOrdering struct {
-	After  *StatsdPluginAfter  `json:"after,omitempty"`
-	Before *StatsdPluginBefore `json:"before,omitempty"`
+	After  *StatsdPluginAfter  `json:"after"`
+	Before *StatsdPluginBefore `json:"before"`
 }
 
 func (o *StatsdPluginOrdering) GetAfter() *StatsdPluginAfter {
@@ -587,19 +587,19 @@ func (e *WorkspaceIdentifierDefault) UnmarshalJSON(data []byte) error {
 
 type StatsdPluginConfig struct {
 	// List of status code ranges that are allowed to be logged in metrics.
-	AllowStatusCodes          []string                   `json:"allow_status_codes,omitempty"`
+	AllowStatusCodes          []string                   `json:"allow_status_codes"`
 	ConsumerIdentifierDefault *ConsumerIdentifierDefault `default:"custom_id" json:"consumer_identifier_default"`
 	FlushTimeout              *float64                   `default:"null" json:"flush_timeout"`
 	// The IP address or hostname of StatsD server to send data to.
 	Host             *string `default:"localhost" json:"host"`
 	HostnameInPrefix *bool   `default:"false" json:"hostname_in_prefix"`
 	// List of metrics to be logged.
-	Metrics []StatsdPluginMetrics `json:"metrics,omitempty"`
+	Metrics []StatsdPluginMetrics `json:"metrics"`
 	// The port of StatsD server to send data to.
 	Port *int64 `default:"8125" json:"port"`
 	// String to prefix to each metric's name.
 	Prefix                     *string                     `default:"kong" json:"prefix"`
-	Queue                      *StatsdPluginQueue          `json:"queue,omitempty"`
+	Queue                      *StatsdPluginQueue          `json:"queue"`
 	QueueSize                  *int64                      `default:"null" json:"queue_size"`
 	RetryCount                 *int64                      `default:"null" json:"retry_count"`
 	ServiceIdentifierDefault   *ServiceIdentifierDefault   `default:"service_name_or_host" json:"service_identifier_default"`
@@ -837,7 +837,7 @@ type StatsdPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64              `json:"updated_at,omitempty"`
-	Config    *StatsdPluginConfig `json:"config,omitempty"`
+	Config    *StatsdPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *StatsdPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.

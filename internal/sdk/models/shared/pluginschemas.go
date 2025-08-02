@@ -58,7 +58,7 @@ func (o *Item) GetUpdatedAt() *int64 {
 
 // PluginSchemas - A response for a single custom plugin schema.
 type PluginSchemas struct {
-	Item *Item `json:"item,omitempty"`
+	Item *Item `json:"item"`
 }
 
 func (o *PluginSchemas) GetItem() *Item {

@@ -10,7 +10,7 @@ import (
 )
 
 type GraphqlProxyCacheAdvancedPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *GraphqlProxyCacheAdvancedPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *GraphqlProxyCacheAdvancedPluginAfter) GetAccess() []string {
 }
 
 type GraphqlProxyCacheAdvancedPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *GraphqlProxyCacheAdvancedPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *GraphqlProxyCacheAdvancedPluginBefore) GetAccess() []string {
 }
 
 type GraphqlProxyCacheAdvancedPluginOrdering struct {
-	After  *GraphqlProxyCacheAdvancedPluginAfter  `json:"after,omitempty"`
-	Before *GraphqlProxyCacheAdvancedPluginBefore `json:"before,omitempty"`
+	After  *GraphqlProxyCacheAdvancedPluginAfter  `json:"after"`
+	Before *GraphqlProxyCacheAdvancedPluginBefore `json:"before"`
 }
 
 func (o *GraphqlProxyCacheAdvancedPluginOrdering) GetAfter() *GraphqlProxyCacheAdvancedPluginAfter {
@@ -211,7 +211,7 @@ type GraphqlProxyCacheAdvancedPluginRedis struct {
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
-	ClusterNodes []GraphqlProxyCacheAdvancedPluginClusterNodes `json:"cluster_nodes,omitempty"`
+	ClusterNodes []GraphqlProxyCacheAdvancedPluginClusterNodes `json:"cluster_nodes"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
@@ -235,7 +235,7 @@ type GraphqlProxyCacheAdvancedPluginRedis struct {
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `default:"null" json:"sentinel_master"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
-	SentinelNodes []GraphqlProxyCacheAdvancedPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
+	SentinelNodes []GraphqlProxyCacheAdvancedPluginSentinelNodes `json:"sentinel_nodes"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
 	SentinelPassword *string `default:"null" json:"sentinel_password"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -442,12 +442,12 @@ type GraphqlProxyCacheAdvancedPluginConfig struct {
 	BypassOnErr *bool `default:"false" json:"bypass_on_err"`
 	// TTL in seconds of cache entities. Must be a value greater than 0.
 	CacheTTL *int64                                `default:"300" json:"cache_ttl"`
-	Memory   *Memory                               `json:"memory,omitempty"`
-	Redis    *GraphqlProxyCacheAdvancedPluginRedis `json:"redis,omitempty"`
+	Memory   *Memory                               `json:"memory"`
+	Redis    *GraphqlProxyCacheAdvancedPluginRedis `json:"redis"`
 	// The backing data store in which to hold cached entities. Accepted value is `memory`.
 	Strategy *GraphqlProxyCacheAdvancedPluginStrategy `default:"memory" json:"strategy"`
 	// Relevant headers considered for the cache key. If undefined, none of the headers are taken into consideration.
-	VaryHeaders []string `json:"vary_headers,omitempty"`
+	VaryHeaders []string `json:"vary_headers"`
 }
 
 func (g GraphqlProxyCacheAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
@@ -589,7 +589,7 @@ type GraphqlProxyCacheAdvancedPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                                 `json:"updated_at,omitempty"`
-	Config    *GraphqlProxyCacheAdvancedPluginConfig `json:"config,omitempty"`
+	Config    *GraphqlProxyCacheAdvancedPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *GraphqlProxyCacheAdvancedPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.

@@ -10,7 +10,7 @@ import (
 )
 
 type KeyAuthPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *KeyAuthPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *KeyAuthPluginAfter) GetAccess() []string {
 }
 
 type KeyAuthPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *KeyAuthPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *KeyAuthPluginBefore) GetAccess() []string {
 }
 
 type KeyAuthPluginOrdering struct {
-	After  *KeyAuthPluginAfter  `json:"after,omitempty"`
-	Before *KeyAuthPluginBefore `json:"before,omitempty"`
+	After  *KeyAuthPluginAfter  `json:"after"`
+	Before *KeyAuthPluginBefore `json:"before"`
 }
 
 func (o *KeyAuthPluginOrdering) GetAfter() *KeyAuthPluginAfter {
@@ -161,7 +161,7 @@ type KeyAuthPluginConfig struct {
 	// An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin strips the credential from the request.
 	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// A configuration of Konnect Identity Realms that indicate where to source a consumer from.
-	IdentityRealms []IdentityRealms `json:"identity_realms,omitempty"`
+	IdentityRealms []IdentityRealms `json:"identity_realms"`
 	// If enabled, the plugin reads the request body. Supported MIME types: `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`.
 	KeyInBody *bool `default:"false" json:"key_in_body"`
 	// If enabled (default), the plugin reads the request header and tries to find the key in it.
@@ -330,7 +330,7 @@ type KeyAuthPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64               `json:"updated_at,omitempty"`
-	Config    *KeyAuthPluginConfig `json:"config,omitempty"`
+	Config    *KeyAuthPluginConfig `json:"config"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []KeyAuthPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

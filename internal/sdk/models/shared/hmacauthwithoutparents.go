@@ -14,7 +14,7 @@ func (o *HMACAuthWithoutParentsConsumer) GetID() *string {
 }
 
 type HMACAuthWithoutParents struct {
-	Consumer *HMACAuthWithoutParentsConsumer `json:"consumer"`
+	Consumer *HMACAuthWithoutParentsConsumer `json:"consumer,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// A string representing a UUID (universally unique identifier).

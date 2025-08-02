@@ -10,7 +10,7 @@ import (
 )
 
 type UpstreamOauthPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *UpstreamOauthPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *UpstreamOauthPluginAfter) GetAccess() []string {
 }
 
 type UpstreamOauthPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *UpstreamOauthPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *UpstreamOauthPluginBefore) GetAccess() []string {
 }
 
 type UpstreamOauthPluginOrdering struct {
-	After  *UpstreamOauthPluginAfter  `json:"after,omitempty"`
-	Before *UpstreamOauthPluginBefore `json:"before,omitempty"`
+	After  *UpstreamOauthPluginAfter  `json:"after"`
+	Before *UpstreamOauthPluginBefore `json:"before"`
 }
 
 func (o *UpstreamOauthPluginOrdering) GetAfter() *UpstreamOauthPluginAfter {
@@ -279,7 +279,7 @@ type UpstreamOauthPluginRedis struct {
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
-	ClusterNodes []UpstreamOauthPluginClusterNodes `json:"cluster_nodes,omitempty"`
+	ClusterNodes []UpstreamOauthPluginClusterNodes `json:"cluster_nodes"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
@@ -303,7 +303,7 @@ type UpstreamOauthPluginRedis struct {
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `default:"null" json:"sentinel_master"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
-	SentinelNodes []UpstreamOauthPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
+	SentinelNodes []UpstreamOauthPluginSentinelNodes `json:"sentinel_nodes"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
 	SentinelPassword *string `default:"null" json:"sentinel_password"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -510,8 +510,8 @@ type UpstreamOauthPluginCache struct {
 	DefaultTTL *float64 `default:"3600" json:"default_ttl"`
 	// The number of seconds to eagerly expire a cached token. By default, a cached token expires 5 seconds before its lifetime as defined in `expires_in`.
 	EagerlyExpire *int64                     `default:"5" json:"eagerly_expire"`
-	Memory        *UpstreamOauthPluginMemory `json:"memory,omitempty"`
-	Redis         *UpstreamOauthPluginRedis  `json:"redis,omitempty"`
+	Memory        *UpstreamOauthPluginMemory `json:"memory"`
+	Redis         *UpstreamOauthPluginRedis  `json:"redis"`
 	// The method Kong should use to cache tokens issued by the IdP.
 	Strategy *UpstreamOauthPluginStrategy `default:"memory" json:"strategy"`
 }
@@ -867,9 +867,9 @@ func (o *Oauth) GetUsername() *string {
 }
 
 type UpstreamOauthPluginConfig struct {
-	Behavior *Behavior                 `json:"behavior,omitempty"`
-	Cache    *UpstreamOauthPluginCache `json:"cache,omitempty"`
-	Client   *Client                   `json:"client,omitempty"`
+	Behavior *Behavior                 `json:"behavior"`
+	Cache    *UpstreamOauthPluginCache `json:"cache"`
+	Client   *Client                   `json:"client"`
 	Oauth    Oauth                     `json:"oauth"`
 }
 

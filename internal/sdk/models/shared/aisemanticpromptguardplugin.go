@@ -10,7 +10,7 @@ import (
 )
 
 type AiSemanticPromptGuardPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiSemanticPromptGuardPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *AiSemanticPromptGuardPluginAfter) GetAccess() []string {
 }
 
 type AiSemanticPromptGuardPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiSemanticPromptGuardPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *AiSemanticPromptGuardPluginBefore) GetAccess() []string {
 }
 
 type AiSemanticPromptGuardPluginOrdering struct {
-	After  *AiSemanticPromptGuardPluginAfter  `json:"after,omitempty"`
-	Before *AiSemanticPromptGuardPluginBefore `json:"before,omitempty"`
+	After  *AiSemanticPromptGuardPluginAfter  `json:"after"`
+	Before *AiSemanticPromptGuardPluginBefore `json:"before"`
 }
 
 func (o *AiSemanticPromptGuardPluginOrdering) GetAfter() *AiSemanticPromptGuardPluginAfter {
@@ -442,9 +442,9 @@ func (o *AiSemanticPromptGuardPluginHuggingface) GetWaitForModel() *bool {
 // AiSemanticPromptGuardPluginOptions - Key/value settings for the model
 type AiSemanticPromptGuardPluginOptions struct {
 	Azure       AiSemanticPromptGuardPluginAzure        `json:"azure"`
-	Bedrock     *AiSemanticPromptGuardPluginBedrock     `json:"bedrock,omitempty"`
-	Gemini      *AiSemanticPromptGuardPluginGemini      `json:"gemini,omitempty"`
-	Huggingface *AiSemanticPromptGuardPluginHuggingface `json:"huggingface,omitempty"`
+	Bedrock     *AiSemanticPromptGuardPluginBedrock     `json:"bedrock"`
+	Gemini      *AiSemanticPromptGuardPluginGemini      `json:"gemini"`
+	Huggingface *AiSemanticPromptGuardPluginHuggingface `json:"huggingface"`
 	// upstream url for the embeddings
 	UpstreamURL *string `default:"null" json:"upstream_url"`
 }
@@ -538,7 +538,7 @@ type AiSemanticPromptGuardPluginModel struct {
 	// Model name to execute.
 	Name string `json:"name"`
 	// Key/value settings for the model
-	Options *AiSemanticPromptGuardPluginOptions `json:"options,omitempty"`
+	Options *AiSemanticPromptGuardPluginOptions `json:"options"`
 	// AI provider format to use for embeddings API
 	Provider AiSemanticPromptGuardPluginProvider `json:"provider"`
 }
@@ -565,7 +565,7 @@ func (o *AiSemanticPromptGuardPluginModel) GetProvider() AiSemanticPromptGuardPl
 }
 
 type AiSemanticPromptGuardPluginEmbeddings struct {
-	Auth  *AiSemanticPromptGuardPluginAuth `json:"auth,omitempty"`
+	Auth  *AiSemanticPromptGuardPluginAuth `json:"auth"`
 	Model AiSemanticPromptGuardPluginModel `json:"model"`
 }
 
@@ -660,9 +660,9 @@ func (e *AiSemanticPromptGuardPluginLlmFormat) UnmarshalJSON(data []byte) error 
 
 type Rules struct {
 	// List of prompts to allow.
-	AllowPrompts []string `json:"allow_prompts,omitempty"`
+	AllowPrompts []string `json:"allow_prompts"`
 	// List of prompts to deny.
-	DenyPrompts []string `json:"deny_prompts,omitempty"`
+	DenyPrompts []string `json:"deny_prompts"`
 	// If false, will ignore all previous chat prompts from the conversation history.
 	MatchAllConversationHistory *bool `default:"false" json:"match_all_conversation_history"`
 	// If true, will match all roles in addition to 'user' role in conversation history.
@@ -1017,7 +1017,7 @@ type AiSemanticPromptGuardPluginRedis struct {
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
-	ClusterNodes []AiSemanticPromptGuardPluginClusterNodes `json:"cluster_nodes,omitempty"`
+	ClusterNodes []AiSemanticPromptGuardPluginClusterNodes `json:"cluster_nodes"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
@@ -1041,7 +1041,7 @@ type AiSemanticPromptGuardPluginRedis struct {
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `default:"null" json:"sentinel_master"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
-	SentinelNodes []AiSemanticPromptGuardPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
+	SentinelNodes []AiSemanticPromptGuardPluginSentinelNodes `json:"sentinel_nodes"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
 	SentinelPassword *string `default:"null" json:"sentinel_password"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -1248,8 +1248,8 @@ type AiSemanticPromptGuardPluginVectordb struct {
 	Dimensions int64 `json:"dimensions"`
 	// the distance metric to use for vector searches
 	DistanceMetric AiSemanticPromptGuardPluginDistanceMetric `json:"distance_metric"`
-	Pgvector       *AiSemanticPromptGuardPluginPgvector      `json:"pgvector,omitempty"`
-	Redis          *AiSemanticPromptGuardPluginRedis         `json:"redis,omitempty"`
+	Pgvector       *AiSemanticPromptGuardPluginPgvector      `json:"pgvector"`
+	Redis          *AiSemanticPromptGuardPluginRedis         `json:"redis"`
 	// which vector database driver to use
 	Strategy AiSemanticPromptGuardPluginStrategy `json:"strategy"`
 	// the default similarity threshold for accepting semantic search results (float)
@@ -1304,8 +1304,8 @@ type AiSemanticPromptGuardPluginConfig struct {
 	GenaiCategory *AiSemanticPromptGuardPluginGenaiCategory `default:"text/generation" json:"genai_category"`
 	// LLM input and output format and schema to use
 	LlmFormat *AiSemanticPromptGuardPluginLlmFormat `default:"openai" json:"llm_format"`
-	Rules     *Rules                                `json:"rules,omitempty"`
-	Search    *Search                               `json:"search,omitempty"`
+	Rules     *Rules                                `json:"rules"`
+	Search    *Search                               `json:"search"`
 	Vectordb  AiSemanticPromptGuardPluginVectordb   `json:"vectordb"`
 }
 

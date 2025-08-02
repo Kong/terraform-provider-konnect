@@ -10,7 +10,7 @@ import (
 )
 
 type ForwardProxyPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ForwardProxyPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *ForwardProxyPluginAfter) GetAccess() []string {
 }
 
 type ForwardProxyPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ForwardProxyPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *ForwardProxyPluginBefore) GetAccess() []string {
 }
 
 type ForwardProxyPluginOrdering struct {
-	After  *ForwardProxyPluginAfter  `json:"after,omitempty"`
-	Before *ForwardProxyPluginBefore `json:"before,omitempty"`
+	After  *ForwardProxyPluginAfter  `json:"after"`
+	Before *ForwardProxyPluginBefore `json:"before"`
 }
 
 func (o *ForwardProxyPluginOrdering) GetAfter() *ForwardProxyPluginAfter {
@@ -327,7 +327,7 @@ type ForwardProxyPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                    `json:"updated_at,omitempty"`
-	Config    *ForwardProxyPluginConfig `json:"config,omitempty"`
+	Config    *ForwardProxyPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *ForwardProxyPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.

@@ -10,7 +10,7 @@ import (
 )
 
 type AiProxyPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiProxyPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *AiProxyPluginAfter) GetAccess() []string {
 }
 
 type AiProxyPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiProxyPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *AiProxyPluginBefore) GetAccess() []string {
 }
 
 type AiProxyPluginOrdering struct {
-	After  *AiProxyPluginAfter  `json:"after,omitempty"`
-	Before *AiProxyPluginBefore `json:"before,omitempty"`
+	After  *AiProxyPluginAfter  `json:"after"`
+	Before *AiProxyPluginBefore `json:"before"`
 }
 
 func (o *AiProxyPluginOrdering) GetAfter() *AiProxyPluginAfter {
@@ -637,12 +637,12 @@ type OptionsObj struct {
 	AzureDeploymentID *string `default:"null" json:"azure_deployment_id"`
 	// Instance name for Azure OpenAI hosted models.
 	AzureInstance *string  `default:"null" json:"azure_instance"`
-	Bedrock       *Bedrock `json:"bedrock,omitempty"`
-	Cohere        *Cohere  `json:"cohere,omitempty"`
+	Bedrock       *Bedrock `json:"bedrock"`
+	Cohere        *Cohere  `json:"cohere"`
 	// If using embeddings models, set the number of dimensions to generate.
 	EmbeddingsDimensions *int64       `default:"null" json:"embeddings_dimensions"`
-	Gemini               *Gemini      `json:"gemini,omitempty"`
-	Huggingface          *Huggingface `json:"huggingface,omitempty"`
+	Gemini               *Gemini      `json:"gemini"`
+	Huggingface          *Huggingface `json:"huggingface"`
 	// Defines the cost per 1M tokens in your prompt.
 	InputCost *float64 `default:"null" json:"input_cost"`
 	// If using llama2 provider, select the upstream message format.
@@ -861,7 +861,7 @@ type Model struct {
 	// Model name to execute.
 	Name *string `default:"null" json:"name"`
 	// Key/value settings for the model
-	Options *OptionsObj `json:"options,omitempty"`
+	Options *OptionsObj `json:"options"`
 	// AI provider request format - Kong translates requests to and from the specified backend compatible formats.
 	Provider Provider `json:"provider"`
 }
@@ -992,12 +992,12 @@ func (e *RouteType) UnmarshalJSON(data []byte) error {
 }
 
 type AiProxyPluginConfig struct {
-	Auth *Auth `json:"auth,omitempty"`
+	Auth *Auth `json:"auth"`
 	// Generative AI category of the request
 	GenaiCategory *AiProxyPluginGenaiCategory `default:"text/generation" json:"genai_category"`
 	// LLM input and output format and schema to use
 	LlmFormat *AiProxyPluginLlmFormat `default:"openai" json:"llm_format"`
-	Logging   *Logging                `json:"logging,omitempty"`
+	Logging   *Logging                `json:"logging"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 	MaxRequestBodySize *int64 `default:"8192" json:"max_request_body_size"`
 	Model              Model  `json:"model"`

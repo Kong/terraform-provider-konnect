@@ -10,7 +10,7 @@ import (
 )
 
 type DatadogPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *DatadogPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *DatadogPluginAfter) GetAccess() []string {
 }
 
 type DatadogPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *DatadogPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *DatadogPluginBefore) GetAccess() []string {
 }
 
 type DatadogPluginOrdering struct {
-	After  *DatadogPluginAfter  `json:"after,omitempty"`
-	Before *DatadogPluginBefore `json:"before,omitempty"`
+	After  *DatadogPluginAfter  `json:"after"`
+	Before *DatadogPluginBefore `json:"before"`
 }
 
 func (o *DatadogPluginOrdering) GetAfter() *DatadogPluginAfter {
@@ -211,7 +211,7 @@ type Metrics struct {
 	// Determines what sort of event the metric represents
 	StatType StatType `json:"stat_type"`
 	// List of tags
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 }
 
 func (m Metrics) MarshalJSON() ([]byte, error) {
@@ -386,7 +386,7 @@ type DatadogPluginConfig struct {
 	Port *int64 `default:"8125" json:"port"`
 	// String to be attached as a prefix to a metric's name.
 	Prefix *string `default:"kong" json:"prefix"`
-	Queue  *Queue  `json:"queue,omitempty"`
+	Queue  *Queue  `json:"queue"`
 	// Maximum number of log entries to be sent on each message to the upstream server.
 	QueueSize *int64 `default:"null" json:"queue_size"`
 	// Number of times to retry when sending data to the upstream server.
@@ -590,7 +590,7 @@ type DatadogPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64               `json:"updated_at,omitempty"`
-	Config    *DatadogPluginConfig `json:"config,omitempty"`
+	Config    *DatadogPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *DatadogPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.

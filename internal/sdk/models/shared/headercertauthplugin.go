@@ -10,7 +10,7 @@ import (
 )
 
 type HeaderCertAuthPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *HeaderCertAuthPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *HeaderCertAuthPluginAfter) GetAccess() []string {
 }
 
 type HeaderCertAuthPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *HeaderCertAuthPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *HeaderCertAuthPluginBefore) GetAccess() []string {
 }
 
 type HeaderCertAuthPluginOrdering struct {
-	After  *HeaderCertAuthPluginAfter  `json:"after,omitempty"`
-	Before *HeaderCertAuthPluginBefore `json:"before,omitempty"`
+	After  *HeaderCertAuthPluginAfter  `json:"after"`
+	Before *HeaderCertAuthPluginBefore `json:"before"`
 }
 
 func (o *HeaderCertAuthPluginOrdering) GetAfter() *HeaderCertAuthPluginAfter {

@@ -10,7 +10,7 @@ import (
 )
 
 type AzureFunctionsPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AzureFunctionsPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *AzureFunctionsPluginAfter) GetAccess() []string {
 }
 
 type AzureFunctionsPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AzureFunctionsPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *AzureFunctionsPluginBefore) GetAccess() []string {
 }
 
 type AzureFunctionsPluginOrdering struct {
-	After  *AzureFunctionsPluginAfter  `json:"after,omitempty"`
-	Before *AzureFunctionsPluginBefore `json:"before,omitempty"`
+	After  *AzureFunctionsPluginAfter  `json:"after"`
+	Before *AzureFunctionsPluginBefore `json:"before"`
 }
 
 func (o *AzureFunctionsPluginOrdering) GetAfter() *AzureFunctionsPluginAfter {

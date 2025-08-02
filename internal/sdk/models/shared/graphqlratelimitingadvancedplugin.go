@@ -10,7 +10,7 @@ import (
 )
 
 type GraphqlRateLimitingAdvancedPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *GraphqlRateLimitingAdvancedPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *GraphqlRateLimitingAdvancedPluginAfter) GetAccess() []string {
 }
 
 type GraphqlRateLimitingAdvancedPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *GraphqlRateLimitingAdvancedPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *GraphqlRateLimitingAdvancedPluginBefore) GetAccess() []string {
 }
 
 type GraphqlRateLimitingAdvancedPluginOrdering struct {
-	After  *GraphqlRateLimitingAdvancedPluginAfter  `json:"after,omitempty"`
-	Before *GraphqlRateLimitingAdvancedPluginBefore `json:"before,omitempty"`
+	After  *GraphqlRateLimitingAdvancedPluginAfter  `json:"after"`
+	Before *GraphqlRateLimitingAdvancedPluginBefore `json:"before"`
 }
 
 func (o *GraphqlRateLimitingAdvancedPluginOrdering) GetAfter() *GraphqlRateLimitingAdvancedPluginAfter {
@@ -245,7 +245,7 @@ type GraphqlRateLimitingAdvancedPluginRedis struct {
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
-	ClusterNodes []GraphqlRateLimitingAdvancedPluginClusterNodes `json:"cluster_nodes,omitempty"`
+	ClusterNodes []GraphqlRateLimitingAdvancedPluginClusterNodes `json:"cluster_nodes"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
@@ -269,7 +269,7 @@ type GraphqlRateLimitingAdvancedPluginRedis struct {
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `default:"null" json:"sentinel_master"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
-	SentinelNodes []GraphqlRateLimitingAdvancedPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
+	SentinelNodes []GraphqlRateLimitingAdvancedPluginSentinelNodes `json:"sentinel_nodes"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
 	SentinelPassword *string `default:"null" json:"sentinel_password"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -515,7 +515,7 @@ type GraphqlRateLimitingAdvancedPluginConfig struct {
 	Namespace *string `default:"null" json:"namespace"`
 	// pass all downstream headers to the upstream graphql server in introspection request
 	PassAllDownstreamHeaders *bool                                   `default:"false" json:"pass_all_downstream_headers"`
-	Redis                    *GraphqlRateLimitingAdvancedPluginRedis `json:"redis,omitempty"`
+	Redis                    *GraphqlRateLimitingAdvancedPluginRedis `json:"redis"`
 	// A scoring factor to multiply (or divide) the cost. The `score_factor` must always be greater than 0.
 	ScoreFactor *float64 `default:"1" json:"score_factor"`
 	// The rate-limiting strategy to use for retrieving and incrementing the limits.

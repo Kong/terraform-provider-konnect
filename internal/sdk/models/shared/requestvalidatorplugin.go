@@ -10,7 +10,7 @@ import (
 )
 
 type RequestValidatorPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *RequestValidatorPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *RequestValidatorPluginAfter) GetAccess() []string {
 }
 
 type RequestValidatorPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *RequestValidatorPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *RequestValidatorPluginBefore) GetAccess() []string {
 }
 
 type RequestValidatorPluginOrdering struct {
-	After  *RequestValidatorPluginAfter  `json:"after,omitempty"`
-	Before *RequestValidatorPluginBefore `json:"before,omitempty"`
+	After  *RequestValidatorPluginAfter  `json:"after"`
+	Before *RequestValidatorPluginBefore `json:"before"`
 }
 
 func (o *RequestValidatorPluginOrdering) GetAfter() *RequestValidatorPluginAfter {
@@ -277,7 +277,7 @@ type RequestValidatorPluginConfig struct {
 	// Determines whether to enable parameters validation of request content-type.
 	ContentTypeParameterValidation *bool `default:"true" json:"content_type_parameter_validation"`
 	// Array of parameter validator specification. One of `body_schema` or `parameter_schema` must be specified.
-	ParameterSchema []ParameterSchema `json:"parameter_schema,omitempty"`
+	ParameterSchema []ParameterSchema `json:"parameter_schema"`
 	// If enabled, the plugin returns more verbose and detailed validation errors.
 	VerboseResponse *bool `default:"false" json:"verbose_response"`
 	// Which validator to use. Supported values are `kong` (default) for using Kong's own schema validator, or `draft4`, `draft7`, `draft201909`, and `draft202012` for using their respective JSON Schema Draft compliant validators.
@@ -423,7 +423,7 @@ type RequestValidatorPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                        `json:"updated_at,omitempty"`
-	Config    *RequestValidatorPluginConfig `json:"config,omitempty"`
+	Config    *RequestValidatorPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *RequestValidatorPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.

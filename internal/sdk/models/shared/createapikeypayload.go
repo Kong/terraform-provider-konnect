@@ -38,7 +38,7 @@ type CreateAPIKeyPayload struct {
 	Type *CreateAPIKeyPayloadType `default:"legacy" json:"type"`
 	// secret to be created. Must be unique within the realm. If not specified a secret will be automatically generated.
 	Secret *string  `default:"null" json:"secret"`
-	Tags   []string `json:"tags,omitempty"`
+	Tags   []string `json:"tags"`
 }
 
 func (c CreateAPIKeyPayload) MarshalJSON() ([]byte, error) {

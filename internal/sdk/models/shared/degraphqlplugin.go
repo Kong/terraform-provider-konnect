@@ -10,7 +10,7 @@ import (
 )
 
 type DegraphqlPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *DegraphqlPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *DegraphqlPluginAfter) GetAccess() []string {
 }
 
 type DegraphqlPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *DegraphqlPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *DegraphqlPluginBefore) GetAccess() []string {
 }
 
 type DegraphqlPluginOrdering struct {
-	After  *DegraphqlPluginAfter  `json:"after,omitempty"`
-	Before *DegraphqlPluginBefore `json:"before,omitempty"`
+	After  *DegraphqlPluginAfter  `json:"after"`
+	Before *DegraphqlPluginBefore `json:"before"`
 }
 
 func (o *DegraphqlPluginOrdering) GetAfter() *DegraphqlPluginAfter {
@@ -187,7 +187,7 @@ type DegraphqlPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                 `json:"updated_at,omitempty"`
-	Config    *DegraphqlPluginConfig `json:"config,omitempty"`
+	Config    *DegraphqlPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
 	Protocols []DegraphqlPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

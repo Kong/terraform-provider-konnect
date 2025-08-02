@@ -10,7 +10,7 @@ import (
 )
 
 type AcmePluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AcmePluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *AcmePluginAfter) GetAccess() []string {
 }
 
 type AcmePluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AcmePluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *AcmePluginBefore) GetAccess() []string {
 }
 
 type AcmePluginOrdering struct {
-	After  *AcmePluginAfter  `json:"after,omitempty"`
-	Before *AcmePluginBefore `json:"before,omitempty"`
+	After  *AcmePluginAfter  `json:"after"`
+	Before *AcmePluginBefore `json:"before"`
 }
 
 func (o *AcmePluginOrdering) GetAfter() *AcmePluginAfter {
@@ -321,7 +321,7 @@ type AcmePluginRedis struct {
 	// Database to use for the Redis connection when using the `redis` strategy
 	Database *int64 `default:"0" json:"database"`
 	// Custom ACME Redis options
-	ExtraOptions *ExtraOptions `json:"extra_options,omitempty"`
+	ExtraOptions *ExtraOptions `json:"extra_options"`
 	// A string representing a host name, such as example.com.
 	Host *string `default:"null" json:"host"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
@@ -594,11 +594,11 @@ func (o *AcmePluginVault) GetToken() *string {
 }
 
 type StorageConfig struct {
-	Consul *Consul          `json:"consul,omitempty"`
+	Consul *Consul          `json:"consul"`
 	Kong   map[string]any   `json:"kong,omitempty"`
-	Redis  *AcmePluginRedis `json:"redis,omitempty"`
-	Shm    *Shm             `json:"shm,omitempty"`
-	Vault  *AcmePluginVault `json:"vault,omitempty"`
+	Redis  *AcmePluginRedis `json:"redis"`
+	Shm    *Shm             `json:"shm"`
+	Vault  *AcmePluginVault `json:"vault"`
 }
 
 func (o *StorageConfig) GetConsul() *Consul {
@@ -640,7 +640,7 @@ type AcmePluginConfig struct {
 	// The account identifier. Can be reused in a different plugin instance.
 	AccountEmail string `json:"account_email"`
 	// The private key associated with the account.
-	AccountKey *AccountKey `json:"account_key,omitempty"`
+	AccountKey *AccountKey `json:"account_key"`
 	// If set to `true`, the plugin allows all domains and ignores any values in the `domains` list.
 	AllowAnyDomain *bool `default:"false" json:"allow_any_domain"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
@@ -648,7 +648,7 @@ type AcmePluginConfig struct {
 	// The certificate type to create. The possible values are `rsa` for RSA certificate or `ecc` for EC certificate.
 	CertType *CertType `default:"rsa" json:"cert_type"`
 	// An array of strings representing hosts. A valid host is a string containing one or more labels separated by periods, with at most one wildcard label ('*')
-	Domains []string `json:"domains,omitempty"`
+	Domains []string `json:"domains"`
 	// External account binding (EAB) base64-encoded URL string of the HMAC key. You usually don't need to set this unless it is explicitly required by the CA.
 	EabHmacKey *string `default:"null" json:"eab_hmac_key"`
 	// External account binding (EAB) key id. You usually don't need to set this unless it is explicitly required by the CA.
@@ -666,7 +666,7 @@ type AcmePluginConfig struct {
 	RsaKeySize *RsaKeySize `default:"4096" json:"rsa_key_size"`
 	// The backend storage type to use. In DB-less mode and Konnect, `kong` storage is unavailable. In hybrid mode and Konnect, `shm` storage is unavailable. `shm` storage does not persist during Kong restarts and does not work for Kong running on different machines, so consider using one of `kong`, `redis`, `consul`, or `vault` in production.
 	Storage       *Storage       `default:"shm" json:"storage"`
-	StorageConfig *StorageConfig `json:"storage_config,omitempty"`
+	StorageConfig *StorageConfig `json:"storage_config"`
 	// If you are using Let's Encrypt, you must set this to `true` to agree the terms of service.
 	TosAccepted *bool `default:"false" json:"tos_accepted"`
 }

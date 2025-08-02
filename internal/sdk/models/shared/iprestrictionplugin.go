@@ -10,7 +10,7 @@ import (
 )
 
 type IPRestrictionPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *IPRestrictionPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *IPRestrictionPluginAfter) GetAccess() []string {
 }
 
 type IPRestrictionPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *IPRestrictionPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *IPRestrictionPluginBefore) GetAccess() []string {
 }
 
 type IPRestrictionPluginOrdering struct {
-	After  *IPRestrictionPluginAfter  `json:"after,omitempty"`
-	Before *IPRestrictionPluginBefore `json:"before,omitempty"`
+	After  *IPRestrictionPluginAfter  `json:"after"`
+	Before *IPRestrictionPluginBefore `json:"before"`
 }
 
 func (o *IPRestrictionPluginOrdering) GetAfter() *IPRestrictionPluginAfter {
@@ -92,9 +92,9 @@ func (o *IPRestrictionPluginPartials) GetPath() *string {
 
 type IPRestrictionPluginConfig struct {
 	// List of IPs or CIDR ranges to allow. One of `config.allow` or `config.deny` must be specified.
-	Allow []string `json:"allow,omitempty"`
+	Allow []string `json:"allow"`
 	// List of IPs or CIDR ranges to deny. One of `config.allow` or `config.deny` must be specified.
-	Deny []string `json:"deny,omitempty"`
+	Deny []string `json:"deny"`
 	// The message to send as a response body to rejected requests.
 	Message *string `default:"null" json:"message"`
 	// The HTTP status of the requests that will be rejected by the plugin.
@@ -257,7 +257,7 @@ type IPRestrictionPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                     `json:"updated_at,omitempty"`
-	Config    *IPRestrictionPluginConfig `json:"config,omitempty"`
+	Config    *IPRestrictionPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *IPRestrictionPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups

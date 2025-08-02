@@ -10,7 +10,7 @@ import (
 )
 
 type ResponseRatelimitingPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ResponseRatelimitingPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *ResponseRatelimitingPluginAfter) GetAccess() []string {
 }
 
 type ResponseRatelimitingPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ResponseRatelimitingPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *ResponseRatelimitingPluginBefore) GetAccess() []string {
 }
 
 type ResponseRatelimitingPluginOrdering struct {
-	After  *ResponseRatelimitingPluginAfter  `json:"after,omitempty"`
-	Before *ResponseRatelimitingPluginBefore `json:"before,omitempty"`
+	After  *ResponseRatelimitingPluginAfter  `json:"after"`
+	Before *ResponseRatelimitingPluginBefore `json:"before"`
 }
 
 func (o *ResponseRatelimitingPluginOrdering) GetAfter() *ResponseRatelimitingPluginAfter {
@@ -262,7 +262,7 @@ type ResponseRatelimitingPluginConfig struct {
 	// The rate-limiting policies to use for retrieving and incrementing the limits.
 	Policy *ResponseRatelimitingPluginPolicy `default:"local" json:"policy"`
 	// Redis configuration
-	Redis *ResponseRatelimitingPluginRedis `json:"redis,omitempty"`
+	Redis *ResponseRatelimitingPluginRedis `json:"redis"`
 }
 
 func (r ResponseRatelimitingPluginConfig) MarshalJSON() ([]byte, error) {
@@ -418,7 +418,7 @@ type ResponseRatelimitingPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                            `json:"updated_at,omitempty"`
-	Config    *ResponseRatelimitingPluginConfig `json:"config,omitempty"`
+	Config    *ResponseRatelimitingPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *ResponseRatelimitingPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.

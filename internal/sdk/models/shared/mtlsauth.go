@@ -26,7 +26,7 @@ func (o *MTLSAuthConsumer) GetID() *string {
 
 type MTLSAuth struct {
 	CaCertificate *MTLSAuthCaCertificate `json:"ca_certificate,omitempty"`
-	Consumer      *MTLSAuthConsumer      `json:"consumer"`
+	Consumer      *MTLSAuthConsumer      `json:"consumer,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// A string representing a UUID (universally unique identifier).

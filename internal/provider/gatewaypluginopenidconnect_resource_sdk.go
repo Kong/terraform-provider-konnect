@@ -16,25 +16,31 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 
 	if resp != nil {
 		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-		r.Config.Audience = make([]types.String, 0, len(resp.Config.Audience))
-		for _, v := range resp.Config.Audience {
-			r.Config.Audience = append(r.Config.Audience, types.StringValue(v))
+		if resp.Config.Audience != nil {
+			r.Config.Audience = make([]types.String, 0, len(resp.Config.Audience))
+			for _, v := range resp.Config.Audience {
+				r.Config.Audience = append(r.Config.Audience, types.StringValue(v))
+			}
 		}
 		r.Config.AudienceClaim = make([]types.String, 0, len(resp.Config.AudienceClaim))
 		for _, v := range resp.Config.AudienceClaim {
 			r.Config.AudienceClaim = append(r.Config.AudienceClaim, types.StringValue(v))
 		}
-		r.Config.AudienceRequired = make([]types.String, 0, len(resp.Config.AudienceRequired))
-		for _, v := range resp.Config.AudienceRequired {
-			r.Config.AudienceRequired = append(r.Config.AudienceRequired, types.StringValue(v))
+		if resp.Config.AudienceRequired != nil {
+			r.Config.AudienceRequired = make([]types.String, 0, len(resp.Config.AudienceRequired))
+			for _, v := range resp.Config.AudienceRequired {
+				r.Config.AudienceRequired = append(r.Config.AudienceRequired, types.StringValue(v))
+			}
 		}
 		r.Config.AuthMethods = make([]types.String, 0, len(resp.Config.AuthMethods))
 		for _, v := range resp.Config.AuthMethods {
 			r.Config.AuthMethods = append(r.Config.AuthMethods, types.StringValue(string(v)))
 		}
-		r.Config.AuthenticatedGroupsClaim = make([]types.String, 0, len(resp.Config.AuthenticatedGroupsClaim))
-		for _, v := range resp.Config.AuthenticatedGroupsClaim {
-			r.Config.AuthenticatedGroupsClaim = append(r.Config.AuthenticatedGroupsClaim, types.StringValue(v))
+		if resp.Config.AuthenticatedGroupsClaim != nil {
+			r.Config.AuthenticatedGroupsClaim = make([]types.String, 0, len(resp.Config.AuthenticatedGroupsClaim))
+			for _, v := range resp.Config.AuthenticatedGroupsClaim {
+				r.Config.AuthenticatedGroupsClaim = append(r.Config.AuthenticatedGroupsClaim, types.StringValue(v))
+			}
 		}
 		r.Config.AuthorizationCookieDomain = types.StringPointerValue(resp.Config.AuthorizationCookieDomain)
 		r.Config.AuthorizationCookieHTTPOnly = types.BoolPointerValue(resp.Config.AuthorizationCookieHTTPOnly)
@@ -47,17 +53,23 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		}
 		r.Config.AuthorizationCookieSecure = types.BoolPointerValue(resp.Config.AuthorizationCookieSecure)
 		r.Config.AuthorizationEndpoint = types.StringPointerValue(resp.Config.AuthorizationEndpoint)
-		r.Config.AuthorizationQueryArgsClient = make([]types.String, 0, len(resp.Config.AuthorizationQueryArgsClient))
-		for _, v := range resp.Config.AuthorizationQueryArgsClient {
-			r.Config.AuthorizationQueryArgsClient = append(r.Config.AuthorizationQueryArgsClient, types.StringValue(v))
+		if resp.Config.AuthorizationQueryArgsClient != nil {
+			r.Config.AuthorizationQueryArgsClient = make([]types.String, 0, len(resp.Config.AuthorizationQueryArgsClient))
+			for _, v := range resp.Config.AuthorizationQueryArgsClient {
+				r.Config.AuthorizationQueryArgsClient = append(r.Config.AuthorizationQueryArgsClient, types.StringValue(v))
+			}
 		}
-		r.Config.AuthorizationQueryArgsNames = make([]types.String, 0, len(resp.Config.AuthorizationQueryArgsNames))
-		for _, v := range resp.Config.AuthorizationQueryArgsNames {
-			r.Config.AuthorizationQueryArgsNames = append(r.Config.AuthorizationQueryArgsNames, types.StringValue(v))
+		if resp.Config.AuthorizationQueryArgsNames != nil {
+			r.Config.AuthorizationQueryArgsNames = make([]types.String, 0, len(resp.Config.AuthorizationQueryArgsNames))
+			for _, v := range resp.Config.AuthorizationQueryArgsNames {
+				r.Config.AuthorizationQueryArgsNames = append(r.Config.AuthorizationQueryArgsNames, types.StringValue(v))
+			}
 		}
-		r.Config.AuthorizationQueryArgsValues = make([]types.String, 0, len(resp.Config.AuthorizationQueryArgsValues))
-		for _, v := range resp.Config.AuthorizationQueryArgsValues {
-			r.Config.AuthorizationQueryArgsValues = append(r.Config.AuthorizationQueryArgsValues, types.StringValue(v))
+		if resp.Config.AuthorizationQueryArgsValues != nil {
+			r.Config.AuthorizationQueryArgsValues = make([]types.String, 0, len(resp.Config.AuthorizationQueryArgsValues))
+			for _, v := range resp.Config.AuthorizationQueryArgsValues {
+				r.Config.AuthorizationQueryArgsValues = append(r.Config.AuthorizationQueryArgsValues, types.StringValue(v))
+			}
 		}
 		r.Config.AuthorizationRollingTimeout = types.Float64PointerValue(resp.Config.AuthorizationRollingTimeout)
 		r.Config.BearerTokenCookieName = types.StringPointerValue(resp.Config.BearerTokenCookieName)
@@ -76,116 +88,134 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		r.Config.CacheTTLNeg = types.Float64PointerValue(resp.Config.CacheTTLNeg)
 		r.Config.CacheTTLResurrect = types.Float64PointerValue(resp.Config.CacheTTLResurrect)
 		r.Config.CacheUserInfo = types.BoolPointerValue(resp.Config.CacheUserInfo)
-		r.Config.ClaimsForbidden = make([]types.String, 0, len(resp.Config.ClaimsForbidden))
-		for _, v := range resp.Config.ClaimsForbidden {
-			r.Config.ClaimsForbidden = append(r.Config.ClaimsForbidden, types.StringValue(v))
+		if resp.Config.ClaimsForbidden != nil {
+			r.Config.ClaimsForbidden = make([]types.String, 0, len(resp.Config.ClaimsForbidden))
+			for _, v := range resp.Config.ClaimsForbidden {
+				r.Config.ClaimsForbidden = append(r.Config.ClaimsForbidden, types.StringValue(v))
+			}
 		}
-		r.Config.ClientAlg = make([]types.String, 0, len(resp.Config.ClientAlg))
-		for _, v := range resp.Config.ClientAlg {
-			r.Config.ClientAlg = append(r.Config.ClientAlg, types.StringValue(string(v)))
+		if resp.Config.ClientAlg != nil {
+			r.Config.ClientAlg = make([]types.String, 0, len(resp.Config.ClientAlg))
+			for _, v := range resp.Config.ClientAlg {
+				r.Config.ClientAlg = append(r.Config.ClientAlg, types.StringValue(string(v)))
+			}
 		}
 		r.Config.ClientArg = types.StringPointerValue(resp.Config.ClientArg)
-		r.Config.ClientAuth = make([]types.String, 0, len(resp.Config.ClientAuth))
-		for _, v := range resp.Config.ClientAuth {
-			r.Config.ClientAuth = append(r.Config.ClientAuth, types.StringValue(string(v)))
+		if resp.Config.ClientAuth != nil {
+			r.Config.ClientAuth = make([]types.String, 0, len(resp.Config.ClientAuth))
+			for _, v := range resp.Config.ClientAuth {
+				r.Config.ClientAuth = append(r.Config.ClientAuth, types.StringValue(string(v)))
+			}
 		}
 		r.Config.ClientCredentialsParamType = make([]types.String, 0, len(resp.Config.ClientCredentialsParamType))
 		for _, v := range resp.Config.ClientCredentialsParamType {
 			r.Config.ClientCredentialsParamType = append(r.Config.ClientCredentialsParamType, types.StringValue(string(v)))
 		}
-		r.Config.ClientID = make([]types.String, 0, len(resp.Config.ClientID))
-		for _, v := range resp.Config.ClientID {
-			r.Config.ClientID = append(r.Config.ClientID, types.StringValue(v))
-		}
-		r.Config.ClientJwk = []tfTypes.ClientJwk{}
-		if len(r.Config.ClientJwk) > len(resp.Config.ClientJwk) {
-			r.Config.ClientJwk = r.Config.ClientJwk[:len(resp.Config.ClientJwk)]
-		}
-		for clientJwkCount, clientJwkItem := range resp.Config.ClientJwk {
-			var clientJwk tfTypes.ClientJwk
-			clientJwk.Alg = types.StringPointerValue(clientJwkItem.Alg)
-			clientJwk.Crv = types.StringPointerValue(clientJwkItem.Crv)
-			clientJwk.D = types.StringPointerValue(clientJwkItem.D)
-			clientJwk.Dp = types.StringPointerValue(clientJwkItem.Dp)
-			clientJwk.Dq = types.StringPointerValue(clientJwkItem.Dq)
-			clientJwk.E = types.StringPointerValue(clientJwkItem.E)
-			clientJwk.Issuer = types.StringPointerValue(clientJwkItem.Issuer)
-			clientJwk.K = types.StringPointerValue(clientJwkItem.K)
-			clientJwk.KeyOps = make([]types.String, 0, len(clientJwkItem.KeyOps))
-			for _, v := range clientJwkItem.KeyOps {
-				clientJwk.KeyOps = append(clientJwk.KeyOps, types.StringValue(v))
-			}
-			clientJwk.Kid = types.StringPointerValue(clientJwkItem.Kid)
-			clientJwk.Kty = types.StringPointerValue(clientJwkItem.Kty)
-			clientJwk.N = types.StringPointerValue(clientJwkItem.N)
-			clientJwk.Oth = types.StringPointerValue(clientJwkItem.Oth)
-			clientJwk.P = types.StringPointerValue(clientJwkItem.P)
-			clientJwk.Q = types.StringPointerValue(clientJwkItem.Q)
-			clientJwk.Qi = types.StringPointerValue(clientJwkItem.Qi)
-			clientJwk.R = types.StringPointerValue(clientJwkItem.R)
-			clientJwk.T = types.StringPointerValue(clientJwkItem.T)
-			clientJwk.Use = types.StringPointerValue(clientJwkItem.Use)
-			clientJwk.X = types.StringPointerValue(clientJwkItem.X)
-			clientJwk.X5c = make([]types.String, 0, len(clientJwkItem.X5c))
-			for _, v := range clientJwkItem.X5c {
-				clientJwk.X5c = append(clientJwk.X5c, types.StringValue(v))
-			}
-			clientJwk.X5t = types.StringPointerValue(clientJwkItem.X5t)
-			clientJwk.X5tNumberS256 = types.StringPointerValue(clientJwkItem.X5tNumberS256)
-			clientJwk.X5u = types.StringPointerValue(clientJwkItem.X5u)
-			clientJwk.Y = types.StringPointerValue(clientJwkItem.Y)
-			if clientJwkCount+1 > len(r.Config.ClientJwk) {
-				r.Config.ClientJwk = append(r.Config.ClientJwk, clientJwk)
-			} else {
-				r.Config.ClientJwk[clientJwkCount].Alg = clientJwk.Alg
-				r.Config.ClientJwk[clientJwkCount].Crv = clientJwk.Crv
-				r.Config.ClientJwk[clientJwkCount].D = clientJwk.D
-				r.Config.ClientJwk[clientJwkCount].Dp = clientJwk.Dp
-				r.Config.ClientJwk[clientJwkCount].Dq = clientJwk.Dq
-				r.Config.ClientJwk[clientJwkCount].E = clientJwk.E
-				r.Config.ClientJwk[clientJwkCount].Issuer = clientJwk.Issuer
-				r.Config.ClientJwk[clientJwkCount].K = clientJwk.K
-				r.Config.ClientJwk[clientJwkCount].KeyOps = clientJwk.KeyOps
-				r.Config.ClientJwk[clientJwkCount].Kid = clientJwk.Kid
-				r.Config.ClientJwk[clientJwkCount].Kty = clientJwk.Kty
-				r.Config.ClientJwk[clientJwkCount].N = clientJwk.N
-				r.Config.ClientJwk[clientJwkCount].Oth = clientJwk.Oth
-				r.Config.ClientJwk[clientJwkCount].P = clientJwk.P
-				r.Config.ClientJwk[clientJwkCount].Q = clientJwk.Q
-				r.Config.ClientJwk[clientJwkCount].Qi = clientJwk.Qi
-				r.Config.ClientJwk[clientJwkCount].R = clientJwk.R
-				r.Config.ClientJwk[clientJwkCount].T = clientJwk.T
-				r.Config.ClientJwk[clientJwkCount].Use = clientJwk.Use
-				r.Config.ClientJwk[clientJwkCount].X = clientJwk.X
-				r.Config.ClientJwk[clientJwkCount].X5c = clientJwk.X5c
-				r.Config.ClientJwk[clientJwkCount].X5t = clientJwk.X5t
-				r.Config.ClientJwk[clientJwkCount].X5tNumberS256 = clientJwk.X5tNumberS256
-				r.Config.ClientJwk[clientJwkCount].X5u = clientJwk.X5u
-				r.Config.ClientJwk[clientJwkCount].Y = clientJwk.Y
+		if resp.Config.ClientID != nil {
+			r.Config.ClientID = make([]types.String, 0, len(resp.Config.ClientID))
+			for _, v := range resp.Config.ClientID {
+				r.Config.ClientID = append(r.Config.ClientID, types.StringValue(v))
 			}
 		}
-		r.Config.ClientSecret = make([]types.String, 0, len(resp.Config.ClientSecret))
-		for _, v := range resp.Config.ClientSecret {
-			r.Config.ClientSecret = append(r.Config.ClientSecret, types.StringValue(v))
+		if resp.Config.ClientJwk != nil {
+			r.Config.ClientJwk = []tfTypes.ClientJwk{}
+			if len(r.Config.ClientJwk) > len(resp.Config.ClientJwk) {
+				r.Config.ClientJwk = r.Config.ClientJwk[:len(resp.Config.ClientJwk)]
+			}
+			for clientJwkCount, clientJwkItem := range resp.Config.ClientJwk {
+				var clientJwk tfTypes.ClientJwk
+				clientJwk.Alg = types.StringPointerValue(clientJwkItem.Alg)
+				clientJwk.Crv = types.StringPointerValue(clientJwkItem.Crv)
+				clientJwk.D = types.StringPointerValue(clientJwkItem.D)
+				clientJwk.Dp = types.StringPointerValue(clientJwkItem.Dp)
+				clientJwk.Dq = types.StringPointerValue(clientJwkItem.Dq)
+				clientJwk.E = types.StringPointerValue(clientJwkItem.E)
+				clientJwk.Issuer = types.StringPointerValue(clientJwkItem.Issuer)
+				clientJwk.K = types.StringPointerValue(clientJwkItem.K)
+				if clientJwkItem.KeyOps != nil {
+					clientJwk.KeyOps = make([]types.String, 0, len(clientJwkItem.KeyOps))
+					for _, v := range clientJwkItem.KeyOps {
+						clientJwk.KeyOps = append(clientJwk.KeyOps, types.StringValue(v))
+					}
+				}
+				clientJwk.Kid = types.StringPointerValue(clientJwkItem.Kid)
+				clientJwk.Kty = types.StringPointerValue(clientJwkItem.Kty)
+				clientJwk.N = types.StringPointerValue(clientJwkItem.N)
+				clientJwk.Oth = types.StringPointerValue(clientJwkItem.Oth)
+				clientJwk.P = types.StringPointerValue(clientJwkItem.P)
+				clientJwk.Q = types.StringPointerValue(clientJwkItem.Q)
+				clientJwk.Qi = types.StringPointerValue(clientJwkItem.Qi)
+				clientJwk.R = types.StringPointerValue(clientJwkItem.R)
+				clientJwk.T = types.StringPointerValue(clientJwkItem.T)
+				clientJwk.Use = types.StringPointerValue(clientJwkItem.Use)
+				clientJwk.X = types.StringPointerValue(clientJwkItem.X)
+				if clientJwkItem.X5c != nil {
+					clientJwk.X5c = make([]types.String, 0, len(clientJwkItem.X5c))
+					for _, v := range clientJwkItem.X5c {
+						clientJwk.X5c = append(clientJwk.X5c, types.StringValue(v))
+					}
+				}
+				clientJwk.X5t = types.StringPointerValue(clientJwkItem.X5t)
+				clientJwk.X5tNumberS256 = types.StringPointerValue(clientJwkItem.X5tNumberS256)
+				clientJwk.X5u = types.StringPointerValue(clientJwkItem.X5u)
+				clientJwk.Y = types.StringPointerValue(clientJwkItem.Y)
+				if clientJwkCount+1 > len(r.Config.ClientJwk) {
+					r.Config.ClientJwk = append(r.Config.ClientJwk, clientJwk)
+				} else {
+					r.Config.ClientJwk[clientJwkCount].Alg = clientJwk.Alg
+					r.Config.ClientJwk[clientJwkCount].Crv = clientJwk.Crv
+					r.Config.ClientJwk[clientJwkCount].D = clientJwk.D
+					r.Config.ClientJwk[clientJwkCount].Dp = clientJwk.Dp
+					r.Config.ClientJwk[clientJwkCount].Dq = clientJwk.Dq
+					r.Config.ClientJwk[clientJwkCount].E = clientJwk.E
+					r.Config.ClientJwk[clientJwkCount].Issuer = clientJwk.Issuer
+					r.Config.ClientJwk[clientJwkCount].K = clientJwk.K
+					r.Config.ClientJwk[clientJwkCount].KeyOps = clientJwk.KeyOps
+					r.Config.ClientJwk[clientJwkCount].Kid = clientJwk.Kid
+					r.Config.ClientJwk[clientJwkCount].Kty = clientJwk.Kty
+					r.Config.ClientJwk[clientJwkCount].N = clientJwk.N
+					r.Config.ClientJwk[clientJwkCount].Oth = clientJwk.Oth
+					r.Config.ClientJwk[clientJwkCount].P = clientJwk.P
+					r.Config.ClientJwk[clientJwkCount].Q = clientJwk.Q
+					r.Config.ClientJwk[clientJwkCount].Qi = clientJwk.Qi
+					r.Config.ClientJwk[clientJwkCount].R = clientJwk.R
+					r.Config.ClientJwk[clientJwkCount].T = clientJwk.T
+					r.Config.ClientJwk[clientJwkCount].Use = clientJwk.Use
+					r.Config.ClientJwk[clientJwkCount].X = clientJwk.X
+					r.Config.ClientJwk[clientJwkCount].X5c = clientJwk.X5c
+					r.Config.ClientJwk[clientJwkCount].X5t = clientJwk.X5t
+					r.Config.ClientJwk[clientJwkCount].X5tNumberS256 = clientJwk.X5tNumberS256
+					r.Config.ClientJwk[clientJwkCount].X5u = clientJwk.X5u
+					r.Config.ClientJwk[clientJwkCount].Y = clientJwk.Y
+				}
+			}
+		}
+		if resp.Config.ClientSecret != nil {
+			r.Config.ClientSecret = make([]types.String, 0, len(resp.Config.ClientSecret))
+			for _, v := range resp.Config.ClientSecret {
+				r.Config.ClientSecret = append(r.Config.ClientSecret, types.StringValue(v))
+			}
 		}
 		if resp.Config.ClusterCacheRedis == nil {
 			r.Config.ClusterCacheRedis = nil
 		} else {
 			r.Config.ClusterCacheRedis = &tfTypes.PartialRedisEeConfig{}
 			r.Config.ClusterCacheRedis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.ClusterCacheRedis.ClusterMaxRedirections)
-			r.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
-			if len(r.Config.ClusterCacheRedis.ClusterNodes) > len(resp.Config.ClusterCacheRedis.ClusterNodes) {
-				r.Config.ClusterCacheRedis.ClusterNodes = r.Config.ClusterCacheRedis.ClusterNodes[:len(resp.Config.ClusterCacheRedis.ClusterNodes)]
-			}
-			for clusterNodesCount, clusterNodesItem := range resp.Config.ClusterCacheRedis.ClusterNodes {
-				var clusterNodes tfTypes.PartialRedisEeClusterNodes
-				clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
-				clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
-				if clusterNodesCount+1 > len(r.Config.ClusterCacheRedis.ClusterNodes) {
-					r.Config.ClusterCacheRedis.ClusterNodes = append(r.Config.ClusterCacheRedis.ClusterNodes, clusterNodes)
-				} else {
-					r.Config.ClusterCacheRedis.ClusterNodes[clusterNodesCount].IP = clusterNodes.IP
-					r.Config.ClusterCacheRedis.ClusterNodes[clusterNodesCount].Port = clusterNodes.Port
+			if resp.Config.ClusterCacheRedis.ClusterNodes != nil {
+				r.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+				if len(r.Config.ClusterCacheRedis.ClusterNodes) > len(resp.Config.ClusterCacheRedis.ClusterNodes) {
+					r.Config.ClusterCacheRedis.ClusterNodes = r.Config.ClusterCacheRedis.ClusterNodes[:len(resp.Config.ClusterCacheRedis.ClusterNodes)]
+				}
+				for clusterNodesCount, clusterNodesItem := range resp.Config.ClusterCacheRedis.ClusterNodes {
+					var clusterNodes tfTypes.PartialRedisEeClusterNodes
+					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
+					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
+					if clusterNodesCount+1 > len(r.Config.ClusterCacheRedis.ClusterNodes) {
+						r.Config.ClusterCacheRedis.ClusterNodes = append(r.Config.ClusterCacheRedis.ClusterNodes, clusterNodes)
+					} else {
+						r.Config.ClusterCacheRedis.ClusterNodes[clusterNodesCount].IP = clusterNodes.IP
+						r.Config.ClusterCacheRedis.ClusterNodes[clusterNodesCount].Port = clusterNodes.Port
+					}
 				}
 			}
 			r.Config.ClusterCacheRedis.ConnectTimeout = types.Int64PointerValue(resp.Config.ClusterCacheRedis.ConnectTimeout)
@@ -199,19 +229,21 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			r.Config.ClusterCacheRedis.ReadTimeout = types.Int64PointerValue(resp.Config.ClusterCacheRedis.ReadTimeout)
 			r.Config.ClusterCacheRedis.SendTimeout = types.Int64PointerValue(resp.Config.ClusterCacheRedis.SendTimeout)
 			r.Config.ClusterCacheRedis.SentinelMaster = types.StringPointerValue(resp.Config.ClusterCacheRedis.SentinelMaster)
-			r.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
-			if len(r.Config.ClusterCacheRedis.SentinelNodes) > len(resp.Config.ClusterCacheRedis.SentinelNodes) {
-				r.Config.ClusterCacheRedis.SentinelNodes = r.Config.ClusterCacheRedis.SentinelNodes[:len(resp.Config.ClusterCacheRedis.SentinelNodes)]
-			}
-			for sentinelNodesCount, sentinelNodesItem := range resp.Config.ClusterCacheRedis.SentinelNodes {
-				var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
-				sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
-				sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
-				if sentinelNodesCount+1 > len(r.Config.ClusterCacheRedis.SentinelNodes) {
-					r.Config.ClusterCacheRedis.SentinelNodes = append(r.Config.ClusterCacheRedis.SentinelNodes, sentinelNodes)
-				} else {
-					r.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes.Host
-					r.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes.Port
+			if resp.Config.ClusterCacheRedis.SentinelNodes != nil {
+				r.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+				if len(r.Config.ClusterCacheRedis.SentinelNodes) > len(resp.Config.ClusterCacheRedis.SentinelNodes) {
+					r.Config.ClusterCacheRedis.SentinelNodes = r.Config.ClusterCacheRedis.SentinelNodes[:len(resp.Config.ClusterCacheRedis.SentinelNodes)]
+				}
+				for sentinelNodesCount, sentinelNodesItem := range resp.Config.ClusterCacheRedis.SentinelNodes {
+					var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
+					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+					if sentinelNodesCount+1 > len(r.Config.ClusterCacheRedis.SentinelNodes) {
+						r.Config.ClusterCacheRedis.SentinelNodes = append(r.Config.ClusterCacheRedis.SentinelNodes, sentinelNodes)
+					} else {
+						r.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes.Host
+						r.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes.Port
+					}
 				}
 			}
 			r.Config.ClusterCacheRedis.SentinelPassword = types.StringPointerValue(resp.Config.ClusterCacheRedis.SentinelPassword)
@@ -235,41 +267,55 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		for _, v := range resp.Config.ConsumerBy {
 			r.Config.ConsumerBy = append(r.Config.ConsumerBy, types.StringValue(string(v)))
 		}
-		r.Config.ConsumerClaim = make([]types.String, 0, len(resp.Config.ConsumerClaim))
-		for _, v := range resp.Config.ConsumerClaim {
-			r.Config.ConsumerClaim = append(r.Config.ConsumerClaim, types.StringValue(v))
+		if resp.Config.ConsumerClaim != nil {
+			r.Config.ConsumerClaim = make([]types.String, 0, len(resp.Config.ConsumerClaim))
+			for _, v := range resp.Config.ConsumerClaim {
+				r.Config.ConsumerClaim = append(r.Config.ConsumerClaim, types.StringValue(v))
+			}
 		}
 		r.Config.ConsumerOptional = types.BoolPointerValue(resp.Config.ConsumerOptional)
 		r.Config.CredentialClaim = make([]types.String, 0, len(resp.Config.CredentialClaim))
 		for _, v := range resp.Config.CredentialClaim {
 			r.Config.CredentialClaim = append(r.Config.CredentialClaim, types.StringValue(v))
 		}
-		r.Config.DisableSession = make([]types.String, 0, len(resp.Config.DisableSession))
-		for _, v := range resp.Config.DisableSession {
-			r.Config.DisableSession = append(r.Config.DisableSession, types.StringValue(string(v)))
+		if resp.Config.DisableSession != nil {
+			r.Config.DisableSession = make([]types.String, 0, len(resp.Config.DisableSession))
+			for _, v := range resp.Config.DisableSession {
+				r.Config.DisableSession = append(r.Config.DisableSession, types.StringValue(string(v)))
+			}
 		}
-		r.Config.DiscoveryHeadersNames = make([]types.String, 0, len(resp.Config.DiscoveryHeadersNames))
-		for _, v := range resp.Config.DiscoveryHeadersNames {
-			r.Config.DiscoveryHeadersNames = append(r.Config.DiscoveryHeadersNames, types.StringValue(v))
+		if resp.Config.DiscoveryHeadersNames != nil {
+			r.Config.DiscoveryHeadersNames = make([]types.String, 0, len(resp.Config.DiscoveryHeadersNames))
+			for _, v := range resp.Config.DiscoveryHeadersNames {
+				r.Config.DiscoveryHeadersNames = append(r.Config.DiscoveryHeadersNames, types.StringValue(v))
+			}
 		}
-		r.Config.DiscoveryHeadersValues = make([]types.String, 0, len(resp.Config.DiscoveryHeadersValues))
-		for _, v := range resp.Config.DiscoveryHeadersValues {
-			r.Config.DiscoveryHeadersValues = append(r.Config.DiscoveryHeadersValues, types.StringValue(v))
+		if resp.Config.DiscoveryHeadersValues != nil {
+			r.Config.DiscoveryHeadersValues = make([]types.String, 0, len(resp.Config.DiscoveryHeadersValues))
+			for _, v := range resp.Config.DiscoveryHeadersValues {
+				r.Config.DiscoveryHeadersValues = append(r.Config.DiscoveryHeadersValues, types.StringValue(v))
+			}
 		}
 		r.Config.DisplayErrors = types.BoolPointerValue(resp.Config.DisplayErrors)
-		r.Config.Domains = make([]types.String, 0, len(resp.Config.Domains))
-		for _, v := range resp.Config.Domains {
-			r.Config.Domains = append(r.Config.Domains, types.StringValue(v))
+		if resp.Config.Domains != nil {
+			r.Config.Domains = make([]types.String, 0, len(resp.Config.Domains))
+			for _, v := range resp.Config.Domains {
+				r.Config.Domains = append(r.Config.Domains, types.StringValue(v))
+			}
 		}
 		r.Config.DownstreamAccessTokenHeader = types.StringPointerValue(resp.Config.DownstreamAccessTokenHeader)
 		r.Config.DownstreamAccessTokenJwkHeader = types.StringPointerValue(resp.Config.DownstreamAccessTokenJwkHeader)
-		r.Config.DownstreamHeadersClaims = make([]types.String, 0, len(resp.Config.DownstreamHeadersClaims))
-		for _, v := range resp.Config.DownstreamHeadersClaims {
-			r.Config.DownstreamHeadersClaims = append(r.Config.DownstreamHeadersClaims, types.StringValue(v))
+		if resp.Config.DownstreamHeadersClaims != nil {
+			r.Config.DownstreamHeadersClaims = make([]types.String, 0, len(resp.Config.DownstreamHeadersClaims))
+			for _, v := range resp.Config.DownstreamHeadersClaims {
+				r.Config.DownstreamHeadersClaims = append(r.Config.DownstreamHeadersClaims, types.StringValue(v))
+			}
 		}
-		r.Config.DownstreamHeadersNames = make([]types.String, 0, len(resp.Config.DownstreamHeadersNames))
-		for _, v := range resp.Config.DownstreamHeadersNames {
-			r.Config.DownstreamHeadersNames = append(r.Config.DownstreamHeadersNames, types.StringValue(v))
+		if resp.Config.DownstreamHeadersNames != nil {
+			r.Config.DownstreamHeadersNames = make([]types.String, 0, len(resp.Config.DownstreamHeadersNames))
+			for _, v := range resp.Config.DownstreamHeadersNames {
+				r.Config.DownstreamHeadersNames = append(r.Config.DownstreamHeadersNames, types.StringValue(v))
+			}
 		}
 		r.Config.DownstreamIDTokenHeader = types.StringPointerValue(resp.Config.DownstreamIDTokenHeader)
 		r.Config.DownstreamIDTokenJwkHeader = types.StringPointerValue(resp.Config.DownstreamIDTokenJwkHeader)
@@ -284,23 +330,29 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		r.Config.EnableHsSignatures = types.BoolPointerValue(resp.Config.EnableHsSignatures)
 		r.Config.EndSessionEndpoint = types.StringPointerValue(resp.Config.EndSessionEndpoint)
 		r.Config.ExposeErrorCode = types.BoolPointerValue(resp.Config.ExposeErrorCode)
-		r.Config.ExtraJwksUris = make([]types.String, 0, len(resp.Config.ExtraJwksUris))
-		for _, v := range resp.Config.ExtraJwksUris {
-			r.Config.ExtraJwksUris = append(r.Config.ExtraJwksUris, types.StringValue(v))
+		if resp.Config.ExtraJwksUris != nil {
+			r.Config.ExtraJwksUris = make([]types.String, 0, len(resp.Config.ExtraJwksUris))
+			for _, v := range resp.Config.ExtraJwksUris {
+				r.Config.ExtraJwksUris = append(r.Config.ExtraJwksUris, types.StringValue(v))
+			}
 		}
 		r.Config.ForbiddenDestroySession = types.BoolPointerValue(resp.Config.ForbiddenDestroySession)
 		r.Config.ForbiddenErrorMessage = types.StringPointerValue(resp.Config.ForbiddenErrorMessage)
-		r.Config.ForbiddenRedirectURI = make([]types.String, 0, len(resp.Config.ForbiddenRedirectURI))
-		for _, v := range resp.Config.ForbiddenRedirectURI {
-			r.Config.ForbiddenRedirectURI = append(r.Config.ForbiddenRedirectURI, types.StringValue(v))
+		if resp.Config.ForbiddenRedirectURI != nil {
+			r.Config.ForbiddenRedirectURI = make([]types.String, 0, len(resp.Config.ForbiddenRedirectURI))
+			for _, v := range resp.Config.ForbiddenRedirectURI {
+				r.Config.ForbiddenRedirectURI = append(r.Config.ForbiddenRedirectURI, types.StringValue(v))
+			}
 		}
 		r.Config.GroupsClaim = make([]types.String, 0, len(resp.Config.GroupsClaim))
 		for _, v := range resp.Config.GroupsClaim {
 			r.Config.GroupsClaim = append(r.Config.GroupsClaim, types.StringValue(v))
 		}
-		r.Config.GroupsRequired = make([]types.String, 0, len(resp.Config.GroupsRequired))
-		for _, v := range resp.Config.GroupsRequired {
-			r.Config.GroupsRequired = append(r.Config.GroupsRequired, types.StringValue(v))
+		if resp.Config.GroupsRequired != nil {
+			r.Config.GroupsRequired = make([]types.String, 0, len(resp.Config.GroupsRequired))
+			for _, v := range resp.Config.GroupsRequired {
+				r.Config.GroupsRequired = append(r.Config.GroupsRequired, types.StringValue(v))
+			}
 		}
 		r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
 		r.Config.HTTPProxy = types.StringPointerValue(resp.Config.HTTPProxy)
@@ -330,40 +382,56 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		} else {
 			r.Config.IntrospectionEndpointAuthMethod = types.StringNull()
 		}
-		r.Config.IntrospectionHeadersClient = make([]types.String, 0, len(resp.Config.IntrospectionHeadersClient))
-		for _, v := range resp.Config.IntrospectionHeadersClient {
-			r.Config.IntrospectionHeadersClient = append(r.Config.IntrospectionHeadersClient, types.StringValue(v))
+		if resp.Config.IntrospectionHeadersClient != nil {
+			r.Config.IntrospectionHeadersClient = make([]types.String, 0, len(resp.Config.IntrospectionHeadersClient))
+			for _, v := range resp.Config.IntrospectionHeadersClient {
+				r.Config.IntrospectionHeadersClient = append(r.Config.IntrospectionHeadersClient, types.StringValue(v))
+			}
 		}
-		r.Config.IntrospectionHeadersNames = make([]types.String, 0, len(resp.Config.IntrospectionHeadersNames))
-		for _, v := range resp.Config.IntrospectionHeadersNames {
-			r.Config.IntrospectionHeadersNames = append(r.Config.IntrospectionHeadersNames, types.StringValue(v))
+		if resp.Config.IntrospectionHeadersNames != nil {
+			r.Config.IntrospectionHeadersNames = make([]types.String, 0, len(resp.Config.IntrospectionHeadersNames))
+			for _, v := range resp.Config.IntrospectionHeadersNames {
+				r.Config.IntrospectionHeadersNames = append(r.Config.IntrospectionHeadersNames, types.StringValue(v))
+			}
 		}
-		r.Config.IntrospectionHeadersValues = make([]types.String, 0, len(resp.Config.IntrospectionHeadersValues))
-		for _, v := range resp.Config.IntrospectionHeadersValues {
-			r.Config.IntrospectionHeadersValues = append(r.Config.IntrospectionHeadersValues, types.StringValue(v))
+		if resp.Config.IntrospectionHeadersValues != nil {
+			r.Config.IntrospectionHeadersValues = make([]types.String, 0, len(resp.Config.IntrospectionHeadersValues))
+			for _, v := range resp.Config.IntrospectionHeadersValues {
+				r.Config.IntrospectionHeadersValues = append(r.Config.IntrospectionHeadersValues, types.StringValue(v))
+			}
 		}
 		r.Config.IntrospectionHint = types.StringPointerValue(resp.Config.IntrospectionHint)
-		r.Config.IntrospectionPostArgsClient = make([]types.String, 0, len(resp.Config.IntrospectionPostArgsClient))
-		for _, v := range resp.Config.IntrospectionPostArgsClient {
-			r.Config.IntrospectionPostArgsClient = append(r.Config.IntrospectionPostArgsClient, types.StringValue(v))
+		if resp.Config.IntrospectionPostArgsClient != nil {
+			r.Config.IntrospectionPostArgsClient = make([]types.String, 0, len(resp.Config.IntrospectionPostArgsClient))
+			for _, v := range resp.Config.IntrospectionPostArgsClient {
+				r.Config.IntrospectionPostArgsClient = append(r.Config.IntrospectionPostArgsClient, types.StringValue(v))
+			}
 		}
-		r.Config.IntrospectionPostArgsClientHeaders = make([]types.String, 0, len(resp.Config.IntrospectionPostArgsClientHeaders))
-		for _, v := range resp.Config.IntrospectionPostArgsClientHeaders {
-			r.Config.IntrospectionPostArgsClientHeaders = append(r.Config.IntrospectionPostArgsClientHeaders, types.StringValue(v))
+		if resp.Config.IntrospectionPostArgsClientHeaders != nil {
+			r.Config.IntrospectionPostArgsClientHeaders = make([]types.String, 0, len(resp.Config.IntrospectionPostArgsClientHeaders))
+			for _, v := range resp.Config.IntrospectionPostArgsClientHeaders {
+				r.Config.IntrospectionPostArgsClientHeaders = append(r.Config.IntrospectionPostArgsClientHeaders, types.StringValue(v))
+			}
 		}
-		r.Config.IntrospectionPostArgsNames = make([]types.String, 0, len(resp.Config.IntrospectionPostArgsNames))
-		for _, v := range resp.Config.IntrospectionPostArgsNames {
-			r.Config.IntrospectionPostArgsNames = append(r.Config.IntrospectionPostArgsNames, types.StringValue(v))
+		if resp.Config.IntrospectionPostArgsNames != nil {
+			r.Config.IntrospectionPostArgsNames = make([]types.String, 0, len(resp.Config.IntrospectionPostArgsNames))
+			for _, v := range resp.Config.IntrospectionPostArgsNames {
+				r.Config.IntrospectionPostArgsNames = append(r.Config.IntrospectionPostArgsNames, types.StringValue(v))
+			}
 		}
-		r.Config.IntrospectionPostArgsValues = make([]types.String, 0, len(resp.Config.IntrospectionPostArgsValues))
-		for _, v := range resp.Config.IntrospectionPostArgsValues {
-			r.Config.IntrospectionPostArgsValues = append(r.Config.IntrospectionPostArgsValues, types.StringValue(v))
+		if resp.Config.IntrospectionPostArgsValues != nil {
+			r.Config.IntrospectionPostArgsValues = make([]types.String, 0, len(resp.Config.IntrospectionPostArgsValues))
+			for _, v := range resp.Config.IntrospectionPostArgsValues {
+				r.Config.IntrospectionPostArgsValues = append(r.Config.IntrospectionPostArgsValues, types.StringValue(v))
+			}
 		}
 		r.Config.IntrospectionTokenParamName = types.StringPointerValue(resp.Config.IntrospectionTokenParamName)
 		r.Config.Issuer = types.StringValue(resp.Config.Issuer)
-		r.Config.IssuersAllowed = make([]types.String, 0, len(resp.Config.IssuersAllowed))
-		for _, v := range resp.Config.IssuersAllowed {
-			r.Config.IssuersAllowed = append(r.Config.IssuersAllowed, types.StringValue(v))
+		if resp.Config.IssuersAllowed != nil {
+			r.Config.IssuersAllowed = make([]types.String, 0, len(resp.Config.IssuersAllowed))
+			for _, v := range resp.Config.IssuersAllowed {
+				r.Config.IssuersAllowed = append(r.Config.IssuersAllowed, types.StringValue(v))
+			}
 		}
 		r.Config.JwtSessionClaim = types.StringPointerValue(resp.Config.JwtSessionClaim)
 		r.Config.JwtSessionCookie = types.StringPointerValue(resp.Config.JwtSessionCookie)
@@ -383,9 +451,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		} else {
 			r.Config.LoginRedirectMode = types.StringNull()
 		}
-		r.Config.LoginRedirectURI = make([]types.String, 0, len(resp.Config.LoginRedirectURI))
-		for _, v := range resp.Config.LoginRedirectURI {
-			r.Config.LoginRedirectURI = append(r.Config.LoginRedirectURI, types.StringValue(v))
+		if resp.Config.LoginRedirectURI != nil {
+			r.Config.LoginRedirectURI = make([]types.String, 0, len(resp.Config.LoginRedirectURI))
+			for _, v := range resp.Config.LoginRedirectURI {
+				r.Config.LoginRedirectURI = append(r.Config.LoginRedirectURI, types.StringValue(v))
+			}
 		}
 		r.Config.LoginTokens = make([]types.String, 0, len(resp.Config.LoginTokens))
 		for _, v := range resp.Config.LoginTokens {
@@ -397,9 +467,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		}
 		r.Config.LogoutPostArg = types.StringPointerValue(resp.Config.LogoutPostArg)
 		r.Config.LogoutQueryArg = types.StringPointerValue(resp.Config.LogoutQueryArg)
-		r.Config.LogoutRedirectURI = make([]types.String, 0, len(resp.Config.LogoutRedirectURI))
-		for _, v := range resp.Config.LogoutRedirectURI {
-			r.Config.LogoutRedirectURI = append(r.Config.LogoutRedirectURI, types.StringValue(v))
+		if resp.Config.LogoutRedirectURI != nil {
+			r.Config.LogoutRedirectURI = make([]types.String, 0, len(resp.Config.LogoutRedirectURI))
+			for _, v := range resp.Config.LogoutRedirectURI {
+				r.Config.LogoutRedirectURI = append(r.Config.LogoutRedirectURI, types.StringValue(v))
+			}
 		}
 		r.Config.LogoutRevoke = types.BoolPointerValue(resp.Config.LogoutRevoke)
 		r.Config.LogoutRevokeAccessToken = types.BoolPointerValue(resp.Config.LogoutRevokeAccessToken)
@@ -432,28 +504,32 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		} else {
 			r.Config.PushedAuthorizationRequestEndpointAuthMethod = types.StringNull()
 		}
-		r.Config.RedirectURI = make([]types.String, 0, len(resp.Config.RedirectURI))
-		for _, v := range resp.Config.RedirectURI {
-			r.Config.RedirectURI = append(r.Config.RedirectURI, types.StringValue(v))
+		if resp.Config.RedirectURI != nil {
+			r.Config.RedirectURI = make([]types.String, 0, len(resp.Config.RedirectURI))
+			for _, v := range resp.Config.RedirectURI {
+				r.Config.RedirectURI = append(r.Config.RedirectURI, types.StringValue(v))
+			}
 		}
 		if resp.Config.Redis == nil {
 			r.Config.Redis = nil
 		} else {
 			r.Config.Redis = &tfTypes.OpenidConnectPluginRedis{}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
-			r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
-			if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
-				r.Config.Redis.ClusterNodes = r.Config.Redis.ClusterNodes[:len(resp.Config.Redis.ClusterNodes)]
-			}
-			for clusterNodesCount1, clusterNodesItem1 := range resp.Config.Redis.ClusterNodes {
-				var clusterNodes1 tfTypes.PartialRedisEeClusterNodes
-				clusterNodes1.IP = types.StringPointerValue(clusterNodesItem1.IP)
-				clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem1.Port)
-				if clusterNodesCount1+1 > len(r.Config.Redis.ClusterNodes) {
-					r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes1)
-				} else {
-					r.Config.Redis.ClusterNodes[clusterNodesCount1].IP = clusterNodes1.IP
-					r.Config.Redis.ClusterNodes[clusterNodesCount1].Port = clusterNodes1.Port
+			if resp.Config.Redis.ClusterNodes != nil {
+				r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+				if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
+					r.Config.Redis.ClusterNodes = r.Config.Redis.ClusterNodes[:len(resp.Config.Redis.ClusterNodes)]
+				}
+				for clusterNodesCount1, clusterNodesItem1 := range resp.Config.Redis.ClusterNodes {
+					var clusterNodes1 tfTypes.PartialRedisEeClusterNodes
+					clusterNodes1.IP = types.StringPointerValue(clusterNodesItem1.IP)
+					clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem1.Port)
+					if clusterNodesCount1+1 > len(r.Config.Redis.ClusterNodes) {
+						r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes1)
+					} else {
+						r.Config.Redis.ClusterNodes[clusterNodesCount1].IP = clusterNodes1.IP
+						r.Config.Redis.ClusterNodes[clusterNodesCount1].Port = clusterNodes1.Port
+					}
 				}
 			}
 			r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
@@ -468,19 +544,21 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
 			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
-			r.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
-			if len(r.Config.Redis.SentinelNodes) > len(resp.Config.Redis.SentinelNodes) {
-				r.Config.Redis.SentinelNodes = r.Config.Redis.SentinelNodes[:len(resp.Config.Redis.SentinelNodes)]
-			}
-			for sentinelNodesCount1, sentinelNodesItem1 := range resp.Config.Redis.SentinelNodes {
-				var sentinelNodes1 tfTypes.PartialRedisEeSentinelNodes
-				sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem1.Host)
-				sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
-				if sentinelNodesCount1+1 > len(r.Config.Redis.SentinelNodes) {
-					r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes1)
-				} else {
-					r.Config.Redis.SentinelNodes[sentinelNodesCount1].Host = sentinelNodes1.Host
-					r.Config.Redis.SentinelNodes[sentinelNodesCount1].Port = sentinelNodes1.Port
+			if resp.Config.Redis.SentinelNodes != nil {
+				r.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+				if len(r.Config.Redis.SentinelNodes) > len(resp.Config.Redis.SentinelNodes) {
+					r.Config.Redis.SentinelNodes = r.Config.Redis.SentinelNodes[:len(resp.Config.Redis.SentinelNodes)]
+				}
+				for sentinelNodesCount1, sentinelNodesItem1 := range resp.Config.Redis.SentinelNodes {
+					var sentinelNodes1 tfTypes.PartialRedisEeSentinelNodes
+					sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem1.Host)
+					sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
+					if sentinelNodesCount1+1 > len(r.Config.Redis.SentinelNodes) {
+						r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes1)
+					} else {
+						r.Config.Redis.SentinelNodes[sentinelNodesCount1].Host = sentinelNodes1.Host
+						r.Config.Redis.SentinelNodes[sentinelNodesCount1].Port = sentinelNodes1.Port
+					}
 				}
 			}
 			r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
@@ -528,9 +606,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		for _, v := range resp.Config.RolesClaim {
 			r.Config.RolesClaim = append(r.Config.RolesClaim, types.StringValue(v))
 		}
-		r.Config.RolesRequired = make([]types.String, 0, len(resp.Config.RolesRequired))
-		for _, v := range resp.Config.RolesRequired {
-			r.Config.RolesRequired = append(r.Config.RolesRequired, types.StringValue(v))
+		if resp.Config.RolesRequired != nil {
+			r.Config.RolesRequired = make([]types.String, 0, len(resp.Config.RolesRequired))
+			for _, v := range resp.Config.RolesRequired {
+				r.Config.RolesRequired = append(r.Config.RolesRequired, types.StringValue(v))
+			}
 		}
 		r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
 		if resp.Config.Scopes != nil {
@@ -543,9 +623,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		for _, v := range resp.Config.ScopesClaim {
 			r.Config.ScopesClaim = append(r.Config.ScopesClaim, types.StringValue(v))
 		}
-		r.Config.ScopesRequired = make([]types.String, 0, len(resp.Config.ScopesRequired))
-		for _, v := range resp.Config.ScopesRequired {
-			r.Config.ScopesRequired = append(r.Config.ScopesRequired, types.StringValue(v))
+		if resp.Config.ScopesRequired != nil {
+			r.Config.ScopesRequired = make([]types.String, 0, len(resp.Config.ScopesRequired))
+			for _, v := range resp.Config.ScopesRequired {
+				r.Config.ScopesRequired = append(r.Config.ScopesRequired, types.StringValue(v))
+			}
 		}
 		r.Config.SearchUserInfo = types.BoolPointerValue(resp.Config.SearchUserInfo)
 		r.Config.SessionAbsoluteTimeout = types.Float64PointerValue(resp.Config.SessionAbsoluteTimeout)
@@ -572,13 +654,17 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		r.Config.SessionRememberAbsoluteTimeout = types.Float64PointerValue(resp.Config.SessionRememberAbsoluteTimeout)
 		r.Config.SessionRememberCookieName = types.StringPointerValue(resp.Config.SessionRememberCookieName)
 		r.Config.SessionRememberRollingTimeout = types.Float64PointerValue(resp.Config.SessionRememberRollingTimeout)
-		r.Config.SessionRequestHeaders = make([]types.String, 0, len(resp.Config.SessionRequestHeaders))
-		for _, v := range resp.Config.SessionRequestHeaders {
-			r.Config.SessionRequestHeaders = append(r.Config.SessionRequestHeaders, types.StringValue(string(v)))
+		if resp.Config.SessionRequestHeaders != nil {
+			r.Config.SessionRequestHeaders = make([]types.String, 0, len(resp.Config.SessionRequestHeaders))
+			for _, v := range resp.Config.SessionRequestHeaders {
+				r.Config.SessionRequestHeaders = append(r.Config.SessionRequestHeaders, types.StringValue(string(v)))
+			}
 		}
-		r.Config.SessionResponseHeaders = make([]types.String, 0, len(resp.Config.SessionResponseHeaders))
-		for _, v := range resp.Config.SessionResponseHeaders {
-			r.Config.SessionResponseHeaders = append(r.Config.SessionResponseHeaders, types.StringValue(string(v)))
+		if resp.Config.SessionResponseHeaders != nil {
+			r.Config.SessionResponseHeaders = make([]types.String, 0, len(resp.Config.SessionResponseHeaders))
+			for _, v := range resp.Config.SessionResponseHeaders {
+				r.Config.SessionResponseHeaders = append(r.Config.SessionResponseHeaders, types.StringValue(string(v)))
+			}
 		}
 		r.Config.SessionRollingTimeout = types.Float64PointerValue(resp.Config.SessionRollingTimeout)
 		r.Config.SessionSecret = types.StringPointerValue(resp.Config.SessionSecret)
@@ -600,58 +686,82 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			r.Config.TokenEndpointAuthMethod = types.StringNull()
 		}
 		r.Config.TokenExchangeEndpoint = types.StringPointerValue(resp.Config.TokenExchangeEndpoint)
-		r.Config.TokenHeadersClient = make([]types.String, 0, len(resp.Config.TokenHeadersClient))
-		for _, v := range resp.Config.TokenHeadersClient {
-			r.Config.TokenHeadersClient = append(r.Config.TokenHeadersClient, types.StringValue(v))
+		if resp.Config.TokenHeadersClient != nil {
+			r.Config.TokenHeadersClient = make([]types.String, 0, len(resp.Config.TokenHeadersClient))
+			for _, v := range resp.Config.TokenHeadersClient {
+				r.Config.TokenHeadersClient = append(r.Config.TokenHeadersClient, types.StringValue(v))
+			}
 		}
-		r.Config.TokenHeadersGrants = make([]types.String, 0, len(resp.Config.TokenHeadersGrants))
-		for _, v := range resp.Config.TokenHeadersGrants {
-			r.Config.TokenHeadersGrants = append(r.Config.TokenHeadersGrants, types.StringValue(string(v)))
+		if resp.Config.TokenHeadersGrants != nil {
+			r.Config.TokenHeadersGrants = make([]types.String, 0, len(resp.Config.TokenHeadersGrants))
+			for _, v := range resp.Config.TokenHeadersGrants {
+				r.Config.TokenHeadersGrants = append(r.Config.TokenHeadersGrants, types.StringValue(string(v)))
+			}
 		}
-		r.Config.TokenHeadersNames = make([]types.String, 0, len(resp.Config.TokenHeadersNames))
-		for _, v := range resp.Config.TokenHeadersNames {
-			r.Config.TokenHeadersNames = append(r.Config.TokenHeadersNames, types.StringValue(v))
+		if resp.Config.TokenHeadersNames != nil {
+			r.Config.TokenHeadersNames = make([]types.String, 0, len(resp.Config.TokenHeadersNames))
+			for _, v := range resp.Config.TokenHeadersNames {
+				r.Config.TokenHeadersNames = append(r.Config.TokenHeadersNames, types.StringValue(v))
+			}
 		}
 		r.Config.TokenHeadersPrefix = types.StringPointerValue(resp.Config.TokenHeadersPrefix)
-		r.Config.TokenHeadersReplay = make([]types.String, 0, len(resp.Config.TokenHeadersReplay))
-		for _, v := range resp.Config.TokenHeadersReplay {
-			r.Config.TokenHeadersReplay = append(r.Config.TokenHeadersReplay, types.StringValue(v))
+		if resp.Config.TokenHeadersReplay != nil {
+			r.Config.TokenHeadersReplay = make([]types.String, 0, len(resp.Config.TokenHeadersReplay))
+			for _, v := range resp.Config.TokenHeadersReplay {
+				r.Config.TokenHeadersReplay = append(r.Config.TokenHeadersReplay, types.StringValue(v))
+			}
 		}
-		r.Config.TokenHeadersValues = make([]types.String, 0, len(resp.Config.TokenHeadersValues))
-		for _, v := range resp.Config.TokenHeadersValues {
-			r.Config.TokenHeadersValues = append(r.Config.TokenHeadersValues, types.StringValue(v))
+		if resp.Config.TokenHeadersValues != nil {
+			r.Config.TokenHeadersValues = make([]types.String, 0, len(resp.Config.TokenHeadersValues))
+			for _, v := range resp.Config.TokenHeadersValues {
+				r.Config.TokenHeadersValues = append(r.Config.TokenHeadersValues, types.StringValue(v))
+			}
 		}
-		r.Config.TokenPostArgsClient = make([]types.String, 0, len(resp.Config.TokenPostArgsClient))
-		for _, v := range resp.Config.TokenPostArgsClient {
-			r.Config.TokenPostArgsClient = append(r.Config.TokenPostArgsClient, types.StringValue(v))
+		if resp.Config.TokenPostArgsClient != nil {
+			r.Config.TokenPostArgsClient = make([]types.String, 0, len(resp.Config.TokenPostArgsClient))
+			for _, v := range resp.Config.TokenPostArgsClient {
+				r.Config.TokenPostArgsClient = append(r.Config.TokenPostArgsClient, types.StringValue(v))
+			}
 		}
-		r.Config.TokenPostArgsNames = make([]types.String, 0, len(resp.Config.TokenPostArgsNames))
-		for _, v := range resp.Config.TokenPostArgsNames {
-			r.Config.TokenPostArgsNames = append(r.Config.TokenPostArgsNames, types.StringValue(v))
+		if resp.Config.TokenPostArgsNames != nil {
+			r.Config.TokenPostArgsNames = make([]types.String, 0, len(resp.Config.TokenPostArgsNames))
+			for _, v := range resp.Config.TokenPostArgsNames {
+				r.Config.TokenPostArgsNames = append(r.Config.TokenPostArgsNames, types.StringValue(v))
+			}
 		}
-		r.Config.TokenPostArgsValues = make([]types.String, 0, len(resp.Config.TokenPostArgsValues))
-		for _, v := range resp.Config.TokenPostArgsValues {
-			r.Config.TokenPostArgsValues = append(r.Config.TokenPostArgsValues, types.StringValue(v))
+		if resp.Config.TokenPostArgsValues != nil {
+			r.Config.TokenPostArgsValues = make([]types.String, 0, len(resp.Config.TokenPostArgsValues))
+			for _, v := range resp.Config.TokenPostArgsValues {
+				r.Config.TokenPostArgsValues = append(r.Config.TokenPostArgsValues, types.StringValue(v))
+			}
 		}
 		r.Config.UnauthorizedDestroySession = types.BoolPointerValue(resp.Config.UnauthorizedDestroySession)
 		r.Config.UnauthorizedErrorMessage = types.StringPointerValue(resp.Config.UnauthorizedErrorMessage)
-		r.Config.UnauthorizedRedirectURI = make([]types.String, 0, len(resp.Config.UnauthorizedRedirectURI))
-		for _, v := range resp.Config.UnauthorizedRedirectURI {
-			r.Config.UnauthorizedRedirectURI = append(r.Config.UnauthorizedRedirectURI, types.StringValue(v))
+		if resp.Config.UnauthorizedRedirectURI != nil {
+			r.Config.UnauthorizedRedirectURI = make([]types.String, 0, len(resp.Config.UnauthorizedRedirectURI))
+			for _, v := range resp.Config.UnauthorizedRedirectURI {
+				r.Config.UnauthorizedRedirectURI = append(r.Config.UnauthorizedRedirectURI, types.StringValue(v))
+			}
 		}
-		r.Config.UnexpectedRedirectURI = make([]types.String, 0, len(resp.Config.UnexpectedRedirectURI))
-		for _, v := range resp.Config.UnexpectedRedirectURI {
-			r.Config.UnexpectedRedirectURI = append(r.Config.UnexpectedRedirectURI, types.StringValue(v))
+		if resp.Config.UnexpectedRedirectURI != nil {
+			r.Config.UnexpectedRedirectURI = make([]types.String, 0, len(resp.Config.UnexpectedRedirectURI))
+			for _, v := range resp.Config.UnexpectedRedirectURI {
+				r.Config.UnexpectedRedirectURI = append(r.Config.UnexpectedRedirectURI, types.StringValue(v))
+			}
 		}
 		r.Config.UpstreamAccessTokenHeader = types.StringPointerValue(resp.Config.UpstreamAccessTokenHeader)
 		r.Config.UpstreamAccessTokenJwkHeader = types.StringPointerValue(resp.Config.UpstreamAccessTokenJwkHeader)
-		r.Config.UpstreamHeadersClaims = make([]types.String, 0, len(resp.Config.UpstreamHeadersClaims))
-		for _, v := range resp.Config.UpstreamHeadersClaims {
-			r.Config.UpstreamHeadersClaims = append(r.Config.UpstreamHeadersClaims, types.StringValue(v))
+		if resp.Config.UpstreamHeadersClaims != nil {
+			r.Config.UpstreamHeadersClaims = make([]types.String, 0, len(resp.Config.UpstreamHeadersClaims))
+			for _, v := range resp.Config.UpstreamHeadersClaims {
+				r.Config.UpstreamHeadersClaims = append(r.Config.UpstreamHeadersClaims, types.StringValue(v))
+			}
 		}
-		r.Config.UpstreamHeadersNames = make([]types.String, 0, len(resp.Config.UpstreamHeadersNames))
-		for _, v := range resp.Config.UpstreamHeadersNames {
-			r.Config.UpstreamHeadersNames = append(r.Config.UpstreamHeadersNames, types.StringValue(v))
+		if resp.Config.UpstreamHeadersNames != nil {
+			r.Config.UpstreamHeadersNames = make([]types.String, 0, len(resp.Config.UpstreamHeadersNames))
+			for _, v := range resp.Config.UpstreamHeadersNames {
+				r.Config.UpstreamHeadersNames = append(r.Config.UpstreamHeadersNames, types.StringValue(v))
+			}
 		}
 		r.Config.UpstreamIDTokenHeader = types.StringPointerValue(resp.Config.UpstreamIDTokenHeader)
 		r.Config.UpstreamIDTokenJwkHeader = types.StringPointerValue(resp.Config.UpstreamIDTokenJwkHeader)
@@ -667,29 +777,41 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			r.Config.UserinfoAccept = types.StringNull()
 		}
 		r.Config.UserinfoEndpoint = types.StringPointerValue(resp.Config.UserinfoEndpoint)
-		r.Config.UserinfoHeadersClient = make([]types.String, 0, len(resp.Config.UserinfoHeadersClient))
-		for _, v := range resp.Config.UserinfoHeadersClient {
-			r.Config.UserinfoHeadersClient = append(r.Config.UserinfoHeadersClient, types.StringValue(v))
+		if resp.Config.UserinfoHeadersClient != nil {
+			r.Config.UserinfoHeadersClient = make([]types.String, 0, len(resp.Config.UserinfoHeadersClient))
+			for _, v := range resp.Config.UserinfoHeadersClient {
+				r.Config.UserinfoHeadersClient = append(r.Config.UserinfoHeadersClient, types.StringValue(v))
+			}
 		}
-		r.Config.UserinfoHeadersNames = make([]types.String, 0, len(resp.Config.UserinfoHeadersNames))
-		for _, v := range resp.Config.UserinfoHeadersNames {
-			r.Config.UserinfoHeadersNames = append(r.Config.UserinfoHeadersNames, types.StringValue(v))
+		if resp.Config.UserinfoHeadersNames != nil {
+			r.Config.UserinfoHeadersNames = make([]types.String, 0, len(resp.Config.UserinfoHeadersNames))
+			for _, v := range resp.Config.UserinfoHeadersNames {
+				r.Config.UserinfoHeadersNames = append(r.Config.UserinfoHeadersNames, types.StringValue(v))
+			}
 		}
-		r.Config.UserinfoHeadersValues = make([]types.String, 0, len(resp.Config.UserinfoHeadersValues))
-		for _, v := range resp.Config.UserinfoHeadersValues {
-			r.Config.UserinfoHeadersValues = append(r.Config.UserinfoHeadersValues, types.StringValue(v))
+		if resp.Config.UserinfoHeadersValues != nil {
+			r.Config.UserinfoHeadersValues = make([]types.String, 0, len(resp.Config.UserinfoHeadersValues))
+			for _, v := range resp.Config.UserinfoHeadersValues {
+				r.Config.UserinfoHeadersValues = append(r.Config.UserinfoHeadersValues, types.StringValue(v))
+			}
 		}
-		r.Config.UserinfoQueryArgsClient = make([]types.String, 0, len(resp.Config.UserinfoQueryArgsClient))
-		for _, v := range resp.Config.UserinfoQueryArgsClient {
-			r.Config.UserinfoQueryArgsClient = append(r.Config.UserinfoQueryArgsClient, types.StringValue(v))
+		if resp.Config.UserinfoQueryArgsClient != nil {
+			r.Config.UserinfoQueryArgsClient = make([]types.String, 0, len(resp.Config.UserinfoQueryArgsClient))
+			for _, v := range resp.Config.UserinfoQueryArgsClient {
+				r.Config.UserinfoQueryArgsClient = append(r.Config.UserinfoQueryArgsClient, types.StringValue(v))
+			}
 		}
-		r.Config.UserinfoQueryArgsNames = make([]types.String, 0, len(resp.Config.UserinfoQueryArgsNames))
-		for _, v := range resp.Config.UserinfoQueryArgsNames {
-			r.Config.UserinfoQueryArgsNames = append(r.Config.UserinfoQueryArgsNames, types.StringValue(v))
+		if resp.Config.UserinfoQueryArgsNames != nil {
+			r.Config.UserinfoQueryArgsNames = make([]types.String, 0, len(resp.Config.UserinfoQueryArgsNames))
+			for _, v := range resp.Config.UserinfoQueryArgsNames {
+				r.Config.UserinfoQueryArgsNames = append(r.Config.UserinfoQueryArgsNames, types.StringValue(v))
+			}
 		}
-		r.Config.UserinfoQueryArgsValues = make([]types.String, 0, len(resp.Config.UserinfoQueryArgsValues))
-		for _, v := range resp.Config.UserinfoQueryArgsValues {
-			r.Config.UserinfoQueryArgsValues = append(r.Config.UserinfoQueryArgsValues, types.StringValue(v))
+		if resp.Config.UserinfoQueryArgsValues != nil {
+			r.Config.UserinfoQueryArgsValues = make([]types.String, 0, len(resp.Config.UserinfoQueryArgsValues))
+			for _, v := range resp.Config.UserinfoQueryArgsValues {
+				r.Config.UserinfoQueryArgsValues = append(r.Config.UserinfoQueryArgsValues, types.StringValue(v))
+			}
 		}
 		r.Config.UsingPseudoIssuer = types.BoolPointerValue(resp.Config.UsingPseudoIssuer)
 		r.Config.VerifyClaims = types.BoolPointerValue(resp.Config.VerifyClaims)
@@ -708,18 +830,22 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -881,9 +1007,12 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	if r.Ordering != nil {
 		var after *shared.OpenidConnectPluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.OpenidConnectPluginAfter{
 				Access: access,
@@ -891,9 +1020,12 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		}
 		var before *shared.OpenidConnectPluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.OpenidConnectPluginBefore{
 				Access: access1,
@@ -952,25 +1084,34 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		anonymous = nil
 	}
-	audience := make([]string, 0, len(r.Config.Audience))
-	for _, audienceItem := range r.Config.Audience {
-		audience = append(audience, audienceItem.ValueString())
+	var audience []string
+	if r.Config.Audience != nil {
+		audience = make([]string, 0, len(r.Config.Audience))
+		for _, audienceItem := range r.Config.Audience {
+			audience = append(audience, audienceItem.ValueString())
+		}
 	}
 	audienceClaim := make([]string, 0, len(r.Config.AudienceClaim))
 	for _, audienceClaimItem := range r.Config.AudienceClaim {
 		audienceClaim = append(audienceClaim, audienceClaimItem.ValueString())
 	}
-	audienceRequired := make([]string, 0, len(r.Config.AudienceRequired))
-	for _, audienceRequiredItem := range r.Config.AudienceRequired {
-		audienceRequired = append(audienceRequired, audienceRequiredItem.ValueString())
+	var audienceRequired []string
+	if r.Config.AudienceRequired != nil {
+		audienceRequired = make([]string, 0, len(r.Config.AudienceRequired))
+		for _, audienceRequiredItem := range r.Config.AudienceRequired {
+			audienceRequired = append(audienceRequired, audienceRequiredItem.ValueString())
+		}
 	}
 	authMethods := make([]shared.AuthMethods, 0, len(r.Config.AuthMethods))
 	for _, authMethodsItem := range r.Config.AuthMethods {
 		authMethods = append(authMethods, shared.AuthMethods(authMethodsItem.ValueString()))
 	}
-	authenticatedGroupsClaim := make([]string, 0, len(r.Config.AuthenticatedGroupsClaim))
-	for _, authenticatedGroupsClaimItem := range r.Config.AuthenticatedGroupsClaim {
-		authenticatedGroupsClaim = append(authenticatedGroupsClaim, authenticatedGroupsClaimItem.ValueString())
+	var authenticatedGroupsClaim []string
+	if r.Config.AuthenticatedGroupsClaim != nil {
+		authenticatedGroupsClaim = make([]string, 0, len(r.Config.AuthenticatedGroupsClaim))
+		for _, authenticatedGroupsClaimItem := range r.Config.AuthenticatedGroupsClaim {
+			authenticatedGroupsClaim = append(authenticatedGroupsClaim, authenticatedGroupsClaimItem.ValueString())
+		}
 	}
 	authorizationCookieDomain := new(string)
 	if !r.Config.AuthorizationCookieDomain.IsUnknown() && !r.Config.AuthorizationCookieDomain.IsNull() {
@@ -1014,17 +1155,26 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		authorizationEndpoint = nil
 	}
-	authorizationQueryArgsClient := make([]string, 0, len(r.Config.AuthorizationQueryArgsClient))
-	for _, authorizationQueryArgsClientItem := range r.Config.AuthorizationQueryArgsClient {
-		authorizationQueryArgsClient = append(authorizationQueryArgsClient, authorizationQueryArgsClientItem.ValueString())
+	var authorizationQueryArgsClient []string
+	if r.Config.AuthorizationQueryArgsClient != nil {
+		authorizationQueryArgsClient = make([]string, 0, len(r.Config.AuthorizationQueryArgsClient))
+		for _, authorizationQueryArgsClientItem := range r.Config.AuthorizationQueryArgsClient {
+			authorizationQueryArgsClient = append(authorizationQueryArgsClient, authorizationQueryArgsClientItem.ValueString())
+		}
 	}
-	authorizationQueryArgsNames := make([]string, 0, len(r.Config.AuthorizationQueryArgsNames))
-	for _, authorizationQueryArgsNamesItem := range r.Config.AuthorizationQueryArgsNames {
-		authorizationQueryArgsNames = append(authorizationQueryArgsNames, authorizationQueryArgsNamesItem.ValueString())
+	var authorizationQueryArgsNames []string
+	if r.Config.AuthorizationQueryArgsNames != nil {
+		authorizationQueryArgsNames = make([]string, 0, len(r.Config.AuthorizationQueryArgsNames))
+		for _, authorizationQueryArgsNamesItem := range r.Config.AuthorizationQueryArgsNames {
+			authorizationQueryArgsNames = append(authorizationQueryArgsNames, authorizationQueryArgsNamesItem.ValueString())
+		}
 	}
-	authorizationQueryArgsValues := make([]string, 0, len(r.Config.AuthorizationQueryArgsValues))
-	for _, authorizationQueryArgsValuesItem := range r.Config.AuthorizationQueryArgsValues {
-		authorizationQueryArgsValues = append(authorizationQueryArgsValues, authorizationQueryArgsValuesItem.ValueString())
+	var authorizationQueryArgsValues []string
+	if r.Config.AuthorizationQueryArgsValues != nil {
+		authorizationQueryArgsValues = make([]string, 0, len(r.Config.AuthorizationQueryArgsValues))
+		for _, authorizationQueryArgsValuesItem := range r.Config.AuthorizationQueryArgsValues {
+			authorizationQueryArgsValues = append(authorizationQueryArgsValues, authorizationQueryArgsValuesItem.ValueString())
+		}
 	}
 	authorizationRollingTimeout := new(float64)
 	if !r.Config.AuthorizationRollingTimeout.IsUnknown() && !r.Config.AuthorizationRollingTimeout.IsNull() {
@@ -1108,13 +1258,19 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		cacheUserInfo = nil
 	}
-	claimsForbidden := make([]string, 0, len(r.Config.ClaimsForbidden))
-	for _, claimsForbiddenItem := range r.Config.ClaimsForbidden {
-		claimsForbidden = append(claimsForbidden, claimsForbiddenItem.ValueString())
+	var claimsForbidden []string
+	if r.Config.ClaimsForbidden != nil {
+		claimsForbidden = make([]string, 0, len(r.Config.ClaimsForbidden))
+		for _, claimsForbiddenItem := range r.Config.ClaimsForbidden {
+			claimsForbidden = append(claimsForbidden, claimsForbiddenItem.ValueString())
+		}
 	}
-	clientAlg := make([]shared.ClientAlg, 0, len(r.Config.ClientAlg))
-	for _, clientAlgItem := range r.Config.ClientAlg {
-		clientAlg = append(clientAlg, shared.ClientAlg(clientAlgItem.ValueString()))
+	var clientAlg []shared.ClientAlg
+	if r.Config.ClientAlg != nil {
+		clientAlg = make([]shared.ClientAlg, 0, len(r.Config.ClientAlg))
+		for _, clientAlgItem := range r.Config.ClientAlg {
+			clientAlg = append(clientAlg, shared.ClientAlg(clientAlgItem.ValueString()))
+		}
 	}
 	clientArg := new(string)
 	if !r.Config.ClientArg.IsUnknown() && !r.Config.ClientArg.IsNull() {
@@ -1122,197 +1278,215 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		clientArg = nil
 	}
-	clientAuth := make([]shared.ClientAuth, 0, len(r.Config.ClientAuth))
-	for _, clientAuthItem := range r.Config.ClientAuth {
-		clientAuth = append(clientAuth, shared.ClientAuth(clientAuthItem.ValueString()))
+	var clientAuth []shared.ClientAuth
+	if r.Config.ClientAuth != nil {
+		clientAuth = make([]shared.ClientAuth, 0, len(r.Config.ClientAuth))
+		for _, clientAuthItem := range r.Config.ClientAuth {
+			clientAuth = append(clientAuth, shared.ClientAuth(clientAuthItem.ValueString()))
+		}
 	}
 	clientCredentialsParamType := make([]shared.ClientCredentialsParamType, 0, len(r.Config.ClientCredentialsParamType))
 	for _, clientCredentialsParamTypeItem := range r.Config.ClientCredentialsParamType {
 		clientCredentialsParamType = append(clientCredentialsParamType, shared.ClientCredentialsParamType(clientCredentialsParamTypeItem.ValueString()))
 	}
-	clientID := make([]string, 0, len(r.Config.ClientID))
-	for _, clientIDItem := range r.Config.ClientID {
-		clientID = append(clientID, clientIDItem.ValueString())
+	var clientID []string
+	if r.Config.ClientID != nil {
+		clientID = make([]string, 0, len(r.Config.ClientID))
+		for _, clientIDItem := range r.Config.ClientID {
+			clientID = append(clientID, clientIDItem.ValueString())
+		}
 	}
-	clientJwk := make([]shared.ClientJwk, 0, len(r.Config.ClientJwk))
-	for _, clientJwkItem := range r.Config.ClientJwk {
-		alg := new(string)
-		if !clientJwkItem.Alg.IsUnknown() && !clientJwkItem.Alg.IsNull() {
-			*alg = clientJwkItem.Alg.ValueString()
-		} else {
-			alg = nil
+	var clientJwk []shared.ClientJwk
+	if r.Config.ClientJwk != nil {
+		clientJwk = make([]shared.ClientJwk, 0, len(r.Config.ClientJwk))
+		for _, clientJwkItem := range r.Config.ClientJwk {
+			alg := new(string)
+			if !clientJwkItem.Alg.IsUnknown() && !clientJwkItem.Alg.IsNull() {
+				*alg = clientJwkItem.Alg.ValueString()
+			} else {
+				alg = nil
+			}
+			crv := new(string)
+			if !clientJwkItem.Crv.IsUnknown() && !clientJwkItem.Crv.IsNull() {
+				*crv = clientJwkItem.Crv.ValueString()
+			} else {
+				crv = nil
+			}
+			d := new(string)
+			if !clientJwkItem.D.IsUnknown() && !clientJwkItem.D.IsNull() {
+				*d = clientJwkItem.D.ValueString()
+			} else {
+				d = nil
+			}
+			dp := new(string)
+			if !clientJwkItem.Dp.IsUnknown() && !clientJwkItem.Dp.IsNull() {
+				*dp = clientJwkItem.Dp.ValueString()
+			} else {
+				dp = nil
+			}
+			dq := new(string)
+			if !clientJwkItem.Dq.IsUnknown() && !clientJwkItem.Dq.IsNull() {
+				*dq = clientJwkItem.Dq.ValueString()
+			} else {
+				dq = nil
+			}
+			e := new(string)
+			if !clientJwkItem.E.IsUnknown() && !clientJwkItem.E.IsNull() {
+				*e = clientJwkItem.E.ValueString()
+			} else {
+				e = nil
+			}
+			issuer := new(string)
+			if !clientJwkItem.Issuer.IsUnknown() && !clientJwkItem.Issuer.IsNull() {
+				*issuer = clientJwkItem.Issuer.ValueString()
+			} else {
+				issuer = nil
+			}
+			k := new(string)
+			if !clientJwkItem.K.IsUnknown() && !clientJwkItem.K.IsNull() {
+				*k = clientJwkItem.K.ValueString()
+			} else {
+				k = nil
+			}
+			var keyOps []string
+			if clientJwkItem.KeyOps != nil {
+				keyOps = make([]string, 0, len(clientJwkItem.KeyOps))
+				for _, keyOpsItem := range clientJwkItem.KeyOps {
+					keyOps = append(keyOps, keyOpsItem.ValueString())
+				}
+			}
+			kid := new(string)
+			if !clientJwkItem.Kid.IsUnknown() && !clientJwkItem.Kid.IsNull() {
+				*kid = clientJwkItem.Kid.ValueString()
+			} else {
+				kid = nil
+			}
+			kty := new(string)
+			if !clientJwkItem.Kty.IsUnknown() && !clientJwkItem.Kty.IsNull() {
+				*kty = clientJwkItem.Kty.ValueString()
+			} else {
+				kty = nil
+			}
+			n := new(string)
+			if !clientJwkItem.N.IsUnknown() && !clientJwkItem.N.IsNull() {
+				*n = clientJwkItem.N.ValueString()
+			} else {
+				n = nil
+			}
+			oth := new(string)
+			if !clientJwkItem.Oth.IsUnknown() && !clientJwkItem.Oth.IsNull() {
+				*oth = clientJwkItem.Oth.ValueString()
+			} else {
+				oth = nil
+			}
+			p := new(string)
+			if !clientJwkItem.P.IsUnknown() && !clientJwkItem.P.IsNull() {
+				*p = clientJwkItem.P.ValueString()
+			} else {
+				p = nil
+			}
+			q := new(string)
+			if !clientJwkItem.Q.IsUnknown() && !clientJwkItem.Q.IsNull() {
+				*q = clientJwkItem.Q.ValueString()
+			} else {
+				q = nil
+			}
+			qi := new(string)
+			if !clientJwkItem.Qi.IsUnknown() && !clientJwkItem.Qi.IsNull() {
+				*qi = clientJwkItem.Qi.ValueString()
+			} else {
+				qi = nil
+			}
+			r1 := new(string)
+			if !clientJwkItem.R.IsUnknown() && !clientJwkItem.R.IsNull() {
+				*r1 = clientJwkItem.R.ValueString()
+			} else {
+				r1 = nil
+			}
+			t := new(string)
+			if !clientJwkItem.T.IsUnknown() && !clientJwkItem.T.IsNull() {
+				*t = clientJwkItem.T.ValueString()
+			} else {
+				t = nil
+			}
+			use := new(string)
+			if !clientJwkItem.Use.IsUnknown() && !clientJwkItem.Use.IsNull() {
+				*use = clientJwkItem.Use.ValueString()
+			} else {
+				use = nil
+			}
+			x := new(string)
+			if !clientJwkItem.X.IsUnknown() && !clientJwkItem.X.IsNull() {
+				*x = clientJwkItem.X.ValueString()
+			} else {
+				x = nil
+			}
+			var x5c []string
+			if clientJwkItem.X5c != nil {
+				x5c = make([]string, 0, len(clientJwkItem.X5c))
+				for _, x5cItem := range clientJwkItem.X5c {
+					x5c = append(x5c, x5cItem.ValueString())
+				}
+			}
+			x5t := new(string)
+			if !clientJwkItem.X5t.IsUnknown() && !clientJwkItem.X5t.IsNull() {
+				*x5t = clientJwkItem.X5t.ValueString()
+			} else {
+				x5t = nil
+			}
+			x5tNumberS256 := new(string)
+			if !clientJwkItem.X5tNumberS256.IsUnknown() && !clientJwkItem.X5tNumberS256.IsNull() {
+				*x5tNumberS256 = clientJwkItem.X5tNumberS256.ValueString()
+			} else {
+				x5tNumberS256 = nil
+			}
+			x5u := new(string)
+			if !clientJwkItem.X5u.IsUnknown() && !clientJwkItem.X5u.IsNull() {
+				*x5u = clientJwkItem.X5u.ValueString()
+			} else {
+				x5u = nil
+			}
+			y := new(string)
+			if !clientJwkItem.Y.IsUnknown() && !clientJwkItem.Y.IsNull() {
+				*y = clientJwkItem.Y.ValueString()
+			} else {
+				y = nil
+			}
+			clientJwk = append(clientJwk, shared.ClientJwk{
+				Alg:           alg,
+				Crv:           crv,
+				D:             d,
+				Dp:            dp,
+				Dq:            dq,
+				E:             e,
+				Issuer:        issuer,
+				K:             k,
+				KeyOps:        keyOps,
+				Kid:           kid,
+				Kty:           kty,
+				N:             n,
+				Oth:           oth,
+				P:             p,
+				Q:             q,
+				Qi:            qi,
+				R:             r1,
+				T:             t,
+				Use:           use,
+				X:             x,
+				X5c:           x5c,
+				X5t:           x5t,
+				X5tNumberS256: x5tNumberS256,
+				X5u:           x5u,
+				Y:             y,
+			})
 		}
-		crv := new(string)
-		if !clientJwkItem.Crv.IsUnknown() && !clientJwkItem.Crv.IsNull() {
-			*crv = clientJwkItem.Crv.ValueString()
-		} else {
-			crv = nil
-		}
-		d := new(string)
-		if !clientJwkItem.D.IsUnknown() && !clientJwkItem.D.IsNull() {
-			*d = clientJwkItem.D.ValueString()
-		} else {
-			d = nil
-		}
-		dp := new(string)
-		if !clientJwkItem.Dp.IsUnknown() && !clientJwkItem.Dp.IsNull() {
-			*dp = clientJwkItem.Dp.ValueString()
-		} else {
-			dp = nil
-		}
-		dq := new(string)
-		if !clientJwkItem.Dq.IsUnknown() && !clientJwkItem.Dq.IsNull() {
-			*dq = clientJwkItem.Dq.ValueString()
-		} else {
-			dq = nil
-		}
-		e := new(string)
-		if !clientJwkItem.E.IsUnknown() && !clientJwkItem.E.IsNull() {
-			*e = clientJwkItem.E.ValueString()
-		} else {
-			e = nil
-		}
-		issuer := new(string)
-		if !clientJwkItem.Issuer.IsUnknown() && !clientJwkItem.Issuer.IsNull() {
-			*issuer = clientJwkItem.Issuer.ValueString()
-		} else {
-			issuer = nil
-		}
-		k := new(string)
-		if !clientJwkItem.K.IsUnknown() && !clientJwkItem.K.IsNull() {
-			*k = clientJwkItem.K.ValueString()
-		} else {
-			k = nil
-		}
-		keyOps := make([]string, 0, len(clientJwkItem.KeyOps))
-		for _, keyOpsItem := range clientJwkItem.KeyOps {
-			keyOps = append(keyOps, keyOpsItem.ValueString())
-		}
-		kid := new(string)
-		if !clientJwkItem.Kid.IsUnknown() && !clientJwkItem.Kid.IsNull() {
-			*kid = clientJwkItem.Kid.ValueString()
-		} else {
-			kid = nil
-		}
-		kty := new(string)
-		if !clientJwkItem.Kty.IsUnknown() && !clientJwkItem.Kty.IsNull() {
-			*kty = clientJwkItem.Kty.ValueString()
-		} else {
-			kty = nil
-		}
-		n := new(string)
-		if !clientJwkItem.N.IsUnknown() && !clientJwkItem.N.IsNull() {
-			*n = clientJwkItem.N.ValueString()
-		} else {
-			n = nil
-		}
-		oth := new(string)
-		if !clientJwkItem.Oth.IsUnknown() && !clientJwkItem.Oth.IsNull() {
-			*oth = clientJwkItem.Oth.ValueString()
-		} else {
-			oth = nil
-		}
-		p := new(string)
-		if !clientJwkItem.P.IsUnknown() && !clientJwkItem.P.IsNull() {
-			*p = clientJwkItem.P.ValueString()
-		} else {
-			p = nil
-		}
-		q := new(string)
-		if !clientJwkItem.Q.IsUnknown() && !clientJwkItem.Q.IsNull() {
-			*q = clientJwkItem.Q.ValueString()
-		} else {
-			q = nil
-		}
-		qi := new(string)
-		if !clientJwkItem.Qi.IsUnknown() && !clientJwkItem.Qi.IsNull() {
-			*qi = clientJwkItem.Qi.ValueString()
-		} else {
-			qi = nil
-		}
-		r1 := new(string)
-		if !clientJwkItem.R.IsUnknown() && !clientJwkItem.R.IsNull() {
-			*r1 = clientJwkItem.R.ValueString()
-		} else {
-			r1 = nil
-		}
-		t := new(string)
-		if !clientJwkItem.T.IsUnknown() && !clientJwkItem.T.IsNull() {
-			*t = clientJwkItem.T.ValueString()
-		} else {
-			t = nil
-		}
-		use := new(string)
-		if !clientJwkItem.Use.IsUnknown() && !clientJwkItem.Use.IsNull() {
-			*use = clientJwkItem.Use.ValueString()
-		} else {
-			use = nil
-		}
-		x := new(string)
-		if !clientJwkItem.X.IsUnknown() && !clientJwkItem.X.IsNull() {
-			*x = clientJwkItem.X.ValueString()
-		} else {
-			x = nil
-		}
-		x5c := make([]string, 0, len(clientJwkItem.X5c))
-		for _, x5cItem := range clientJwkItem.X5c {
-			x5c = append(x5c, x5cItem.ValueString())
-		}
-		x5t := new(string)
-		if !clientJwkItem.X5t.IsUnknown() && !clientJwkItem.X5t.IsNull() {
-			*x5t = clientJwkItem.X5t.ValueString()
-		} else {
-			x5t = nil
-		}
-		x5tNumberS256 := new(string)
-		if !clientJwkItem.X5tNumberS256.IsUnknown() && !clientJwkItem.X5tNumberS256.IsNull() {
-			*x5tNumberS256 = clientJwkItem.X5tNumberS256.ValueString()
-		} else {
-			x5tNumberS256 = nil
-		}
-		x5u := new(string)
-		if !clientJwkItem.X5u.IsUnknown() && !clientJwkItem.X5u.IsNull() {
-			*x5u = clientJwkItem.X5u.ValueString()
-		} else {
-			x5u = nil
-		}
-		y := new(string)
-		if !clientJwkItem.Y.IsUnknown() && !clientJwkItem.Y.IsNull() {
-			*y = clientJwkItem.Y.ValueString()
-		} else {
-			y = nil
-		}
-		clientJwk = append(clientJwk, shared.ClientJwk{
-			Alg:           alg,
-			Crv:           crv,
-			D:             d,
-			Dp:            dp,
-			Dq:            dq,
-			E:             e,
-			Issuer:        issuer,
-			K:             k,
-			KeyOps:        keyOps,
-			Kid:           kid,
-			Kty:           kty,
-			N:             n,
-			Oth:           oth,
-			P:             p,
-			Q:             q,
-			Qi:            qi,
-			R:             r1,
-			T:             t,
-			Use:           use,
-			X:             x,
-			X5c:           x5c,
-			X5t:           x5t,
-			X5tNumberS256: x5tNumberS256,
-			X5u:           x5u,
-			Y:             y,
-		})
 	}
-	clientSecret := make([]string, 0, len(r.Config.ClientSecret))
-	for _, clientSecretItem := range r.Config.ClientSecret {
-		clientSecret = append(clientSecret, clientSecretItem.ValueString())
+	var clientSecret []string
+	if r.Config.ClientSecret != nil {
+		clientSecret = make([]string, 0, len(r.Config.ClientSecret))
+		for _, clientSecretItem := range r.Config.ClientSecret {
+			clientSecret = append(clientSecret, clientSecretItem.ValueString())
+		}
 	}
 	var clusterCacheRedis *shared.ClusterCacheRedis
 	if r.Config.ClusterCacheRedis != nil {
@@ -1322,24 +1496,27 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		} else {
 			clusterMaxRedirections = nil
 		}
-		clusterNodes := make([]shared.OpenidConnectPluginClusterNodes, 0, len(r.Config.ClusterCacheRedis.ClusterNodes))
-		for _, clusterNodesItem := range r.Config.ClusterCacheRedis.ClusterNodes {
-			ip := new(string)
-			if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
-				*ip = clusterNodesItem.IP.ValueString()
-			} else {
-				ip = nil
+		var clusterNodes []shared.OpenidConnectPluginClusterNodes
+		if r.Config.ClusterCacheRedis.ClusterNodes != nil {
+			clusterNodes = make([]shared.OpenidConnectPluginClusterNodes, 0, len(r.Config.ClusterCacheRedis.ClusterNodes))
+			for _, clusterNodesItem := range r.Config.ClusterCacheRedis.ClusterNodes {
+				ip := new(string)
+				if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
+					*ip = clusterNodesItem.IP.ValueString()
+				} else {
+					ip = nil
+				}
+				port := new(int64)
+				if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
+					*port = clusterNodesItem.Port.ValueInt64()
+				} else {
+					port = nil
+				}
+				clusterNodes = append(clusterNodes, shared.OpenidConnectPluginClusterNodes{
+					IP:   ip,
+					Port: port,
+				})
 			}
-			port := new(int64)
-			if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
-				*port = clusterNodesItem.Port.ValueInt64()
-			} else {
-				port = nil
-			}
-			clusterNodes = append(clusterNodes, shared.OpenidConnectPluginClusterNodes{
-				IP:   ip,
-				Port: port,
-			})
 		}
 		connectTimeout := new(int64)
 		if !r.Config.ClusterCacheRedis.ConnectTimeout.IsUnknown() && !r.Config.ClusterCacheRedis.ConnectTimeout.IsNull() {
@@ -1407,24 +1584,27 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		} else {
 			sentinelMaster = nil
 		}
-		sentinelNodes := make([]shared.OpenidConnectPluginSentinelNodes, 0, len(r.Config.ClusterCacheRedis.SentinelNodes))
-		for _, sentinelNodesItem := range r.Config.ClusterCacheRedis.SentinelNodes {
-			host1 := new(string)
-			if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
-				*host1 = sentinelNodesItem.Host.ValueString()
-			} else {
-				host1 = nil
+		var sentinelNodes []shared.OpenidConnectPluginSentinelNodes
+		if r.Config.ClusterCacheRedis.SentinelNodes != nil {
+			sentinelNodes = make([]shared.OpenidConnectPluginSentinelNodes, 0, len(r.Config.ClusterCacheRedis.SentinelNodes))
+			for _, sentinelNodesItem := range r.Config.ClusterCacheRedis.SentinelNodes {
+				host1 := new(string)
+				if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
+					*host1 = sentinelNodesItem.Host.ValueString()
+				} else {
+					host1 = nil
+				}
+				port2 := new(int64)
+				if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
+					*port2 = sentinelNodesItem.Port.ValueInt64()
+				} else {
+					port2 = nil
+				}
+				sentinelNodes = append(sentinelNodes, shared.OpenidConnectPluginSentinelNodes{
+					Host: host1,
+					Port: port2,
+				})
 			}
-			port2 := new(int64)
-			if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
-				*port2 = sentinelNodesItem.Port.ValueInt64()
-			} else {
-				port2 = nil
-			}
-			sentinelNodes = append(sentinelNodes, shared.OpenidConnectPluginSentinelNodes{
-				Host: host1,
-				Port: port2,
-			})
 		}
 		sentinelPassword := new(string)
 		if !r.Config.ClusterCacheRedis.SentinelPassword.IsUnknown() && !r.Config.ClusterCacheRedis.SentinelPassword.IsNull() {
@@ -1502,9 +1682,12 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	for _, consumerByItem := range r.Config.ConsumerBy {
 		consumerBy = append(consumerBy, shared.OpenidConnectPluginConsumerBy(consumerByItem.ValueString()))
 	}
-	consumerClaim := make([]string, 0, len(r.Config.ConsumerClaim))
-	for _, consumerClaimItem := range r.Config.ConsumerClaim {
-		consumerClaim = append(consumerClaim, consumerClaimItem.ValueString())
+	var consumerClaim []string
+	if r.Config.ConsumerClaim != nil {
+		consumerClaim = make([]string, 0, len(r.Config.ConsumerClaim))
+		for _, consumerClaimItem := range r.Config.ConsumerClaim {
+			consumerClaim = append(consumerClaim, consumerClaimItem.ValueString())
+		}
 	}
 	consumerOptional := new(bool)
 	if !r.Config.ConsumerOptional.IsUnknown() && !r.Config.ConsumerOptional.IsNull() {
@@ -1516,17 +1699,26 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	for _, credentialClaimItem := range r.Config.CredentialClaim {
 		credentialClaim = append(credentialClaim, credentialClaimItem.ValueString())
 	}
-	disableSession := make([]shared.DisableSession, 0, len(r.Config.DisableSession))
-	for _, disableSessionItem := range r.Config.DisableSession {
-		disableSession = append(disableSession, shared.DisableSession(disableSessionItem.ValueString()))
+	var disableSession []shared.DisableSession
+	if r.Config.DisableSession != nil {
+		disableSession = make([]shared.DisableSession, 0, len(r.Config.DisableSession))
+		for _, disableSessionItem := range r.Config.DisableSession {
+			disableSession = append(disableSession, shared.DisableSession(disableSessionItem.ValueString()))
+		}
 	}
-	discoveryHeadersNames := make([]string, 0, len(r.Config.DiscoveryHeadersNames))
-	for _, discoveryHeadersNamesItem := range r.Config.DiscoveryHeadersNames {
-		discoveryHeadersNames = append(discoveryHeadersNames, discoveryHeadersNamesItem.ValueString())
+	var discoveryHeadersNames []string
+	if r.Config.DiscoveryHeadersNames != nil {
+		discoveryHeadersNames = make([]string, 0, len(r.Config.DiscoveryHeadersNames))
+		for _, discoveryHeadersNamesItem := range r.Config.DiscoveryHeadersNames {
+			discoveryHeadersNames = append(discoveryHeadersNames, discoveryHeadersNamesItem.ValueString())
+		}
 	}
-	discoveryHeadersValues := make([]string, 0, len(r.Config.DiscoveryHeadersValues))
-	for _, discoveryHeadersValuesItem := range r.Config.DiscoveryHeadersValues {
-		discoveryHeadersValues = append(discoveryHeadersValues, discoveryHeadersValuesItem.ValueString())
+	var discoveryHeadersValues []string
+	if r.Config.DiscoveryHeadersValues != nil {
+		discoveryHeadersValues = make([]string, 0, len(r.Config.DiscoveryHeadersValues))
+		for _, discoveryHeadersValuesItem := range r.Config.DiscoveryHeadersValues {
+			discoveryHeadersValues = append(discoveryHeadersValues, discoveryHeadersValuesItem.ValueString())
+		}
 	}
 	displayErrors := new(bool)
 	if !r.Config.DisplayErrors.IsUnknown() && !r.Config.DisplayErrors.IsNull() {
@@ -1534,9 +1726,12 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		displayErrors = nil
 	}
-	domains := make([]string, 0, len(r.Config.Domains))
-	for _, domainsItem := range r.Config.Domains {
-		domains = append(domains, domainsItem.ValueString())
+	var domains []string
+	if r.Config.Domains != nil {
+		domains = make([]string, 0, len(r.Config.Domains))
+		for _, domainsItem := range r.Config.Domains {
+			domains = append(domains, domainsItem.ValueString())
+		}
 	}
 	downstreamAccessTokenHeader := new(string)
 	if !r.Config.DownstreamAccessTokenHeader.IsUnknown() && !r.Config.DownstreamAccessTokenHeader.IsNull() {
@@ -1550,13 +1745,19 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		downstreamAccessTokenJwkHeader = nil
 	}
-	downstreamHeadersClaims := make([]string, 0, len(r.Config.DownstreamHeadersClaims))
-	for _, downstreamHeadersClaimsItem := range r.Config.DownstreamHeadersClaims {
-		downstreamHeadersClaims = append(downstreamHeadersClaims, downstreamHeadersClaimsItem.ValueString())
+	var downstreamHeadersClaims []string
+	if r.Config.DownstreamHeadersClaims != nil {
+		downstreamHeadersClaims = make([]string, 0, len(r.Config.DownstreamHeadersClaims))
+		for _, downstreamHeadersClaimsItem := range r.Config.DownstreamHeadersClaims {
+			downstreamHeadersClaims = append(downstreamHeadersClaims, downstreamHeadersClaimsItem.ValueString())
+		}
 	}
-	downstreamHeadersNames := make([]string, 0, len(r.Config.DownstreamHeadersNames))
-	for _, downstreamHeadersNamesItem := range r.Config.DownstreamHeadersNames {
-		downstreamHeadersNames = append(downstreamHeadersNames, downstreamHeadersNamesItem.ValueString())
+	var downstreamHeadersNames []string
+	if r.Config.DownstreamHeadersNames != nil {
+		downstreamHeadersNames = make([]string, 0, len(r.Config.DownstreamHeadersNames))
+		for _, downstreamHeadersNamesItem := range r.Config.DownstreamHeadersNames {
+			downstreamHeadersNames = append(downstreamHeadersNames, downstreamHeadersNamesItem.ValueString())
+		}
 	}
 	downstreamIDTokenHeader := new(string)
 	if !r.Config.DownstreamIDTokenHeader.IsUnknown() && !r.Config.DownstreamIDTokenHeader.IsNull() {
@@ -1636,9 +1837,12 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		exposeErrorCode = nil
 	}
-	extraJwksUris := make([]string, 0, len(r.Config.ExtraJwksUris))
-	for _, extraJwksUrisItem := range r.Config.ExtraJwksUris {
-		extraJwksUris = append(extraJwksUris, extraJwksUrisItem.ValueString())
+	var extraJwksUris []string
+	if r.Config.ExtraJwksUris != nil {
+		extraJwksUris = make([]string, 0, len(r.Config.ExtraJwksUris))
+		for _, extraJwksUrisItem := range r.Config.ExtraJwksUris {
+			extraJwksUris = append(extraJwksUris, extraJwksUrisItem.ValueString())
+		}
 	}
 	forbiddenDestroySession := new(bool)
 	if !r.Config.ForbiddenDestroySession.IsUnknown() && !r.Config.ForbiddenDestroySession.IsNull() {
@@ -1652,17 +1856,23 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		forbiddenErrorMessage = nil
 	}
-	forbiddenRedirectURI := make([]string, 0, len(r.Config.ForbiddenRedirectURI))
-	for _, forbiddenRedirectURIItem := range r.Config.ForbiddenRedirectURI {
-		forbiddenRedirectURI = append(forbiddenRedirectURI, forbiddenRedirectURIItem.ValueString())
+	var forbiddenRedirectURI []string
+	if r.Config.ForbiddenRedirectURI != nil {
+		forbiddenRedirectURI = make([]string, 0, len(r.Config.ForbiddenRedirectURI))
+		for _, forbiddenRedirectURIItem := range r.Config.ForbiddenRedirectURI {
+			forbiddenRedirectURI = append(forbiddenRedirectURI, forbiddenRedirectURIItem.ValueString())
+		}
 	}
 	groupsClaim := make([]string, 0, len(r.Config.GroupsClaim))
 	for _, groupsClaimItem := range r.Config.GroupsClaim {
 		groupsClaim = append(groupsClaim, groupsClaimItem.ValueString())
 	}
-	groupsRequired := make([]string, 0, len(r.Config.GroupsRequired))
-	for _, groupsRequiredItem := range r.Config.GroupsRequired {
-		groupsRequired = append(groupsRequired, groupsRequiredItem.ValueString())
+	var groupsRequired []string
+	if r.Config.GroupsRequired != nil {
+		groupsRequired = make([]string, 0, len(r.Config.GroupsRequired))
+		for _, groupsRequiredItem := range r.Config.GroupsRequired {
+			groupsRequired = append(groupsRequired, groupsRequiredItem.ValueString())
+		}
 	}
 	hideCredentials := new(bool)
 	if !r.Config.HideCredentials.IsUnknown() && !r.Config.HideCredentials.IsNull() {
@@ -1744,17 +1954,26 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		introspectionEndpointAuthMethod = nil
 	}
-	introspectionHeadersClient := make([]string, 0, len(r.Config.IntrospectionHeadersClient))
-	for _, introspectionHeadersClientItem := range r.Config.IntrospectionHeadersClient {
-		introspectionHeadersClient = append(introspectionHeadersClient, introspectionHeadersClientItem.ValueString())
+	var introspectionHeadersClient []string
+	if r.Config.IntrospectionHeadersClient != nil {
+		introspectionHeadersClient = make([]string, 0, len(r.Config.IntrospectionHeadersClient))
+		for _, introspectionHeadersClientItem := range r.Config.IntrospectionHeadersClient {
+			introspectionHeadersClient = append(introspectionHeadersClient, introspectionHeadersClientItem.ValueString())
+		}
 	}
-	introspectionHeadersNames := make([]string, 0, len(r.Config.IntrospectionHeadersNames))
-	for _, introspectionHeadersNamesItem := range r.Config.IntrospectionHeadersNames {
-		introspectionHeadersNames = append(introspectionHeadersNames, introspectionHeadersNamesItem.ValueString())
+	var introspectionHeadersNames []string
+	if r.Config.IntrospectionHeadersNames != nil {
+		introspectionHeadersNames = make([]string, 0, len(r.Config.IntrospectionHeadersNames))
+		for _, introspectionHeadersNamesItem := range r.Config.IntrospectionHeadersNames {
+			introspectionHeadersNames = append(introspectionHeadersNames, introspectionHeadersNamesItem.ValueString())
+		}
 	}
-	introspectionHeadersValues := make([]string, 0, len(r.Config.IntrospectionHeadersValues))
-	for _, introspectionHeadersValuesItem := range r.Config.IntrospectionHeadersValues {
-		introspectionHeadersValues = append(introspectionHeadersValues, introspectionHeadersValuesItem.ValueString())
+	var introspectionHeadersValues []string
+	if r.Config.IntrospectionHeadersValues != nil {
+		introspectionHeadersValues = make([]string, 0, len(r.Config.IntrospectionHeadersValues))
+		for _, introspectionHeadersValuesItem := range r.Config.IntrospectionHeadersValues {
+			introspectionHeadersValues = append(introspectionHeadersValues, introspectionHeadersValuesItem.ValueString())
+		}
 	}
 	introspectionHint := new(string)
 	if !r.Config.IntrospectionHint.IsUnknown() && !r.Config.IntrospectionHint.IsNull() {
@@ -1762,21 +1981,33 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		introspectionHint = nil
 	}
-	introspectionPostArgsClient := make([]string, 0, len(r.Config.IntrospectionPostArgsClient))
-	for _, introspectionPostArgsClientItem := range r.Config.IntrospectionPostArgsClient {
-		introspectionPostArgsClient = append(introspectionPostArgsClient, introspectionPostArgsClientItem.ValueString())
+	var introspectionPostArgsClient []string
+	if r.Config.IntrospectionPostArgsClient != nil {
+		introspectionPostArgsClient = make([]string, 0, len(r.Config.IntrospectionPostArgsClient))
+		for _, introspectionPostArgsClientItem := range r.Config.IntrospectionPostArgsClient {
+			introspectionPostArgsClient = append(introspectionPostArgsClient, introspectionPostArgsClientItem.ValueString())
+		}
 	}
-	introspectionPostArgsClientHeaders := make([]string, 0, len(r.Config.IntrospectionPostArgsClientHeaders))
-	for _, introspectionPostArgsClientHeadersItem := range r.Config.IntrospectionPostArgsClientHeaders {
-		introspectionPostArgsClientHeaders = append(introspectionPostArgsClientHeaders, introspectionPostArgsClientHeadersItem.ValueString())
+	var introspectionPostArgsClientHeaders []string
+	if r.Config.IntrospectionPostArgsClientHeaders != nil {
+		introspectionPostArgsClientHeaders = make([]string, 0, len(r.Config.IntrospectionPostArgsClientHeaders))
+		for _, introspectionPostArgsClientHeadersItem := range r.Config.IntrospectionPostArgsClientHeaders {
+			introspectionPostArgsClientHeaders = append(introspectionPostArgsClientHeaders, introspectionPostArgsClientHeadersItem.ValueString())
+		}
 	}
-	introspectionPostArgsNames := make([]string, 0, len(r.Config.IntrospectionPostArgsNames))
-	for _, introspectionPostArgsNamesItem := range r.Config.IntrospectionPostArgsNames {
-		introspectionPostArgsNames = append(introspectionPostArgsNames, introspectionPostArgsNamesItem.ValueString())
+	var introspectionPostArgsNames []string
+	if r.Config.IntrospectionPostArgsNames != nil {
+		introspectionPostArgsNames = make([]string, 0, len(r.Config.IntrospectionPostArgsNames))
+		for _, introspectionPostArgsNamesItem := range r.Config.IntrospectionPostArgsNames {
+			introspectionPostArgsNames = append(introspectionPostArgsNames, introspectionPostArgsNamesItem.ValueString())
+		}
 	}
-	introspectionPostArgsValues := make([]string, 0, len(r.Config.IntrospectionPostArgsValues))
-	for _, introspectionPostArgsValuesItem := range r.Config.IntrospectionPostArgsValues {
-		introspectionPostArgsValues = append(introspectionPostArgsValues, introspectionPostArgsValuesItem.ValueString())
+	var introspectionPostArgsValues []string
+	if r.Config.IntrospectionPostArgsValues != nil {
+		introspectionPostArgsValues = make([]string, 0, len(r.Config.IntrospectionPostArgsValues))
+		for _, introspectionPostArgsValuesItem := range r.Config.IntrospectionPostArgsValues {
+			introspectionPostArgsValues = append(introspectionPostArgsValues, introspectionPostArgsValuesItem.ValueString())
+		}
 	}
 	introspectionTokenParamName := new(string)
 	if !r.Config.IntrospectionTokenParamName.IsUnknown() && !r.Config.IntrospectionTokenParamName.IsNull() {
@@ -1787,9 +2018,12 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	var issuer1 string
 	issuer1 = r.Config.Issuer.ValueString()
 
-	issuersAllowed := make([]string, 0, len(r.Config.IssuersAllowed))
-	for _, issuersAllowedItem := range r.Config.IssuersAllowed {
-		issuersAllowed = append(issuersAllowed, issuersAllowedItem.ValueString())
+	var issuersAllowed []string
+	if r.Config.IssuersAllowed != nil {
+		issuersAllowed = make([]string, 0, len(r.Config.IssuersAllowed))
+		for _, issuersAllowedItem := range r.Config.IssuersAllowed {
+			issuersAllowed = append(issuersAllowed, issuersAllowedItem.ValueString())
+		}
 	}
 	jwtSessionClaim := new(string)
 	if !r.Config.JwtSessionClaim.IsUnknown() && !r.Config.JwtSessionClaim.IsNull() {
@@ -1831,9 +2065,12 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		loginRedirectMode = nil
 	}
-	loginRedirectURI := make([]string, 0, len(r.Config.LoginRedirectURI))
-	for _, loginRedirectURIItem := range r.Config.LoginRedirectURI {
-		loginRedirectURI = append(loginRedirectURI, loginRedirectURIItem.ValueString())
+	var loginRedirectURI []string
+	if r.Config.LoginRedirectURI != nil {
+		loginRedirectURI = make([]string, 0, len(r.Config.LoginRedirectURI))
+		for _, loginRedirectURIItem := range r.Config.LoginRedirectURI {
+			loginRedirectURI = append(loginRedirectURI, loginRedirectURIItem.ValueString())
+		}
 	}
 	loginTokens := make([]shared.LoginTokens, 0, len(r.Config.LoginTokens))
 	for _, loginTokensItem := range r.Config.LoginTokens {
@@ -1855,9 +2092,12 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		logoutQueryArg = nil
 	}
-	logoutRedirectURI := make([]string, 0, len(r.Config.LogoutRedirectURI))
-	for _, logoutRedirectURIItem := range r.Config.LogoutRedirectURI {
-		logoutRedirectURI = append(logoutRedirectURI, logoutRedirectURIItem.ValueString())
+	var logoutRedirectURI []string
+	if r.Config.LogoutRedirectURI != nil {
+		logoutRedirectURI = make([]string, 0, len(r.Config.LogoutRedirectURI))
+		for _, logoutRedirectURIItem := range r.Config.LogoutRedirectURI {
+			logoutRedirectURI = append(logoutRedirectURI, logoutRedirectURIItem.ValueString())
+		}
 	}
 	logoutRevoke := new(bool)
 	if !r.Config.LogoutRevoke.IsUnknown() && !r.Config.LogoutRevoke.IsNull() {
@@ -1953,9 +2193,12 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		pushedAuthorizationRequestEndpointAuthMethod = nil
 	}
-	redirectURI := make([]string, 0, len(r.Config.RedirectURI))
-	for _, redirectURIItem := range r.Config.RedirectURI {
-		redirectURI = append(redirectURI, redirectURIItem.ValueString())
+	var redirectURI []string
+	if r.Config.RedirectURI != nil {
+		redirectURI = make([]string, 0, len(r.Config.RedirectURI))
+		for _, redirectURIItem := range r.Config.RedirectURI {
+			redirectURI = append(redirectURI, redirectURIItem.ValueString())
+		}
 	}
 	var redis *shared.OpenidConnectPluginRedis
 	if r.Config.Redis != nil {
@@ -1965,24 +2208,27 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		} else {
 			clusterMaxRedirections1 = nil
 		}
-		clusterNodes1 := make([]shared.OpenidConnectPluginConfigClusterNodes, 0, len(r.Config.Redis.ClusterNodes))
-		for _, clusterNodesItem1 := range r.Config.Redis.ClusterNodes {
-			ip1 := new(string)
-			if !clusterNodesItem1.IP.IsUnknown() && !clusterNodesItem1.IP.IsNull() {
-				*ip1 = clusterNodesItem1.IP.ValueString()
-			} else {
-				ip1 = nil
+		var clusterNodes1 []shared.OpenidConnectPluginConfigClusterNodes
+		if r.Config.Redis.ClusterNodes != nil {
+			clusterNodes1 = make([]shared.OpenidConnectPluginConfigClusterNodes, 0, len(r.Config.Redis.ClusterNodes))
+			for _, clusterNodesItem1 := range r.Config.Redis.ClusterNodes {
+				ip1 := new(string)
+				if !clusterNodesItem1.IP.IsUnknown() && !clusterNodesItem1.IP.IsNull() {
+					*ip1 = clusterNodesItem1.IP.ValueString()
+				} else {
+					ip1 = nil
+				}
+				port3 := new(int64)
+				if !clusterNodesItem1.Port.IsUnknown() && !clusterNodesItem1.Port.IsNull() {
+					*port3 = clusterNodesItem1.Port.ValueInt64()
+				} else {
+					port3 = nil
+				}
+				clusterNodes1 = append(clusterNodes1, shared.OpenidConnectPluginConfigClusterNodes{
+					IP:   ip1,
+					Port: port3,
+				})
 			}
-			port3 := new(int64)
-			if !clusterNodesItem1.Port.IsUnknown() && !clusterNodesItem1.Port.IsNull() {
-				*port3 = clusterNodesItem1.Port.ValueInt64()
-			} else {
-				port3 = nil
-			}
-			clusterNodes1 = append(clusterNodes1, shared.OpenidConnectPluginConfigClusterNodes{
-				IP:   ip1,
-				Port: port3,
-			})
 		}
 		connectTimeout1 := new(int64)
 		if !r.Config.Redis.ConnectTimeout.IsUnknown() && !r.Config.Redis.ConnectTimeout.IsNull() {
@@ -2056,24 +2302,27 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		} else {
 			sentinelMaster1 = nil
 		}
-		sentinelNodes1 := make([]shared.OpenidConnectPluginConfigSentinelNodes, 0, len(r.Config.Redis.SentinelNodes))
-		for _, sentinelNodesItem1 := range r.Config.Redis.SentinelNodes {
-			host3 := new(string)
-			if !sentinelNodesItem1.Host.IsUnknown() && !sentinelNodesItem1.Host.IsNull() {
-				*host3 = sentinelNodesItem1.Host.ValueString()
-			} else {
-				host3 = nil
+		var sentinelNodes1 []shared.OpenidConnectPluginConfigSentinelNodes
+		if r.Config.Redis.SentinelNodes != nil {
+			sentinelNodes1 = make([]shared.OpenidConnectPluginConfigSentinelNodes, 0, len(r.Config.Redis.SentinelNodes))
+			for _, sentinelNodesItem1 := range r.Config.Redis.SentinelNodes {
+				host3 := new(string)
+				if !sentinelNodesItem1.Host.IsUnknown() && !sentinelNodesItem1.Host.IsNull() {
+					*host3 = sentinelNodesItem1.Host.ValueString()
+				} else {
+					host3 = nil
+				}
+				port5 := new(int64)
+				if !sentinelNodesItem1.Port.IsUnknown() && !sentinelNodesItem1.Port.IsNull() {
+					*port5 = sentinelNodesItem1.Port.ValueInt64()
+				} else {
+					port5 = nil
+				}
+				sentinelNodes1 = append(sentinelNodes1, shared.OpenidConnectPluginConfigSentinelNodes{
+					Host: host3,
+					Port: port5,
+				})
 			}
-			port5 := new(int64)
-			if !sentinelNodesItem1.Port.IsUnknown() && !sentinelNodesItem1.Port.IsNull() {
-				*port5 = sentinelNodesItem1.Port.ValueInt64()
-			} else {
-				port5 = nil
-			}
-			sentinelNodes1 = append(sentinelNodes1, shared.OpenidConnectPluginConfigSentinelNodes{
-				Host: host3,
-				Port: port5,
-			})
 		}
 		sentinelPassword1 := new(string)
 		if !r.Config.Redis.SentinelPassword.IsUnknown() && !r.Config.Redis.SentinelPassword.IsNull() {
@@ -2233,9 +2482,12 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	for _, rolesClaimItem := range r.Config.RolesClaim {
 		rolesClaim = append(rolesClaim, rolesClaimItem.ValueString())
 	}
-	rolesRequired := make([]string, 0, len(r.Config.RolesRequired))
-	for _, rolesRequiredItem := range r.Config.RolesRequired {
-		rolesRequired = append(rolesRequired, rolesRequiredItem.ValueString())
+	var rolesRequired []string
+	if r.Config.RolesRequired != nil {
+		rolesRequired = make([]string, 0, len(r.Config.RolesRequired))
+		for _, rolesRequiredItem := range r.Config.RolesRequired {
+			rolesRequired = append(rolesRequired, rolesRequiredItem.ValueString())
+		}
 	}
 	runOnPreflight := new(bool)
 	if !r.Config.RunOnPreflight.IsUnknown() && !r.Config.RunOnPreflight.IsNull() {
@@ -2254,9 +2506,12 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	for _, scopesClaimItem := range r.Config.ScopesClaim {
 		scopesClaim = append(scopesClaim, scopesClaimItem.ValueString())
 	}
-	scopesRequired := make([]string, 0, len(r.Config.ScopesRequired))
-	for _, scopesRequiredItem := range r.Config.ScopesRequired {
-		scopesRequired = append(scopesRequired, scopesRequiredItem.ValueString())
+	var scopesRequired []string
+	if r.Config.ScopesRequired != nil {
+		scopesRequired = make([]string, 0, len(r.Config.ScopesRequired))
+		for _, scopesRequiredItem := range r.Config.ScopesRequired {
+			scopesRequired = append(scopesRequired, scopesRequiredItem.ValueString())
+		}
 	}
 	searchUserInfo := new(bool)
 	if !r.Config.SearchUserInfo.IsUnknown() && !r.Config.SearchUserInfo.IsNull() {
@@ -2384,13 +2639,19 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		sessionRememberRollingTimeout = nil
 	}
-	sessionRequestHeaders := make([]shared.SessionRequestHeaders, 0, len(r.Config.SessionRequestHeaders))
-	for _, sessionRequestHeadersItem := range r.Config.SessionRequestHeaders {
-		sessionRequestHeaders = append(sessionRequestHeaders, shared.SessionRequestHeaders(sessionRequestHeadersItem.ValueString()))
+	var sessionRequestHeaders []shared.SessionRequestHeaders
+	if r.Config.SessionRequestHeaders != nil {
+		sessionRequestHeaders = make([]shared.SessionRequestHeaders, 0, len(r.Config.SessionRequestHeaders))
+		for _, sessionRequestHeadersItem := range r.Config.SessionRequestHeaders {
+			sessionRequestHeaders = append(sessionRequestHeaders, shared.SessionRequestHeaders(sessionRequestHeadersItem.ValueString()))
+		}
 	}
-	sessionResponseHeaders := make([]shared.SessionResponseHeaders, 0, len(r.Config.SessionResponseHeaders))
-	for _, sessionResponseHeadersItem := range r.Config.SessionResponseHeaders {
-		sessionResponseHeaders = append(sessionResponseHeaders, shared.SessionResponseHeaders(sessionResponseHeadersItem.ValueString()))
+	var sessionResponseHeaders []shared.SessionResponseHeaders
+	if r.Config.SessionResponseHeaders != nil {
+		sessionResponseHeaders = make([]shared.SessionResponseHeaders, 0, len(r.Config.SessionResponseHeaders))
+		for _, sessionResponseHeadersItem := range r.Config.SessionResponseHeaders {
+			sessionResponseHeaders = append(sessionResponseHeaders, shared.SessionResponseHeaders(sessionResponseHeadersItem.ValueString()))
+		}
 	}
 	sessionRollingTimeout := new(float64)
 	if !r.Config.SessionRollingTimeout.IsUnknown() && !r.Config.SessionRollingTimeout.IsNull() {
@@ -2464,17 +2725,26 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		tokenExchangeEndpoint = nil
 	}
-	tokenHeadersClient := make([]string, 0, len(r.Config.TokenHeadersClient))
-	for _, tokenHeadersClientItem := range r.Config.TokenHeadersClient {
-		tokenHeadersClient = append(tokenHeadersClient, tokenHeadersClientItem.ValueString())
+	var tokenHeadersClient []string
+	if r.Config.TokenHeadersClient != nil {
+		tokenHeadersClient = make([]string, 0, len(r.Config.TokenHeadersClient))
+		for _, tokenHeadersClientItem := range r.Config.TokenHeadersClient {
+			tokenHeadersClient = append(tokenHeadersClient, tokenHeadersClientItem.ValueString())
+		}
 	}
-	tokenHeadersGrants := make([]shared.TokenHeadersGrants, 0, len(r.Config.TokenHeadersGrants))
-	for _, tokenHeadersGrantsItem := range r.Config.TokenHeadersGrants {
-		tokenHeadersGrants = append(tokenHeadersGrants, shared.TokenHeadersGrants(tokenHeadersGrantsItem.ValueString()))
+	var tokenHeadersGrants []shared.TokenHeadersGrants
+	if r.Config.TokenHeadersGrants != nil {
+		tokenHeadersGrants = make([]shared.TokenHeadersGrants, 0, len(r.Config.TokenHeadersGrants))
+		for _, tokenHeadersGrantsItem := range r.Config.TokenHeadersGrants {
+			tokenHeadersGrants = append(tokenHeadersGrants, shared.TokenHeadersGrants(tokenHeadersGrantsItem.ValueString()))
+		}
 	}
-	tokenHeadersNames := make([]string, 0, len(r.Config.TokenHeadersNames))
-	for _, tokenHeadersNamesItem := range r.Config.TokenHeadersNames {
-		tokenHeadersNames = append(tokenHeadersNames, tokenHeadersNamesItem.ValueString())
+	var tokenHeadersNames []string
+	if r.Config.TokenHeadersNames != nil {
+		tokenHeadersNames = make([]string, 0, len(r.Config.TokenHeadersNames))
+		for _, tokenHeadersNamesItem := range r.Config.TokenHeadersNames {
+			tokenHeadersNames = append(tokenHeadersNames, tokenHeadersNamesItem.ValueString())
+		}
 	}
 	tokenHeadersPrefix := new(string)
 	if !r.Config.TokenHeadersPrefix.IsUnknown() && !r.Config.TokenHeadersPrefix.IsNull() {
@@ -2482,25 +2752,40 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		tokenHeadersPrefix = nil
 	}
-	tokenHeadersReplay := make([]string, 0, len(r.Config.TokenHeadersReplay))
-	for _, tokenHeadersReplayItem := range r.Config.TokenHeadersReplay {
-		tokenHeadersReplay = append(tokenHeadersReplay, tokenHeadersReplayItem.ValueString())
+	var tokenHeadersReplay []string
+	if r.Config.TokenHeadersReplay != nil {
+		tokenHeadersReplay = make([]string, 0, len(r.Config.TokenHeadersReplay))
+		for _, tokenHeadersReplayItem := range r.Config.TokenHeadersReplay {
+			tokenHeadersReplay = append(tokenHeadersReplay, tokenHeadersReplayItem.ValueString())
+		}
 	}
-	tokenHeadersValues := make([]string, 0, len(r.Config.TokenHeadersValues))
-	for _, tokenHeadersValuesItem := range r.Config.TokenHeadersValues {
-		tokenHeadersValues = append(tokenHeadersValues, tokenHeadersValuesItem.ValueString())
+	var tokenHeadersValues []string
+	if r.Config.TokenHeadersValues != nil {
+		tokenHeadersValues = make([]string, 0, len(r.Config.TokenHeadersValues))
+		for _, tokenHeadersValuesItem := range r.Config.TokenHeadersValues {
+			tokenHeadersValues = append(tokenHeadersValues, tokenHeadersValuesItem.ValueString())
+		}
 	}
-	tokenPostArgsClient := make([]string, 0, len(r.Config.TokenPostArgsClient))
-	for _, tokenPostArgsClientItem := range r.Config.TokenPostArgsClient {
-		tokenPostArgsClient = append(tokenPostArgsClient, tokenPostArgsClientItem.ValueString())
+	var tokenPostArgsClient []string
+	if r.Config.TokenPostArgsClient != nil {
+		tokenPostArgsClient = make([]string, 0, len(r.Config.TokenPostArgsClient))
+		for _, tokenPostArgsClientItem := range r.Config.TokenPostArgsClient {
+			tokenPostArgsClient = append(tokenPostArgsClient, tokenPostArgsClientItem.ValueString())
+		}
 	}
-	tokenPostArgsNames := make([]string, 0, len(r.Config.TokenPostArgsNames))
-	for _, tokenPostArgsNamesItem := range r.Config.TokenPostArgsNames {
-		tokenPostArgsNames = append(tokenPostArgsNames, tokenPostArgsNamesItem.ValueString())
+	var tokenPostArgsNames []string
+	if r.Config.TokenPostArgsNames != nil {
+		tokenPostArgsNames = make([]string, 0, len(r.Config.TokenPostArgsNames))
+		for _, tokenPostArgsNamesItem := range r.Config.TokenPostArgsNames {
+			tokenPostArgsNames = append(tokenPostArgsNames, tokenPostArgsNamesItem.ValueString())
+		}
 	}
-	tokenPostArgsValues := make([]string, 0, len(r.Config.TokenPostArgsValues))
-	for _, tokenPostArgsValuesItem := range r.Config.TokenPostArgsValues {
-		tokenPostArgsValues = append(tokenPostArgsValues, tokenPostArgsValuesItem.ValueString())
+	var tokenPostArgsValues []string
+	if r.Config.TokenPostArgsValues != nil {
+		tokenPostArgsValues = make([]string, 0, len(r.Config.TokenPostArgsValues))
+		for _, tokenPostArgsValuesItem := range r.Config.TokenPostArgsValues {
+			tokenPostArgsValues = append(tokenPostArgsValues, tokenPostArgsValuesItem.ValueString())
+		}
 	}
 	unauthorizedDestroySession := new(bool)
 	if !r.Config.UnauthorizedDestroySession.IsUnknown() && !r.Config.UnauthorizedDestroySession.IsNull() {
@@ -2514,13 +2799,19 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		unauthorizedErrorMessage = nil
 	}
-	unauthorizedRedirectURI := make([]string, 0, len(r.Config.UnauthorizedRedirectURI))
-	for _, unauthorizedRedirectURIItem := range r.Config.UnauthorizedRedirectURI {
-		unauthorizedRedirectURI = append(unauthorizedRedirectURI, unauthorizedRedirectURIItem.ValueString())
+	var unauthorizedRedirectURI []string
+	if r.Config.UnauthorizedRedirectURI != nil {
+		unauthorizedRedirectURI = make([]string, 0, len(r.Config.UnauthorizedRedirectURI))
+		for _, unauthorizedRedirectURIItem := range r.Config.UnauthorizedRedirectURI {
+			unauthorizedRedirectURI = append(unauthorizedRedirectURI, unauthorizedRedirectURIItem.ValueString())
+		}
 	}
-	unexpectedRedirectURI := make([]string, 0, len(r.Config.UnexpectedRedirectURI))
-	for _, unexpectedRedirectURIItem := range r.Config.UnexpectedRedirectURI {
-		unexpectedRedirectURI = append(unexpectedRedirectURI, unexpectedRedirectURIItem.ValueString())
+	var unexpectedRedirectURI []string
+	if r.Config.UnexpectedRedirectURI != nil {
+		unexpectedRedirectURI = make([]string, 0, len(r.Config.UnexpectedRedirectURI))
+		for _, unexpectedRedirectURIItem := range r.Config.UnexpectedRedirectURI {
+			unexpectedRedirectURI = append(unexpectedRedirectURI, unexpectedRedirectURIItem.ValueString())
+		}
 	}
 	upstreamAccessTokenHeader := new(string)
 	if !r.Config.UpstreamAccessTokenHeader.IsUnknown() && !r.Config.UpstreamAccessTokenHeader.IsNull() {
@@ -2534,13 +2825,19 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		upstreamAccessTokenJwkHeader = nil
 	}
-	upstreamHeadersClaims := make([]string, 0, len(r.Config.UpstreamHeadersClaims))
-	for _, upstreamHeadersClaimsItem := range r.Config.UpstreamHeadersClaims {
-		upstreamHeadersClaims = append(upstreamHeadersClaims, upstreamHeadersClaimsItem.ValueString())
+	var upstreamHeadersClaims []string
+	if r.Config.UpstreamHeadersClaims != nil {
+		upstreamHeadersClaims = make([]string, 0, len(r.Config.UpstreamHeadersClaims))
+		for _, upstreamHeadersClaimsItem := range r.Config.UpstreamHeadersClaims {
+			upstreamHeadersClaims = append(upstreamHeadersClaims, upstreamHeadersClaimsItem.ValueString())
+		}
 	}
-	upstreamHeadersNames := make([]string, 0, len(r.Config.UpstreamHeadersNames))
-	for _, upstreamHeadersNamesItem := range r.Config.UpstreamHeadersNames {
-		upstreamHeadersNames = append(upstreamHeadersNames, upstreamHeadersNamesItem.ValueString())
+	var upstreamHeadersNames []string
+	if r.Config.UpstreamHeadersNames != nil {
+		upstreamHeadersNames = make([]string, 0, len(r.Config.UpstreamHeadersNames))
+		for _, upstreamHeadersNamesItem := range r.Config.UpstreamHeadersNames {
+			upstreamHeadersNames = append(upstreamHeadersNames, upstreamHeadersNamesItem.ValueString())
+		}
 	}
 	upstreamIDTokenHeader := new(string)
 	if !r.Config.UpstreamIDTokenHeader.IsUnknown() && !r.Config.UpstreamIDTokenHeader.IsNull() {
@@ -2602,29 +2899,47 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		userinfoEndpoint = nil
 	}
-	userinfoHeadersClient := make([]string, 0, len(r.Config.UserinfoHeadersClient))
-	for _, userinfoHeadersClientItem := range r.Config.UserinfoHeadersClient {
-		userinfoHeadersClient = append(userinfoHeadersClient, userinfoHeadersClientItem.ValueString())
+	var userinfoHeadersClient []string
+	if r.Config.UserinfoHeadersClient != nil {
+		userinfoHeadersClient = make([]string, 0, len(r.Config.UserinfoHeadersClient))
+		for _, userinfoHeadersClientItem := range r.Config.UserinfoHeadersClient {
+			userinfoHeadersClient = append(userinfoHeadersClient, userinfoHeadersClientItem.ValueString())
+		}
 	}
-	userinfoHeadersNames := make([]string, 0, len(r.Config.UserinfoHeadersNames))
-	for _, userinfoHeadersNamesItem := range r.Config.UserinfoHeadersNames {
-		userinfoHeadersNames = append(userinfoHeadersNames, userinfoHeadersNamesItem.ValueString())
+	var userinfoHeadersNames []string
+	if r.Config.UserinfoHeadersNames != nil {
+		userinfoHeadersNames = make([]string, 0, len(r.Config.UserinfoHeadersNames))
+		for _, userinfoHeadersNamesItem := range r.Config.UserinfoHeadersNames {
+			userinfoHeadersNames = append(userinfoHeadersNames, userinfoHeadersNamesItem.ValueString())
+		}
 	}
-	userinfoHeadersValues := make([]string, 0, len(r.Config.UserinfoHeadersValues))
-	for _, userinfoHeadersValuesItem := range r.Config.UserinfoHeadersValues {
-		userinfoHeadersValues = append(userinfoHeadersValues, userinfoHeadersValuesItem.ValueString())
+	var userinfoHeadersValues []string
+	if r.Config.UserinfoHeadersValues != nil {
+		userinfoHeadersValues = make([]string, 0, len(r.Config.UserinfoHeadersValues))
+		for _, userinfoHeadersValuesItem := range r.Config.UserinfoHeadersValues {
+			userinfoHeadersValues = append(userinfoHeadersValues, userinfoHeadersValuesItem.ValueString())
+		}
 	}
-	userinfoQueryArgsClient := make([]string, 0, len(r.Config.UserinfoQueryArgsClient))
-	for _, userinfoQueryArgsClientItem := range r.Config.UserinfoQueryArgsClient {
-		userinfoQueryArgsClient = append(userinfoQueryArgsClient, userinfoQueryArgsClientItem.ValueString())
+	var userinfoQueryArgsClient []string
+	if r.Config.UserinfoQueryArgsClient != nil {
+		userinfoQueryArgsClient = make([]string, 0, len(r.Config.UserinfoQueryArgsClient))
+		for _, userinfoQueryArgsClientItem := range r.Config.UserinfoQueryArgsClient {
+			userinfoQueryArgsClient = append(userinfoQueryArgsClient, userinfoQueryArgsClientItem.ValueString())
+		}
 	}
-	userinfoQueryArgsNames := make([]string, 0, len(r.Config.UserinfoQueryArgsNames))
-	for _, userinfoQueryArgsNamesItem := range r.Config.UserinfoQueryArgsNames {
-		userinfoQueryArgsNames = append(userinfoQueryArgsNames, userinfoQueryArgsNamesItem.ValueString())
+	var userinfoQueryArgsNames []string
+	if r.Config.UserinfoQueryArgsNames != nil {
+		userinfoQueryArgsNames = make([]string, 0, len(r.Config.UserinfoQueryArgsNames))
+		for _, userinfoQueryArgsNamesItem := range r.Config.UserinfoQueryArgsNames {
+			userinfoQueryArgsNames = append(userinfoQueryArgsNames, userinfoQueryArgsNamesItem.ValueString())
+		}
 	}
-	userinfoQueryArgsValues := make([]string, 0, len(r.Config.UserinfoQueryArgsValues))
-	for _, userinfoQueryArgsValuesItem := range r.Config.UserinfoQueryArgsValues {
-		userinfoQueryArgsValues = append(userinfoQueryArgsValues, userinfoQueryArgsValuesItem.ValueString())
+	var userinfoQueryArgsValues []string
+	if r.Config.UserinfoQueryArgsValues != nil {
+		userinfoQueryArgsValues = make([]string, 0, len(r.Config.UserinfoQueryArgsValues))
+		for _, userinfoQueryArgsValuesItem := range r.Config.UserinfoQueryArgsValues {
+			userinfoQueryArgsValues = append(userinfoQueryArgsValues, userinfoQueryArgsValuesItem.ValueString())
+		}
 	}
 	usingPseudoIssuer := new(bool)
 	if !r.Config.UsingPseudoIssuer.IsUnknown() && !r.Config.UsingPseudoIssuer.IsNull() {

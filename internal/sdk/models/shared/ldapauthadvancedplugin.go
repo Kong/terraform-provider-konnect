@@ -10,7 +10,7 @@ import (
 )
 
 type LdapAuthAdvancedPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *LdapAuthAdvancedPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *LdapAuthAdvancedPluginAfter) GetAccess() []string {
 }
 
 type LdapAuthAdvancedPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *LdapAuthAdvancedPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *LdapAuthAdvancedPluginBefore) GetAccess() []string {
 }
 
 type LdapAuthAdvancedPluginOrdering struct {
-	After  *LdapAuthAdvancedPluginAfter  `json:"after,omitempty"`
-	Before *LdapAuthAdvancedPluginBefore `json:"before,omitempty"`
+	After  *LdapAuthAdvancedPluginAfter  `json:"after"`
+	Before *LdapAuthAdvancedPluginBefore `json:"before"`
 }
 
 func (o *LdapAuthAdvancedPluginOrdering) GetAfter() *LdapAuthAdvancedPluginAfter {
@@ -138,7 +138,7 @@ type LdapAuthAdvancedPluginConfig struct {
 	// Sets the attribute holding the name of a group, typically called `name` (in Active Directory) or `cn` (in OpenLDAP). This field is case-insensitive.
 	GroupNameAttribute *string `default:"null" json:"group_name_attribute"`
 	// The groups required to be present in the LDAP search result for successful authorization. This config parameter works in both **AND** / **OR** cases. - When `["group1 group2"]` are in the same array indices, both `group1` AND `group2` need to be present in the LDAP search result. - When `["group1", "group2"]` are in different array indices, either `group1` OR `group2` need to be present in the LDAP search result.
-	GroupsRequired []string `json:"groups_required,omitempty"`
+	GroupsRequired []string `json:"groups_required"`
 	// An optional string to use as part of the Authorization header. By default, a valid Authorization header looks like this: `Authorization: ldap base64(username:password)`. If `header_type` is set to "basic", then the Authorization header would be `Authorization: basic base64(username:password)`. Note that `header_type` can take any string, not just `'ldap'` and `'basic'`.
 	HeaderType *string `default:"ldap" json:"header_type"`
 	// An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request.

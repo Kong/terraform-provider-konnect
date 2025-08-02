@@ -10,7 +10,7 @@ import (
 )
 
 type AiPromptDecoratorPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiPromptDecoratorPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *AiPromptDecoratorPluginAfter) GetAccess() []string {
 }
 
 type AiPromptDecoratorPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiPromptDecoratorPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *AiPromptDecoratorPluginBefore) GetAccess() []string {
 }
 
 type AiPromptDecoratorPluginOrdering struct {
-	After  *AiPromptDecoratorPluginAfter  `json:"after,omitempty"`
-	Before *AiPromptDecoratorPluginBefore `json:"before,omitempty"`
+	After  *AiPromptDecoratorPluginAfter  `json:"after"`
+	Before *AiPromptDecoratorPluginBefore `json:"before"`
 }
 
 func (o *AiPromptDecoratorPluginOrdering) GetAfter() *AiPromptDecoratorPluginAfter {
@@ -246,9 +246,9 @@ func (o *Prepend) GetRole() *AiPromptDecoratorPluginRole {
 
 type Prompts struct {
 	// Insert chat messages at the end of the chat message array. This array preserves exact order when adding messages.
-	Append []AiPromptDecoratorPluginAppend `json:"append,omitempty"`
+	Append []AiPromptDecoratorPluginAppend `json:"append"`
 	// Insert chat messages at the beginning of the chat message array. This array preserves exact order when adding messages.
-	Prepend []Prepend `json:"prepend,omitempty"`
+	Prepend []Prepend `json:"prepend"`
 }
 
 func (o *Prompts) GetAppend() []AiPromptDecoratorPluginAppend {
@@ -270,7 +270,7 @@ type AiPromptDecoratorPluginConfig struct {
 	LlmFormat *LlmFormat `default:"openai" json:"llm_format"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 	MaxRequestBodySize *int64   `default:"8192" json:"max_request_body_size"`
-	Prompts            *Prompts `json:"prompts,omitempty"`
+	Prompts            *Prompts `json:"prompts"`
 }
 
 func (a AiPromptDecoratorPluginConfig) MarshalJSON() ([]byte, error) {
@@ -403,7 +403,7 @@ type AiPromptDecoratorPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                         `json:"updated_at,omitempty"`
-	Config    *AiPromptDecoratorPluginConfig `json:"config,omitempty"`
+	Config    *AiPromptDecoratorPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *AiPromptDecoratorPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups

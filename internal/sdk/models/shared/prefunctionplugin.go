@@ -10,7 +10,7 @@ import (
 )
 
 type PreFunctionPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *PreFunctionPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *PreFunctionPluginAfter) GetAccess() []string {
 }
 
 type PreFunctionPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *PreFunctionPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *PreFunctionPluginBefore) GetAccess() []string {
 }
 
 type PreFunctionPluginOrdering struct {
-	After  *PreFunctionPluginAfter  `json:"after,omitempty"`
-	Before *PreFunctionPluginBefore `json:"before,omitempty"`
+	After  *PreFunctionPluginAfter  `json:"after"`
+	Before *PreFunctionPluginBefore `json:"before"`
 }
 
 func (o *PreFunctionPluginOrdering) GetAfter() *PreFunctionPluginAfter {
@@ -266,7 +266,7 @@ type PreFunctionPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                   `json:"updated_at,omitempty"`
-	Config    *PreFunctionPluginConfig `json:"config,omitempty"`
+	Config    *PreFunctionPluginConfig `json:"config"`
 	// A set of strings representing protocols.
 	Protocols []PreFunctionPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

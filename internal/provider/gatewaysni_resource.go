@@ -7,11 +7,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -36,7 +34,7 @@ type GatewaySNIResource struct {
 
 // GatewaySNIResourceModel describes the resource data model.
 type GatewaySNIResourceModel struct {
-	Certificate    *tfTypes.Set   `tfsdk:"certificate"`
+	Certificate    tfTypes.Set    `tfsdk:"certificate"`
 	ControlPlaneID types.String   `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64    `tfsdk:"created_at"`
 	ID             types.String   `tfsdk:"id"`
@@ -54,11 +52,7 @@ func (r *GatewaySNIResource) Schema(ctx context.Context, req resource.SchemaRequ
 		MarkdownDescription: "GatewaySNI Resource",
 		Attributes: map[string]schema.Attribute{
 			"certificate": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,

@@ -10,7 +10,7 @@ import (
 )
 
 type TLSHandshakeModifierPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *TLSHandshakeModifierPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *TLSHandshakeModifierPluginAfter) GetAccess() []string {
 }
 
 type TLSHandshakeModifierPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *TLSHandshakeModifierPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *TLSHandshakeModifierPluginBefore) GetAccess() []string {
 }
 
 type TLSHandshakeModifierPluginOrdering struct {
-	After  *TLSHandshakeModifierPluginAfter  `json:"after,omitempty"`
-	Before *TLSHandshakeModifierPluginBefore `json:"before,omitempty"`
+	After  *TLSHandshakeModifierPluginAfter  `json:"after"`
+	Before *TLSHandshakeModifierPluginBefore `json:"before"`
 }
 
 func (o *TLSHandshakeModifierPluginOrdering) GetAfter() *TLSHandshakeModifierPluginAfter {
@@ -208,7 +208,7 @@ type TLSHandshakeModifierPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                            `json:"updated_at,omitempty"`
-	Config    *TLSHandshakeModifierPluginConfig `json:"config,omitempty"`
+	Config    *TLSHandshakeModifierPluginConfig `json:"config"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []TLSHandshakeModifierPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

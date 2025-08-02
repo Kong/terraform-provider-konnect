@@ -20,23 +20,27 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) RefreshFromSharedAiAzur
 		r.Config.AzureClientSecret = types.StringPointerValue(resp.Config.AzureClientSecret)
 		r.Config.AzureTenantID = types.StringPointerValue(resp.Config.AzureTenantID)
 		r.Config.AzureUseManagedIdentity = types.BoolPointerValue(resp.Config.AzureUseManagedIdentity)
-		r.Config.BlocklistNames = make([]types.String, 0, len(resp.Config.BlocklistNames))
-		for _, v := range resp.Config.BlocklistNames {
-			r.Config.BlocklistNames = append(r.Config.BlocklistNames, types.StringValue(v))
+		if resp.Config.BlocklistNames != nil {
+			r.Config.BlocklistNames = make([]types.String, 0, len(resp.Config.BlocklistNames))
+			for _, v := range resp.Config.BlocklistNames {
+				r.Config.BlocklistNames = append(r.Config.BlocklistNames, types.StringValue(v))
+			}
 		}
-		r.Config.Categories = []tfTypes.Categories{}
-		if len(r.Config.Categories) > len(resp.Config.Categories) {
-			r.Config.Categories = r.Config.Categories[:len(resp.Config.Categories)]
-		}
-		for categoriesCount, categoriesItem := range resp.Config.Categories {
-			var categories tfTypes.Categories
-			categories.Name = types.StringValue(categoriesItem.Name)
-			categories.RejectionLevel = types.Int64Value(categoriesItem.RejectionLevel)
-			if categoriesCount+1 > len(r.Config.Categories) {
-				r.Config.Categories = append(r.Config.Categories, categories)
-			} else {
-				r.Config.Categories[categoriesCount].Name = categories.Name
-				r.Config.Categories[categoriesCount].RejectionLevel = categories.RejectionLevel
+		if resp.Config.Categories != nil {
+			r.Config.Categories = []tfTypes.Categories{}
+			if len(r.Config.Categories) > len(resp.Config.Categories) {
+				r.Config.Categories = r.Config.Categories[:len(resp.Config.Categories)]
+			}
+			for categoriesCount, categoriesItem := range resp.Config.Categories {
+				var categories tfTypes.Categories
+				categories.Name = types.StringValue(categoriesItem.Name)
+				categories.RejectionLevel = types.Int64Value(categoriesItem.RejectionLevel)
+				if categoriesCount+1 > len(r.Config.Categories) {
+					r.Config.Categories = append(r.Config.Categories, categories)
+				} else {
+					r.Config.Categories[categoriesCount].Name = categories.Name
+					r.Config.Categories[categoriesCount].RejectionLevel = categories.RejectionLevel
+				}
 			}
 		}
 		r.Config.ContentSafetyKey = types.StringPointerValue(resp.Config.ContentSafetyKey)
@@ -65,18 +69,22 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) RefreshFromSharedAiAzur
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -238,9 +246,12 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentS
 	if r.Ordering != nil {
 		var after *shared.AiAzureContentSafetyPluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.AiAzureContentSafetyPluginAfter{
 				Access: access,
@@ -248,9 +259,12 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentS
 		}
 		var before *shared.AiAzureContentSafetyPluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.AiAzureContentSafetyPluginBefore{
 				Access: access1,
@@ -333,22 +347,28 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentS
 	} else {
 		azureUseManagedIdentity = nil
 	}
-	blocklistNames := make([]string, 0, len(r.Config.BlocklistNames))
-	for _, blocklistNamesItem := range r.Config.BlocklistNames {
-		blocklistNames = append(blocklistNames, blocklistNamesItem.ValueString())
+	var blocklistNames []string
+	if r.Config.BlocklistNames != nil {
+		blocklistNames = make([]string, 0, len(r.Config.BlocklistNames))
+		for _, blocklistNamesItem := range r.Config.BlocklistNames {
+			blocklistNames = append(blocklistNames, blocklistNamesItem.ValueString())
+		}
 	}
-	categories := make([]shared.Categories, 0, len(r.Config.Categories))
-	for _, categoriesItem := range r.Config.Categories {
-		var name1 string
-		name1 = categoriesItem.Name.ValueString()
+	var categories []shared.Categories
+	if r.Config.Categories != nil {
+		categories = make([]shared.Categories, 0, len(r.Config.Categories))
+		for _, categoriesItem := range r.Config.Categories {
+			var name1 string
+			name1 = categoriesItem.Name.ValueString()
 
-		var rejectionLevel int64
-		rejectionLevel = categoriesItem.RejectionLevel.ValueInt64()
+			var rejectionLevel int64
+			rejectionLevel = categoriesItem.RejectionLevel.ValueInt64()
 
-		categories = append(categories, shared.Categories{
-			Name:           name1,
-			RejectionLevel: rejectionLevel,
-		})
+			categories = append(categories, shared.Categories{
+				Name:           name1,
+				RejectionLevel: rejectionLevel,
+			})
+		}
 	}
 	contentSafetyKey := new(string)
 	if !r.Config.ContentSafetyKey.IsUnknown() && !r.Config.ContentSafetyKey.IsNull() {

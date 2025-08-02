@@ -10,7 +10,7 @@ import (
 )
 
 type KeyAuthEncPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *KeyAuthEncPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *KeyAuthEncPluginAfter) GetAccess() []string {
 }
 
 type KeyAuthEncPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *KeyAuthEncPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *KeyAuthEncPluginBefore) GetAccess() []string {
 }
 
 type KeyAuthEncPluginOrdering struct {
-	After  *KeyAuthEncPluginAfter  `json:"after,omitempty"`
-	Before *KeyAuthEncPluginBefore `json:"before,omitempty"`
+	After  *KeyAuthEncPluginAfter  `json:"after"`
+	Before *KeyAuthEncPluginBefore `json:"before"`
 }
 
 func (o *KeyAuthEncPluginOrdering) GetAfter() *KeyAuthEncPluginAfter {
@@ -256,7 +256,7 @@ type KeyAuthEncPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                  `json:"updated_at,omitempty"`
-	Config    *KeyAuthEncPluginConfig `json:"config,omitempty"`
+	Config    *KeyAuthEncPluginConfig `json:"config"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []KeyAuthEncPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

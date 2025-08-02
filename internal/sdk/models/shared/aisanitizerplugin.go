@@ -10,7 +10,7 @@ import (
 )
 
 type AiSanitizerPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiSanitizerPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *AiSanitizerPluginAfter) GetAccess() []string {
 }
 
 type AiSanitizerPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiSanitizerPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *AiSanitizerPluginBefore) GetAccess() []string {
 }
 
 type AiSanitizerPluginOrdering struct {
-	After  *AiSanitizerPluginAfter  `json:"after,omitempty"`
-	Before *AiSanitizerPluginBefore `json:"before,omitempty"`
+	After  *AiSanitizerPluginAfter  `json:"after"`
+	Before *AiSanitizerPluginBefore `json:"before"`
 }
 
 func (o *AiSanitizerPluginOrdering) GetAfter() *AiSanitizerPluginAfter {
@@ -239,7 +239,7 @@ type AiSanitizerPluginConfig struct {
 	// List of types to be anonymized
 	Anonymize []Anonymize `json:"anonymize,omitempty"`
 	// List of custom patterns to be used for anonymization
-	CustomPatterns []CustomPatterns `json:"custom_patterns,omitempty"`
+	CustomPatterns []CustomPatterns `json:"custom_patterns"`
 	// The host of the sanitizer
 	Host *string `default:"localhost" json:"host"`
 	// The keepalive timeout for the established http connnection
@@ -437,7 +437,7 @@ type AiSanitizerPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                   `json:"updated_at,omitempty"`
-	Config    *AiSanitizerPluginConfig `json:"config,omitempty"`
+	Config    *AiSanitizerPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *AiSanitizerPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups

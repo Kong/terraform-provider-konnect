@@ -10,7 +10,7 @@ import (
 )
 
 type JweDecryptPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *JweDecryptPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *JweDecryptPluginAfter) GetAccess() []string {
 }
 
 type JweDecryptPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *JweDecryptPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *JweDecryptPluginBefore) GetAccess() []string {
 }
 
 type JweDecryptPluginOrdering struct {
-	After  *JweDecryptPluginAfter  `json:"after,omitempty"`
-	Before *JweDecryptPluginBefore `json:"before,omitempty"`
+	After  *JweDecryptPluginAfter  `json:"after"`
+	Before *JweDecryptPluginBefore `json:"before"`
 }
 
 func (o *JweDecryptPluginOrdering) GetAfter() *JweDecryptPluginAfter {

@@ -10,7 +10,7 @@ import (
 )
 
 type AiAzureContentSafetyPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiAzureContentSafetyPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *AiAzureContentSafetyPluginAfter) GetAccess() []string {
 }
 
 type AiAzureContentSafetyPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiAzureContentSafetyPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *AiAzureContentSafetyPluginBefore) GetAccess() []string {
 }
 
 type AiAzureContentSafetyPluginOrdering struct {
-	After  *AiAzureContentSafetyPluginAfter  `json:"after,omitempty"`
-	Before *AiAzureContentSafetyPluginBefore `json:"before,omitempty"`
+	After  *AiAzureContentSafetyPluginAfter  `json:"after"`
+	Before *AiAzureContentSafetyPluginBefore `json:"before"`
 }
 
 func (o *AiAzureContentSafetyPluginOrdering) GetAfter() *AiAzureContentSafetyPluginAfter {
@@ -175,9 +175,9 @@ type AiAzureContentSafetyPluginConfig struct {
 	// If checked, uses (if set) `azure_client_id`, `azure_client_secret`, and/or `azure_tenant_id` for Azure authentication, via Managed or User-assigned identity
 	AzureUseManagedIdentity *bool `default:"false" json:"azure_use_managed_identity"`
 	// Use these configured blocklists (in Azure Content Services) when inspecting content.
-	BlocklistNames []string `json:"blocklist_names,omitempty"`
+	BlocklistNames []string `json:"blocklist_names"`
 	// Array of categories, and their thresholds, to measure on.
-	Categories []Categories `json:"categories,omitempty"`
+	Categories []Categories `json:"categories"`
 	// If `azure_use_managed_identity` is true, set the API key to call Content Safety.
 	ContentSafetyKey *string `default:"null" json:"content_safety_key"`
 	// Full URL, inc protocol, of the Azure Content Safety instance.

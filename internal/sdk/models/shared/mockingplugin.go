@@ -10,7 +10,7 @@ import (
 )
 
 type MockingPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *MockingPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *MockingPluginAfter) GetAccess() []string {
 }
 
 type MockingPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *MockingPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *MockingPluginBefore) GetAccess() []string {
 }
 
 type MockingPluginOrdering struct {
-	After  *MockingPluginAfter  `json:"after,omitempty"`
-	Before *MockingPluginBefore `json:"before,omitempty"`
+	After  *MockingPluginAfter  `json:"after"`
+	Before *MockingPluginBefore `json:"before"`
 }
 
 func (o *MockingPluginOrdering) GetAfter() *MockingPluginAfter {
@@ -100,7 +100,7 @@ type MockingPluginConfig struct {
 	// Indicates whether to include the base path when performing path match evaluation.
 	IncludeBasePath *bool `default:"false" json:"include_base_path"`
 	// A global list of the HTTP status codes that can only be selected and returned.
-	IncludedStatusCodes []int64 `json:"included_status_codes,omitempty"`
+	IncludedStatusCodes []int64 `json:"included_status_codes"`
 	// The maximum value in seconds of delay time. Set this value when `random_delay` is enabled and you want to adjust the default. The value must be greater than the `min_delay_time`.
 	MaxDelayTime *float64 `default:"1" json:"max_delay_time"`
 	// The minimum value in seconds of delay time. Set this value when `random_delay` is enabled and you want to adjust the default. The value must be less than the `max_delay_time`.
@@ -280,7 +280,7 @@ type MockingPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64               `json:"updated_at,omitempty"`
-	Config    *MockingPluginConfig `json:"config,omitempty"`
+	Config    *MockingPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *MockingPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.

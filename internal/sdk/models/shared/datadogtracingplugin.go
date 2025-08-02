@@ -10,7 +10,7 @@ import (
 )
 
 type DatadogTracingPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *DatadogTracingPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *DatadogTracingPluginAfter) GetAccess() []string {
 }
 
 type DatadogTracingPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *DatadogTracingPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *DatadogTracingPluginBefore) GetAccess() []string {
 }
 
 type DatadogTracingPluginOrdering struct {
-	After  *DatadogTracingPluginAfter  `json:"after,omitempty"`
-	Before *DatadogTracingPluginBefore `json:"before,omitempty"`
+	After  *DatadogTracingPluginAfter  `json:"after"`
+	Before *DatadogTracingPluginBefore `json:"before"`
 }
 
 func (o *DatadogTracingPluginOrdering) GetAfter() *DatadogTracingPluginAfter {
@@ -254,7 +254,7 @@ type DatadogTracingPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                      `json:"updated_at,omitempty"`
-	Config    *DatadogTracingPluginConfig `json:"config,omitempty"`
+	Config    *DatadogTracingPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *DatadogTracingPluginConsumerGroup `json:"consumer_group"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.

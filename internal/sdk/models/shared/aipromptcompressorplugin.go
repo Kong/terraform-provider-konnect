@@ -10,7 +10,7 @@ import (
 )
 
 type AiPromptCompressorPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiPromptCompressorPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *AiPromptCompressorPluginAfter) GetAccess() []string {
 }
 
 type AiPromptCompressorPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiPromptCompressorPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *AiPromptCompressorPluginBefore) GetAccess() []string {
 }
 
 type AiPromptCompressorPluginOrdering struct {
-	After  *AiPromptCompressorPluginAfter  `json:"after,omitempty"`
-	Before *AiPromptCompressorPluginBefore `json:"before,omitempty"`
+	After  *AiPromptCompressorPluginAfter  `json:"after"`
+	Before *AiPromptCompressorPluginBefore `json:"before"`
 }
 
 func (o *AiPromptCompressorPluginOrdering) GetAfter() *AiPromptCompressorPluginAfter {

@@ -10,7 +10,7 @@ import (
 )
 
 type OpentelemetryPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *OpentelemetryPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *OpentelemetryPluginAfter) GetAccess() []string {
 }
 
 type OpentelemetryPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *OpentelemetryPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *OpentelemetryPluginBefore) GetAccess() []string {
 }
 
 type OpentelemetryPluginOrdering struct {
-	After  *OpentelemetryPluginAfter  `json:"after,omitempty"`
-	Before *OpentelemetryPluginBefore `json:"before,omitempty"`
+	After  *OpentelemetryPluginAfter  `json:"after"`
+	Before *OpentelemetryPluginBefore `json:"before"`
 }
 
 func (o *OpentelemetryPluginOrdering) GetAfter() *OpentelemetryPluginAfter {
@@ -287,13 +287,13 @@ func (e *Inject) UnmarshalJSON(data []byte) error {
 
 type Propagation struct {
 	// Header names to clear after context extraction. This allows to extract the context from a certain header and then remove it from the request, useful when extraction and injection are performed on different header formats and the original header should not be sent to the upstream. If left empty, no headers are cleared.
-	Clear []string `json:"clear,omitempty"`
+	Clear []string `json:"clear"`
 	// The default header format to use when extractors did not match any format in the incoming headers and `inject` is configured with the value: `preserve`. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in `extract`.
 	DefaultFormat DefaultFormat `json:"default_format"`
 	// Header formats used to extract tracing context from incoming requests. If multiple values are specified, the first one found will be used for extraction. If left empty, Kong will not extract any tracing context information from incoming requests and generate a trace with no parent and a new trace ID.
-	Extract []Extract `json:"extract,omitempty"`
+	Extract []Extract `json:"extract"`
 	// Header formats used to inject tracing context. The value `preserve` will use the same header format as the incoming request. If multiple values are specified, all of them will be used during injection. If left empty, Kong will not inject any tracing context information in outgoing requests.
-	Inject []Inject `json:"inject,omitempty"`
+	Inject []Inject `json:"inject"`
 }
 
 func (o *Propagation) GetClear() []string {
@@ -694,7 +694,7 @@ type OpentelemetryPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                     `json:"updated_at,omitempty"`
-	Config    *OpentelemetryPluginConfig `json:"config,omitempty"`
+	Config    *OpentelemetryPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *OpentelemetryPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.

@@ -10,7 +10,7 @@ import (
 )
 
 type TLSMetadataHeadersPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *TLSMetadataHeadersPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *TLSMetadataHeadersPluginAfter) GetAccess() []string {
 }
 
 type TLSMetadataHeadersPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *TLSMetadataHeadersPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *TLSMetadataHeadersPluginBefore) GetAccess() []string {
 }
 
 type TLSMetadataHeadersPluginOrdering struct {
-	After  *TLSMetadataHeadersPluginAfter  `json:"after,omitempty"`
-	Before *TLSMetadataHeadersPluginBefore `json:"before,omitempty"`
+	After  *TLSMetadataHeadersPluginAfter  `json:"after"`
+	Before *TLSMetadataHeadersPluginBefore `json:"before"`
 }
 
 func (o *TLSMetadataHeadersPluginOrdering) GetAfter() *TLSMetadataHeadersPluginAfter {
@@ -229,7 +229,7 @@ type TLSMetadataHeadersPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                          `json:"updated_at,omitempty"`
-	Config    *TLSMetadataHeadersPluginConfig `json:"config,omitempty"`
+	Config    *TLSMetadataHeadersPluginConfig `json:"config"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []TLSMetadataHeadersPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

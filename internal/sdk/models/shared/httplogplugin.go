@@ -10,7 +10,7 @@ import (
 )
 
 type HTTPLogPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *HTTPLogPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *HTTPLogPluginAfter) GetAccess() []string {
 }
 
 type HTTPLogPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *HTTPLogPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *HTTPLogPluginBefore) GetAccess() []string {
 }
 
 type HTTPLogPluginOrdering struct {
-	After  *HTTPLogPluginAfter  `json:"after,omitempty"`
-	Before *HTTPLogPluginBefore `json:"before,omitempty"`
+	After  *HTTPLogPluginAfter  `json:"after"`
+	Before *HTTPLogPluginBefore `json:"before"`
 }
 
 func (o *HTTPLogPluginOrdering) GetAfter() *HTTPLogPluginAfter {
@@ -275,7 +275,7 @@ type HTTPLogPluginConfig struct {
 	Keepalive *float64 `default:"60000" json:"keepalive"`
 	// An optional method used to send data to the HTTP server. Supported values are `POST` (default), `PUT`, and `PATCH`.
 	Method *Method             `default:"POST" json:"method"`
-	Queue  *HTTPLogPluginQueue `json:"queue,omitempty"`
+	Queue  *HTTPLogPluginQueue `json:"queue"`
 	// Maximum number of log entries to be sent on each message to the upstream server.
 	QueueSize *int64 `default:"null" json:"queue_size"`
 	// Number of times to retry when sending data to the upstream server.

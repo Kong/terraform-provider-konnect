@@ -10,7 +10,7 @@ import (
 )
 
 type ResponseTransformerAdvancedPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ResponseTransformerAdvancedPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *ResponseTransformerAdvancedPluginAfter) GetAccess() []string {
 }
 
 type ResponseTransformerAdvancedPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ResponseTransformerAdvancedPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *ResponseTransformerAdvancedPluginBefore) GetAccess() []string {
 }
 
 type ResponseTransformerAdvancedPluginOrdering struct {
-	After  *ResponseTransformerAdvancedPluginAfter  `json:"after,omitempty"`
-	Before *ResponseTransformerAdvancedPluginBefore `json:"before,omitempty"`
+	After  *ResponseTransformerAdvancedPluginAfter  `json:"after"`
+	Before *ResponseTransformerAdvancedPluginBefore `json:"before"`
 }
 
 func (o *ResponseTransformerAdvancedPluginOrdering) GetAfter() *ResponseTransformerAdvancedPluginAfter {
@@ -155,7 +155,7 @@ func (o *ResponseTransformerAdvancedPluginAdd) GetJSONTypes() []ResponseTransfor
 }
 
 type ResponseTransformerAdvancedPluginAllow struct {
-	JSON []string `json:"json,omitempty"`
+	JSON []string `json:"json"`
 }
 
 func (o *ResponseTransformerAdvancedPluginAllow) GetJSON() []string {
@@ -387,15 +387,15 @@ func (o *Transform) GetJSON() []string {
 }
 
 type ResponseTransformerAdvancedPluginConfig struct {
-	Add    *ResponseTransformerAdvancedPluginAdd    `json:"add,omitempty"`
-	Allow  *ResponseTransformerAdvancedPluginAllow  `json:"allow,omitempty"`
-	Append *ResponseTransformerAdvancedPluginAppend `json:"append,omitempty"`
+	Add    *ResponseTransformerAdvancedPluginAdd    `json:"add"`
+	Allow  *ResponseTransformerAdvancedPluginAllow  `json:"allow"`
+	Append *ResponseTransformerAdvancedPluginAppend `json:"append"`
 	// Whether dots (for example, `customers.info.phone`) should be treated as part of a property name or used to descend into nested JSON objects..
 	DotsInKeys *bool                                     `default:"true" json:"dots_in_keys"`
-	Remove     *ResponseTransformerAdvancedPluginRemove  `json:"remove,omitempty"`
-	Rename     *ResponseTransformerAdvancedPluginRename  `json:"rename,omitempty"`
-	Replace    *ResponseTransformerAdvancedPluginReplace `json:"replace,omitempty"`
-	Transform  *Transform                                `json:"transform,omitempty"`
+	Remove     *ResponseTransformerAdvancedPluginRemove  `json:"remove"`
+	Rename     *ResponseTransformerAdvancedPluginRename  `json:"rename"`
+	Replace    *ResponseTransformerAdvancedPluginReplace `json:"replace"`
+	Transform  *Transform                                `json:"transform"`
 }
 
 func (r ResponseTransformerAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
@@ -563,7 +563,7 @@ type ResponseTransformerAdvancedPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                                   `json:"updated_at,omitempty"`
-	Config    *ResponseTransformerAdvancedPluginConfig `json:"config,omitempty"`
+	Config    *ResponseTransformerAdvancedPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *ResponseTransformerAdvancedPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups

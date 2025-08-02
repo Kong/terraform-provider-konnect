@@ -10,7 +10,7 @@ import (
 )
 
 type RequestTransformerPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *RequestTransformerPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *RequestTransformerPluginAfter) GetAccess() []string {
 }
 
 type RequestTransformerPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *RequestTransformerPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *RequestTransformerPluginBefore) GetAccess() []string {
 }
 
 type RequestTransformerPluginOrdering struct {
-	After  *RequestTransformerPluginAfter  `json:"after,omitempty"`
-	Before *RequestTransformerPluginBefore `json:"before,omitempty"`
+	After  *RequestTransformerPluginAfter  `json:"after"`
+	Before *RequestTransformerPluginBefore `json:"before"`
 }
 
 func (o *RequestTransformerPluginOrdering) GetAfter() *RequestTransformerPluginAfter {
@@ -245,13 +245,13 @@ func (o *Replace) GetURI() *string {
 }
 
 type RequestTransformerPluginConfig struct {
-	Add    *Add    `json:"add,omitempty"`
-	Append *Append `json:"append,omitempty"`
+	Add    *Add    `json:"add"`
+	Append *Append `json:"append"`
 	// A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters.
 	HTTPMethod *string  `default:"null" json:"http_method"`
-	Remove     *Remove  `json:"remove,omitempty"`
-	Rename     *Rename  `json:"rename,omitempty"`
-	Replace    *Replace `json:"replace,omitempty"`
+	Remove     *Remove  `json:"remove"`
+	Rename     *Rename  `json:"rename"`
+	Replace    *Replace `json:"replace"`
 }
 
 func (r RequestTransformerPluginConfig) MarshalJSON() ([]byte, error) {
@@ -424,7 +424,7 @@ type RequestTransformerPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                          `json:"updated_at,omitempty"`
-	Config    *RequestTransformerPluginConfig `json:"config,omitempty"`
+	Config    *RequestTransformerPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *RequestTransformerPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups

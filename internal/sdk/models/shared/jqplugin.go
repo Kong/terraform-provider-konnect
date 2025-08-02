@@ -10,7 +10,7 @@ import (
 )
 
 type JqPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *JqPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *JqPluginAfter) GetAccess() []string {
 }
 
 type JqPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *JqPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *JqPluginBefore) GetAccess() []string {
 }
 
 type JqPluginOrdering struct {
-	After  *JqPluginAfter  `json:"after,omitempty"`
-	Before *JqPluginBefore `json:"before,omitempty"`
+	After  *JqPluginAfter  `json:"after"`
+	Before *JqPluginBefore `json:"before"`
 }
 
 func (o *JqPluginOrdering) GetAfter() *JqPluginAfter {
@@ -201,11 +201,11 @@ func (o *ResponseJqProgramOptions) GetSortKeys() *bool {
 type JqPluginConfig struct {
 	RequestIfMediaType       []string                  `json:"request_if_media_type,omitempty"`
 	RequestJqProgram         *string                   `default:"null" json:"request_jq_program"`
-	RequestJqProgramOptions  *RequestJqProgramOptions  `json:"request_jq_program_options,omitempty"`
+	RequestJqProgramOptions  *RequestJqProgramOptions  `json:"request_jq_program_options"`
 	ResponseIfMediaType      []string                  `json:"response_if_media_type,omitempty"`
 	ResponseIfStatusCode     []int64                   `json:"response_if_status_code,omitempty"`
 	ResponseJqProgram        *string                   `default:"null" json:"response_jq_program"`
-	ResponseJqProgramOptions *ResponseJqProgramOptions `json:"response_jq_program_options,omitempty"`
+	ResponseJqProgramOptions *ResponseJqProgramOptions `json:"response_jq_program_options"`
 }
 
 func (j JqPluginConfig) MarshalJSON() ([]byte, error) {
@@ -354,7 +354,7 @@ type JqPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64          `json:"updated_at,omitempty"`
-	Config    *JqPluginConfig `json:"config,omitempty"`
+	Config    *JqPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *JqPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.

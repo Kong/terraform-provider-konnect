@@ -10,7 +10,7 @@ import (
 )
 
 type RequestCalloutPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *RequestCalloutPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *RequestCalloutPluginAfter) GetAccess() []string {
 }
 
 type RequestCalloutPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *RequestCalloutPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *RequestCalloutPluginBefore) GetAccess() []string {
 }
 
 type RequestCalloutPluginOrdering struct {
-	After  *RequestCalloutPluginAfter  `json:"after,omitempty"`
-	Before *RequestCalloutPluginBefore `json:"before,omitempty"`
+	After  *RequestCalloutPluginAfter  `json:"after"`
+	Before *RequestCalloutPluginBefore `json:"before"`
 }
 
 func (o *RequestCalloutPluginOrdering) GetAfter() *RequestCalloutPluginAfter {
@@ -211,7 +211,7 @@ type RequestCalloutPluginRedis struct {
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
-	ClusterNodes []RequestCalloutPluginClusterNodes `json:"cluster_nodes,omitempty"`
+	ClusterNodes []RequestCalloutPluginClusterNodes `json:"cluster_nodes"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
@@ -235,7 +235,7 @@ type RequestCalloutPluginRedis struct {
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `default:"null" json:"sentinel_master"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
-	SentinelNodes []RequestCalloutPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
+	SentinelNodes []RequestCalloutPluginSentinelNodes `json:"sentinel_nodes"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
 	SentinelPassword *string `default:"null" json:"sentinel_password"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -444,8 +444,8 @@ func (e *RequestCalloutPluginStrategy) UnmarshalJSON(data []byte) error {
 type Cache struct {
 	// TTL in seconds of cache entities.
 	CacheTTL *int64                      `default:"300" json:"cache_ttl"`
-	Memory   *RequestCalloutPluginMemory `json:"memory,omitempty"`
-	Redis    *RequestCalloutPluginRedis  `json:"redis,omitempty"`
+	Memory   *RequestCalloutPluginMemory `json:"memory"`
+	Redis    *RequestCalloutPluginRedis  `json:"redis"`
 	// The backing data store in which to hold cache entities. Accepted values are: `off`, `memory`, and `redis`.
 	Strategy *RequestCalloutPluginStrategy `default:"off" json:"strategy"`
 }
@@ -591,7 +591,7 @@ type Error struct {
 	// The error mesasge to respond with if `on_error` is set to `fail` or if `retries` is achieved. Templating with Lua expressions is supported.
 	ErrorResponseMsg *string `default:"service callout error" json:"error_response_msg"`
 	// The list of HTTP status codes considered errors under the error handling policy.
-	HTTPStatuses []int64  `json:"http_statuses,omitempty"`
+	HTTPStatuses []int64  `json:"http_statuses"`
 	OnError      *OnError `default:"fail" json:"on_error"`
 	// The number of retries the plugin will attempt on TCP and HTTP errors if `on_error` is set to `retry`.
 	Retries *int64 `default:"2" json:"retries"`
@@ -772,13 +772,13 @@ func (o *Timeouts) GetWrite() *int64 {
 // HTTPOpts - HTTP connection parameters.
 type HTTPOpts struct {
 	// Proxy settings.
-	Proxy *Proxy `json:"proxy,omitempty"`
+	Proxy *Proxy `json:"proxy"`
 	// The SNI used in the callout request. Defaults to host if omitted.
 	SslServerName *string `default:"null" json:"ssl_server_name"`
 	// If set to `true`, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
 	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Socket timeouts in milliseconds. All or none must be set.
-	Timeouts *Timeouts `json:"timeouts,omitempty"`
+	Timeouts *Timeouts `json:"timeouts"`
 }
 
 func (h HTTPOpts) MarshalJSON() ([]byte, error) {
@@ -1196,13 +1196,13 @@ func (o *Query) GetForward() *bool {
 // RequestCalloutPluginUpstream - Customizations to the upstream request.
 type RequestCalloutPluginUpstream struct {
 	// Callout request body customizations.
-	Body *Body `json:"body,omitempty"`
+	Body *Body `json:"body"`
 	// Lua code that executes before the upstream request is made. Can produce side effects. Standard Lua sandboxing restrictions apply.
 	ByLua *string `default:"null" json:"by_lua"`
 	// Callout request header customizations.
-	Headers *Headers `json:"headers,omitempty"`
+	Headers *Headers `json:"headers"`
 	// Upstream request query param customizations.
-	Query *Query `json:"query,omitempty"`
+	Query *Query `json:"query"`
 }
 
 func (r RequestCalloutPluginUpstream) MarshalJSON() ([]byte, error) {
@@ -1246,11 +1246,11 @@ func (o *RequestCalloutPluginUpstream) GetQuery() *Query {
 
 type RequestCalloutPluginConfig struct {
 	// Plugin global caching configuration.
-	Cache *Cache `json:"cache,omitempty"`
+	Cache *Cache `json:"cache"`
 	// A collection of callout objects, where each object represents an HTTP request made in the context of a proxy request.
 	Callouts []Callouts `json:"callouts"`
 	// Customizations to the upstream request.
-	Upstream *RequestCalloutPluginUpstream `json:"upstream,omitempty"`
+	Upstream *RequestCalloutPluginUpstream `json:"upstream"`
 }
 
 func (o *RequestCalloutPluginConfig) GetCache() *Cache {

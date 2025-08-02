@@ -10,7 +10,7 @@ import (
 )
 
 type UDPLogPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *UDPLogPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *UDPLogPluginAfter) GetAccess() []string {
 }
 
 type UDPLogPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *UDPLogPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *UDPLogPluginBefore) GetAccess() []string {
 }
 
 type UDPLogPluginOrdering struct {
-	After  *UDPLogPluginAfter  `json:"after,omitempty"`
-	Before *UDPLogPluginBefore `json:"before,omitempty"`
+	After  *UDPLogPluginAfter  `json:"after"`
+	Before *UDPLogPluginBefore `json:"before"`
 }
 
 func (o *UDPLogPluginOrdering) GetAfter() *UDPLogPluginAfter {

@@ -4,7 +4,7 @@ package shared
 
 // GetPluginSchemaResponse - The schema for the plugin
 type GetPluginSchemaResponse struct {
-	Fields []map[string]any `json:"fields,omitempty"`
+	Fields []map[string]any `json:"fields"`
 }
 
 func (o *GetPluginSchemaResponse) GetFields() []map[string]any {

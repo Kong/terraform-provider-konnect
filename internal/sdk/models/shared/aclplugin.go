@@ -10,7 +10,7 @@ import (
 )
 
 type ACLPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ACLPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *ACLPluginAfter) GetAccess() []string {
 }
 
 type ACLPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ACLPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *ACLPluginBefore) GetAccess() []string {
 }
 
 type ACLPluginOrdering struct {
-	After  *ACLPluginAfter  `json:"after,omitempty"`
-	Before *ACLPluginBefore `json:"before,omitempty"`
+	After  *ACLPluginAfter  `json:"after"`
+	Before *ACLPluginBefore `json:"before"`
 }
 
 func (o *ACLPluginOrdering) GetAfter() *ACLPluginAfter {
@@ -92,11 +92,11 @@ func (o *Partials) GetPath() *string {
 
 type ACLPluginConfig struct {
 	// Arbitrary group names that are allowed to consume the service or route. One of `config.allow` or `config.deny` must be specified.
-	Allow []string `json:"allow,omitempty"`
+	Allow []string `json:"allow"`
 	// If enabled (`true`), the authenticated groups will always be used even when an authenticated consumer already exists. If the authenticated groups don't exist, it will fallback to use the groups associated with the consumer. By default the authenticated groups will only be used when there is no consumer or the consumer is anonymous.
 	AlwaysUseAuthenticatedGroups *bool `default:"false" json:"always_use_authenticated_groups"`
 	// Arbitrary group names that are not allowed to consume the service or route. One of `config.allow` or `config.deny` must be specified.
-	Deny []string `json:"deny,omitempty"`
+	Deny []string `json:"deny"`
 	// If enabled (`true`), prevents the `X-Consumer-Groups` header from being sent in the request to the upstream service.
 	HideGroupsHeader *bool `default:"false" json:"hide_groups_header"`
 	// If enabled (`true`), allows the consumer-groups to be used in the `allow|deny` fields
@@ -223,7 +223,7 @@ type ACLPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64           `json:"updated_at,omitempty"`
-	Config    *ACLPluginConfig `json:"config,omitempty"`
+	Config    *ACLPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
 	Protocols []ACLPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

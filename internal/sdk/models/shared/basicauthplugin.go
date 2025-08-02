@@ -10,7 +10,7 @@ import (
 )
 
 type BasicAuthPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *BasicAuthPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *BasicAuthPluginAfter) GetAccess() []string {
 }
 
 type BasicAuthPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *BasicAuthPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *BasicAuthPluginBefore) GetAccess() []string {
 }
 
 type BasicAuthPluginOrdering struct {
-	After  *BasicAuthPluginAfter  `json:"after,omitempty"`
-	Before *BasicAuthPluginBefore `json:"before,omitempty"`
+	After  *BasicAuthPluginAfter  `json:"after"`
+	Before *BasicAuthPluginBefore `json:"before"`
 }
 
 func (o *BasicAuthPluginOrdering) GetAfter() *BasicAuthPluginAfter {
@@ -211,7 +211,7 @@ type BasicAuthPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                 `json:"updated_at,omitempty"`
-	Config    *BasicAuthPluginConfig `json:"config,omitempty"`
+	Config    *BasicAuthPluginConfig `json:"config"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []BasicAuthPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

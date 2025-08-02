@@ -32,19 +32,21 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			} else {
 				r.Config.Cache.Redis = &tfTypes.PartialRedisEeConfig{}
 				r.Config.Cache.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Cache.Redis.ClusterMaxRedirections)
-				r.Config.Cache.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
-				if len(r.Config.Cache.Redis.ClusterNodes) > len(resp.Config.Cache.Redis.ClusterNodes) {
-					r.Config.Cache.Redis.ClusterNodes = r.Config.Cache.Redis.ClusterNodes[:len(resp.Config.Cache.Redis.ClusterNodes)]
-				}
-				for clusterNodesCount, clusterNodesItem := range resp.Config.Cache.Redis.ClusterNodes {
-					var clusterNodes tfTypes.PartialRedisEeClusterNodes
-					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
-					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
-					if clusterNodesCount+1 > len(r.Config.Cache.Redis.ClusterNodes) {
-						r.Config.Cache.Redis.ClusterNodes = append(r.Config.Cache.Redis.ClusterNodes, clusterNodes)
-					} else {
-						r.Config.Cache.Redis.ClusterNodes[clusterNodesCount].IP = clusterNodes.IP
-						r.Config.Cache.Redis.ClusterNodes[clusterNodesCount].Port = clusterNodes.Port
+				if resp.Config.Cache.Redis.ClusterNodes != nil {
+					r.Config.Cache.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+					if len(r.Config.Cache.Redis.ClusterNodes) > len(resp.Config.Cache.Redis.ClusterNodes) {
+						r.Config.Cache.Redis.ClusterNodes = r.Config.Cache.Redis.ClusterNodes[:len(resp.Config.Cache.Redis.ClusterNodes)]
+					}
+					for clusterNodesCount, clusterNodesItem := range resp.Config.Cache.Redis.ClusterNodes {
+						var clusterNodes tfTypes.PartialRedisEeClusterNodes
+						clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
+						clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
+						if clusterNodesCount+1 > len(r.Config.Cache.Redis.ClusterNodes) {
+							r.Config.Cache.Redis.ClusterNodes = append(r.Config.Cache.Redis.ClusterNodes, clusterNodes)
+						} else {
+							r.Config.Cache.Redis.ClusterNodes[clusterNodesCount].IP = clusterNodes.IP
+							r.Config.Cache.Redis.ClusterNodes[clusterNodesCount].Port = clusterNodes.Port
+						}
 					}
 				}
 				r.Config.Cache.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ConnectTimeout)
@@ -58,19 +60,21 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				r.Config.Cache.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ReadTimeout)
 				r.Config.Cache.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.SendTimeout)
 				r.Config.Cache.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Cache.Redis.SentinelMaster)
-				r.Config.Cache.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
-				if len(r.Config.Cache.Redis.SentinelNodes) > len(resp.Config.Cache.Redis.SentinelNodes) {
-					r.Config.Cache.Redis.SentinelNodes = r.Config.Cache.Redis.SentinelNodes[:len(resp.Config.Cache.Redis.SentinelNodes)]
-				}
-				for sentinelNodesCount, sentinelNodesItem := range resp.Config.Cache.Redis.SentinelNodes {
-					var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
-					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
-					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
-					if sentinelNodesCount+1 > len(r.Config.Cache.Redis.SentinelNodes) {
-						r.Config.Cache.Redis.SentinelNodes = append(r.Config.Cache.Redis.SentinelNodes, sentinelNodes)
-					} else {
-						r.Config.Cache.Redis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes.Host
-						r.Config.Cache.Redis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes.Port
+				if resp.Config.Cache.Redis.SentinelNodes != nil {
+					r.Config.Cache.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+					if len(r.Config.Cache.Redis.SentinelNodes) > len(resp.Config.Cache.Redis.SentinelNodes) {
+						r.Config.Cache.Redis.SentinelNodes = r.Config.Cache.Redis.SentinelNodes[:len(resp.Config.Cache.Redis.SentinelNodes)]
+					}
+					for sentinelNodesCount, sentinelNodesItem := range resp.Config.Cache.Redis.SentinelNodes {
+						var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+						sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
+						sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+						if sentinelNodesCount+1 > len(r.Config.Cache.Redis.SentinelNodes) {
+							r.Config.Cache.Redis.SentinelNodes = append(r.Config.Cache.Redis.SentinelNodes, sentinelNodes)
+						} else {
+							r.Config.Cache.Redis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes.Host
+							r.Config.Cache.Redis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes.Port
+						}
 					}
 				}
 				r.Config.Cache.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Cache.Redis.SentinelPassword)
@@ -103,7 +107,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				callouts.DependsOn = append(callouts.DependsOn, types.StringValue(v))
 			}
 			callouts.Name = types.StringValue(calloutsItem.Name)
-			if len(calloutsItem.Request.Body.Custom) > 0 {
+			if calloutsItem.Request.Body.Custom != nil {
 				callouts.Request.Body.Custom = make(map[string]types.String, len(calloutsItem.Request.Body.Custom))
 				for key, value := range calloutsItem.Request.Body.Custom {
 					result, _ := json.Marshal(value)
@@ -115,9 +119,11 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			callouts.Request.ByLua = types.StringPointerValue(calloutsItem.Request.ByLua)
 			callouts.Request.Error.ErrorResponseCode = types.Int64PointerValue(calloutsItem.Request.Error.ErrorResponseCode)
 			callouts.Request.Error.ErrorResponseMsg = types.StringPointerValue(calloutsItem.Request.Error.ErrorResponseMsg)
-			callouts.Request.Error.HTTPStatuses = make([]types.Int64, 0, len(calloutsItem.Request.Error.HTTPStatuses))
-			for _, v := range calloutsItem.Request.Error.HTTPStatuses {
-				callouts.Request.Error.HTTPStatuses = append(callouts.Request.Error.HTTPStatuses, types.Int64Value(v))
+			if calloutsItem.Request.Error.HTTPStatuses != nil {
+				callouts.Request.Error.HTTPStatuses = make([]types.Int64, 0, len(calloutsItem.Request.Error.HTTPStatuses))
+				for _, v := range calloutsItem.Request.Error.HTTPStatuses {
+					callouts.Request.Error.HTTPStatuses = append(callouts.Request.Error.HTTPStatuses, types.Int64Value(v))
+				}
 			}
 			if calloutsItem.Request.Error.OnError != nil {
 				callouts.Request.Error.OnError = types.StringValue(string(*calloutsItem.Request.Error.OnError))
@@ -125,7 +131,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				callouts.Request.Error.OnError = types.StringNull()
 			}
 			callouts.Request.Error.Retries = types.Int64PointerValue(calloutsItem.Request.Error.Retries)
-			if len(calloutsItem.Request.Headers.Custom) > 0 {
+			if calloutsItem.Request.Headers.Custom != nil {
 				callouts.Request.Headers.Custom = make(map[string]types.String, len(calloutsItem.Request.Headers.Custom))
 				for key1, value1 := range calloutsItem.Request.Headers.Custom {
 					result1, _ := json.Marshal(value1)
@@ -153,7 +159,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				callouts.Request.HTTPOpts.Timeouts.Write = types.Int64PointerValue(calloutsItem.Request.HTTPOpts.Timeouts.Write)
 			}
 			callouts.Request.Method = types.StringPointerValue(calloutsItem.Request.Method)
-			if len(calloutsItem.Request.Query.Custom) > 0 {
+			if calloutsItem.Request.Query.Custom != nil {
 				callouts.Request.Query.Custom = make(map[string]types.String, len(calloutsItem.Request.Query.Custom))
 				for key2, value2 := range calloutsItem.Request.Query.Custom {
 					result2, _ := json.Marshal(value2)
@@ -184,7 +190,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				r.Config.Upstream.Body = nil
 			} else {
 				r.Config.Upstream.Body = &tfTypes.RequestCalloutPluginConfigBody{}
-				if len(resp.Config.Upstream.Body.Custom) > 0 {
+				if resp.Config.Upstream.Body.Custom != nil {
 					r.Config.Upstream.Body.Custom = make(map[string]types.String, len(resp.Config.Upstream.Body.Custom))
 					for key3, value3 := range resp.Config.Upstream.Body.Custom {
 						result3, _ := json.Marshal(value3)
@@ -199,7 +205,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				r.Config.Upstream.Headers = nil
 			} else {
 				r.Config.Upstream.Headers = &tfTypes.RequestCalloutPluginConfigHeaders{}
-				if len(resp.Config.Upstream.Headers.Custom) > 0 {
+				if resp.Config.Upstream.Headers.Custom != nil {
 					r.Config.Upstream.Headers.Custom = make(map[string]types.String, len(resp.Config.Upstream.Headers.Custom))
 					for key4, value4 := range resp.Config.Upstream.Headers.Custom {
 						result4, _ := json.Marshal(value4)
@@ -212,7 +218,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				r.Config.Upstream.Query = nil
 			} else {
 				r.Config.Upstream.Query = &tfTypes.RequestCalloutPluginConfigHeaders{}
-				if len(resp.Config.Upstream.Query.Custom) > 0 {
+				if resp.Config.Upstream.Query.Custom != nil {
 					r.Config.Upstream.Query.Custom = make(map[string]types.String, len(resp.Config.Upstream.Query.Custom))
 					for key5, value5 := range resp.Config.Upstream.Query.Custom {
 						result5, _ := json.Marshal(value5)
@@ -246,18 +252,22 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -419,9 +429,12 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 	if r.Ordering != nil {
 		var after *shared.RequestCalloutPluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.RequestCalloutPluginAfter{
 				Access: access,
@@ -429,9 +442,12 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		}
 		var before *shared.RequestCalloutPluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.RequestCalloutPluginBefore{
 				Access: access1,
@@ -512,24 +528,27 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 			} else {
 				clusterMaxRedirections = nil
 			}
-			clusterNodes := make([]shared.RequestCalloutPluginClusterNodes, 0, len(r.Config.Cache.Redis.ClusterNodes))
-			for _, clusterNodesItem := range r.Config.Cache.Redis.ClusterNodes {
-				ip := new(string)
-				if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
-					*ip = clusterNodesItem.IP.ValueString()
-				} else {
-					ip = nil
+			var clusterNodes []shared.RequestCalloutPluginClusterNodes
+			if r.Config.Cache.Redis.ClusterNodes != nil {
+				clusterNodes = make([]shared.RequestCalloutPluginClusterNodes, 0, len(r.Config.Cache.Redis.ClusterNodes))
+				for _, clusterNodesItem := range r.Config.Cache.Redis.ClusterNodes {
+					ip := new(string)
+					if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
+						*ip = clusterNodesItem.IP.ValueString()
+					} else {
+						ip = nil
+					}
+					port := new(int64)
+					if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
+						*port = clusterNodesItem.Port.ValueInt64()
+					} else {
+						port = nil
+					}
+					clusterNodes = append(clusterNodes, shared.RequestCalloutPluginClusterNodes{
+						IP:   ip,
+						Port: port,
+					})
 				}
-				port := new(int64)
-				if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
-					*port = clusterNodesItem.Port.ValueInt64()
-				} else {
-					port = nil
-				}
-				clusterNodes = append(clusterNodes, shared.RequestCalloutPluginClusterNodes{
-					IP:   ip,
-					Port: port,
-				})
 			}
 			connectTimeout := new(int64)
 			if !r.Config.Cache.Redis.ConnectTimeout.IsUnknown() && !r.Config.Cache.Redis.ConnectTimeout.IsNull() {
@@ -597,24 +616,27 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 			} else {
 				sentinelMaster = nil
 			}
-			sentinelNodes := make([]shared.RequestCalloutPluginSentinelNodes, 0, len(r.Config.Cache.Redis.SentinelNodes))
-			for _, sentinelNodesItem := range r.Config.Cache.Redis.SentinelNodes {
-				host1 := new(string)
-				if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
-					*host1 = sentinelNodesItem.Host.ValueString()
-				} else {
-					host1 = nil
+			var sentinelNodes []shared.RequestCalloutPluginSentinelNodes
+			if r.Config.Cache.Redis.SentinelNodes != nil {
+				sentinelNodes = make([]shared.RequestCalloutPluginSentinelNodes, 0, len(r.Config.Cache.Redis.SentinelNodes))
+				for _, sentinelNodesItem := range r.Config.Cache.Redis.SentinelNodes {
+					host1 := new(string)
+					if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
+						*host1 = sentinelNodesItem.Host.ValueString()
+					} else {
+						host1 = nil
+					}
+					port2 := new(int64)
+					if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
+						*port2 = sentinelNodesItem.Port.ValueInt64()
+					} else {
+						port2 = nil
+					}
+					sentinelNodes = append(sentinelNodes, shared.RequestCalloutPluginSentinelNodes{
+						Host: host1,
+						Port: port2,
+					})
 				}
-				port2 := new(int64)
-				if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
-					*port2 = sentinelNodesItem.Port.ValueInt64()
-				} else {
-					port2 = nil
-				}
-				sentinelNodes = append(sentinelNodes, shared.RequestCalloutPluginSentinelNodes{
-					Host: host1,
-					Port: port2,
-				})
 			}
 			sentinelPassword := new(string)
 			if !r.Config.Cache.Redis.SentinelPassword.IsUnknown() && !r.Config.Cache.Redis.SentinelPassword.IsNull() {
@@ -754,9 +776,12 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		} else {
 			errorResponseMsg = nil
 		}
-		httpStatuses := make([]int64, 0, len(calloutsItem.Request.Error.HTTPStatuses))
-		for _, httpStatusesItem := range calloutsItem.Request.Error.HTTPStatuses {
-			httpStatuses = append(httpStatuses, httpStatusesItem.ValueInt64())
+		var httpStatuses []int64
+		if calloutsItem.Request.Error.HTTPStatuses != nil {
+			httpStatuses = make([]int64, 0, len(calloutsItem.Request.Error.HTTPStatuses))
+			for _, httpStatusesItem := range calloutsItem.Request.Error.HTTPStatuses {
+				httpStatuses = append(httpStatuses, httpStatusesItem.ValueInt64())
+			}
 		}
 		onError := new(shared.OnError)
 		if !calloutsItem.Request.Error.OnError.IsUnknown() && !calloutsItem.Request.Error.OnError.IsNull() {

@@ -33,7 +33,7 @@ func (o *PluginConsumerGroup) GetID() *string {
 }
 
 type After struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *After) GetAccess() []string {
@@ -44,7 +44,7 @@ func (o *After) GetAccess() []string {
 }
 
 type Before struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *Before) GetAccess() []string {
@@ -55,8 +55,8 @@ func (o *Before) GetAccess() []string {
 }
 
 type Ordering struct {
-	After  *After  `json:"after,omitempty"`
-	Before *Before `json:"before,omitempty"`
+	After  *After  `json:"after"`
+	Before *Before `json:"before"`
 }
 
 func (o *Ordering) GetAfter() *After {

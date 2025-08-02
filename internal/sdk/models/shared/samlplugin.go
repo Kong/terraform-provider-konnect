@@ -10,7 +10,7 @@ import (
 )
 
 type SamlPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *SamlPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *SamlPluginAfter) GetAccess() []string {
 }
 
 type SamlPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *SamlPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *SamlPluginBefore) GetAccess() []string {
 }
 
 type SamlPluginOrdering struct {
-	After  *SamlPluginAfter  `json:"after,omitempty"`
-	Before *SamlPluginBefore `json:"before,omitempty"`
+	After  *SamlPluginAfter  `json:"after"`
+	Before *SamlPluginBefore `json:"before"`
 }
 
 func (o *SamlPluginOrdering) GetAfter() *SamlPluginAfter {
@@ -221,7 +221,7 @@ type SamlPluginRedis struct {
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
-	ClusterNodes []SamlPluginClusterNodes `json:"cluster_nodes,omitempty"`
+	ClusterNodes []SamlPluginClusterNodes `json:"cluster_nodes"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
@@ -247,7 +247,7 @@ type SamlPluginRedis struct {
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `default:"null" json:"sentinel_master"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
-	SentinelNodes []SamlPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
+	SentinelNodes []SamlPluginSentinelNodes `json:"sentinel_nodes"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
 	SentinelPassword *string `default:"null" json:"sentinel_password"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -713,7 +713,7 @@ type SamlPluginConfig struct {
 	Issuer string `json:"issuer"`
 	// The requested `NameId` format. Options available are: - `Unspecified` - `EmailAddress` - `Persistent` - `Transient`
 	NameidFormat *NameidFormat    `default:"EmailAddress" json:"nameid_format"`
-	Redis        *SamlPluginRedis `json:"redis,omitempty"`
+	Redis        *SamlPluginRedis `json:"redis"`
 	// The digest algorithm for Authn requests: - `SHA256` - `SHA1`
 	RequestDigestAlgorithm *RequestDigestAlgorithm `default:"SHA256" json:"request_digest_algorithm"`
 	// The signature algorithm for signing Authn requests. Options available are: - `SHA256` - `SHA384` - `SHA512`
@@ -768,8 +768,8 @@ type SamlPluginConfig struct {
 	SessionRememberCookieName *string `default:"remember" json:"session_remember_cookie_name"`
 	// Persistent session rolling timeout in seconds.
 	SessionRememberRollingTimeout *float64                           `default:"604800" json:"session_remember_rolling_timeout"`
-	SessionRequestHeaders         []SamlPluginSessionRequestHeaders  `json:"session_request_headers,omitempty"`
-	SessionResponseHeaders        []SamlPluginSessionResponseHeaders `json:"session_response_headers,omitempty"`
+	SessionRequestHeaders         []SamlPluginSessionRequestHeaders  `json:"session_request_headers"`
+	SessionResponseHeaders        []SamlPluginSessionResponseHeaders `json:"session_response_headers"`
 	// The session cookie absolute timeout in seconds. Specifies how long the session can be used until it is no longer valid.
 	SessionRollingTimeout *float64 `default:"3600" json:"session_rolling_timeout"`
 	// The session secret. This must be a random string of 32 characters from the base64 alphabet (letters, numbers, `/`, `_` and `+`). It is used as the secret key for encrypting session data as well as state information that is sent to the IdP in the authentication exchange.

@@ -10,7 +10,7 @@ import (
 )
 
 type RouteTransformerAdvancedPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *RouteTransformerAdvancedPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *RouteTransformerAdvancedPluginAfter) GetAccess() []string {
 }
 
 type RouteTransformerAdvancedPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *RouteTransformerAdvancedPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *RouteTransformerAdvancedPluginBefore) GetAccess() []string {
 }
 
 type RouteTransformerAdvancedPluginOrdering struct {
-	After  *RouteTransformerAdvancedPluginAfter  `json:"after,omitempty"`
-	Before *RouteTransformerAdvancedPluginBefore `json:"before,omitempty"`
+	After  *RouteTransformerAdvancedPluginAfter  `json:"after"`
+	Before *RouteTransformerAdvancedPluginBefore `json:"before"`
 }
 
 func (o *RouteTransformerAdvancedPluginOrdering) GetAfter() *RouteTransformerAdvancedPluginAfter {
@@ -222,7 +222,7 @@ type RouteTransformerAdvancedPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                                `json:"updated_at,omitempty"`
-	Config    *RouteTransformerAdvancedPluginConfig `json:"config,omitempty"`
+	Config    *RouteTransformerAdvancedPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *RouteTransformerAdvancedPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.

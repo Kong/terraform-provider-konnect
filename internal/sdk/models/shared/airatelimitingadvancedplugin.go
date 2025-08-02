@@ -10,7 +10,7 @@ import (
 )
 
 type AiRateLimitingAdvancedPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiRateLimitingAdvancedPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *AiRateLimitingAdvancedPluginAfter) GetAccess() []string {
 }
 
 type AiRateLimitingAdvancedPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiRateLimitingAdvancedPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *AiRateLimitingAdvancedPluginBefore) GetAccess() []string {
 }
 
 type AiRateLimitingAdvancedPluginOrdering struct {
-	After  *AiRateLimitingAdvancedPluginAfter  `json:"after,omitempty"`
-	Before *AiRateLimitingAdvancedPluginBefore `json:"before,omitempty"`
+	After  *AiRateLimitingAdvancedPluginAfter  `json:"after"`
+	Before *AiRateLimitingAdvancedPluginBefore `json:"before"`
 }
 
 func (o *AiRateLimitingAdvancedPluginOrdering) GetAfter() *AiRateLimitingAdvancedPluginAfter {
@@ -347,7 +347,7 @@ type Redis struct {
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
-	ClusterNodes []ClusterNodes `json:"cluster_nodes,omitempty"`
+	ClusterNodes []ClusterNodes `json:"cluster_nodes"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
@@ -371,7 +371,7 @@ type Redis struct {
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `default:"null" json:"sentinel_master"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
-	SentinelNodes []SentinelNodes `json:"sentinel_nodes,omitempty"`
+	SentinelNodes []SentinelNodes `json:"sentinel_nodes"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
 	SentinelPassword *string `default:"null" json:"sentinel_password"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -661,7 +661,7 @@ type AiRateLimitingAdvancedPluginConfig struct {
 	Namespace *string `default:"null" json:"namespace"`
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
 	Path  *string `default:"null" json:"path"`
-	Redis *Redis  `json:"redis,omitempty"`
+	Redis *Redis  `json:"redis"`
 	// If defined, it use custom function to count requests for the request prompt provider
 	RequestPromptCountFunction *string `default:"null" json:"request_prompt_count_function"`
 	// The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header.

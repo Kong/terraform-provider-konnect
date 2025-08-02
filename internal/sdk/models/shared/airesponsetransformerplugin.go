@@ -10,7 +10,7 @@ import (
 )
 
 type AiResponseTransformerPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiResponseTransformerPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *AiResponseTransformerPluginAfter) GetAccess() []string {
 }
 
 type AiResponseTransformerPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiResponseTransformerPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *AiResponseTransformerPluginBefore) GetAccess() []string {
 }
 
 type AiResponseTransformerPluginOrdering struct {
-	After  *AiResponseTransformerPluginAfter  `json:"after,omitempty"`
-	Before *AiResponseTransformerPluginBefore `json:"before,omitempty"`
+	After  *AiResponseTransformerPluginAfter  `json:"after"`
+	Before *AiResponseTransformerPluginBefore `json:"before"`
 }
 
 func (o *AiResponseTransformerPluginOrdering) GetAfter() *AiResponseTransformerPluginAfter {
@@ -565,12 +565,12 @@ type AiResponseTransformerPluginOptions struct {
 	AzureDeploymentID *string `default:"null" json:"azure_deployment_id"`
 	// Instance name for Azure OpenAI hosted models.
 	AzureInstance *string                             `default:"null" json:"azure_instance"`
-	Bedrock       *AiResponseTransformerPluginBedrock `json:"bedrock,omitempty"`
-	Cohere        *AiResponseTransformerPluginCohere  `json:"cohere,omitempty"`
+	Bedrock       *AiResponseTransformerPluginBedrock `json:"bedrock"`
+	Cohere        *AiResponseTransformerPluginCohere  `json:"cohere"`
 	// If using embeddings models, set the number of dimensions to generate.
 	EmbeddingsDimensions *int64                                  `default:"null" json:"embeddings_dimensions"`
-	Gemini               *AiResponseTransformerPluginGemini      `json:"gemini,omitempty"`
-	Huggingface          *AiResponseTransformerPluginHuggingface `json:"huggingface,omitempty"`
+	Gemini               *AiResponseTransformerPluginGemini      `json:"gemini"`
+	Huggingface          *AiResponseTransformerPluginHuggingface `json:"huggingface"`
 	// Defines the cost per 1M tokens in your prompt.
 	InputCost *float64 `default:"null" json:"input_cost"`
 	// If using llama2 provider, select the upstream message format.
@@ -789,7 +789,7 @@ type AiResponseTransformerPluginModel struct {
 	// Model name to execute.
 	Name *string `default:"null" json:"name"`
 	// Key/value settings for the model
-	Options *AiResponseTransformerPluginOptions `json:"options,omitempty"`
+	Options *AiResponseTransformerPluginOptions `json:"options"`
 	// AI provider request format - Kong translates requests to and from the specified backend compatible formats.
 	Provider AiResponseTransformerPluginProvider `json:"provider"`
 }
@@ -890,8 +890,8 @@ func (e *AiResponseTransformerPluginRouteType) UnmarshalJSON(data []byte) error 
 }
 
 type AiResponseTransformerPluginLlm struct {
-	Auth    *AiResponseTransformerPluginAuth    `json:"auth,omitempty"`
-	Logging *AiResponseTransformerPluginLogging `json:"logging,omitempty"`
+	Auth    *AiResponseTransformerPluginAuth    `json:"auth"`
+	Logging *AiResponseTransformerPluginLogging `json:"logging"`
 	Model   AiResponseTransformerPluginModel    `json:"model"`
 	// The model's operation implementation, for this provider.
 	RouteType AiResponseTransformerPluginRouteType `json:"route_type"`

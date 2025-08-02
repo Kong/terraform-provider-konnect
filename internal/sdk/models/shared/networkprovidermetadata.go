@@ -9,7 +9,7 @@ import (
 // NetworkProviderMetadata - Metadata describing attributes returned by cloud-provider for the network.
 type NetworkProviderMetadata struct {
 	VpcID     *string  `default:"null" json:"vpc_id"`
-	SubnetIds []string `json:"subnet_ids,omitempty"`
+	SubnetIds []string `json:"subnet_ids"`
 }
 
 func (n NetworkProviderMetadata) MarshalJSON() ([]byte, error) {

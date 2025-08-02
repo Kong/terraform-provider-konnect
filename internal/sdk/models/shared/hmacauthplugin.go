@@ -10,7 +10,7 @@ import (
 )
 
 type HmacAuthPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *HmacAuthPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *HmacAuthPluginAfter) GetAccess() []string {
 }
 
 type HmacAuthPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *HmacAuthPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *HmacAuthPluginBefore) GetAccess() []string {
 }
 
 type HmacAuthPluginOrdering struct {
-	After  *HmacAuthPluginAfter  `json:"after,omitempty"`
-	Before *HmacAuthPluginBefore `json:"before,omitempty"`
+	After  *HmacAuthPluginAfter  `json:"after"`
+	Before *HmacAuthPluginBefore `json:"before"`
 }
 
 func (o *HmacAuthPluginOrdering) GetAfter() *HmacAuthPluginAfter {
@@ -279,7 +279,7 @@ type HmacAuthPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                `json:"updated_at,omitempty"`
-	Config    *HmacAuthPluginConfig `json:"config,omitempty"`
+	Config    *HmacAuthPluginConfig `json:"config"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []HmacAuthPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

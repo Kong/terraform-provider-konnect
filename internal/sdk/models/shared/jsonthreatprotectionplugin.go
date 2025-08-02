@@ -10,7 +10,7 @@ import (
 )
 
 type JSONThreatProtectionPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *JSONThreatProtectionPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *JSONThreatProtectionPluginAfter) GetAccess() []string {
 }
 
 type JSONThreatProtectionPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *JSONThreatProtectionPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *JSONThreatProtectionPluginBefore) GetAccess() []string {
 }
 
 type JSONThreatProtectionPluginOrdering struct {
-	After  *JSONThreatProtectionPluginAfter  `json:"after,omitempty"`
-	Before *JSONThreatProtectionPluginBefore `json:"before,omitempty"`
+	After  *JSONThreatProtectionPluginAfter  `json:"after"`
+	Before *JSONThreatProtectionPluginBefore `json:"before"`
 }
 
 func (o *JSONThreatProtectionPluginOrdering) GetAfter() *JSONThreatProtectionPluginAfter {
@@ -295,7 +295,7 @@ type JSONThreatProtectionPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                            `json:"updated_at,omitempty"`
-	Config    *JSONThreatProtectionPluginConfig `json:"config,omitempty"`
+	Config    *JSONThreatProtectionPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
 	Protocols []JSONThreatProtectionPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

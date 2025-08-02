@@ -10,7 +10,7 @@ import (
 )
 
 type RateLimitingPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *RateLimitingPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *RateLimitingPluginAfter) GetAccess() []string {
 }
 
 type RateLimitingPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *RateLimitingPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *RateLimitingPluginBefore) GetAccess() []string {
 }
 
 type RateLimitingPluginOrdering struct {
-	After  *RateLimitingPluginAfter  `json:"after,omitempty"`
-	Before *RateLimitingPluginBefore `json:"before,omitempty"`
+	After  *RateLimitingPluginAfter  `json:"after"`
+	Before *RateLimitingPluginBefore `json:"before"`
 }
 
 func (o *RateLimitingPluginOrdering) GetAfter() *RateLimitingPluginAfter {
@@ -284,7 +284,7 @@ type RateLimitingPluginConfig struct {
 	// The rate-limiting policies to use for retrieving and incrementing the limits.
 	Policy *Policy `default:"local" json:"policy"`
 	// Redis configuration
-	Redis *RateLimitingPluginRedis `json:"redis,omitempty"`
+	Redis *RateLimitingPluginRedis `json:"redis"`
 	// The number of HTTP requests that can be made per second.
 	Second *float64 `default:"null" json:"second"`
 	// How often to sync counter data to the central data store. A value of -1 results in synchronous behavior.
@@ -514,7 +514,7 @@ type RateLimitingPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                    `json:"updated_at,omitempty"`
-	Config    *RateLimitingPluginConfig `json:"config,omitempty"`
+	Config    *RateLimitingPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *RateLimitingPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups

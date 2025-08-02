@@ -10,7 +10,7 @@ import (
 )
 
 type UpstreamTimeoutPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *UpstreamTimeoutPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *UpstreamTimeoutPluginAfter) GetAccess() []string {
 }
 
 type UpstreamTimeoutPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *UpstreamTimeoutPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *UpstreamTimeoutPluginBefore) GetAccess() []string {
 }
 
 type UpstreamTimeoutPluginOrdering struct {
-	After  *UpstreamTimeoutPluginAfter  `json:"after,omitempty"`
-	Before *UpstreamTimeoutPluginBefore `json:"before,omitempty"`
+	After  *UpstreamTimeoutPluginAfter  `json:"after"`
+	Before *UpstreamTimeoutPluginBefore `json:"before"`
 }
 
 func (o *UpstreamTimeoutPluginOrdering) GetAfter() *UpstreamTimeoutPluginAfter {
@@ -217,7 +217,7 @@ type UpstreamTimeoutPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                       `json:"updated_at,omitempty"`
-	Config    *UpstreamTimeoutPluginConfig `json:"config,omitempty"`
+	Config    *UpstreamTimeoutPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *UpstreamTimeoutPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.

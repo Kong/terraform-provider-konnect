@@ -10,7 +10,7 @@ import (
 )
 
 type PrometheusPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *PrometheusPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *PrometheusPluginAfter) GetAccess() []string {
 }
 
 type PrometheusPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *PrometheusPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *PrometheusPluginBefore) GetAccess() []string {
 }
 
 type PrometheusPluginOrdering struct {
-	After  *PrometheusPluginAfter  `json:"after,omitempty"`
-	Before *PrometheusPluginBefore `json:"before,omitempty"`
+	After  *PrometheusPluginAfter  `json:"after"`
+	Before *PrometheusPluginBefore `json:"before"`
 }
 
 func (o *PrometheusPluginOrdering) GetAfter() *PrometheusPluginAfter {
@@ -272,7 +272,7 @@ type PrometheusPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                  `json:"updated_at,omitempty"`
-	Config    *PrometheusPluginConfig `json:"config,omitempty"`
+	Config    *PrometheusPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *PrometheusPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.

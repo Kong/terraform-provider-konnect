@@ -277,7 +277,7 @@ type Active struct {
 	Concurrency *int64 `default:"10" json:"concurrency"`
 	// A map of header names to arrays of header values.
 	Headers map[string]string `json:"headers,omitempty"`
-	Healthy *Healthy          `json:"healthy,omitempty"`
+	Healthy *Healthy          `json:"healthy"`
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
 	HTTPPath *string `default:"/" json:"http_path"`
 	// A string representing an SNI (server name indication) value for TLS.
@@ -285,7 +285,7 @@ type Active struct {
 	HTTPSVerifyCertificate *bool         `default:"true" json:"https_verify_certificate"`
 	Timeout                *float64      `default:"1" json:"timeout"`
 	Type                   *UpstreamType `default:"http" json:"type"`
-	Unhealthy              *Unhealthy    `json:"unhealthy,omitempty"`
+	Unhealthy              *Unhealthy    `json:"unhealthy"`
 }
 
 func (a Active) MarshalJSON() ([]byte, error) {
@@ -474,9 +474,9 @@ func (o *UpstreamUnhealthy) GetTimeouts() *int64 {
 }
 
 type Passive struct {
-	Healthy   *UpstreamHealthy          `json:"healthy,omitempty"`
+	Healthy   *UpstreamHealthy          `json:"healthy"`
 	Type      *UpstreamHealthchecksType `default:"http" json:"type"`
-	Unhealthy *UpstreamUnhealthy        `json:"unhealthy,omitempty"`
+	Unhealthy *UpstreamUnhealthy        `json:"unhealthy"`
 }
 
 func (p Passive) MarshalJSON() ([]byte, error) {
@@ -512,8 +512,8 @@ func (o *Passive) GetUnhealthy() *UpstreamUnhealthy {
 }
 
 type Healthchecks struct {
-	Active    *Active  `json:"active,omitempty"`
-	Passive   *Passive `json:"passive,omitempty"`
+	Active    *Active  `json:"active"`
+	Passive   *Passive `json:"passive"`
 	Threshold *float64 `default:"0" json:"threshold"`
 }
 

@@ -19,9 +19,11 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) RefreshFromSharedStatsdAdvanc
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.StatsdAdvancedPluginConfig{}
-			r.Config.AllowStatusCodes = make([]types.String, 0, len(resp.Config.AllowStatusCodes))
-			for _, v := range resp.Config.AllowStatusCodes {
-				r.Config.AllowStatusCodes = append(r.Config.AllowStatusCodes, types.StringValue(v))
+			if resp.Config.AllowStatusCodes != nil {
+				r.Config.AllowStatusCodes = make([]types.String, 0, len(resp.Config.AllowStatusCodes))
+				for _, v := range resp.Config.AllowStatusCodes {
+					r.Config.AllowStatusCodes = append(r.Config.AllowStatusCodes, types.StringValue(v))
+				}
 			}
 			if resp.Config.ConsumerIdentifierDefault != nil {
 				r.Config.ConsumerIdentifierDefault = types.StringValue(string(*resp.Config.ConsumerIdentifierDefault))
@@ -115,18 +117,22 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) RefreshFromSharedStatsdAdvanc
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -288,9 +294,12 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToSharedStatsdAdvancedPlugin(
 	if r.Ordering != nil {
 		var after *shared.StatsdAdvancedPluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.StatsdAdvancedPluginAfter{
 				Access: access,
@@ -298,9 +307,12 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToSharedStatsdAdvancedPlugin(
 		}
 		var before *shared.StatsdAdvancedPluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.StatsdAdvancedPluginBefore{
 				Access: access1,
@@ -355,9 +367,12 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToSharedStatsdAdvancedPlugin(
 	}
 	var config *shared.StatsdAdvancedPluginConfig
 	if r.Config != nil {
-		allowStatusCodes := make([]string, 0, len(r.Config.AllowStatusCodes))
-		for _, allowStatusCodesItem := range r.Config.AllowStatusCodes {
-			allowStatusCodes = append(allowStatusCodes, allowStatusCodesItem.ValueString())
+		var allowStatusCodes []string
+		if r.Config.AllowStatusCodes != nil {
+			allowStatusCodes = make([]string, 0, len(r.Config.AllowStatusCodes))
+			for _, allowStatusCodesItem := range r.Config.AllowStatusCodes {
+				allowStatusCodes = append(allowStatusCodes, allowStatusCodesItem.ValueString())
+			}
 		}
 		consumerIdentifierDefault := new(shared.StatsdAdvancedPluginConsumerIdentifierDefault)
 		if !r.Config.ConsumerIdentifierDefault.IsUnknown() && !r.Config.ConsumerIdentifierDefault.IsNull() {

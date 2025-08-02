@@ -31,7 +31,7 @@ type Target struct {
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *float64 `json:"updated_at,omitempty"`
 	// The unique identifier or the name of the upstream for which to update the target.
-	Upstream *TargetUpstream `json:"upstream"`
+	Upstream *TargetUpstream `json:"upstream,omitempty"`
 	// The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record.
 	Weight *int64 `default:"100" json:"weight"`
 }

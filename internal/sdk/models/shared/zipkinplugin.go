@@ -10,7 +10,7 @@ import (
 )
 
 type ZipkinPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ZipkinPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *ZipkinPluginAfter) GetAccess() []string {
 }
 
 type ZipkinPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ZipkinPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *ZipkinPluginBefore) GetAccess() []string {
 }
 
 type ZipkinPluginOrdering struct {
-	After  *ZipkinPluginAfter  `json:"after,omitempty"`
-	Before *ZipkinPluginBefore `json:"before,omitempty"`
+	After  *ZipkinPluginAfter  `json:"after"`
+	Before *ZipkinPluginBefore `json:"before"`
 }
 
 func (o *ZipkinPluginOrdering) GetAfter() *ZipkinPluginAfter {
@@ -390,13 +390,13 @@ func (e *ZipkinPluginInject) UnmarshalJSON(data []byte) error {
 
 type ZipkinPluginPropagation struct {
 	// Header names to clear after context extraction. This allows to extract the context from a certain header and then remove it from the request, useful when extraction and injection are performed on different header formats and the original header should not be sent to the upstream. If left empty, no headers are cleared.
-	Clear []string `json:"clear,omitempty"`
+	Clear []string `json:"clear"`
 	// The default header format to use when extractors did not match any format in the incoming headers and `inject` is configured with the value: `preserve`. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in `extract`.
 	DefaultFormat ZipkinPluginDefaultFormat `json:"default_format"`
 	// Header formats used to extract tracing context from incoming requests. If multiple values are specified, the first one found will be used for extraction. If left empty, Kong will not extract any tracing context information from incoming requests and generate a trace with no parent and a new trace ID.
-	Extract []ZipkinPluginExtract `json:"extract,omitempty"`
+	Extract []ZipkinPluginExtract `json:"extract"`
 	// Header formats used to inject tracing context. The value `preserve` will use the same header format as the incoming request. If multiple values are specified, all of them will be used during injection. If left empty, Kong will not inject any tracing context information in outgoing requests.
-	Inject []ZipkinPluginInject `json:"inject,omitempty"`
+	Inject []ZipkinPluginInject `json:"inject"`
 }
 
 func (o *ZipkinPluginPropagation) GetClear() []string {
@@ -607,7 +607,7 @@ type ZipkinPluginConfig struct {
 	// Specify whether to include the duration of each phase as an annotation or a tag.
 	PhaseDurationFlavor *PhaseDurationFlavor     `default:"annotations" json:"phase_duration_flavor"`
 	Propagation         *ZipkinPluginPropagation `json:"propagation,omitempty"`
-	Queue               *ZipkinPluginQueue       `json:"queue,omitempty"`
+	Queue               *ZipkinPluginQueue       `json:"queue"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `default:"5000" json:"read_timeout"`
 	// How often to sample requests that do not contain trace IDs. Set to `0` to turn sampling off, or to `1` to sample **all** requests.
@@ -615,7 +615,7 @@ type ZipkinPluginConfig struct {
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	SendTimeout *int64 `default:"5000" json:"send_timeout"`
 	// The tags specified on this property will be added to the generated request traces.
-	StaticTags []StaticTags `json:"static_tags,omitempty"`
+	StaticTags []StaticTags `json:"static_tags"`
 	// The Zipkin plugin will add extra headers to the tags associated with any HTTP requests that come with a header named as configured by this property.
 	TagsHeader *string `default:"Zipkin-Tags" json:"tags_header"`
 	// The length in bytes of each request's Trace ID.
@@ -864,7 +864,7 @@ type ZipkinPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64              `json:"updated_at,omitempty"`
-	Config    *ZipkinPluginConfig `json:"config,omitempty"`
+	Config    *ZipkinPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *ZipkinPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.

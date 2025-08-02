@@ -10,7 +10,7 @@ import (
 )
 
 type KafkaConsumePluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *KafkaConsumePluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *KafkaConsumePluginAfter) GetAccess() []string {
 }
 
 type KafkaConsumePluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *KafkaConsumePluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *KafkaConsumePluginBefore) GetAccess() []string {
 }
 
 type KafkaConsumePluginOrdering struct {
-	After  *KafkaConsumePluginAfter  `json:"after,omitempty"`
-	Before *KafkaConsumePluginBefore `json:"before,omitempty"`
+	After  *KafkaConsumePluginAfter  `json:"after"`
+	Before *KafkaConsumePluginBefore `json:"before"`
 }
 
 func (o *KafkaConsumePluginOrdering) GetAfter() *KafkaConsumePluginAfter {
@@ -382,7 +382,7 @@ func (e *KafkaConsumePluginConfigMode) UnmarshalJSON(data []byte) error {
 }
 
 type KafkaConsumePluginAuthentication struct {
-	Basic *KafkaConsumePluginBasic `json:"basic,omitempty"`
+	Basic *KafkaConsumePluginBasic `json:"basic"`
 	// Authentication mode to use with the schema registry.
 	Mode *KafkaConsumePluginConfigMode `default:"none" json:"mode"`
 }
@@ -463,7 +463,7 @@ func (o *KafkaConsumePluginConfluent) GetURL() *string {
 
 // KafkaConsumePluginSchemaRegistry - The plugin-global schema registry configuration.
 type KafkaConsumePluginSchemaRegistry struct {
-	Confluent *KafkaConsumePluginConfluent `json:"confluent,omitempty"`
+	Confluent *KafkaConsumePluginConfluent `json:"confluent"`
 }
 
 func (o *KafkaConsumePluginSchemaRegistry) GetConfluent() *KafkaConsumePluginConfluent {
@@ -552,7 +552,7 @@ func (e *KafkaConsumePluginConfigTopicsMode) UnmarshalJSON(data []byte) error {
 }
 
 type KafkaConsumePluginConfigAuthentication struct {
-	Basic *KafkaConsumePluginConfigBasic `json:"basic,omitempty"`
+	Basic *KafkaConsumePluginConfigBasic `json:"basic"`
 	// Authentication mode to use with the schema registry.
 	Mode *KafkaConsumePluginConfigTopicsMode `default:"none" json:"mode"`
 }
@@ -633,7 +633,7 @@ func (o *KafkaConsumePluginConfigConfluent) GetURL() *string {
 
 // KafkaConsumePluginConfigSchemaRegistry - The plugin-global schema registry configuration.
 type KafkaConsumePluginConfigSchemaRegistry struct {
-	Confluent *KafkaConsumePluginConfigConfluent `json:"confluent,omitempty"`
+	Confluent *KafkaConsumePluginConfigConfluent `json:"confluent"`
 }
 
 func (o *KafkaConsumePluginConfigSchemaRegistry) GetConfluent() *KafkaConsumePluginConfigConfluent {
@@ -664,7 +664,7 @@ func (o *KafkaConsumePluginTopics) GetSchemaRegistry() KafkaConsumePluginConfigS
 }
 
 type KafkaConsumePluginConfig struct {
-	Authentication *Authentication `json:"authentication,omitempty"`
+	Authentication *Authentication `json:"authentication"`
 	// The offset to start from when there is no initial offset in the consumer group.
 	AutoOffsetReset *KafkaConsumePluginAutoOffsetReset `default:"latest" json:"auto_offset_reset"`
 	// Set of bootstrap brokers in a `{host: host, port: port}` list format.
@@ -678,8 +678,8 @@ type KafkaConsumePluginConfig struct {
 	// The mode of operation for the plugin.
 	Mode *KafkaConsumePluginMode `default:"http-get" json:"mode"`
 	// The plugin-global schema registry configuration.
-	SchemaRegistry *KafkaConsumePluginSchemaRegistry `json:"schema_registry,omitempty"`
-	Security       *KafkaConsumePluginSecurity       `json:"security,omitempty"`
+	SchemaRegistry *KafkaConsumePluginSchemaRegistry `json:"schema_registry"`
+	Security       *KafkaConsumePluginSecurity       `json:"security"`
 	// The Kafka topics and their configuration you want to consume from.
 	Topics []KafkaConsumePluginTopics `json:"topics"`
 }

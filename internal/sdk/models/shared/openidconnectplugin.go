@@ -10,7 +10,7 @@ import (
 )
 
 type OpenidConnectPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *OpenidConnectPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *OpenidConnectPluginAfter) GetAccess() []string {
 }
 
 type OpenidConnectPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *OpenidConnectPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *OpenidConnectPluginBefore) GetAccess() []string {
 }
 
 type OpenidConnectPluginOrdering struct {
-	After  *OpenidConnectPluginAfter  `json:"after,omitempty"`
-	Before *OpenidConnectPluginBefore `json:"before,omitempty"`
+	After  *OpenidConnectPluginAfter  `json:"after"`
+	Before *OpenidConnectPluginBefore `json:"before"`
 }
 
 func (o *OpenidConnectPluginOrdering) GetAfter() *OpenidConnectPluginAfter {
@@ -340,7 +340,7 @@ type ClientJwk struct {
 	E             *string  `default:"null" json:"e"`
 	Issuer        *string  `default:"null" json:"issuer"`
 	K             *string  `default:"null" json:"k"`
-	KeyOps        []string `json:"key_ops,omitempty"`
+	KeyOps        []string `json:"key_ops"`
 	Kid           *string  `default:"null" json:"kid"`
 	Kty           *string  `default:"null" json:"kty"`
 	N             *string  `default:"null" json:"n"`
@@ -352,7 +352,7 @@ type ClientJwk struct {
 	T             *string  `default:"null" json:"t"`
 	Use           *string  `default:"null" json:"use"`
 	X             *string  `default:"null" json:"x"`
-	X5c           []string `json:"x5c,omitempty"`
+	X5c           []string `json:"x5c"`
 	X5t           *string  `default:"null" json:"x5t"`
 	X5tNumberS256 *string  `default:"null" json:"x5t#S256"`
 	X5u           *string  `default:"null" json:"x5u"`
@@ -643,7 +643,7 @@ type ClusterCacheRedis struct {
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
-	ClusterNodes []OpenidConnectPluginClusterNodes `json:"cluster_nodes,omitempty"`
+	ClusterNodes []OpenidConnectPluginClusterNodes `json:"cluster_nodes"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
@@ -667,7 +667,7 @@ type ClusterCacheRedis struct {
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `default:"null" json:"sentinel_master"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
-	SentinelNodes []OpenidConnectPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
+	SentinelNodes []OpenidConnectPluginSentinelNodes `json:"sentinel_nodes"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
 	SentinelPassword *string `default:"null" json:"sentinel_password"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -1484,7 +1484,7 @@ type OpenidConnectPluginRedis struct {
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
-	ClusterNodes []OpenidConnectPluginConfigClusterNodes `json:"cluster_nodes,omitempty"`
+	ClusterNodes []OpenidConnectPluginConfigClusterNodes `json:"cluster_nodes"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
@@ -1510,7 +1510,7 @@ type OpenidConnectPluginRedis struct {
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `default:"null" json:"sentinel_master"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
-	SentinelNodes []OpenidConnectPluginConfigSentinelNodes `json:"sentinel_nodes,omitempty"`
+	SentinelNodes []OpenidConnectPluginConfigSentinelNodes `json:"sentinel_nodes"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
 	SentinelPassword *string `default:"null" json:"sentinel_password"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -2067,15 +2067,15 @@ type OpenidConnectPluginConfig struct {
 	// An optional string (consumer UUID or username) value that functions as an “anonymous” consumer if authentication fails. If empty (default null), requests that fail authentication will return a `4xx` HTTP status code. This value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
 	Anonymous *string `default:"null" json:"anonymous"`
 	// The audience passed to the authorization endpoint.
-	Audience []string `json:"audience,omitempty"`
+	Audience []string `json:"audience"`
 	// The claim that contains the audience. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	AudienceClaim []string `json:"audience_claim,omitempty"`
 	// The audiences (`audience_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
-	AudienceRequired []string `json:"audience_required,omitempty"`
+	AudienceRequired []string `json:"audience_required"`
 	// Types of credentials/grants to enable.
 	AuthMethods []AuthMethods `json:"auth_methods,omitempty"`
 	// The claim that contains authenticated groups. This setting can be used together with ACL plugin, but it also enables IdP managed groups with other applications and integrations. If multiple values are set, it means the claim is inside a nested object of the token payload.
-	AuthenticatedGroupsClaim []string `json:"authenticated_groups_claim,omitempty"`
+	AuthenticatedGroupsClaim []string `json:"authenticated_groups_claim"`
 	// The authorization cookie Domain flag.
 	AuthorizationCookieDomain *string `default:"null" json:"authorization_cookie_domain"`
 	// Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property.
@@ -2091,11 +2091,11 @@ type OpenidConnectPluginConfig struct {
 	// The authorization endpoint. If set it overrides the value in `authorization_endpoint` returned by the discovery endpoint.
 	AuthorizationEndpoint *string `default:"null" json:"authorization_endpoint"`
 	// Extra query arguments passed from the client to the authorization endpoint.
-	AuthorizationQueryArgsClient []string `json:"authorization_query_args_client,omitempty"`
+	AuthorizationQueryArgsClient []string `json:"authorization_query_args_client"`
 	// Extra query argument names passed to the authorization endpoint.
-	AuthorizationQueryArgsNames []string `json:"authorization_query_args_names,omitempty"`
+	AuthorizationQueryArgsNames []string `json:"authorization_query_args_names"`
 	// Extra query argument values passed to the authorization endpoint.
-	AuthorizationQueryArgsValues []string `json:"authorization_query_args_values,omitempty"`
+	AuthorizationQueryArgsValues []string `json:"authorization_query_args_values"`
 	// Specifies how long the session used for the authorization code flow can be used in seconds until it needs to be renewed. 0 disables the checks and rolling.
 	AuthorizationRollingTimeout *float64 `default:"600" json:"authorization_rolling_timeout"`
 	// The name of the cookie in which the bearer token is passed.
@@ -2125,50 +2125,50 @@ type OpenidConnectPluginConfig struct {
 	// Cache the user info requests.
 	CacheUserInfo *bool `default:"true" json:"cache_user_info"`
 	// If given, these claims are forbidden in the token payload.
-	ClaimsForbidden []string `json:"claims_forbidden,omitempty"`
+	ClaimsForbidden []string `json:"claims_forbidden"`
 	// The algorithm to use for client_secret_jwt (only HS***) or private_key_jwt authentication.
-	ClientAlg []ClientAlg `json:"client_alg,omitempty"`
+	ClientAlg []ClientAlg `json:"client_alg"`
 	// The client to use for this request (the selection is made with a request parameter with the same name).
 	ClientArg *string `default:"client_id" json:"client_arg"`
 	// The default OpenID Connect client authentication method is 'client_secret_basic' (using 'Authorization: Basic' header), 'client_secret_post' (credentials in body), 'client_secret_jwt' (signed client assertion in body), 'private_key_jwt' (private key-signed assertion), 'tls_client_auth' (client certificate), 'self_signed_tls_client_auth' (self-signed client certificate), and 'none' (no authentication).
-	ClientAuth []ClientAuth `json:"client_auth,omitempty"`
+	ClientAuth []ClientAuth `json:"client_auth"`
 	// Where to look for the client credentials: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search from the HTTP request body.
 	ClientCredentialsParamType []ClientCredentialsParamType `json:"client_credentials_param_type,omitempty"`
 	// The client id(s) that the plugin uses when it calls authenticated endpoints on the identity provider.
-	ClientID []string `json:"client_id,omitempty"`
+	ClientID []string `json:"client_id"`
 	// The JWK used for the private_key_jwt authentication.
-	ClientJwk []ClientJwk `json:"client_jwk,omitempty"`
+	ClientJwk []ClientJwk `json:"client_jwk"`
 	// The client secret.
-	ClientSecret      []string           `json:"client_secret,omitempty"`
-	ClusterCacheRedis *ClusterCacheRedis `json:"cluster_cache_redis,omitempty"`
+	ClientSecret      []string           `json:"client_secret"`
+	ClusterCacheRedis *ClusterCacheRedis `json:"cluster_cache_redis"`
 	// The strategy to use for the cluster cache. If set, the plugin will share cache with nodes configured with the same strategy backend. Currentlly only introspection cache is shared.
 	ClusterCacheStrategy *ClusterCacheStrategy `default:"off" json:"cluster_cache_strategy"`
 	// Consumer fields used for mapping: - `id`: try to find the matching Consumer by `id` - `username`: try to find the matching Consumer by `username` - `custom_id`: try to find the matching Consumer by `custom_id`.
 	ConsumerBy []OpenidConnectPluginConsumerBy `json:"consumer_by,omitempty"`
 	// The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
-	ConsumerClaim []string `json:"consumer_claim,omitempty"`
+	ConsumerClaim []string `json:"consumer_claim"`
 	// Do not terminate the request if consumer mapping fails.
 	ConsumerOptional *bool `default:"false" json:"consumer_optional"`
 	// The claim used to derive virtual credentials (e.g. to be consumed by the rate-limiting plugin), in case the consumer mapping is not used. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	CredentialClaim []string `json:"credential_claim,omitempty"`
 	// Disable issuing the session cookie with the specified grants.
-	DisableSession []DisableSession `json:"disable_session,omitempty"`
+	DisableSession []DisableSession `json:"disable_session"`
 	// Extra header names passed to the discovery endpoint.
-	DiscoveryHeadersNames []string `json:"discovery_headers_names,omitempty"`
+	DiscoveryHeadersNames []string `json:"discovery_headers_names"`
 	// Extra header values passed to the discovery endpoint.
-	DiscoveryHeadersValues []string `json:"discovery_headers_values,omitempty"`
+	DiscoveryHeadersValues []string `json:"discovery_headers_values"`
 	// Display errors on failure responses.
 	DisplayErrors *bool `default:"false" json:"display_errors"`
 	// The allowed values for the `hd` claim.
-	Domains []string `json:"domains,omitempty"`
+	Domains []string `json:"domains"`
 	// The downstream access token header.
 	DownstreamAccessTokenHeader *string `default:"null" json:"downstream_access_token_header"`
 	// The downstream access token JWK header.
 	DownstreamAccessTokenJwkHeader *string `default:"null" json:"downstream_access_token_jwk_header"`
 	// The downstream header claims. If multiple values are set, it means the claim is inside a nested object of the token payload.
-	DownstreamHeadersClaims []string `json:"downstream_headers_claims,omitempty"`
+	DownstreamHeadersClaims []string `json:"downstream_headers_claims"`
 	// The downstream header names for the claim values.
-	DownstreamHeadersNames []string `json:"downstream_headers_names,omitempty"`
+	DownstreamHeadersNames []string `json:"downstream_headers_names"`
 	// The downstream id token header.
 	DownstreamIDTokenHeader *string `default:"null" json:"downstream_id_token_header"`
 	// The downstream id token JWK header.
@@ -2196,17 +2196,17 @@ type OpenidConnectPluginConfig struct {
 	// Specifies whether to expose the error code header, as defined in RFC 6750. If an authorization request fails, this header is sent in the response. Set to `false` to disable.
 	ExposeErrorCode *bool `default:"true" json:"expose_error_code"`
 	// JWKS URIs whose public keys are trusted (in addition to the keys found with the discovery).
-	ExtraJwksUris []string `json:"extra_jwks_uris,omitempty"`
+	ExtraJwksUris []string `json:"extra_jwks_uris"`
 	// Destroy any active session for the forbidden requests.
 	ForbiddenDestroySession *bool `default:"true" json:"forbidden_destroy_session"`
 	// The error message for the forbidden requests (when not using the redirection).
 	ForbiddenErrorMessage *string `default:"Forbidden" json:"forbidden_error_message"`
 	// Where to redirect the client on forbidden requests.
-	ForbiddenRedirectURI []string `json:"forbidden_redirect_uri,omitempty"`
+	ForbiddenRedirectURI []string `json:"forbidden_redirect_uri"`
 	// The claim that contains the groups. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	GroupsClaim []string `json:"groups_claim,omitempty"`
 	// The groups (`groups_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
-	GroupsRequired []string `json:"groups_required,omitempty"`
+	GroupsRequired []string `json:"groups_required"`
 	// Remove the credentials used for authentication from the request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication.
 	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// The HTTP proxy.
@@ -2236,27 +2236,27 @@ type OpenidConnectPluginConfig struct {
 	// The introspection endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
 	IntrospectionEndpointAuthMethod *IntrospectionEndpointAuthMethod `json:"introspection_endpoint_auth_method,omitempty"`
 	// Extra headers passed from the client to the introspection endpoint.
-	IntrospectionHeadersClient []string `json:"introspection_headers_client,omitempty"`
+	IntrospectionHeadersClient []string `json:"introspection_headers_client"`
 	// Extra header names passed to the introspection endpoint.
-	IntrospectionHeadersNames []string `json:"introspection_headers_names,omitempty"`
+	IntrospectionHeadersNames []string `json:"introspection_headers_names"`
 	// Extra header values passed to the introspection endpoint.
-	IntrospectionHeadersValues []string `json:"introspection_headers_values,omitempty"`
+	IntrospectionHeadersValues []string `json:"introspection_headers_values"`
 	// Introspection hint parameter value passed to the introspection endpoint.
 	IntrospectionHint *string `default:"access_token" json:"introspection_hint"`
 	// Extra post arguments passed from the client to the introspection endpoint.
-	IntrospectionPostArgsClient []string `json:"introspection_post_args_client,omitempty"`
+	IntrospectionPostArgsClient []string `json:"introspection_post_args_client"`
 	// Extra post arguments passed from the client headers to the introspection endpoint.
-	IntrospectionPostArgsClientHeaders []string `json:"introspection_post_args_client_headers,omitempty"`
+	IntrospectionPostArgsClientHeaders []string `json:"introspection_post_args_client_headers"`
 	// Extra post argument names passed to the introspection endpoint.
-	IntrospectionPostArgsNames []string `json:"introspection_post_args_names,omitempty"`
+	IntrospectionPostArgsNames []string `json:"introspection_post_args_names"`
 	// Extra post argument values passed to the introspection endpoint.
-	IntrospectionPostArgsValues []string `json:"introspection_post_args_values,omitempty"`
+	IntrospectionPostArgsValues []string `json:"introspection_post_args_values"`
 	// Designate token's parameter name for introspection.
 	IntrospectionTokenParamName *string `default:"token" json:"introspection_token_param_name"`
 	// The discovery endpoint (or the issuer identifier). When there is no discovery endpoint, please also configure `config.using_pseudo_issuer=true`.
 	Issuer string `json:"issuer"`
 	// The issuers allowed to be present in the tokens (`iss` claim).
-	IssuersAllowed []string `json:"issuers_allowed,omitempty"`
+	IssuersAllowed []string `json:"issuers_allowed"`
 	// The claim to match against the JWT session cookie.
 	JwtSessionClaim *string `default:"sid" json:"jwt_session_claim"`
 	// The name of the JWT session cookie.
@@ -2272,7 +2272,7 @@ type OpenidConnectPluginConfig struct {
 	// Where to place `login_tokens` when using `redirect` `login_action`: - `query`: place tokens in query string - `fragment`: place tokens in url fragment (not readable by servers).
 	LoginRedirectMode *LoginRedirectMode `default:"fragment" json:"login_redirect_mode"`
 	// Where to redirect the client when `login_action` is set to `redirect`.
-	LoginRedirectURI []string `json:"login_redirect_uri,omitempty"`
+	LoginRedirectURI []string `json:"login_redirect_uri"`
 	// What tokens to include in `response` body or `redirect` query string or fragment: - `id_token`: include id token - `access_token`: include access token - `refresh_token`: include refresh token - `tokens`: include the full token endpoint response - `introspection`: include introspection response.
 	LoginTokens []LoginTokens `json:"login_tokens,omitempty"`
 	// The request methods that can activate the logout: - `POST`: HTTP POST method - `GET`: HTTP GET method - `DELETE`: HTTP DELETE method.
@@ -2282,7 +2282,7 @@ type OpenidConnectPluginConfig struct {
 	// The request query argument that activates the logout.
 	LogoutQueryArg *string `default:"null" json:"logout_query_arg"`
 	// Where to redirect the client after the logout.
-	LogoutRedirectURI []string `json:"logout_redirect_uri,omitempty"`
+	LogoutRedirectURI []string `json:"logout_redirect_uri"`
 	// Revoke tokens as part of the logout.
 	//
 	// For more granular token revocation, you can also adjust the `logout_revoke_access_token` and `logout_revoke_refresh_token` parameters.
@@ -2318,8 +2318,8 @@ type OpenidConnectPluginConfig struct {
 	// The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
 	PushedAuthorizationRequestEndpointAuthMethod *PushedAuthorizationRequestEndpointAuthMethod `json:"pushed_authorization_request_endpoint_auth_method,omitempty"`
 	// The redirect URI passed to the authorization and token endpoints.
-	RedirectURI []string                  `json:"redirect_uri,omitempty"`
-	Redis       *OpenidConnectPluginRedis `json:"redis,omitempty"`
+	RedirectURI []string                  `json:"redirect_uri"`
+	Redis       *OpenidConnectPluginRedis `json:"redis"`
 	// Specifies how long (in seconds) the plugin waits between discovery attempts. Discovery is still triggered on an as-needed basis.
 	RediscoveryLifetime *float64 `default:"30" json:"rediscovery_lifetime"`
 	// The name of the parameter used to pass the refresh token.
@@ -2351,7 +2351,7 @@ type OpenidConnectPluginConfig struct {
 	// The claim that contains the roles. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	RolesClaim []string `json:"roles_claim,omitempty"`
 	// The roles (`roles_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
-	RolesRequired []string `json:"roles_required,omitempty"`
+	RolesRequired []string `json:"roles_required"`
 	// Specifies whether to run this plugin on pre-flight (`OPTIONS`) requests.
 	RunOnPreflight *bool `default:"true" json:"run_on_preflight"`
 	// The scopes passed to the authorization and token endpoints.
@@ -2359,7 +2359,7 @@ type OpenidConnectPluginConfig struct {
 	// The claim that contains the scopes. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	ScopesClaim []string `json:"scopes_claim,omitempty"`
 	// The scopes (`scopes_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
-	ScopesRequired []string `json:"scopes_required,omitempty"`
+	ScopesRequired []string `json:"scopes_required"`
 	// Specify whether to use the user info endpoint to get additional claims for consumer mapping, credential mapping, authenticated groups, and upstream and downstream headers.
 	SearchUserInfo *bool `default:"false" json:"search_user_info"`
 	// Limits how long the session can be renewed in seconds, until re-authentication is required. 0 disables the checks.
@@ -2403,9 +2403,9 @@ type OpenidConnectPluginConfig struct {
 	// Specifies how long the persistent session is considered valid in seconds. 0 disables the checks and rolling.
 	SessionRememberRollingTimeout *float64 `default:"604800" json:"session_remember_rolling_timeout"`
 	// Set of headers to send to upstream, use id, audience, subject, timeout, idling-timeout, rolling-timeout, absolute-timeout. E.g. `[ "id", "timeout" ]` will set Session-Id and Session-Timeout request headers.
-	SessionRequestHeaders []SessionRequestHeaders `json:"session_request_headers,omitempty"`
+	SessionRequestHeaders []SessionRequestHeaders `json:"session_request_headers"`
 	// Set of headers to send to downstream, use id, audience, subject, timeout, idling-timeout, rolling-timeout, absolute-timeout. E.g. `[ "id", "timeout" ]` will set Session-Id and Session-Timeout response headers.
-	SessionResponseHeaders []SessionResponseHeaders `json:"session_response_headers,omitempty"`
+	SessionResponseHeaders []SessionResponseHeaders `json:"session_response_headers"`
 	// Specifies how long the session can be used in seconds until it needs to be renewed. 0 disables the checks and rolling.
 	SessionRollingTimeout *float64 `default:"3600" json:"session_rolling_timeout"`
 	// The session secret.
@@ -2431,39 +2431,39 @@ type OpenidConnectPluginConfig struct {
 	// The token exchange endpoint.
 	TokenExchangeEndpoint *string `default:"null" json:"token_exchange_endpoint"`
 	// Extra headers passed from the client to the token endpoint.
-	TokenHeadersClient []string `json:"token_headers_client,omitempty"`
+	TokenHeadersClient []string `json:"token_headers_client"`
 	// Enable the sending of the token endpoint response headers only with certain grants: - `password`: with OAuth password grant - `client_credentials`: with OAuth client credentials grant - `authorization_code`: with authorization code flow - `refresh_token` with refresh token grant.
-	TokenHeadersGrants []TokenHeadersGrants `json:"token_headers_grants,omitempty"`
+	TokenHeadersGrants []TokenHeadersGrants `json:"token_headers_grants"`
 	// Extra header names passed to the token endpoint.
-	TokenHeadersNames []string `json:"token_headers_names,omitempty"`
+	TokenHeadersNames []string `json:"token_headers_names"`
 	// Add a prefix to the token endpoint response headers before forwarding them to the downstream client.
 	TokenHeadersPrefix *string `default:"null" json:"token_headers_prefix"`
 	// The names of token endpoint response headers to forward to the downstream client.
-	TokenHeadersReplay []string `json:"token_headers_replay,omitempty"`
+	TokenHeadersReplay []string `json:"token_headers_replay"`
 	// Extra header values passed to the token endpoint.
-	TokenHeadersValues []string `json:"token_headers_values,omitempty"`
+	TokenHeadersValues []string `json:"token_headers_values"`
 	// Pass extra arguments from the client to the OpenID-Connect plugin. If arguments exist, the client can pass them using: - Query parameters - Request Body - Request Header  This parameter can be used with `scope` values, like this:  `config.token_post_args_client=scope`  In this case, the token would take the `scope` value from the query parameter or from the request body or from the header and send it to the token endpoint.
-	TokenPostArgsClient []string `json:"token_post_args_client,omitempty"`
+	TokenPostArgsClient []string `json:"token_post_args_client"`
 	// Extra post argument names passed to the token endpoint.
-	TokenPostArgsNames []string `json:"token_post_args_names,omitempty"`
+	TokenPostArgsNames []string `json:"token_post_args_names"`
 	// Extra post argument values passed to the token endpoint.
-	TokenPostArgsValues []string `json:"token_post_args_values,omitempty"`
+	TokenPostArgsValues []string `json:"token_post_args_values"`
 	// Destroy any active session for the unauthorized requests.
 	UnauthorizedDestroySession *bool `default:"true" json:"unauthorized_destroy_session"`
 	// The error message for the unauthorized requests (when not using the redirection).
 	UnauthorizedErrorMessage *string `default:"Unauthorized" json:"unauthorized_error_message"`
 	// Where to redirect the client on unauthorized requests.
-	UnauthorizedRedirectURI []string `json:"unauthorized_redirect_uri,omitempty"`
+	UnauthorizedRedirectURI []string `json:"unauthorized_redirect_uri"`
 	// Where to redirect the client when unexpected errors happen with the requests.
-	UnexpectedRedirectURI []string `json:"unexpected_redirect_uri,omitempty"`
+	UnexpectedRedirectURI []string `json:"unexpected_redirect_uri"`
 	// The upstream access token header.
 	UpstreamAccessTokenHeader *string `default:"authorization:bearer" json:"upstream_access_token_header"`
 	// The upstream access token JWK header.
 	UpstreamAccessTokenJwkHeader *string `default:"null" json:"upstream_access_token_jwk_header"`
 	// The upstream header claims. Only top level claims are supported.
-	UpstreamHeadersClaims []string `json:"upstream_headers_claims,omitempty"`
+	UpstreamHeadersClaims []string `json:"upstream_headers_claims"`
 	// The upstream header names for the claim values.
-	UpstreamHeadersNames []string `json:"upstream_headers_names,omitempty"`
+	UpstreamHeadersNames []string `json:"upstream_headers_names"`
 	// The upstream id token header.
 	UpstreamIDTokenHeader *string `default:"null" json:"upstream_id_token_header"`
 	// The upstream id token JWK header.
@@ -2485,17 +2485,17 @@ type OpenidConnectPluginConfig struct {
 	// The user info endpoint. If set it overrides the value in `userinfo_endpoint` returned by the discovery endpoint.
 	UserinfoEndpoint *string `default:"null" json:"userinfo_endpoint"`
 	// Extra headers passed from the client to the user info endpoint.
-	UserinfoHeadersClient []string `json:"userinfo_headers_client,omitempty"`
+	UserinfoHeadersClient []string `json:"userinfo_headers_client"`
 	// Extra header names passed to the user info endpoint.
-	UserinfoHeadersNames []string `json:"userinfo_headers_names,omitempty"`
+	UserinfoHeadersNames []string `json:"userinfo_headers_names"`
 	// Extra header values passed to the user info endpoint.
-	UserinfoHeadersValues []string `json:"userinfo_headers_values,omitempty"`
+	UserinfoHeadersValues []string `json:"userinfo_headers_values"`
 	// Extra query arguments passed from the client to the user info endpoint.
-	UserinfoQueryArgsClient []string `json:"userinfo_query_args_client,omitempty"`
+	UserinfoQueryArgsClient []string `json:"userinfo_query_args_client"`
 	// Extra query argument names passed to the user info endpoint.
-	UserinfoQueryArgsNames []string `json:"userinfo_query_args_names,omitempty"`
+	UserinfoQueryArgsNames []string `json:"userinfo_query_args_names"`
 	// Extra query argument values passed to the user info endpoint.
-	UserinfoQueryArgsValues []string `json:"userinfo_query_args_values,omitempty"`
+	UserinfoQueryArgsValues []string `json:"userinfo_query_args_values"`
 	// If the plugin uses a pseudo issuer. When set to true, the plugin will not discover the configuration from the issuer URL specified with `config.issuer`.
 	UsingPseudoIssuer *bool `default:"false" json:"using_pseudo_issuer"`
 	// Verify tokens for standard claims.

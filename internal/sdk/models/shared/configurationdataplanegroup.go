@@ -98,10 +98,10 @@ type ConfigurationDataPlaneGroup struct {
 	StateMetadata *StateMetadata `json:"state_metadata,omitempty"`
 	// List of private IP addresses of the internal load balancer that proxies traffic to this data-plane group.
 	//
-	PrivateIPAddresses []string `json:"private_ip_addresses,omitempty"`
+	PrivateIPAddresses []string `json:"private_ip_addresses"`
 	// List of egress IP addresses for the network that this data-plane group runs on.
 	//
-	EgressIPAddresses []string `json:"egress_ip_addresses,omitempty"`
+	EgressIPAddresses []string `json:"egress_ip_addresses"`
 	// An RFC-3339 timestamp representation of data-plane group creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An RFC-3339 timestamp representation of data-plane group update date.

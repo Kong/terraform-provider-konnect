@@ -10,7 +10,7 @@ import (
 )
 
 type StatsdAdvancedPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *StatsdAdvancedPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *StatsdAdvancedPluginAfter) GetAccess() []string {
 }
 
 type StatsdAdvancedPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *StatsdAdvancedPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *StatsdAdvancedPluginBefore) GetAccess() []string {
 }
 
 type StatsdAdvancedPluginOrdering struct {
-	After  *StatsdAdvancedPluginAfter  `json:"after,omitempty"`
-	Before *StatsdAdvancedPluginBefore `json:"before,omitempty"`
+	After  *StatsdAdvancedPluginAfter  `json:"after"`
+	Before *StatsdAdvancedPluginBefore `json:"before"`
 }
 
 func (o *StatsdAdvancedPluginOrdering) GetAfter() *StatsdAdvancedPluginAfter {
@@ -547,7 +547,7 @@ func (e *StatsdAdvancedPluginWorkspaceIdentifierDefault) UnmarshalJSON(data []by
 
 type StatsdAdvancedPluginConfig struct {
 	// List of status code ranges that are allowed to be logged in metrics.
-	AllowStatusCodes []string `json:"allow_status_codes,omitempty"`
+	AllowStatusCodes []string `json:"allow_status_codes"`
 	// The default consumer identifier for metrics. This will take effect when a metric's consumer identifier is omitted. Allowed values are `custom_id`, `consumer_id`, `username`.
 	ConsumerIdentifierDefault *StatsdAdvancedPluginConsumerIdentifierDefault `default:"custom_id" json:"consumer_identifier_default"`
 	// A string representing a host name, such as example.com.
@@ -560,7 +560,7 @@ type StatsdAdvancedPluginConfig struct {
 	Port *int64 `default:"8125" json:"port"`
 	// String to prefix to each metric's name.
 	Prefix *string                    `default:"kong" json:"prefix"`
-	Queue  *StatsdAdvancedPluginQueue `json:"queue,omitempty"`
+	Queue  *StatsdAdvancedPluginQueue `json:"queue"`
 	// The default service identifier for metrics. This will take effect when a metric's service identifier is omitted. Allowed values are `service_name_or_host`, `service_id`, `service_name`, `service_host`.
 	ServiceIdentifierDefault *StatsdAdvancedPluginServiceIdentifierDefault `default:"service_name_or_host" json:"service_identifier_default"`
 	// Combine UDP packet up to the size configured. If zero (0), don't combine the UDP packet. Must be a number between 0 and 65507 (inclusive).
@@ -771,7 +771,7 @@ type StatsdAdvancedPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                      `json:"updated_at,omitempty"`
-	Config    *StatsdAdvancedPluginConfig `json:"config,omitempty"`
+	Config    *StatsdAdvancedPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *StatsdAdvancedPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.

@@ -10,7 +10,7 @@ import (
 )
 
 type ConfluentConsumePluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ConfluentConsumePluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *ConfluentConsumePluginAfter) GetAccess() []string {
 }
 
 type ConfluentConsumePluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ConfluentConsumePluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *ConfluentConsumePluginBefore) GetAccess() []string {
 }
 
 type ConfluentConsumePluginOrdering struct {
-	After  *ConfluentConsumePluginAfter  `json:"after,omitempty"`
-	Before *ConfluentConsumePluginBefore `json:"before,omitempty"`
+	After  *ConfluentConsumePluginAfter  `json:"after"`
+	Before *ConfluentConsumePluginBefore `json:"before"`
 }
 
 func (o *ConfluentConsumePluginOrdering) GetAfter() *ConfluentConsumePluginAfter {
@@ -266,7 +266,7 @@ func (e *ConfluentConsumePluginMode) UnmarshalJSON(data []byte) error {
 }
 
 type ConfluentConsumePluginAuthentication struct {
-	Basic *ConfluentConsumePluginBasic `json:"basic,omitempty"`
+	Basic *ConfluentConsumePluginBasic `json:"basic"`
 	// Authentication mode to use with the schema registry.
 	Mode *ConfluentConsumePluginMode `default:"none" json:"mode"`
 }
@@ -347,7 +347,7 @@ func (o *ConfluentConsumePluginConfluent) GetURL() *string {
 
 // ConfluentConsumePluginSchemaRegistry - The plugin-global schema registry configuration.
 type ConfluentConsumePluginSchemaRegistry struct {
-	Confluent *ConfluentConsumePluginConfluent `json:"confluent,omitempty"`
+	Confluent *ConfluentConsumePluginConfluent `json:"confluent"`
 }
 
 func (o *ConfluentConsumePluginSchemaRegistry) GetConfluent() *ConfluentConsumePluginConfluent {
@@ -404,7 +404,7 @@ func (e *ConfluentConsumePluginConfigMode) UnmarshalJSON(data []byte) error {
 }
 
 type ConfluentConsumePluginConfigAuthentication struct {
-	Basic *ConfluentConsumePluginConfigBasic `json:"basic,omitempty"`
+	Basic *ConfluentConsumePluginConfigBasic `json:"basic"`
 	// Authentication mode to use with the schema registry.
 	Mode *ConfluentConsumePluginConfigMode `default:"none" json:"mode"`
 }
@@ -485,7 +485,7 @@ func (o *ConfluentConsumePluginConfigConfluent) GetURL() *string {
 
 // ConfluentConsumePluginConfigSchemaRegistry - The plugin-global schema registry configuration.
 type ConfluentConsumePluginConfigSchemaRegistry struct {
-	Confluent *ConfluentConsumePluginConfigConfluent `json:"confluent,omitempty"`
+	Confluent *ConfluentConsumePluginConfigConfluent `json:"confluent"`
 }
 
 func (o *ConfluentConsumePluginConfigSchemaRegistry) GetConfluent() *ConfluentConsumePluginConfigConfluent {
@@ -519,7 +519,7 @@ type ConfluentConsumePluginConfig struct {
 	// The offset to start from when there is no initial offset in the consumer group.
 	AutoOffsetReset *AutoOffsetReset `default:"latest" json:"auto_offset_reset"`
 	// Set of bootstrap brokers in a `{host: host, port: port}` list format.
-	BootstrapServers []ConfluentConsumePluginBootstrapServers `json:"bootstrap_servers,omitempty"`
+	BootstrapServers []ConfluentConsumePluginBootstrapServers `json:"bootstrap_servers"`
 	// Username/Apikey for SASL authentication.
 	ClusterAPIKey string `json:"cluster_api_key"`
 	// Password/ApiSecret for SASL authentication.
@@ -540,7 +540,7 @@ type ConfluentConsumePluginConfig struct {
 	// The mode of operation for the plugin.
 	Mode *Mode `default:"http-get" json:"mode"`
 	// The plugin-global schema registry configuration.
-	SchemaRegistry *ConfluentConsumePluginSchemaRegistry `json:"schema_registry,omitempty"`
+	SchemaRegistry *ConfluentConsumePluginSchemaRegistry `json:"schema_registry"`
 	// Socket timeout in milliseconds.
 	Timeout *int64 `default:"10000" json:"timeout"`
 	// The Kafka topics and their configuration you want to consume from.

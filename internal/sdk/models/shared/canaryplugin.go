@@ -10,7 +10,7 @@ import (
 )
 
 type CanaryPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *CanaryPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *CanaryPluginAfter) GetAccess() []string {
 }
 
 type CanaryPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *CanaryPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *CanaryPluginBefore) GetAccess() []string {
 }
 
 type CanaryPluginOrdering struct {
-	After  *CanaryPluginAfter  `json:"after,omitempty"`
-	Before *CanaryPluginBefore `json:"before,omitempty"`
+	After  *CanaryPluginAfter  `json:"after"`
+	Before *CanaryPluginBefore `json:"before"`
 }
 
 func (o *CanaryPluginOrdering) GetAfter() *CanaryPluginAfter {
@@ -142,7 +142,7 @@ type CanaryPluginConfig struct {
 	// The duration of the canary release in seconds.
 	Duration *float64 `default:"3600" json:"duration"`
 	// The groups allowed to access the canary release.
-	Groups []string `json:"groups,omitempty"`
+	Groups []string `json:"groups"`
 	// Hash algorithm to be used for canary release.
 	//
 	// * `consumer`: The hash will be based on the consumer.
@@ -339,7 +339,7 @@ type CanaryPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64              `json:"updated_at,omitempty"`
-	Config    *CanaryPluginConfig `json:"config,omitempty"`
+	Config    *CanaryPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
 	Protocols []CanaryPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

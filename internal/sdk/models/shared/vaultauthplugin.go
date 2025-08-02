@@ -10,7 +10,7 @@ import (
 )
 
 type VaultAuthPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *VaultAuthPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *VaultAuthPluginAfter) GetAccess() []string {
 }
 
 type VaultAuthPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *VaultAuthPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *VaultAuthPluginBefore) GetAccess() []string {
 }
 
 type VaultAuthPluginOrdering struct {
-	After  *VaultAuthPluginAfter  `json:"after,omitempty"`
-	Before *VaultAuthPluginBefore `json:"before,omitempty"`
+	After  *VaultAuthPluginAfter  `json:"after"`
+	Before *VaultAuthPluginBefore `json:"before"`
 }
 
 func (o *VaultAuthPluginOrdering) GetAfter() *VaultAuthPluginAfter {

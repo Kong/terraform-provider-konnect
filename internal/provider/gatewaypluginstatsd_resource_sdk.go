@@ -19,9 +19,11 @@ func (r *GatewayPluginStatsdResourceModel) RefreshFromSharedStatsdPlugin(ctx con
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.StatsdPluginConfig{}
-			r.Config.AllowStatusCodes = make([]types.String, 0, len(resp.Config.AllowStatusCodes))
-			for _, v := range resp.Config.AllowStatusCodes {
-				r.Config.AllowStatusCodes = append(r.Config.AllowStatusCodes, types.StringValue(v))
+			if resp.Config.AllowStatusCodes != nil {
+				r.Config.AllowStatusCodes = make([]types.String, 0, len(resp.Config.AllowStatusCodes))
+				for _, v := range resp.Config.AllowStatusCodes {
+					r.Config.AllowStatusCodes = append(r.Config.AllowStatusCodes, types.StringValue(v))
+				}
 			}
 			if resp.Config.ConsumerIdentifierDefault != nil {
 				r.Config.ConsumerIdentifierDefault = types.StringValue(string(*resp.Config.ConsumerIdentifierDefault))
@@ -31,39 +33,41 @@ func (r *GatewayPluginStatsdResourceModel) RefreshFromSharedStatsdPlugin(ctx con
 			r.Config.FlushTimeout = types.Float64PointerValue(resp.Config.FlushTimeout)
 			r.Config.Host = types.StringPointerValue(resp.Config.Host)
 			r.Config.HostnameInPrefix = types.BoolPointerValue(resp.Config.HostnameInPrefix)
-			r.Config.Metrics = []tfTypes.StatsdPluginMetrics{}
-			if len(r.Config.Metrics) > len(resp.Config.Metrics) {
-				r.Config.Metrics = r.Config.Metrics[:len(resp.Config.Metrics)]
-			}
-			for metricsCount, metricsItem := range resp.Config.Metrics {
-				var metrics tfTypes.StatsdPluginMetrics
-				if metricsItem.ConsumerIdentifier != nil {
-					metrics.ConsumerIdentifier = types.StringValue(string(*metricsItem.ConsumerIdentifier))
-				} else {
-					metrics.ConsumerIdentifier = types.StringNull()
+			if resp.Config.Metrics != nil {
+				r.Config.Metrics = []tfTypes.StatsdPluginMetrics{}
+				if len(r.Config.Metrics) > len(resp.Config.Metrics) {
+					r.Config.Metrics = r.Config.Metrics[:len(resp.Config.Metrics)]
 				}
-				metrics.Name = types.StringValue(string(metricsItem.Name))
-				metrics.SampleRate = types.Float64PointerValue(metricsItem.SampleRate)
-				if metricsItem.ServiceIdentifier != nil {
-					metrics.ServiceIdentifier = types.StringValue(string(*metricsItem.ServiceIdentifier))
-				} else {
-					metrics.ServiceIdentifier = types.StringNull()
-				}
-				metrics.StatType = types.StringValue(string(metricsItem.StatType))
-				if metricsItem.WorkspaceIdentifier != nil {
-					metrics.WorkspaceIdentifier = types.StringValue(string(*metricsItem.WorkspaceIdentifier))
-				} else {
-					metrics.WorkspaceIdentifier = types.StringNull()
-				}
-				if metricsCount+1 > len(r.Config.Metrics) {
-					r.Config.Metrics = append(r.Config.Metrics, metrics)
-				} else {
-					r.Config.Metrics[metricsCount].ConsumerIdentifier = metrics.ConsumerIdentifier
-					r.Config.Metrics[metricsCount].Name = metrics.Name
-					r.Config.Metrics[metricsCount].SampleRate = metrics.SampleRate
-					r.Config.Metrics[metricsCount].ServiceIdentifier = metrics.ServiceIdentifier
-					r.Config.Metrics[metricsCount].StatType = metrics.StatType
-					r.Config.Metrics[metricsCount].WorkspaceIdentifier = metrics.WorkspaceIdentifier
+				for metricsCount, metricsItem := range resp.Config.Metrics {
+					var metrics tfTypes.StatsdPluginMetrics
+					if metricsItem.ConsumerIdentifier != nil {
+						metrics.ConsumerIdentifier = types.StringValue(string(*metricsItem.ConsumerIdentifier))
+					} else {
+						metrics.ConsumerIdentifier = types.StringNull()
+					}
+					metrics.Name = types.StringValue(string(metricsItem.Name))
+					metrics.SampleRate = types.Float64PointerValue(metricsItem.SampleRate)
+					if metricsItem.ServiceIdentifier != nil {
+						metrics.ServiceIdentifier = types.StringValue(string(*metricsItem.ServiceIdentifier))
+					} else {
+						metrics.ServiceIdentifier = types.StringNull()
+					}
+					metrics.StatType = types.StringValue(string(metricsItem.StatType))
+					if metricsItem.WorkspaceIdentifier != nil {
+						metrics.WorkspaceIdentifier = types.StringValue(string(*metricsItem.WorkspaceIdentifier))
+					} else {
+						metrics.WorkspaceIdentifier = types.StringNull()
+					}
+					if metricsCount+1 > len(r.Config.Metrics) {
+						r.Config.Metrics = append(r.Config.Metrics, metrics)
+					} else {
+						r.Config.Metrics[metricsCount].ConsumerIdentifier = metrics.ConsumerIdentifier
+						r.Config.Metrics[metricsCount].Name = metrics.Name
+						r.Config.Metrics[metricsCount].SampleRate = metrics.SampleRate
+						r.Config.Metrics[metricsCount].ServiceIdentifier = metrics.ServiceIdentifier
+						r.Config.Metrics[metricsCount].StatType = metrics.StatType
+						r.Config.Metrics[metricsCount].WorkspaceIdentifier = metrics.WorkspaceIdentifier
+					}
 				}
 			}
 			r.Config.Port = types.Int64PointerValue(resp.Config.Port)
@@ -123,18 +127,22 @@ func (r *GatewayPluginStatsdResourceModel) RefreshFromSharedStatsdPlugin(ctx con
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -296,9 +304,12 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedStatsdPlugin(ctx context.Cont
 	if r.Ordering != nil {
 		var after *shared.StatsdPluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.StatsdPluginAfter{
 				Access: access,
@@ -306,9 +317,12 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedStatsdPlugin(ctx context.Cont
 		}
 		var before *shared.StatsdPluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.StatsdPluginBefore{
 				Access: access1,
@@ -363,9 +377,12 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedStatsdPlugin(ctx context.Cont
 	}
 	var config *shared.StatsdPluginConfig
 	if r.Config != nil {
-		allowStatusCodes := make([]string, 0, len(r.Config.AllowStatusCodes))
-		for _, allowStatusCodesItem := range r.Config.AllowStatusCodes {
-			allowStatusCodes = append(allowStatusCodes, allowStatusCodesItem.ValueString())
+		var allowStatusCodes []string
+		if r.Config.AllowStatusCodes != nil {
+			allowStatusCodes = make([]string, 0, len(r.Config.AllowStatusCodes))
+			for _, allowStatusCodesItem := range r.Config.AllowStatusCodes {
+				allowStatusCodes = append(allowStatusCodes, allowStatusCodesItem.ValueString())
+			}
 		}
 		consumerIdentifierDefault := new(shared.ConsumerIdentifierDefault)
 		if !r.Config.ConsumerIdentifierDefault.IsUnknown() && !r.Config.ConsumerIdentifierDefault.IsNull() {
@@ -391,42 +408,45 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedStatsdPlugin(ctx context.Cont
 		} else {
 			hostnameInPrefix = nil
 		}
-		metrics := make([]shared.StatsdPluginMetrics, 0, len(r.Config.Metrics))
-		for _, metricsItem := range r.Config.Metrics {
-			consumerIdentifier := new(shared.StatsdPluginConsumerIdentifier)
-			if !metricsItem.ConsumerIdentifier.IsUnknown() && !metricsItem.ConsumerIdentifier.IsNull() {
-				*consumerIdentifier = shared.StatsdPluginConsumerIdentifier(metricsItem.ConsumerIdentifier.ValueString())
-			} else {
-				consumerIdentifier = nil
+		var metrics []shared.StatsdPluginMetrics
+		if r.Config.Metrics != nil {
+			metrics = make([]shared.StatsdPluginMetrics, 0, len(r.Config.Metrics))
+			for _, metricsItem := range r.Config.Metrics {
+				consumerIdentifier := new(shared.StatsdPluginConsumerIdentifier)
+				if !metricsItem.ConsumerIdentifier.IsUnknown() && !metricsItem.ConsumerIdentifier.IsNull() {
+					*consumerIdentifier = shared.StatsdPluginConsumerIdentifier(metricsItem.ConsumerIdentifier.ValueString())
+				} else {
+					consumerIdentifier = nil
+				}
+				name1 := shared.StatsdPluginName(metricsItem.Name.ValueString())
+				sampleRate := new(float64)
+				if !metricsItem.SampleRate.IsUnknown() && !metricsItem.SampleRate.IsNull() {
+					*sampleRate = metricsItem.SampleRate.ValueFloat64()
+				} else {
+					sampleRate = nil
+				}
+				serviceIdentifier := new(shared.ServiceIdentifier)
+				if !metricsItem.ServiceIdentifier.IsUnknown() && !metricsItem.ServiceIdentifier.IsNull() {
+					*serviceIdentifier = shared.ServiceIdentifier(metricsItem.ServiceIdentifier.ValueString())
+				} else {
+					serviceIdentifier = nil
+				}
+				statType := shared.StatsdPluginStatType(metricsItem.StatType.ValueString())
+				workspaceIdentifier := new(shared.WorkspaceIdentifier)
+				if !metricsItem.WorkspaceIdentifier.IsUnknown() && !metricsItem.WorkspaceIdentifier.IsNull() {
+					*workspaceIdentifier = shared.WorkspaceIdentifier(metricsItem.WorkspaceIdentifier.ValueString())
+				} else {
+					workspaceIdentifier = nil
+				}
+				metrics = append(metrics, shared.StatsdPluginMetrics{
+					ConsumerIdentifier:  consumerIdentifier,
+					Name:                name1,
+					SampleRate:          sampleRate,
+					ServiceIdentifier:   serviceIdentifier,
+					StatType:            statType,
+					WorkspaceIdentifier: workspaceIdentifier,
+				})
 			}
-			name1 := shared.StatsdPluginName(metricsItem.Name.ValueString())
-			sampleRate := new(float64)
-			if !metricsItem.SampleRate.IsUnknown() && !metricsItem.SampleRate.IsNull() {
-				*sampleRate = metricsItem.SampleRate.ValueFloat64()
-			} else {
-				sampleRate = nil
-			}
-			serviceIdentifier := new(shared.ServiceIdentifier)
-			if !metricsItem.ServiceIdentifier.IsUnknown() && !metricsItem.ServiceIdentifier.IsNull() {
-				*serviceIdentifier = shared.ServiceIdentifier(metricsItem.ServiceIdentifier.ValueString())
-			} else {
-				serviceIdentifier = nil
-			}
-			statType := shared.StatsdPluginStatType(metricsItem.StatType.ValueString())
-			workspaceIdentifier := new(shared.WorkspaceIdentifier)
-			if !metricsItem.WorkspaceIdentifier.IsUnknown() && !metricsItem.WorkspaceIdentifier.IsNull() {
-				*workspaceIdentifier = shared.WorkspaceIdentifier(metricsItem.WorkspaceIdentifier.ValueString())
-			} else {
-				workspaceIdentifier = nil
-			}
-			metrics = append(metrics, shared.StatsdPluginMetrics{
-				ConsumerIdentifier:  consumerIdentifier,
-				Name:                name1,
-				SampleRate:          sampleRate,
-				ServiceIdentifier:   serviceIdentifier,
-				StatType:            statType,
-				WorkspaceIdentifier: workspaceIdentifier,
-			})
 		}
 		port := new(int64)
 		if !r.Config.Port.IsUnknown() && !r.Config.Port.IsNull() {

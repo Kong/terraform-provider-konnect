@@ -12,9 +12,9 @@ import (
 // An OIDC strategy may be used in conjunction with a DCR provider to automatically create the IdP application.
 type PartialAppAuthStrategyConfigOpenIDConnect struct {
 	Issuer               *string  `default:"null" json:"issuer"`
-	CredentialClaim      []string `json:"credential_claim,omitempty"`
-	Scopes               []string `json:"scopes,omitempty"`
-	AuthMethods          []string `json:"auth_methods,omitempty"`
+	CredentialClaim      []string `json:"credential_claim"`
+	Scopes               []string `json:"scopes"`
+	AuthMethods          []string `json:"auth_methods"`
 	AdditionalProperties any      `additionalProperties:"true" json:"-"`
 }
 

@@ -10,7 +10,7 @@ import (
 )
 
 type AiProxyAdvancedPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiProxyAdvancedPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *AiProxyAdvancedPluginAfter) GetAccess() []string {
 }
 
 type AiProxyAdvancedPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiProxyAdvancedPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *AiProxyAdvancedPluginBefore) GetAccess() []string {
 }
 
 type AiProxyAdvancedPluginOrdering struct {
-	After  *AiProxyAdvancedPluginAfter  `json:"after,omitempty"`
-	Before *AiProxyAdvancedPluginBefore `json:"before,omitempty"`
+	After  *AiProxyAdvancedPluginAfter  `json:"after"`
+	Before *AiProxyAdvancedPluginBefore `json:"before"`
 }
 
 func (o *AiProxyAdvancedPluginOrdering) GetAfter() *AiProxyAdvancedPluginAfter {
@@ -695,9 +695,9 @@ func (o *AiProxyAdvancedPluginHuggingface) GetWaitForModel() *bool {
 // AiProxyAdvancedPluginOptions - Key/value settings for the model
 type AiProxyAdvancedPluginOptions struct {
 	Azure       Azure                             `json:"azure"`
-	Bedrock     *AiProxyAdvancedPluginBedrock     `json:"bedrock,omitempty"`
-	Gemini      *AiProxyAdvancedPluginGemini      `json:"gemini,omitempty"`
-	Huggingface *AiProxyAdvancedPluginHuggingface `json:"huggingface,omitempty"`
+	Bedrock     *AiProxyAdvancedPluginBedrock     `json:"bedrock"`
+	Gemini      *AiProxyAdvancedPluginGemini      `json:"gemini"`
+	Huggingface *AiProxyAdvancedPluginHuggingface `json:"huggingface"`
 	// upstream url for the embeddings
 	UpstreamURL *string `default:"null" json:"upstream_url"`
 }
@@ -791,7 +791,7 @@ type AiProxyAdvancedPluginModel struct {
 	// Model name to execute.
 	Name string `json:"name"`
 	// Key/value settings for the model
-	Options *AiProxyAdvancedPluginOptions `json:"options,omitempty"`
+	Options *AiProxyAdvancedPluginOptions `json:"options"`
 	// AI provider format to use for embeddings API
 	Provider AiProxyAdvancedPluginProvider `json:"provider"`
 }
@@ -818,7 +818,7 @@ func (o *AiProxyAdvancedPluginModel) GetProvider() AiProxyAdvancedPluginProvider
 }
 
 type Embeddings struct {
-	Auth  *AiProxyAdvancedPluginAuth `json:"auth,omitempty"`
+	Auth  *AiProxyAdvancedPluginAuth `json:"auth"`
 	Model AiProxyAdvancedPluginModel `json:"model"`
 }
 
@@ -1416,12 +1416,12 @@ type AiProxyAdvancedPluginConfigOptions struct {
 	AzureDeploymentID *string `default:"null" json:"azure_deployment_id"`
 	// Instance name for Azure OpenAI hosted models.
 	AzureInstance *string                             `default:"null" json:"azure_instance"`
-	Bedrock       *AiProxyAdvancedPluginConfigBedrock `json:"bedrock,omitempty"`
-	Cohere        *AiProxyAdvancedPluginCohere        `json:"cohere,omitempty"`
+	Bedrock       *AiProxyAdvancedPluginConfigBedrock `json:"bedrock"`
+	Cohere        *AiProxyAdvancedPluginCohere        `json:"cohere"`
 	// If using embeddings models, set the number of dimensions to generate.
 	EmbeddingsDimensions *int64                                  `default:"null" json:"embeddings_dimensions"`
-	Gemini               *AiProxyAdvancedPluginConfigGemini      `json:"gemini,omitempty"`
-	Huggingface          *AiProxyAdvancedPluginConfigHuggingface `json:"huggingface,omitempty"`
+	Gemini               *AiProxyAdvancedPluginConfigGemini      `json:"gemini"`
+	Huggingface          *AiProxyAdvancedPluginConfigHuggingface `json:"huggingface"`
 	// Defines the cost per 1M tokens in your prompt.
 	InputCost *float64 `default:"null" json:"input_cost"`
 	// If using llama2 provider, select the upstream message format.
@@ -1640,7 +1640,7 @@ type AiProxyAdvancedPluginConfigModel struct {
 	// Model name to execute.
 	Name *string `default:"null" json:"name"`
 	// Key/value settings for the model
-	Options *AiProxyAdvancedPluginConfigOptions `json:"options,omitempty"`
+	Options *AiProxyAdvancedPluginConfigOptions `json:"options"`
 	// AI provider request format - Kong translates requests to and from the specified backend compatible formats.
 	Provider AiProxyAdvancedPluginConfigProvider `json:"provider"`
 }
@@ -1741,7 +1741,7 @@ func (e *AiProxyAdvancedPluginRouteType) UnmarshalJSON(data []byte) error {
 }
 
 type Targets struct {
-	Auth *AiProxyAdvancedPluginConfigAuth `json:"auth,omitempty"`
+	Auth *AiProxyAdvancedPluginConfigAuth `json:"auth"`
 	// The semantic description of the target, required if using semantic load balancing. Specially, setting this to 'CATCHALL' will indicate such target to be used when no other targets match the semantic threshold.
 	Description *string                          `default:"null" json:"description"`
 	Logging     AiProxyAdvancedPluginLogging     `json:"logging"`
@@ -2082,7 +2082,7 @@ type AiProxyAdvancedPluginRedis struct {
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
-	ClusterNodes []AiProxyAdvancedPluginClusterNodes `json:"cluster_nodes,omitempty"`
+	ClusterNodes []AiProxyAdvancedPluginClusterNodes `json:"cluster_nodes"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
@@ -2106,7 +2106,7 @@ type AiProxyAdvancedPluginRedis struct {
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `default:"null" json:"sentinel_master"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
-	SentinelNodes []AiProxyAdvancedPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
+	SentinelNodes []AiProxyAdvancedPluginSentinelNodes `json:"sentinel_nodes"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
 	SentinelPassword *string `default:"null" json:"sentinel_password"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -2364,8 +2364,8 @@ func (o *Vectordb) GetThreshold() float64 {
 }
 
 type AiProxyAdvancedPluginConfig struct {
-	Balancer   *Balancer   `json:"balancer,omitempty"`
-	Embeddings *Embeddings `json:"embeddings,omitempty"`
+	Balancer   *Balancer   `json:"balancer"`
+	Embeddings *Embeddings `json:"embeddings"`
 	// Generative AI category of the request
 	GenaiCategory *AiProxyAdvancedPluginGenaiCategory `default:"text/generation" json:"genai_category"`
 	// LLM input and output format and schema to use
@@ -2377,7 +2377,7 @@ type AiProxyAdvancedPluginConfig struct {
 	// Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events.
 	ResponseStreaming *AiProxyAdvancedPluginResponseStreaming `default:"allow" json:"response_streaming"`
 	Targets           []Targets                               `json:"targets"`
-	Vectordb          *Vectordb                               `json:"vectordb,omitempty"`
+	Vectordb          *Vectordb                               `json:"vectordb"`
 }
 
 func (a AiProxyAdvancedPluginConfig) MarshalJSON() ([]byte, error) {

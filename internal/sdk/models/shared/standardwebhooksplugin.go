@@ -10,7 +10,7 @@ import (
 )
 
 type StandardWebhooksPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *StandardWebhooksPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *StandardWebhooksPluginAfter) GetAccess() []string {
 }
 
 type StandardWebhooksPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *StandardWebhooksPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *StandardWebhooksPluginBefore) GetAccess() []string {
 }
 
 type StandardWebhooksPluginOrdering struct {
-	After  *StandardWebhooksPluginAfter  `json:"after,omitempty"`
-	Before *StandardWebhooksPluginBefore `json:"before,omitempty"`
+	After  *StandardWebhooksPluginAfter  `json:"after"`
+	Before *StandardWebhooksPluginBefore `json:"before"`
 }
 
 func (o *StandardWebhooksPluginOrdering) GetAfter() *StandardWebhooksPluginAfter {

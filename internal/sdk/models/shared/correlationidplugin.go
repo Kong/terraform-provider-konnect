@@ -10,7 +10,7 @@ import (
 )
 
 type CorrelationIDPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *CorrelationIDPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *CorrelationIDPluginAfter) GetAccess() []string {
 }
 
 type CorrelationIDPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *CorrelationIDPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *CorrelationIDPluginBefore) GetAccess() []string {
 }
 
 type CorrelationIDPluginOrdering struct {
-	After  *CorrelationIDPluginAfter  `json:"after,omitempty"`
-	Before *CorrelationIDPluginBefore `json:"before,omitempty"`
+	After  *CorrelationIDPluginAfter  `json:"after"`
+	Before *CorrelationIDPluginBefore `json:"before"`
 }
 
 func (o *CorrelationIDPluginOrdering) GetAfter() *CorrelationIDPluginAfter {
@@ -247,7 +247,7 @@ type CorrelationIDPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                     `json:"updated_at,omitempty"`
-	Config    *CorrelationIDPluginConfig `json:"config,omitempty"`
+	Config    *CorrelationIDPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *CorrelationIDPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.

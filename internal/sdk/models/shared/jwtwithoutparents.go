@@ -110,7 +110,7 @@ func (o *JWTWithoutParentsConsumer) GetID() *string {
 
 type JWTWithoutParents struct {
 	Algorithm *Algorithm                 `default:"HS256" json:"algorithm"`
-	Consumer  *JWTWithoutParentsConsumer `json:"consumer"`
+	Consumer  *JWTWithoutParentsConsumer `json:"consumer,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// A string representing a UUID (universally unique identifier).

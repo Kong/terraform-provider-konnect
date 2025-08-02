@@ -10,7 +10,7 @@ import (
 )
 
 type ServiceProtectionPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ServiceProtectionPluginAfter) GetAccess() []string {
@@ -21,7 +21,7 @@ func (o *ServiceProtectionPluginAfter) GetAccess() []string {
 }
 
 type ServiceProtectionPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ServiceProtectionPluginBefore) GetAccess() []string {
@@ -32,8 +32,8 @@ func (o *ServiceProtectionPluginBefore) GetAccess() []string {
 }
 
 type ServiceProtectionPluginOrdering struct {
-	After  *ServiceProtectionPluginAfter  `json:"after,omitempty"`
-	Before *ServiceProtectionPluginBefore `json:"before,omitempty"`
+	After  *ServiceProtectionPluginAfter  `json:"after"`
+	Before *ServiceProtectionPluginBefore `json:"before"`
 }
 
 func (o *ServiceProtectionPluginOrdering) GetAfter() *ServiceProtectionPluginAfter {
@@ -188,7 +188,7 @@ type ServiceProtectionPluginRedis struct {
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
-	ClusterNodes []ServiceProtectionPluginClusterNodes `json:"cluster_nodes,omitempty"`
+	ClusterNodes []ServiceProtectionPluginClusterNodes `json:"cluster_nodes"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
@@ -212,7 +212,7 @@ type ServiceProtectionPluginRedis struct {
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 	SentinelMaster *string `default:"null" json:"sentinel_master"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
-	SentinelNodes []ServiceProtectionPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
+	SentinelNodes []ServiceProtectionPluginSentinelNodes `json:"sentinel_nodes"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
 	SentinelPassword *string `default:"null" json:"sentinel_password"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -461,7 +461,7 @@ type ServiceProtectionPluginConfig struct {
 	LockDictionaryName *string `default:"kong_locks" json:"lock_dictionary_name"`
 	// The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `dictionary_name`, need to be the same.
 	Namespace *string                       `default:"null" json:"namespace"`
-	Redis     *ServiceProtectionPluginRedis `json:"redis,omitempty"`
+	Redis     *ServiceProtectionPluginRedis `json:"redis"`
 	// The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header.
 	RetryAfterJitterMax *float64 `default:"0" json:"retry_after_jitter_max"`
 	// The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local` and `cluster`.
