@@ -4,6 +4,12 @@ resource "konnect_gateway_control_plane" "upstreamcp" {
   cluster_type = "CLUSTER_TYPE_CONTROL_PLANE"
 }
 
+resource "konnect_gateway_data_plane_client_certificate" "my_gatewaydataplaneclientcertificate" {
+  cert             = file("./alice.crt")
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+}
+
+
 resource "konnect_gateway_upstream" "my_nullable_upstream" {
   name             = "demo-nullable-upstream"
   control_plane_id = konnect_gateway_control_plane.upstreamcp.id
