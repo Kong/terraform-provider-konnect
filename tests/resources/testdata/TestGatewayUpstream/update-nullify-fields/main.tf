@@ -1,0 +1,36 @@
+resource "konnect_gateway_control_plane" "upstreamcp" {
+  name         = "Terraform Control Plane For Upstream Nullify"
+  description  = "This is a sample description"
+  cluster_type = "CLUSTER_TYPE_CONTROL_PLANE"
+}
+
+resource "konnect_gateway_data_plane_client_certificate" "my_gatewaydataplaneclientcertificate" {
+  cert             = file("./alice.crt")
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+}
+
+
+resource "konnect_gateway_upstream" "my_nullable_upstream" {
+  name             = "demo-nullable-upstream"
+  control_plane_id = konnect_gateway_control_plane.upstreamcp.id
+  hash_on_header = "header"
+  healthchecks = {
+    passive = {
+      healthy = {
+        http_statuses = [
+          200
+        ]
+        successes = 8
+      }
+      type = "grpcs"
+      unhealthy = {
+        http_failures = 10
+        http_statuses = [
+          400
+        ]
+        tcp_failures = 10
+        timeouts     = 0
+      }
+    }
+  }
+}
