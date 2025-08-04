@@ -1,18 +1,17 @@
-resource "konnect_gateway_control_plane" "plugin_ratelimiting_advanced_cp" {
-  name         = "Terraform Control Plane For RateLimitingAdvanced  Plugin"
+resource "konnect_gateway_control_plane" "plugin_request_transformer_cp" {
+  name         = "Terraform Control Plane For RequestTransformer Plugin"
   description  = "This is a sample description"
   cluster_type = "CLUSTER_TYPE_CONTROL_PLANE"
 }
 
-resource "konnect_gateway_plugin_rate_limiting_advanced" "my_rate_limiting_advanced" {
+resource "konnect_gateway_plugin_request_transformer" "my_request_transformer" {
   enabled = true
 
   config = {
-    limit = [200]
-    window_size = [1800]
-    window_type = "fixed"
-    namespace = "my-namespace"
+    add = {
+      headers = ["New-Header:Header Value"]
+    }
   }
 
-  control_plane_id = konnect_gateway_control_plane.plugin_ratelimiting_advanced_cp.id
+  control_plane_id = konnect_gateway_control_plane.plugin_request_transformer_cp.id
 }

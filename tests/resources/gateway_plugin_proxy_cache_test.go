@@ -7,7 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-func TestGatewayPluginRequestTransformer(t *testing.T) {
+func TestGatewayPluginProxyCache(t *testing.T) {
 	t.Parallel()
 	t.Run("update-nullify-fields", func(t *testing.T) {
 		resource.Test(t, resource.TestCase{
@@ -17,7 +17,7 @@ func TestGatewayPluginRequestTransformer(t *testing.T) {
 					Config:          providerConfigUs,
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_gateway_plugin_request_transformer.my_request_transformer", "enabled", "true"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_proxy_cache.my_proxy_cache", "enabled", "true"),
 					),
 				},
 				{
@@ -25,7 +25,7 @@ func TestGatewayPluginRequestTransformer(t *testing.T) {
 					Config:          providerConfigUs,
 					ConfigDirectory: config.TestStepDirectory(),
 					Check: resource.ComposeTestCheckFunc(
-						resource.TestCheckNoResourceAttr("konnect_gateway_plugin_request_transformer.my_request_transformer", "config.http_method"),
+						resource.TestCheckNoResourceAttr("konnect_gateway_plugin_proxy_cache.my_proxy_cache", "config.response_headers"),
 					),
 				},
 			},
