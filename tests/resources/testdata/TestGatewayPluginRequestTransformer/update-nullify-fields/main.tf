@@ -12,6 +12,7 @@ resource "konnect_gateway_plugin_request_transformer" "my_request_transformer" {
     add = {
       headers = ["New-Header:Header Value"]
     }
+    http_method = "GET"
   }
 
   control_plane_id = konnect_gateway_control_plane.plugin_request_transformer_cp.id
