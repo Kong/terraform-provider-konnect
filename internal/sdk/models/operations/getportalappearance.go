@@ -27,7 +27,7 @@ type GetPortalAppearanceResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Details about a portal's current appearance settings.
-	GetPortalAppearanceResponse *shared.GetPortalAppearanceResponse
+	V2GetPortalAppearanceResponse *shared.V2GetPortalAppearanceResponse
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
@@ -57,11 +57,11 @@ func (o *GetPortalAppearanceResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *GetPortalAppearanceResponse) GetGetPortalAppearanceResponse() *shared.GetPortalAppearanceResponse {
+func (o *GetPortalAppearanceResponse) GetV2GetPortalAppearanceResponse() *shared.V2GetPortalAppearanceResponse {
 	if o == nil {
 		return nil
 	}
-	return o.GetPortalAppearanceResponse
+	return o.V2GetPortalAppearanceResponse
 }
 
 func (o *GetPortalAppearanceResponse) GetUnauthorizedError() *shared.UnauthorizedError {

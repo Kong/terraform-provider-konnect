@@ -11,7 +11,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *PortalResourceModel) RefreshFromSharedCreatePortalResponse(ctx context.Context, resp *shared.CreatePortalResponse) diag.Diagnostics {
+func (r *PortalResourceModel) RefreshFromSharedV2CreatePortalResponse(ctx context.Context, resp *shared.V2CreatePortalResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -31,7 +31,7 @@ func (r *PortalResourceModel) RefreshFromSharedCreatePortalResponse(ctx context.
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringPointerValue(value)
+				r.Labels[key] = types.StringValue(value)
 			}
 		}
 		r.Name = types.StringValue(resp.Name)
@@ -82,22 +82,22 @@ func (r *PortalResourceModel) ToOperationsUpdatePortalRequest(ctx context.Contex
 	var portalID string
 	portalID = r.ID.ValueString()
 
-	updatePortalRequest, updatePortalRequestDiags := r.ToSharedUpdatePortalRequest(ctx)
-	diags.Append(updatePortalRequestDiags...)
+	v2UpdatePortalRequest, v2UpdatePortalRequestDiags := r.ToSharedV2UpdatePortalRequest(ctx)
+	diags.Append(v2UpdatePortalRequestDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := operations.UpdatePortalRequest{
-		PortalID:            portalID,
-		UpdatePortalRequest: *updatePortalRequest,
+		PortalID:              portalID,
+		V2UpdatePortalRequest: *v2UpdatePortalRequest,
 	}
 
 	return &out, diags
 }
 
-func (r *PortalResourceModel) ToSharedCreatePortalRequest(ctx context.Context) (*shared.CreatePortalRequest, diag.Diagnostics) {
+func (r *PortalResourceModel) ToSharedV2CreatePortalRequest(ctx context.Context) (*shared.V2CreatePortalRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var name string
@@ -157,17 +157,14 @@ func (r *PortalResourceModel) ToSharedCreatePortalRequest(ctx context.Context) (
 	} else {
 		defaultApplicationAuthStrategyID = nil
 	}
-	labels := make(map[string]*string)
+	labels := make(map[string]string)
 	for labelsKey, labelsValue := range r.Labels {
-		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
-		} else {
-			labelsInst = nil
-		}
+		var labelsInst string
+		labelsInst = labelsValue.ValueString()
+
 		labels[labelsKey] = labelsInst
 	}
-	out := shared.CreatePortalRequest{
+	out := shared.V2CreatePortalRequest{
 		Name:                             name,
 		DisplayName:                      displayName,
 		Description:                      description,
@@ -184,7 +181,7 @@ func (r *PortalResourceModel) ToSharedCreatePortalRequest(ctx context.Context) (
 	return &out, diags
 }
 
-func (r *PortalResourceModel) ToSharedUpdatePortalRequest(ctx context.Context) (*shared.UpdatePortalRequest, diag.Diagnostics) {
+func (r *PortalResourceModel) ToSharedV2UpdatePortalRequest(ctx context.Context) (*shared.V2UpdatePortalRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	name := new(string)
@@ -257,7 +254,7 @@ func (r *PortalResourceModel) ToSharedUpdatePortalRequest(ctx context.Context) (
 		}
 		labels[labelsKey] = labelsInst
 	}
-	out := shared.UpdatePortalRequest{
+	out := shared.V2UpdatePortalRequest{
 		Name:                             name,
 		DisplayName:                      displayName,
 		Description:                      description,

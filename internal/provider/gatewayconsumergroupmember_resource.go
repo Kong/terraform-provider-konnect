@@ -48,7 +48,7 @@ func (r *GatewayConsumerGroupMemberResource) Schema(ctx context.Context, req res
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Description: `Requires replacement if changed.`,
+				Description: `The UUID or name of the consumer group. Requires replacement if changed.`,
 			},
 			"consumer_id": schema.StringAttribute{
 				Optional: true,

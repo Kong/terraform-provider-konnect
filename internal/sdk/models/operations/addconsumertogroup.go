@@ -18,6 +18,7 @@ func (o *AddConsumerToGroupRequestBody) GetConsumerID() *string {
 }
 
 type AddConsumerToGroupRequest struct {
+	// The UUID or name of the consumer group
 	ConsumerGroupID string `pathParam:"style=simple,explode=false,name=ConsumerGroupId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string                         `pathParam:"style=simple,explode=false,name=controlPlaneId"`

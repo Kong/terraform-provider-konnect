@@ -229,7 +229,6 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayPluginMockingResource,
 		NewGatewayPluginMtlsAuthResource,
 		NewGatewayPluginOasValidationResource,
-		NewGatewayPluginOauth2Resource,
 		NewGatewayPluginOauth2IntrospectionResource,
 		NewGatewayPluginOpaResource,
 		NewGatewayPluginOpenidConnectResource,
@@ -285,8 +284,11 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewMeshControlPlaneResource,
 		NewPortalResource,
 		NewPortalAppearanceResource,
+		NewPortalAppearanceClassicResource,
 		NewPortalAuthResource,
+		NewPortalClassicResource,
 		NewPortalProductVersionResource,
+		NewPortalProductVersionClassicResource,
 		NewPortalTeamResource,
 		NewRealmResource,
 		NewServerlessCloudGatewayResource,
@@ -307,6 +309,7 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewGatewayControlPlaneListDataSource,
 		NewMeshControlPlanesDataSource,
 		NewPortalListDataSource,
+		NewPortalListClassicDataSource,
 	}
 }
 

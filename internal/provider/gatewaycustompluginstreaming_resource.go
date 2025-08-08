@@ -64,22 +64,27 @@ func (r *GatewayCustomPluginStreamingResource) Schema(ctx context.Context, req r
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"handler": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The handler for the given custom plugin.`,
 			},
 			"id": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"name": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The name to associate with the given custom plugin.`,
 			},
 			"schema": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The schema for the given custom plugin.`,
 			},
 			"tags": schema.ListAttribute{
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
+				Description: `A set of strings representing tags.`,
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,

@@ -4,12 +4,17 @@ package shared
 
 type CustomPlugin struct {
 	// Unix epoch when the resource was created.
-	CreatedAt *int64   `json:"created_at,omitempty"`
-	Handler   string   `json:"handler"`
-	ID        *string  `json:"id,omitempty"`
-	Name      string   `json:"name"`
-	Schema    string   `json:"schema"`
-	Tags      []string `json:"tags,omitempty"`
+	CreatedAt *int64 `json:"created_at,omitempty"`
+	// The handler for the given custom plugin.
+	Handler string `json:"handler"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// The name to associate with the given custom plugin.
+	Name string `json:"name"`
+	// The schema for the given custom plugin.
+	Schema string `json:"schema"`
+	// A set of strings representing tags.
+	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }

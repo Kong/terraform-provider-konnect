@@ -111,12 +111,14 @@ type JWTWithoutParents struct {
 	Algorithm *Algorithm                 `json:"algorithm,omitempty"`
 	Consumer  *JWTWithoutParentsConsumer `json:"consumer"`
 	// Unix epoch when the resource was created.
-	CreatedAt    *int64   `json:"created_at,omitempty"`
-	ID           *string  `json:"id,omitempty"`
-	Key          *string  `json:"key,omitempty"`
-	RsaPublicKey *string  `json:"rsa_public_key,omitempty"`
-	Secret       *string  `json:"secret,omitempty"`
-	Tags         []string `json:"tags,omitempty"`
+	CreatedAt *int64 `json:"created_at,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID           *string `json:"id,omitempty"`
+	Key          *string `json:"key,omitempty"`
+	RsaPublicKey *string `json:"rsa_public_key,omitempty"`
+	Secret       *string `json:"secret,omitempty"`
+	// A set of strings representing tags.
+	Tags []string `json:"tags,omitempty"`
 }
 
 func (o *JWTWithoutParents) GetAlgorithm() *Algorithm {

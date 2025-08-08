@@ -14,7 +14,7 @@ GatewayConsumerGroupMember Resource
 
 ```terraform
 resource "konnect_gateway_consumer_group_member" "my_gatewayconsumergroupmember" {
-  consumer_group_id = "...my_consumer_group_id..."
+  consumer_group_id = "cf4c7e60-11db-49dd-b300-7c7e5f0f7e6b"
   consumer_id       = "cf4c7e60-11db-49dd-b300-7c7e5f0f7e6b"
   control_plane_id  = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
 }
@@ -25,7 +25,7 @@ resource "konnect_gateway_consumer_group_member" "my_gatewayconsumergroupmember"
 
 ### Required
 
-- `consumer_group_id` (String) Requires replacement if changed.
+- `consumer_group_id` (String) The UUID or name of the consumer group. Requires replacement if changed.
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional

@@ -59,6 +59,34 @@ func (r *CloudGatewayPrivateDNSResourceModel) RefreshFromSharedPrivateDNSRespons
 			r.AwsPrivateHostedZoneResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AwsPrivateHostedZoneResponse.StateMetadata.ReportedStatus)
 			r.AwsPrivateHostedZoneResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsPrivateHostedZoneResponse.UpdatedAt))
 		}
+		if resp.AzurePrivateHostedZoneResponse != nil {
+			r.AzurePrivateHostedZoneResponse = &tfTypes.AzurePrivateHostedZoneResponse{}
+			r.AzurePrivateHostedZoneResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AzurePrivateHostedZoneResponse.CreatedAt))
+			r.AzurePrivateHostedZoneResponse.EntityVersion = types.Int64Value(resp.AzurePrivateHostedZoneResponse.EntityVersion)
+			r.EntityVersion = r.AzurePrivateHostedZoneResponse.EntityVersion
+			r.AzurePrivateHostedZoneResponse.ID = types.StringValue(resp.AzurePrivateHostedZoneResponse.ID)
+			r.ID = r.AzurePrivateHostedZoneResponse.ID
+			r.AzurePrivateHostedZoneResponse.Name = types.StringValue(resp.AzurePrivateHostedZoneResponse.Name)
+			r.Name = r.AzurePrivateHostedZoneResponse.Name
+			r.AzurePrivateHostedZoneResponse.State = types.StringValue(string(resp.AzurePrivateHostedZoneResponse.State))
+			r.AzurePrivateHostedZoneResponse.StateMetadata.Reason = types.StringPointerValue(resp.AzurePrivateHostedZoneResponse.StateMetadata.Reason)
+			r.AzurePrivateHostedZoneResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AzurePrivateHostedZoneResponse.StateMetadata.ReportedStatus)
+			r.AzurePrivateHostedZoneResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AzurePrivateHostedZoneResponse.UpdatedAt))
+		}
+		if resp.GcpPrivateHostedZoneResponse != nil {
+			r.GcpPrivateHostedZoneResponse = &tfTypes.AzurePrivateHostedZoneResponse{}
+			r.GcpPrivateHostedZoneResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.GcpPrivateHostedZoneResponse.CreatedAt))
+			r.GcpPrivateHostedZoneResponse.EntityVersion = types.Int64Value(resp.GcpPrivateHostedZoneResponse.EntityVersion)
+			r.EntityVersion = r.GcpPrivateHostedZoneResponse.EntityVersion
+			r.GcpPrivateHostedZoneResponse.ID = types.StringValue(resp.GcpPrivateHostedZoneResponse.ID)
+			r.ID = r.GcpPrivateHostedZoneResponse.ID
+			r.GcpPrivateHostedZoneResponse.Name = types.StringValue(resp.GcpPrivateHostedZoneResponse.Name)
+			r.Name = r.GcpPrivateHostedZoneResponse.Name
+			r.GcpPrivateHostedZoneResponse.State = types.StringValue(string(resp.GcpPrivateHostedZoneResponse.State))
+			r.GcpPrivateHostedZoneResponse.StateMetadata.Reason = types.StringPointerValue(resp.GcpPrivateHostedZoneResponse.StateMetadata.Reason)
+			r.GcpPrivateHostedZoneResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.GcpPrivateHostedZoneResponse.StateMetadata.ReportedStatus)
+			r.GcpPrivateHostedZoneResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.GcpPrivateHostedZoneResponse.UpdatedAt))
+		}
 	}
 
 	return diags

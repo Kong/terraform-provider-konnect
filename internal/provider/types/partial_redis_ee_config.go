@@ -6,9 +6,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type PartialRedisEEConfig struct {
+type PartialRedisEeConfig struct {
 	ClusterMaxRedirections types.Int64                   `tfsdk:"cluster_max_redirections"`
-	ClusterNodes           []PartialRedisEEClusterNodes  `tfsdk:"cluster_nodes"`
+	ClusterNodes           []PartialRedisEeClusterNodes  `tfsdk:"cluster_nodes"`
 	ConnectTimeout         types.Int64                   `tfsdk:"connect_timeout"`
 	ConnectionIsProxied    types.Bool                    `tfsdk:"connection_is_proxied"`
 	Database               types.Int64                   `tfsdk:"database"`
@@ -20,7 +20,7 @@ type PartialRedisEEConfig struct {
 	ReadTimeout            types.Int64                   `tfsdk:"read_timeout"`
 	SendTimeout            types.Int64                   `tfsdk:"send_timeout"`
 	SentinelMaster         types.String                  `tfsdk:"sentinel_master"`
-	SentinelNodes          []PartialRedisEESentinelNodes `tfsdk:"sentinel_nodes"`
+	SentinelNodes          []PartialRedisEeSentinelNodes `tfsdk:"sentinel_nodes"`
 	SentinelPassword       types.String                  `tfsdk:"sentinel_password"`
 	SentinelRole           types.String                  `tfsdk:"sentinel_role"`
 	SentinelUsername       types.String                  `tfsdk:"sentinel_username"`

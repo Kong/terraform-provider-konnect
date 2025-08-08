@@ -85,7 +85,7 @@ func (r *GatewayBasicAuthResource) Schema(ctx context.Context, req resource.Sche
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `Requires replacement if changed.`,
+				Description: `A string representing a UUID (universally unique identifier). Requires replacement if changed.`,
 			},
 			"password": schema.StringAttribute{
 				Required:  true,
@@ -103,7 +103,7 @@ func (r *GatewayBasicAuthResource) Schema(ctx context.Context, req resource.Sche
 					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 				},
 				ElementType: types.StringType,
-				Description: `Requires replacement if changed.`,
+				Description: `A set of strings representing tags. Requires replacement if changed.`,
 			},
 			"username": schema.StringAttribute{
 				Required: true,

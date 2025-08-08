@@ -29,7 +29,7 @@ type PortalListDataSource struct {
 
 // PortalListDataSourceModel describes the data model.
 type PortalListDataSourceModel struct {
-	Data       []tfTypes.Portal      `tfsdk:"data"`
+	Data       []tfTypes.V2Portal    `tfsdk:"data"`
 	Meta       tfTypes.PaginatedMeta `tfsdk:"meta"`
 	PageNumber types.Int64           `queryParam:"style=form,explode=true,name=page[number]" tfsdk:"page_number"`
 	PageSize   types.Int64           `queryParam:"style=form,explode=true,name=page[size]" tfsdk:"page_size"`
@@ -237,11 +237,11 @@ func (r *PortalListDataSource) Read(ctx context.Context, req datasource.ReadRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.ListPortalsResponse != nil) {
+	if !(res.V2ListPortalsResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedListPortalsResponse(ctx, res.ListPortalsResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedV2ListPortalsResponse(ctx, res.V2ListPortalsResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
