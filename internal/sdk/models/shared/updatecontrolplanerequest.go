@@ -48,7 +48,7 @@ type UpdateControlPlaneRequest struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 }
 
 func (o *UpdateControlPlaneRequest) GetName() *string {
@@ -79,7 +79,7 @@ func (o *UpdateControlPlaneRequest) GetProxyUrls() []ProxyURL {
 	return o.ProxyUrls
 }
 
-func (o *UpdateControlPlaneRequest) GetLabels() map[string]*string {
+func (o *UpdateControlPlaneRequest) GetLabels() map[string]string {
 	if o == nil {
 		return nil
 	}

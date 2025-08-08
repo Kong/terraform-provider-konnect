@@ -50,7 +50,9 @@ func (o *RateLimitingPluginOrdering) GetBefore() *RateLimitingPluginBefore {
 }
 
 type RateLimitingPluginPartials struct {
-	ID   *string `json:"id,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
 }
@@ -464,13 +466,18 @@ func (o *RateLimitingPluginService) GetID() *string {
 type RateLimitingPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
+	// User-defined entity description. Konnect only field, not synced to the Gateway.
+	Description *string `json:"description,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                        `json:"enabled,omitempty"`
-	ID           *string                      `json:"id,omitempty"`
-	InstanceName *string                      `json:"instance_name,omitempty"`
-	name         string                       `const:"rate-limiting" json:"name"`
-	Ordering     *RateLimitingPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []RateLimitingPluginPartials `json:"partials,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string                     `json:"instance_name,omitempty"`
+	name         string                      `const:"rate-limiting" json:"name"`
+	Ordering     *RateLimitingPluginOrdering `json:"ordering,omitempty"`
+	// A list of partials to be used by the plugin.
+	Partials []RateLimitingPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -504,6 +511,13 @@ func (o *RateLimitingPlugin) GetCreatedAt() *int64 {
 		return nil
 	}
 	return o.CreatedAt
+}
+
+func (o *RateLimitingPlugin) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
 }
 
 func (o *RateLimitingPlugin) GetEnabled() *bool {

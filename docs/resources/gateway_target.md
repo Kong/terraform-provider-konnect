@@ -41,11 +41,11 @@ resource "konnect_gateway_target" "my_gatewaytarget" {
 ### Optional
 
 - `created_at` (Number) Unix epoch when the resource was created. Requires replacement if changed.
-- `id` (String) Requires replacement if changed.
+- `id` (String) A string representing a UUID (universally unique identifier). Requires replacement if changed.
 - `tags` (List of String) An optional set of strings associated with the Target for grouping and filtering. Requires replacement if changed.
 - `target` (String) The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record. Requires replacement if changed.
 - `updated_at` (Number) Unix epoch when the resource was last updated. Requires replacement if changed.
-- `upstream` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--upstream))
+- `upstream` (Attributes) The unique identifier or the name of the upstream for which to update the target. Requires replacement if changed. (see [below for nested schema](#nestedatt--upstream))
 - `weight` (Number) The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record. Requires replacement if changed.
 
 <a id="nestedatt--upstream"></a>

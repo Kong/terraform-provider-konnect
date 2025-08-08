@@ -57,7 +57,7 @@ type ListPortalsResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// A paginated list of portals in the current region of an organization.
-	ListPortalsResponse *shared.ListPortalsResponse
+	V2ListPortalsResponse *shared.V2ListPortalsResponse
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -87,11 +87,11 @@ func (o *ListPortalsResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *ListPortalsResponse) GetListPortalsResponse() *shared.ListPortalsResponse {
+func (o *ListPortalsResponse) GetV2ListPortalsResponse() *shared.V2ListPortalsResponse {
 	if o == nil {
 		return nil
 	}
-	return o.ListPortalsResponse
+	return o.V2ListPortalsResponse
 }
 
 func (o *ListPortalsResponse) GetBadRequestError() *shared.BadRequestError {

@@ -12,16 +12,16 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *PortalListDataSourceModel) RefreshFromSharedListPortalsResponse(ctx context.Context, resp *shared.ListPortalsResponse) diag.Diagnostics {
+func (r *PortalListDataSourceModel) RefreshFromSharedV2ListPortalsResponse(ctx context.Context, resp *shared.V2ListPortalsResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		r.Data = []tfTypes.Portal{}
+		r.Data = []tfTypes.V2Portal{}
 		if len(r.Data) > len(resp.Data) {
 			r.Data = r.Data[:len(resp.Data)]
 		}
 		for dataCount, dataItem := range resp.Data {
-			var data tfTypes.Portal
+			var data tfTypes.V2Portal
 			data.ApplicationCount = types.Float64Value(dataItem.ApplicationCount)
 			data.AutoApproveApplications = types.BoolValue(dataItem.AutoApproveApplications)
 			data.AutoApproveDevelopers = types.BoolValue(dataItem.AutoApproveDevelopers)
@@ -38,7 +38,7 @@ func (r *PortalListDataSourceModel) RefreshFromSharedListPortalsResponse(ctx con
 			if len(dataItem.Labels) > 0 {
 				data.Labels = make(map[string]types.String, len(dataItem.Labels))
 				for key, value := range dataItem.Labels {
-					data.Labels[key] = types.StringPointerValue(value)
+					data.Labels[key] = types.StringValue(value)
 				}
 			}
 			data.Name = types.StringValue(dataItem.Name)

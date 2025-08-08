@@ -83,6 +83,7 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 0
+  description      = "...my_description..."
   enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
@@ -126,17 +127,15 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
 ### Optional
 
 - `created_at` (Number) Unix epoch when the resource was created.
+- `description` (String) User-defined entity description. Konnect only field, not synced to the Gateway.
 - `enabled` (Boolean) Whether the plugin is applied.
-- `instance_name` (String)
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
+- `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
 - `protocols` (Set of String) A set of strings representing HTTP protocols.
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
-
-### Read-Only
-
-- `id` (String) The ID of this resource.
 
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
@@ -282,8 +281,8 @@ Optional:
 
 Optional:
 
-- `id` (String)
-- `name` (String)
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `name` (String) A unique string representing a UTF-8 encoded name.
 - `path` (String)
 
 ## Import

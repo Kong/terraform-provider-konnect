@@ -19,8 +19,9 @@ type Sni struct {
 	// The id (a UUID) of the certificate with which to associate the SNI hostname. The Certificate must have a valid private key associated with it to be used by the SNI object.
 	Certificate *SNICertificate `json:"certificate"`
 	// Unix epoch when the resource was created.
-	CreatedAt *int64  `json:"created_at,omitempty"`
-	ID        *string `json:"id,omitempty"`
+	CreatedAt *int64 `json:"created_at,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
 	// The SNI name to associate with the given certificate.
 	Name string `json:"name"`
 	// An optional set of strings associated with the SNIs for grouping and filtering.

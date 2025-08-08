@@ -27,7 +27,7 @@ type GetPortalAuthenticationSettingsResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Details about a portal's authentication settings.
-	PortalAuthenticationSettingsResponse *shared.PortalAuthenticationSettingsResponse
+	V2PortalAuthenticationSettingsResponse *shared.V2PortalAuthenticationSettingsResponse
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError
 }
@@ -53,11 +53,11 @@ func (o *GetPortalAuthenticationSettingsResponse) GetRawResponse() *http.Respons
 	return o.RawResponse
 }
 
-func (o *GetPortalAuthenticationSettingsResponse) GetPortalAuthenticationSettingsResponse() *shared.PortalAuthenticationSettingsResponse {
+func (o *GetPortalAuthenticationSettingsResponse) GetV2PortalAuthenticationSettingsResponse() *shared.V2PortalAuthenticationSettingsResponse {
 	if o == nil {
 		return nil
 	}
-	return o.PortalAuthenticationSettingsResponse
+	return o.V2PortalAuthenticationSettingsResponse
 }
 
 func (o *GetPortalAuthenticationSettingsResponse) GetUnauthorizedError() *shared.UnauthorizedError {

@@ -11,16 +11,18 @@ import (
 type CreateTransitGatewayRequestType string
 
 const (
-	CreateTransitGatewayRequestTypeAWSTransitGateway    CreateTransitGatewayRequestType = "AWSTransitGateway"
-	CreateTransitGatewayRequestTypeAWSVpcPeeringGateway CreateTransitGatewayRequestType = "AWSVpcPeeringGateway"
-	CreateTransitGatewayRequestTypeAzureTransitGateway  CreateTransitGatewayRequestType = "AzureTransitGateway"
+	CreateTransitGatewayRequestTypeAWSTransitGateway          CreateTransitGatewayRequestType = "AWSTransitGateway"
+	CreateTransitGatewayRequestTypeAWSVpcPeeringGateway       CreateTransitGatewayRequestType = "AWSVpcPeeringGateway"
+	CreateTransitGatewayRequestTypeAWSResourceEndpointGateway CreateTransitGatewayRequestType = "AWSResourceEndpointGateway"
+	CreateTransitGatewayRequestTypeAzureTransitGateway        CreateTransitGatewayRequestType = "AzureTransitGateway"
 )
 
 // CreateTransitGatewayRequest - Request schema for creating a transit gateway.
 type CreateTransitGatewayRequest struct {
-	AWSTransitGateway    *AWSTransitGateway    `queryParam:"inline"`
-	AWSVpcPeeringGateway *AWSVpcPeeringGateway `queryParam:"inline"`
-	AzureTransitGateway  *AzureTransitGateway  `queryParam:"inline"`
+	AWSTransitGateway          *AWSTransitGateway          `queryParam:"inline"`
+	AWSVpcPeeringGateway       *AWSVpcPeeringGateway       `queryParam:"inline"`
+	AWSResourceEndpointGateway *AWSResourceEndpointGateway `queryParam:"inline"`
+	AzureTransitGateway        *AzureTransitGateway        `queryParam:"inline"`
 
 	Type CreateTransitGatewayRequestType
 }
@@ -43,6 +45,15 @@ func CreateCreateTransitGatewayRequestAWSVpcPeeringGateway(awsVpcPeeringGateway 
 	}
 }
 
+func CreateCreateTransitGatewayRequestAWSResourceEndpointGateway(awsResourceEndpointGateway AWSResourceEndpointGateway) CreateTransitGatewayRequest {
+	typ := CreateTransitGatewayRequestTypeAWSResourceEndpointGateway
+
+	return CreateTransitGatewayRequest{
+		AWSResourceEndpointGateway: &awsResourceEndpointGateway,
+		Type:                       typ,
+	}
+}
+
 func CreateCreateTransitGatewayRequestAzureTransitGateway(azureTransitGateway AzureTransitGateway) CreateTransitGatewayRequest {
 	typ := CreateTransitGatewayRequestTypeAzureTransitGateway
 
@@ -53,6 +64,13 @@ func CreateCreateTransitGatewayRequestAzureTransitGateway(azureTransitGateway Az
 }
 
 func (u *CreateTransitGatewayRequest) UnmarshalJSON(data []byte) error {
+
+	var awsResourceEndpointGateway AWSResourceEndpointGateway = AWSResourceEndpointGateway{}
+	if err := utils.UnmarshalJSON(data, &awsResourceEndpointGateway, "", true, true); err == nil {
+		u.AWSResourceEndpointGateway = &awsResourceEndpointGateway
+		u.Type = CreateTransitGatewayRequestTypeAWSResourceEndpointGateway
+		return nil
+	}
 
 	var azureTransitGateway AzureTransitGateway = AzureTransitGateway{}
 	if err := utils.UnmarshalJSON(data, &azureTransitGateway, "", true, true); err == nil {
@@ -85,6 +103,10 @@ func (u CreateTransitGatewayRequest) MarshalJSON() ([]byte, error) {
 
 	if u.AWSVpcPeeringGateway != nil {
 		return utils.MarshalJSON(u.AWSVpcPeeringGateway, "", true)
+	}
+
+	if u.AWSResourceEndpointGateway != nil {
+		return utils.MarshalJSON(u.AWSResourceEndpointGateway, "", true)
 	}
 
 	if u.AzureTransitGateway != nil {

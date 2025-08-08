@@ -21,7 +21,7 @@ func (r *TeamResourceModel) RefreshFromSharedTeam(ctx context.Context, resp *sha
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringPointerValue(value)
+				r.Labels[key] = types.StringValue(value)
 			}
 		}
 		r.Name = types.StringPointerValue(resp.Name)
@@ -91,14 +91,11 @@ func (r *TeamResourceModel) ToSharedCreateTeam(ctx context.Context) (*shared.Cre
 	} else {
 		description = nil
 	}
-	labels := make(map[string]*string)
+	labels := make(map[string]string)
 	for labelsKey, labelsValue := range r.Labels {
-		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
-		} else {
-			labelsInst = nil
-		}
+		var labelsInst string
+		labelsInst = labelsValue.ValueString()
+
 		labels[labelsKey] = labelsInst
 	}
 	out := shared.CreateTeam{

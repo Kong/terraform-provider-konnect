@@ -24,6 +24,7 @@ func (r *GatewayPluginBasicAuthResourceModel) RefreshFromSharedBasicAuthPlugin(c
 			r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
@@ -186,6 +187,12 @@ func (r *GatewayPluginBasicAuthResourceModel) ToSharedBasicAuthPlugin(ctx contex
 	} else {
 		createdAt = nil
 	}
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -329,6 +336,7 @@ func (r *GatewayPluginBasicAuthResourceModel) ToSharedBasicAuthPlugin(ctx contex
 	}
 	out := shared.BasicAuthPlugin{
 		CreatedAt:    createdAt,
+		Description:  description,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,

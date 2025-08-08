@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type PartialRedisEESentinelNodes struct {
+type PartialRedisEeSentinelNodes struct {
 	Host types.String `tfsdk:"host"`
 	Port types.Int64  `tfsdk:"port"`
 }

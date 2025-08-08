@@ -50,7 +50,9 @@ func (o *RateLimitingAdvancedPluginOrdering) GetBefore() *RateLimitingAdvancedPl
 }
 
 type RateLimitingAdvancedPluginPartials struct {
-	ID   *string `json:"id,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
 }
@@ -539,7 +541,7 @@ type RateLimitingAdvancedPluginConfig struct {
 	// The shared dictionary where concurrency control locks are stored. The default shared dictionary is `kong_locks`. The shared dictionary should be declare in nginx-kong.conf.
 	LockDictionaryName *string `json:"lock_dictionary_name,omitempty"`
 	// The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `dictionary_name`, need to be the same.
-	Namespace string `json:"namespace"`
+	Namespace *string `json:"namespace,omitempty"`
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
 	Path  *string                          `json:"path,omitempty"`
 	Redis *RateLimitingAdvancedPluginRedis `json:"redis,omitempty"`
@@ -639,9 +641,9 @@ func (o *RateLimitingAdvancedPluginConfig) GetLockDictionaryName() *string {
 	return o.LockDictionaryName
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetNamespace() string {
+func (o *RateLimitingAdvancedPluginConfig) GetNamespace() *string {
 	if o == nil {
-		return ""
+		return nil
 	}
 	return o.Namespace
 }
@@ -779,13 +781,18 @@ func (o *RateLimitingAdvancedPluginService) GetID() *string {
 type RateLimitingAdvancedPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
+	// User-defined entity description. Konnect only field, not synced to the Gateway.
+	Description *string `json:"description,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                                `json:"enabled,omitempty"`
-	ID           *string                              `json:"id,omitempty"`
-	InstanceName *string                              `json:"instance_name,omitempty"`
-	name         string                               `const:"rate-limiting-advanced" json:"name"`
-	Ordering     *RateLimitingAdvancedPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []RateLimitingAdvancedPluginPartials `json:"partials,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string                             `json:"instance_name,omitempty"`
+	name         string                              `const:"rate-limiting-advanced" json:"name"`
+	Ordering     *RateLimitingAdvancedPluginOrdering `json:"ordering,omitempty"`
+	// A list of partials to be used by the plugin.
+	Partials []RateLimitingAdvancedPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -819,6 +826,13 @@ func (o *RateLimitingAdvancedPlugin) GetCreatedAt() *int64 {
 		return nil
 	}
 	return o.CreatedAt
+}
+
+func (o *RateLimitingAdvancedPlugin) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
 }
 
 func (o *RateLimitingAdvancedPlugin) GetEnabled() *bool {

@@ -68,6 +68,7 @@ resource "konnect_gateway_plugin_service_protection" "my_gatewaypluginservicepro
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 7
+  description      = "...my_description..."
   enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
@@ -114,18 +115,16 @@ resource "konnect_gateway_plugin_service_protection" "my_gatewaypluginservicepro
 ### Optional
 
 - `created_at` (Number) Unix epoch when the resource was created.
+- `description` (String) User-defined entity description. Konnect only field, not synced to the Gateway.
 - `enabled` (Boolean) Whether the plugin is applied.
-- `instance_name` (String)
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
+- `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
 - `protocols` (Set of String) A set of strings representing HTTP protocols.
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
-
-### Read-Only
-
-- `id` (String) The ID of this resource.
 
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
@@ -133,7 +132,6 @@ resource "konnect_gateway_plugin_service_protection" "my_gatewaypluginservicepro
 Required:
 
 - `limit` (List of Number) One or more requests-per-window limits to apply. There must be a matching number of window limits and sizes specified.
-- `namespace` (String) The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `dictionary_name`, need to be the same.
 - `window_size` (List of Number) One or more window sizes to apply a limit to (defined in seconds). There must be a matching number of window limits and sizes specified.
 
 Optional:
@@ -144,6 +142,7 @@ Optional:
 - `error_message` (String) Set a custom error message to return when the rate limit is exceeded.
 - `hide_client_headers` (Boolean) Optionally hide informative response headers that would otherwise provide information about the current status of limits and counters.
 - `lock_dictionary_name` (String) The shared dictionary where concurrency control locks are stored. The default shared dictionary is `kong_locks`. The shared dictionary should be declared in nginx-kong.conf.
+- `namespace` (String) The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `dictionary_name`, need to be the same.
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--redis))
 - `retry_after_jitter_max` (Number) The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header.
 - `strategy` (String) The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local` and `cluster`. must be one of ["cluster", "local", "redis"]
@@ -227,8 +226,8 @@ Optional:
 
 Optional:
 
-- `id` (String)
-- `name` (String)
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `name` (String) A unique string representing a UTF-8 encoded name.
 - `path` (String)
 
 

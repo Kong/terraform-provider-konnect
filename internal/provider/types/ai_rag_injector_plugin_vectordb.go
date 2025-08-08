@@ -7,9 +7,9 @@ import (
 )
 
 type AiRagInjectorPluginVectordb struct {
-	Dimensions     types.Int64                 `tfsdk:"dimensions"`
-	DistanceMetric types.String                `tfsdk:"distance_metric"`
-	Pgvector       *Pgvector                   `tfsdk:"pgvector"`
-	Redis          *AiProxyAdvancedPluginRedis `tfsdk:"redis"`
-	Strategy       types.String                `tfsdk:"strategy"`
+	Dimensions     types.Int64           `tfsdk:"dimensions"`
+	DistanceMetric types.String          `tfsdk:"distance_metric"`
+	Pgvector       *Pgvector             `tfsdk:"pgvector"`
+	Redis          *PartialRedisEeConfig `tfsdk:"redis"`
+	Strategy       types.String          `tfsdk:"strategy"`
 }

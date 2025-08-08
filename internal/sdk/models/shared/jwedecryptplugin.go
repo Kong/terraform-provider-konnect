@@ -50,7 +50,9 @@ func (o *JweDecryptPluginOrdering) GetBefore() *JweDecryptPluginBefore {
 }
 
 type JweDecryptPluginPartials struct {
-	ID   *string `json:"id,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
 }
@@ -175,13 +177,18 @@ func (o *JweDecryptPluginService) GetID() *string {
 type JweDecryptPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
+	// User-defined entity description. Konnect only field, not synced to the Gateway.
+	Description *string `json:"description,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                      `json:"enabled,omitempty"`
-	ID           *string                    `json:"id,omitempty"`
-	InstanceName *string                    `json:"instance_name,omitempty"`
-	name         string                     `const:"jwe-decrypt" json:"name"`
-	Ordering     *JweDecryptPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []JweDecryptPluginPartials `json:"partials,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string                   `json:"instance_name,omitempty"`
+	name         string                    `const:"jwe-decrypt" json:"name"`
+	Ordering     *JweDecryptPluginOrdering `json:"ordering,omitempty"`
+	// A list of partials to be used by the plugin.
+	Partials []JweDecryptPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -211,6 +218,13 @@ func (o *JweDecryptPlugin) GetCreatedAt() *int64 {
 		return nil
 	}
 	return o.CreatedAt
+}
+
+func (o *JweDecryptPlugin) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
 }
 
 func (o *JweDecryptPlugin) GetEnabled() *bool {

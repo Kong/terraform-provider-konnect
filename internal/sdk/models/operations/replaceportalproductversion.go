@@ -11,8 +11,8 @@ type ReplacePortalProductVersionRequest struct {
 	// API product version identifier
 	ProductVersionID string `pathParam:"style=simple,explode=false,name=productVersionId"`
 	// ID of the portal.
-	PortalID                           string                                    `pathParam:"style=simple,explode=false,name=portalId"`
-	ReplacePortalProductVersionPayload shared.ReplacePortalProductVersionPayload `request:"mediaType=application/json"`
+	PortalID                             string                                      `pathParam:"style=simple,explode=false,name=portalId"`
+	V2ReplacePortalProductVersionPayload shared.V2ReplacePortalProductVersionPayload `request:"mediaType=application/json"`
 }
 
 func (o *ReplacePortalProductVersionRequest) GetProductVersionID() string {
@@ -29,11 +29,11 @@ func (o *ReplacePortalProductVersionRequest) GetPortalID() string {
 	return o.PortalID
 }
 
-func (o *ReplacePortalProductVersionRequest) GetReplacePortalProductVersionPayload() shared.ReplacePortalProductVersionPayload {
+func (o *ReplacePortalProductVersionRequest) GetV2ReplacePortalProductVersionPayload() shared.V2ReplacePortalProductVersionPayload {
 	if o == nil {
-		return shared.ReplacePortalProductVersionPayload{}
+		return shared.V2ReplacePortalProductVersionPayload{}
 	}
-	return o.ReplacePortalProductVersionPayload
+	return o.V2ReplacePortalProductVersionPayload
 }
 
 type ReplacePortalProductVersionResponse struct {
@@ -44,7 +44,7 @@ type ReplacePortalProductVersionResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// A response containing a portal product version
-	PortalProductVersion *shared.PortalProductVersion
+	V2PortalProductVersion *shared.V2PortalProductVersion
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -76,11 +76,11 @@ func (o *ReplacePortalProductVersionResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *ReplacePortalProductVersionResponse) GetPortalProductVersion() *shared.PortalProductVersion {
+func (o *ReplacePortalProductVersionResponse) GetV2PortalProductVersion() *shared.V2PortalProductVersion {
 	if o == nil {
 		return nil
 	}
-	return o.PortalProductVersion
+	return o.V2PortalProductVersion
 }
 
 func (o *ReplacePortalProductVersionResponse) GetBadRequestError() *shared.BadRequestError {

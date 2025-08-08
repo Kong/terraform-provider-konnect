@@ -6,8 +6,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type PartialRedisEE struct {
-	Config    PartialRedisEEConfig `tfsdk:"config"`
+type PartialRedisEe struct {
+	Config    PartialRedisEeConfig `tfsdk:"config"`
 	CreatedAt types.Int64          `tfsdk:"created_at"`
 	ID        types.String         `tfsdk:"id"`
 	Name      types.String         `tfsdk:"name"`

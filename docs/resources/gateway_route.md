@@ -81,6 +81,7 @@ resource "konnect_gateway_route" "my_gatewayroute" {
 - `headers` (Map of List of String) One or more lists of values indexed by header name that will cause this Route to match if present in the request. The `Host` header cannot be used with this attribute: hosts should be specified using the `hosts` attribute. When `headers` contains only one value and that value starts with the special prefix `~*`, the value is interpreted as a regular expression.
 - `hosts` (List of String) A list of domain names that match this Route. Note that the hosts value is case sensitive.
 - `https_redirect_status_code` (Number) The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the `https` protocol. must be one of ["426", "301", "302", "307", "308"]
+- `id` (String) A string representing a UUID (universally unique identifier).
 - `methods` (List of String) A list of HTTP methods that match this Route.
 - `name` (String) The name of the Route. Route names must be unique, and they are case sensitive. For example, there can be two different Routes named "test" and "Test".
 - `path_handling` (String) Controls how the Service path, Route path and requested path are combined when sending a request to the upstream. See above for a detailed description of each behavior. must be one of ["v0", "v1"]
@@ -97,17 +98,13 @@ resource "konnect_gateway_route" "my_gatewayroute" {
 - `tags` (List of String) An optional set of strings associated with the Route for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
 
-### Read-Only
-
-- `id` (String) The ID of this resource.
-
 <a id="nestedatt--destinations"></a>
 ### Nested Schema for `destinations`
 
 Optional:
 
-- `ip` (String)
-- `port` (Number)
+- `ip` (String) A string representing an IP address or CIDR block, such as 192.168.1.1 or 192.168.0.0/16.
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 
 
 <a id="nestedatt--service"></a>
@@ -123,8 +120,8 @@ Optional:
 
 Optional:
 
-- `ip` (String)
-- `port` (Number)
+- `ip` (String) A string representing an IP address or CIDR block, such as 192.168.1.1 or 192.168.0.0/16.
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 
 ## Import
 

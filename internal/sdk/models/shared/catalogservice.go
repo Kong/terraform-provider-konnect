@@ -25,7 +25,7 @@ type CatalogService struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels"`
+	Labels map[string]string `json:"labels"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
@@ -78,9 +78,9 @@ func (o *CatalogService) GetCustomFields() any {
 	return o.CustomFields
 }
 
-func (o *CatalogService) GetLabels() map[string]*string {
+func (o *CatalogService) GetLabels() map[string]string {
 	if o == nil {
-		return map[string]*string{}
+		return map[string]string{}
 	}
 	return o.Labels
 }

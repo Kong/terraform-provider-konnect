@@ -80,8 +80,9 @@ func (r *GatewaySNIResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,

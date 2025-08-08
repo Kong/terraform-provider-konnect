@@ -97,8 +97,9 @@ func (r *GatewayRouteExpressionResource) Schema(ctx context.Context, req resourc
 				},
 			},
 			"id": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,
@@ -119,8 +120,9 @@ func (r *GatewayRouteExpressionResource) Schema(ctx context.Context, req resourc
 				Description: `When matching a Route via one of the ` + "`" + `hosts` + "`" + ` domain names, use the request ` + "`" + `Host` + "`" + ` header in the upstream request headers. If set to ` + "`" + `false` + "`" + `, the upstream ` + "`" + `Host` + "`" + ` header will be that of the Service's ` + "`" + `host` + "`" + `.`,
 			},
 			"priority": schema.Int64Attribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A number used to specify the matching order for expression routes. The higher the ` + "`" + `priority` + "`" + `, the sooner an route will be evaluated. This field is ignored unless ` + "`" + `expression` + "`" + ` field is set.`,
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
