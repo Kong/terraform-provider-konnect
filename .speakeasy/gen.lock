@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 1697419ee36b47628bbde9e5d85b69f0
+  docChecksum: 18804611d5345c5024d950dd510720e3
   docVersion: 2.0.0
   speakeasyVersion: 1.581.1
   generationVersion: 2.656.9
@@ -221,8 +221,6 @@ generatedFiles:
   - examples/resources/konnect_gateway_plugin_mtls_auth/resource.tf
   - examples/resources/konnect_gateway_plugin_oas_validation/import.sh
   - examples/resources/konnect_gateway_plugin_oas_validation/resource.tf
-  - examples/resources/konnect_gateway_plugin_oauth2/import.sh
-  - examples/resources/konnect_gateway_plugin_oauth2/resource.tf
   - examples/resources/konnect_gateway_plugin_oauth2_introspection/import.sh
   - examples/resources/konnect_gateway_plugin_oauth2_introspection/resource.tf
   - examples/resources/konnect_gateway_plugin_opa/import.sh
@@ -559,8 +557,6 @@ generatedFiles:
   - internal/provider/gatewaypluginmtlsauth_resource_sdk.go
   - internal/provider/gatewaypluginoasvalidation_resource.go
   - internal/provider/gatewaypluginoasvalidation_resource_sdk.go
-  - internal/provider/gatewaypluginoauth2_resource.go
-  - internal/provider/gatewaypluginoauth2_resource_sdk.go
   - internal/provider/gatewaypluginoauth2introspection_resource.go
   - internal/provider/gatewaypluginoauth2introspection_resource_sdk.go
   - internal/provider/gatewaypluginopa_resource.go
@@ -736,7 +732,6 @@ generatedFiles:
   - internal/provider/types/ai_proxy_advanced_plugin_config.go
   - internal/provider/types/ai_proxy_advanced_plugin_model.go
   - internal/provider/types/ai_proxy_advanced_plugin_options.go
-  - internal/provider/types/ai_proxy_advanced_plugin_redis.go
   - internal/provider/types/ai_proxy_plugin_config.go
   - internal/provider/types/ai_rag_injector_plugin_config.go
   - internal/provider/types/ai_rag_injector_plugin_vectordb.go
@@ -894,7 +889,6 @@ generatedFiles:
   - internal/provider/types/oas_validation_plugin_config.go
   - internal/provider/types/oauth.go
   - internal/provider/types/oauth2_introspection_plugin_config.go
-  - internal/provider/types/oauth2_plugin_config.go
   - internal/provider/types/oauth_auth_config.go
   - internal/provider/types/oauth_config.go
   - internal/provider/types/opa_plugin_config.go
@@ -933,7 +927,6 @@ generatedFiles:
   - internal/provider/types/rate_limiting_advanced_plugin_config.go
   - internal/provider/types/rate_limiting_advanced_plugin_redis.go
   - internal/provider/types/rate_limiting_plugin_config.go
-  - internal/provider/types/rate_limiting_plugin_redis.go
   - internal/provider/types/redirect_plugin_config.go
   - internal/provider/types/replace.go
   - internal/provider/types/request.go
@@ -1154,7 +1147,6 @@ generatedFiles:
   - internal/sdk/models/operations/createnetwork.go
   - internal/sdk/models/operations/createoasvalidationplugin.go
   - internal/sdk/models/operations/createoauth2introspectionplugin.go
-  - internal/sdk/models/operations/createoauth2plugin.go
   - internal/sdk/models/operations/createopaplugin.go
   - internal/sdk/models/operations/createopenidconnectplugin.go
   - internal/sdk/models/operations/createopentelemetryplugin.go
@@ -1305,7 +1297,6 @@ generatedFiles:
   - internal/sdk/models/operations/deletenetwork.go
   - internal/sdk/models/operations/deleteoasvalidationplugin.go
   - internal/sdk/models/operations/deleteoauth2introspectionplugin.go
-  - internal/sdk/models/operations/deleteoauth2plugin.go
   - internal/sdk/models/operations/deleteopaplugin.go
   - internal/sdk/models/operations/deleteopenidconnectplugin.go
   - internal/sdk/models/operations/deleteopentelemetryplugin.go
@@ -1463,7 +1454,6 @@ generatedFiles:
   - internal/sdk/models/operations/getnetwork.go
   - internal/sdk/models/operations/getoasvalidationplugin.go
   - internal/sdk/models/operations/getoauth2introspectionplugin.go
-  - internal/sdk/models/operations/getoauth2plugin.go
   - internal/sdk/models/operations/getopaplugin.go
   - internal/sdk/models/operations/getopenidconnectplugin.go
   - internal/sdk/models/operations/getopentelemetryplugin.go
@@ -1619,7 +1609,6 @@ generatedFiles:
   - internal/sdk/models/operations/updatenetwork.go
   - internal/sdk/models/operations/updateoasvalidationplugin.go
   - internal/sdk/models/operations/updateoauth2introspectionplugin.go
-  - internal/sdk/models/operations/updateoauth2plugin.go
   - internal/sdk/models/operations/updateopaplugin.go
   - internal/sdk/models/operations/updateopenidconnectplugin.go
   - internal/sdk/models/operations/updateopentelemetryplugin.go
@@ -1909,7 +1898,6 @@ generatedFiles:
   - internal/sdk/models/shared/nullableappearancethemevariables.go
   - internal/sdk/models/shared/oasvalidationplugin.go
   - internal/sdk/models/shared/oauth2introspectionplugin.go
-  - internal/sdk/models/shared/oauth2plugin.go
   - internal/sdk/models/shared/oauthauthconfig.go
   - internal/sdk/models/shared/oauthconfig.go
   - internal/sdk/models/shared/opaplugin.go
@@ -3272,7 +3260,7 @@ examples:
     speakeasy-default-add-consumer-to-group:
       parameters:
         path:
-          ConsumerGroupId: "<id>"
+          ConsumerGroupId: "cf4c7e60-11db-49dd-b300-7c7e5f0f7e6b"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
         application/json: {"consumer": "cf4c7e60-11db-49dd-b300-7c7e5f0f7e6b"}
@@ -3280,7 +3268,7 @@ examples:
     speakeasy-default-remove-consumer-from-group:
       parameters:
         path:
-          ConsumerGroupId: "<id>"
+          ConsumerGroupId: "cf4c7e60-11db-49dd-b300-7c7e5f0f7e6b"
           ConsumerId: "<id>"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   create-consumer:
@@ -3910,7 +3898,7 @@ examples:
         application/json: {"config": {"database": 0, "host": "localhost", "password": "password", "port": 6379, "server_name": "redis", "ssl": false, "ssl_verify": false, "timeout": 2000, "username": "username"}, "type": "redis-ce"}
       responses:
         "201":
-          application/json: {"config": {"cluster_nodes": [{"ip": "192.168.1.10", "port": 6380}], "connect_timeout": 2000, "database": 0, "host": "localhost", "keepalive_pool_size": 256, "password": "password", "port": 6379, "read_timeout": 1000, "send_timeout": 1000, "sentinel_nodes": [{"host": "sentinel1.redis.server", "port": 26379}], "server_name": "redis-ee", "ssl": false, "ssl_verify": false, "username": "username"}, "type": "redis-ee"}
+          application/json: {"config": {"database": 0, "host": "localhost", "password": "password", "port": 6379, "server_name": "redis", "ssl": false, "ssl_verify": false, "timeout": 2000, "username": "username"}, "type": "redis-ce"}
         "401":
           application/json: {"message": "<value>", "status": 415811}
   delete-partial:
@@ -3948,7 +3936,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"config": {"cluster_nodes": [{"ip": "192.168.1.10", "port": 6380}], "connect_timeout": 2000, "database": 0, "host": "localhost", "keepalive_pool_size": 256, "password": "password", "port": 6379, "read_timeout": 1000, "send_timeout": 1000, "sentinel_nodes": [{"host": "sentinel1.redis.server", "port": 26379}], "server_name": "redis-ee", "ssl": false, "ssl_verify": false, "username": "username"}, "type": "redis-ee"}
+          application/json: {"config": {"database": 0, "host": "localhost", "password": "password", "port": 6379, "server_name": "redis", "ssl": false, "ssl_verify": false, "timeout": 2000, "username": "username"}, "type": "redis-ce"}
         "401":
           application/json: {"message": "<value>", "status": 629733}
   upsert-partial:
@@ -3970,7 +3958,7 @@ examples:
           PartialId: ""
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"config": {"cluster_nodes": [{"ip": "192.168.1.10", "port": 6380}], "connect_timeout": 2000, "database": 0, "host": "localhost", "keepalive_pool_size": 256, "password": "password", "port": 6379, "read_timeout": 1000, "send_timeout": 1000, "sentinel_nodes": [{"host": "sentinel1.redis.server", "port": 26379}], "server_name": "redis-ee", "ssl": false, "ssl_verify": false, "username": "username"}, "type": "redis-ee"}
+        application/json: {"config": {"database": 0, "host": "localhost", "password": "password", "port": 6379, "server_name": "redis", "ssl": false, "ssl_verify": false, "timeout": 2000, "username": "username"}, "type": "redis-ce"}
       responses:
         "200":
           application/json: {"config": {"database": 0, "host": "localhost", "password": "password", "port": 6379, "server_name": "redis", "ssl": false, "ssl_verify": false, "timeout": 2000, "username": "username"}, "type": "redis-ce"}
@@ -8322,7 +8310,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "rate-limiting-advanced", "config": {"limit": [3020.94], "namespace": "<value>", "window_size": [2528.48, 6676.72, 4410.69]}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "rate-limiting-advanced", "config": {"limit": [3020.94], "window_size": [2528.48, 6676.72, 4410.69]}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 369253}
   update-ratelimitingadvanced-plugin:
@@ -8344,10 +8332,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "rate-limiting-advanced", "config": {"limit": [7767.61, 1267.71, 903.59], "namespace": "<value>", "window_size": [6415.93, 7987.32, 166.11]}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "rate-limiting-advanced", "config": {"limit": [7767.61, 1267.71, 903.59], "window_size": [6415.93, 7987.32, 166.11]}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "rate-limiting-advanced", "config": {"limit": [2612.76, 8593.22, 4524.37], "namespace": "<value>", "window_size": []}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "rate-limiting-advanced", "config": {"limit": [2612.76, 8593.22, 4524.37], "window_size": []}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 856301}
   delete-redirect-plugin:
@@ -9204,7 +9192,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "service-protection", "config": {"limit": [8664.96, 639.34, 7987.92], "namespace": "<value>", "window_size": [9755.96]}, "protocols": ["grpc", "grpcs", "http", "https"], "service": null}
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "service-protection", "config": {"limit": [8664.96, 639.34, 7987.92], "window_size": [9755.96]}, "protocols": ["grpc", "grpcs", "http", "https"], "service": null}
         "401":
           application/json: {"message": "<value>", "status": 820048}
   update-serviceprotection-plugin:
@@ -9226,10 +9214,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "service-protection", "config": {"limit": [2301.67], "namespace": "<value>", "window_size": [3640.94]}, "protocols": ["grpc", "grpcs", "http", "https"], "service": null}
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "service-protection", "config": {"limit": [2301.67], "window_size": [3640.94]}, "protocols": ["grpc", "grpcs", "http", "https"], "service": null}
       responses:
         "200":
-          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "service-protection", "config": {"limit": [488.72, 6385.53, 1484.7], "namespace": "<value>", "window_size": [429.58, 697.88, 6680.31]}, "protocols": ["grpc", "grpcs", "http", "https"], "service": null}
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "service-protection", "config": {"limit": [488.72, 6385.53, 1484.7], "window_size": [429.58, 697.88, 6680.31]}, "protocols": ["grpc", "grpcs", "http", "https"], "service": null}
         "401":
           application/json: {"message": "<value>", "status": 452211}
   delete-session-plugin:
@@ -11038,10 +11026,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "rate-limiting-advanced", "config": {"limit": [481.69, 1966.64, 2061.56], "namespace": "<value>", "window_size": [139.64, 9425.18, 2892.92]}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "rate-limiting-advanced", "config": {"limit": [481.69, 1966.64, 2061.56], "window_size": [139.64, 9425.18, 2892.92]}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "rate-limiting-advanced", "config": {"limit": [7433.6], "namespace": "<value>", "window_size": [9258.71, 8295.23]}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "rate-limiting-advanced", "config": {"limit": [7433.6], "window_size": [9258.71, 8295.23]}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 923464}
   create-redirect-plugin:
@@ -11206,10 +11194,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "service-protection", "config": {"limit": [6426.87, 2535.28], "namespace": "<value>", "window_size": []}, "protocols": ["grpc", "grpcs", "http", "https"], "service": null}
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "service-protection", "config": {"limit": [6426.87, 2535.28], "window_size": []}, "protocols": ["grpc", "grpcs", "http", "https"], "service": null}
       responses:
         "201":
-          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "service-protection", "config": {"limit": [6125.48, 7951.99, 6273.27], "namespace": "<value>", "window_size": [329.86, 9231.56, 5897.94]}, "protocols": ["grpc", "grpcs", "http", "https"], "service": null}
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "service-protection", "config": {"limit": [6125.48, 7951.99, 6273.27], "window_size": [329.86, 9231.56, 5897.94]}, "protocols": ["grpc", "grpcs", "http", "https"], "service": null}
         "401":
           application/json: {"message": "<value>", "status": 649883}
   create-session-plugin:

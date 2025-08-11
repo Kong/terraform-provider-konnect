@@ -75,8 +75,9 @@ func (r *GatewayCertificateResource) Schema(ctx context.Context, req resource.Sc
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"key": schema.StringAttribute{
 				Required:    true,

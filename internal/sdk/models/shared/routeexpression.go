@@ -70,6 +70,7 @@ func (e *RouteExpressionPathHandling) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// RouteExpressionProtocols - A string representing a protocol, such as HTTP or HTTPS.
 type RouteExpressionProtocols string
 
 const (
@@ -140,14 +141,16 @@ type RouteExpression struct {
 	Expression *string `json:"expression,omitempty"`
 	// The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the `https` protocol.
 	HTTPSRedirectStatusCode *RouteExpressionHTTPSRedirectStatusCode `json:"https_redirect_status_code,omitempty"`
-	ID                      *string                                 `json:"id,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
 	// The name of the Route. Route names must be unique, and they are case sensitive. For example, there can be two different Routes named "test" and "Test".
 	Name *string `json:"name,omitempty"`
 	// Controls how the Service path, Route path and requested path are combined when sending a request to the upstream. See above for a detailed description of each behavior.
 	PathHandling *RouteExpressionPathHandling `json:"path_handling,omitempty"`
 	// When matching a Route via one of the `hosts` domain names, use the request `Host` header in the upstream request headers. If set to `false`, the upstream `Host` header will be that of the Service's `host`.
-	PreserveHost *bool  `json:"preserve_host,omitempty"`
-	Priority     *int64 `json:"priority,omitempty"`
+	PreserveHost *bool `json:"preserve_host,omitempty"`
+	// A number used to specify the matching order for expression routes. The higher the `priority`, the sooner an route will be evaluated. This field is ignored unless `expression` field is set.
+	Priority *int64 `json:"priority,omitempty"`
 	// An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only `"https"`, HTTP requests are answered with an upgrade error. When set to only `"http"`, HTTPS requests are answered with an error.
 	Protocols []RouteExpressionProtocols `json:"protocols"`
 	// Whether to enable request body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that receive data with chunked transfer encoding.

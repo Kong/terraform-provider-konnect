@@ -28,12 +28,12 @@ func (o *CreatePartialRequest) GetPartial() shared.Partial {
 	return o.Partial
 }
 
-func (o *CreatePartialRequest) GetPartialRedisCe() *shared.PartialRedisCE {
-	return o.GetPartial().PartialRedisCE
+func (o *CreatePartialRequest) GetPartialRedisCe() *shared.PartialRedisCe {
+	return o.GetPartial().PartialRedisCe
 }
 
-func (o *CreatePartialRequest) GetPartialRedisEe() *shared.PartialRedisEE {
-	return o.GetPartial().PartialRedisEE
+func (o *CreatePartialRequest) GetPartialRedisEe() *shared.PartialRedisEe {
+	return o.GetPartial().PartialRedisEe
 }
 
 type CreatePartialResponse struct {
@@ -77,16 +77,16 @@ func (o *CreatePartialResponse) GetPartial() *shared.Partial {
 	return o.Partial
 }
 
-func (o *CreatePartialResponse) GetPartialRedisCe() *shared.PartialRedisCE {
+func (o *CreatePartialResponse) GetPartialRedisCe() *shared.PartialRedisCe {
 	if v := o.GetPartial(); v != nil {
-		return v.PartialRedisCE
+		return v.PartialRedisCe
 	}
 	return nil
 }
 
-func (o *CreatePartialResponse) GetPartialRedisEe() *shared.PartialRedisEE {
+func (o *CreatePartialResponse) GetPartialRedisEe() *shared.PartialRedisEe {
 	if v := o.GetPartial(); v != nil {
-		return v.PartialRedisEE
+		return v.PartialRedisEe
 	}
 	return nil
 }

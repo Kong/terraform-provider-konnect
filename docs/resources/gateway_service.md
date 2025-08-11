@@ -65,6 +65,7 @@ resource "konnect_gateway_service" "my_gatewayservice" {
 - `connect_timeout` (Number) The timeout in milliseconds for establishing a connection to the upstream server.
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the Service is active. If set to `false`, the proxy behavior will be as if any routes attached to it do not exist (404). Default: `true`.
+- `id` (String) A string representing a UUID (universally unique identifier).
 - `name` (String) The Service name.
 - `path` (String) The path to be used in requests to the upstream server.
 - `port` (Number) The upstream server port.
@@ -77,10 +78,6 @@ resource "konnect_gateway_service" "my_gatewayservice" {
 - `tls_verify_depth` (Number) Maximum depth of chain while verifying Upstream server's TLS certificate. If set to `null`, then the Nginx default is respected.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
 - `write_timeout` (Number) The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server.
-
-### Read-Only
-
-- `id` (String) The ID of this resource.
 
 <a id="nestedatt--client_certificate"></a>
 ### Nested Schema for `client_certificate`
@@ -95,8 +92,8 @@ Optional:
 
 Optional:
 
-- `dnsnames` (List of String)
-- `uris` (List of String)
+- `dnsnames` (List of String) A dnsName for TLS verification.
+- `uris` (List of String) An URI for TLS verification.
 
 ## Import
 

@@ -23,6 +23,7 @@ func (r *GatewayPluginJweDecryptResourceModel) RefreshFromSharedJweDecryptPlugin
 		r.Config.LookupHeaderName = types.StringPointerValue(resp.Config.LookupHeaderName)
 		r.Config.Strict = types.BoolPointerValue(resp.Config.Strict)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
@@ -185,6 +186,12 @@ func (r *GatewayPluginJweDecryptResourceModel) ToSharedJweDecryptPlugin(ctx cont
 	} else {
 		createdAt = nil
 	}
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -330,6 +337,7 @@ func (r *GatewayPluginJweDecryptResourceModel) ToSharedJweDecryptPlugin(ctx cont
 	}
 	out := shared.JweDecryptPlugin{
 		CreatedAt:    createdAt,
+		Description:  description,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
