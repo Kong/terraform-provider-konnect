@@ -30,12 +30,12 @@ func (r *GatewayPluginSamlResourceModel) RefreshFromSharedSamlPlugin(ctx context
 		} else {
 			r.Config.Redis = &tfTypes.OpenidConnectPluginRedis{}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
-			r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEEClusterNodes{}
+			r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
 			if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
 				r.Config.Redis.ClusterNodes = r.Config.Redis.ClusterNodes[:len(resp.Config.Redis.ClusterNodes)]
 			}
 			for clusterNodesCount, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
-				var clusterNodes tfTypes.PartialRedisEEClusterNodes
+				var clusterNodes tfTypes.PartialRedisEeClusterNodes
 				clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 				clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
 				if clusterNodesCount+1 > len(r.Config.Redis.ClusterNodes) {
@@ -57,12 +57,12 @@ func (r *GatewayPluginSamlResourceModel) RefreshFromSharedSamlPlugin(ctx context
 			r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
 			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
-			r.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEESentinelNodes{}
+			r.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
 			if len(r.Config.Redis.SentinelNodes) > len(resp.Config.Redis.SentinelNodes) {
 				r.Config.Redis.SentinelNodes = r.Config.Redis.SentinelNodes[:len(resp.Config.Redis.SentinelNodes)]
 			}
 			for sentinelNodesCount, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
-				var sentinelNodes tfTypes.PartialRedisEESentinelNodes
+				var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
 				sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 				sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 				if sentinelNodesCount+1 > len(r.Config.Redis.SentinelNodes) {
@@ -150,6 +150,7 @@ func (r *GatewayPluginSamlResourceModel) RefreshFromSharedSamlPlugin(ctx context
 		r.Config.SessionStoreMetadata = types.BoolPointerValue(resp.Config.SessionStoreMetadata)
 		r.Config.ValidateAssertionSignature = types.BoolPointerValue(resp.Config.ValidateAssertionSignature)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
@@ -311,6 +312,12 @@ func (r *GatewayPluginSamlResourceModel) ToSharedSamlPlugin(ctx context.Context)
 		*createdAt = r.CreatedAt.ValueInt64()
 	} else {
 		createdAt = nil
+	}
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
 	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
@@ -888,6 +895,7 @@ func (r *GatewayPluginSamlResourceModel) ToSharedSamlPlugin(ctx context.Context)
 	}
 	out := shared.SamlPlugin{
 		CreatedAt:    createdAt,
+		Description:  description,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,

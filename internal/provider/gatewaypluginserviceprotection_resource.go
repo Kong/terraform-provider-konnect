@@ -43,6 +43,7 @@ type GatewayPluginServiceProtectionResourceModel struct {
 	Config         tfTypes.ServiceProtectionPluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                          `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                           `tfsdk:"created_at"`
+	Description    types.String                          `tfsdk:"description"`
 	Enabled        types.Bool                            `tfsdk:"enabled"`
 	ID             types.String                          `tfsdk:"id"`
 	InstanceName   types.String                          `tfsdk:"instance_name"`
@@ -101,7 +102,8 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 						Description: `The shared dictionary where concurrency control locks are stored. The default shared dictionary is ` + "`" + `kong_locks` + "`" + `. The shared dictionary should be declared in nginx-kong.conf.`,
 					},
 					"namespace": schema.StringAttribute{
-						Required:    true,
+						Computed:    true,
+						Optional:    true,
 						Description: `The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. ` + "`" + `strategy` + "`" + `, ` + "`" + `redis` + "`" + `, ` + "`" + `sync_rate` + "`" + `, ` + "`" + `dictionary_name` + "`" + `, need to be the same.`,
 					},
 					"redis": schema.SingleNestedAttribute{
@@ -332,18 +334,25 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
+			"description": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `User-defined entity description. Konnect only field, not synced to the Gateway.`,
+			},
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
 				Description: `Whether the plugin is applied.`,
 			},
 			"id": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
@@ -382,12 +391,14 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 					},
 					Attributes: map[string]schema.Attribute{
 						"id": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
+							Computed:    true,
+							Optional:    true,
+							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
+							Computed:    true,
+							Optional:    true,
+							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
 							Computed: true,
@@ -395,6 +406,7 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 						},
 					},
 				},
+				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.SetAttribute{
 				Computed:    true,

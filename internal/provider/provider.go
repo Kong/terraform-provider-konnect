@@ -229,7 +229,6 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayPluginMockingResource,
 		NewGatewayPluginMtlsAuthResource,
 		NewGatewayPluginOasValidationResource,
-		NewGatewayPluginOauth2Resource,
 		NewGatewayPluginOauth2IntrospectionResource,
 		NewGatewayPluginOpaResource,
 		NewGatewayPluginOpenidConnectResource,

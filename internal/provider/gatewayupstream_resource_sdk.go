@@ -55,9 +55,15 @@ func (r *GatewayUpstreamResourceModel) RefreshFromSharedUpstream(ctx context.Con
 				r.Healthchecks.Active = &tfTypes.Active{}
 				r.Healthchecks.Active.Concurrency = types.Int64PointerValue(resp.Healthchecks.Active.Concurrency)
 				if len(resp.Healthchecks.Active.Headers) > 0 {
-					r.Healthchecks.Active.Headers = make(map[string]types.String, len(resp.Healthchecks.Active.Headers))
-					for key, value := range resp.Healthchecks.Active.Headers {
-						r.Healthchecks.Active.Headers[key] = types.StringValue(value)
+					r.Healthchecks.Active.Headers = make(map[string][]types.String, len(resp.Healthchecks.Active.Headers))
+					for headersKey, headersValue := range resp.Healthchecks.Active.Headers {
+						var headersResult []types.String
+						headersResult = make([]types.String, 0, len(headersValue))
+						for _, v := range headersValue {
+							headersResult = append(headersResult, types.StringValue(v))
+						}
+
+						r.Healthchecks.Active.Headers[headersKey] = headersResult
 					}
 				}
 				if resp.Healthchecks.Active.Healthy == nil {
@@ -324,11 +330,12 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstream(ctx context.Context) (*s
 			} else {
 				concurrency = nil
 			}
-			headers := make(map[string]string)
+			headers := make(map[string][]string)
 			for headersKey, headersValue := range r.Healthchecks.Active.Headers {
-				var headersInst string
-				headersInst = headersValue.ValueString()
-
+				headersInst := make([]string, 0, len(headersValue))
+				for _, item := range headersValue {
+					headersInst = append(headersInst, item.ValueString())
+				}
 				headers[headersKey] = headersInst
 			}
 			var healthy *shared.Healthy

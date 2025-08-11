@@ -48,6 +48,7 @@ type GatewayPluginOpentelemetryResourceModel struct {
 	Consumer       *tfTypes.Set                       `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
+	Description    types.String                       `tfsdk:"description"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
 	ID             types.String                       `tfsdk:"id"`
 	InstanceName   types.String                       `tfsdk:"instance_name"`
@@ -311,18 +312,25 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
+			"description": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `User-defined entity description. Konnect only field, not synced to the Gateway.`,
+			},
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
 				Description: `Whether the plugin is applied.`,
 			},
 			"id": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
@@ -361,12 +369,14 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 					},
 					Attributes: map[string]schema.Attribute{
 						"id": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
+							Computed:    true,
+							Optional:    true,
+							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
+							Computed:    true,
+							Optional:    true,
+							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
 							Computed: true,
@@ -374,6 +384,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						},
 					},
 				},
+				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.SetAttribute{
 				Computed:    true,

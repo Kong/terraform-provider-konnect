@@ -33,19 +33,16 @@ resource "konnect_gateway_custom_plugin_streaming" "my_gatewaycustompluginstream
 ### Required
 
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
-- `handler` (String)
-- `name` (String)
-- `schema` (String)
+- `handler` (String) The handler for the given custom plugin.
+- `name` (String) The name to associate with the given custom plugin.
+- `schema` (String) The schema for the given custom plugin.
 
 ### Optional
 
 - `created_at` (Number) Unix epoch when the resource was created.
-- `tags` (List of String)
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `tags` (List of String) A set of strings representing tags.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
-
-### Read-Only
-
-- `id` (String) The ID of this resource.
 
 ## Import
 

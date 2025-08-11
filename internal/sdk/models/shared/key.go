@@ -37,8 +37,9 @@ func (o *Set) GetID() *string {
 // A Key object holds a representation of asymmetric keys in various formats. When Kong or a Kong plugin requires a specific public or private key to perform certain operations, it can use this entity.
 type Key struct {
 	// Unix epoch when the resource was created.
-	CreatedAt *int64  `json:"created_at,omitempty"`
-	ID        *string `json:"id,omitempty"`
+	CreatedAt *int64 `json:"created_at,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
 	// A JSON Web Key represented as a string.
 	Jwk *string `json:"jwk,omitempty"`
 	// A unique identifier for a key.
@@ -52,8 +53,9 @@ type Key struct {
 	// An optional set of strings associated with the Key for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64  `json:"updated_at,omitempty"`
-	X5t       *string `json:"x5t,omitempty"`
+	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	// X.509 certificate SHA-1 thumbprint.
+	X5t *string `json:"x5t,omitempty"`
 }
 
 func (o *Key) GetCreatedAt() *int64 {

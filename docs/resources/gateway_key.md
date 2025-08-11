@@ -46,17 +46,14 @@ resource "konnect_gateway_key" "my_gatewaykey" {
 ### Optional
 
 - `created_at` (Number) Unix epoch when the resource was created.
+- `id` (String) A string representing a UUID (universally unique identifier).
 - `jwk` (String) A JSON Web Key represented as a string.
 - `name` (String) The name to associate with the given keys.
 - `pem` (Attributes) A keypair in PEM format. (see [below for nested schema](#nestedatt--pem))
 - `set` (Attributes) The id (an UUID) of the key-set with which to associate the key. (see [below for nested schema](#nestedatt--set))
 - `tags` (List of String) An optional set of strings associated with the Key for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
-- `x5t` (String)
-
-### Read-Only
-
-- `id` (String) The ID of this resource.
+- `x5t` (String) X.509 certificate SHA-1 thumbprint.
 
 <a id="nestedatt--pem"></a>
 ### Nested Schema for `pem`

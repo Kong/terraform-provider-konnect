@@ -50,7 +50,9 @@ func (o *AiSemanticCachePluginOrdering) GetBefore() *AiSemanticCachePluginBefore
 }
 
 type AiSemanticCachePluginPartials struct {
-	ID   *string `json:"id,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
 }
@@ -1237,13 +1239,18 @@ func (o *AiSemanticCachePluginService) GetID() *string {
 type AiSemanticCachePlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
+	// User-defined entity description. Konnect only field, not synced to the Gateway.
+	Description *string `json:"description,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                           `json:"enabled,omitempty"`
-	ID           *string                         `json:"id,omitempty"`
-	InstanceName *string                         `json:"instance_name,omitempty"`
-	name         string                          `const:"ai-semantic-cache" json:"name"`
-	Ordering     *AiSemanticCachePluginOrdering  `json:"ordering,omitempty"`
-	Partials     []AiSemanticCachePluginPartials `json:"partials,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string                        `json:"instance_name,omitempty"`
+	name         string                         `const:"ai-semantic-cache" json:"name"`
+	Ordering     *AiSemanticCachePluginOrdering `json:"ordering,omitempty"`
+	// A list of partials to be used by the plugin.
+	Partials []AiSemanticCachePluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -1277,6 +1284,13 @@ func (o *AiSemanticCachePlugin) GetCreatedAt() *int64 {
 		return nil
 	}
 	return o.CreatedAt
+}
+
+func (o *AiSemanticCachePlugin) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
 }
 
 func (o *AiSemanticCachePlugin) GetEnabled() *bool {

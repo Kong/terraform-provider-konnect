@@ -50,7 +50,9 @@ func (o *ServiceProtectionPluginOrdering) GetBefore() *ServiceProtectionPluginBe
 }
 
 type ServiceProtectionPluginPartials struct {
-	ID   *string `json:"id,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
 }
@@ -413,7 +415,7 @@ type ServiceProtectionPluginConfig struct {
 	// The shared dictionary where concurrency control locks are stored. The default shared dictionary is `kong_locks`. The shared dictionary should be declared in nginx-kong.conf.
 	LockDictionaryName *string `json:"lock_dictionary_name,omitempty"`
 	// The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `dictionary_name`, need to be the same.
-	Namespace string                        `json:"namespace"`
+	Namespace *string                       `json:"namespace,omitempty"`
 	Redis     *ServiceProtectionPluginRedis `json:"redis,omitempty"`
 	// The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header.
 	RetryAfterJitterMax *float64 `json:"retry_after_jitter_max,omitempty"`
@@ -476,9 +478,9 @@ func (o *ServiceProtectionPluginConfig) GetLockDictionaryName() *string {
 	return o.LockDictionaryName
 }
 
-func (o *ServiceProtectionPluginConfig) GetNamespace() string {
+func (o *ServiceProtectionPluginConfig) GetNamespace() *string {
 	if o == nil {
-		return ""
+		return nil
 	}
 	return o.Namespace
 }
@@ -573,13 +575,18 @@ func (o *ServiceProtectionPluginService) GetID() *string {
 type ServiceProtectionPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
+	// User-defined entity description. Konnect only field, not synced to the Gateway.
+	Description *string `json:"description,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                             `json:"enabled,omitempty"`
-	ID           *string                           `json:"id,omitempty"`
-	InstanceName *string                           `json:"instance_name,omitempty"`
-	name         string                            `const:"service-protection" json:"name"`
-	Ordering     *ServiceProtectionPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []ServiceProtectionPluginPartials `json:"partials,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string                          `json:"instance_name,omitempty"`
+	name         string                           `const:"service-protection" json:"name"`
+	Ordering     *ServiceProtectionPluginOrdering `json:"ordering,omitempty"`
+	// A list of partials to be used by the plugin.
+	Partials []ServiceProtectionPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -607,6 +614,13 @@ func (o *ServiceProtectionPlugin) GetCreatedAt() *int64 {
 		return nil
 	}
 	return o.CreatedAt
+}
+
+func (o *ServiceProtectionPlugin) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
 }
 
 func (o *ServiceProtectionPlugin) GetEnabled() *bool {

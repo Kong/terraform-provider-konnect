@@ -6,6 +6,11 @@
 ### Features
 * Add support for the `konnect_cmek` resource
 
+### Bug fixes
+
+* `namespace` is no longer required in plugins
+* The `konnect_gateway_plugin_oauth2` resource has been removed. Konnect does not support `oauth2`. See "Kong Identity" as an alternative for Konnect users.
+
 ## 2.12.0
 > Released on 2025/07/22
 

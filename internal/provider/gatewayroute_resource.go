@@ -42,7 +42,7 @@ type GatewayRouteResource struct {
 type GatewayRouteResourceModel struct {
 	ControlPlaneID          types.String                         `tfsdk:"control_plane_id"`
 	CreatedAt               types.Int64                          `tfsdk:"created_at"`
-	Destinations            []tfTypes.PartialRedisEEClusterNodes `tfsdk:"destinations"`
+	Destinations            []tfTypes.PartialRedisEeClusterNodes `tfsdk:"destinations"`
 	Headers                 map[string][]types.String            `tfsdk:"headers"`
 	Hosts                   []types.String                       `tfsdk:"hosts"`
 	HTTPSRedirectStatusCode types.Int64                          `tfsdk:"https_redirect_status_code"`
@@ -58,7 +58,7 @@ type GatewayRouteResourceModel struct {
 	ResponseBuffering       types.Bool                           `tfsdk:"response_buffering"`
 	Service                 *tfTypes.Set                         `tfsdk:"service"`
 	Snis                    []types.String                       `tfsdk:"snis"`
-	Sources                 []tfTypes.PartialRedisEEClusterNodes `tfsdk:"sources"`
+	Sources                 []tfTypes.PartialRedisEeClusterNodes `tfsdk:"sources"`
 	StripPath               types.Bool                           `tfsdk:"strip_path"`
 	Tags                    []types.String                       `tfsdk:"tags"`
 	UpdatedAt               types.Int64                          `tfsdk:"updated_at"`
@@ -93,12 +93,14 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 					},
 					Attributes: map[string]schema.Attribute{
 						"ip": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
+							Computed:    true,
+							Optional:    true,
+							Description: `A string representing an IP address or CIDR block, such as 192.168.1.1 or 192.168.0.0/16.`,
 						},
 						"port": schema.Int64Attribute{
-							Computed: true,
-							Optional: true,
+							Computed:    true,
+							Optional:    true,
+							Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 						},
 					},
 				},
@@ -133,8 +135,9 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 			},
 			"id": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"methods": schema.ListAttribute{
 				Computed:    true,
@@ -216,12 +219,14 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 					},
 					Attributes: map[string]schema.Attribute{
 						"ip": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
+							Computed:    true,
+							Optional:    true,
+							Description: `A string representing an IP address or CIDR block, such as 192.168.1.1 or 192.168.0.0/16.`,
 						},
 						"port": schema.Int64Attribute{
-							Computed: true,
-							Optional: true,
+							Computed:    true,
+							Optional:    true,
+							Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 						},
 					},
 				},
