@@ -3,6 +3,7 @@
 package types
 
 import (
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -10,7 +11,7 @@ type Session struct {
 	Authentication         *SolaceUpstreamPluginAuthentication `tfsdk:"authentication"`
 	ConnectTimeout         types.Int64                         `tfsdk:"connect_timeout"`
 	Host                   types.String                        `tfsdk:"host"`
-	Properties             map[string]types.String             `tfsdk:"properties"`
+	Properties             map[string]jsontypes.Normalized     `tfsdk:"properties"`
 	SslValidateCertificate types.Bool                          `tfsdk:"ssl_validate_certificate"`
 	VpnName                types.String                        `tfsdk:"vpn_name"`
 }

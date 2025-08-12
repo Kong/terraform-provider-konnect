@@ -3,19 +3,20 @@
 package types
 
 import (
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type HTTPLogPluginConfig struct {
-	ContentType       types.String            `tfsdk:"content_type"`
-	CustomFieldsByLua map[string]types.String `tfsdk:"custom_fields_by_lua"`
-	FlushTimeout      types.Float64           `tfsdk:"flush_timeout"`
-	Headers           map[string]types.String `tfsdk:"headers"`
-	HTTPEndpoint      types.String            `tfsdk:"http_endpoint"`
-	Keepalive         types.Float64           `tfsdk:"keepalive"`
-	Method            types.String            `tfsdk:"method"`
-	Queue             *Queue                  `tfsdk:"queue"`
-	QueueSize         types.Int64             `tfsdk:"queue_size"`
-	RetryCount        types.Int64             `tfsdk:"retry_count"`
-	Timeout           types.Float64           `tfsdk:"timeout"`
+	ContentType       types.String                    `tfsdk:"content_type"`
+	CustomFieldsByLua map[string]jsontypes.Normalized `tfsdk:"custom_fields_by_lua"`
+	FlushTimeout      types.Float64                   `tfsdk:"flush_timeout"`
+	Headers           map[string]jsontypes.Normalized `tfsdk:"headers"`
+	HTTPEndpoint      types.String                    `tfsdk:"http_endpoint"`
+	Keepalive         types.Float64                   `tfsdk:"keepalive"`
+	Method            types.String                    `tfsdk:"method"`
+	Queue             *Queue                          `tfsdk:"queue"`
+	QueueSize         types.Int64                     `tfsdk:"queue_size"`
+	RetryCount        types.Int64                     `tfsdk:"retry_count"`
+	Timeout           types.Float64                   `tfsdk:"timeout"`
 }

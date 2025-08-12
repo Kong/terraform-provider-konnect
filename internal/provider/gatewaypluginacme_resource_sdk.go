@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
@@ -67,10 +68,10 @@ func (r *GatewayPluginAcmeResourceModel) RefreshFromSharedAcmePlugin(ctx context
 				r.Config.StorageConfig.Consul.Token = types.StringPointerValue(resp.Config.StorageConfig.Consul.Token)
 			}
 			if len(resp.Config.StorageConfig.Kong) > 0 {
-				r.Config.StorageConfig.Kong = make(map[string]types.String, len(resp.Config.StorageConfig.Kong))
+				r.Config.StorageConfig.Kong = make(map[string]jsontypes.Normalized, len(resp.Config.StorageConfig.Kong))
 				for key, value := range resp.Config.StorageConfig.Kong {
 					result, _ := json.Marshal(value)
-					r.Config.StorageConfig.Kong[key] = types.StringValue(string(result))
+					r.Config.StorageConfig.Kong[key] = jsontypes.NewNormalizedValue(string(result))
 				}
 			}
 			if resp.Config.StorageConfig.Redis == nil {
@@ -152,21 +153,15 @@ func (r *GatewayPluginAcmeResourceModel) RefreshFromSharedAcmePlugin(ctx context
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))

@@ -26,11 +26,10 @@ func (r *GatewayPluginRequestValidatorResourceModel) RefreshFromSharedRequestVal
 			r.Config.BodySchema = types.StringPointerValue(resp.Config.BodySchema)
 			r.Config.ContentTypeParameterValidation = types.BoolPointerValue(resp.Config.ContentTypeParameterValidation)
 			r.Config.ParameterSchema = []tfTypes.ParameterSchema{}
-			if len(r.Config.ParameterSchema) > len(resp.Config.ParameterSchema) {
-				r.Config.ParameterSchema = r.Config.ParameterSchema[:len(resp.Config.ParameterSchema)]
-			}
-			for parameterSchemaCount, parameterSchemaItem := range resp.Config.ParameterSchema {
+
+			for _, parameterSchemaItem := range resp.Config.ParameterSchema {
 				var parameterSchema tfTypes.ParameterSchema
+
 				parameterSchema.Explode = types.BoolPointerValue(parameterSchemaItem.Explode)
 				parameterSchema.In = types.StringValue(string(parameterSchemaItem.In))
 				parameterSchema.Name = types.StringValue(parameterSchemaItem.Name)
@@ -41,16 +40,8 @@ func (r *GatewayPluginRequestValidatorResourceModel) RefreshFromSharedRequestVal
 				} else {
 					parameterSchema.Style = types.StringNull()
 				}
-				if parameterSchemaCount+1 > len(r.Config.ParameterSchema) {
-					r.Config.ParameterSchema = append(r.Config.ParameterSchema, parameterSchema)
-				} else {
-					r.Config.ParameterSchema[parameterSchemaCount].Explode = parameterSchema.Explode
-					r.Config.ParameterSchema[parameterSchemaCount].In = parameterSchema.In
-					r.Config.ParameterSchema[parameterSchemaCount].Name = parameterSchema.Name
-					r.Config.ParameterSchema[parameterSchemaCount].Required = parameterSchema.Required
-					r.Config.ParameterSchema[parameterSchemaCount].Schema = parameterSchema.Schema
-					r.Config.ParameterSchema[parameterSchemaCount].Style = parameterSchema.Style
-				}
+
+				r.Config.ParameterSchema = append(r.Config.ParameterSchema, parameterSchema)
 			}
 			r.Config.VerboseResponse = types.BoolPointerValue(resp.Config.VerboseResponse)
 			if resp.Config.Version != nil {
@@ -94,21 +85,15 @@ func (r *GatewayPluginRequestValidatorResourceModel) RefreshFromSharedRequestVal
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))

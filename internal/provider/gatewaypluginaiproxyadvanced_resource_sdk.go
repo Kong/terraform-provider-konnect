@@ -128,11 +128,10 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 			r.Config.ResponseStreaming = types.StringNull()
 		}
 		r.Config.Targets = []tfTypes.Targets{}
-		if len(r.Config.Targets) > len(resp.Config.Targets) {
-			r.Config.Targets = r.Config.Targets[:len(resp.Config.Targets)]
-		}
-		for targetsCount, targetsItem := range resp.Config.Targets {
+
+		for _, targetsItem := range resp.Config.Targets {
 			var targets tfTypes.Targets
+
 			if targetsItem.Auth == nil {
 				targets.Auth = nil
 			} else {
@@ -228,16 +227,8 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 			targets.Model.Provider = types.StringValue(string(targetsItem.Model.Provider))
 			targets.RouteType = types.StringValue(string(targetsItem.RouteType))
 			targets.Weight = types.Int64PointerValue(targetsItem.Weight)
-			if targetsCount+1 > len(r.Config.Targets) {
-				r.Config.Targets = append(r.Config.Targets, targets)
-			} else {
-				r.Config.Targets[targetsCount].Auth = targets.Auth
-				r.Config.Targets[targetsCount].Description = targets.Description
-				r.Config.Targets[targetsCount].Logging = targets.Logging
-				r.Config.Targets[targetsCount].Model = targets.Model
-				r.Config.Targets[targetsCount].RouteType = targets.RouteType
-				r.Config.Targets[targetsCount].Weight = targets.Weight
-			}
+
+			r.Config.Targets = append(r.Config.Targets, targets)
 		}
 		if resp.Config.Vectordb == nil {
 			r.Config.Vectordb = nil
@@ -263,19 +254,14 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 			r.Config.Vectordb.Pgvector.User = types.StringPointerValue(resp.Config.Vectordb.Pgvector.User)
 			r.Config.Vectordb.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Vectordb.Redis.ClusterMaxRedirections)
 			r.Config.Vectordb.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
-			if len(r.Config.Vectordb.Redis.ClusterNodes) > len(resp.Config.Vectordb.Redis.ClusterNodes) {
-				r.Config.Vectordb.Redis.ClusterNodes = r.Config.Vectordb.Redis.ClusterNodes[:len(resp.Config.Vectordb.Redis.ClusterNodes)]
-			}
-			for clusterNodesCount, clusterNodesItem := range resp.Config.Vectordb.Redis.ClusterNodes {
+
+			for _, clusterNodesItem := range resp.Config.Vectordb.Redis.ClusterNodes {
 				var clusterNodes tfTypes.PartialRedisEeClusterNodes
+
 				clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 				clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
-				if clusterNodesCount+1 > len(r.Config.Vectordb.Redis.ClusterNodes) {
-					r.Config.Vectordb.Redis.ClusterNodes = append(r.Config.Vectordb.Redis.ClusterNodes, clusterNodes)
-				} else {
-					r.Config.Vectordb.Redis.ClusterNodes[clusterNodesCount].IP = clusterNodes.IP
-					r.Config.Vectordb.Redis.ClusterNodes[clusterNodesCount].Port = clusterNodes.Port
-				}
+
+				r.Config.Vectordb.Redis.ClusterNodes = append(r.Config.Vectordb.Redis.ClusterNodes, clusterNodes)
 			}
 			r.Config.Vectordb.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.ConnectTimeout)
 			r.Config.Vectordb.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Vectordb.Redis.ConnectionIsProxied)
@@ -289,19 +275,14 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 			r.Config.Vectordb.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.SendTimeout)
 			r.Config.Vectordb.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Vectordb.Redis.SentinelMaster)
 			r.Config.Vectordb.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
-			if len(r.Config.Vectordb.Redis.SentinelNodes) > len(resp.Config.Vectordb.Redis.SentinelNodes) {
-				r.Config.Vectordb.Redis.SentinelNodes = r.Config.Vectordb.Redis.SentinelNodes[:len(resp.Config.Vectordb.Redis.SentinelNodes)]
-			}
-			for sentinelNodesCount, sentinelNodesItem := range resp.Config.Vectordb.Redis.SentinelNodes {
+
+			for _, sentinelNodesItem := range resp.Config.Vectordb.Redis.SentinelNodes {
 				var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+
 				sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 				sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
-				if sentinelNodesCount+1 > len(r.Config.Vectordb.Redis.SentinelNodes) {
-					r.Config.Vectordb.Redis.SentinelNodes = append(r.Config.Vectordb.Redis.SentinelNodes, sentinelNodes)
-				} else {
-					r.Config.Vectordb.Redis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes.Host
-					r.Config.Vectordb.Redis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes.Port
-				}
+
+				r.Config.Vectordb.Redis.SentinelNodes = append(r.Config.Vectordb.Redis.SentinelNodes, sentinelNodes)
 			}
 			r.Config.Vectordb.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Vectordb.Redis.SentinelPassword)
 			if resp.Config.Vectordb.Redis.SentinelRole != nil {
@@ -358,21 +339,15 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))

@@ -16,21 +16,15 @@ func (r *GatewayPluginAiPromptCompressorResourceModel) RefreshFromSharedAiPrompt
 
 	if resp != nil {
 		r.Config.CompressionRanges = []tfTypes.CompressionRanges{}
-		if len(r.Config.CompressionRanges) > len(resp.Config.CompressionRanges) {
-			r.Config.CompressionRanges = r.Config.CompressionRanges[:len(resp.Config.CompressionRanges)]
-		}
-		for compressionRangesCount, compressionRangesItem := range resp.Config.CompressionRanges {
+
+		for _, compressionRangesItem := range resp.Config.CompressionRanges {
 			var compressionRanges tfTypes.CompressionRanges
+
 			compressionRanges.MaxTokens = types.Int64Value(compressionRangesItem.MaxTokens)
 			compressionRanges.MinTokens = types.Int64Value(compressionRangesItem.MinTokens)
 			compressionRanges.Value = types.Float64Value(compressionRangesItem.Value)
-			if compressionRangesCount+1 > len(r.Config.CompressionRanges) {
-				r.Config.CompressionRanges = append(r.Config.CompressionRanges, compressionRanges)
-			} else {
-				r.Config.CompressionRanges[compressionRangesCount].MaxTokens = compressionRanges.MaxTokens
-				r.Config.CompressionRanges[compressionRangesCount].MinTokens = compressionRanges.MinTokens
-				r.Config.CompressionRanges[compressionRangesCount].Value = compressionRanges.Value
-			}
+
+			r.Config.CompressionRanges = append(r.Config.CompressionRanges, compressionRanges)
 		}
 		if resp.Config.CompressorType != nil {
 			r.Config.CompressorType = types.StringValue(string(*resp.Config.CompressorType))
@@ -87,21 +81,15 @@ func (r *GatewayPluginAiPromptCompressorResourceModel) RefreshFromSharedAiPrompt
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))

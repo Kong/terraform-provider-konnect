@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -81,7 +82,7 @@ func (r *GatewayPluginRouteByHeaderResource) Schema(ctx context.Context, req res
 								"condition": schema.MapAttribute{
 									Computed:    true,
 									Optional:    true,
-									ElementType: types.StringType,
+									ElementType: jsontypes.NormalizedType{},
 									Description: `Not Null`,
 									Validators: []validator.Map{
 										speakeasy_mapvalidators.NotNull(),

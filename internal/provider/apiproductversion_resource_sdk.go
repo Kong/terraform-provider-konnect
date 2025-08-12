@@ -35,23 +35,20 @@ func (r *APIProductVersionResourceModel) RefreshFromSharedAPIProductVersion(ctx 
 		}
 		r.Name = types.StringValue(resp.Name)
 		r.Portals = []tfTypes.APIProductVersionPortal{}
-		if len(r.Portals) > len(resp.Portals) {
-			r.Portals = r.Portals[:len(resp.Portals)]
-		}
-		for portalsCount, portalsItem := range resp.Portals {
+
+		for _, portalsItem := range resp.Portals {
 			var portals tfTypes.APIProductVersionPortal
+
 			portals.ApplicationRegistrationEnabled = types.BoolValue(portalsItem.ApplicationRegistrationEnabled)
 			portals.AuthStrategies = []tfTypes.APIProductVersionAuthStrategy{}
-			for authStrategiesCount, authStrategiesItem := range portalsItem.AuthStrategies {
+
+			for _, authStrategiesItem := range portalsItem.AuthStrategies {
 				var authStrategies tfTypes.APIProductVersionAuthStrategy
+
 				authStrategies.ID = types.StringValue(authStrategiesItem.ID)
 				authStrategies.Name = types.StringValue(authStrategiesItem.Name)
-				if authStrategiesCount+1 > len(portals.AuthStrategies) {
-					portals.AuthStrategies = append(portals.AuthStrategies, authStrategies)
-				} else {
-					portals.AuthStrategies[authStrategiesCount].ID = authStrategies.ID
-					portals.AuthStrategies[authStrategiesCount].Name = authStrategies.Name
-				}
+
+				portals.AuthStrategies = append(portals.AuthStrategies, authStrategies)
 			}
 			portals.AutoApproveRegistration = types.BoolValue(portalsItem.AutoApproveRegistration)
 			portals.Deprecated = types.BoolValue(portalsItem.Deprecated)
@@ -59,18 +56,8 @@ func (r *APIProductVersionResourceModel) RefreshFromSharedAPIProductVersion(ctx 
 			portals.PortalName = types.StringValue(portalsItem.PortalName)
 			portals.PortalProductVersionID = types.StringValue(portalsItem.PortalProductVersionID)
 			portals.PublishStatus = types.StringValue(string(portalsItem.PublishStatus))
-			if portalsCount+1 > len(r.Portals) {
-				r.Portals = append(r.Portals, portals)
-			} else {
-				r.Portals[portalsCount].ApplicationRegistrationEnabled = portals.ApplicationRegistrationEnabled
-				r.Portals[portalsCount].AuthStrategies = portals.AuthStrategies
-				r.Portals[portalsCount].AutoApproveRegistration = portals.AutoApproveRegistration
-				r.Portals[portalsCount].Deprecated = portals.Deprecated
-				r.Portals[portalsCount].PortalID = portals.PortalID
-				r.Portals[portalsCount].PortalName = portals.PortalName
-				r.Portals[portalsCount].PortalProductVersionID = portals.PortalProductVersionID
-				r.Portals[portalsCount].PublishStatus = portals.PublishStatus
-			}
+
+			r.Portals = append(r.Portals, portals)
 		}
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}

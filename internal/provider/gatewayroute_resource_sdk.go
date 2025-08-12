@@ -18,19 +18,14 @@ func (r *GatewayRouteResourceModel) RefreshFromSharedRouteJSON(ctx context.Conte
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		if resp.Destinations != nil {
 			r.Destinations = []tfTypes.PartialRedisEeClusterNodes{}
-			if len(r.Destinations) > len(resp.Destinations) {
-				r.Destinations = r.Destinations[:len(resp.Destinations)]
-			}
-			for destinationsCount, destinationsItem := range resp.Destinations {
+
+			for _, destinationsItem := range resp.Destinations {
 				var destinations tfTypes.PartialRedisEeClusterNodes
+
 				destinations.IP = types.StringPointerValue(destinationsItem.IP)
 				destinations.Port = types.Int64PointerValue(destinationsItem.Port)
-				if destinationsCount+1 > len(r.Destinations) {
-					r.Destinations = append(r.Destinations, destinations)
-				} else {
-					r.Destinations[destinationsCount].IP = destinations.IP
-					r.Destinations[destinationsCount].Port = destinations.Port
-				}
+
+				r.Destinations = append(r.Destinations, destinations)
 			}
 		}
 		if resp.Headers != nil {
@@ -99,19 +94,14 @@ func (r *GatewayRouteResourceModel) RefreshFromSharedRouteJSON(ctx context.Conte
 		}
 		if resp.Sources != nil {
 			r.Sources = []tfTypes.PartialRedisEeClusterNodes{}
-			if len(r.Sources) > len(resp.Sources) {
-				r.Sources = r.Sources[:len(resp.Sources)]
-			}
-			for sourcesCount, sourcesItem := range resp.Sources {
+
+			for _, sourcesItem := range resp.Sources {
 				var sources tfTypes.PartialRedisEeClusterNodes
+
 				sources.IP = types.StringPointerValue(sourcesItem.IP)
 				sources.Port = types.Int64PointerValue(sourcesItem.Port)
-				if sourcesCount+1 > len(r.Sources) {
-					r.Sources = append(r.Sources, sources)
-				} else {
-					r.Sources[sourcesCount].IP = sources.IP
-					r.Sources[sourcesCount].Port = sources.Port
-				}
+
+				r.Sources = append(r.Sources, sources)
 			}
 		}
 		r.StripPath = types.BoolPointerValue(resp.StripPath)

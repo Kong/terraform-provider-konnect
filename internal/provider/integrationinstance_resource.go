@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -38,7 +39,7 @@ type IntegrationInstanceResource struct {
 // IntegrationInstanceResourceModel describes the resource data model.
 type IntegrationInstanceResourceModel struct {
 	Authorized      types.Bool                            `tfsdk:"authorized"`
-	Config          types.String                          `tfsdk:"config"`
+	Config          jsontypes.Normalized                  `tfsdk:"config"`
 	CreatedAt       types.String                          `tfsdk:"created_at"`
 	Description     types.String                          `tfsdk:"description"`
 	DisplayName     types.String                          `tfsdk:"display_name"`
@@ -62,13 +63,11 @@ func (r *IntegrationInstanceResource) Schema(ctx context.Context, req resource.S
 				Description: `Denotes whether the integration instance has been authorized within the catalog.`,
 			},
 			"config": schema.StringAttribute{
-				Required: true,
+				CustomType: jsontypes.NormalizedType{},
+				Required:   true,
 				MarkdownDescription: `JSON object representing configuration specific to the integration instance.` + "\n" +
 					`The expected schema depends on the integration type and is dynamically registered at runtime.` + "\n" +
 					`Parsed as JSON.`,
-				Validators: []validator.String{
-					validators.IsValidJSON(),
-				},
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,

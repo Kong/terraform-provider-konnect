@@ -18,11 +18,10 @@ func (r *PortalProductVersionResourceModel) RefreshFromSharedPortalProductVersio
 	if resp != nil {
 		r.ApplicationRegistrationEnabled = types.BoolValue(resp.ApplicationRegistrationEnabled)
 		r.AuthStrategies = []tfTypes.AuthStrategy{}
-		if len(r.AuthStrategies) > len(resp.AuthStrategies) {
-			r.AuthStrategies = r.AuthStrategies[:len(resp.AuthStrategies)]
-		}
-		for authStrategiesCount, authStrategiesItem := range resp.AuthStrategies {
+
+		for _, authStrategiesItem := range resp.AuthStrategies {
 			var authStrategies tfTypes.AuthStrategy
+
 			if authStrategiesItem.AuthStrategyClientCredentials != nil {
 				authStrategies.ClientCredentials = &tfTypes.AuthStrategyClientCredentials{}
 				authStrategies.ClientCredentials.AuthMethods = make([]types.String, 0, len(authStrategiesItem.AuthStrategyClientCredentials.AuthMethods))
@@ -47,12 +46,8 @@ func (r *PortalProductVersionResourceModel) RefreshFromSharedPortalProductVersio
 				}
 				authStrategies.KeyAuth.Name = types.StringValue(authStrategiesItem.AuthStrategyKeyAuth.Name)
 			}
-			if authStrategiesCount+1 > len(r.AuthStrategies) {
-				r.AuthStrategies = append(r.AuthStrategies, authStrategies)
-			} else {
-				r.AuthStrategies[authStrategiesCount].ClientCredentials = authStrategies.ClientCredentials
-				r.AuthStrategies[authStrategiesCount].KeyAuth = authStrategies.KeyAuth
-			}
+
+			r.AuthStrategies = append(r.AuthStrategies, authStrategies)
 		}
 		r.AutoApproveRegistration = types.BoolValue(resp.AutoApproveRegistration)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))

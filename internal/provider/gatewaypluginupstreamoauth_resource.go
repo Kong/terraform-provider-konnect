@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -452,7 +453,7 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 							"token_headers": schema.MapAttribute{
 								Computed:    true,
 								Optional:    true,
-								ElementType: types.StringType,
+								ElementType: jsontypes.NormalizedType{},
 								Description: `Extra headers to be passed in the token endpoint request.`,
 								Validators: []validator.Map{
 									mapvalidator.ValueStringsAre(validators.IsValidJSON()),
@@ -461,7 +462,7 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 							"token_post_args": schema.MapAttribute{
 								Computed:    true,
 								Optional:    true,
-								ElementType: types.StringType,
+								ElementType: jsontypes.NormalizedType{},
 								Description: `Extra post arguments to be passed in the token endpoint request.`,
 								Validators: []validator.Map{
 									mapvalidator.ValueStringsAre(validators.IsValidJSON()),

@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
@@ -24,23 +25,18 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) RefreshFromSharedSolaceUpstre
 			r.Config.Message.DeliveryMode = types.StringNull()
 		}
 		r.Config.Message.Destinations = []tfTypes.SolaceUpstreamPluginDestinations{}
-		if len(r.Config.Message.Destinations) > len(resp.Config.Message.Destinations) {
-			r.Config.Message.Destinations = r.Config.Message.Destinations[:len(resp.Config.Message.Destinations)]
-		}
-		for destinationsCount, destinationsItem := range resp.Config.Message.Destinations {
+
+		for _, destinationsItem := range resp.Config.Message.Destinations {
 			var destinations tfTypes.SolaceUpstreamPluginDestinations
+
 			destinations.Name = types.StringValue(destinationsItem.Name)
 			if destinationsItem.Type != nil {
 				destinations.Type = types.StringValue(string(*destinationsItem.Type))
 			} else {
 				destinations.Type = types.StringNull()
 			}
-			if destinationsCount+1 > len(r.Config.Message.Destinations) {
-				r.Config.Message.Destinations = append(r.Config.Message.Destinations, destinations)
-			} else {
-				r.Config.Message.Destinations[destinationsCount].Name = destinations.Name
-				r.Config.Message.Destinations[destinationsCount].Type = destinations.Type
-			}
+
+			r.Config.Message.Destinations = append(r.Config.Message.Destinations, destinations)
 		}
 		r.Config.Message.DmqEligible = types.BoolPointerValue(resp.Config.Message.DmqEligible)
 		r.Config.Message.ForwardBody = types.BoolPointerValue(resp.Config.Message.ForwardBody)
@@ -75,10 +71,10 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) RefreshFromSharedSolaceUpstre
 		r.Config.Session.ConnectTimeout = types.Int64PointerValue(resp.Config.Session.ConnectTimeout)
 		r.Config.Session.Host = types.StringValue(resp.Config.Session.Host)
 		if len(resp.Config.Session.Properties) > 0 {
-			r.Config.Session.Properties = make(map[string]types.String, len(resp.Config.Session.Properties))
+			r.Config.Session.Properties = make(map[string]jsontypes.Normalized, len(resp.Config.Session.Properties))
 			for key, value := range resp.Config.Session.Properties {
 				result, _ := json.Marshal(value)
-				r.Config.Session.Properties[key] = types.StringValue(string(result))
+				r.Config.Session.Properties[key] = jsontypes.NewNormalizedValue(string(result))
 			}
 		}
 		r.Config.Session.SslValidateCertificate = types.BoolPointerValue(resp.Config.Session.SslValidateCertificate)
@@ -112,21 +108,15 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) RefreshFromSharedSolaceUpstre
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))

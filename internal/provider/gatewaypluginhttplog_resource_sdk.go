@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
@@ -22,18 +23,18 @@ func (r *GatewayPluginHTTPLogResourceModel) RefreshFromSharedHTTPLogPlugin(ctx c
 			r.Config.ContentType = types.StringNull()
 		}
 		if len(resp.Config.CustomFieldsByLua) > 0 {
-			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
+			r.Config.CustomFieldsByLua = make(map[string]jsontypes.Normalized, len(resp.Config.CustomFieldsByLua))
 			for key, value := range resp.Config.CustomFieldsByLua {
 				result, _ := json.Marshal(value)
-				r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
+				r.Config.CustomFieldsByLua[key] = jsontypes.NewNormalizedValue(string(result))
 			}
 		}
 		r.Config.FlushTimeout = types.Float64PointerValue(resp.Config.FlushTimeout)
 		if len(resp.Config.Headers) > 0 {
-			r.Config.Headers = make(map[string]types.String, len(resp.Config.Headers))
+			r.Config.Headers = make(map[string]jsontypes.Normalized, len(resp.Config.Headers))
 			for key1, value1 := range resp.Config.Headers {
 				result1, _ := json.Marshal(value1)
-				r.Config.Headers[key1] = types.StringValue(string(result1))
+				r.Config.Headers[key1] = jsontypes.NewNormalizedValue(string(result1))
 			}
 		}
 		r.Config.HTTPEndpoint = types.StringValue(resp.Config.HTTPEndpoint)
@@ -98,21 +99,15 @@ func (r *GatewayPluginHTTPLogResourceModel) RefreshFromSharedHTTPLogPlugin(ctx c
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))

@@ -20,19 +20,14 @@ func (r *GatewayPluginInjectionProtectionResourceModel) RefreshFromSharedInjecti
 		} else {
 			r.Config = &tfTypes.InjectionProtectionPluginConfig{}
 			r.Config.CustomInjections = []tfTypes.CustomInjections{}
-			if len(r.Config.CustomInjections) > len(resp.Config.CustomInjections) {
-				r.Config.CustomInjections = r.Config.CustomInjections[:len(resp.Config.CustomInjections)]
-			}
-			for customInjectionsCount, customInjectionsItem := range resp.Config.CustomInjections {
+
+			for _, customInjectionsItem := range resp.Config.CustomInjections {
 				var customInjections tfTypes.CustomInjections
+
 				customInjections.Name = types.StringValue(customInjectionsItem.Name)
 				customInjections.Regex = types.StringValue(customInjectionsItem.Regex)
-				if customInjectionsCount+1 > len(r.Config.CustomInjections) {
-					r.Config.CustomInjections = append(r.Config.CustomInjections, customInjections)
-				} else {
-					r.Config.CustomInjections[customInjectionsCount].Name = customInjections.Name
-					r.Config.CustomInjections[customInjectionsCount].Regex = customInjections.Regex
-				}
+
+				r.Config.CustomInjections = append(r.Config.CustomInjections, customInjections)
 			}
 			if resp.Config.EnforcementMode != nil {
 				r.Config.EnforcementMode = types.StringValue(string(*resp.Config.EnforcementMode))
@@ -79,21 +74,15 @@ func (r *GatewayPluginInjectionProtectionResourceModel) RefreshFromSharedInjecti
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))

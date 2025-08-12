@@ -45,19 +45,14 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 			r.RedisEe = &tfTypes.PartialRedisEe{}
 			r.RedisEe.Config.ClusterMaxRedirections = types.Int64PointerValue(resp.PartialRedisEe.Config.ClusterMaxRedirections)
 			r.RedisEe.Config.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
-			if len(r.RedisEe.Config.ClusterNodes) > len(resp.PartialRedisEe.Config.ClusterNodes) {
-				r.RedisEe.Config.ClusterNodes = r.RedisEe.Config.ClusterNodes[:len(resp.PartialRedisEe.Config.ClusterNodes)]
-			}
-			for clusterNodesCount, clusterNodesItem := range resp.PartialRedisEe.Config.ClusterNodes {
+
+			for _, clusterNodesItem := range resp.PartialRedisEe.Config.ClusterNodes {
 				var clusterNodes tfTypes.PartialRedisEeClusterNodes
+
 				clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 				clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
-				if clusterNodesCount+1 > len(r.RedisEe.Config.ClusterNodes) {
-					r.RedisEe.Config.ClusterNodes = append(r.RedisEe.Config.ClusterNodes, clusterNodes)
-				} else {
-					r.RedisEe.Config.ClusterNodes[clusterNodesCount].IP = clusterNodes.IP
-					r.RedisEe.Config.ClusterNodes[clusterNodesCount].Port = clusterNodes.Port
-				}
+
+				r.RedisEe.Config.ClusterNodes = append(r.RedisEe.Config.ClusterNodes, clusterNodes)
 			}
 			r.RedisEe.Config.ConnectTimeout = types.Int64PointerValue(resp.PartialRedisEe.Config.ConnectTimeout)
 			r.RedisEe.Config.ConnectionIsProxied = types.BoolPointerValue(resp.PartialRedisEe.Config.ConnectionIsProxied)
@@ -71,19 +66,14 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 			r.RedisEe.Config.SendTimeout = types.Int64PointerValue(resp.PartialRedisEe.Config.SendTimeout)
 			r.RedisEe.Config.SentinelMaster = types.StringPointerValue(resp.PartialRedisEe.Config.SentinelMaster)
 			r.RedisEe.Config.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
-			if len(r.RedisEe.Config.SentinelNodes) > len(resp.PartialRedisEe.Config.SentinelNodes) {
-				r.RedisEe.Config.SentinelNodes = r.RedisEe.Config.SentinelNodes[:len(resp.PartialRedisEe.Config.SentinelNodes)]
-			}
-			for sentinelNodesCount, sentinelNodesItem := range resp.PartialRedisEe.Config.SentinelNodes {
+
+			for _, sentinelNodesItem := range resp.PartialRedisEe.Config.SentinelNodes {
 				var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+
 				sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 				sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
-				if sentinelNodesCount+1 > len(r.RedisEe.Config.SentinelNodes) {
-					r.RedisEe.Config.SentinelNodes = append(r.RedisEe.Config.SentinelNodes, sentinelNodes)
-				} else {
-					r.RedisEe.Config.SentinelNodes[sentinelNodesCount].Host = sentinelNodes.Host
-					r.RedisEe.Config.SentinelNodes[sentinelNodesCount].Port = sentinelNodes.Port
-				}
+
+				r.RedisEe.Config.SentinelNodes = append(r.RedisEe.Config.SentinelNodes, sentinelNodes)
 			}
 			r.RedisEe.Config.SentinelPassword = types.StringPointerValue(resp.PartialRedisEe.Config.SentinelPassword)
 			if resp.PartialRedisEe.Config.SentinelRole != nil {

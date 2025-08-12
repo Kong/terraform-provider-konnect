@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -253,7 +254,7 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 							"properties": schema.MapAttribute{
 								Computed:    true,
 								Optional:    true,
-								ElementType: types.StringType,
+								ElementType: jsontypes.NormalizedType{},
 								Description: `Additional Solace session properties (each setting needs to have ` + "`" + `SESSION_` + "`" + ` prefix).`,
 								Validators: []validator.Map{
 									mapvalidator.ValueStringsAre(validators.IsValidJSON()),

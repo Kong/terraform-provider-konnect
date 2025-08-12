@@ -28,22 +28,17 @@ func (r *IntegrationInstanceAuthCredentialResourceModel) RefreshFromSharedIntegr
 			r.MultiKeyAuthCredential.IntegrationInstance.ID = types.StringValue(resp.MultiKeyAuthCredential.IntegrationInstance.ID)
 			r.MultiKeyAuthCredential.IntegrationInstance.Name = types.StringValue(resp.MultiKeyAuthCredential.IntegrationInstance.Name)
 			r.MultiKeyAuthCredential.MissingPermissions = []tfTypes.MissingPermission{}
-			if len(r.MultiKeyAuthCredential.MissingPermissions) > len(resp.MultiKeyAuthCredential.MissingPermissions) {
-				r.MultiKeyAuthCredential.MissingPermissions = r.MultiKeyAuthCredential.MissingPermissions[:len(resp.MultiKeyAuthCredential.MissingPermissions)]
-			}
-			for missingPermissionsCount, missingPermissionsItem := range resp.MultiKeyAuthCredential.MissingPermissions {
+
+			for _, missingPermissionsItem := range resp.MultiKeyAuthCredential.MissingPermissions {
 				var missingPermissions tfTypes.MissingPermission
+
 				missingPermissions.Message = types.StringValue(missingPermissionsItem.Message)
 				missingPermissions.Scopes = make([]types.String, 0, len(missingPermissionsItem.Scopes))
 				for _, v := range missingPermissionsItem.Scopes {
 					missingPermissions.Scopes = append(missingPermissions.Scopes, types.StringPointerValue(v))
 				}
-				if missingPermissionsCount+1 > len(r.MultiKeyAuthCredential.MissingPermissions) {
-					r.MultiKeyAuthCredential.MissingPermissions = append(r.MultiKeyAuthCredential.MissingPermissions, missingPermissions)
-				} else {
-					r.MultiKeyAuthCredential.MissingPermissions[missingPermissionsCount].Message = missingPermissions.Message
-					r.MultiKeyAuthCredential.MissingPermissions[missingPermissionsCount].Scopes = missingPermissions.Scopes
-				}
+
+				r.MultiKeyAuthCredential.MissingPermissions = append(r.MultiKeyAuthCredential.MissingPermissions, missingPermissions)
 			}
 			r.MultiKeyAuthCredential.Tainted = types.BoolValue(resp.MultiKeyAuthCredential.Tainted)
 			r.Tainted = r.MultiKeyAuthCredential.Tainted

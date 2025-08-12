@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
@@ -35,26 +36,21 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 			r.Config.Authentication.User = types.StringPointerValue(resp.Config.Authentication.User)
 		}
 		r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
-		if len(r.Config.BootstrapServers) > len(resp.Config.BootstrapServers) {
-			r.Config.BootstrapServers = r.Config.BootstrapServers[:len(resp.Config.BootstrapServers)]
-		}
-		for bootstrapServersCount, bootstrapServersItem := range resp.Config.BootstrapServers {
+
+		for _, bootstrapServersItem := range resp.Config.BootstrapServers {
 			var bootstrapServers tfTypes.BootstrapServers
+
 			bootstrapServers.Host = types.StringValue(bootstrapServersItem.Host)
 			bootstrapServers.Port = types.Int64Value(bootstrapServersItem.Port)
-			if bootstrapServersCount+1 > len(r.Config.BootstrapServers) {
-				r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
-			} else {
-				r.Config.BootstrapServers[bootstrapServersCount].Host = bootstrapServers.Host
-				r.Config.BootstrapServers[bootstrapServersCount].Port = bootstrapServers.Port
-			}
+
+			r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
 		}
 		r.Config.ClusterName = types.StringPointerValue(resp.Config.ClusterName)
 		if len(resp.Config.CustomFieldsByLua) > 0 {
-			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
+			r.Config.CustomFieldsByLua = make(map[string]jsontypes.Normalized, len(resp.Config.CustomFieldsByLua))
 			for key, value := range resp.Config.CustomFieldsByLua {
 				result, _ := json.Marshal(value)
-				r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
+				r.Config.CustomFieldsByLua[key] = jsontypes.NewNormalizedValue(string(result))
 			}
 		}
 		r.Config.Keepalive = types.Int64PointerValue(resp.Config.Keepalive)
@@ -156,21 +152,15 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))

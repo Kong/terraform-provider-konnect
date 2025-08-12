@@ -21,19 +21,14 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 			r.Config.AutoOffsetReset = types.StringNull()
 		}
 		r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
-		if len(r.Config.BootstrapServers) > len(resp.Config.BootstrapServers) {
-			r.Config.BootstrapServers = r.Config.BootstrapServers[:len(resp.Config.BootstrapServers)]
-		}
-		for bootstrapServersCount, bootstrapServersItem := range resp.Config.BootstrapServers {
+
+		for _, bootstrapServersItem := range resp.Config.BootstrapServers {
 			var bootstrapServers tfTypes.BootstrapServers
+
 			bootstrapServers.Host = types.StringValue(bootstrapServersItem.Host)
 			bootstrapServers.Port = types.Int64Value(bootstrapServersItem.Port)
-			if bootstrapServersCount+1 > len(r.Config.BootstrapServers) {
-				r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
-			} else {
-				r.Config.BootstrapServers[bootstrapServersCount].Host = bootstrapServers.Host
-				r.Config.BootstrapServers[bootstrapServersCount].Port = bootstrapServers.Port
-			}
+
+			r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
 		}
 		r.Config.ClusterAPIKey = types.StringValue(resp.Config.ClusterAPIKey)
 		r.Config.ClusterAPISecret = types.StringValue(resp.Config.ClusterAPISecret)
@@ -84,11 +79,10 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 		}
 		r.Config.Timeout = types.Int64PointerValue(resp.Config.Timeout)
 		r.Config.Topics = []tfTypes.Topics{}
-		if len(r.Config.Topics) > len(resp.Config.Topics) {
-			r.Config.Topics = r.Config.Topics[:len(resp.Config.Topics)]
-		}
-		for topicsCount, topicsItem := range resp.Config.Topics {
+
+		for _, topicsItem := range resp.Config.Topics {
 			var topics tfTypes.Topics
+
 			topics.Name = types.StringValue(topicsItem.Name)
 			if topicsItem.SchemaRegistry.Confluent == nil {
 				topics.SchemaRegistry.Confluent = nil
@@ -110,12 +104,8 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 				topics.SchemaRegistry.Confluent.TTL = types.Float64PointerValue(topicsItem.SchemaRegistry.Confluent.TTL)
 				topics.SchemaRegistry.Confluent.URL = types.StringPointerValue(topicsItem.SchemaRegistry.Confluent.URL)
 			}
-			if topicsCount+1 > len(r.Config.Topics) {
-				r.Config.Topics = append(r.Config.Topics, topics)
-			} else {
-				r.Config.Topics[topicsCount].Name = topics.Name
-				r.Config.Topics[topicsCount].SchemaRegistry = topics.SchemaRegistry
-			}
+
+			r.Config.Topics = append(r.Config.Topics, topics)
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -152,21 +142,15 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
