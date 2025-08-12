@@ -7,7 +7,7 @@ resource "konnect_catalog_service" "my_catalogservice" {
     "owner" : "MEE",
     "product_manager" : "Your Name",
     "dashboard" : {
-      "name" : "danny dashboard",
+      "name" : "Example Dashboard",
       "link" : "https://app.example.com/dashboard/123",
     },
     "git_repo" : {
