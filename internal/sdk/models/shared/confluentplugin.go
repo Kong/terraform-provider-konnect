@@ -629,8 +629,6 @@ func (o *ConfluentPluginService) GetID() *string {
 type ConfluentPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
-	// User-defined entity description. Konnect only field, not synced to the Gateway.
-	Description *string `json:"description,omitempty"`
 	// Whether the plugin is applied.
 	Enabled *bool `json:"enabled,omitempty"`
 	// A string representing a UUID (universally unique identifier).
@@ -672,13 +670,6 @@ func (o *ConfluentPlugin) GetCreatedAt() *int64 {
 		return nil
 	}
 	return o.CreatedAt
-}
-
-func (o *ConfluentPlugin) GetDescription() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Description
 }
 
 func (o *ConfluentPlugin) GetEnabled() *bool {

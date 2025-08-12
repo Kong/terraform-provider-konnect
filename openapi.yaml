@@ -32828,8 +32828,6 @@ components:
                       - preserve
                       - w3c
                     type: string
-              required:
-                - default_format
             queue:
               type: object
               properties:
@@ -33322,10 +33320,6 @@ components:
           description: Unix epoch when the resource was created.
           type: integer
           nullable: true
-        description:
-          description: 'User-defined entity description. Konnect only field, not synced to the Gateway.'
-          type: string
-          nullable: true
         enabled:
           description: Whether the plugin is applied.
           type: boolean
@@ -33385,24 +33379,6 @@ components:
           description: Unix epoch when the resource was last updated.
           type: integer
           nullable: true
-      example:
-        config:
-          anonymous: null
-          hide_credentials: false
-          key_in_body: false
-          key_in_header: true
-          key_in_query: true
-          key_names:
-            - apikey
-          run_on_preflight: true
-        enabled: true
-        id: 3fd1eea1-885a-4011-b986-289943ff8177
-        name: key-auth
-        protocols:
-          - grpc
-          - grpcs
-          - http
-          - https
       additionalProperties: false
       required:
         - name
@@ -39950,8 +39926,6 @@ components:
                       - preserve
                       - w3c
                     type: string
-              required:
-                - default_format
             queue:
               type: object
               properties:
@@ -40409,6 +40383,7 @@ components:
                   - Application Auth Strategies
                   - Audit Logs
                   - Control Planes
+                  - Dashboards
                   - DCR Providers
                   - Identity
                   - Mesh Control Planes

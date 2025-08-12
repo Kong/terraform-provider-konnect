@@ -108,7 +108,6 @@ resource "konnect_gateway_plugin_upstream_oauth" "my_gatewaypluginupstreamoauth"
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 5
-  description      = "...my_description..."
   enabled          = false
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
@@ -160,7 +159,6 @@ resource "konnect_gateway_plugin_upstream_oauth" "my_gatewaypluginupstreamoauth"
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `description` (String) User-defined entity description. Konnect only field, not synced to the Gateway.
 - `enabled` (Boolean) Whether the plugin is applied.
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.

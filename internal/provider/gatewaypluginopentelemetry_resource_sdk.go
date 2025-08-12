@@ -45,7 +45,11 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 				for _, v := range resp.Config.Propagation.Clear {
 					r.Config.Propagation.Clear = append(r.Config.Propagation.Clear, types.StringValue(v))
 				}
-				r.Config.Propagation.DefaultFormat = types.StringValue(string(resp.Config.Propagation.DefaultFormat))
+				if resp.Config.Propagation.DefaultFormat != nil {
+					r.Config.Propagation.DefaultFormat = types.StringValue(string(*resp.Config.Propagation.DefaultFormat))
+				} else {
+					r.Config.Propagation.DefaultFormat = types.StringNull()
+				}
 				r.Config.Propagation.Extract = make([]types.String, 0, len(resp.Config.Propagation.Extract))
 				for _, v := range resp.Config.Propagation.Extract {
 					r.Config.Propagation.Extract = append(r.Config.Propagation.Extract, types.StringValue(string(v)))
@@ -96,7 +100,6 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
@@ -259,12 +262,6 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 	} else {
 		createdAt = nil
 	}
-	description := new(string)
-	if !r.Description.IsUnknown() && !r.Description.IsNull() {
-		*description = r.Description.ValueString()
-	} else {
-		description = nil
-	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -402,7 +399,12 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 			for _, clearItem := range r.Config.Propagation.Clear {
 				clear = append(clear, clearItem.ValueString())
 			}
-			defaultFormat := shared.DefaultFormat(r.Config.Propagation.DefaultFormat.ValueString())
+			defaultFormat := new(shared.DefaultFormat)
+			if !r.Config.Propagation.DefaultFormat.IsUnknown() && !r.Config.Propagation.DefaultFormat.IsNull() {
+				*defaultFormat = shared.DefaultFormat(r.Config.Propagation.DefaultFormat.ValueString())
+			} else {
+				defaultFormat = nil
+			}
 			extract := make([]shared.Extract, 0, len(r.Config.Propagation.Extract))
 			for _, extractItem := range r.Config.Propagation.Extract {
 				extract = append(extract, shared.Extract(extractItem.ValueString()))
@@ -575,7 +577,6 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 	}
 	out := shared.OpentelemetryPlugin{
 		CreatedAt:    createdAt,
-		Description:  description,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,

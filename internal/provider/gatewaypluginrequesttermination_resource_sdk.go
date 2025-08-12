@@ -39,7 +39,6 @@ func (r *GatewayPluginRequestTerminationResourceModel) RefreshFromSharedRequestT
 			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
@@ -201,12 +200,6 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToSharedRequestTerminatio
 		*createdAt = r.CreatedAt.ValueInt64()
 	} else {
 		createdAt = nil
-	}
-	description := new(string)
-	if !r.Description.IsUnknown() && !r.Description.IsNull() {
-		*description = r.Description.ValueString()
-	} else {
-		description = nil
 	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
@@ -396,7 +389,6 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToSharedRequestTerminatio
 	}
 	out := shared.RequestTerminationPlugin{
 		CreatedAt:     createdAt,
-		Description:   description,
 		Enabled:       enabled,
 		ID:            id,
 		InstanceName:  instanceName,

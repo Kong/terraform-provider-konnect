@@ -30,7 +30,6 @@ func (r *GatewayPluginLdapAuthResourceModel) RefreshFromSharedLdapAuthPlugin(ctx
 		r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
 		r.Config.VerifyLdapHost = types.BoolPointerValue(resp.Config.VerifyLdapHost)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
@@ -192,12 +191,6 @@ func (r *GatewayPluginLdapAuthResourceModel) ToSharedLdapAuthPlugin(ctx context.
 		*createdAt = r.CreatedAt.ValueInt64()
 	} else {
 		createdAt = nil
-	}
-	description := new(string)
-	if !r.Description.IsUnknown() && !r.Description.IsNull() {
-		*description = r.Description.ValueString()
-	} else {
-		description = nil
 	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
@@ -407,7 +400,6 @@ func (r *GatewayPluginLdapAuthResourceModel) ToSharedLdapAuthPlugin(ctx context.
 	}
 	out := shared.LdapAuthPlugin{
 		CreatedAt:    createdAt,
-		Description:  description,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,

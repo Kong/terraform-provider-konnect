@@ -44,7 +44,6 @@ type GatewayPluginWebsocketValidatorResourceModel struct {
 	Consumer       *tfTypes.Set                            `tfsdk:"consumer"`
 	ControlPlaneID types.String                            `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                             `tfsdk:"created_at"`
-	Description    types.String                            `tfsdk:"description"`
 	Enabled        types.Bool                              `tfsdk:"enabled"`
 	ID             types.String                            `tfsdk:"id"`
 	InstanceName   types.String                            `tfsdk:"instance_name"`
@@ -200,11 +199,6 @@ func (r *GatewayPluginWebsocketValidatorResource) Schema(ctx context.Context, re
 				Computed:    true,
 				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
-			},
-			"description": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `User-defined entity description. Konnect only field, not synced to the Gateway.`,
 			},
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
