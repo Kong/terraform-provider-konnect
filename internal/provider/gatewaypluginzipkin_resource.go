@@ -46,7 +46,6 @@ type GatewayPluginZipkinResourceModel struct {
 	Consumer       *tfTypes.Set                `tfsdk:"consumer"`
 	ControlPlaneID types.String                `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                 `tfsdk:"created_at"`
-	Description    types.String                `tfsdk:"description"`
 	Enabled        types.Bool                  `tfsdk:"enabled"`
 	ID             types.String                `tfsdk:"id"`
 	InstanceName   types.String                `tfsdk:"instance_name"`
@@ -176,9 +175,8 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 							"default_format": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The default header format to use when extractors did not match any format in the incoming headers and ` + "`" + `inject` + "`" + ` is configured with the value: ` + "`" + `preserve` + "`" + `. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in ` + "`" + `extract` + "`" + `. Not Null; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c"]`,
+								Description: `The default header format to use when extractors did not match any format in the incoming headers and ` + "`" + `inject` + "`" + ` is configured with the value: ` + "`" + `preserve` + "`" + `. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in ` + "`" + `extract` + "`" + `. must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c"]`,
 								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.OneOf(
 										"aws",
 										"b3",
@@ -362,11 +360,6 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 				Computed:    true,
 				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
-			},
-			"description": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `User-defined entity description. Konnect only field, not synced to the Gateway.`,
 			},
 			"enabled": schema.BoolAttribute{
 				Computed:    true,

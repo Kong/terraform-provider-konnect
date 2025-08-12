@@ -27,7 +27,6 @@ resource "konnect_gateway_plugin_acl" "my_gatewaypluginacl" {
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 2
-  description      = "...my_description..."
   enabled          = false
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
@@ -77,7 +76,6 @@ resource "konnect_gateway_plugin_acl" "my_gatewaypluginacl" {
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `description` (String) User-defined entity description. Konnect only field, not synced to the Gateway.
 - `enabled` (Boolean) Whether the plugin is applied.
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.

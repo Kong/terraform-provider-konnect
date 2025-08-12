@@ -295,8 +295,6 @@ func (o *JqPluginService) GetID() *string {
 type JqPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
-	// User-defined entity description. Konnect only field, not synced to the Gateway.
-	Description *string `json:"description,omitempty"`
 	// Whether the plugin is applied.
 	Enabled *bool `json:"enabled,omitempty"`
 	// A string representing a UUID (universally unique identifier).
@@ -338,13 +336,6 @@ func (o *JqPlugin) GetCreatedAt() *int64 {
 		return nil
 	}
 	return o.CreatedAt
-}
-
-func (o *JqPlugin) GetDescription() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Description
 }
 
 func (o *JqPlugin) GetEnabled() *bool {

@@ -277,7 +277,7 @@ type Propagation struct {
 	// Header names to clear after context extraction. This allows to extract the context from a certain header and then remove it from the request, useful when extraction and injection are performed on different header formats and the original header should not be sent to the upstream. If left empty, no headers are cleared.
 	Clear []string `json:"clear,omitempty"`
 	// The default header format to use when extractors did not match any format in the incoming headers and `inject` is configured with the value: `preserve`. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in `extract`.
-	DefaultFormat DefaultFormat `json:"default_format"`
+	DefaultFormat *DefaultFormat `json:"default_format,omitempty"`
 	// Header formats used to extract tracing context from incoming requests. If multiple values are specified, the first one found will be used for extraction. If left empty, Kong will not extract any tracing context information from incoming requests and generate a trace with no parent and a new trace ID.
 	Extract []Extract `json:"extract,omitempty"`
 	// Header formats used to inject tracing context. The value `preserve` will use the same header format as the incoming request. If multiple values are specified, all of them will be used during injection. If left empty, Kong will not inject any tracing context information in outgoing requests.
@@ -291,9 +291,9 @@ func (o *Propagation) GetClear() []string {
 	return o.Clear
 }
 
-func (o *Propagation) GetDefaultFormat() DefaultFormat {
+func (o *Propagation) GetDefaultFormat() *DefaultFormat {
 	if o == nil {
-		return DefaultFormat("")
+		return nil
 	}
 	return o.DefaultFormat
 }
@@ -646,8 +646,6 @@ func (o *OpentelemetryPluginService) GetID() *string {
 type OpentelemetryPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
-	// User-defined entity description. Konnect only field, not synced to the Gateway.
-	Description *string `json:"description,omitempty"`
 	// Whether the plugin is applied.
 	Enabled *bool `json:"enabled,omitempty"`
 	// A string representing a UUID (universally unique identifier).
@@ -689,13 +687,6 @@ func (o *OpentelemetryPlugin) GetCreatedAt() *int64 {
 		return nil
 	}
 	return o.CreatedAt
-}
-
-func (o *OpentelemetryPlugin) GetDescription() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Description
 }
 
 func (o *OpentelemetryPlugin) GetEnabled() *bool {

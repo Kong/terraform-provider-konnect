@@ -84,7 +84,7 @@ func (r *TeamRoleResource) Schema(ctx context.Context, req resource.SchemaReques
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The type of entity. must be one of ["APIs", "API Products", "Application Auth Strategies", "Audit Logs", "Control Planes", "DCR Providers", "Identity", "Mesh Control Planes", "Networks", "Portals", "Service Hub"]; Requires replacement if changed.`,
+				Description: `The type of entity. must be one of ["APIs", "API Products", "Application Auth Strategies", "Audit Logs", "Control Planes", "Dashboards", "DCR Providers", "Identity", "Mesh Control Planes", "Networks", "Portals", "Service Hub"]; Requires replacement if changed.`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"APIs",
@@ -92,6 +92,7 @@ func (r *TeamRoleResource) Schema(ctx context.Context, req resource.SchemaReques
 						"Application Auth Strategies",
 						"Audit Logs",
 						"Control Planes",
+						"Dashboards",
 						"DCR Providers",
 						"Identity",
 						"Mesh Control Planes",
