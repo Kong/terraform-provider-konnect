@@ -37,7 +37,7 @@ resource "konnect_api_product_version" "my_apiproductversion" {
 
 ### Optional
 
-- `deprecated` (Boolean, Deprecated) Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead.
+- `deprecated` (Boolean, Deprecated) Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead. Default: false
 - `gateway_service` (Attributes) (see [below for nested schema](#nestedatt--gateway_service))
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
@@ -53,10 +53,10 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 <a id="nestedatt--gateway_service"></a>
 ### Nested Schema for `gateway_service`
 
-Optional:
+Required:
 
-- `control_plane_id` (String) The identifier of the control plane that the gateway service resides in. Not Null
-- `id` (String) The identifier of a gateway service associated with the version of the API product. Not Null
+- `control_plane_id` (String) The identifier of the control plane that the gateway service resides in
+- `id` (String) The identifier of a gateway service associated with the version of the API product.
 
 Read-Only:
 

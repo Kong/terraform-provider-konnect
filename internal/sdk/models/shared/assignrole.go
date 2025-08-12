@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
 // RoleName - The desired role.
@@ -228,11 +229,22 @@ type AssignRole struct {
 	// The desired role.
 	RoleName *RoleName `json:"role_name,omitempty"`
 	// The ID of the entity.
-	EntityID *string `json:"entity_id,omitempty"`
+	EntityID *string `default:"null" json:"entity_id"`
 	// The type of entity.
 	EntityTypeName *EntityTypeName `json:"entity_type_name,omitempty"`
 	// Region of the team.
 	EntityRegion *EntityRegion `json:"entity_region,omitempty"`
+}
+
+func (a AssignRole) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AssignRole) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AssignRole) GetRoleName() *RoleName {

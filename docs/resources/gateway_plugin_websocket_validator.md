@@ -91,19 +91,16 @@ resource "konnect_gateway_plugin_websocket_validator" "my_gatewaypluginwebsocket
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
-- `instance_name` (String)
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
+- `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
 - `protocols` (Set of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
-
-### Read-Only
-
-- `id` (String) The ID of this resource.
 
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
@@ -124,19 +121,19 @@ Optional:
 <a id="nestedatt--config--client--binary"></a>
 ### Nested Schema for `config.client.binary`
 
-Optional:
+Required:
 
-- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`. Not Null
-- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. Not Null; must be "draft4"
+- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`.
+- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. must be "draft4"
 
 
 <a id="nestedatt--config--client--text"></a>
 ### Nested Schema for `config.client.text`
 
-Optional:
+Required:
 
-- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`. Not Null
-- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. Not Null; must be "draft4"
+- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`.
+- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. must be "draft4"
 
 
 
@@ -151,19 +148,19 @@ Optional:
 <a id="nestedatt--config--upstream--binary"></a>
 ### Nested Schema for `config.upstream.binary`
 
-Optional:
+Required:
 
-- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`. Not Null
-- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. Not Null; must be "draft4"
+- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`.
+- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. must be "draft4"
 
 
 <a id="nestedatt--config--upstream--text"></a>
 ### Nested Schema for `config.upstream.text`
 
-Optional:
+Required:
 
-- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`. Not Null
-- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. Not Null; must be "draft4"
+- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`.
+- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. must be "draft4"
 
 
 
@@ -206,8 +203,8 @@ Optional:
 
 Optional:
 
-- `id` (String)
-- `name` (String)
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `name` (String) A unique string representing a UTF-8 encoded name.
 - `path` (String)
 
 

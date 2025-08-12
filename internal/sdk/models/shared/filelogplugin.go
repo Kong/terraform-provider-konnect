@@ -6,10 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type FileLogPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *FileLogPluginAfter) GetAccess() []string {
@@ -20,7 +21,7 @@ func (o *FileLogPluginAfter) GetAccess() []string {
 }
 
 type FileLogPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *FileLogPluginBefore) GetAccess() []string {
@@ -31,8 +32,8 @@ func (o *FileLogPluginBefore) GetAccess() []string {
 }
 
 type FileLogPluginOrdering struct {
-	After  *FileLogPluginAfter  `json:"after,omitempty"`
-	Before *FileLogPluginBefore `json:"before,omitempty"`
+	After  *FileLogPluginAfter  `json:"after"`
+	Before *FileLogPluginBefore `json:"before"`
 }
 
 func (o *FileLogPluginOrdering) GetAfter() *FileLogPluginAfter {
@@ -50,9 +51,22 @@ func (o *FileLogPluginOrdering) GetBefore() *FileLogPluginBefore {
 }
 
 type FileLogPluginPartials struct {
-	ID   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (f FileLogPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *FileLogPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *FileLogPluginPartials) GetID() *string {
@@ -82,7 +96,18 @@ type FileLogPluginConfig struct {
 	// The file path of the output log file. The plugin creates the log file if it doesn't exist yet.
 	Path string `json:"path"`
 	// Determines whether the log file is closed and reopened on every request.
-	Reopen *bool `json:"reopen,omitempty"`
+	Reopen *bool `default:"false" json:"reopen"`
+}
+
+func (f FileLogPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *FileLogPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *FileLogPluginConfig) GetCustomFieldsByLua() map[string]any {
@@ -198,21 +223,24 @@ type FileLogPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                   `json:"enabled,omitempty"`
-	ID           *string                 `json:"id,omitempty"`
-	InstanceName *string                 `json:"instance_name,omitempty"`
-	name         string                  `const:"file-log" json:"name"`
-	Ordering     *FileLogPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []FileLogPluginPartials `json:"partials,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string                `default:"null" json:"instance_name"`
+	name         *string                `const:"file-log" json:"name"`
+	Ordering     *FileLogPluginOrdering `json:"ordering"`
+	// A list of partials to be used by the plugin.
+	Partials []FileLogPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64              `json:"updated_at,omitempty"`
 	Config    FileLogPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *FileLogPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
-	Protocols []FileLogPluginProtocols `json:"protocols,omitempty"`
+	Protocols []FileLogPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *FileLogPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -258,8 +286,8 @@ func (o *FileLogPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *FileLogPlugin) GetName() string {
-	return "file-log"
+func (o *FileLogPlugin) GetName() *string {
+	return types.String("file-log")
 }
 
 func (o *FileLogPlugin) GetOrdering() *FileLogPluginOrdering {

@@ -6,10 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type StandardWebhooksPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *StandardWebhooksPluginAfter) GetAccess() []string {
@@ -20,7 +21,7 @@ func (o *StandardWebhooksPluginAfter) GetAccess() []string {
 }
 
 type StandardWebhooksPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *StandardWebhooksPluginBefore) GetAccess() []string {
@@ -31,8 +32,8 @@ func (o *StandardWebhooksPluginBefore) GetAccess() []string {
 }
 
 type StandardWebhooksPluginOrdering struct {
-	After  *StandardWebhooksPluginAfter  `json:"after,omitempty"`
-	Before *StandardWebhooksPluginBefore `json:"before,omitempty"`
+	After  *StandardWebhooksPluginAfter  `json:"after"`
+	Before *StandardWebhooksPluginBefore `json:"before"`
 }
 
 func (o *StandardWebhooksPluginOrdering) GetAfter() *StandardWebhooksPluginAfter {
@@ -50,9 +51,22 @@ func (o *StandardWebhooksPluginOrdering) GetBefore() *StandardWebhooksPluginBefo
 }
 
 type StandardWebhooksPluginPartials struct {
-	ID   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (s StandardWebhooksPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StandardWebhooksPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *StandardWebhooksPluginPartials) GetID() *string {
@@ -80,7 +94,18 @@ type StandardWebhooksPluginConfig struct {
 	// Webhook secret
 	SecretV1 string `json:"secret_v1"`
 	// Tolerance of the webhook timestamp in seconds. If the webhook timestamp is older than this number of seconds, it will be rejected with a '400' response.
-	ToleranceSecond *int64 `json:"tolerance_second,omitempty"`
+	ToleranceSecond *int64 `default:"300" json:"tolerance_second"`
+}
+
+func (s StandardWebhooksPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StandardWebhooksPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *StandardWebhooksPluginConfig) GetSecretV1() string {
@@ -170,21 +195,24 @@ type StandardWebhooksPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                            `json:"enabled,omitempty"`
-	ID           *string                          `json:"id,omitempty"`
-	InstanceName *string                          `json:"instance_name,omitempty"`
-	name         string                           `const:"standard-webhooks" json:"name"`
-	Ordering     *StandardWebhooksPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []StandardWebhooksPluginPartials `json:"partials,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string                         `default:"null" json:"instance_name"`
+	name         *string                         `const:"standard-webhooks" json:"name"`
+	Ordering     *StandardWebhooksPluginOrdering `json:"ordering"`
+	// A list of partials to be used by the plugin.
+	Partials []StandardWebhooksPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                       `json:"updated_at,omitempty"`
 	Config    StandardWebhooksPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *StandardWebhooksPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
-	Protocols []StandardWebhooksPluginProtocols `json:"protocols,omitempty"`
+	Protocols []StandardWebhooksPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *StandardWebhooksPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -230,8 +258,8 @@ func (o *StandardWebhooksPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *StandardWebhooksPlugin) GetName() string {
-	return "standard-webhooks"
+func (o *StandardWebhooksPlugin) GetName() *string {
+	return types.String("standard-webhooks")
 }
 
 func (o *StandardWebhooksPlugin) GetOrdering() *StandardWebhooksPluginOrdering {

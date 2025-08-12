@@ -2,26 +2,41 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+)
+
 // PortalAuthenticationSettingsUpdateRequest - Properties to update a portal's developer auth settings.
 type PortalAuthenticationSettingsUpdateRequest struct {
 	// The organization has basic auth enabled.
-	BasicAuthEnabled *bool `json:"basic_auth_enabled,omitempty"`
+	BasicAuthEnabled *bool `default:"null" json:"basic_auth_enabled"`
 	// The organization has OIDC disabled.
-	OidcAuthEnabled *bool `json:"oidc_auth_enabled,omitempty"`
+	OidcAuthEnabled *bool `default:"null" json:"oidc_auth_enabled"`
 	// The portal has SAML enabled or disabled.
-	SamlAuthEnabled *bool `json:"saml_auth_enabled,omitempty"`
+	SamlAuthEnabled *bool `default:"null" json:"saml_auth_enabled"`
 	// Whether IdP groups determine the Konnect Portal teams a developer has.
-	OidcTeamMappingEnabled *bool `json:"oidc_team_mapping_enabled,omitempty"`
+	OidcTeamMappingEnabled *bool `default:"null" json:"oidc_team_mapping_enabled"`
 	// Whether a Konnect Identity Admin assigns teams to a developer.
-	KonnectMappingEnabled *bool `json:"konnect_mapping_enabled,omitempty"`
+	KonnectMappingEnabled *bool `default:"null" json:"konnect_mapping_enabled"`
 	// Whether IdP groups determine the Konnect Portal teams a developer has. This will soon replace oidc_team_mapping_enabled.
-	IdpMappingEnabled *bool    `json:"idp_mapping_enabled,omitempty"`
-	OidcIssuer        *string  `json:"oidc_issuer,omitempty"`
-	OidcClientID      *string  `json:"oidc_client_id,omitempty"`
-	OidcClientSecret  *string  `json:"oidc_client_secret,omitempty"`
+	IdpMappingEnabled *bool    `default:"null" json:"idp_mapping_enabled"`
+	OidcIssuer        *string  `default:"null" json:"oidc_issuer"`
+	OidcClientID      *string  `default:"null" json:"oidc_client_id"`
+	OidcClientSecret  *string  `default:"null" json:"oidc_client_secret"`
 	OidcScopes        []string `json:"oidc_scopes,omitempty"`
 	// Mappings from a portal developer atribute to an Identity Provider claim.
 	OidcClaimMappings *PortalClaimMappings `json:"oidc_claim_mappings,omitempty"`
+}
+
+func (p PortalAuthenticationSettingsUpdateRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PortalAuthenticationSettingsUpdateRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *PortalAuthenticationSettingsUpdateRequest) GetBasicAuthEnabled() *bool {

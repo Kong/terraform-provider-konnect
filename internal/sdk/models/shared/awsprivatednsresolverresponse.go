@@ -10,10 +10,21 @@ import (
 // AwsPrivateDNSResolverResponsePrivateDNSStateMetadata - Metadata describing the backing state of the Private Dns and why it may be in an erroneous state.
 type AwsPrivateDNSResolverResponsePrivateDNSStateMetadata struct {
 	// Reported status of the Private Dns from backing infrastructure.
-	ReportedStatus *string `json:"reported_status,omitempty"`
+	ReportedStatus *string `default:"null" json:"reported_status"`
 	// Reason why the Private Dns may be in an erroneous state, reported from backing infrastructure.
 	//
-	Reason *string `json:"reason,omitempty"`
+	Reason *string `default:"null" json:"reason"`
+}
+
+func (a AwsPrivateDNSResolverResponsePrivateDNSStateMetadata) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AwsPrivateDNSResolverResponsePrivateDNSStateMetadata) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AwsPrivateDNSResolverResponsePrivateDNSStateMetadata) GetReportedStatus() *string {

@@ -6,10 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type RequestTerminationPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *RequestTerminationPluginAfter) GetAccess() []string {
@@ -20,7 +21,7 @@ func (o *RequestTerminationPluginAfter) GetAccess() []string {
 }
 
 type RequestTerminationPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *RequestTerminationPluginBefore) GetAccess() []string {
@@ -31,8 +32,8 @@ func (o *RequestTerminationPluginBefore) GetAccess() []string {
 }
 
 type RequestTerminationPluginOrdering struct {
-	After  *RequestTerminationPluginAfter  `json:"after,omitempty"`
-	Before *RequestTerminationPluginBefore `json:"before,omitempty"`
+	After  *RequestTerminationPluginAfter  `json:"after"`
+	Before *RequestTerminationPluginBefore `json:"before"`
 }
 
 func (o *RequestTerminationPluginOrdering) GetAfter() *RequestTerminationPluginAfter {
@@ -50,9 +51,22 @@ func (o *RequestTerminationPluginOrdering) GetBefore() *RequestTerminationPlugin
 }
 
 type RequestTerminationPluginPartials struct {
-	ID   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (r RequestTerminationPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestTerminationPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestTerminationPluginPartials) GetID() *string {
@@ -78,17 +92,28 @@ func (o *RequestTerminationPluginPartials) GetPath() *string {
 
 type RequestTerminationPluginConfig struct {
 	// The raw response body to send. This is mutually exclusive with the `config.message` field.
-	Body *string `json:"body,omitempty"`
+	Body *string `default:"null" json:"body"`
 	// Content type of the raw response configured with `config.body`.
-	ContentType *string `json:"content_type,omitempty"`
+	ContentType *string `default:"null" json:"content_type"`
 	// When set, the plugin will echo a copy of the request back to the client. The main usecase for this is debugging. It can be combined with `trigger` in order to debug requests on live systems without disturbing real traffic.
-	Echo *bool `json:"echo,omitempty"`
+	Echo *bool `default:"false" json:"echo"`
 	// The message to send, if using the default response generator.
-	Message *string `json:"message,omitempty"`
+	Message *string `default:"null" json:"message"`
 	// The response code to send. Must be an integer between 100 and 599.
-	StatusCode *int64 `json:"status_code,omitempty"`
+	StatusCode *int64 `default:"503" json:"status_code"`
 	// A string representing an HTTP header name.
-	Trigger *string `json:"trigger,omitempty"`
+	Trigger *string `default:"null" json:"trigger"`
+}
+
+func (r RequestTerminationPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestTerminationPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestTerminationPluginConfig) GetBody() *string {
@@ -218,23 +243,26 @@ type RequestTerminationPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                              `json:"enabled,omitempty"`
-	ID           *string                            `json:"id,omitempty"`
-	InstanceName *string                            `json:"instance_name,omitempty"`
-	name         string                             `const:"request-termination" json:"name"`
-	Ordering     *RequestTerminationPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []RequestTerminationPluginPartials `json:"partials,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string                           `default:"null" json:"instance_name"`
+	name         *string                           `const:"request-termination" json:"name"`
+	Ordering     *RequestTerminationPluginOrdering `json:"ordering"`
+	// A list of partials to be used by the plugin.
+	Partials []RequestTerminationPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                          `json:"updated_at,omitempty"`
-	Config    *RequestTerminationPluginConfig `json:"config,omitempty"`
+	Config    *RequestTerminationPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *RequestTerminationPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *RequestTerminationPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
-	Protocols []RequestTerminationPluginProtocols `json:"protocols,omitempty"`
+	Protocols []RequestTerminationPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *RequestTerminationPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -280,8 +308,8 @@ func (o *RequestTerminationPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *RequestTerminationPlugin) GetName() string {
-	return "request-termination"
+func (o *RequestTerminationPlugin) GetName() *string {
+	return types.String("request-termination")
 }
 
 func (o *RequestTerminationPlugin) GetOrdering() *RequestTerminationPluginOrdering {

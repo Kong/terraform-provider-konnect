@@ -2,12 +2,27 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+)
+
 // UpdateSystemAccount - The request schema for the update system account request.
 type UpdateSystemAccount struct {
 	// Name of the system account.
-	Name *string `json:"name,omitempty"`
+	Name *string `default:"null" json:"name"`
 	// Description of the system account.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"null" json:"description"`
+}
+
+func (u UpdateSystemAccount) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateSystemAccount) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpdateSystemAccount) GetName() *string {

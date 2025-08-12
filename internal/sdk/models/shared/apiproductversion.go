@@ -15,9 +15,20 @@ type GatewayService struct {
 	// This field is deprecated, please use `control_plane_id` instead. The identifier of the control plane that the gateway service resides in
 	//
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
-	RuntimeGroupID *string `json:"runtime_group_id,omitempty"`
+	RuntimeGroupID *string `default:"null" json:"runtime_group_id"`
 	// The identifier of the control plane that the gateway service resides in
 	ControlPlaneID string `json:"control_plane_id"`
+}
+
+func (g GatewayService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GatewayService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *GatewayService) GetID() *string {

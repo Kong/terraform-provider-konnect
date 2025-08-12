@@ -6,10 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type RouteTransformerAdvancedPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *RouteTransformerAdvancedPluginAfter) GetAccess() []string {
@@ -20,7 +21,7 @@ func (o *RouteTransformerAdvancedPluginAfter) GetAccess() []string {
 }
 
 type RouteTransformerAdvancedPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *RouteTransformerAdvancedPluginBefore) GetAccess() []string {
@@ -31,8 +32,8 @@ func (o *RouteTransformerAdvancedPluginBefore) GetAccess() []string {
 }
 
 type RouteTransformerAdvancedPluginOrdering struct {
-	After  *RouteTransformerAdvancedPluginAfter  `json:"after,omitempty"`
-	Before *RouteTransformerAdvancedPluginBefore `json:"before,omitempty"`
+	After  *RouteTransformerAdvancedPluginAfter  `json:"after"`
+	Before *RouteTransformerAdvancedPluginBefore `json:"before"`
 }
 
 func (o *RouteTransformerAdvancedPluginOrdering) GetAfter() *RouteTransformerAdvancedPluginAfter {
@@ -50,9 +51,22 @@ func (o *RouteTransformerAdvancedPluginOrdering) GetBefore() *RouteTransformerAd
 }
 
 type RouteTransformerAdvancedPluginPartials struct {
-	ID   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (r RouteTransformerAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteTransformerAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RouteTransformerAdvancedPluginPartials) GetID() *string {
@@ -77,10 +91,21 @@ func (o *RouteTransformerAdvancedPluginPartials) GetPath() *string {
 }
 
 type RouteTransformerAdvancedPluginConfig struct {
-	EscapePath *bool   `json:"escape_path,omitempty"`
-	Host       *string `json:"host,omitempty"`
-	Path       *string `json:"path,omitempty"`
-	Port       *string `json:"port,omitempty"`
+	EscapePath *bool   `default:"false" json:"escape_path"`
+	Host       *string `default:"null" json:"host"`
+	Path       *string `default:"null" json:"path"`
+	Port       *string `default:"null" json:"port"`
+}
+
+func (r RouteTransformerAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteTransformerAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RouteTransformerAdvancedPluginConfig) GetEscapePath() *bool {
@@ -184,21 +209,24 @@ type RouteTransformerAdvancedPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                                    `json:"enabled,omitempty"`
-	ID           *string                                  `json:"id,omitempty"`
-	InstanceName *string                                  `json:"instance_name,omitempty"`
-	name         string                                   `const:"route-transformer-advanced" json:"name"`
-	Ordering     *RouteTransformerAdvancedPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []RouteTransformerAdvancedPluginPartials `json:"partials,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string                                 `default:"null" json:"instance_name"`
+	name         *string                                 `const:"route-transformer-advanced" json:"name"`
+	Ordering     *RouteTransformerAdvancedPluginOrdering `json:"ordering"`
+	// A list of partials to be used by the plugin.
+	Partials []RouteTransformerAdvancedPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                                `json:"updated_at,omitempty"`
-	Config    *RouteTransformerAdvancedPluginConfig `json:"config,omitempty"`
+	Config    *RouteTransformerAdvancedPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *RouteTransformerAdvancedPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
-	Protocols []RouteTransformerAdvancedPluginProtocols `json:"protocols,omitempty"`
+	Protocols []RouteTransformerAdvancedPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *RouteTransformerAdvancedPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -244,8 +272,8 @@ func (o *RouteTransformerAdvancedPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *RouteTransformerAdvancedPlugin) GetName() string {
-	return "route-transformer-advanced"
+func (o *RouteTransformerAdvancedPlugin) GetName() *string {
+	return types.String("route-transformer-advanced")
 }
 
 func (o *RouteTransformerAdvancedPlugin) GetOrdering() *RouteTransformerAdvancedPluginOrdering {

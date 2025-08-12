@@ -6,10 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type AiPromptDecoratorPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiPromptDecoratorPluginAfter) GetAccess() []string {
@@ -20,7 +21,7 @@ func (o *AiPromptDecoratorPluginAfter) GetAccess() []string {
 }
 
 type AiPromptDecoratorPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiPromptDecoratorPluginBefore) GetAccess() []string {
@@ -31,8 +32,8 @@ func (o *AiPromptDecoratorPluginBefore) GetAccess() []string {
 }
 
 type AiPromptDecoratorPluginOrdering struct {
-	After  *AiPromptDecoratorPluginAfter  `json:"after,omitempty"`
-	Before *AiPromptDecoratorPluginBefore `json:"before,omitempty"`
+	After  *AiPromptDecoratorPluginAfter  `json:"after"`
+	Before *AiPromptDecoratorPluginBefore `json:"before"`
 }
 
 func (o *AiPromptDecoratorPluginOrdering) GetAfter() *AiPromptDecoratorPluginAfter {
@@ -50,9 +51,22 @@ func (o *AiPromptDecoratorPluginOrdering) GetBefore() *AiPromptDecoratorPluginBe
 }
 
 type AiPromptDecoratorPluginPartials struct {
-	ID   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (a AiPromptDecoratorPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptDecoratorPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiPromptDecoratorPluginPartials) GetID() *string {
@@ -143,7 +157,18 @@ func (e *Role) UnmarshalJSON(data []byte) error {
 
 type AiPromptDecoratorPluginAppend struct {
 	Content string `json:"content"`
-	Role    *Role  `json:"role,omitempty"`
+	Role    *Role  `default:"system" json:"role"`
+}
+
+func (a AiPromptDecoratorPluginAppend) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptDecoratorPluginAppend) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiPromptDecoratorPluginAppend) GetContent() string {
@@ -191,7 +216,18 @@ func (e *AiPromptDecoratorPluginRole) UnmarshalJSON(data []byte) error {
 
 type Prepend struct {
 	Content string                       `json:"content"`
-	Role    *AiPromptDecoratorPluginRole `json:"role,omitempty"`
+	Role    *AiPromptDecoratorPluginRole `default:"system" json:"role"`
+}
+
+func (p Prepend) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *Prepend) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Prepend) GetContent() string {
@@ -210,9 +246,9 @@ func (o *Prepend) GetRole() *AiPromptDecoratorPluginRole {
 
 type Prompts struct {
 	// Insert chat messages at the end of the chat message array. This array preserves exact order when adding messages.
-	Append []AiPromptDecoratorPluginAppend `json:"append,omitempty"`
+	Append []AiPromptDecoratorPluginAppend `json:"append"`
 	// Insert chat messages at the beginning of the chat message array. This array preserves exact order when adding messages.
-	Prepend []Prepend `json:"prepend,omitempty"`
+	Prepend []Prepend `json:"prepend"`
 }
 
 func (o *Prompts) GetAppend() []AiPromptDecoratorPluginAppend {
@@ -231,10 +267,21 @@ func (o *Prompts) GetPrepend() []Prepend {
 
 type AiPromptDecoratorPluginConfig struct {
 	// LLM input and output format and schema to use
-	LlmFormat *LlmFormat `json:"llm_format,omitempty"`
+	LlmFormat *LlmFormat `default:"openai" json:"llm_format"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
-	MaxRequestBodySize *int64   `json:"max_request_body_size,omitempty"`
-	Prompts            *Prompts `json:"prompts,omitempty"`
+	MaxRequestBodySize *int64   `default:"8192" json:"max_request_body_size"`
+	Prompts            *Prompts `json:"prompts"`
+}
+
+func (a AiPromptDecoratorPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptDecoratorPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiPromptDecoratorPluginConfig) GetLlmFormat() *LlmFormat {
@@ -343,23 +390,26 @@ type AiPromptDecoratorPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                             `json:"enabled,omitempty"`
-	ID           *string                           `json:"id,omitempty"`
-	InstanceName *string                           `json:"instance_name,omitempty"`
-	name         string                            `const:"ai-prompt-decorator" json:"name"`
-	Ordering     *AiPromptDecoratorPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []AiPromptDecoratorPluginPartials `json:"partials,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string                          `default:"null" json:"instance_name"`
+	name         *string                          `const:"ai-prompt-decorator" json:"name"`
+	Ordering     *AiPromptDecoratorPluginOrdering `json:"ordering"`
+	// A list of partials to be used by the plugin.
+	Partials []AiPromptDecoratorPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                         `json:"updated_at,omitempty"`
-	Config    *AiPromptDecoratorPluginConfig `json:"config,omitempty"`
+	Config    *AiPromptDecoratorPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *AiPromptDecoratorPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *AiPromptDecoratorPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
-	Protocols []AiPromptDecoratorPluginProtocols `json:"protocols,omitempty"`
+	Protocols []AiPromptDecoratorPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *AiPromptDecoratorPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -405,8 +455,8 @@ func (o *AiPromptDecoratorPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *AiPromptDecoratorPlugin) GetName() string {
-	return "ai-prompt-decorator"
+func (o *AiPromptDecoratorPlugin) GetName() *string {
+	return types.String("ai-prompt-decorator")
 }
 
 func (o *AiPromptDecoratorPlugin) GetOrdering() *AiPromptDecoratorPluginOrdering {

@@ -11,8 +11,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -65,19 +67,23 @@ func (r *GatewayPluginGrpcWebResource) Schema(ctx context.Context, req resource.
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"allow_origin_header": types.StringType,
+					"pass_stripped_path":  types.BoolType,
+					"proto":               types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"allow_origin_header": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The value of the ` + "`" + `Access-Control-Allow-Origin` + "`" + ` header in the response to the gRPC-Web client.`,
+						Default:     stringdefault.StaticString(`*`),
+						Description: `The value of the ` + "`" + `Access-Control-Allow-Origin` + "`" + ` header in the response to the gRPC-Web client. Default: "*"`,
 					},
 					"pass_stripped_path": schema.BoolAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `If set to ` + "`" + `true` + "`" + ` causes the plugin to pass the stripped request path to the upstream gRPC service.`,
 					},
 					"proto": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `If present, describes the gRPC types and methods. Required to support payload transcoding. When absent, the web client must use application/grpw-web+proto content.`,
 					},
@@ -112,26 +118,48 @@ func (r *GatewayPluginGrpcWebResource) Schema(ctx context.Context, req resource.
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Optional:    true,
+				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -140,9 +168,13 @@ func (r *GatewayPluginGrpcWebResource) Schema(ctx context.Context, req resource.
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -151,7 +183,6 @@ func (r *GatewayPluginGrpcWebResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -159,19 +190,20 @@ func (r *GatewayPluginGrpcWebResource) Schema(ctx context.Context, req resource.
 					},
 					Attributes: map[string]schema.Attribute{
 						"id": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
+							Computed:    true,
+							Optional:    true,
+							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
+							Optional:    true,
+							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},
 				},
+				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.SetAttribute{
 				Computed:    true,
@@ -208,7 +240,6 @@ func (r *GatewayPluginGrpcWebResource) Schema(ctx context.Context, req resource.
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

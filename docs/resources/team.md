@@ -40,7 +40,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 
 - `created_at` (String) A Unix timestamp representation of team creation.
 - `id` (String) The team ID.
-- `system_team` (Boolean) Returns True if a user belongs to a `system_team`. System teams are teams that can manage Konnect objects, like "Organization Admin", or "Service"
+- `system_team` (Boolean) Returns True if a user belongs to a `system_team`. System teams are teams that can manage Konnect objects, like "Organization Admin", or "Service". Default: false
 - `updated_at` (String) A Unix timestamp representation of the most recent change to the team object in Konnect.
 
 ## Import

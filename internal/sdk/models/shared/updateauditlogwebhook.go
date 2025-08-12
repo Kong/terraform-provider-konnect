@@ -9,17 +9,17 @@ import (
 // UpdateAuditLogWebhook - The request schema to modify an audit log webhook.
 type UpdateAuditLogWebhook struct {
 	// The endpoint that will receive audit log messages.
-	Endpoint *string `json:"endpoint,omitempty"`
+	Endpoint *string `default:"null" json:"endpoint"`
 	// The value to include in the `Authorization` header when sending audit logs to the webhook.
-	Authorization *string `json:"authorization,omitempty"`
+	Authorization *string `default:"null" json:"authorization"`
 	// Indicates if the data should be sent to the webhook.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"false" json:"enabled"`
 	// The output format of each log messages.
 	LogFormat *LogFormat `default:"cef" json:"log_format"`
 	// Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
 	// We strongly recommend not setting this to 'true' as you are subject to man-in-the-middle and other attacks.
 	// This option should be considered only for self-signed SSL certificates used in a non-production environment.
-	SkipSslVerification *bool `json:"skip_ssl_verification,omitempty"`
+	SkipSslVerification *bool `default:"false" json:"skip_ssl_verification"`
 }
 
 func (u UpdateAuditLogWebhook) MarshalJSON() ([]byte, error) {

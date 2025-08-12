@@ -7,7 +7,7 @@ package shared
 // Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for Key Auth.
 type AppAuthStrategyConfigKeyAuth struct {
 	// The names of the headers containing the API key. You can specify multiple header names.
-	KeyNames []string `json:"key_names,omitempty"`
+	KeyNames []string `json:"key_names"`
 }
 
 func (o *AppAuthStrategyConfigKeyAuth) GetKeyNames() []string {

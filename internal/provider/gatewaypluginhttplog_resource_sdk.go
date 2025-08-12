@@ -21,7 +21,7 @@ func (r *GatewayPluginHTTPLogResourceModel) RefreshFromSharedHTTPLogPlugin(ctx c
 		} else {
 			r.Config.ContentType = types.StringNull()
 		}
-		if len(resp.Config.CustomFieldsByLua) > 0 {
+		if resp.Config.CustomFieldsByLua != nil {
 			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
 			for key, value := range resp.Config.CustomFieldsByLua {
 				result, _ := json.Marshal(value)
@@ -29,7 +29,7 @@ func (r *GatewayPluginHTTPLogResourceModel) RefreshFromSharedHTTPLogPlugin(ctx c
 			}
 		}
 		r.Config.FlushTimeout = types.Float64PointerValue(resp.Config.FlushTimeout)
-		if len(resp.Config.Headers) > 0 {
+		if resp.Config.Headers != nil {
 			r.Config.Headers = make(map[string]types.String, len(resp.Config.Headers))
 			for key1, value1 := range resp.Config.Headers {
 				result1, _ := json.Marshal(value1)
@@ -81,18 +81,22 @@ func (r *GatewayPluginHTTPLogResourceModel) RefreshFromSharedHTTPLogPlugin(ctx c
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -254,9 +258,12 @@ func (r *GatewayPluginHTTPLogResourceModel) ToSharedHTTPLogPlugin(ctx context.Co
 	if r.Ordering != nil {
 		var after *shared.HTTPLogPluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.HTTPLogPluginAfter{
 				Access: access,
@@ -264,9 +271,12 @@ func (r *GatewayPluginHTTPLogResourceModel) ToSharedHTTPLogPlugin(ctx context.Co
 		}
 		var before *shared.HTTPLogPluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.HTTPLogPluginBefore{
 				Access: access1,

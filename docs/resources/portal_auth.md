@@ -65,9 +65,9 @@ resource "konnect_portal_auth" "my_portalauth" {
 
 Optional:
 
-- `email` (String)
-- `groups` (String)
-- `name` (String)
+- `email` (String) Default: "email"
+- `groups` (String) Default: "groups"
+- `name` (String) Default: "name"
 
 
 <a id="nestedatt--oidc_config"></a>
@@ -85,9 +85,9 @@ Read-Only:
 
 Read-Only:
 
-- `email` (String)
-- `groups` (String)
-- `name` (String)
+- `email` (String) Default: "email"
+- `groups` (String) Default: "groups"
+- `name` (String) Default: "name"
 
 ## Import
 

@@ -103,19 +103,16 @@ resource "konnect_gateway_plugin_proxy_cache" "my_gatewaypluginproxycache" {
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
-- `instance_name` (String)
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
+- `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
 - `protocols` (Set of String) A set of strings representing protocols.
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
-
-### Read-Only
-
-- `id` (String) The ID of this resource.
 
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
@@ -126,10 +123,10 @@ Required:
 
 Optional:
 
-- `cache_control` (Boolean) When enabled, respect the Cache-Control behaviors defined in RFC7234.
-- `cache_ttl` (Number) TTL, in seconds, of cache entities.
+- `cache_control` (Boolean) When enabled, respect the Cache-Control behaviors defined in RFC7234. Default: false
+- `cache_ttl` (Number) TTL, in seconds, of cache entities. Default: 300
 - `content_type` (List of String) Upstream response content types considered cacheable. The plugin performs an **exact match** against each specified value.
-- `ignore_uri_case` (Boolean)
+- `ignore_uri_case` (Boolean) Default: false
 - `memory` (Attributes) (see [below for nested schema](#nestedatt--config--memory))
 - `request_method` (List of String) Downstream request methods considered cacheable.
 - `response_code` (List of Number) Upstream response status code considered cacheable.
@@ -143,7 +140,7 @@ Optional:
 
 Optional:
 
-- `dictionary_name` (String) The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. Note that this dictionary currently must be defined manually in the Kong Nginx template.
+- `dictionary_name` (String) The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. Note that this dictionary currently must be defined manually in the Kong Nginx template. Default: "kong_db_cache"
 
 
 <a id="nestedatt--config--response_headers"></a>
@@ -151,9 +148,9 @@ Optional:
 
 Optional:
 
-- `age` (Boolean)
-- `x_cache_key` (Boolean)
-- `x_cache_status` (Boolean)
+- `age` (Boolean) Default: true
+- `x_cache_key` (Boolean) Default: true
+- `x_cache_status` (Boolean) Default: true
 
 
 
@@ -203,8 +200,8 @@ Optional:
 
 Optional:
 
-- `id` (String)
-- `name` (String)
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `name` (String) A unique string representing a UTF-8 encoded name.
 - `path` (String)
 
 

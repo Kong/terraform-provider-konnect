@@ -93,19 +93,16 @@ resource "konnect_gateway_plugin_ai_sanitizer" "my_gatewaypluginaisanitizer" {
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
-- `instance_name` (String)
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
+- `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
 - `protocols` (Set of String) A set of strings representing HTTP protocols.
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
-
-### Read-Only
-
-- `id` (String) The ID of this resource.
 
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
@@ -114,14 +111,14 @@ Optional:
 
 - `anonymize` (List of String) List of types to be anonymized
 - `custom_patterns` (Attributes List) List of custom patterns to be used for anonymization (see [below for nested schema](#nestedatt--config--custom_patterns))
-- `host` (String) The host of the sanitizer
-- `keepalive_timeout` (Number) The keepalive timeout for the established http connnection
-- `port` (Number) The port of the sanitizer
-- `recover_redacted` (Boolean) Whether to recover redacted data
-- `redact_type` (String) What value to be used to redacted to. must be one of ["placeholder", "synthetic"]
-- `scheme` (String) The protocol can be http and https
-- `stop_on_error` (Boolean) Stop processing if an error occurs
-- `timeout` (Number) Connection timeout with the sanitizer
+- `host` (String) The host of the sanitizer. Default: "localhost"
+- `keepalive_timeout` (Number) The keepalive timeout for the established http connnection. Default: 60000
+- `port` (Number) The port of the sanitizer. Default: 8080
+- `recover_redacted` (Boolean) Whether to recover redacted data. Default: true
+- `redact_type` (String) What value to be used to redacted to. Default: "placeholder"; must be one of ["placeholder", "synthetic"]
+- `scheme` (String) The protocol can be http and https. Default: "http"
+- `stop_on_error` (Boolean) Stop processing if an error occurs. Default: true
+- `timeout` (Number) Connection timeout with the sanitizer. Default: 10000
 
 <a id="nestedatt--config--custom_patterns"></a>
 ### Nested Schema for `config.custom_patterns`
@@ -130,7 +127,7 @@ Optional:
 
 - `name` (String) Not Null
 - `regex` (String) Not Null
-- `score` (Number)
+- `score` (Number) Default: 0.5
 
 
 
@@ -180,8 +177,8 @@ Optional:
 
 Optional:
 
-- `id` (String)
-- `name` (String)
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `name` (String) A unique string representing a UTF-8 encoded name.
 - `path` (String)
 
 

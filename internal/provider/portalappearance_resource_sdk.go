@@ -96,7 +96,7 @@ func (r *PortalAppearanceResourceModel) RefreshFromSharedGetPortalAppearanceResp
 			r.Text.Catalog.WelcomeMessage = types.StringValue(resp.Text.Catalog.WelcomeMessage)
 		}
 		r.ThemeName = types.StringValue(string(resp.ThemeName))
-		r.UseCustomFonts = types.BoolValue(resp.UseCustomFonts)
+		r.UseCustomFonts = types.BoolPointerValue(resp.UseCustomFonts)
 	}
 
 	return diags
@@ -187,7 +187,7 @@ func (r *PortalAppearanceResourceModel) RefreshFromSharedUpdatePortalAppearanceR
 			r.Text.Catalog.WelcomeMessage = types.StringValue(resp.Text.Catalog.WelcomeMessage)
 		}
 		r.ThemeName = types.StringValue(string(resp.ThemeName))
-		r.UseCustomFonts = types.BoolValue(resp.UseCustomFonts)
+		r.UseCustomFonts = types.BoolPointerValue(resp.UseCustomFonts)
 	}
 
 	return diags

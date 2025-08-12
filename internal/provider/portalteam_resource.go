@@ -58,7 +58,6 @@ func (r *PortalTeamResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"description": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(250),

@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+)
+
 type GetPortalAppearanceResponse struct {
 	// Select a pre-existing default theme or specify 'custom' to use custom_theme variables.
 	ThemeName PortalTheme `json:"theme_name"`
@@ -10,11 +14,22 @@ type GetPortalAppearanceResponse struct {
 	// Font selections to render text in the portal user interface. Must set use_custom_fonts to true to enable using custom font values.
 	CustomFonts *NullableAppearanceFonts `json:"custom_fonts"`
 	// If true, fonts in custom_fonts will be used over the theme's default fonts
-	UseCustomFonts bool `json:"use_custom_fonts"`
+	UseCustomFonts *bool `default:"null" json:"use_custom_fonts"`
 	// Values to display for customizable text in the portal user interface
 	Text *NullableAppearanceTextVariables `json:"text"`
 	// A collection of binary image data to customize images in the portal
 	Images *AppearanceImages `json:"images"`
+}
+
+func (g GetPortalAppearanceResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetPortalAppearanceResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *GetPortalAppearanceResponse) GetThemeName() PortalTheme {
@@ -38,9 +53,9 @@ func (o *GetPortalAppearanceResponse) GetCustomFonts() *NullableAppearanceFonts 
 	return o.CustomFonts
 }
 
-func (o *GetPortalAppearanceResponse) GetUseCustomFonts() bool {
+func (o *GetPortalAppearanceResponse) GetUseCustomFonts() *bool {
 	if o == nil {
-		return false
+		return nil
 	}
 	return o.UseCustomFonts
 }

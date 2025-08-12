@@ -47,9 +47,11 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) RefreshFromSharedSolaceUpstre
 		r.Config.Message.ForwardHeaders = types.BoolPointerValue(resp.Config.Message.ForwardHeaders)
 		r.Config.Message.ForwardMethod = types.BoolPointerValue(resp.Config.Message.ForwardMethod)
 		r.Config.Message.ForwardURI = types.BoolPointerValue(resp.Config.Message.ForwardURI)
-		r.Config.Message.Functions = make([]types.String, 0, len(resp.Config.Message.Functions))
-		for _, v := range resp.Config.Message.Functions {
-			r.Config.Message.Functions = append(r.Config.Message.Functions, types.StringValue(v))
+		if resp.Config.Message.Functions != nil {
+			r.Config.Message.Functions = make([]types.String, 0, len(resp.Config.Message.Functions))
+			for _, v := range resp.Config.Message.Functions {
+				r.Config.Message.Functions = append(r.Config.Message.Functions, types.StringValue(v))
+			}
 		}
 		r.Config.Message.Priority = types.Int64PointerValue(resp.Config.Message.Priority)
 		r.Config.Message.SenderID = types.StringPointerValue(resp.Config.Message.SenderID)
@@ -74,7 +76,7 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) RefreshFromSharedSolaceUpstre
 		}
 		r.Config.Session.ConnectTimeout = types.Int64PointerValue(resp.Config.Session.ConnectTimeout)
 		r.Config.Session.Host = types.StringValue(resp.Config.Session.Host)
-		if len(resp.Config.Session.Properties) > 0 {
+		if resp.Config.Session.Properties != nil {
 			r.Config.Session.Properties = make(map[string]types.String, len(resp.Config.Session.Properties))
 			for key, value := range resp.Config.Session.Properties {
 				result, _ := json.Marshal(value)
@@ -95,18 +97,22 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) RefreshFromSharedSolaceUpstre
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -268,9 +274,12 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToSharedSolaceUpstreamPlugin(
 	if r.Ordering != nil {
 		var after *shared.SolaceUpstreamPluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.SolaceUpstreamPluginAfter{
 				Access: access,
@@ -278,9 +287,12 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToSharedSolaceUpstreamPlugin(
 		}
 		var before *shared.SolaceUpstreamPluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.SolaceUpstreamPluginBefore{
 				Access: access1,
@@ -397,9 +409,12 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToSharedSolaceUpstreamPlugin(
 	} else {
 		forwardURI = nil
 	}
-	functions := make([]string, 0, len(r.Config.Message.Functions))
-	for _, functionsItem := range r.Config.Message.Functions {
-		functions = append(functions, functionsItem.ValueString())
+	var functions []string
+	if r.Config.Message.Functions != nil {
+		functions = make([]string, 0, len(r.Config.Message.Functions))
+		for _, functionsItem := range r.Config.Message.Functions {
+			functions = append(functions, functionsItem.ValueString())
+		}
 	}
 	priority := new(int64)
 	if !r.Config.Message.Priority.IsUnknown() && !r.Config.Message.Priority.IsNull() {

@@ -81,19 +81,16 @@ resource "konnect_gateway_plugin_canary" "my_gatewayplugincanary" {
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
-- `instance_name` (String)
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
+- `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
 - `protocols` (Set of String) A set of strings representing HTTP protocols.
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
-
-### Read-Only
-
-- `id` (String) The ID of this resource.
 
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
@@ -101,7 +98,7 @@ resource "konnect_gateway_plugin_canary" "my_gatewayplugincanary" {
 Optional:
 
 - `canary_by_header_name` (String) A string representing an HTTP header name.
-- `duration` (Number) The duration of the canary release in seconds.
+- `duration` (Number) The duration of the canary release in seconds. Default: 3600
 - `groups` (List of String) The groups allowed to access the canary release.
 - `hash` (String) Hash algorithm to be used for canary release.
 
@@ -111,12 +108,12 @@ Optional:
 * `allow`: Allows the specified groups to access the canary release.
 * `deny`: Denies the specified groups from accessing the canary release.
 * `header`: The hash will be based on the specified header value.
-must be one of ["allow", "consumer", "deny", "header", "ip", "none"]
+Default: "consumer"; must be one of ["allow", "consumer", "deny", "header", "ip", "none"]
 - `hash_header` (String) A string representing an HTTP header name.
 - `percentage` (Number) The percentage of traffic to be routed to the canary release.
 - `start` (Number) Future time in seconds since epoch, when the canary release will start. Ignored when `percentage` is set, or when using `allow` or `deny` in `hash`.
-- `steps` (Number) The number of steps for the canary release.
-- `upstream_fallback` (Boolean) Specifies whether to fallback to the upstream server if the canary release fails.
+- `steps` (Number) The number of steps for the canary release. Default: 1000
+- `upstream_fallback` (Boolean) Specifies whether to fallback to the upstream server if the canary release fails. Default: false
 - `upstream_host` (String) A string representing a host name, such as example.com.
 - `upstream_port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `upstream_uri` (String) The URI of the upstream server to be used for the canary release.
@@ -152,8 +149,8 @@ Optional:
 
 Optional:
 
-- `id` (String)
-- `name` (String)
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `name` (String) A unique string representing a UTF-8 encoded name.
 - `path` (String)
 
 

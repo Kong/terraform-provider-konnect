@@ -73,31 +73,28 @@ resource "konnect_gateway_plugin_tls_metadata_headers" "my_gatewayplugintlsmetad
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
-- `instance_name` (String)
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `partials` (Attributes List) (see [below for nested schema](#nestedatt--partials))
+- `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
 - `protocols` (Set of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
 
-### Read-Only
-
-- `id` (String) The ID of this resource.
-
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
 Optional:
 
-- `client_cert_fingerprint_header_name` (String) Define the HTTP header name used for the SHA1 fingerprint of the client certificate.
-- `client_cert_header_name` (String) Define the HTTP header name used for the PEM format URL encoded client certificate.
-- `client_cert_issuer_dn_header_name` (String) Define the HTTP header name used for the issuer DN of the client certificate.
-- `client_cert_subject_dn_header_name` (String) Define the HTTP header name used for the subject DN of the client certificate.
-- `client_serial_header_name` (String) Define the HTTP header name used for the serial number of the client certificate.
-- `inject_client_cert_details` (Boolean) Enables TLS client certificate metadata values to be injected into HTTP headers.
+- `client_cert_fingerprint_header_name` (String) Define the HTTP header name used for the SHA1 fingerprint of the client certificate. Default: "X-Client-Cert-Fingerprint"
+- `client_cert_header_name` (String) Define the HTTP header name used for the PEM format URL encoded client certificate. Default: "X-Client-Cert"
+- `client_cert_issuer_dn_header_name` (String) Define the HTTP header name used for the issuer DN of the client certificate. Default: "X-Client-Cert-Issuer-DN"
+- `client_cert_subject_dn_header_name` (String) Define the HTTP header name used for the subject DN of the client certificate. Default: "X-Client-Cert-Subject-DN"
+- `client_serial_header_name` (String) Define the HTTP header name used for the serial number of the client certificate. Default: "X-Client-Cert-Serial"
+- `inject_client_cert_details` (Boolean) Enables TLS client certificate metadata values to be injected into HTTP headers. Default: false
 
 
 <a id="nestedatt--ordering"></a>
@@ -130,8 +127,8 @@ Optional:
 
 Optional:
 
-- `id` (String)
-- `name` (String)
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `name` (String) A unique string representing a UTF-8 encoded name.
 - `path` (String)
 
 

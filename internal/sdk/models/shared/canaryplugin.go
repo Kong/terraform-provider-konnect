@@ -6,10 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type CanaryPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *CanaryPluginAfter) GetAccess() []string {
@@ -20,7 +21,7 @@ func (o *CanaryPluginAfter) GetAccess() []string {
 }
 
 type CanaryPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *CanaryPluginBefore) GetAccess() []string {
@@ -31,8 +32,8 @@ func (o *CanaryPluginBefore) GetAccess() []string {
 }
 
 type CanaryPluginOrdering struct {
-	After  *CanaryPluginAfter  `json:"after,omitempty"`
-	Before *CanaryPluginBefore `json:"before,omitempty"`
+	After  *CanaryPluginAfter  `json:"after"`
+	Before *CanaryPluginBefore `json:"before"`
 }
 
 func (o *CanaryPluginOrdering) GetAfter() *CanaryPluginAfter {
@@ -50,9 +51,22 @@ func (o *CanaryPluginOrdering) GetBefore() *CanaryPluginBefore {
 }
 
 type CanaryPluginPartials struct {
-	ID   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (c CanaryPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CanaryPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CanaryPluginPartials) GetID() *string {
@@ -124,11 +138,11 @@ func (e *Hash) UnmarshalJSON(data []byte) error {
 
 type CanaryPluginConfig struct {
 	// A string representing an HTTP header name.
-	CanaryByHeaderName *string `json:"canary_by_header_name,omitempty"`
+	CanaryByHeaderName *string `default:"null" json:"canary_by_header_name"`
 	// The duration of the canary release in seconds.
-	Duration *float64 `json:"duration,omitempty"`
+	Duration *float64 `default:"3600" json:"duration"`
 	// The groups allowed to access the canary release.
-	Groups []string `json:"groups,omitempty"`
+	Groups []string `json:"groups"`
 	// Hash algorithm to be used for canary release.
 	//
 	// * `consumer`: The hash will be based on the consumer.
@@ -137,23 +151,34 @@ type CanaryPluginConfig struct {
 	// * `allow`: Allows the specified groups to access the canary release.
 	// * `deny`: Denies the specified groups from accessing the canary release.
 	// * `header`: The hash will be based on the specified header value.
-	Hash *Hash `json:"hash,omitempty"`
+	Hash *Hash `default:"consumer" json:"hash"`
 	// A string representing an HTTP header name.
-	HashHeader *string `json:"hash_header,omitempty"`
+	HashHeader *string `default:"null" json:"hash_header"`
 	// The percentage of traffic to be routed to the canary release.
-	Percentage *float64 `json:"percentage,omitempty"`
+	Percentage *float64 `default:"null" json:"percentage"`
 	// Future time in seconds since epoch, when the canary release will start. Ignored when `percentage` is set, or when using `allow` or `deny` in `hash`.
-	Start *float64 `json:"start,omitempty"`
+	Start *float64 `default:"null" json:"start"`
 	// The number of steps for the canary release.
-	Steps *float64 `json:"steps,omitempty"`
+	Steps *float64 `default:"1000" json:"steps"`
 	// Specifies whether to fallback to the upstream server if the canary release fails.
-	UpstreamFallback *bool `json:"upstream_fallback,omitempty"`
+	UpstreamFallback *bool `default:"false" json:"upstream_fallback"`
 	// A string representing a host name, such as example.com.
-	UpstreamHost *string `json:"upstream_host,omitempty"`
+	UpstreamHost *string `default:"null" json:"upstream_host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	UpstreamPort *int64 `json:"upstream_port,omitempty"`
+	UpstreamPort *int64 `default:"null" json:"upstream_port"`
 	// The URI of the upstream server to be used for the canary release.
-	UpstreamURI *string `json:"upstream_uri,omitempty"`
+	UpstreamURI *string `default:"null" json:"upstream_uri"`
+}
+
+func (c CanaryPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CanaryPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CanaryPluginConfig) GetCanaryByHeaderName() *string {
@@ -301,19 +326,22 @@ type CanaryPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                  `json:"enabled,omitempty"`
-	ID           *string                `json:"id,omitempty"`
-	InstanceName *string                `json:"instance_name,omitempty"`
-	name         string                 `const:"canary" json:"name"`
-	Ordering     *CanaryPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []CanaryPluginPartials `json:"partials,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string               `default:"null" json:"instance_name"`
+	name         *string               `const:"canary" json:"name"`
+	Ordering     *CanaryPluginOrdering `json:"ordering"`
+	// A list of partials to be used by the plugin.
+	Partials []CanaryPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64              `json:"updated_at,omitempty"`
-	Config    *CanaryPluginConfig `json:"config,omitempty"`
+	Config    *CanaryPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
-	Protocols []CanaryPluginProtocols `json:"protocols,omitempty"`
+	Protocols []CanaryPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *CanaryPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -359,8 +387,8 @@ func (o *CanaryPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *CanaryPlugin) GetName() string {
-	return "canary"
+func (o *CanaryPlugin) GetName() *string {
+	return types.String("canary")
 }
 
 func (o *CanaryPlugin) GetOrdering() *CanaryPluginOrdering {

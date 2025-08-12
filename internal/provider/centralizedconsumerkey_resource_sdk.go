@@ -17,9 +17,11 @@ func (r *CentralizedConsumerKeyResourceModel) RefreshFromSharedAPIKey(ctx contex
 	if resp != nil {
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.ID = types.StringValue(resp.ID)
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
+		if resp.Tags != nil {
+			r.Tags = make([]types.String, 0, len(resp.Tags))
+			for _, v := range resp.Tags {
+				r.Tags = append(r.Tags, types.StringValue(v))
+			}
 		}
 		r.Type = types.StringValue(string(resp.Type))
 	}
@@ -34,9 +36,11 @@ func (r *CentralizedConsumerKeyResourceModel) RefreshFromSharedCreateAPIKeyResul
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.ID = types.StringValue(resp.ID)
 		r.Secret = types.StringValue(resp.Secret)
-		r.Tags = make([]types.String, 0, len(resp.Tags))
-		for _, v := range resp.Tags {
-			r.Tags = append(r.Tags, types.StringValue(v))
+		if resp.Tags != nil {
+			r.Tags = make([]types.String, 0, len(resp.Tags))
+			for _, v := range resp.Tags {
+				r.Tags = append(r.Tags, types.StringValue(v))
+			}
 		}
 		r.Type = types.StringValue(string(resp.Type))
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
@@ -115,16 +119,24 @@ func (r *CentralizedConsumerKeyResourceModel) ToOperationsGetConsumerKeyRequest(
 func (r *CentralizedConsumerKeyResourceModel) ToSharedCreateAPIKeyPayload(ctx context.Context) (*shared.CreateAPIKeyPayload, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	typeVar := shared.CreateAPIKeyPayloadType(r.Type.ValueString())
+	typeVar := new(shared.CreateAPIKeyPayloadType)
+	if !r.Type.IsUnknown() && !r.Type.IsNull() {
+		*typeVar = shared.CreateAPIKeyPayloadType(r.Type.ValueString())
+	} else {
+		typeVar = nil
+	}
 	secret := new(string)
 	if !r.Secret.IsUnknown() && !r.Secret.IsNull() {
 		*secret = r.Secret.ValueString()
 	} else {
 		secret = nil
 	}
-	tags := make([]string, 0, len(r.Tags))
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
+	var tags []string
+	if r.Tags != nil {
+		tags = make([]string, 0, len(r.Tags))
+		for _, tagsItem := range r.Tags {
+			tags = append(tags, tagsItem.ValueString())
+		}
 	}
 	out := shared.CreateAPIKeyPayload{
 		Type:   typeVar,

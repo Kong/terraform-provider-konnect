@@ -21,22 +21,28 @@ func (r *GatewayPluginCorsResourceModel) RefreshFromSharedCorsPlugin(ctx context
 			r.Config = &tfTypes.CorsPluginConfig{}
 			r.Config.AllowOriginAbsent = types.BoolPointerValue(resp.Config.AllowOriginAbsent)
 			r.Config.Credentials = types.BoolPointerValue(resp.Config.Credentials)
-			r.Config.ExposedHeaders = make([]types.String, 0, len(resp.Config.ExposedHeaders))
-			for _, v := range resp.Config.ExposedHeaders {
-				r.Config.ExposedHeaders = append(r.Config.ExposedHeaders, types.StringValue(v))
+			if resp.Config.ExposedHeaders != nil {
+				r.Config.ExposedHeaders = make([]types.String, 0, len(resp.Config.ExposedHeaders))
+				for _, v := range resp.Config.ExposedHeaders {
+					r.Config.ExposedHeaders = append(r.Config.ExposedHeaders, types.StringValue(v))
+				}
 			}
-			r.Config.Headers = make([]types.String, 0, len(resp.Config.Headers))
-			for _, v := range resp.Config.Headers {
-				r.Config.Headers = append(r.Config.Headers, types.StringValue(v))
+			if resp.Config.Headers != nil {
+				r.Config.Headers = make([]types.String, 0, len(resp.Config.Headers))
+				for _, v := range resp.Config.Headers {
+					r.Config.Headers = append(r.Config.Headers, types.StringValue(v))
+				}
 			}
 			r.Config.MaxAge = types.Float64PointerValue(resp.Config.MaxAge)
 			r.Config.Methods = make([]types.String, 0, len(resp.Config.Methods))
 			for _, v := range resp.Config.Methods {
 				r.Config.Methods = append(r.Config.Methods, types.StringValue(string(v)))
 			}
-			r.Config.Origins = make([]types.String, 0, len(resp.Config.Origins))
-			for _, v := range resp.Config.Origins {
-				r.Config.Origins = append(r.Config.Origins, types.StringValue(v))
+			if resp.Config.Origins != nil {
+				r.Config.Origins = make([]types.String, 0, len(resp.Config.Origins))
+				for _, v := range resp.Config.Origins {
+					r.Config.Origins = append(r.Config.Origins, types.StringValue(v))
+				}
 			}
 			r.Config.PreflightContinue = types.BoolPointerValue(resp.Config.PreflightContinue)
 			r.Config.PrivateNetwork = types.BoolPointerValue(resp.Config.PrivateNetwork)
@@ -53,18 +59,22 @@ func (r *GatewayPluginCorsResourceModel) RefreshFromSharedCorsPlugin(ctx context
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -226,9 +236,12 @@ func (r *GatewayPluginCorsResourceModel) ToSharedCorsPlugin(ctx context.Context)
 	if r.Ordering != nil {
 		var after *shared.CorsPluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.CorsPluginAfter{
 				Access: access,
@@ -236,9 +249,12 @@ func (r *GatewayPluginCorsResourceModel) ToSharedCorsPlugin(ctx context.Context)
 		}
 		var before *shared.CorsPluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.CorsPluginBefore{
 				Access: access1,
@@ -305,13 +321,19 @@ func (r *GatewayPluginCorsResourceModel) ToSharedCorsPlugin(ctx context.Context)
 		} else {
 			credentials = nil
 		}
-		exposedHeaders := make([]string, 0, len(r.Config.ExposedHeaders))
-		for _, exposedHeadersItem := range r.Config.ExposedHeaders {
-			exposedHeaders = append(exposedHeaders, exposedHeadersItem.ValueString())
+		var exposedHeaders []string
+		if r.Config.ExposedHeaders != nil {
+			exposedHeaders = make([]string, 0, len(r.Config.ExposedHeaders))
+			for _, exposedHeadersItem := range r.Config.ExposedHeaders {
+				exposedHeaders = append(exposedHeaders, exposedHeadersItem.ValueString())
+			}
 		}
-		headers := make([]string, 0, len(r.Config.Headers))
-		for _, headersItem := range r.Config.Headers {
-			headers = append(headers, headersItem.ValueString())
+		var headers []string
+		if r.Config.Headers != nil {
+			headers = make([]string, 0, len(r.Config.Headers))
+			for _, headersItem := range r.Config.Headers {
+				headers = append(headers, headersItem.ValueString())
+			}
 		}
 		maxAge := new(float64)
 		if !r.Config.MaxAge.IsUnknown() && !r.Config.MaxAge.IsNull() {
@@ -323,9 +345,12 @@ func (r *GatewayPluginCorsResourceModel) ToSharedCorsPlugin(ctx context.Context)
 		for _, methodsItem := range r.Config.Methods {
 			methods = append(methods, shared.Methods(methodsItem.ValueString()))
 		}
-		origins := make([]string, 0, len(r.Config.Origins))
-		for _, originsItem := range r.Config.Origins {
-			origins = append(origins, originsItem.ValueString())
+		var origins []string
+		if r.Config.Origins != nil {
+			origins = make([]string, 0, len(r.Config.Origins))
+			for _, originsItem := range r.Config.Origins {
+				origins = append(origins, originsItem.ValueString())
+			}
 		}
 		preflightContinue := new(bool)
 		if !r.Config.PreflightContinue.IsUnknown() && !r.Config.PreflightContinue.IsNull() {

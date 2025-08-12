@@ -6,10 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type AiAwsGuardrailsPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiAwsGuardrailsPluginAfter) GetAccess() []string {
@@ -20,7 +21,7 @@ func (o *AiAwsGuardrailsPluginAfter) GetAccess() []string {
 }
 
 type AiAwsGuardrailsPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiAwsGuardrailsPluginBefore) GetAccess() []string {
@@ -31,8 +32,8 @@ func (o *AiAwsGuardrailsPluginBefore) GetAccess() []string {
 }
 
 type AiAwsGuardrailsPluginOrdering struct {
-	After  *AiAwsGuardrailsPluginAfter  `json:"after,omitempty"`
-	Before *AiAwsGuardrailsPluginBefore `json:"before,omitempty"`
+	After  *AiAwsGuardrailsPluginAfter  `json:"after"`
+	Before *AiAwsGuardrailsPluginBefore `json:"before"`
 }
 
 func (o *AiAwsGuardrailsPluginOrdering) GetAfter() *AiAwsGuardrailsPluginAfter {
@@ -50,9 +51,22 @@ func (o *AiAwsGuardrailsPluginOrdering) GetBefore() *AiAwsGuardrailsPluginBefore
 }
 
 type AiAwsGuardrailsPluginPartials struct {
-	ID   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (a AiAwsGuardrailsPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiAwsGuardrailsPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiAwsGuardrailsPluginPartials) GetID() *string {
@@ -135,25 +149,36 @@ func (e *TextSource) UnmarshalJSON(data []byte) error {
 
 type AiAwsGuardrailsPluginConfig struct {
 	// The AWS access key ID to use for authentication
-	AwsAccessKeyID *string `json:"aws_access_key_id,omitempty"`
+	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
 	// The AWS region to use for the Bedrock API
 	AwsRegion string `json:"aws_region"`
 	// The AWS secret access key to use for authentication
-	AwsSecretAccessKey *string `json:"aws_secret_access_key,omitempty"`
+	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
 	// The guardrail mode to use for the request
-	GuardingMode *GuardingMode `json:"guarding_mode,omitempty"`
+	GuardingMode *GuardingMode `default:"INPUT" json:"guarding_mode"`
 	// The guardrail identifier used in the request to apply the guardrail
 	GuardrailsID string `json:"guardrails_id"`
 	// The guardrail version used in the request to apply the guardrail
 	GuardrailsVersion string `json:"guardrails_version"`
 	// The amount of token receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard.
-	ResponseBufferSize *float64 `json:"response_buffer_size,omitempty"`
+	ResponseBufferSize *float64 `default:"100" json:"response_buffer_size"`
 	// Stop processing if an error occurs
-	StopOnError *bool `json:"stop_on_error,omitempty"`
+	StopOnError *bool `default:"true" json:"stop_on_error"`
 	// Select where to pick the 'text' for the Content Guard Services request.
-	TextSource *TextSource `json:"text_source,omitempty"`
+	TextSource *TextSource `default:"concatenate_all_content" json:"text_source"`
 	// Connection timeout with the bedrock service
-	Timeout *float64 `json:"timeout,omitempty"`
+	Timeout *float64 `default:"10000" json:"timeout"`
+}
+
+func (a AiAwsGuardrailsPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiAwsGuardrailsPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiAwsGuardrailsPluginConfig) GetAwsAccessKeyID() *string {
@@ -311,14 +336,17 @@ type AiAwsGuardrailsPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                           `json:"enabled,omitempty"`
-	ID           *string                         `json:"id,omitempty"`
-	InstanceName *string                         `json:"instance_name,omitempty"`
-	name         string                          `const:"ai-aws-guardrails" json:"name"`
-	Ordering     *AiAwsGuardrailsPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []AiAwsGuardrailsPluginPartials `json:"partials,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string                        `default:"null" json:"instance_name"`
+	name         *string                        `const:"ai-aws-guardrails" json:"name"`
+	Ordering     *AiAwsGuardrailsPluginOrdering `json:"ordering"`
+	// A list of partials to be used by the plugin.
+	Partials []AiAwsGuardrailsPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                      `json:"updated_at,omitempty"`
 	Config    AiAwsGuardrailsPluginConfig `json:"config"`
@@ -327,7 +355,7 @@ type AiAwsGuardrailsPlugin struct {
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *AiAwsGuardrailsPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
-	Protocols []AiAwsGuardrailsPluginProtocols `json:"protocols,omitempty"`
+	Protocols []AiAwsGuardrailsPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *AiAwsGuardrailsPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -373,8 +401,8 @@ func (o *AiAwsGuardrailsPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *AiAwsGuardrailsPlugin) GetName() string {
-	return "ai-aws-guardrails"
+func (o *AiAwsGuardrailsPlugin) GetName() *string {
+	return types.String("ai-aws-guardrails")
 }
 
 func (o *AiAwsGuardrailsPlugin) GetOrdering() *AiAwsGuardrailsPluginOrdering {

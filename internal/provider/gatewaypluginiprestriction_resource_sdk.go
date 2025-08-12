@@ -19,13 +19,17 @@ func (r *GatewayPluginIPRestrictionResourceModel) RefreshFromSharedIPRestriction
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.IPRestrictionPluginConfig{}
-			r.Config.Allow = make([]types.String, 0, len(resp.Config.Allow))
-			for _, v := range resp.Config.Allow {
-				r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
+			if resp.Config.Allow != nil {
+				r.Config.Allow = make([]types.String, 0, len(resp.Config.Allow))
+				for _, v := range resp.Config.Allow {
+					r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
+				}
 			}
-			r.Config.Deny = make([]types.String, 0, len(resp.Config.Deny))
-			for _, v := range resp.Config.Deny {
-				r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
+			if resp.Config.Deny != nil {
+				r.Config.Deny = make([]types.String, 0, len(resp.Config.Deny))
+				for _, v := range resp.Config.Deny {
+					r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
+				}
 			}
 			r.Config.Message = types.StringPointerValue(resp.Config.Message)
 			r.Config.Status = types.Float64PointerValue(resp.Config.Status)
@@ -54,18 +58,22 @@ func (r *GatewayPluginIPRestrictionResourceModel) RefreshFromSharedIPRestriction
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -227,9 +235,12 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPlugin(ct
 	if r.Ordering != nil {
 		var after *shared.IPRestrictionPluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.IPRestrictionPluginAfter{
 				Access: access,
@@ -237,9 +248,12 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPlugin(ct
 		}
 		var before *shared.IPRestrictionPluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.IPRestrictionPluginBefore{
 				Access: access1,
@@ -294,13 +308,19 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPlugin(ct
 	}
 	var config *shared.IPRestrictionPluginConfig
 	if r.Config != nil {
-		allow := make([]string, 0, len(r.Config.Allow))
-		for _, allowItem := range r.Config.Allow {
-			allow = append(allow, allowItem.ValueString())
+		var allow []string
+		if r.Config.Allow != nil {
+			allow = make([]string, 0, len(r.Config.Allow))
+			for _, allowItem := range r.Config.Allow {
+				allow = append(allow, allowItem.ValueString())
+			}
 		}
-		deny := make([]string, 0, len(r.Config.Deny))
-		for _, denyItem := range r.Config.Deny {
-			deny = append(deny, denyItem.ValueString())
+		var deny []string
+		if r.Config.Deny != nil {
+			deny = make([]string, 0, len(r.Config.Deny))
+			for _, denyItem := range r.Config.Deny {
+				deny = append(deny, denyItem.ValueString())
+			}
 		}
 		message := new(string)
 		if !r.Config.Message.IsUnknown() && !r.Config.Message.IsNull() {

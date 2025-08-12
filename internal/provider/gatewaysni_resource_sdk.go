@@ -6,7 +6,6 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
@@ -15,12 +14,7 @@ func (r *GatewaySNIResourceModel) RefreshFromSharedSni(ctx context.Context, resp
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Certificate == nil {
-			r.Certificate = nil
-		} else {
-			r.Certificate = &tfTypes.Set{}
-			r.Certificate.ID = types.StringPointerValue(resp.Certificate.ID)
-		}
+		r.Certificate.ID = types.StringPointerValue(resp.Certificate.ID)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Name = types.StringValue(resp.Name)
@@ -119,17 +113,14 @@ func (r *GatewaySNIResourceModel) ToOperationsUpsertSniRequest(ctx context.Conte
 func (r *GatewaySNIResourceModel) ToSharedSni(ctx context.Context) (*shared.Sni, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var certificate *shared.SNICertificate
-	if r.Certificate != nil {
-		id := new(string)
-		if !r.Certificate.ID.IsUnknown() && !r.Certificate.ID.IsNull() {
-			*id = r.Certificate.ID.ValueString()
-		} else {
-			id = nil
-		}
-		certificate = &shared.SNICertificate{
-			ID: id,
-		}
+	id := new(string)
+	if !r.Certificate.ID.IsUnknown() && !r.Certificate.ID.IsNull() {
+		*id = r.Certificate.ID.ValueString()
+	} else {
+		id = nil
+	}
+	certificate := shared.SNICertificate{
+		ID: id,
 	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {

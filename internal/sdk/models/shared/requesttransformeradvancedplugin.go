@@ -6,10 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type RequestTransformerAdvancedPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *RequestTransformerAdvancedPluginAfter) GetAccess() []string {
@@ -20,7 +21,7 @@ func (o *RequestTransformerAdvancedPluginAfter) GetAccess() []string {
 }
 
 type RequestTransformerAdvancedPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *RequestTransformerAdvancedPluginBefore) GetAccess() []string {
@@ -31,8 +32,8 @@ func (o *RequestTransformerAdvancedPluginBefore) GetAccess() []string {
 }
 
 type RequestTransformerAdvancedPluginOrdering struct {
-	After  *RequestTransformerAdvancedPluginAfter  `json:"after,omitempty"`
-	Before *RequestTransformerAdvancedPluginBefore `json:"before,omitempty"`
+	After  *RequestTransformerAdvancedPluginAfter  `json:"after"`
+	Before *RequestTransformerAdvancedPluginBefore `json:"before"`
 }
 
 func (o *RequestTransformerAdvancedPluginOrdering) GetAfter() *RequestTransformerAdvancedPluginAfter {
@@ -50,9 +51,22 @@ func (o *RequestTransformerAdvancedPluginOrdering) GetBefore() *RequestTransform
 }
 
 type RequestTransformerAdvancedPluginPartials struct {
-	ID   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (r RequestTransformerAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestTransformerAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestTransformerAdvancedPluginPartials) GetID() *string {
@@ -141,7 +155,7 @@ func (o *RequestTransformerAdvancedPluginAdd) GetQuerystring() []string {
 }
 
 type Allow struct {
-	Body []string `json:"body,omitempty"`
+	Body []string `json:"body"`
 }
 
 func (o *Allow) GetBody() []string {
@@ -303,7 +317,18 @@ type RequestTransformerAdvancedPluginReplace struct {
 	Headers     []string                                          `json:"headers,omitempty"`
 	JSONTypes   []RequestTransformerAdvancedPluginConfigJSONTypes `json:"json_types,omitempty"`
 	Querystring []string                                          `json:"querystring,omitempty"`
-	URI         *string                                           `json:"uri,omitempty"`
+	URI         *string                                           `default:"null" json:"uri"`
+}
+
+func (r RequestTransformerAdvancedPluginReplace) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestTransformerAdvancedPluginReplace) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestTransformerAdvancedPluginReplace) GetBody() []string {
@@ -342,16 +367,27 @@ func (o *RequestTransformerAdvancedPluginReplace) GetURI() *string {
 }
 
 type RequestTransformerAdvancedPluginConfig struct {
-	Add    *RequestTransformerAdvancedPluginAdd    `json:"add,omitempty"`
-	Allow  *Allow                                  `json:"allow,omitempty"`
-	Append *RequestTransformerAdvancedPluginAppend `json:"append,omitempty"`
+	Add    *RequestTransformerAdvancedPluginAdd    `json:"add"`
+	Allow  *Allow                                  `json:"allow"`
+	Append *RequestTransformerAdvancedPluginAppend `json:"append"`
 	// Specify whether dots (for example, `customers.info.phone`) should be treated as part of a property name or used to descend into nested JSON objects.  See [Arrays and nested objects](#arrays-and-nested-objects).
-	DotsInKeys *bool `json:"dots_in_keys,omitempty"`
+	DotsInKeys *bool `default:"true" json:"dots_in_keys"`
 	// A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters.
-	HTTPMethod *string                                  `json:"http_method,omitempty"`
-	Remove     *RequestTransformerAdvancedPluginRemove  `json:"remove,omitempty"`
-	Rename     *RequestTransformerAdvancedPluginRename  `json:"rename,omitempty"`
-	Replace    *RequestTransformerAdvancedPluginReplace `json:"replace,omitempty"`
+	HTTPMethod *string                                  `default:"null" json:"http_method"`
+	Remove     *RequestTransformerAdvancedPluginRemove  `json:"remove"`
+	Rename     *RequestTransformerAdvancedPluginRename  `json:"rename"`
+	Replace    *RequestTransformerAdvancedPluginReplace `json:"replace"`
+}
+
+func (r RequestTransformerAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestTransformerAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestTransformerAdvancedPluginConfig) GetAdd() *RequestTransformerAdvancedPluginAdd {
@@ -495,23 +531,26 @@ type RequestTransformerAdvancedPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                                      `json:"enabled,omitempty"`
-	ID           *string                                    `json:"id,omitempty"`
-	InstanceName *string                                    `json:"instance_name,omitempty"`
-	name         string                                     `const:"request-transformer-advanced" json:"name"`
-	Ordering     *RequestTransformerAdvancedPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []RequestTransformerAdvancedPluginPartials `json:"partials,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string                                   `default:"null" json:"instance_name"`
+	name         *string                                   `const:"request-transformer-advanced" json:"name"`
+	Ordering     *RequestTransformerAdvancedPluginOrdering `json:"ordering"`
+	// A list of partials to be used by the plugin.
+	Partials []RequestTransformerAdvancedPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                                  `json:"updated_at,omitempty"`
-	Config    *RequestTransformerAdvancedPluginConfig `json:"config,omitempty"`
+	Config    *RequestTransformerAdvancedPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *RequestTransformerAdvancedPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *RequestTransformerAdvancedPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
-	Protocols []RequestTransformerAdvancedPluginProtocols `json:"protocols,omitempty"`
+	Protocols []RequestTransformerAdvancedPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *RequestTransformerAdvancedPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -557,8 +596,8 @@ func (o *RequestTransformerAdvancedPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *RequestTransformerAdvancedPlugin) GetName() string {
-	return "request-transformer-advanced"
+func (o *RequestTransformerAdvancedPlugin) GetName() *string {
+	return types.String("request-transformer-advanced")
 }
 
 func (o *RequestTransformerAdvancedPlugin) GetOrdering() *RequestTransformerAdvancedPluginOrdering {

@@ -74,7 +74,6 @@ func (r *GatewayConfigStoreResource) Schema(ctx context.Context, req resource.Sc
 				Description: `The Config Store ID.`,
 			},
 			"name": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 100),

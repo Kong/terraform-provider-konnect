@@ -20,19 +20,21 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 		} else {
 			r.Config.AutoOffsetReset = types.StringNull()
 		}
-		r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
-		if len(r.Config.BootstrapServers) > len(resp.Config.BootstrapServers) {
-			r.Config.BootstrapServers = r.Config.BootstrapServers[:len(resp.Config.BootstrapServers)]
-		}
-		for bootstrapServersCount, bootstrapServersItem := range resp.Config.BootstrapServers {
-			var bootstrapServers tfTypes.BootstrapServers
-			bootstrapServers.Host = types.StringValue(bootstrapServersItem.Host)
-			bootstrapServers.Port = types.Int64Value(bootstrapServersItem.Port)
-			if bootstrapServersCount+1 > len(r.Config.BootstrapServers) {
-				r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
-			} else {
-				r.Config.BootstrapServers[bootstrapServersCount].Host = bootstrapServers.Host
-				r.Config.BootstrapServers[bootstrapServersCount].Port = bootstrapServers.Port
+		if resp.Config.BootstrapServers != nil {
+			r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
+			if len(r.Config.BootstrapServers) > len(resp.Config.BootstrapServers) {
+				r.Config.BootstrapServers = r.Config.BootstrapServers[:len(resp.Config.BootstrapServers)]
+			}
+			for bootstrapServersCount, bootstrapServersItem := range resp.Config.BootstrapServers {
+				var bootstrapServers tfTypes.BootstrapServers
+				bootstrapServers.Host = types.StringValue(bootstrapServersItem.Host)
+				bootstrapServers.Port = types.Int64Value(bootstrapServersItem.Port)
+				if bootstrapServersCount+1 > len(r.Config.BootstrapServers) {
+					r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
+				} else {
+					r.Config.BootstrapServers[bootstrapServersCount].Host = bootstrapServers.Host
+					r.Config.BootstrapServers[bootstrapServersCount].Port = bootstrapServers.Port
+				}
 			}
 		}
 		r.Config.ClusterAPIKey = types.StringValue(resp.Config.ClusterAPIKey)
@@ -135,18 +137,22 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -308,9 +314,12 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 	if r.Ordering != nil {
 		var after *shared.ConfluentConsumePluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.ConfluentConsumePluginAfter{
 				Access: access,
@@ -318,9 +327,12 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 		}
 		var before *shared.ConfluentConsumePluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.ConfluentConsumePluginBefore{
 				Access: access1,
@@ -379,18 +391,21 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 	} else {
 		autoOffsetReset = nil
 	}
-	bootstrapServers := make([]shared.ConfluentConsumePluginBootstrapServers, 0, len(r.Config.BootstrapServers))
-	for _, bootstrapServersItem := range r.Config.BootstrapServers {
-		var host string
-		host = bootstrapServersItem.Host.ValueString()
+	var bootstrapServers []shared.ConfluentConsumePluginBootstrapServers
+	if r.Config.BootstrapServers != nil {
+		bootstrapServers = make([]shared.ConfluentConsumePluginBootstrapServers, 0, len(r.Config.BootstrapServers))
+		for _, bootstrapServersItem := range r.Config.BootstrapServers {
+			var host string
+			host = bootstrapServersItem.Host.ValueString()
 
-		var port int64
-		port = bootstrapServersItem.Port.ValueInt64()
+			var port int64
+			port = bootstrapServersItem.Port.ValueInt64()
 
-		bootstrapServers = append(bootstrapServers, shared.ConfluentConsumePluginBootstrapServers{
-			Host: host,
-			Port: port,
-		})
+			bootstrapServers = append(bootstrapServers, shared.ConfluentConsumePluginBootstrapServers{
+				Host: host,
+				Port: port,
+			})
+		}
 	}
 	var clusterAPIKey string
 	clusterAPIKey = r.Config.ClusterAPIKey.ValueString()

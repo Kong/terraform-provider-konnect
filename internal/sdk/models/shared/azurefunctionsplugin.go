@@ -6,10 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type AzureFunctionsPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AzureFunctionsPluginAfter) GetAccess() []string {
@@ -20,7 +21,7 @@ func (o *AzureFunctionsPluginAfter) GetAccess() []string {
 }
 
 type AzureFunctionsPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AzureFunctionsPluginBefore) GetAccess() []string {
@@ -31,8 +32,8 @@ func (o *AzureFunctionsPluginBefore) GetAccess() []string {
 }
 
 type AzureFunctionsPluginOrdering struct {
-	After  *AzureFunctionsPluginAfter  `json:"after,omitempty"`
-	Before *AzureFunctionsPluginBefore `json:"before,omitempty"`
+	After  *AzureFunctionsPluginAfter  `json:"after"`
+	Before *AzureFunctionsPluginBefore `json:"before"`
 }
 
 func (o *AzureFunctionsPluginOrdering) GetAfter() *AzureFunctionsPluginAfter {
@@ -50,9 +51,22 @@ func (o *AzureFunctionsPluginOrdering) GetBefore() *AzureFunctionsPluginBefore {
 }
 
 type AzureFunctionsPluginPartials struct {
-	ID   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (a AzureFunctionsPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AzureFunctionsPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AzureFunctionsPluginPartials) GetID() *string {
@@ -78,25 +92,36 @@ func (o *AzureFunctionsPluginPartials) GetPath() *string {
 
 type AzureFunctionsPluginConfig struct {
 	// The apikey to access the Azure resources. If provided, it is injected as the `x-functions-key` header.
-	Apikey *string `json:"apikey,omitempty"`
+	Apikey *string `default:"null" json:"apikey"`
 	// The Azure app name.
 	Appname string `json:"appname"`
 	// The `clientid` to access the Azure resources. If provided, it is injected as the `x-functions-clientid` header.
-	Clientid *string `json:"clientid,omitempty"`
+	Clientid *string `default:"null" json:"clientid"`
 	// Name of the Azure function to invoke.
 	Functionname string `json:"functionname"`
 	// The domain where the function resides.
-	Hostdomain *string `json:"hostdomain,omitempty"`
+	Hostdomain *string `default:"azurewebsites.net" json:"hostdomain"`
 	// Use of HTTPS to connect with the Azure Functions server.
-	HTTPS *bool `json:"https,omitempty"`
+	HTTPS *bool `default:"true" json:"https"`
 	// Set to `true` to authenticate the Azure Functions server.
-	HTTPSVerify *bool `json:"https_verify,omitempty"`
+	HTTPSVerify *bool `default:"false" json:"https_verify"`
 	// Time in milliseconds during which an idle connection to the Azure Functions server lives before being closed.
-	Keepalive *float64 `json:"keepalive,omitempty"`
+	Keepalive *float64 `default:"60000" json:"keepalive"`
 	// Route prefix to use.
-	Routeprefix *string `json:"routeprefix,omitempty"`
+	Routeprefix *string `default:"api" json:"routeprefix"`
 	// Timeout in milliseconds before closing a connection to the Azure Functions server.
-	Timeout *float64 `json:"timeout,omitempty"`
+	Timeout *float64 `default:"600000" json:"timeout"`
+}
+
+func (a AzureFunctionsPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AzureFunctionsPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AzureFunctionsPluginConfig) GetApikey() *string {
@@ -261,21 +286,24 @@ type AzureFunctionsPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                          `json:"enabled,omitempty"`
-	ID           *string                        `json:"id,omitempty"`
-	InstanceName *string                        `json:"instance_name,omitempty"`
-	name         string                         `const:"azure-functions" json:"name"`
-	Ordering     *AzureFunctionsPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []AzureFunctionsPluginPartials `json:"partials,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string                       `default:"null" json:"instance_name"`
+	name         *string                       `const:"azure-functions" json:"name"`
+	Ordering     *AzureFunctionsPluginOrdering `json:"ordering"`
+	// A list of partials to be used by the plugin.
+	Partials []AzureFunctionsPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                     `json:"updated_at,omitempty"`
 	Config    AzureFunctionsPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *AzureFunctionsPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
-	Protocols []AzureFunctionsPluginProtocols `json:"protocols,omitempty"`
+	Protocols []AzureFunctionsPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *AzureFunctionsPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -321,8 +349,8 @@ func (o *AzureFunctionsPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *AzureFunctionsPlugin) GetName() string {
-	return "azure-functions"
+func (o *AzureFunctionsPlugin) GetName() *string {
+	return types.String("azure-functions")
 }
 
 func (o *AzureFunctionsPlugin) GetOrdering() *AzureFunctionsPluginOrdering {

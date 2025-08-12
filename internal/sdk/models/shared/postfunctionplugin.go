@@ -6,10 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type PostFunctionPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *PostFunctionPluginAfter) GetAccess() []string {
@@ -20,7 +21,7 @@ func (o *PostFunctionPluginAfter) GetAccess() []string {
 }
 
 type PostFunctionPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *PostFunctionPluginBefore) GetAccess() []string {
@@ -31,8 +32,8 @@ func (o *PostFunctionPluginBefore) GetAccess() []string {
 }
 
 type PostFunctionPluginOrdering struct {
-	After  *PostFunctionPluginAfter  `json:"after,omitempty"`
-	Before *PostFunctionPluginBefore `json:"before,omitempty"`
+	After  *PostFunctionPluginAfter  `json:"after"`
+	Before *PostFunctionPluginBefore `json:"before"`
 }
 
 func (o *PostFunctionPluginOrdering) GetAfter() *PostFunctionPluginAfter {
@@ -50,9 +51,22 @@ func (o *PostFunctionPluginOrdering) GetBefore() *PostFunctionPluginBefore {
 }
 
 type PostFunctionPluginPartials struct {
-	ID   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (p PostFunctionPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PostFunctionPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *PostFunctionPluginPartials) GetID() *string {
@@ -239,19 +253,22 @@ type PostFunctionPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                        `json:"enabled,omitempty"`
-	ID           *string                      `json:"id,omitempty"`
-	InstanceName *string                      `json:"instance_name,omitempty"`
-	name         string                       `const:"post-function" json:"name"`
-	Ordering     *PostFunctionPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []PostFunctionPluginPartials `json:"partials,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string                     `default:"null" json:"instance_name"`
+	name         *string                     `const:"post-function" json:"name"`
+	Ordering     *PostFunctionPluginOrdering `json:"ordering"`
+	// A list of partials to be used by the plugin.
+	Partials []PostFunctionPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                    `json:"updated_at,omitempty"`
-	Config    *PostFunctionPluginConfig `json:"config,omitempty"`
+	Config    *PostFunctionPluginConfig `json:"config"`
 	// A set of strings representing protocols.
-	Protocols []PostFunctionPluginProtocols `json:"protocols,omitempty"`
+	Protocols []PostFunctionPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *PostFunctionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -297,8 +314,8 @@ func (o *PostFunctionPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *PostFunctionPlugin) GetName() string {
-	return "post-function"
+func (o *PostFunctionPlugin) GetName() *string {
+	return types.String("post-function")
 }
 
 func (o *PostFunctionPlugin) GetOrdering() *PostFunctionPluginOrdering {

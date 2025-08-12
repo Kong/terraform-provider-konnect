@@ -37,12 +37,12 @@ func (o *UpsertPartialRequest) GetPartial() shared.Partial {
 	return o.Partial
 }
 
-func (o *UpsertPartialRequest) GetPartialRedisCe() *shared.PartialRedisCE {
-	return o.GetPartial().PartialRedisCE
+func (o *UpsertPartialRequest) GetPartialRedisCe() *shared.PartialRedisCe {
+	return o.GetPartial().PartialRedisCe
 }
 
-func (o *UpsertPartialRequest) GetPartialRedisEe() *shared.PartialRedisEE {
-	return o.GetPartial().PartialRedisEE
+func (o *UpsertPartialRequest) GetPartialRedisEe() *shared.PartialRedisEe {
+	return o.GetPartial().PartialRedisEe
 }
 
 type UpsertPartialResponse struct {
@@ -86,16 +86,16 @@ func (o *UpsertPartialResponse) GetPartial() *shared.Partial {
 	return o.Partial
 }
 
-func (o *UpsertPartialResponse) GetPartialRedisCe() *shared.PartialRedisCE {
+func (o *UpsertPartialResponse) GetPartialRedisCe() *shared.PartialRedisCe {
 	if v := o.GetPartial(); v != nil {
-		return v.PartialRedisCE
+		return v.PartialRedisCe
 	}
 	return nil
 }
 
-func (o *UpsertPartialResponse) GetPartialRedisEe() *shared.PartialRedisEE {
+func (o *UpsertPartialResponse) GetPartialRedisEe() *shared.PartialRedisEe {
 	if v := o.GetPartial(); v != nil {
-		return v.PartialRedisEE
+		return v.PartialRedisEe
 	}
 	return nil
 }

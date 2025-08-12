@@ -6,10 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type GrpcWebPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *GrpcWebPluginAfter) GetAccess() []string {
@@ -20,7 +21,7 @@ func (o *GrpcWebPluginAfter) GetAccess() []string {
 }
 
 type GrpcWebPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *GrpcWebPluginBefore) GetAccess() []string {
@@ -31,8 +32,8 @@ func (o *GrpcWebPluginBefore) GetAccess() []string {
 }
 
 type GrpcWebPluginOrdering struct {
-	After  *GrpcWebPluginAfter  `json:"after,omitempty"`
-	Before *GrpcWebPluginBefore `json:"before,omitempty"`
+	After  *GrpcWebPluginAfter  `json:"after"`
+	Before *GrpcWebPluginBefore `json:"before"`
 }
 
 func (o *GrpcWebPluginOrdering) GetAfter() *GrpcWebPluginAfter {
@@ -50,9 +51,22 @@ func (o *GrpcWebPluginOrdering) GetBefore() *GrpcWebPluginBefore {
 }
 
 type GrpcWebPluginPartials struct {
-	ID   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (g GrpcWebPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GrpcWebPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *GrpcWebPluginPartials) GetID() *string {
@@ -78,11 +92,22 @@ func (o *GrpcWebPluginPartials) GetPath() *string {
 
 type GrpcWebPluginConfig struct {
 	// The value of the `Access-Control-Allow-Origin` header in the response to the gRPC-Web client.
-	AllowOriginHeader *string `json:"allow_origin_header,omitempty"`
+	AllowOriginHeader *string `default:"*" json:"allow_origin_header"`
 	// If set to `true` causes the plugin to pass the stripped request path to the upstream gRPC service.
-	PassStrippedPath *bool `json:"pass_stripped_path,omitempty"`
+	PassStrippedPath *bool `default:"null" json:"pass_stripped_path"`
 	// If present, describes the gRPC types and methods. Required to support payload transcoding. When absent, the web client must use application/grpw-web+proto content.
-	Proto *string `json:"proto,omitempty"`
+	Proto *string `default:"null" json:"proto"`
+}
+
+func (g GrpcWebPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GrpcWebPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *GrpcWebPluginConfig) GetAllowOriginHeader() *string {
@@ -198,21 +223,24 @@ type GrpcWebPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                   `json:"enabled,omitempty"`
-	ID           *string                 `json:"id,omitempty"`
-	InstanceName *string                 `json:"instance_name,omitempty"`
-	name         string                  `const:"grpc-web" json:"name"`
-	Ordering     *GrpcWebPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []GrpcWebPluginPartials `json:"partials,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string                `default:"null" json:"instance_name"`
+	name         *string                `const:"grpc-web" json:"name"`
+	Ordering     *GrpcWebPluginOrdering `json:"ordering"`
+	// A list of partials to be used by the plugin.
+	Partials []GrpcWebPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64               `json:"updated_at,omitempty"`
-	Config    *GrpcWebPluginConfig `json:"config,omitempty"`
+	Config    *GrpcWebPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *GrpcWebPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
-	Protocols []GrpcWebPluginProtocols `json:"protocols,omitempty"`
+	Protocols []GrpcWebPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *GrpcWebPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -258,8 +286,8 @@ func (o *GrpcWebPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *GrpcWebPlugin) GetName() string {
-	return "grpc-web"
+func (o *GrpcWebPlugin) GetName() *string {
+	return types.String("grpc-web")
 }
 
 func (o *GrpcWebPlugin) GetOrdering() *GrpcWebPluginOrdering {

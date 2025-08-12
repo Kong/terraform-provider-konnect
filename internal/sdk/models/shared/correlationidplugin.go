@@ -6,10 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 type CorrelationIDPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *CorrelationIDPluginAfter) GetAccess() []string {
@@ -20,7 +21,7 @@ func (o *CorrelationIDPluginAfter) GetAccess() []string {
 }
 
 type CorrelationIDPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *CorrelationIDPluginBefore) GetAccess() []string {
@@ -31,8 +32,8 @@ func (o *CorrelationIDPluginBefore) GetAccess() []string {
 }
 
 type CorrelationIDPluginOrdering struct {
-	After  *CorrelationIDPluginAfter  `json:"after,omitempty"`
-	Before *CorrelationIDPluginBefore `json:"before,omitempty"`
+	After  *CorrelationIDPluginAfter  `json:"after"`
+	Before *CorrelationIDPluginBefore `json:"before"`
 }
 
 func (o *CorrelationIDPluginOrdering) GetAfter() *CorrelationIDPluginAfter {
@@ -50,9 +51,22 @@ func (o *CorrelationIDPluginOrdering) GetBefore() *CorrelationIDPluginBefore {
 }
 
 type CorrelationIDPluginPartials struct {
-	ID   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (c CorrelationIDPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CorrelationIDPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CorrelationIDPluginPartials) GetID() *string {
@@ -108,11 +122,22 @@ func (e *Generator) UnmarshalJSON(data []byte) error {
 
 type CorrelationIDPluginConfig struct {
 	// Whether to echo the header back to downstream (the client).
-	EchoDownstream *bool `json:"echo_downstream,omitempty"`
+	EchoDownstream *bool `default:"false" json:"echo_downstream"`
 	// The generator to use for the correlation ID. Accepted values are `uuid`, `uuid#counter`, and `tracker`. See [Generators](#generators).
-	Generator *Generator `json:"generator,omitempty"`
+	Generator *Generator `default:"uuid#counter" json:"generator"`
 	// The HTTP header name to use for the correlation ID.
-	HeaderName *string `json:"header_name,omitempty"`
+	HeaderName *string `default:"Kong-Request-ID" json:"header_name"`
+}
+
+func (c CorrelationIDPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CorrelationIDPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CorrelationIDPluginConfig) GetEchoDownstream() *bool {
@@ -209,21 +234,24 @@ type CorrelationIDPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                         `json:"enabled,omitempty"`
-	ID           *string                       `json:"id,omitempty"`
-	InstanceName *string                       `json:"instance_name,omitempty"`
-	name         string                        `const:"correlation-id" json:"name"`
-	Ordering     *CorrelationIDPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []CorrelationIDPluginPartials `json:"partials,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string                      `default:"null" json:"instance_name"`
+	name         *string                      `const:"correlation-id" json:"name"`
+	Ordering     *CorrelationIDPluginOrdering `json:"ordering"`
+	// A list of partials to be used by the plugin.
+	Partials []CorrelationIDPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                     `json:"updated_at,omitempty"`
-	Config    *CorrelationIDPluginConfig `json:"config,omitempty"`
+	Config    *CorrelationIDPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *CorrelationIDPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
-	Protocols []CorrelationIDPluginProtocols `json:"protocols,omitempty"`
+	Protocols []CorrelationIDPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *CorrelationIDPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -269,8 +297,8 @@ func (o *CorrelationIDPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *CorrelationIDPlugin) GetName() string {
-	return "correlation-id"
+func (o *CorrelationIDPlugin) GetName() *string {
+	return types.String("correlation-id")
 }
 
 func (o *CorrelationIDPlugin) GetOrdering() *CorrelationIDPluginOrdering {
