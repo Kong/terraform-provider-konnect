@@ -4,7 +4,8 @@
 > Released on 2025/??/??
 
 ### Features
-* ...
+* Introduce new resources `konnect_portal_classic` into which `konnect_portal` can be imported
+* Introduce new data source `konnect_portal_classic_list` which is equivalent to `konnect_portal_list`
 
 ### Bug fixes
 * ...
