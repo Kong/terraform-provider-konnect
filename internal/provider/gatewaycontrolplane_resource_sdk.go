@@ -20,21 +20,15 @@ func (r *GatewayControlPlaneResourceModel) RefreshFromSharedControlPlane(ctx con
 		r.Config.ClusterType = types.StringValue(string(resp.Config.ClusterType))
 		r.Config.ControlPlaneEndpoint = types.StringValue(resp.Config.ControlPlaneEndpoint)
 		r.Config.ProxyUrls = []tfTypes.ProxyURL{}
-		if len(r.Config.ProxyUrls) > len(resp.Config.ProxyUrls) {
-			r.Config.ProxyUrls = r.Config.ProxyUrls[:len(resp.Config.ProxyUrls)]
-		}
-		for proxyUrlsCount, proxyUrlsItem := range resp.Config.ProxyUrls {
+
+		for _, proxyUrlsItem := range resp.Config.ProxyUrls {
 			var proxyUrls tfTypes.ProxyURL
+
 			proxyUrls.Host = types.StringValue(proxyUrlsItem.Host)
 			proxyUrls.Port = types.Int64Value(proxyUrlsItem.Port)
 			proxyUrls.Protocol = types.StringValue(proxyUrlsItem.Protocol)
-			if proxyUrlsCount+1 > len(r.Config.ProxyUrls) {
-				r.Config.ProxyUrls = append(r.Config.ProxyUrls, proxyUrls)
-			} else {
-				r.Config.ProxyUrls[proxyUrlsCount].Host = proxyUrls.Host
-				r.Config.ProxyUrls[proxyUrlsCount].Port = proxyUrls.Port
-				r.Config.ProxyUrls[proxyUrlsCount].Protocol = proxyUrls.Protocol
-			}
+
+			r.Config.ProxyUrls = append(r.Config.ProxyUrls, proxyUrls)
 		}
 		r.Config.TelemetryEndpoint = types.StringValue(resp.Config.TelemetryEndpoint)
 		r.Description = types.StringPointerValue(resp.Description)

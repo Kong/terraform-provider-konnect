@@ -25,26 +25,21 @@ func (r *GatewayPluginServiceProtectionResourceModel) RefreshFromSharedServicePr
 			r.Config.Limit = append(r.Config.Limit, types.Float64Value(v))
 		}
 		r.Config.LockDictionaryName = types.StringPointerValue(resp.Config.LockDictionaryName)
-		r.Config.Namespace = types.StringValue(resp.Config.Namespace)
+		r.Config.Namespace = types.StringPointerValue(resp.Config.Namespace)
 		if resp.Config.Redis == nil {
 			r.Config.Redis = nil
 		} else {
-			r.Config.Redis = &tfTypes.AiProxyAdvancedPluginRedis{}
+			r.Config.Redis = &tfTypes.PartialRedisEeConfig{}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
-			r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEEClusterNodes{}
-			if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
-				r.Config.Redis.ClusterNodes = r.Config.Redis.ClusterNodes[:len(resp.Config.Redis.ClusterNodes)]
-			}
-			for clusterNodesCount, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
-				var clusterNodes tfTypes.PartialRedisEEClusterNodes
+			r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+
+			for _, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
+				var clusterNodes tfTypes.PartialRedisEeClusterNodes
+
 				clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 				clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
-				if clusterNodesCount+1 > len(r.Config.Redis.ClusterNodes) {
-					r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes)
-				} else {
-					r.Config.Redis.ClusterNodes[clusterNodesCount].IP = clusterNodes.IP
-					r.Config.Redis.ClusterNodes[clusterNodesCount].Port = clusterNodes.Port
-				}
+
+				r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes)
 			}
 			r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
 			r.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Redis.ConnectionIsProxied)
@@ -57,20 +52,15 @@ func (r *GatewayPluginServiceProtectionResourceModel) RefreshFromSharedServicePr
 			r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
 			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
-			r.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEESentinelNodes{}
-			if len(r.Config.Redis.SentinelNodes) > len(resp.Config.Redis.SentinelNodes) {
-				r.Config.Redis.SentinelNodes = r.Config.Redis.SentinelNodes[:len(resp.Config.Redis.SentinelNodes)]
-			}
-			for sentinelNodesCount, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
-				var sentinelNodes tfTypes.PartialRedisEESentinelNodes
+			r.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+
+			for _, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
+				var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+
 				sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 				sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
-				if sentinelNodesCount+1 > len(r.Config.Redis.SentinelNodes) {
-					r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes)
-				} else {
-					r.Config.Redis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes.Host
-					r.Config.Redis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes.Port
-				}
+
+				r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes)
 			}
 			r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
 			if resp.Config.Redis.SentinelRole != nil {
@@ -129,21 +119,15 @@ func (r *GatewayPluginServiceProtectionResourceModel) RefreshFromSharedServicePr
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
@@ -384,9 +368,12 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToSharedServiceProtectionP
 	} else {
 		lockDictionaryName = nil
 	}
-	var namespace string
-	namespace = r.Config.Namespace.ValueString()
-
+	namespace := new(string)
+	if !r.Config.Namespace.IsUnknown() && !r.Config.Namespace.IsNull() {
+		*namespace = r.Config.Namespace.ValueString()
+	} else {
+		namespace = nil
+	}
 	var redis *shared.ServiceProtectionPluginRedis
 	if r.Config.Redis != nil {
 		clusterMaxRedirections := new(int64)

@@ -16,28 +16,24 @@ func (r *GatewayControlPlaneListDataSourceModel) RefreshFromSharedListControlPla
 
 	if resp != nil {
 		r.Data = []tfTypes.ControlPlane{}
-		if len(r.Data) > len(resp.Data) {
-			r.Data = r.Data[:len(resp.Data)]
-		}
-		for dataCount, dataItem := range resp.Data {
+
+		for _, dataItem := range resp.Data {
 			var data tfTypes.ControlPlane
+
 			data.Config.AuthType = types.StringValue(string(dataItem.Config.AuthType))
 			data.Config.CloudGateway = types.BoolValue(dataItem.Config.CloudGateway)
 			data.Config.ClusterType = types.StringValue(string(dataItem.Config.ClusterType))
 			data.Config.ControlPlaneEndpoint = types.StringValue(dataItem.Config.ControlPlaneEndpoint)
 			data.Config.ProxyUrls = []tfTypes.ProxyURL{}
-			for proxyUrlsCount, proxyUrlsItem := range dataItem.Config.ProxyUrls {
+
+			for _, proxyUrlsItem := range dataItem.Config.ProxyUrls {
 				var proxyUrls tfTypes.ProxyURL
+
 				proxyUrls.Host = types.StringValue(proxyUrlsItem.Host)
 				proxyUrls.Port = types.Int64Value(proxyUrlsItem.Port)
 				proxyUrls.Protocol = types.StringValue(proxyUrlsItem.Protocol)
-				if proxyUrlsCount+1 > len(data.Config.ProxyUrls) {
-					data.Config.ProxyUrls = append(data.Config.ProxyUrls, proxyUrls)
-				} else {
-					data.Config.ProxyUrls[proxyUrlsCount].Host = proxyUrls.Host
-					data.Config.ProxyUrls[proxyUrlsCount].Port = proxyUrls.Port
-					data.Config.ProxyUrls[proxyUrlsCount].Protocol = proxyUrls.Protocol
-				}
+
+				data.Config.ProxyUrls = append(data.Config.ProxyUrls, proxyUrls)
 			}
 			data.Config.TelemetryEndpoint = types.StringValue(dataItem.Config.TelemetryEndpoint)
 			data.Description = types.StringPointerValue(dataItem.Description)
@@ -49,15 +45,8 @@ func (r *GatewayControlPlaneListDataSourceModel) RefreshFromSharedListControlPla
 				}
 			}
 			data.Name = types.StringValue(dataItem.Name)
-			if dataCount+1 > len(r.Data) {
-				r.Data = append(r.Data, data)
-			} else {
-				r.Data[dataCount].Config = data.Config
-				r.Data[dataCount].Description = data.Description
-				r.Data[dataCount].ID = data.ID
-				r.Data[dataCount].Labels = data.Labels
-				r.Data[dataCount].Name = data.Name
-			}
+
+			r.Data = append(r.Data, data)
 		}
 		r.Meta.Page.Number = types.Float64Value(resp.Meta.Page.Number)
 		r.Meta.Page.Size = types.Float64Value(resp.Meta.Page.Size)

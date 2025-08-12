@@ -37,13 +37,10 @@ resource "konnect_gateway_consumer" "my_gatewayconsumer" {
 
 - `created_at` (Number) Unix epoch when the resource was created.
 - `custom_id` (String) Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database. You must send either this field or `username` with the request.
+- `id` (String) A string representing a UUID (universally unique identifier).
 - `tags` (List of String) An optional set of strings associated with the Consumer for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
 - `username` (String) The unique username of the Consumer. You must send either this field or `custom_id` with the request.
-
-### Read-Only
-
-- `id` (String) The ID of this resource.
 
 ## Import
 

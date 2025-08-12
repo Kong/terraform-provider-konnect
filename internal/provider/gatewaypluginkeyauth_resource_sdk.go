@@ -22,11 +22,10 @@ func (r *GatewayPluginKeyAuthResourceModel) RefreshFromSharedKeyAuthPlugin(ctx c
 			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
 			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
 			r.Config.IdentityRealms = []tfTypes.IdentityRealms{}
-			if len(r.Config.IdentityRealms) > len(resp.Config.IdentityRealms) {
-				r.Config.IdentityRealms = r.Config.IdentityRealms[:len(resp.Config.IdentityRealms)]
-			}
-			for identityRealmsCount, identityRealmsItem := range resp.Config.IdentityRealms {
+
+			for _, identityRealmsItem := range resp.Config.IdentityRealms {
 				var identityRealms tfTypes.IdentityRealms
+
 				identityRealms.ID = types.StringPointerValue(identityRealmsItem.ID)
 				identityRealms.Region = types.StringPointerValue(identityRealmsItem.Region)
 				if identityRealmsItem.Scope != nil {
@@ -34,13 +33,8 @@ func (r *GatewayPluginKeyAuthResourceModel) RefreshFromSharedKeyAuthPlugin(ctx c
 				} else {
 					identityRealms.Scope = types.StringNull()
 				}
-				if identityRealmsCount+1 > len(r.Config.IdentityRealms) {
-					r.Config.IdentityRealms = append(r.Config.IdentityRealms, identityRealms)
-				} else {
-					r.Config.IdentityRealms[identityRealmsCount].ID = identityRealms.ID
-					r.Config.IdentityRealms[identityRealmsCount].Region = identityRealms.Region
-					r.Config.IdentityRealms[identityRealmsCount].Scope = identityRealms.Scope
-				}
+
+				r.Config.IdentityRealms = append(r.Config.IdentityRealms, identityRealms)
 			}
 			r.Config.KeyInBody = types.BoolPointerValue(resp.Config.KeyInBody)
 			r.Config.KeyInHeader = types.BoolPointerValue(resp.Config.KeyInHeader)
@@ -81,21 +75,15 @@ func (r *GatewayPluginKeyAuthResourceModel) RefreshFromSharedKeyAuthPlugin(ctx c
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))

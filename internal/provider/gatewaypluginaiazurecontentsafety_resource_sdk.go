@@ -25,19 +25,14 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) RefreshFromSharedAiAzur
 			r.Config.BlocklistNames = append(r.Config.BlocklistNames, types.StringValue(v))
 		}
 		r.Config.Categories = []tfTypes.Categories{}
-		if len(r.Config.Categories) > len(resp.Config.Categories) {
-			r.Config.Categories = r.Config.Categories[:len(resp.Config.Categories)]
-		}
-		for categoriesCount, categoriesItem := range resp.Config.Categories {
+
+		for _, categoriesItem := range resp.Config.Categories {
 			var categories tfTypes.Categories
+
 			categories.Name = types.StringValue(categoriesItem.Name)
 			categories.RejectionLevel = types.Int64Value(categoriesItem.RejectionLevel)
-			if categoriesCount+1 > len(r.Config.Categories) {
-				r.Config.Categories = append(r.Config.Categories, categories)
-			} else {
-				r.Config.Categories[categoriesCount].Name = categories.Name
-				r.Config.Categories[categoriesCount].RejectionLevel = categories.RejectionLevel
-			}
+
+			r.Config.Categories = append(r.Config.Categories, categories)
 		}
 		r.Config.ContentSafetyKey = types.StringPointerValue(resp.Config.ContentSafetyKey)
 		r.Config.ContentSafetyURL = types.StringValue(resp.Config.ContentSafetyURL)
@@ -82,21 +77,15 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) RefreshFromSharedAiAzur
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))

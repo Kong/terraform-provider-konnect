@@ -7,6 +7,5 @@ import (
 )
 
 type RequestCalloutPluginConfigHeaders struct {
-	Custom  map[string]types.String `tfsdk:"custom"`
-	Forward types.Bool              `tfsdk:"forward"`
+	Store types.Bool `tfsdk:"store"`
 }

@@ -31,17 +31,14 @@ resource "konnect_gateway_consumer_group" "my_gatewayconsumergroup" {
 ### Required
 
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
-- `name` (String)
+- `name` (String) The name of the consumer group.
 
 ### Optional
 
 - `created_at` (Number) Unix epoch when the resource was created.
-- `tags` (List of String)
+- `id` (String) A string representing a UUID (universally unique identifier).
+- `tags` (List of String) A set of strings representing tags.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
-
-### Read-Only
-
-- `id` (String) The ID of this resource.
 
 ## Import
 

@@ -108,6 +108,364 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Serverless Cloud Gateways
+  /v1/catalog-services:
+    post:
+      x-speakeasy-entity-operation: CatalogService#create
+      operationId: create-catalog-service
+      summary: Create Service
+      description: Creates a service.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateCatalogServiceRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CatalogServiceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Catalog Services
+  '/v1/catalog-services/{id}':
+    parameters:
+      - name: id
+        in: path
+        description: The `id` of the service.
+        required: true
+        schema:
+          type: string
+          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: CatalogService#read
+        terraform-datasource: null
+      operationId: fetch-catalog-service
+      summary: Fetch Service
+      description: Fetches a service.
+      responses:
+        '200':
+          $ref: '#/components/responses/CatalogServiceResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Catalog Services
+    patch:
+      x-speakeasy-entity-operation: CatalogService#update
+      operationId: update-catalog-service
+      summary: Update Service
+      description: Updates a service.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateCatalogServiceRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/CatalogServiceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Catalog Services
+    delete:
+      x-speakeasy-entity-operation: CatalogService#delete
+      operationId: delete-catalog-service
+      summary: Delete Service
+      description: Deletes a service.
+      responses:
+        '204':
+          description: Service was deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Catalog Services
+  '/v1/cmeks/{cmekId}':
+    parameters:
+      - $ref: '#/components/parameters/cmekId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: CMEK#read
+        terraform-datasource: null
+      operationId: get-cmek
+      summary: Get a CMEK
+      description: Get a customer managed encryption key.
+      responses:
+        '200':
+          $ref: '#/components/responses/CMEK'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - CMEK
+    put:
+      x-speakeasy-entity-operation: 'CMEK#create,update'
+      operationId: put-cmek
+      summary: Create or replace a CMEK
+      description: Create or replace a customer managed encryption key.
+      requestBody:
+        $ref: '#/components/requestBodies/ReplaceCMEK'
+      responses:
+        '200':
+          $ref: '#/components/responses/CMEK'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - CMEK
+    delete:
+      x-speakeasy-entity-operation: CMEK#delete
+      operationId: delete-cmek
+      summary: Delete a CMEK
+      description: 'Delete a customer managed encryption key. Avoid revoking or deleting a KMS key and CMEK that is actively used by Konnect, as this can lead to data loss or service disruptions.'
+      responses:
+        '204':
+          description: Success
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - CMEK
+  /v1/integration-instances:
+    post:
+      x-speakeasy-entity-operation: IntegrationInstance#create
+      operationId: create-integration-instance
+      summary: Create Integration Instance
+      description: Creates an integration instance.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateIntegrationInstanceRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/IntegrationInstanceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Integration Instances
+  '/v1/integration-instances/{id}':
+    parameters:
+      - name: id
+        in: path
+        description: The `id` of the integration instance.
+        required: true
+        schema:
+          type: string
+          example: 3f51fa25-310a-421d-bd1a-007f859021a3
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IntegrationInstance#read
+        terraform-datasource: null
+      operationId: fetch-integration-instance
+      summary: Fetch Integration Instance
+      description: Fetches a integration instance.
+      responses:
+        '200':
+          $ref: '#/components/responses/IntegrationInstanceResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Integration Instances
+    patch:
+      x-speakeasy-entity-operation: IntegrationInstance#update
+      operationId: update-integration-instance
+      summary: Update Integration Instance
+      description: Updates an integration instance.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateIntegrationInstanceRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/IntegrationInstanceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Integration Instances
+    delete:
+      x-speakeasy-entity-operation: IntegrationInstance#delete
+      operationId: delete-integration-instance
+      summary: Delete Integration Instance
+      description: Deletes an integration instance.
+      responses:
+        '204':
+          description: Integration Instance was deleted successfully.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Integration Instances
+  '/v1/integration-instances/{integrationInstanceId}/auth-config':
+    parameters:
+      - name: integrationInstanceId
+        in: path
+        description: The `id` of the integration instance.
+        required: true
+        schema:
+          type: string
+          example: 3f51fa25-310a-421d-bd1a-007f859021a3
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IntegrationInstanceAuthConfig#read
+        terraform-datasource: null
+      operationId: get-integration-instance-auth-config
+      summary: Get Integration Instance Auth Config
+      description: Fetches auth config scoped to the given integration instance.
+      responses:
+        '200':
+          $ref: '#/components/responses/IntegrationInstanceAuthConfigResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Integration Instance Auth Config
+    put:
+      x-speakeasy-entity-operation: 'IntegrationInstanceAuthConfig#create,update'
+      operationId: upsert-integration-instance-auth-config
+      summary: Upsert Integration Instance Auth Config
+      description: Upserts auth config scoped to the given integration instance.
+      requestBody:
+        $ref: '#/components/requestBodies/UpsertIntegrationInstanceAuthConfigRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/IntegrationInstanceAuthConfigResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Integration Instance Auth Config
+    delete:
+      x-speakeasy-entity-operation: IntegrationInstanceAuthConfig#delete
+      operationId: delete-integration-instance-auth-config
+      summary: Delete Integration Instance Auth Config
+      description: Deletes the auth config scoped to the given integration instance.
+      responses:
+        '204':
+          description: Integration Instance Auth Config was deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Integration Instance Auth Config
+  '/v1/integration-instances/{integrationInstanceId}/auth-credential':
+    parameters:
+      - name: integrationInstanceId
+        in: path
+        description: The `id` of the integration instance.
+        required: true
+        schema:
+          type: string
+          example: 3f51fa25-310a-421d-bd1a-007f859021a3
+    post:
+      x-speakeasy-entity-operation: IntegrationInstanceAuthCredential#create
+      operationId: create-integration-instance-auth-credential
+      summary: Create Integration Instance Auth Credential
+      description: |
+        Creates an auth credential scoped to the given integration instance.
+        Auth credentials are singleton resources that have a 1-to-1 relationship with
+        an integration instance.
+
+        An attempt to create subsequent auth credentials for an instance will result in a 409 response.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateIntegrationInstanceAuthCredentialRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/IntegrationInstanceAuthCredentialResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Integration Instance Auth Credentials
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IntegrationInstanceAuthCredential#read
+        terraform-datasource: null
+      operationId: get-integration-instance-auth-credential
+      summary: Get Integration Instance Auth Credential
+      description: Fetches the auth credential scoped to the given integration instance.
+      responses:
+        '200':
+          $ref: '#/components/responses/IntegrationInstanceAuthCredentialResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Integration Instance Auth Credentials
+    delete:
+      x-speakeasy-entity-operation: IntegrationInstanceAuthCredential#delete
+      operationId: delete-integration-instance-auth-credential
+      summary: Delete Integration Instance Auth Credential
+      description: Deletes the auth credential scoped to the given integration instance.
+      responses:
+        '204':
+          description: Integration Instance Auth Credential was deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Integration Instance Auth Credentials
   /v1/mesh/control-planes:
     get:
       x-speakeasy-entity-operation: MeshControlPlanes#get
@@ -6941,68 +7299,6 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Plugins
-  '/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#Oauth2':
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayPluginOauth2#delete
-      operationId: delete-oauth2-plugin
-      summary: Delete a Oauth2 plugin
-      description: Delete a Oauth2 plugin
-      responses:
-        '204':
-          description: Successfully deleted Plugin or the resource didn't exist
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Plugins
-    get:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayPluginOauth2#read
-      operationId: get-oauth2-plugin
-      summary: Get a Oauth2 plugin
-      description: Get a Oauth2 plugin
-      responses:
-        '200':
-          description: Oauth2 plugin
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Oauth2Plugin'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-        '404':
-          description: Resource does not exist
-      tags:
-        - Plugins
-    parameters:
-      - $ref: '#/components/parameters/PluginId'
-      - $ref: '#/components/parameters/controlPlaneId'
-    put:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayPluginOauth2#update
-      operationId: update-oauth2-plugin
-      summary: Update a Oauth2 plugin
-      description: Update a Oauth2 plugin
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Oauth2Plugin'
-      responses:
-        '200':
-          description: Oauth2 plugin
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Oauth2Plugin'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Plugins
   '/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#Oauth2Introspection':
     delete:
       x-speakeasy-entity-operation:
@@ -11173,33 +11469,6 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Plugins
-  '/v2/control-planes/{controlPlaneId}/core-entities/plugins#Oauth2':
-    parameters:
-      - $ref: '#/components/parameters/controlPlaneId'
-    post:
-      x-speakeasy-entity-operation:
-        terraform-datasource: null
-        terraform-resource: GatewayPluginOauth2#create
-      operationId: create-oauth2-plugin
-      summary: Create a Oauth2 plugin
-      description: Create a Oauth2 plugin
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Oauth2Plugin'
-      responses:
-        '201':
-          description: Created Oauth2 plugin
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Oauth2Plugin'
-        '401':
-          $ref: '#/components/responses/HTTP401Error'
-      tags:
-        - Plugins
   '/v2/control-planes/{controlPlaneId}/core-entities/plugins#Oauth2Introspection':
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
@@ -14261,11 +14530,13 @@ components:
         type: string
       x-speakeasy-match: id
     ConsumerGroupIdManageConsumers:
+      description: The UUID or name of the consumer group
       in: path
       name: ConsumerGroupId
       required: true
       schema:
         type: string
+        example: cf4c7e60-11db-49dd-b300-7c7e5f0f7e6b
       x-speakeasy-name-override: consumer_group_id
     ConsumerId:
       description: ID of the Consumer to lookup
@@ -14562,6 +14833,18 @@ components:
       description: ID of the of the consumer
       schema:
         type: string
+    cmekId:
+      name: cmekId
+      in: path
+      required: true
+      description: 'Customer Managed Encryption Key identifier. This ID is selected from a predefined, Konnect-specific list of allowed values and uniquely identifies a CMEK configuration within a given organization and Konnect region. While not global in function, these IDs behave like scoped namespaces with enforced uniqueness and enumeration constraints.'
+      schema:
+        type: string
+        example: default
+        default: default
+        enum:
+          - default
+      x-speakeasy-name-override: id
     configStoreId:
       schema:
         type: string
@@ -19660,6 +19943,527 @@ components:
       format: set
       title: RealmConsumerGroups
       x-speakeasy-param-suppress-computed-diff: true
+    KMSARN:
+      description: 'The Amazon Resource Name (ARN) of the Key Management Service (KMS) key to use for encryption and decryption. We recommend using one multi-region key (MRK) per Konnect region to enhance security and compliance, while also supporting failover to other AWS regions.'
+      type: string
+      example: 'arn:aws:kms:us-east-1:123456789012:key/mrk-12345678123412341234123456789012'
+    CMEKName:
+      description: The name of the CMEK. We recommend you match the key's name used in KMS.
+      type: string
+      example: My KMS Key
+      minLength: 1
+    CMEKDescription:
+      description: An optional description of the CMEK.
+      type: string
+      example: My Key Description
+    CMEK:
+      type: object
+      properties:
+        id:
+          type: string
+          x-speakeasy-ignore: true
+        key_arn:
+          $ref: '#/components/schemas/KMSARN'
+        name:
+          $ref: '#/components/schemas/CMEKName'
+        description:
+          $ref: '#/components/schemas/CMEKDescription'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - key_arn
+        - name
+        - created_at
+        - updated_at
+    CreateCatalogService:
+      type: object
+      properties:
+        name:
+          description: |
+            The machine name of the Service that uniquely identifies it within the catalog.
+          type: string
+          example: user-svc
+          maxLength: 120
+          minLength: 1
+          pattern: '^[0-9a-z.-]+$'
+        display_name:
+          description: The display name of the Service.
+          type: string
+          example: User Service
+          maxLength: 120
+          minLength: 1
+        description:
+          description: Optionally provide a description of the Service.
+          type: string
+          maxLength: 2048
+          nullable: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        custom_fields:
+          $ref: '#/components/schemas/CustomFields'
+      additionalProperties: false
+      required:
+        - name
+        - display_name
+    UpdateCatalogService:
+      type: object
+      properties:
+        name:
+          description: |
+            The machine name of the Service that uniquely identifies it within the catalog.
+          type: string
+          example: user-svc
+          maxLength: 120
+          minLength: 1
+          pattern: '^[0-9a-z.-]+$'
+        display_name:
+          description: The display name of the Service.
+          type: string
+          example: User Service
+          maxLength: 120
+          minLength: 1
+        description:
+          description: Optionally provide a description of the Service.
+          type: string
+          maxLength: 2048
+          nullable: true
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
+        custom_fields:
+          $ref: '#/components/schemas/CustomFields'
+      additionalProperties: false
+    CatalogService:
+      description: The service object contains information about a Service Catalog service.
+      type: object
+      properties:
+        id:
+          description: The service ID.
+          type: string
+          format: uuid
+          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          readOnly: true
+        name:
+          description: |
+            The machine name of the Service that uniquely identifies it within the catalog.
+          type: string
+          example: user-svc
+          maxLength: 120
+          minLength: 1
+          pattern: '^[0-9a-z.-]+$'
+        display_name:
+          description: The display name of the Service.
+          type: string
+          example: User Service
+          maxLength: 120
+          minLength: 1
+        description:
+          description: Optionally provide a description of the Service.
+          type: string
+          maxLength: 2048
+          nullable: true
+        custom_fields:
+          $ref: '#/components/schemas/CustomFields'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - name
+        - display_name
+        - description
+        - custom_fields
+        - labels
+        - created_at
+        - updated_at
+      title: CatalogService
+    CreateIntegrationInstance:
+      type: object
+      properties:
+        integration_name:
+          description: The type of integration instance to create.
+          type: string
+          example: aws-lambda
+          maxLength: 120
+          minLength: 1
+          pattern: '^[0-9a-z.-]+$'
+        name:
+          description: |
+            The machine name of the integration instance that uniquely identifies it within the catalog.
+          type: string
+          example: aws-lambda-prod
+          maxLength: 120
+          minLength: 1
+          pattern: '^[0-9a-z.-]+$'
+        display_name:
+          description: The display name of the integration instance.
+          type: string
+          example: AWS (prod)
+          maxLength: 120
+          minLength: 1
+        description:
+          description: Optionally provide a description of the integration instance.
+          type: string
+          maxLength: 2048
+          nullable: true
+        config:
+          $ref: '#/components/schemas/IntegrationInstanceConfig'
+      additionalProperties: false
+      required:
+        - integration_name
+        - name
+        - display_name
+        - config
+    UpdateIntegrationInstance:
+      type: object
+      properties:
+        name:
+          description: |
+            The machine name of the integration instance that uniquely identifies it within the catalog.
+          type: string
+          example: aws-lambda-prod
+          maxLength: 120
+          minLength: 1
+          pattern: '^[0-9a-z.-]+$'
+        display_name:
+          description: The display name of the integration instance.
+          type: string
+          example: AWS (prod)
+          maxLength: 120
+          minLength: 1
+        description:
+          description: Optionally provide a description of the integration instance.
+          type: string
+          maxLength: 2048
+          nullable: true
+        config:
+          $ref: '#/components/schemas/IntegrationInstanceConfig'
+      additionalProperties: false
+    IntegrationInstance:
+      description: Information about an integration instance.
+      type: object
+      properties:
+        id:
+          description: The integration instance ID.
+          type: string
+          format: uuid
+          example: 3f51fa25-310a-421d-bd1a-007f859021a3
+          readOnly: true
+        name:
+          description: |
+            The machine name of the integration instance that uniquely identifies it within the catalog.
+          type: string
+          example: aws-lambda-prod
+          maxLength: 120
+          minLength: 1
+          pattern: '^[0-9a-z.-]+$'
+        display_name:
+          description: The display name of the integration instance.
+          type: string
+          example: AWS (prod)
+          maxLength: 120
+          minLength: 1
+        description:
+          description: The description of the integration instance.
+          type: string
+          maxLength: 2048
+          nullable: true
+        integration:
+          $ref: '#/components/schemas/IntegrationRefWithoutInstance'
+        authorized:
+          description: Denotes whether the integration instance has been authorized within the catalog.
+          type: boolean
+          example: true
+          readOnly: true
+        config:
+          $ref: '#/components/schemas/IntegrationInstanceConfig'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - name
+        - display_name
+        - description
+        - integration
+        - authorized
+        - config
+        - created_at
+        - updated_at
+    IntegrationInstanceConfig:
+      description: |
+        JSON object representing configuration specific to the integration instance.
+        The expected schema depends on the integration type and is dynamically registered at runtime.
+      type: object
+      example:
+        account_region: eu
+      default: {}
+      additionalProperties: true
+      x-speakeasy-type-override: any
+    CreateIntegrationInstanceAuthCredential:
+      oneOf:
+        - $ref: '#/components/schemas/CreateMultiKeyAuthCredential'
+      title: CreateIntegrationInstanceAuthCredential
+    IntegrationInstanceAuthCredential:
+      description: Object containing metadata for an integration instance auth credential.
+      oneOf:
+        - $ref: '#/components/schemas/MultiKeyAuthCredential'
+      title: IntegrationInstanceAuthCredential
+    CreateMultiKeyAuthCredential:
+      description: Payload used to create an `Multi Key` credential for an integration instance.
+      type: object
+      properties:
+        type:
+          type: string
+          const: multi_key_auth
+        config:
+          type: object
+          additionalProperties: false
+          properties:
+            headers:
+              description: |
+                A list of header key/value pairs used to transmit API credentials to the integration's external API.
+                Header names are defined by the integration within its `Multi Key` authorization strategy definition.
+              type: array
+              items:
+                type: object
+                required:
+                  - name
+                  - key
+                properties:
+                  name:
+                    description: Name of the request header
+                    type: string
+                  key:
+                    description: The key used to populate the request header
+                    type: string
+              example:
+                - name: x-api-key
+                  key: 9f2a3b4c8d6e7f00112233445566778899aabbccddeeff001122334455667788
+          required:
+            - headers
+          title: CreateMultiKeyAuthCredentialConfig
+          x-speakeasy-param-force-new: true
+          x-speakeasy-param-suppress-computed-diff: true
+      additionalProperties: false
+      required:
+        - type
+        - config
+      writeOnly: true
+      x-speakeasy-name-override: multi_key_auth
+    MultiKeyAuthCredential:
+      description: Represents a credential scoped to an integration instance that supports the `Multi Key` authorization strategy.
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 4f535923-ec24-456c-b4e5-e67f65c8c208
+        integration_instance:
+          $ref: '#/components/schemas/IntegrationInstanceRef'
+        missing_permissions:
+          description: List of detected missing permissions required to enable the full functionality of the given integration instance.
+          type: array
+          items:
+            $ref: '#/components/schemas/MissingPermission'
+        tainted:
+          description: Indicates that the credential is no longer valid and must be replaced with a new valid credential.
+          type: boolean
+          example: false
+        expires_at:
+          description: |
+            Timestamp denoting when the when the credential will expire in RFC-3339 format with a "T" character separating date from time within the field value.
+            When expired, the credential must be replaced with a new valid credential to re-enable full functionality for the given integration instance.
+
+            A `null` value indicates no known expiration time.
+          type: string
+          format: date-time
+          example: '2025-04-01T07:20:50Z'
+          nullable: true
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        type:
+          type: string
+          const: multi_key_auth
+      required:
+        - id
+        - integration_instance
+        - missing_permissions
+        - tainted
+        - expires_at
+        - created_at
+        - type
+      title: MultiKeyAuthCredential
+      x-speakeasy-param-suppress-computed-diff: true
+    MissingPermission:
+      type: object
+      properties:
+        scopes:
+          type: array
+          items:
+            type: string
+            nullable: true
+          example:
+            - 'incident:read'
+        message:
+          description: |
+            Describes the degraded experience of the integration instance due to the missing permission.
+            May also include a message on how to resolve the missing permission.
+          type: string
+      required:
+        - scopes
+        - message
+    UpsertIntegrationInstanceAuthConfig:
+      oneOf:
+        - $ref: '#/components/schemas/UpsertOAuthAuthConfig'
+      title: UpsertIntegrationInstanceAuthConfig
+    IntegrationInstanceAuthConfig:
+      oneOf:
+        - $ref: '#/components/schemas/OAuthAuthConfig'
+      title: IntegrationInstanceAuthConfig
+    UpsertOAuthAuthConfig:
+      type: object
+      properties:
+        type:
+          type: string
+          const: oauth
+        client_id:
+          description: The OAuth client identifier.
+          type: string
+          example: d745213a-b7e8-4998-abe3-41f164001970
+        client_secret:
+          description: The OAuth client secret.
+          type: string
+          example: s3cr3t4p1cl13ntt0k3n1234567890abcdef
+          writeOnly: true
+        authorization_endpoint:
+          description: The URL where users are redirected to authorize access.
+          type: string
+          format: uri
+          example: 'https://identity.service.com/oauth/authorize'
+        token_endpoint:
+          description: The URL used to retrieve access tokens.
+          type: string
+          format: uri
+          example: 'https://identity.service.com/oauth/token'
+      additionalProperties: false
+      required:
+        - type
+        - client_id
+        - client_secret
+        - authorization_endpoint
+        - token_endpoint
+      title: OAuth Config
+      x-speakeasy-name-override: oauth_config
+    OAuthAuthConfig:
+      type: object
+      properties:
+        type:
+          type: string
+          const: oauth
+        client_id:
+          description: The OAuth client identifier.
+          type: string
+          example: d745213a-b7e8-4998-abe3-41f164001970
+        authorization_endpoint:
+          description: The URL where users are redirected to authorize access.
+          type: string
+          format: uri
+          example: 'https://identity.service.com/oauth/authorize'
+        token_endpoint:
+          description: The URL used to retrieve access tokens.
+          type: string
+          format: uri
+          example: 'https://identity.service.com/oauth/token'
+      required:
+        - type
+        - client_id
+        - authorization_endpoint
+        - token_endpoint
+      x-speakeasy-name-override: OauthAuthConfig
+    CustomFields:
+      description: |
+        Map of customizable, catalog-defined fields providing information about a service.
+      type: object
+      example:
+        owner: John Appleseed
+        dashboard:
+          name: On-Call Dashboard
+          link: 'https://my-dashboard-svc.io/dashboards/1'
+      additionalProperties:
+        oneOf:
+          - $ref: '#/components/schemas/TextCustomField'
+          - $ref: '#/components/schemas/NumericCustomField'
+          - $ref: '#/components/schemas/BooleanCustomField'
+          - $ref: '#/components/schemas/UrlCustomField'
+      x-speakeasy-type-override: any
+    TextCustomField:
+      type: string
+      nullable: true
+    NumericCustomField:
+      type: number
+      nullable: true
+    BooleanCustomField:
+      type: boolean
+      nullable: true
+    UrlCustomField:
+      type: object
+      properties:
+        name:
+          description: The human-readable name of the URL link.
+          type: string
+          example: On-Call Dashboard
+        link:
+          description: The href value of the URL link.
+          type: string
+          format: uri-reference
+          example: 'https://my-dashboard-svc.io/dashboards/1'
+      nullable: true
+      required:
+        - name
+        - link
+    IntegrationRefWithoutInstance:
+      description: Short-hand descriptor of an integration that omits instance metadata.
+      type: object
+      properties:
+        name:
+          type: string
+          example: gateway-manager
+        display_name:
+          type: string
+          example: gateway-manager
+      required:
+        - name
+        - display_name
+    IntegrationInstanceRef:
+      description: Short-hand descriptor of an integration instance.
+      type: object
+      properties:
+        id:
+          description: The integration instance ID.
+          type: string
+          format: uuid
+          example: 772b9caf-ddbc-4f4f-8aa4-8dfbbe420351
+        name:
+          description: |
+            The machine name of the integration instance that uniquely identifies it within the catalog.
+          type: string
+          example: aws-lambda-prod
+          pattern: '^[0-9a-z.-]+$'
+        display_name:
+          description: The display name of the integration instance.
+          type: string
+          example: AWS (prod)
+      required:
+        - id
+        - name
+        - display_name
     DataPlaneClientCertificate:
       x-speakeasy-entity: GatewayDataPlaneClientCertificate
       type: object
@@ -19736,11 +20540,14 @@ components:
         group:
           type: string
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         tags:
+          description: A set of strings representing tags.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
       example:
@@ -19835,11 +20642,14 @@ components:
         group:
           type: string
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         tags:
+          description: A set of strings representing tags.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
       example:
@@ -24410,6 +25220,7 @@ components:
           type: integer
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         password:
@@ -24417,8 +25228,10 @@ components:
           writeOnly: true
           x-speakeasy-param-sensitive: true
         tags:
+          description: A set of strings representing tags.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         username:
@@ -24507,6 +25320,7 @@ components:
           type: integer
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         password:
@@ -24514,8 +25328,10 @@ components:
           writeOnly: true
           x-speakeasy-param-sensitive: true
         tags:
+          description: A set of strings representing tags.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         username:
@@ -24601,12 +25417,14 @@ components:
           type: integer
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         tags:
           description: An optional set of strings associated with the Certificate for grouping and filtering.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         updated_at:
@@ -24752,6 +25570,7 @@ components:
           type: integer
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         key:
@@ -24764,12 +25583,14 @@ components:
         snis:
           type: array
           items:
+            description: 'A string representing a wildcard host name, such as *.example.com.'
             type: string
           nullable: true
         tags:
           description: An optional set of strings associated with the Certificate for grouping and filtering.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         updated_at:
@@ -25245,12 +26066,14 @@ components:
           type: string
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         tags:
           description: An optional set of strings associated with the Consumer for grouping and filtering.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         updated_at:
@@ -25277,13 +26100,17 @@ components:
           type: integer
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         name:
+          description: The name of the consumer group.
           type: string
         tags:
+          description: A set of strings representing tags.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         updated_at:
@@ -25464,17 +26291,23 @@ components:
           type: integer
           nullable: true
         handler:
+          description: The handler for the given custom plugin.
           type: string
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         name:
+          description: The name to associate with the given custom plugin.
           type: string
         schema:
+          description: The schema for the given custom plugin.
           type: string
         tags:
+          description: A set of strings representing tags.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         updated_at:
@@ -26988,14 +27821,17 @@ components:
           type: integer
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         secret:
           type: string
           nullable: true
         tags:
+          description: A set of strings representing tags.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         username:
@@ -27028,14 +27864,17 @@ components:
           type: integer
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         secret:
           type: string
           nullable: true
         tags:
+          description: A set of strings representing tags.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         username:
@@ -27624,6 +28463,7 @@ components:
           type: integer
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         key:
@@ -27636,8 +28476,10 @@ components:
           type: string
           nullable: true
         tags:
+          description: A set of strings representing tags.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
       example:
@@ -27694,6 +28536,7 @@ components:
           type: integer
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         key:
@@ -27706,8 +28549,10 @@ components:
           type: string
           nullable: true
         tags:
+          description: A set of strings representing tags.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
       example:
@@ -29184,6 +30029,7 @@ components:
           type: integer
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         jwk:
@@ -29220,6 +30066,7 @@ components:
           description: An optional set of strings associated with the Key for grouping and filtering.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         updated_at:
@@ -29227,6 +30074,7 @@ components:
           type: integer
           nullable: true
         x5t:
+          description: X.509 certificate SHA-1 thumbprint.
           type: string
           nullable: true
       example:
@@ -29261,14 +30109,17 @@ components:
           type: integer
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         key:
           type: string
           nullable: true
         tags:
+          description: A set of strings representing tags.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         ttl:
@@ -29463,14 +30314,17 @@ components:
           type: integer
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         key:
           type: string
           nullable: true
         tags:
+          description: A set of strings representing tags.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         ttl:
@@ -29490,14 +30344,18 @@ components:
           type: integer
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         name:
+          description: The name to associate with the given key-set.
           type: string
           nullable: true
         tags:
+          description: A set of strings representing tags.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         updated_at:
@@ -29891,13 +30749,16 @@ components:
           type: integer
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         subject_name:
           type: string
         tags:
+          description: A set of strings representing tags.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
       example:
@@ -29938,13 +30799,16 @@ components:
           type: integer
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         subject_name:
           type: string
         tags:
+          description: A set of strings representing tags.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
       example:
@@ -30329,117 +31193,6 @@ components:
               - grpcs
               - http
               - https
-            type: string
-          format: set
-        route:
-          description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
-          type: object
-          default: null
-          additionalProperties: false
-          nullable: true
-          properties:
-            id:
-              type: string
-          x-speakeasy-param-computed: false
-        service:
-          description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
-          type: object
-          default: null
-          additionalProperties: false
-          nullable: true
-          properties:
-            id:
-              type: string
-          x-speakeasy-param-computed: false
-      required:
-        - config
-    Oauth2Plugin:
-      x-speakeasy-entity: GatewayPluginOauth2
-      allOf:
-        - $ref: '#/components/schemas/PluginBase'
-        - $ref: '#/components/schemas/Oauth2PluginConfig'
-    Oauth2PluginConfig:
-      properties:
-        config:
-          type: object
-          properties:
-            accept_http_if_already_terminated:
-              description: Accepts HTTPs requests that have already been terminated by a proxy or load balancer.
-              type: boolean
-            anonymous:
-              description: An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails.
-              type: string
-            auth_header_name:
-              description: The name of the header that is supposed to carry the access token.
-              type: string
-            enable_authorization_code:
-              description: An optional boolean value to enable the three-legged Authorization Code flow (RFC 6742 Section 4.1).
-              type: boolean
-            enable_client_credentials:
-              description: An optional boolean value to enable the Client Credentials Grant flow (RFC 6742 Section 4.4).
-              type: boolean
-            enable_implicit_grant:
-              description: An optional boolean value to enable the Implicit Grant flow which allows to provision a token as a result of the authorization process (RFC 6742 Section 4.2).
-              type: boolean
-            enable_password_grant:
-              description: An optional boolean value to enable the Resource Owner Password Credentials Grant flow (RFC 6742 Section 4.3).
-              type: boolean
-            global_credentials:
-              description: An optional boolean value that allows using the same OAuth credentials generated by the plugin with any other service whose OAuth 2.0 plugin configuration also has `config.global_credentials=true`.
-              type: boolean
-            hide_credentials:
-              description: An optional boolean value telling the plugin to show or hide the credential from the upstream service.
-              type: boolean
-            mandatory_scope:
-              description: An optional boolean value telling the plugin to require at least one `scope` to be authorized by the end user.
-              type: boolean
-            persistent_refresh_token:
-              type: boolean
-            pkce:
-              description: Specifies a mode of how the Proof Key for Code Exchange (PKCE) should be handled by the plugin.
-              type: string
-              enum:
-                - lax
-                - none
-                - strict
-            provision_key:
-              description: The unique key the plugin has generated when it has been added to the Service.
-              type: string
-            realm:
-              description: When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
-              type: string
-            refresh_token_ttl:
-              description: Time-to-live value for data
-              type: number
-              maximum: 100000000
-              minimum: 0
-            reuse_refresh_token:
-              description: An optional boolean value that indicates whether an OAuth refresh token is reused when refreshing an access token.
-              type: boolean
-            scopes:
-              description: 'Describes an array of scope names that will be available to the end user. If `mandatory_scope` is set to `true`, then `scopes` are required.'
-              type: array
-              items:
-                type: string
-            token_expiration:
-              description: 'An optional integer value telling the plugin how many seconds a token should last, after which the client will need to refresh the token. Set to `0` to disable the expiration.'
-              type: number
-          required:
-            - provision_key
-        name:
-          type: string
-          const: oauth2
-        protocols:
-          description: 'A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.'
-          type: array
-          items:
-            enum:
-              - grpc
-              - grpcs
-              - http
-              - https
-              - ws
-              - wss
             type: string
           format: set
         route:
@@ -32075,8 +32828,6 @@ components:
                       - preserve
                       - w3c
                     type: string
-              required:
-                - default_format
             queue:
               type: object
               properties:
@@ -32197,79 +32948,62 @@ components:
       type: object
       discriminator:
         mapping:
-          redis-ce: '#/components/schemas/PartialRedisCE'
-          redis-ee: '#/components/schemas/PartialRedisEE'
+          redis-ce: '#/components/schemas/PartialRedisCe'
+          redis-ee: '#/components/schemas/PartialRedisEe'
         propertyName: type
       oneOf:
-        - $ref: '#/components/schemas/PartialRedisCE'
-        - $ref: '#/components/schemas/PartialRedisEE'
-    PartialRedisCE:
-      x-speakeasy-entity: GatewayPartial
+        - $ref: '#/components/schemas/PartialRedisCe'
+        - $ref: '#/components/schemas/PartialRedisEe'
+    PartialRedisCe:
       type: object
       properties:
         config:
-          description: Redis-CE configuration
           type: object
-          example:
-            database: 0
-            host: localhost
-            password: password
-            port: 6379
-            server_name: redis
-            ssl: false
-            ssl_verify: false
-            timeout: 2000
-            username: username
           properties:
             database:
               description: Database to use for the Redis connection when using the `redis` strategy
               type: integer
-              nullable: true
             host:
-              description: Redis host.
+              description: 'A string representing a host name, such as example.com.'
               type: string
-              nullable: true
             password:
               description: 'Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.'
               type: string
-              nullable: true
             port:
-              description: Redis port.
+              description: 'An integer representing a port number between 0 and 65535, inclusive.'
               type: integer
-              nullable: true
             server_name:
-              description: Server name for SSL verification.
+              description: A string representing an SNI (server name indication) value for TLS.
               type: string
-              nullable: true
             ssl:
               description: 'If set to true, uses SSL to connect to Redis.'
               type: boolean
-              nullable: true
             ssl_verify:
-              description: 'If set to true, verifies the validity of the server SSL certificate.'
+              description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
               type: boolean
-              nullable: true
             timeout:
-              description: Connection timeout.
+              description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
               type: integer
-              nullable: true
             username:
-              description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. Requires Redis v6.0.0+.'
+              description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
               type: string
-              nullable: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         name:
+          description: A unique string representing a UTF-8 encoded name.
           type: string
           nullable: true
         tags:
+          description: A set of strings representing tags.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         type:
@@ -32279,152 +33013,130 @@ components:
           description: Unix epoch when the resource was last updated.
           type: integer
           nullable: true
+      example:
+        config:
+          database: 0
+          host: localhost
+          password: password
+          port: 6379
+          server_name: redis
+          ssl: false
+          ssl_verify: false
+          timeout: 2000
+          username: username
+        type: redis-ce
       additionalProperties: false
       required:
         - type
         - config
-    PartialRedisEE:
-      x-speakeasy-entity: GatewayPartial
+    PartialRedisEe:
       type: object
       properties:
         config:
-          description: Redis-EE configuration
           type: object
-          example:
-            cluster_nodes:
-              - ip: 192.168.1.10
-                port: 6380
-            connect_timeout: 2000
-            database: 0
-            host: localhost
-            keepalive_pool_size: 256
-            password: password
-            port: 6379
-            read_timeout: 1000
-            send_timeout: 1000
-            sentinel_nodes:
-              - host: sentinel1.redis.server
-                port: 26379
-            server_name: redis-ee
-            ssl: false
-            ssl_verify: false
-            username: username
           properties:
             cluster_max_redirections:
               description: Maximum retry attempts for redirection.
               type: integer
-              nullable: true
             cluster_nodes:
-              description: Cluster addresses for Redis connections using the `redis` strategy.
+              description: Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
               type: array
               items:
                 properties:
                   ip:
-                    description: Cluster node IP.
+                    description: 'A string representing a host name, such as example.com.'
                     type: string
                   port:
-                    description: Cluster node port.
+                    description: 'An integer representing a port number between 0 and 65535, inclusive.'
                     type: integer
                 type: object
-              nullable: true
             connect_timeout:
-              description: Connect timeout.
+              description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
               type: integer
-              nullable: true
             connection_is_proxied:
-              description: 'If the connection to Redis is proxied, e.g., Envoy.'
+              description: 'If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.'
               type: boolean
-              nullable: true
             database:
-              description: Database index.
+              description: Database to use for the Redis connection when using the `redis` strategy
               type: integer
-              nullable: true
             host:
-              description: Redis host.
+              description: 'A string representing a host name, such as example.com.'
               type: string
-              nullable: true
             keepalive_backlog:
-              description: Limits the total number of opened connections for a pool.
+              description: 'Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.'
               type: integer
-              nullable: true
             keepalive_pool_size:
-              description: Size limit for cosocket connection pool per worker process.
+              description: 'The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn''t specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.'
               type: integer
-              nullable: true
             password:
               description: 'Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.'
               type: string
-              nullable: true
             port:
-              description: The port is only used when the host is set.
+              description: 'An integer representing a port number between 0 and 65535, inclusive.'
               type: integer
-              nullable: true
             read_timeout:
-              description: Read timeout.
+              description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
               type: integer
-              nullable: true
             send_timeout:
-              description: Send timeout.
+              description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
               type: integer
-              nullable: true
             sentinel_master:
-              description: Sentinel master to use for Redis connections. Defining this implies using Redis Sentinel.
+              description: Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
               type: string
-              nullable: true
             sentinel_nodes:
-              description: Sentinel addresses for Redis connections using the `redis` strategy. Array must have at least 1 element.
+              description: Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
               type: array
               items:
                 properties:
                   host:
-                    description: Sentinel node hostname.
+                    description: 'A string representing a host name, such as example.com.'
                     type: string
                   port:
-                    description: Sentinel node port.
+                    description: 'An integer representing a port number between 0 and 65535, inclusive.'
                     type: integer
                 type: object
-              nullable: true
             sentinel_password:
-              description: Sentinel password to authenticate with a Redis Sentinel instance.
+              description: 'Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.'
               type: string
-              nullable: true
             sentinel_role:
-              description: 'Sentinel role to use for Redis connections when `redis` strategy is used, implies using Redis Sentinel.'
+              description: Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
               type: string
-              nullable: true
+              enum:
+                - master
+                - slave
+                - any
             sentinel_username:
-              description: Sentinel username to authenticate with a Redis Sentinel instance. Requires Redis v6.2.0+.
+              description: 'Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won''t be performed. This requires Redis v6.2.0+.'
               type: string
-              nullable: true
             server_name:
-              description: Server name for SSL verification.
+              description: A string representing an SNI (server name indication) value for TLS.
               type: string
-              nullable: true
             ssl:
               description: 'If set to true, uses SSL to connect to Redis.'
               type: boolean
-              nullable: true
             ssl_verify:
-              description: 'If set to true, verifies the validity of the server SSL certificate.'
+              description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
               type: boolean
-              nullable: true
             username:
-              description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. Requires Redis v6.0.0+.'
+              description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
               type: string
-              nullable: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         name:
+          description: A unique string representing a UTF-8 encoded name.
           type: string
           nullable: true
         tags:
+          description: A set of strings representing tags.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         type:
@@ -32434,6 +33146,27 @@ components:
           description: Unix epoch when the resource was last updated.
           type: integer
           nullable: true
+      example:
+        config:
+          cluster_nodes:
+            - ip: 192.168.1.10
+              port: 6380
+          connect_timeout: 2000
+          database: 0
+          host: localhost
+          keepalive_pool_size: 256
+          password: password
+          port: 6379
+          read_timeout: 1000
+          send_timeout: 1000
+          sentinel_nodes:
+            - host: sentinel1.redis.server
+              port: 26379
+          server_name: redis-ee
+          ssl: false
+          ssl_verify: false
+          username: username
+        type: redis-ee
       additionalProperties: false
       required:
         - type
@@ -32458,6 +33191,7 @@ components:
           x-foreign: true
           x-speakeasy-param-computed: false
         consumer_group:
+          description: 'If set, the plugin will activate only for requests where the specified group has been authenticated'
           type: object
           default: null
           nullable: true
@@ -32475,9 +33209,11 @@ components:
           type: boolean
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         instance_name:
+          description: A unique string representing a UTF-8 encoded name.
           type: string
           nullable: true
         name:
@@ -32505,6 +33241,7 @@ components:
           description: 'A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.'
           type: array
           items:
+            description: 'A string representing a protocol, such as HTTP or HTTPS.'
             enum:
               - grpc
               - grpcs
@@ -32547,6 +33284,7 @@ components:
           description: An optional set of strings associated with the Plugin for grouping and filtering.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         updated_at:
@@ -32587,9 +33325,11 @@ components:
           type: boolean
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         instance_name:
+          description: A unique string representing a UTF-8 encoded name.
           type: string
           nullable: true
         name:
@@ -32614,12 +33354,15 @@ components:
                   items:
                     type: string
         partials:
+          description: A list of partials to be used by the plugin.
           type: array
           items:
             properties:
               id:
+                description: A string representing a UUID (universally unique identifier).
                 type: string
               name:
+                description: A unique string representing a UTF-8 encoded name.
                 type: string
               path:
                 type: string
@@ -32629,30 +33372,13 @@ components:
           description: An optional set of strings associated with the Plugin for grouping and filtering.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
           nullable: true
-      example:
-        config:
-          anonymous: null
-          hide_credentials: false
-          key_in_body: false
-          key_in_header: true
-          key_in_query: true
-          key_names:
-            - apikey
-          run_on_preflight: true
-        enabled: true
-        id: 3fd1eea1-885a-4011-b986-289943ff8177
-        name: key-auth
-        protocols:
-          - grpc
-          - grpcs
-          - http
-          - https
       additionalProperties: false
       required:
         - name
@@ -33546,7 +34272,6 @@ components:
                 - sliding
           required:
             - limit
-            - namespace
             - window_size
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
@@ -35482,6 +36207,7 @@ components:
             - 308
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         name:
@@ -35500,12 +36226,14 @@ components:
           type: boolean
           nullable: true
         priority:
+          description: 'A number used to specify the matching order for expression routes. The higher the `priority`, the sooner an route will be evaluated. This field is ignored unless `expression` field is set.'
           type: integer
           nullable: true
         protocols:
           description: 'An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only `"https"`, HTTP requests are answered with an upgrade error. When set to only `"http"`, HTTPS requests are answered with an error.'
           type: array
           items:
+            description: 'A string representing a protocol, such as HTTP or HTTPS.'
             enum:
               - grpc
               - grpcs
@@ -35548,6 +36276,7 @@ components:
           description: An optional set of strings associated with the Route for grouping and filtering.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         updated_at:
@@ -35570,8 +36299,10 @@ components:
           items:
             properties:
               ip:
+                description: 'A string representing an IP address or CIDR block, such as 192.168.1.1 or 192.168.0.0/16.'
                 type: string
               port:
+                description: 'An integer representing a port number between 0 and 65535, inclusive.'
                 type: integer
             type: object
           nullable: true
@@ -35600,12 +36331,14 @@ components:
             - 308
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         methods:
           description: A list of HTTP methods that match this Route.
           type: array
           items:
+            description: 'A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters.'
             type: string
           nullable: true
         name:
@@ -35623,6 +36356,7 @@ components:
           description: A list of paths that match this Route.
           type: array
           items:
+            description: 'A string representing a router path. It must start with a forward slash (''/'') for a fixed path, or the sequence ''~/'' for a regex path. It must not have empty segments.'
             type: string
           nullable: true
         preserve_host:
@@ -35633,6 +36367,7 @@ components:
           description: 'An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only `"https"`, HTTP requests are answered with an upgrade error. When set to only `"http"`, HTTPS requests are answered with an error.'
           type: array
           items:
+            description: 'A string representing a protocol, such as HTTP or HTTPS.'
             enum:
               - grpc
               - grpcs
@@ -35675,6 +36410,7 @@ components:
           description: A list of SNIs that match this Route when using stream routing.
           type: array
           items:
+            description: 'A string representing a wildcard host name, such as *.example.com.'
             type: string
           nullable: true
         sources:
@@ -35683,8 +36419,10 @@ components:
           items:
             properties:
               ip:
+                description: 'A string representing an IP address or CIDR block, such as 192.168.1.1 or 192.168.0.0/16.'
                 type: string
               port:
+                description: 'An integer representing a port number between 0 and 65535, inclusive.'
                 type: integer
             type: object
           nullable: true
@@ -35696,6 +36434,7 @@ components:
           description: An optional set of strings associated with the Route for grouping and filtering.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         updated_at:
@@ -35796,6 +36535,7 @@ components:
           type: integer
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         name:
@@ -35805,6 +36545,7 @@ components:
           description: An optional set of strings associated with the SNIs for grouping and filtering.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         updated_at:
@@ -36273,6 +37014,7 @@ components:
           description: The host of the upstream server. Note that the host value is case sensitive.
           type: string
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         name:
@@ -36314,6 +37056,7 @@ components:
           description: An optional set of strings associated with the Service for grouping and filtering.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         tls_sans:
@@ -36321,12 +37064,16 @@ components:
           nullable: true
           properties:
             dnsnames:
+              description: A dnsName for TLS verification.
               type: array
               items:
+                description: A string representing an SNI (server name indication) value for TLS.
                 type: string
             uris:
+              description: An URI for TLS verification.
               type: array
               items:
+                description: 'A string representing a URL, such as https://example.com/path/to/resource?q=search.'
                 type: string
         tls_verify:
           description: 'Whether to enable verification of upstream server TLS certificate. If set to `null`, then the Nginx default is respected.'
@@ -36541,7 +37288,6 @@ components:
                 - sliding
           required:
             - limit
-            - namespace
             - window_size
         name:
           type: string
@@ -37554,12 +38300,14 @@ components:
           type: number
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         tags:
           description: An optional set of strings associated with the Target for grouping and filtering.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         target:
@@ -37571,6 +38319,7 @@ components:
           type: number
           nullable: true
         upstream:
+          description: The unique identifier or the name of the upstream for which to update the target.
           type: object
           default: null
           nullable: true
@@ -37600,12 +38349,14 @@ components:
           type: number
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         tags:
           description: An optional set of strings associated with the Target for grouping and filtering.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         target:
@@ -37617,6 +38368,7 @@ components:
           type: number
           nullable: true
         upstream:
+          description: The unique identifier or the name of the upstream for which to update the target.
           type: object
           default: null
           nullable: true
@@ -38011,9 +38763,12 @@ components:
                 concurrency:
                   type: integer
                 headers:
+                  description: A map of header names to arrays of header values.
                   type: object
                   additionalProperties:
-                    type: string
+                    items:
+                      type: string
+                    type: array
                 healthy:
                   type: object
                   properties:
@@ -38026,8 +38781,10 @@ components:
                     successes:
                       type: integer
                 http_path:
+                  description: 'A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).'
                   type: string
                 https_sni:
+                  description: A string representing an SNI (server name indication) value for TLS.
                   type: string
                 https_verify_certificate:
                   type: boolean
@@ -38096,6 +38853,7 @@ components:
           type: string
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         name:
@@ -38106,15 +38864,18 @@ components:
           type: integer
           nullable: true
         sticky_sessions_cookie:
+          description: The cookie name to keep sticky sessions.
           type: string
           nullable: true
         sticky_sessions_cookie_path:
+          description: 'A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).'
           type: string
           nullable: true
         tags:
           description: An optional set of strings associated with the Upstream for grouping and filtering.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         updated_at:
@@ -38614,6 +39375,7 @@ components:
           type: string
           nullable: true
         id:
+          description: A string representing a UUID (universally unique identifier).
           type: string
           nullable: true
         name:
@@ -38626,6 +39388,7 @@ components:
           description: An optional set of strings associated with the Vault for grouping and filtering.
           type: array
           items:
+            description: A string representing a tag.
             type: string
           nullable: true
         updated_at:
@@ -39163,8 +39926,6 @@ components:
                       - preserve
                       - w3c
                     type: string
-              required:
-                - default_format
             queue:
               type: object
               properties:
@@ -39622,6 +40383,7 @@ components:
                   - Application Auth Strategies
                   - Audit Logs
                   - Control Planes
+                  - Dashboards
                   - DCR Providers
                   - Identity
                   - Mesh Control Planes
@@ -39835,6 +40597,59 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ConsumerCreateRequest'
+    ReplaceCMEK:
+      description: CMEK to be replaced
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              key_arn:
+                $ref: '#/components/schemas/KMSARN'
+              name:
+                $ref: '#/components/schemas/CMEKName'
+              description:
+                $ref: '#/components/schemas/CMEKDescription'
+            required:
+              - key_arn
+              - name
+    CreateCatalogServiceRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateCatalogService'
+    UpdateCatalogServiceRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateCatalogService'
+    CreateIntegrationInstanceRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateIntegrationInstance'
+    UpdateIntegrationInstanceRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateIntegrationInstance'
+    CreateIntegrationInstanceAuthCredentialRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateIntegrationInstanceAuthCredential'
+    UpsertIntegrationInstanceAuthConfigRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpsertIntegrationInstanceAuthConfig'
     DataPlaneClientCertificateRequest:
       content:
         application/json:
@@ -40560,6 +41375,36 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ConsumerRealm'
+    CMEK:
+      description: A CMEK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CMEK'
+    CatalogServiceResponse:
+      description: A response containing a single service object.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CatalogService'
+    IntegrationInstanceResponse:
+      description: A response containing a single integration instance object.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IntegrationInstance'
+    IntegrationInstanceAuthCredentialResponse:
+      description: A response containing an integration instance auth credential.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IntegrationInstanceAuthCredential'
+    IntegrationInstanceAuthConfigResponse:
+      description: A response containing integration instance auth config.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IntegrationInstanceAuthConfig'
     DataPlaneClientCertificateResponse:
       description: Response body for retrieving a dp-client-certificate.
       content:
@@ -40741,6 +41586,49 @@ tags:
   - name: Centrally Managed Keys
     description: |
       Centrally managed consumers use key-auth mechanism to authenticate consumers. Keys refer to the API key credential used by the consumer to authenticate to your services. 
+  - name: CMEK
+    description: 'Customer Managed Encryption Keys (CMEK) are used to encrypt and decrypt sensitive data in Konnect. They allow you to manage your own encryption keys using AWS Key Management Service (KMS). CMEKs provide an additional layer of security and compliance for your Konnect deployments, ensuring that your data is encrypted with keys that you control. Avoid revoking or deleting a KMS key and CMEK that is actively used by Konnect, as this can lead to data loss or service disruptions.'
+  - name: Catalog Services
+    description: |
+      Create and maintain a centralized catalog of all services running in your organization.
+      Add custom fields and map resources from across your organization to provide a 360-degree overview of your services.
+
+      Custom fields allow you to surface key information such as:
+      - `Owner`: The person or team responsible for the service
+      - `Product Manager`: The person assigned to guide the service's direction for customer success
+      - `Jira Project`: The Jira project which represents past, present and future work for the service
+
+      Resources are discovered from the integrations you use within your organization to create, operate and manage your services.
+      Mapping the resources relevant to your service will provide a rich view of the service's communication channels, dependencies and more.
+      Types of resources which you can map to a service include:
+      - `Code Repositories:` The software project(s) that make up the service
+      - `Monitors and Dashboards:` Tools providing visibility into the health and performance of the service
+      - `Communication Channels`: Virtual spaces where questions and concerns can be raised about the service
+      - `Incident Management Resources`: Alerts setup within your incident management platform to notify individuals regarding issues with the service
+  - name: Integration Instances
+    description: |
+      An integration instance represents a specific account of the integration which contains the resources used to manage and support your services.
+      Some integrations provide configuration options to customize how it should behave once authorized (see the integration's manifest for details).
+      Konnect-internal integrations are built-in and do not need to be installed.
+
+      Once an integration instance is created, authorize the instance to allow the Service Catalog to discover its resources.
+      Note that deleting an integration instance is a **destructive** operation.
+      When an integration instance is deleted, all its resources and mappings will be deleted from the service catalog.
+      In cases where the integration instance's credentials need to be updated, you may re-authorize the instance to retain all currently discovered resources and mappings.
+      To set up and view a list of all the integrations we support, please view our [documentation](https://developer.konghq.com/service-catalog/integrations/).
+  - name: Integration Instance Auth Credentials
+    description: |
+      Represents the credentials use to authorize an integration instance.
+      You will want to configure the integration instance settings and authorization configuration before authorizing the instance.
+      This will inform the authorization process on how to reach and authorize the account.
+      Once the integration instance is authorized, the system will automatically discover all the relevant resources from the account.
+      The integration instance's auth credentials can be removed or updated while retaining all resources which have already been discovered.
+  - name: Integration Instance Auth Config
+    description: |
+      A integration instance may need to be provided with an auth config before authorizing the instance.
+      Typically an auth config will be required when authorizing against a integration which is hosted within your organization.
+      The integration instance's auth config will inform how the Service Catalog will authorize the integration instance.
+      Note that updating the auth config for an instance which is already authorized will **remove the existing credential**, requiring you to re-authorize the instance.
   - description: DP Certificates
     name: DP Certificates
   - description: Custom Plugin Schemas

@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -81,7 +82,7 @@ func (r *GatewayPluginRouteByHeaderResource) Schema(ctx context.Context, req res
 								"condition": schema.MapAttribute{
 									Computed:    true,
 									Optional:    true,
-									ElementType: types.StringType,
+									ElementType: jsontypes.NormalizedType{},
 									Description: `Not Null`,
 									Validators: []validator.Map{
 										speakeasy_mapvalidators.NotNull(),
@@ -134,12 +135,14 @@ func (r *GatewayPluginRouteByHeaderResource) Schema(ctx context.Context, req res
 				Description: `Whether the plugin is applied.`,
 			},
 			"id": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
@@ -178,12 +181,14 @@ func (r *GatewayPluginRouteByHeaderResource) Schema(ctx context.Context, req res
 					},
 					Attributes: map[string]schema.Attribute{
 						"id": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
+							Computed:    true,
+							Optional:    true,
+							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
+							Computed:    true,
+							Optional:    true,
+							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
 							Computed: true,
@@ -191,6 +196,7 @@ func (r *GatewayPluginRouteByHeaderResource) Schema(ctx context.Context, req res
 						},
 					},
 				},
+				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.SetAttribute{
 				Computed:    true,

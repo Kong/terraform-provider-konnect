@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
@@ -45,22 +46,17 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 			if resp.Config.Cache.Redis == nil {
 				r.Config.Cache.Redis = nil
 			} else {
-				r.Config.Cache.Redis = &tfTypes.AiProxyAdvancedPluginRedis{}
+				r.Config.Cache.Redis = &tfTypes.PartialRedisEeConfig{}
 				r.Config.Cache.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Cache.Redis.ClusterMaxRedirections)
-				r.Config.Cache.Redis.ClusterNodes = []tfTypes.PartialRedisEEClusterNodes{}
-				if len(r.Config.Cache.Redis.ClusterNodes) > len(resp.Config.Cache.Redis.ClusterNodes) {
-					r.Config.Cache.Redis.ClusterNodes = r.Config.Cache.Redis.ClusterNodes[:len(resp.Config.Cache.Redis.ClusterNodes)]
-				}
-				for clusterNodesCount, clusterNodesItem := range resp.Config.Cache.Redis.ClusterNodes {
-					var clusterNodes tfTypes.PartialRedisEEClusterNodes
+				r.Config.Cache.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+
+				for _, clusterNodesItem := range resp.Config.Cache.Redis.ClusterNodes {
+					var clusterNodes tfTypes.PartialRedisEeClusterNodes
+
 					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
-					if clusterNodesCount+1 > len(r.Config.Cache.Redis.ClusterNodes) {
-						r.Config.Cache.Redis.ClusterNodes = append(r.Config.Cache.Redis.ClusterNodes, clusterNodes)
-					} else {
-						r.Config.Cache.Redis.ClusterNodes[clusterNodesCount].IP = clusterNodes.IP
-						r.Config.Cache.Redis.ClusterNodes[clusterNodesCount].Port = clusterNodes.Port
-					}
+
+					r.Config.Cache.Redis.ClusterNodes = append(r.Config.Cache.Redis.ClusterNodes, clusterNodes)
 				}
 				r.Config.Cache.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ConnectTimeout)
 				r.Config.Cache.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Cache.Redis.ConnectionIsProxied)
@@ -73,20 +69,15 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 				r.Config.Cache.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ReadTimeout)
 				r.Config.Cache.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.SendTimeout)
 				r.Config.Cache.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Cache.Redis.SentinelMaster)
-				r.Config.Cache.Redis.SentinelNodes = []tfTypes.PartialRedisEESentinelNodes{}
-				if len(r.Config.Cache.Redis.SentinelNodes) > len(resp.Config.Cache.Redis.SentinelNodes) {
-					r.Config.Cache.Redis.SentinelNodes = r.Config.Cache.Redis.SentinelNodes[:len(resp.Config.Cache.Redis.SentinelNodes)]
-				}
-				for sentinelNodesCount, sentinelNodesItem := range resp.Config.Cache.Redis.SentinelNodes {
-					var sentinelNodes tfTypes.PartialRedisEESentinelNodes
+				r.Config.Cache.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+
+				for _, sentinelNodesItem := range resp.Config.Cache.Redis.SentinelNodes {
+					var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+
 					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
-					if sentinelNodesCount+1 > len(r.Config.Cache.Redis.SentinelNodes) {
-						r.Config.Cache.Redis.SentinelNodes = append(r.Config.Cache.Redis.SentinelNodes, sentinelNodes)
-					} else {
-						r.Config.Cache.Redis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes.Host
-						r.Config.Cache.Redis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes.Port
-					}
+
+					r.Config.Cache.Redis.SentinelNodes = append(r.Config.Cache.Redis.SentinelNodes, sentinelNodes)
 				}
 				r.Config.Cache.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Cache.Redis.SentinelPassword)
 				if resp.Config.Cache.Redis.SentinelRole != nil {
@@ -150,17 +141,17 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 		}
 		r.Config.Oauth.TokenEndpoint = types.StringValue(resp.Config.Oauth.TokenEndpoint)
 		if len(resp.Config.Oauth.TokenHeaders) > 0 {
-			r.Config.Oauth.TokenHeaders = make(map[string]types.String, len(resp.Config.Oauth.TokenHeaders))
+			r.Config.Oauth.TokenHeaders = make(map[string]jsontypes.Normalized, len(resp.Config.Oauth.TokenHeaders))
 			for key, value := range resp.Config.Oauth.TokenHeaders {
 				result, _ := json.Marshal(value)
-				r.Config.Oauth.TokenHeaders[key] = types.StringValue(string(result))
+				r.Config.Oauth.TokenHeaders[key] = jsontypes.NewNormalizedValue(string(result))
 			}
 		}
 		if len(resp.Config.Oauth.TokenPostArgs) > 0 {
-			r.Config.Oauth.TokenPostArgs = make(map[string]types.String, len(resp.Config.Oauth.TokenPostArgs))
+			r.Config.Oauth.TokenPostArgs = make(map[string]jsontypes.Normalized, len(resp.Config.Oauth.TokenPostArgs))
 			for key1, value1 := range resp.Config.Oauth.TokenPostArgs {
 				result1, _ := json.Marshal(value1)
-				r.Config.Oauth.TokenPostArgs[key1] = types.StringValue(string(result1))
+				r.Config.Oauth.TokenPostArgs[key1] = jsontypes.NewNormalizedValue(string(result1))
 			}
 		}
 		r.Config.Oauth.Username = types.StringPointerValue(resp.Config.Oauth.Username)
@@ -205,21 +196,15 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))

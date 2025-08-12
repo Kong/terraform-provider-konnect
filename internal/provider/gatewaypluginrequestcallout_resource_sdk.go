@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
@@ -30,22 +31,17 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			if resp.Config.Cache.Redis == nil {
 				r.Config.Cache.Redis = nil
 			} else {
-				r.Config.Cache.Redis = &tfTypes.AiProxyAdvancedPluginRedis{}
+				r.Config.Cache.Redis = &tfTypes.PartialRedisEeConfig{}
 				r.Config.Cache.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Cache.Redis.ClusterMaxRedirections)
-				r.Config.Cache.Redis.ClusterNodes = []tfTypes.PartialRedisEEClusterNodes{}
-				if len(r.Config.Cache.Redis.ClusterNodes) > len(resp.Config.Cache.Redis.ClusterNodes) {
-					r.Config.Cache.Redis.ClusterNodes = r.Config.Cache.Redis.ClusterNodes[:len(resp.Config.Cache.Redis.ClusterNodes)]
-				}
-				for clusterNodesCount, clusterNodesItem := range resp.Config.Cache.Redis.ClusterNodes {
-					var clusterNodes tfTypes.PartialRedisEEClusterNodes
+				r.Config.Cache.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+
+				for _, clusterNodesItem := range resp.Config.Cache.Redis.ClusterNodes {
+					var clusterNodes tfTypes.PartialRedisEeClusterNodes
+
 					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
 					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
-					if clusterNodesCount+1 > len(r.Config.Cache.Redis.ClusterNodes) {
-						r.Config.Cache.Redis.ClusterNodes = append(r.Config.Cache.Redis.ClusterNodes, clusterNodes)
-					} else {
-						r.Config.Cache.Redis.ClusterNodes[clusterNodesCount].IP = clusterNodes.IP
-						r.Config.Cache.Redis.ClusterNodes[clusterNodesCount].Port = clusterNodes.Port
-					}
+
+					r.Config.Cache.Redis.ClusterNodes = append(r.Config.Cache.Redis.ClusterNodes, clusterNodes)
 				}
 				r.Config.Cache.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ConnectTimeout)
 				r.Config.Cache.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Cache.Redis.ConnectionIsProxied)
@@ -58,20 +54,15 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				r.Config.Cache.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ReadTimeout)
 				r.Config.Cache.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.SendTimeout)
 				r.Config.Cache.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Cache.Redis.SentinelMaster)
-				r.Config.Cache.Redis.SentinelNodes = []tfTypes.PartialRedisEESentinelNodes{}
-				if len(r.Config.Cache.Redis.SentinelNodes) > len(resp.Config.Cache.Redis.SentinelNodes) {
-					r.Config.Cache.Redis.SentinelNodes = r.Config.Cache.Redis.SentinelNodes[:len(resp.Config.Cache.Redis.SentinelNodes)]
-				}
-				for sentinelNodesCount, sentinelNodesItem := range resp.Config.Cache.Redis.SentinelNodes {
-					var sentinelNodes tfTypes.PartialRedisEESentinelNodes
+				r.Config.Cache.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+
+				for _, sentinelNodesItem := range resp.Config.Cache.Redis.SentinelNodes {
+					var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+
 					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
 					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
-					if sentinelNodesCount+1 > len(r.Config.Cache.Redis.SentinelNodes) {
-						r.Config.Cache.Redis.SentinelNodes = append(r.Config.Cache.Redis.SentinelNodes, sentinelNodes)
-					} else {
-						r.Config.Cache.Redis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes.Host
-						r.Config.Cache.Redis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes.Port
-					}
+
+					r.Config.Cache.Redis.SentinelNodes = append(r.Config.Cache.Redis.SentinelNodes, sentinelNodes)
 				}
 				r.Config.Cache.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Cache.Redis.SentinelPassword)
 				if resp.Config.Cache.Redis.SentinelRole != nil {
@@ -92,11 +83,10 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			}
 		}
 		r.Config.Callouts = []tfTypes.Callouts{}
-		if len(r.Config.Callouts) > len(resp.Config.Callouts) {
-			r.Config.Callouts = r.Config.Callouts[:len(resp.Config.Callouts)]
-		}
-		for calloutsCount, calloutsItem := range resp.Config.Callouts {
+
+		for _, calloutsItem := range resp.Config.Callouts {
 			var callouts tfTypes.Callouts
+
 			callouts.Cache.Bypass = types.BoolPointerValue(calloutsItem.Cache.Bypass)
 			callouts.DependsOn = make([]types.String, 0, len(calloutsItem.DependsOn))
 			for _, v := range calloutsItem.DependsOn {
@@ -104,10 +94,10 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			}
 			callouts.Name = types.StringValue(calloutsItem.Name)
 			if len(calloutsItem.Request.Body.Custom) > 0 {
-				callouts.Request.Body.Custom = make(map[string]types.String, len(calloutsItem.Request.Body.Custom))
+				callouts.Request.Body.Custom = make(map[string]jsontypes.Normalized, len(calloutsItem.Request.Body.Custom))
 				for key, value := range calloutsItem.Request.Body.Custom {
 					result, _ := json.Marshal(value)
-					callouts.Request.Body.Custom[key] = types.StringValue(string(result))
+					callouts.Request.Body.Custom[key] = jsontypes.NewNormalizedValue(string(result))
 				}
 			}
 			callouts.Request.Body.Decode = types.BoolPointerValue(calloutsItem.Request.Body.Decode)
@@ -126,10 +116,10 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			}
 			callouts.Request.Error.Retries = types.Int64PointerValue(calloutsItem.Request.Error.Retries)
 			if len(calloutsItem.Request.Headers.Custom) > 0 {
-				callouts.Request.Headers.Custom = make(map[string]types.String, len(calloutsItem.Request.Headers.Custom))
+				callouts.Request.Headers.Custom = make(map[string]jsontypes.Normalized, len(calloutsItem.Request.Headers.Custom))
 				for key1, value1 := range calloutsItem.Request.Headers.Custom {
 					result1, _ := json.Marshal(value1)
-					callouts.Request.Headers.Custom[key1] = types.StringValue(string(result1))
+					callouts.Request.Headers.Custom[key1] = jsontypes.NewNormalizedValue(string(result1))
 				}
 			}
 			callouts.Request.Headers.Forward = types.BoolPointerValue(calloutsItem.Request.Headers.Forward)
@@ -154,10 +144,10 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			}
 			callouts.Request.Method = types.StringPointerValue(calloutsItem.Request.Method)
 			if len(calloutsItem.Request.Query.Custom) > 0 {
-				callouts.Request.Query.Custom = make(map[string]types.String, len(calloutsItem.Request.Query.Custom))
+				callouts.Request.Query.Custom = make(map[string]jsontypes.Normalized, len(calloutsItem.Request.Query.Custom))
 				for key2, value2 := range calloutsItem.Request.Query.Custom {
 					result2, _ := json.Marshal(value2)
-					callouts.Request.Query.Custom[key2] = types.StringValue(string(result2))
+					callouts.Request.Query.Custom[key2] = jsontypes.NewNormalizedValue(string(result2))
 				}
 			}
 			callouts.Request.Query.Forward = types.BoolPointerValue(calloutsItem.Request.Query.Forward)
@@ -166,15 +156,8 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			callouts.Response.Body.Store = types.BoolPointerValue(calloutsItem.Response.Body.Store)
 			callouts.Response.ByLua = types.StringPointerValue(calloutsItem.Response.ByLua)
 			callouts.Response.Headers.Store = types.BoolPointerValue(calloutsItem.Response.Headers.Store)
-			if calloutsCount+1 > len(r.Config.Callouts) {
-				r.Config.Callouts = append(r.Config.Callouts, callouts)
-			} else {
-				r.Config.Callouts[calloutsCount].Cache = callouts.Cache
-				r.Config.Callouts[calloutsCount].DependsOn = callouts.DependsOn
-				r.Config.Callouts[calloutsCount].Name = callouts.Name
-				r.Config.Callouts[calloutsCount].Request = callouts.Request
-				r.Config.Callouts[calloutsCount].Response = callouts.Response
-			}
+
+			r.Config.Callouts = append(r.Config.Callouts, callouts)
 		}
 		if resp.Config.Upstream == nil {
 			r.Config.Upstream = nil
@@ -185,10 +168,10 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			} else {
 				r.Config.Upstream.Body = &tfTypes.RequestCalloutPluginConfigBody{}
 				if len(resp.Config.Upstream.Body.Custom) > 0 {
-					r.Config.Upstream.Body.Custom = make(map[string]types.String, len(resp.Config.Upstream.Body.Custom))
+					r.Config.Upstream.Body.Custom = make(map[string]jsontypes.Normalized, len(resp.Config.Upstream.Body.Custom))
 					for key3, value3 := range resp.Config.Upstream.Body.Custom {
 						result3, _ := json.Marshal(value3)
-						r.Config.Upstream.Body.Custom[key3] = types.StringValue(string(result3))
+						r.Config.Upstream.Body.Custom[key3] = jsontypes.NewNormalizedValue(string(result3))
 					}
 				}
 				r.Config.Upstream.Body.Decode = types.BoolPointerValue(resp.Config.Upstream.Body.Decode)
@@ -198,12 +181,12 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			if resp.Config.Upstream.Headers == nil {
 				r.Config.Upstream.Headers = nil
 			} else {
-				r.Config.Upstream.Headers = &tfTypes.RequestCalloutPluginConfigHeaders{}
+				r.Config.Upstream.Headers = &tfTypes.RequestCalloutPluginConfigCalloutsHeaders{}
 				if len(resp.Config.Upstream.Headers.Custom) > 0 {
-					r.Config.Upstream.Headers.Custom = make(map[string]types.String, len(resp.Config.Upstream.Headers.Custom))
+					r.Config.Upstream.Headers.Custom = make(map[string]jsontypes.Normalized, len(resp.Config.Upstream.Headers.Custom))
 					for key4, value4 := range resp.Config.Upstream.Headers.Custom {
 						result4, _ := json.Marshal(value4)
-						r.Config.Upstream.Headers.Custom[key4] = types.StringValue(string(result4))
+						r.Config.Upstream.Headers.Custom[key4] = jsontypes.NewNormalizedValue(string(result4))
 					}
 				}
 				r.Config.Upstream.Headers.Forward = types.BoolPointerValue(resp.Config.Upstream.Headers.Forward)
@@ -211,12 +194,12 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			if resp.Config.Upstream.Query == nil {
 				r.Config.Upstream.Query = nil
 			} else {
-				r.Config.Upstream.Query = &tfTypes.RequestCalloutPluginConfigHeaders{}
+				r.Config.Upstream.Query = &tfTypes.RequestCalloutPluginConfigCalloutsHeaders{}
 				if len(resp.Config.Upstream.Query.Custom) > 0 {
-					r.Config.Upstream.Query.Custom = make(map[string]types.String, len(resp.Config.Upstream.Query.Custom))
+					r.Config.Upstream.Query.Custom = make(map[string]jsontypes.Normalized, len(resp.Config.Upstream.Query.Custom))
 					for key5, value5 := range resp.Config.Upstream.Query.Custom {
 						result5, _ := json.Marshal(value5)
-						r.Config.Upstream.Query.Custom[key5] = types.StringValue(string(result5))
+						r.Config.Upstream.Query.Custom[key5] = jsontypes.NewNormalizedValue(string(result5))
 					}
 				}
 				r.Config.Upstream.Query.Forward = types.BoolPointerValue(resp.Config.Upstream.Query.Forward)
@@ -263,21 +246,15 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
@@ -789,7 +766,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		} else {
 			forward1 = nil
 		}
-		headers := shared.RequestCalloutPluginConfigHeaders{
+		headers := shared.RequestCalloutPluginConfigCalloutsHeaders{
 			Custom:  custom1,
 			Forward: forward1,
 		}
@@ -933,7 +910,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		} else {
 			store1 = nil
 		}
-		headers1 := shared.RequestCalloutPluginHeaders{
+		headers1 := shared.RequestCalloutPluginConfigHeaders{
 			Store: store1,
 		}
 		response := shared.Response{
@@ -983,7 +960,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		} else {
 			byLua2 = nil
 		}
-		var headers2 *shared.Headers
+		var headers2 *shared.RequestCalloutPluginHeaders
 		if r.Config.Upstream.Headers != nil {
 			custom4 := make(map[string]interface{})
 			for customKey4, customValue4 := range r.Config.Upstream.Headers.Custom {
@@ -997,7 +974,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 			} else {
 				forward4 = nil
 			}
-			headers2 = &shared.Headers{
+			headers2 = &shared.RequestCalloutPluginHeaders{
 				Custom:  custom4,
 				Forward: forward4,
 			}

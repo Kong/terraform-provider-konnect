@@ -2,7 +2,7 @@ module github.com/kong/terraform-provider-konnect/v2
 
 go 1.23.4
 
-toolchain go1.24.3
+toolchain go1.24.2
 
 require (
 	github.com/Kong/shared-speakeasy/customtypes v0.2.3
@@ -10,6 +10,7 @@ require (
 	github.com/hashicorp/go-uuid v1.0.3
 	github.com/hashicorp/terraform-plugin-docs v0.20.1
 	github.com/hashicorp/terraform-plugin-framework v1.15.0
+	github.com/hashicorp/terraform-plugin-framework-jsontypes v0.2.0
 	github.com/hashicorp/terraform-plugin-framework-validators v0.17.0
 	github.com/hashicorp/terraform-plugin-go v0.28.0
 	github.com/hashicorp/terraform-plugin-log v0.9.0

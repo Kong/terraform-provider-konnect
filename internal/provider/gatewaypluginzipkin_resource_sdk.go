@@ -53,7 +53,11 @@ func (r *GatewayPluginZipkinResourceModel) RefreshFromSharedZipkinPlugin(ctx con
 				for _, v := range resp.Config.Propagation.Clear {
 					r.Config.Propagation.Clear = append(r.Config.Propagation.Clear, types.StringValue(v))
 				}
-				r.Config.Propagation.DefaultFormat = types.StringValue(string(resp.Config.Propagation.DefaultFormat))
+				if resp.Config.Propagation.DefaultFormat != nil {
+					r.Config.Propagation.DefaultFormat = types.StringValue(string(*resp.Config.Propagation.DefaultFormat))
+				} else {
+					r.Config.Propagation.DefaultFormat = types.StringNull()
+				}
 				r.Config.Propagation.Extract = make([]types.String, 0, len(resp.Config.Propagation.Extract))
 				for _, v := range resp.Config.Propagation.Extract {
 					r.Config.Propagation.Extract = append(r.Config.Propagation.Extract, types.StringValue(string(v)))
@@ -84,19 +88,14 @@ func (r *GatewayPluginZipkinResourceModel) RefreshFromSharedZipkinPlugin(ctx con
 			r.Config.SampleRatio = types.Float64PointerValue(resp.Config.SampleRatio)
 			r.Config.SendTimeout = types.Int64PointerValue(resp.Config.SendTimeout)
 			r.Config.StaticTags = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
-			if len(r.Config.StaticTags) > len(resp.Config.StaticTags) {
-				r.Config.StaticTags = r.Config.StaticTags[:len(resp.Config.StaticTags)]
-			}
-			for staticTagsCount, staticTagsItem := range resp.Config.StaticTags {
+
+			for _, staticTagsItem := range resp.Config.StaticTags {
 				var staticTags tfTypes.ConfigurationDataPlaneGroupEnvironmentField
+
 				staticTags.Name = types.StringValue(staticTagsItem.Name)
 				staticTags.Value = types.StringValue(staticTagsItem.Value)
-				if staticTagsCount+1 > len(r.Config.StaticTags) {
-					r.Config.StaticTags = append(r.Config.StaticTags, staticTags)
-				} else {
-					r.Config.StaticTags[staticTagsCount].Name = staticTags.Name
-					r.Config.StaticTags[staticTagsCount].Value = staticTags.Value
-				}
+
+				r.Config.StaticTags = append(r.Config.StaticTags, staticTags)
 			}
 			r.Config.TagsHeader = types.StringPointerValue(resp.Config.TagsHeader)
 			if resp.Config.TraceidByteCount != nil {
@@ -140,21 +139,15 @@ func (r *GatewayPluginZipkinResourceModel) RefreshFromSharedZipkinPlugin(ctx con
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
@@ -429,7 +422,12 @@ func (r *GatewayPluginZipkinResourceModel) ToSharedZipkinPlugin(ctx context.Cont
 			for _, clearItem := range r.Config.Propagation.Clear {
 				clear = append(clear, clearItem.ValueString())
 			}
-			defaultFormat := shared.ZipkinPluginDefaultFormat(r.Config.Propagation.DefaultFormat.ValueString())
+			defaultFormat := new(shared.ZipkinPluginDefaultFormat)
+			if !r.Config.Propagation.DefaultFormat.IsUnknown() && !r.Config.Propagation.DefaultFormat.IsNull() {
+				*defaultFormat = shared.ZipkinPluginDefaultFormat(r.Config.Propagation.DefaultFormat.ValueString())
+			} else {
+				defaultFormat = nil
+			}
 			extract := make([]shared.ZipkinPluginExtract, 0, len(r.Config.Propagation.Extract))
 			for _, extractItem := range r.Config.Propagation.Extract {
 				extract = append(extract, shared.ZipkinPluginExtract(extractItem.ValueString()))

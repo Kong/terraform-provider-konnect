@@ -3,13 +3,13 @@
 package types
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 )
 
 type StorageConfig struct {
-	Consul *Consul                 `tfsdk:"consul"`
-	Kong   map[string]types.String `tfsdk:"kong"`
-	Redis  *AcmePluginRedis        `tfsdk:"redis"`
-	Shm    *Shm                    `tfsdk:"shm"`
-	Vault  *AcmePluginVault        `tfsdk:"vault"`
+	Consul *Consul                         `tfsdk:"consul"`
+	Kong   map[string]jsontypes.Normalized `tfsdk:"kong"`
+	Redis  *AcmePluginRedis                `tfsdk:"redis"`
+	Shm    *Shm                            `tfsdk:"shm"`
+	Vault  *AcmePluginVault                `tfsdk:"vault"`
 }

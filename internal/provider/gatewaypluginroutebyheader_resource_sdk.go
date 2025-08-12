@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
@@ -21,25 +22,20 @@ func (r *GatewayPluginRouteByHeaderResourceModel) RefreshFromSharedRouteByHeader
 		} else {
 			r.Config = &tfTypes.RouteByHeaderPluginConfig{}
 			r.Config.Rules = []tfTypes.RouteByHeaderPluginRules{}
-			if len(r.Config.Rules) > len(resp.Config.Rules) {
-				r.Config.Rules = r.Config.Rules[:len(resp.Config.Rules)]
-			}
-			for rulesCount, rulesItem := range resp.Config.Rules {
+
+			for _, rulesItem := range resp.Config.Rules {
 				var rules tfTypes.RouteByHeaderPluginRules
+
 				if len(rulesItem.Condition) > 0 {
-					rules.Condition = make(map[string]types.String, len(rulesItem.Condition))
+					rules.Condition = make(map[string]jsontypes.Normalized, len(rulesItem.Condition))
 					for key, value := range rulesItem.Condition {
 						result, _ := json.Marshal(value)
-						rules.Condition[key] = types.StringValue(string(result))
+						rules.Condition[key] = jsontypes.NewNormalizedValue(string(result))
 					}
 				}
 				rules.UpstreamName = types.StringValue(rulesItem.UpstreamName)
-				if rulesCount+1 > len(r.Config.Rules) {
-					r.Config.Rules = append(r.Config.Rules, rules)
-				} else {
-					r.Config.Rules[rulesCount].Condition = rules.Condition
-					r.Config.Rules[rulesCount].UpstreamName = rules.UpstreamName
-				}
+
+				r.Config.Rules = append(r.Config.Rules, rules)
 			}
 		}
 		if resp.Consumer == nil {
@@ -77,21 +73,15 @@ func (r *GatewayPluginRouteByHeaderResourceModel) RefreshFromSharedRouteByHeader
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))

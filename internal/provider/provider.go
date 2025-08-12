@@ -78,13 +78,14 @@ func (p *KonnectProvider) Configure(ctx context.Context, req provider.ConfigureR
 		return
 	}
 
-	ServerURL := data.ServerURL.ValueString()
+	serverUrl := data.ServerURL.ValueString()
 
-	if ServerURL == "" && len(os.Getenv("KONNECT_SERVER_URL")) > 0 {
-		ServerURL = os.Getenv("KONNECT_SERVER_URL")
+	if serverUrl == "" && os.Getenv("KONNECT_SERVER_URL") != "" {
+		serverUrl = os.Getenv("KONNECT_SERVER_URL")
 	}
-	if ServerURL == "" {
-		ServerURL = "https://global.api.konghq.com"
+
+	if serverUrl == "" {
+		serverUrl = "https://global.api.konghq.com"
 	}
 
 	security := shared.Security{}
@@ -122,7 +123,7 @@ func (p *KonnectProvider) Configure(ctx context.Context, req provider.ConfigureR
 	httpClient.Transport = NewProviderHTTPTransport(providerHTTPTransportOpts)
 
 	opts := []sdk.SDKOption{
-		sdk.WithServerURL(ServerURL),
+		sdk.WithServerURL(serverUrl),
 		sdk.WithSecurity(security),
 		sdk.WithClient(httpClient),
 	}
@@ -142,6 +143,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewApplicationAuthStrategyResource,
 		NewAuditLogResource,
 		NewAuditLogDestinationResource,
+		NewCatalogServiceResource,
 		NewCentralizedConsumerResource,
 		NewCentralizedConsumerKeyResource,
 		NewCloudGatewayConfigurationResource,
@@ -149,6 +151,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewCloudGatewayNetworkResource,
 		NewCloudGatewayPrivateDNSResource,
 		NewCloudGatewayTransitGatewayResource,
+		NewCmekResource,
 		NewGatewayACLResource,
 		NewGatewayBasicAuthResource,
 		NewGatewayCACertificateResource,
@@ -227,7 +230,6 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayPluginMockingResource,
 		NewGatewayPluginMtlsAuthResource,
 		NewGatewayPluginOasValidationResource,
-		NewGatewayPluginOauth2Resource,
 		NewGatewayPluginOauth2IntrospectionResource,
 		NewGatewayPluginOpaResource,
 		NewGatewayPluginOpenidConnectResource,
@@ -277,6 +279,9 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayTargetResource,
 		NewGatewayUpstreamResource,
 		NewGatewayVaultResource,
+		NewIntegrationInstanceResource,
+		NewIntegrationInstanceAuthConfigResource,
+		NewIntegrationInstanceAuthCredentialResource,
 		NewMeshControlPlaneResource,
 		NewPortalResource,
 		NewPortalAppearanceResource,

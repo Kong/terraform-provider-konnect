@@ -17,11 +17,10 @@ func (r *PortalListDataSourceModel) RefreshFromSharedListPortalsResponse(ctx con
 
 	if resp != nil {
 		r.Data = []tfTypes.Portal{}
-		if len(r.Data) > len(resp.Data) {
-			r.Data = r.Data[:len(resp.Data)]
-		}
-		for dataCount, dataItem := range resp.Data {
+
+		for _, dataItem := range resp.Data {
 			var data tfTypes.Portal
+
 			data.ApplicationCount = types.Float64Value(dataItem.ApplicationCount)
 			data.AutoApproveApplications = types.BoolValue(dataItem.AutoApproveApplications)
 			data.AutoApproveDevelopers = types.BoolValue(dataItem.AutoApproveDevelopers)
@@ -45,28 +44,8 @@ func (r *PortalListDataSourceModel) RefreshFromSharedListPortalsResponse(ctx con
 			data.PublishedProductCount = types.Float64Value(dataItem.PublishedProductCount)
 			data.RbacEnabled = types.BoolValue(dataItem.RbacEnabled)
 			data.UpdatedAt = types.StringValue(typeconvert.TimeToString(dataItem.UpdatedAt))
-			if dataCount+1 > len(r.Data) {
-				r.Data = append(r.Data, data)
-			} else {
-				r.Data[dataCount].ApplicationCount = data.ApplicationCount
-				r.Data[dataCount].AutoApproveApplications = data.AutoApproveApplications
-				r.Data[dataCount].AutoApproveDevelopers = data.AutoApproveDevelopers
-				r.Data[dataCount].CreatedAt = data.CreatedAt
-				r.Data[dataCount].CustomClientDomain = data.CustomClientDomain
-				r.Data[dataCount].CustomDomain = data.CustomDomain
-				r.Data[dataCount].DefaultApplicationAuthStrategyID = data.DefaultApplicationAuthStrategyID
-				r.Data[dataCount].DefaultDomain = data.DefaultDomain
-				r.Data[dataCount].Description = data.Description
-				r.Data[dataCount].DeveloperCount = data.DeveloperCount
-				r.Data[dataCount].DisplayName = data.DisplayName
-				r.Data[dataCount].ID = data.ID
-				r.Data[dataCount].IsPublic = data.IsPublic
-				r.Data[dataCount].Labels = data.Labels
-				r.Data[dataCount].Name = data.Name
-				r.Data[dataCount].PublishedProductCount = data.PublishedProductCount
-				r.Data[dataCount].RbacEnabled = data.RbacEnabled
-				r.Data[dataCount].UpdatedAt = data.UpdatedAt
-			}
+
+			r.Data = append(r.Data, data)
 		}
 		r.Meta.Page.Number = types.Float64Value(resp.Meta.Page.Number)
 		r.Meta.Page.Size = types.Float64Value(resp.Meta.Page.Size)

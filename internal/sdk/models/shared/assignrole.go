@@ -139,6 +139,7 @@ const (
 	EntityTypeNameApplicationAuthStrategies EntityTypeName = "Application Auth Strategies"
 	EntityTypeNameAuditLogs                 EntityTypeName = "Audit Logs"
 	EntityTypeNameControlPlanes             EntityTypeName = "Control Planes"
+	EntityTypeNameDashboards                EntityTypeName = "Dashboards"
 	EntityTypeNameDcrProviders              EntityTypeName = "DCR Providers"
 	EntityTypeNameIdentity                  EntityTypeName = "Identity"
 	EntityTypeNameMeshControlPlanes         EntityTypeName = "Mesh Control Planes"
@@ -165,6 +166,8 @@ func (e *EntityTypeName) UnmarshalJSON(data []byte) error {
 	case "Audit Logs":
 		fallthrough
 	case "Control Planes":
+		fallthrough
+	case "Dashboards":
 		fallthrough
 	case "DCR Providers":
 		fallthrough

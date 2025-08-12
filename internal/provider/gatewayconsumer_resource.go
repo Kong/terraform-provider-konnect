@@ -68,8 +68,9 @@ func (r *GatewayConsumerResource) Schema(ctx context.Context, req resource.Schem
 				Description: `Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database. You must send either this field or ` + "`" + `username` + "`" + ` with the request.`,
 			},
 			"id": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"tags": schema.ListAttribute{
 				Computed:    true,

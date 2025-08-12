@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -253,7 +254,7 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 							"properties": schema.MapAttribute{
 								Computed:    true,
 								Optional:    true,
-								ElementType: types.StringType,
+								ElementType: jsontypes.NormalizedType{},
 								Description: `Additional Solace session properties (each setting needs to have ` + "`" + `SESSION_` + "`" + ` prefix).`,
 								Validators: []validator.Map{
 									mapvalidator.ValueStringsAre(validators.IsValidJSON()),
@@ -292,12 +293,14 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 				Description: `Whether the plugin is applied.`,
 			},
 			"id": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
@@ -336,12 +339,14 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 					},
 					Attributes: map[string]schema.Attribute{
 						"id": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
+							Computed:    true,
+							Optional:    true,
+							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
+							Computed:    true,
+							Optional:    true,
+							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
 							Computed: true,
@@ -349,6 +354,7 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 						},
 					},
 				},
+				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.SetAttribute{
 				Computed:    true,

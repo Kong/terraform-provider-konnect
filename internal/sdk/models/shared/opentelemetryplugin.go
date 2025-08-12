@@ -50,7 +50,9 @@ func (o *OpentelemetryPluginOrdering) GetBefore() *OpentelemetryPluginBefore {
 }
 
 type OpentelemetryPluginPartials struct {
-	ID   *string `json:"id,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
 }
@@ -275,7 +277,7 @@ type Propagation struct {
 	// Header names to clear after context extraction. This allows to extract the context from a certain header and then remove it from the request, useful when extraction and injection are performed on different header formats and the original header should not be sent to the upstream. If left empty, no headers are cleared.
 	Clear []string `json:"clear,omitempty"`
 	// The default header format to use when extractors did not match any format in the incoming headers and `inject` is configured with the value: `preserve`. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in `extract`.
-	DefaultFormat DefaultFormat `json:"default_format"`
+	DefaultFormat *DefaultFormat `json:"default_format,omitempty"`
 	// Header formats used to extract tracing context from incoming requests. If multiple values are specified, the first one found will be used for extraction. If left empty, Kong will not extract any tracing context information from incoming requests and generate a trace with no parent and a new trace ID.
 	Extract []Extract `json:"extract,omitempty"`
 	// Header formats used to inject tracing context. The value `preserve` will use the same header format as the incoming request. If multiple values are specified, all of them will be used during injection. If left empty, Kong will not inject any tracing context information in outgoing requests.
@@ -289,9 +291,9 @@ func (o *Propagation) GetClear() []string {
 	return o.Clear
 }
 
-func (o *Propagation) GetDefaultFormat() DefaultFormat {
+func (o *Propagation) GetDefaultFormat() *DefaultFormat {
 	if o == nil {
-		return DefaultFormat("")
+		return nil
 	}
 	return o.DefaultFormat
 }
@@ -645,12 +647,15 @@ type OpentelemetryPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                         `json:"enabled,omitempty"`
-	ID           *string                       `json:"id,omitempty"`
-	InstanceName *string                       `json:"instance_name,omitempty"`
-	name         string                        `const:"opentelemetry" json:"name"`
-	Ordering     *OpentelemetryPluginOrdering  `json:"ordering,omitempty"`
-	Partials     []OpentelemetryPluginPartials `json:"partials,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string                      `json:"instance_name,omitempty"`
+	name         string                       `const:"opentelemetry" json:"name"`
+	Ordering     *OpentelemetryPluginOrdering `json:"ordering,omitempty"`
+	// A list of partials to be used by the plugin.
+	Partials []OpentelemetryPluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.

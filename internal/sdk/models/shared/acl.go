@@ -16,10 +16,12 @@ func (o *ACLConsumer) GetID() *string {
 type ACL struct {
 	Consumer *ACLConsumer `json:"consumer"`
 	// Unix epoch when the resource was created.
-	CreatedAt *int64   `json:"created_at,omitempty"`
-	Group     string   `json:"group"`
-	ID        *string  `json:"id,omitempty"`
-	Tags      []string `json:"tags,omitempty"`
+	CreatedAt *int64 `json:"created_at,omitempty"`
+	Group     string `json:"group"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A set of strings representing tags.
+	Tags []string `json:"tags,omitempty"`
 }
 
 func (o *ACL) GetConsumer() *ACLConsumer {

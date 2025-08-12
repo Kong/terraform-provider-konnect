@@ -70,8 +70,9 @@ func (r *GatewayKeyResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"jwk": schema.StringAttribute{
 				Computed:    true,
@@ -128,8 +129,9 @@ func (r *GatewayKeyResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 			"x5t": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `X.509 certificate SHA-1 thumbprint.`,
 			},
 		},
 	}

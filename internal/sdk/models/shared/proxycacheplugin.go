@@ -50,7 +50,9 @@ func (o *ProxyCachePluginOrdering) GetBefore() *ProxyCachePluginBefore {
 }
 
 type ProxyCachePluginPartials struct {
-	ID   *string `json:"id,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
 }
@@ -388,12 +390,15 @@ type ProxyCachePlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                      `json:"enabled,omitempty"`
-	ID           *string                    `json:"id,omitempty"`
-	InstanceName *string                    `json:"instance_name,omitempty"`
-	name         string                     `const:"proxy-cache" json:"name"`
-	Ordering     *ProxyCachePluginOrdering  `json:"ordering,omitempty"`
-	Partials     []ProxyCachePluginPartials `json:"partials,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
+	// A unique string representing a UTF-8 encoded name.
+	InstanceName *string                   `json:"instance_name,omitempty"`
+	name         string                    `const:"proxy-cache" json:"name"`
+	Ordering     *ProxyCachePluginOrdering `json:"ordering,omitempty"`
+	// A list of partials to be used by the plugin.
+	Partials []ProxyCachePluginPartials `json:"partials,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.

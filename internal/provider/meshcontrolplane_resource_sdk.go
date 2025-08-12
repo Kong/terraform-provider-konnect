@@ -19,11 +19,10 @@ func (r *MeshControlPlaneResourceModel) RefreshFromSharedMeshControlPlane(ctx co
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.Features = []tfTypes.MeshControlPlaneFeature{}
-		if len(r.Features) > len(resp.Features) {
-			r.Features = r.Features[:len(resp.Features)]
-		}
-		for featuresCount, featuresItem := range resp.Features {
+
+		for _, featuresItem := range resp.Features {
 			var features tfTypes.MeshControlPlaneFeature
+
 			if featuresItem.HostnameGeneratorCreation == nil {
 				features.HostnameGeneratorCreation = nil
 			} else {
@@ -37,13 +36,8 @@ func (r *MeshControlPlaneResourceModel) RefreshFromSharedMeshControlPlane(ctx co
 				features.MeshCreation.Enabled = types.BoolValue(featuresItem.MeshCreation.Enabled)
 			}
 			features.Type = types.StringValue(string(featuresItem.Type))
-			if featuresCount+1 > len(r.Features) {
-				r.Features = append(r.Features, features)
-			} else {
-				r.Features[featuresCount].HostnameGeneratorCreation = features.HostnameGeneratorCreation
-				r.Features[featuresCount].MeshCreation = features.MeshCreation
-				r.Features[featuresCount].Type = features.Type
-			}
+
+			r.Features = append(r.Features, features)
 		}
 		r.ID = types.StringValue(resp.ID)
 		if resp.Labels != nil {

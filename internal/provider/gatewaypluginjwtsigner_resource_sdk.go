@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
@@ -84,24 +85,24 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 			r.Config.AccessTokenUpstreamHeader = types.StringPointerValue(resp.Config.AccessTokenUpstreamHeader)
 			r.Config.AccessTokenUpstreamLeeway = types.Float64PointerValue(resp.Config.AccessTokenUpstreamLeeway)
 			if len(resp.Config.AddAccessTokenClaims) > 0 {
-				r.Config.AddAccessTokenClaims = make(map[string]types.String, len(resp.Config.AddAccessTokenClaims))
+				r.Config.AddAccessTokenClaims = make(map[string]jsontypes.Normalized, len(resp.Config.AddAccessTokenClaims))
 				for key, value := range resp.Config.AddAccessTokenClaims {
 					result, _ := json.Marshal(value)
-					r.Config.AddAccessTokenClaims[key] = types.StringValue(string(result))
+					r.Config.AddAccessTokenClaims[key] = jsontypes.NewNormalizedValue(string(result))
 				}
 			}
 			if len(resp.Config.AddChannelTokenClaims) > 0 {
-				r.Config.AddChannelTokenClaims = make(map[string]types.String, len(resp.Config.AddChannelTokenClaims))
+				r.Config.AddChannelTokenClaims = make(map[string]jsontypes.Normalized, len(resp.Config.AddChannelTokenClaims))
 				for key1, value1 := range resp.Config.AddChannelTokenClaims {
 					result1, _ := json.Marshal(value1)
-					r.Config.AddChannelTokenClaims[key1] = types.StringValue(string(result1))
+					r.Config.AddChannelTokenClaims[key1] = jsontypes.NewNormalizedValue(string(result1))
 				}
 			}
 			if len(resp.Config.AddClaims) > 0 {
-				r.Config.AddClaims = make(map[string]types.String, len(resp.Config.AddClaims))
+				r.Config.AddClaims = make(map[string]jsontypes.Normalized, len(resp.Config.AddClaims))
 				for key2, value2 := range resp.Config.AddClaims {
 					result2, _ := json.Marshal(value2)
-					r.Config.AddClaims[key2] = types.StringValue(string(result2))
+					r.Config.AddClaims[key2] = jsontypes.NewNormalizedValue(string(result2))
 				}
 			}
 			r.Config.CacheAccessTokenIntrospection = types.BoolPointerValue(resp.Config.CacheAccessTokenIntrospection)
@@ -185,24 +186,24 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 				r.Config.RemoveChannelTokenClaims = append(r.Config.RemoveChannelTokenClaims, types.StringValue(v))
 			}
 			if len(resp.Config.SetAccessTokenClaims) > 0 {
-				r.Config.SetAccessTokenClaims = make(map[string]types.String, len(resp.Config.SetAccessTokenClaims))
+				r.Config.SetAccessTokenClaims = make(map[string]jsontypes.Normalized, len(resp.Config.SetAccessTokenClaims))
 				for key3, value3 := range resp.Config.SetAccessTokenClaims {
 					result3, _ := json.Marshal(value3)
-					r.Config.SetAccessTokenClaims[key3] = types.StringValue(string(result3))
+					r.Config.SetAccessTokenClaims[key3] = jsontypes.NewNormalizedValue(string(result3))
 				}
 			}
 			if len(resp.Config.SetChannelTokenClaims) > 0 {
-				r.Config.SetChannelTokenClaims = make(map[string]types.String, len(resp.Config.SetChannelTokenClaims))
+				r.Config.SetChannelTokenClaims = make(map[string]jsontypes.Normalized, len(resp.Config.SetChannelTokenClaims))
 				for key4, value4 := range resp.Config.SetChannelTokenClaims {
 					result4, _ := json.Marshal(value4)
-					r.Config.SetChannelTokenClaims[key4] = types.StringValue(string(result4))
+					r.Config.SetChannelTokenClaims[key4] = jsontypes.NewNormalizedValue(string(result4))
 				}
 			}
 			if len(resp.Config.SetClaims) > 0 {
-				r.Config.SetClaims = make(map[string]types.String, len(resp.Config.SetClaims))
+				r.Config.SetClaims = make(map[string]jsontypes.Normalized, len(resp.Config.SetClaims))
 				for key5, value5 := range resp.Config.SetClaims {
 					result5, _ := json.Marshal(value5)
-					r.Config.SetClaims[key5] = types.StringValue(string(result5))
+					r.Config.SetClaims[key5] = jsontypes.NewNormalizedValue(string(result5))
 				}
 			}
 			r.Config.TrustAccessTokenIntrospection = types.BoolPointerValue(resp.Config.TrustAccessTokenIntrospection)
@@ -247,21 +248,15 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))

@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.13.0
+> Released on 2025/08/12
+
+### Features
+* Add support for the `konnect_cmek` resource for Customer Managed Encryption Keys
+* Add support for the `konnect_catalog_service`, `konnect_integration_instance`, `konnect_integration_instance_auth_config`, `konnect_integration_instance_auth_credential` resources for Service Catalog
+* Allow the `Dashboards` entity when configuring roles
+
+### Bug fixes
+
+* `namespace` is no longer required in plugins
+* The `konnect_gateway_plugin_oauth2` resource has been removed. Konnect does not support `oauth2`. See "Kong Identity" as an alternative for Konnect users.
+
 ## 2.12.0
 > Released on 2025/07/22
 

@@ -42,12 +42,9 @@ resource "konnect_gateway_vault" "my_gatewayvault" {
 - `config` (String) The configuration properties for the Vault which can be found on the vaults' documentation page. Parsed as JSON.
 - `created_at` (Number) Unix epoch when the resource was created.
 - `description` (String) The description of the Vault entity.
+- `id` (String) A string representing a UUID (universally unique identifier).
 - `tags` (List of String) An optional set of strings associated with the Vault for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
-
-### Read-Only
-
-- `id` (String) The ID of this resource.
 
 ## Import
 

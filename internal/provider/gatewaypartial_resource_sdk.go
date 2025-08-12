@@ -15,100 +15,90 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.PartialRedisCE != nil {
-			r.RedisCe = &tfTypes.PartialRedisCE{}
-			r.RedisCe.Config.Database = types.Int64PointerValue(resp.PartialRedisCE.Config.Database)
-			r.RedisCe.Config.Host = types.StringPointerValue(resp.PartialRedisCE.Config.Host)
-			r.RedisCe.Config.Password = types.StringPointerValue(resp.PartialRedisCE.Config.Password)
-			r.RedisCe.Config.Port = types.Int64PointerValue(resp.PartialRedisCE.Config.Port)
-			r.RedisCe.Config.ServerName = types.StringPointerValue(resp.PartialRedisCE.Config.ServerName)
-			r.RedisCe.Config.Ssl = types.BoolPointerValue(resp.PartialRedisCE.Config.Ssl)
-			r.RedisCe.Config.SslVerify = types.BoolPointerValue(resp.PartialRedisCE.Config.SslVerify)
-			r.RedisCe.Config.Timeout = types.Int64PointerValue(resp.PartialRedisCE.Config.Timeout)
-			r.RedisCe.Config.Username = types.StringPointerValue(resp.PartialRedisCE.Config.Username)
-			r.RedisCe.CreatedAt = types.Int64PointerValue(resp.PartialRedisCE.CreatedAt)
+		if resp.PartialRedisCe != nil {
+			r.RedisCe = &tfTypes.PartialRedisCe{}
+			r.RedisCe.Config.Database = types.Int64PointerValue(resp.PartialRedisCe.Config.Database)
+			r.RedisCe.Config.Host = types.StringPointerValue(resp.PartialRedisCe.Config.Host)
+			r.RedisCe.Config.Password = types.StringPointerValue(resp.PartialRedisCe.Config.Password)
+			r.RedisCe.Config.Port = types.Int64PointerValue(resp.PartialRedisCe.Config.Port)
+			r.RedisCe.Config.ServerName = types.StringPointerValue(resp.PartialRedisCe.Config.ServerName)
+			r.RedisCe.Config.Ssl = types.BoolPointerValue(resp.PartialRedisCe.Config.Ssl)
+			r.RedisCe.Config.SslVerify = types.BoolPointerValue(resp.PartialRedisCe.Config.SslVerify)
+			r.RedisCe.Config.Timeout = types.Int64PointerValue(resp.PartialRedisCe.Config.Timeout)
+			r.RedisCe.Config.Username = types.StringPointerValue(resp.PartialRedisCe.Config.Username)
+			r.RedisCe.CreatedAt = types.Int64PointerValue(resp.PartialRedisCe.CreatedAt)
 			r.CreatedAt = r.RedisCe.CreatedAt
-			r.RedisCe.ID = types.StringPointerValue(resp.PartialRedisCE.ID)
+			r.RedisCe.ID = types.StringPointerValue(resp.PartialRedisCe.ID)
 			r.ID = r.RedisCe.ID
-			r.RedisCe.Name = types.StringPointerValue(resp.PartialRedisCE.Name)
+			r.RedisCe.Name = types.StringPointerValue(resp.PartialRedisCe.Name)
 			r.Name = r.RedisCe.Name
-			if resp.PartialRedisCE.Tags != nil {
-				r.RedisCe.Tags = make([]types.String, 0, len(resp.PartialRedisCE.Tags))
-				for _, v := range resp.PartialRedisCE.Tags {
+			if resp.PartialRedisCe.Tags != nil {
+				r.RedisCe.Tags = make([]types.String, 0, len(resp.PartialRedisCe.Tags))
+				for _, v := range resp.PartialRedisCe.Tags {
 					r.RedisCe.Tags = append(r.RedisCe.Tags, types.StringValue(v))
 				}
 			}
-			r.RedisCe.UpdatedAt = types.Int64PointerValue(resp.PartialRedisCE.UpdatedAt)
+			r.RedisCe.UpdatedAt = types.Int64PointerValue(resp.PartialRedisCe.UpdatedAt)
 			r.UpdatedAt = r.RedisCe.UpdatedAt
 		}
-		if resp.PartialRedisEE != nil {
-			r.RedisEe = &tfTypes.PartialRedisEE{}
-			r.RedisEe.Config.ClusterMaxRedirections = types.Int64PointerValue(resp.PartialRedisEE.Config.ClusterMaxRedirections)
-			if resp.PartialRedisEE.Config.ClusterNodes != nil {
-				r.RedisEe.Config.ClusterNodes = []tfTypes.PartialRedisEEClusterNodes{}
-				if len(r.RedisEe.Config.ClusterNodes) > len(resp.PartialRedisEE.Config.ClusterNodes) {
-					r.RedisEe.Config.ClusterNodes = r.RedisEe.Config.ClusterNodes[:len(resp.PartialRedisEE.Config.ClusterNodes)]
-				}
-				for clusterNodesCount, clusterNodesItem := range resp.PartialRedisEE.Config.ClusterNodes {
-					var clusterNodes tfTypes.PartialRedisEEClusterNodes
-					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
-					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
-					if clusterNodesCount+1 > len(r.RedisEe.Config.ClusterNodes) {
-						r.RedisEe.Config.ClusterNodes = append(r.RedisEe.Config.ClusterNodes, clusterNodes)
-					} else {
-						r.RedisEe.Config.ClusterNodes[clusterNodesCount].IP = clusterNodes.IP
-						r.RedisEe.Config.ClusterNodes[clusterNodesCount].Port = clusterNodes.Port
-					}
-				}
+		if resp.PartialRedisEe != nil {
+			r.RedisEe = &tfTypes.PartialRedisEe{}
+			r.RedisEe.Config.ClusterMaxRedirections = types.Int64PointerValue(resp.PartialRedisEe.Config.ClusterMaxRedirections)
+			r.RedisEe.Config.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+
+			for _, clusterNodesItem := range resp.PartialRedisEe.Config.ClusterNodes {
+				var clusterNodes tfTypes.PartialRedisEeClusterNodes
+
+				clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
+				clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
+
+				r.RedisEe.Config.ClusterNodes = append(r.RedisEe.Config.ClusterNodes, clusterNodes)
 			}
-			r.RedisEe.Config.ConnectTimeout = types.Int64PointerValue(resp.PartialRedisEE.Config.ConnectTimeout)
-			r.RedisEe.Config.ConnectionIsProxied = types.BoolPointerValue(resp.PartialRedisEE.Config.ConnectionIsProxied)
-			r.RedisEe.Config.Database = types.Int64PointerValue(resp.PartialRedisEE.Config.Database)
-			r.RedisEe.Config.Host = types.StringPointerValue(resp.PartialRedisEE.Config.Host)
-			r.RedisEe.Config.KeepaliveBacklog = types.Int64PointerValue(resp.PartialRedisEE.Config.KeepaliveBacklog)
-			r.RedisEe.Config.KeepalivePoolSize = types.Int64PointerValue(resp.PartialRedisEE.Config.KeepalivePoolSize)
-			r.RedisEe.Config.Password = types.StringPointerValue(resp.PartialRedisEE.Config.Password)
-			r.RedisEe.Config.Port = types.Int64PointerValue(resp.PartialRedisEE.Config.Port)
-			r.RedisEe.Config.ReadTimeout = types.Int64PointerValue(resp.PartialRedisEE.Config.ReadTimeout)
-			r.RedisEe.Config.SendTimeout = types.Int64PointerValue(resp.PartialRedisEE.Config.SendTimeout)
-			r.RedisEe.Config.SentinelMaster = types.StringPointerValue(resp.PartialRedisEE.Config.SentinelMaster)
-			if resp.PartialRedisEE.Config.SentinelNodes != nil {
-				r.RedisEe.Config.SentinelNodes = []tfTypes.PartialRedisEESentinelNodes{}
-				if len(r.RedisEe.Config.SentinelNodes) > len(resp.PartialRedisEE.Config.SentinelNodes) {
-					r.RedisEe.Config.SentinelNodes = r.RedisEe.Config.SentinelNodes[:len(resp.PartialRedisEE.Config.SentinelNodes)]
-				}
-				for sentinelNodesCount, sentinelNodesItem := range resp.PartialRedisEE.Config.SentinelNodes {
-					var sentinelNodes tfTypes.PartialRedisEESentinelNodes
-					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
-					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
-					if sentinelNodesCount+1 > len(r.RedisEe.Config.SentinelNodes) {
-						r.RedisEe.Config.SentinelNodes = append(r.RedisEe.Config.SentinelNodes, sentinelNodes)
-					} else {
-						r.RedisEe.Config.SentinelNodes[sentinelNodesCount].Host = sentinelNodes.Host
-						r.RedisEe.Config.SentinelNodes[sentinelNodesCount].Port = sentinelNodes.Port
-					}
-				}
+			r.RedisEe.Config.ConnectTimeout = types.Int64PointerValue(resp.PartialRedisEe.Config.ConnectTimeout)
+			r.RedisEe.Config.ConnectionIsProxied = types.BoolPointerValue(resp.PartialRedisEe.Config.ConnectionIsProxied)
+			r.RedisEe.Config.Database = types.Int64PointerValue(resp.PartialRedisEe.Config.Database)
+			r.RedisEe.Config.Host = types.StringPointerValue(resp.PartialRedisEe.Config.Host)
+			r.RedisEe.Config.KeepaliveBacklog = types.Int64PointerValue(resp.PartialRedisEe.Config.KeepaliveBacklog)
+			r.RedisEe.Config.KeepalivePoolSize = types.Int64PointerValue(resp.PartialRedisEe.Config.KeepalivePoolSize)
+			r.RedisEe.Config.Password = types.StringPointerValue(resp.PartialRedisEe.Config.Password)
+			r.RedisEe.Config.Port = types.Int64PointerValue(resp.PartialRedisEe.Config.Port)
+			r.RedisEe.Config.ReadTimeout = types.Int64PointerValue(resp.PartialRedisEe.Config.ReadTimeout)
+			r.RedisEe.Config.SendTimeout = types.Int64PointerValue(resp.PartialRedisEe.Config.SendTimeout)
+			r.RedisEe.Config.SentinelMaster = types.StringPointerValue(resp.PartialRedisEe.Config.SentinelMaster)
+			r.RedisEe.Config.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+
+			for _, sentinelNodesItem := range resp.PartialRedisEe.Config.SentinelNodes {
+				var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+
+				sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
+				sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+
+				r.RedisEe.Config.SentinelNodes = append(r.RedisEe.Config.SentinelNodes, sentinelNodes)
 			}
-			r.RedisEe.Config.SentinelPassword = types.StringPointerValue(resp.PartialRedisEE.Config.SentinelPassword)
-			r.RedisEe.Config.SentinelRole = types.StringPointerValue(resp.PartialRedisEE.Config.SentinelRole)
-			r.RedisEe.Config.SentinelUsername = types.StringPointerValue(resp.PartialRedisEE.Config.SentinelUsername)
-			r.RedisEe.Config.ServerName = types.StringPointerValue(resp.PartialRedisEE.Config.ServerName)
-			r.RedisEe.Config.Ssl = types.BoolPointerValue(resp.PartialRedisEE.Config.Ssl)
-			r.RedisEe.Config.SslVerify = types.BoolPointerValue(resp.PartialRedisEE.Config.SslVerify)
-			r.RedisEe.Config.Username = types.StringPointerValue(resp.PartialRedisEE.Config.Username)
-			r.RedisEe.CreatedAt = types.Int64PointerValue(resp.PartialRedisEE.CreatedAt)
+			r.RedisEe.Config.SentinelPassword = types.StringPointerValue(resp.PartialRedisEe.Config.SentinelPassword)
+			if resp.PartialRedisEe.Config.SentinelRole != nil {
+				r.RedisEe.Config.SentinelRole = types.StringValue(string(*resp.PartialRedisEe.Config.SentinelRole))
+			} else {
+				r.RedisEe.Config.SentinelRole = types.StringNull()
+			}
+			r.RedisEe.Config.SentinelUsername = types.StringPointerValue(resp.PartialRedisEe.Config.SentinelUsername)
+			r.RedisEe.Config.ServerName = types.StringPointerValue(resp.PartialRedisEe.Config.ServerName)
+			r.RedisEe.Config.Ssl = types.BoolPointerValue(resp.PartialRedisEe.Config.Ssl)
+			r.RedisEe.Config.SslVerify = types.BoolPointerValue(resp.PartialRedisEe.Config.SslVerify)
+			r.RedisEe.Config.Username = types.StringPointerValue(resp.PartialRedisEe.Config.Username)
+			r.RedisEe.CreatedAt = types.Int64PointerValue(resp.PartialRedisEe.CreatedAt)
 			r.CreatedAt = r.RedisEe.CreatedAt
-			r.RedisEe.ID = types.StringPointerValue(resp.PartialRedisEE.ID)
+			r.RedisEe.ID = types.StringPointerValue(resp.PartialRedisEe.ID)
 			r.ID = r.RedisEe.ID
-			r.RedisEe.Name = types.StringPointerValue(resp.PartialRedisEE.Name)
+			r.RedisEe.Name = types.StringPointerValue(resp.PartialRedisEe.Name)
 			r.Name = r.RedisEe.Name
-			if resp.PartialRedisEE.Tags != nil {
-				r.RedisEe.Tags = make([]types.String, 0, len(resp.PartialRedisEE.Tags))
-				for _, v := range resp.PartialRedisEE.Tags {
+			if resp.PartialRedisEe.Tags != nil {
+				r.RedisEe.Tags = make([]types.String, 0, len(resp.PartialRedisEe.Tags))
+				for _, v := range resp.PartialRedisEe.Tags {
 					r.RedisEe.Tags = append(r.RedisEe.Tags, types.StringValue(v))
 				}
 			}
-			r.RedisEe.UpdatedAt = types.Int64PointerValue(resp.PartialRedisEE.UpdatedAt)
+			r.RedisEe.UpdatedAt = types.Int64PointerValue(resp.PartialRedisEe.UpdatedAt)
 			r.UpdatedAt = r.RedisEe.UpdatedAt
 		}
 	}
@@ -200,7 +190,7 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 	var diags diag.Diagnostics
 
 	var out shared.Partial
-	var partialRedisCE *shared.PartialRedisCE
+	var partialRedisCe *shared.PartialRedisCe
 	if r.RedisCe != nil {
 		database := new(int64)
 		if !r.RedisCe.Config.Database.IsUnknown() && !r.RedisCe.Config.Database.IsNull() {
@@ -256,7 +246,7 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 		} else {
 			username = nil
 		}
-		config := shared.PartialRedisCEConfig{
+		config := shared.PartialRedisCeConfig{
 			Database:   database,
 			Host:       host,
 			Password:   password,
@@ -298,7 +288,7 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 		} else {
 			updatedAt = nil
 		}
-		partialRedisCE = &shared.PartialRedisCE{
+		partialRedisCe = &shared.PartialRedisCe{
 			Config:    config,
 			CreatedAt: createdAt,
 			ID:        id,
@@ -307,12 +297,12 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 			UpdatedAt: updatedAt,
 		}
 	}
-	if partialRedisCE != nil {
+	if partialRedisCe != nil {
 		out = shared.Partial{
-			PartialRedisCE: partialRedisCE,
+			PartialRedisCe: partialRedisCe,
 		}
 	}
-	var partialRedisEE *shared.PartialRedisEE
+	var partialRedisEe *shared.PartialRedisEe
 	if r.RedisEe != nil {
 		clusterMaxRedirections := new(int64)
 		if !r.RedisEe.Config.ClusterMaxRedirections.IsUnknown() && !r.RedisEe.Config.ClusterMaxRedirections.IsNull() {
@@ -320,27 +310,24 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 		} else {
 			clusterMaxRedirections = nil
 		}
-		var clusterNodes []shared.PartialRedisEEClusterNodes
-		if r.RedisEe.Config.ClusterNodes != nil {
-			clusterNodes = make([]shared.PartialRedisEEClusterNodes, 0, len(r.RedisEe.Config.ClusterNodes))
-			for _, clusterNodesItem := range r.RedisEe.Config.ClusterNodes {
-				ip := new(string)
-				if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
-					*ip = clusterNodesItem.IP.ValueString()
-				} else {
-					ip = nil
-				}
-				port1 := new(int64)
-				if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
-					*port1 = clusterNodesItem.Port.ValueInt64()
-				} else {
-					port1 = nil
-				}
-				clusterNodes = append(clusterNodes, shared.PartialRedisEEClusterNodes{
-					IP:   ip,
-					Port: port1,
-				})
+		clusterNodes := make([]shared.PartialRedisEeClusterNodes, 0, len(r.RedisEe.Config.ClusterNodes))
+		for _, clusterNodesItem := range r.RedisEe.Config.ClusterNodes {
+			ip := new(string)
+			if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
+				*ip = clusterNodesItem.IP.ValueString()
+			} else {
+				ip = nil
 			}
+			port1 := new(int64)
+			if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
+				*port1 = clusterNodesItem.Port.ValueInt64()
+			} else {
+				port1 = nil
+			}
+			clusterNodes = append(clusterNodes, shared.PartialRedisEeClusterNodes{
+				IP:   ip,
+				Port: port1,
+			})
 		}
 		connectTimeout := new(int64)
 		if !r.RedisEe.Config.ConnectTimeout.IsUnknown() && !r.RedisEe.Config.ConnectTimeout.IsNull() {
@@ -408,27 +395,24 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 		} else {
 			sentinelMaster = nil
 		}
-		var sentinelNodes []shared.PartialRedisEESentinelNodes
-		if r.RedisEe.Config.SentinelNodes != nil {
-			sentinelNodes = make([]shared.PartialRedisEESentinelNodes, 0, len(r.RedisEe.Config.SentinelNodes))
-			for _, sentinelNodesItem := range r.RedisEe.Config.SentinelNodes {
-				host2 := new(string)
-				if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
-					*host2 = sentinelNodesItem.Host.ValueString()
-				} else {
-					host2 = nil
-				}
-				port3 := new(int64)
-				if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
-					*port3 = sentinelNodesItem.Port.ValueInt64()
-				} else {
-					port3 = nil
-				}
-				sentinelNodes = append(sentinelNodes, shared.PartialRedisEESentinelNodes{
-					Host: host2,
-					Port: port3,
-				})
+		sentinelNodes := make([]shared.PartialRedisEeSentinelNodes, 0, len(r.RedisEe.Config.SentinelNodes))
+		for _, sentinelNodesItem := range r.RedisEe.Config.SentinelNodes {
+			host2 := new(string)
+			if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
+				*host2 = sentinelNodesItem.Host.ValueString()
+			} else {
+				host2 = nil
 			}
+			port3 := new(int64)
+			if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
+				*port3 = sentinelNodesItem.Port.ValueInt64()
+			} else {
+				port3 = nil
+			}
+			sentinelNodes = append(sentinelNodes, shared.PartialRedisEeSentinelNodes{
+				Host: host2,
+				Port: port3,
+			})
 		}
 		sentinelPassword := new(string)
 		if !r.RedisEe.Config.SentinelPassword.IsUnknown() && !r.RedisEe.Config.SentinelPassword.IsNull() {
@@ -436,9 +420,9 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 		} else {
 			sentinelPassword = nil
 		}
-		sentinelRole := new(string)
+		sentinelRole := new(shared.PartialRedisEeSentinelRole)
 		if !r.RedisEe.Config.SentinelRole.IsUnknown() && !r.RedisEe.Config.SentinelRole.IsNull() {
-			*sentinelRole = r.RedisEe.Config.SentinelRole.ValueString()
+			*sentinelRole = shared.PartialRedisEeSentinelRole(r.RedisEe.Config.SentinelRole.ValueString())
 		} else {
 			sentinelRole = nil
 		}
@@ -472,7 +456,7 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 		} else {
 			username1 = nil
 		}
-		config1 := shared.PartialRedisEEConfig{
+		config1 := shared.PartialRedisEeConfig{
 			ClusterMaxRedirections: clusterMaxRedirections,
 			ClusterNodes:           clusterNodes,
 			ConnectTimeout:         connectTimeout,
@@ -526,7 +510,7 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 		} else {
 			updatedAt1 = nil
 		}
-		partialRedisEE = &shared.PartialRedisEE{
+		partialRedisEe = &shared.PartialRedisEe{
 			Config:    config1,
 			CreatedAt: createdAt1,
 			ID:        id1,
@@ -535,9 +519,9 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 			UpdatedAt: updatedAt1,
 		}
 	}
-	if partialRedisEE != nil {
+	if partialRedisEe != nil {
 		out = shared.Partial{
-			PartialRedisEE: partialRedisEE,
+			PartialRedisEe: partialRedisEe,
 		}
 	}
 

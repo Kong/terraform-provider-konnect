@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
@@ -30,10 +31,10 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) RefreshFromSharedRespon
 				r.Config.LimitBy = types.StringNull()
 			}
 			if len(resp.Config.Limits) > 0 {
-				r.Config.Limits = make(map[string]types.String, len(resp.Config.Limits))
+				r.Config.Limits = make(map[string]jsontypes.Normalized, len(resp.Config.Limits))
 				for key, value := range resp.Config.Limits {
 					result, _ := json.Marshal(value)
-					r.Config.Limits[key] = types.StringValue(string(result))
+					r.Config.Limits[key] = jsontypes.NewNormalizedValue(string(result))
 				}
 			}
 			if resp.Config.Policy != nil {
@@ -44,7 +45,7 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) RefreshFromSharedRespon
 			if resp.Config.Redis == nil {
 				r.Config.Redis = nil
 			} else {
-				r.Config.Redis = &tfTypes.RateLimitingPluginRedis{}
+				r.Config.Redis = &tfTypes.PartialRedisCeConfig{}
 				r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
 				r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
 				r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
@@ -91,21 +92,15 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) RefreshFromSharedRespon
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))

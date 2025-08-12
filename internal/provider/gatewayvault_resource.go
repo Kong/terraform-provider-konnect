@@ -7,16 +7,15 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -35,15 +34,15 @@ type GatewayVaultResource struct {
 
 // GatewayVaultResourceModel describes the resource data model.
 type GatewayVaultResourceModel struct {
-	Config         types.String   `tfsdk:"config"`
-	ControlPlaneID types.String   `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64    `tfsdk:"created_at"`
-	Description    types.String   `tfsdk:"description"`
-	ID             types.String   `tfsdk:"id"`
-	Name           types.String   `tfsdk:"name"`
-	Prefix         types.String   `tfsdk:"prefix"`
-	Tags           []types.String `tfsdk:"tags"`
-	UpdatedAt      types.Int64    `tfsdk:"updated_at"`
+	Config         jsontypes.Normalized `tfsdk:"config"`
+	ControlPlaneID types.String         `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64          `tfsdk:"created_at"`
+	Description    types.String         `tfsdk:"description"`
+	ID             types.String         `tfsdk:"id"`
+	Name           types.String         `tfsdk:"name"`
+	Prefix         types.String         `tfsdk:"prefix"`
+	Tags           []types.String       `tfsdk:"tags"`
+	UpdatedAt      types.Int64          `tfsdk:"updated_at"`
 }
 
 func (r *GatewayVaultResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -55,12 +54,10 @@ func (r *GatewayVaultResource) Schema(ctx context.Context, req resource.SchemaRe
 		MarkdownDescription: "GatewayVault Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.StringAttribute{
+				CustomType:  jsontypes.NormalizedType{},
 				Computed:    true,
 				Optional:    true,
 				Description: `The configuration properties for the Vault which can be found on the vaults' documentation page. Parsed as JSON.`,
-				Validators: []validator.String{
-					validators.IsValidJSON(),
-				},
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required: true,
@@ -80,8 +77,9 @@ func (r *GatewayVaultResource) Schema(ctx context.Context, req resource.SchemaRe
 				Description: `The description of the Vault entity.`,
 			},
 			"id": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Optional:    true,
+				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,

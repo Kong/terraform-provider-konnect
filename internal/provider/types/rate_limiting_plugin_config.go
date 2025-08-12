@@ -7,20 +7,20 @@ import (
 )
 
 type RateLimitingPluginConfig struct {
-	Day               types.Float64            `tfsdk:"day"`
-	ErrorCode         types.Float64            `tfsdk:"error_code"`
-	ErrorMessage      types.String             `tfsdk:"error_message"`
-	FaultTolerant     types.Bool               `tfsdk:"fault_tolerant"`
-	HeaderName        types.String             `tfsdk:"header_name"`
-	HideClientHeaders types.Bool               `tfsdk:"hide_client_headers"`
-	Hour              types.Float64            `tfsdk:"hour"`
-	LimitBy           types.String             `tfsdk:"limit_by"`
-	Minute            types.Float64            `tfsdk:"minute"`
-	Month             types.Float64            `tfsdk:"month"`
-	Path              types.String             `tfsdk:"path"`
-	Policy            types.String             `tfsdk:"policy"`
-	Redis             *RateLimitingPluginRedis `tfsdk:"redis"`
-	Second            types.Float64            `tfsdk:"second"`
-	SyncRate          types.Float64            `tfsdk:"sync_rate"`
-	Year              types.Float64            `tfsdk:"year"`
+	Day               types.Float64         `tfsdk:"day"`
+	ErrorCode         types.Float64         `tfsdk:"error_code"`
+	ErrorMessage      types.String          `tfsdk:"error_message"`
+	FaultTolerant     types.Bool            `tfsdk:"fault_tolerant"`
+	HeaderName        types.String          `tfsdk:"header_name"`
+	HideClientHeaders types.Bool            `tfsdk:"hide_client_headers"`
+	Hour              types.Float64         `tfsdk:"hour"`
+	LimitBy           types.String          `tfsdk:"limit_by"`
+	Minute            types.Float64         `tfsdk:"minute"`
+	Month             types.Float64         `tfsdk:"month"`
+	Path              types.String          `tfsdk:"path"`
+	Policy            types.String          `tfsdk:"policy"`
+	Redis             *PartialRedisCeConfig `tfsdk:"redis"`
+	Second            types.Float64         `tfsdk:"second"`
+	SyncRate          types.Float64         `tfsdk:"sync_rate"`
+	Year              types.Float64         `tfsdk:"year"`
 }

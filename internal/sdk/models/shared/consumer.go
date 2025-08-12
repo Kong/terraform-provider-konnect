@@ -8,7 +8,8 @@ type Consumer struct {
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database. You must send either this field or `username` with the request.
 	CustomID *string `json:"custom_id,omitempty"`
-	ID       *string `json:"id,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
 	// An optional set of strings associated with the Consumer for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.

@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type PartialRedisCEConfig struct {
+type PartialRedisCeConfig struct {
 	Database   types.Int64  `tfsdk:"database"`
 	Host       types.String `tfsdk:"host"`
 	Password   types.String `tfsdk:"password"`

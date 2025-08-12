@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
@@ -29,10 +30,10 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 				r.Config.HeaderType = types.StringNull()
 			}
 			if len(resp.Config.Headers) > 0 {
-				r.Config.Headers = make(map[string]types.String, len(resp.Config.Headers))
+				r.Config.Headers = make(map[string]jsontypes.Normalized, len(resp.Config.Headers))
 				for key, value := range resp.Config.Headers {
 					result, _ := json.Marshal(value)
-					r.Config.Headers[key] = types.StringValue(string(result))
+					r.Config.Headers[key] = jsontypes.NewNormalizedValue(string(result))
 				}
 			}
 			r.Config.HTTPResponseHeaderForTraceid = types.StringPointerValue(resp.Config.HTTPResponseHeaderForTraceid)
@@ -45,7 +46,11 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 				for _, v := range resp.Config.Propagation.Clear {
 					r.Config.Propagation.Clear = append(r.Config.Propagation.Clear, types.StringValue(v))
 				}
-				r.Config.Propagation.DefaultFormat = types.StringValue(string(resp.Config.Propagation.DefaultFormat))
+				if resp.Config.Propagation.DefaultFormat != nil {
+					r.Config.Propagation.DefaultFormat = types.StringValue(string(*resp.Config.Propagation.DefaultFormat))
+				} else {
+					r.Config.Propagation.DefaultFormat = types.StringNull()
+				}
 				r.Config.Propagation.Extract = make([]types.String, 0, len(resp.Config.Propagation.Extract))
 				for _, v := range resp.Config.Propagation.Extract {
 					r.Config.Propagation.Extract = append(r.Config.Propagation.Extract, types.StringValue(string(v)))
@@ -74,10 +79,10 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 			}
 			r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
 			if len(resp.Config.ResourceAttributes) > 0 {
-				r.Config.ResourceAttributes = make(map[string]types.String, len(resp.Config.ResourceAttributes))
+				r.Config.ResourceAttributes = make(map[string]jsontypes.Normalized, len(resp.Config.ResourceAttributes))
 				for key1, value1 := range resp.Config.ResourceAttributes {
 					result1, _ := json.Marshal(value1)
-					r.Config.ResourceAttributes[key1] = types.StringValue(string(result1))
+					r.Config.ResourceAttributes[key1] = jsontypes.NewNormalizedValue(string(result1))
 				}
 			}
 			r.Config.SamplingRate = types.Float64PointerValue(resp.Config.SamplingRate)
@@ -124,21 +129,15 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
@@ -395,7 +394,12 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 			for _, clearItem := range r.Config.Propagation.Clear {
 				clear = append(clear, clearItem.ValueString())
 			}
-			defaultFormat := shared.DefaultFormat(r.Config.Propagation.DefaultFormat.ValueString())
+			defaultFormat := new(shared.DefaultFormat)
+			if !r.Config.Propagation.DefaultFormat.IsUnknown() && !r.Config.Propagation.DefaultFormat.IsNull() {
+				*defaultFormat = shared.DefaultFormat(r.Config.Propagation.DefaultFormat.ValueString())
+			} else {
+				defaultFormat = nil
+			}
 			extract := make([]shared.Extract, 0, len(r.Config.Propagation.Extract))
 			for _, extractItem := range r.Config.Propagation.Extract {
 				extract = append(extract, shared.Extract(extractItem.ValueString()))

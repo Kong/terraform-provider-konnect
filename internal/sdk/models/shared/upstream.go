@@ -251,15 +251,18 @@ func (o *Unhealthy) GetTimeouts() *int64 {
 }
 
 type Active struct {
-	Concurrency            *int64            `json:"concurrency,omitempty"`
-	Headers                map[string]string `json:"headers,omitempty"`
-	Healthy                *Healthy          `json:"healthy,omitempty"`
-	HTTPPath               *string           `json:"http_path,omitempty"`
-	HTTPSSni               *string           `json:"https_sni,omitempty"`
-	HTTPSVerifyCertificate *bool             `json:"https_verify_certificate,omitempty"`
-	Timeout                *float64          `json:"timeout,omitempty"`
-	Type                   *UpstreamType     `json:"type,omitempty"`
-	Unhealthy              *Unhealthy        `json:"unhealthy,omitempty"`
+	Concurrency *int64 `json:"concurrency,omitempty"`
+	// A map of header names to arrays of header values.
+	Headers map[string][]string `json:"headers,omitempty"`
+	Healthy *Healthy            `json:"healthy,omitempty"`
+	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
+	HTTPPath *string `json:"http_path,omitempty"`
+	// A string representing an SNI (server name indication) value for TLS.
+	HTTPSSni               *string       `json:"https_sni,omitempty"`
+	HTTPSVerifyCertificate *bool         `json:"https_verify_certificate,omitempty"`
+	Timeout                *float64      `json:"timeout,omitempty"`
+	Type                   *UpstreamType `json:"type,omitempty"`
+	Unhealthy              *Unhealthy    `json:"unhealthy,omitempty"`
 }
 
 func (o *Active) GetConcurrency() *int64 {
@@ -269,7 +272,7 @@ func (o *Active) GetConcurrency() *int64 {
 	return o.Concurrency
 }
 
-func (o *Active) GetHeaders() map[string]string {
+func (o *Active) GetHeaders() map[string][]string {
 	if o == nil {
 		return nil
 	}
@@ -499,12 +502,15 @@ type Upstream struct {
 	Healthchecks     *Healthchecks `json:"healthchecks,omitempty"`
 	// The hostname to be used as `Host` header when proxying requests through Kong.
 	HostHeader *string `json:"host_header,omitempty"`
-	ID         *string `json:"id,omitempty"`
+	// A string representing a UUID (universally unique identifier).
+	ID *string `json:"id,omitempty"`
 	// This is a hostname, which must be equal to the `host` of a Service.
 	Name string `json:"name"`
 	// The number of slots in the load balancer algorithm. If `algorithm` is set to `round-robin`, this setting determines the maximum number of slots. If `algorithm` is set to `consistent-hashing`, this setting determines the actual number of slots in the algorithm. Accepts an integer in the range `10`-`65536`.
-	Slots                    *int64  `json:"slots,omitempty"`
-	StickySessionsCookie     *string `json:"sticky_sessions_cookie,omitempty"`
+	Slots *int64 `json:"slots,omitempty"`
+	// The cookie name to keep sticky sessions.
+	StickySessionsCookie *string `json:"sticky_sessions_cookie,omitempty"`
+	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
 	StickySessionsCookiePath *string `json:"sticky_sessions_cookie_path,omitempty"`
 	// An optional set of strings associated with the Upstream for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
