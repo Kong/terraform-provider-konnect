@@ -1,10 +1,12 @@
 # Changelog
 
 ## 2.13.0
-> Released on 2025/??/??
+> Released on 2025/08/12
 
 ### Features
-* Add support for the `konnect_cmek` resource
+* Add support for the `konnect_cmek` resource for Customer Managed Encryption Keys
+* Add support for the `konnect_catalog_service`, `konnect_integration_instance`, `konnect_integration_instance_auth_config`, `konnect_integration_instance_auth_credential` resources for Service Catalog
+* Allow the `Dashboards` entity when configuring roles
 
 ### Bug fixes
 
