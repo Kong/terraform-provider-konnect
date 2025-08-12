@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -256,7 +257,7 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 					"add_access_token_claims": schema.MapAttribute{
 						Computed:    true,
 						Optional:    true,
-						ElementType: types.StringType,
+						ElementType: jsontypes.NormalizedType{},
 						Description: `Add customized claims if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
 						Validators: []validator.Map{
 							mapvalidator.ValueStringsAre(validators.IsValidJSON()),
@@ -265,7 +266,7 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 					"add_channel_token_claims": schema.MapAttribute{
 						Computed:    true,
 						Optional:    true,
-						ElementType: types.StringType,
+						ElementType: jsontypes.NormalizedType{},
 						Description: `Add customized claims if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
 						Validators: []validator.Map{
 							mapvalidator.ValueStringsAre(validators.IsValidJSON()),
@@ -274,7 +275,7 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 					"add_claims": schema.MapAttribute{
 						Computed:    true,
 						Optional:    true,
-						ElementType: types.StringType,
+						ElementType: jsontypes.NormalizedType{},
 						Description: `Add customized claims to both tokens if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
 						Validators: []validator.Map{
 							mapvalidator.ValueStringsAre(validators.IsValidJSON()),
@@ -525,7 +526,7 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 					"set_access_token_claims": schema.MapAttribute{
 						Computed:    true,
 						Optional:    true,
-						ElementType: types.StringType,
+						ElementType: jsontypes.NormalizedType{},
 						Description: `Set customized claims. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
 						Validators: []validator.Map{
 							mapvalidator.ValueStringsAre(validators.IsValidJSON()),
@@ -534,7 +535,7 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 					"set_channel_token_claims": schema.MapAttribute{
 						Computed:    true,
 						Optional:    true,
-						ElementType: types.StringType,
+						ElementType: jsontypes.NormalizedType{},
 						Description: `Set customized claims. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
 						Validators: []validator.Map{
 							mapvalidator.ValueStringsAre(validators.IsValidJSON()),
@@ -543,7 +544,7 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 					"set_claims": schema.MapAttribute{
 						Computed:    true,
 						Optional:    true,
-						ElementType: types.StringType,
+						ElementType: jsontypes.NormalizedType{},
 						Description: `Set customized claims to both tokens. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
 						Validators: []validator.Map{
 							mapvalidator.ValueStringsAre(validators.IsValidJSON()),

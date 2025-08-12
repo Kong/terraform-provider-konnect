@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
@@ -55,10 +56,10 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			r.OpenidConnect.Active = types.BoolValue(resp.AppAuthStrategyOpenIDConnectResponse.Active)
 			r.Active = r.OpenidConnect.Active
 			if resp.AppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.AdditionalProperties == nil {
-				r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties = types.StringNull()
+				r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties = jsontypes.NewNormalizedNull()
 			} else {
 				additionalPropertiesResult, _ := json.Marshal(resp.AppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.AdditionalProperties)
-				r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties = types.StringValue(string(additionalPropertiesResult))
+				r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties = jsontypes.NewNormalizedValue(string(additionalPropertiesResult))
 			}
 			r.OpenidConnect.Configs.OpenidConnect.AuthMethods = make([]types.String, 0, len(resp.AppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.AuthMethods))
 			for _, v := range resp.AppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.AuthMethods {

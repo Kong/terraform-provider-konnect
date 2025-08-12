@@ -3,13 +3,14 @@
 package types
 
 import (
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type AppAuthStrategyConfigOpenIDConnect struct {
-	AdditionalProperties types.String   `tfsdk:"additional_properties"`
-	AuthMethods          []types.String `tfsdk:"auth_methods"`
-	CredentialClaim      []types.String `tfsdk:"credential_claim"`
-	Issuer               types.String   `tfsdk:"issuer"`
-	Scopes               []types.String `tfsdk:"scopes"`
+	AdditionalProperties jsontypes.Normalized `tfsdk:"additional_properties"`
+	AuthMethods          []types.String       `tfsdk:"auth_methods"`
+	CredentialClaim      []types.String       `tfsdk:"credential_claim"`
+	Issuer               types.String         `tfsdk:"issuer"`
+	Scopes               []types.String       `tfsdk:"scopes"`
 }

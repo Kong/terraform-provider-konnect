@@ -3,8 +3,8 @@ id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
   docChecksum: a4a3b7455dbc6b127951ad343cb55c00
   docVersion: 2.0.0
-  speakeasyVersion: 1.581.1
-  generationVersion: 2.656.9
+  speakeasyVersion: 1.602.0
+  generationVersion: 2.681.1
   releaseVersion: 2.12.0
   configChecksum: 8f39d0909ce53f5d8e355b8236327ec9
 features:
@@ -12,18 +12,18 @@ features:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
     constsAndDefaults: 0.2.1
-    core: 3.41.16
+    core: 3.44.0
     deepObjectParams: 0.1.0
     deprecations: 2.82.0
     globalSecurity: 2.81.12
-    globalServerURLs: 2.82.2
+    globalServerURLs: 2.83.0
     groups: 2.81.2
     ignores: 2.81.1
     inputOutputModels: 2.83.0
     methodServerURLs: 2.82.1
     nameOverrides: 2.81.3
     nullables: 0.0.0
-    retries: 2.81.3
+    retries: 2.81.4
     sets: 0.1.2
     typeOverrides: 2.81.1
     unions: 2.81.17

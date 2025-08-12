@@ -17,19 +17,14 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 	if resp != nil {
 		r.Config.Debug = types.BoolPointerValue(resp.Config.Debug)
 		r.Config.Nodes = []tfTypes.Nodes{}
-		if len(r.Config.Nodes) > len(resp.Config.Nodes) {
-			r.Config.Nodes = r.Config.Nodes[:len(resp.Config.Nodes)]
-		}
-		for nodesCount, nodesItem := range resp.Config.Nodes {
+
+		for _, nodesItem := range resp.Config.Nodes {
 			var nodes tfTypes.Nodes
+
 			nodes.Name = types.StringValue(nodesItem.Name)
 			nodes.Type = types.StringValue(string(nodesItem.Type))
-			if nodesCount+1 > len(r.Config.Nodes) {
-				r.Config.Nodes = append(r.Config.Nodes, nodes)
-			} else {
-				r.Config.Nodes[nodesCount].Name = nodes.Name
-				r.Config.Nodes[nodesCount].Type = nodes.Type
-			}
+
+			r.Config.Nodes = append(r.Config.Nodes, nodes)
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -72,21 +67,15 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))

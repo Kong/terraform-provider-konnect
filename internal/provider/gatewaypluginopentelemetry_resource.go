@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/float64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
@@ -112,7 +113,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 					"headers": schema.MapAttribute{
 						Computed:    true,
 						Optional:    true,
-						ElementType: types.StringType,
+						ElementType: jsontypes.NormalizedType{},
 						Description: `The custom headers to be added in the HTTP request sent to the OTLP server. This setting is useful for adding the authentication headers (token) for the APM backend.`,
 						Validators: []validator.Map{
 							mapvalidator.ValueStringsAre(validators.IsValidJSON()),
@@ -244,7 +245,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 					"resource_attributes": schema.MapAttribute{
 						Computed:    true,
 						Optional:    true,
-						ElementType: types.StringType,
+						ElementType: jsontypes.NormalizedType{},
 						Validators: []validator.Map{
 							mapvalidator.ValueStringsAre(validators.IsValidJSON()),
 						},

@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -330,7 +331,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 												"custom": schema.MapAttribute{
 													Computed:    true,
 													Optional:    true,
-													ElementType: types.StringType,
+													ElementType: jsontypes.NormalizedType{},
 													Description: `The custom body fields to be added to the callout HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
 													Validators: []validator.Map{
 														mapvalidator.ValueStringsAre(validators.IsValidJSON()),
@@ -407,7 +408,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 												"custom": schema.MapAttribute{
 													Computed:    true,
 													Optional:    true,
-													ElementType: types.StringType,
+													ElementType: jsontypes.NormalizedType{},
 													Description: `The custom headers to be added in the callout HTTP request. Values can contain Lua expressions in the form ` + "`" + `$(some_lua_expression)` + "`" + `. The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
 													Validators: []validator.Map{
 														mapvalidator.ValueStringsAre(validators.IsValidJSON()),
@@ -517,7 +518,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 												"custom": schema.MapAttribute{
 													Computed:    true,
 													Optional:    true,
-													ElementType: types.StringType,
+													ElementType: jsontypes.NormalizedType{},
 													Description: `The custom query params to be added in the callout HTTP request. Values can contain Lua expressions in the form ` + "`" + `$(some_lua_expression)` + "`" + `. The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
 													Validators: []validator.Map{
 														mapvalidator.ValueStringsAre(validators.IsValidJSON()),
@@ -613,7 +614,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 									"custom": schema.MapAttribute{
 										Computed:    true,
 										Optional:    true,
-										ElementType: types.StringType,
+										ElementType: jsontypes.NormalizedType{},
 										Description: `The custom body fields to be added in the upstream request body. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
 										Validators: []validator.Map{
 											mapvalidator.ValueStringsAre(validators.IsValidJSON()),
@@ -644,7 +645,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 									"custom": schema.MapAttribute{
 										Computed:    true,
 										Optional:    true,
-										ElementType: types.StringType,
+										ElementType: jsontypes.NormalizedType{},
 										Description: `The custom headers to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
 										Validators: []validator.Map{
 											mapvalidator.ValueStringsAre(validators.IsValidJSON()),
@@ -665,7 +666,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 									"custom": schema.MapAttribute{
 										Computed:    true,
 										Optional:    true,
-										ElementType: types.StringType,
+										ElementType: jsontypes.NormalizedType{},
 										Description: `The custom query params to be added in the upstream HTTP request. Values can contain Lua expressions in the form ` + "`" + `$(some_lua_expression)` + "`" + `. The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
 										Validators: []validator.Map{
 											mapvalidator.ValueStringsAre(validators.IsValidJSON()),

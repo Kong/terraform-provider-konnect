@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -70,7 +71,7 @@ func (r *GatewayPluginFileLogResource) Schema(ctx context.Context, req resource.
 					"custom_fields_by_lua": schema.MapAttribute{
 						Computed:    true,
 						Optional:    true,
-						ElementType: types.StringType,
+						ElementType: jsontypes.NormalizedType{},
 						Description: `Lua code as a key-value map`,
 						Validators: []validator.Map{
 							mapvalidator.ValueStringsAre(validators.IsValidJSON()),

@@ -31,19 +31,14 @@ func (r *APIProductResourceModel) RefreshFromSharedAPIProduct(ctx context.Contex
 			r.PortalIds = append(r.PortalIds, types.StringValue(v))
 		}
 		r.Portals = []tfTypes.APIProductPortal{}
-		if len(r.Portals) > len(resp.Portals) {
-			r.Portals = r.Portals[:len(resp.Portals)]
-		}
-		for portalsCount, portalsItem := range resp.Portals {
+
+		for _, portalsItem := range resp.Portals {
 			var portals tfTypes.APIProductPortal
+
 			portals.PortalID = types.StringValue(portalsItem.PortalID)
 			portals.PortalName = types.StringValue(portalsItem.PortalName)
-			if portalsCount+1 > len(r.Portals) {
-				r.Portals = append(r.Portals, portals)
-			} else {
-				r.Portals[portalsCount].PortalID = portals.PortalID
-				r.Portals[portalsCount].PortalName = portals.PortalName
-			}
+
+			r.Portals = append(r.Portals, portals)
 		}
 		if len(resp.PublicLabels) > 0 {
 			r.PublicLabels = make(map[string]types.String, len(resp.PublicLabels))

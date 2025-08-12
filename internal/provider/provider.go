@@ -78,13 +78,14 @@ func (p *KonnectProvider) Configure(ctx context.Context, req provider.ConfigureR
 		return
 	}
 
-	ServerURL := data.ServerURL.ValueString()
+	serverUrl := data.ServerURL.ValueString()
 
-	if ServerURL == "" && len(os.Getenv("KONNECT_SERVER_URL")) > 0 {
-		ServerURL = os.Getenv("KONNECT_SERVER_URL")
+	if serverUrl == "" && os.Getenv("KONNECT_SERVER_URL") != "" {
+		serverUrl = os.Getenv("KONNECT_SERVER_URL")
 	}
-	if ServerURL == "" {
-		ServerURL = "https://global.api.konghq.com"
+
+	if serverUrl == "" {
+		serverUrl = "https://global.api.konghq.com"
 	}
 
 	security := shared.Security{}
@@ -122,7 +123,7 @@ func (p *KonnectProvider) Configure(ctx context.Context, req provider.ConfigureR
 	httpClient.Transport = NewProviderHTTPTransport(providerHTTPTransportOpts)
 
 	opts := []sdk.SDKOption{
-		sdk.WithServerURL(ServerURL),
+		sdk.WithServerURL(serverUrl),
 		sdk.WithSecurity(security),
 		sdk.WithClient(httpClient),
 	}

@@ -24,21 +24,15 @@ func (r *GatewayPluginAiSanitizerResourceModel) RefreshFromSharedAiSanitizerPlug
 				r.Config.Anonymize = append(r.Config.Anonymize, types.StringValue(string(v)))
 			}
 			r.Config.CustomPatterns = []tfTypes.CustomPatterns{}
-			if len(r.Config.CustomPatterns) > len(resp.Config.CustomPatterns) {
-				r.Config.CustomPatterns = r.Config.CustomPatterns[:len(resp.Config.CustomPatterns)]
-			}
-			for customPatternsCount, customPatternsItem := range resp.Config.CustomPatterns {
+
+			for _, customPatternsItem := range resp.Config.CustomPatterns {
 				var customPatterns tfTypes.CustomPatterns
+
 				customPatterns.Name = types.StringValue(customPatternsItem.Name)
 				customPatterns.Regex = types.StringValue(customPatternsItem.Regex)
 				customPatterns.Score = types.Float64PointerValue(customPatternsItem.Score)
-				if customPatternsCount+1 > len(r.Config.CustomPatterns) {
-					r.Config.CustomPatterns = append(r.Config.CustomPatterns, customPatterns)
-				} else {
-					r.Config.CustomPatterns[customPatternsCount].Name = customPatterns.Name
-					r.Config.CustomPatterns[customPatternsCount].Regex = customPatterns.Regex
-					r.Config.CustomPatterns[customPatternsCount].Score = customPatterns.Score
-				}
+
+				r.Config.CustomPatterns = append(r.Config.CustomPatterns, customPatterns)
 			}
 			r.Config.Host = types.StringPointerValue(resp.Config.Host)
 			r.Config.KeepaliveTimeout = types.Float64PointerValue(resp.Config.KeepaliveTimeout)
@@ -94,21 +88,15 @@ func (r *GatewayPluginAiSanitizerResourceModel) RefreshFromSharedAiSanitizerPlug
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))

@@ -38,19 +38,14 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) RefreshFromSharedKafkaUpstream
 			r.Config.Authentication.User = types.StringPointerValue(resp.Config.Authentication.User)
 		}
 		r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
-		if len(r.Config.BootstrapServers) > len(resp.Config.BootstrapServers) {
-			r.Config.BootstrapServers = r.Config.BootstrapServers[:len(resp.Config.BootstrapServers)]
-		}
-		for bootstrapServersCount, bootstrapServersItem := range resp.Config.BootstrapServers {
+
+		for _, bootstrapServersItem := range resp.Config.BootstrapServers {
 			var bootstrapServers tfTypes.BootstrapServers
+
 			bootstrapServers.Host = types.StringValue(bootstrapServersItem.Host)
 			bootstrapServers.Port = types.Int64Value(bootstrapServersItem.Port)
-			if bootstrapServersCount+1 > len(r.Config.BootstrapServers) {
-				r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
-			} else {
-				r.Config.BootstrapServers[bootstrapServersCount].Host = bootstrapServers.Host
-				r.Config.BootstrapServers[bootstrapServersCount].Port = bootstrapServers.Port
-			}
+
+			r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
 		}
 		r.Config.ClusterName = types.StringPointerValue(resp.Config.ClusterName)
 		r.Config.ForwardBody = types.BoolPointerValue(resp.Config.ForwardBody)
@@ -161,21 +156,15 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) RefreshFromSharedKafkaUpstream
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))

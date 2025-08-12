@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -312,16 +313,14 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 								},
 								Attributes: map[string]schema.Attribute{
 									"additional_properties": schema.StringAttribute{
-										Computed: true,
-										Optional: true,
+										CustomType: jsontypes.NormalizedType{},
+										Computed:   true,
+										Optional:   true,
 										PlanModifiers: []planmodifier.String{
 											stringplanmodifier.RequiresReplaceIfConfigured(),
 											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 										},
 										Description: `Requires replacement if changed.; Parsed as JSON.`,
-										Validators: []validator.String{
-											validators.IsValidJSON(),
-										},
 									},
 									"auth_methods": schema.ListAttribute{
 										Computed: true,

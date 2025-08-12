@@ -31,11 +31,10 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) RefreshFromSharedStatsdAdvanc
 			r.Config.Host = types.StringPointerValue(resp.Config.Host)
 			r.Config.HostnameInPrefix = types.BoolPointerValue(resp.Config.HostnameInPrefix)
 			r.Config.Metrics = []tfTypes.StatsdPluginMetrics{}
-			if len(r.Config.Metrics) > len(resp.Config.Metrics) {
-				r.Config.Metrics = r.Config.Metrics[:len(resp.Config.Metrics)]
-			}
-			for metricsCount, metricsItem := range resp.Config.Metrics {
+
+			for _, metricsItem := range resp.Config.Metrics {
 				var metrics tfTypes.StatsdPluginMetrics
+
 				if metricsItem.ConsumerIdentifier != nil {
 					metrics.ConsumerIdentifier = types.StringValue(string(*metricsItem.ConsumerIdentifier))
 				} else {
@@ -54,16 +53,8 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) RefreshFromSharedStatsdAdvanc
 				} else {
 					metrics.WorkspaceIdentifier = types.StringNull()
 				}
-				if metricsCount+1 > len(r.Config.Metrics) {
-					r.Config.Metrics = append(r.Config.Metrics, metrics)
-				} else {
-					r.Config.Metrics[metricsCount].ConsumerIdentifier = metrics.ConsumerIdentifier
-					r.Config.Metrics[metricsCount].Name = metrics.Name
-					r.Config.Metrics[metricsCount].SampleRate = metrics.SampleRate
-					r.Config.Metrics[metricsCount].ServiceIdentifier = metrics.ServiceIdentifier
-					r.Config.Metrics[metricsCount].StatType = metrics.StatType
-					r.Config.Metrics[metricsCount].WorkspaceIdentifier = metrics.WorkspaceIdentifier
-				}
+
+				r.Config.Metrics = append(r.Config.Metrics, metrics)
 			}
 			r.Config.Port = types.Int64PointerValue(resp.Config.Port)
 			r.Config.Prefix = types.StringPointerValue(resp.Config.Prefix)
@@ -132,21 +123,15 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) RefreshFromSharedStatsdAdvanc
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))

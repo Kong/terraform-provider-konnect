@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -36,7 +37,7 @@ type CatalogServiceResource struct {
 // CatalogServiceResourceModel describes the resource data model.
 type CatalogServiceResourceModel struct {
 	CreatedAt    types.String            `tfsdk:"created_at"`
-	CustomFields types.String            `tfsdk:"custom_fields"`
+	CustomFields jsontypes.Normalized    `tfsdk:"custom_fields"`
 	Description  types.String            `tfsdk:"description"`
 	DisplayName  types.String            `tfsdk:"display_name"`
 	ID           types.String            `tfsdk:"id"`
@@ -64,12 +65,10 @@ func (r *CatalogServiceResource) Schema(ctx context.Context, req resource.Schema
 				},
 			},
 			"custom_fields": schema.StringAttribute{
+				CustomType:  jsontypes.NormalizedType{},
 				Computed:    true,
 				Optional:    true,
 				Description: `Map of customizable, catalog-defined fields providing information about a service. Parsed as JSON.`,
-				Validators: []validator.String{
-					validators.IsValidJSON(),
-				},
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,

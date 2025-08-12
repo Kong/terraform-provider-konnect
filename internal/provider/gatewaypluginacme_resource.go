@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -223,7 +224,7 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 							"kong": schema.MapAttribute{
 								Computed:    true,
 								Optional:    true,
-								ElementType: types.StringType,
+								ElementType: jsontypes.NormalizedType{},
 								Validators: []validator.Map{
 									mapvalidator.ValueStringsAre(validators.IsValidJSON()),
 								},

@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
@@ -18,7 +19,7 @@ func (r *CatalogServiceResourceModel) RefreshFromSharedCatalogService(ctx contex
 	if resp != nil {
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		customFieldsResult, _ := json.Marshal(resp.CustomFields)
-		r.CustomFields = types.StringValue(string(customFieldsResult))
+		r.CustomFields = jsontypes.NewNormalizedValue(string(customFieldsResult))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringValue(resp.DisplayName)
 		r.ID = types.StringValue(resp.ID)

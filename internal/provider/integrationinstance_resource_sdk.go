@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
@@ -18,7 +19,7 @@ func (r *IntegrationInstanceResourceModel) RefreshFromSharedIntegrationInstance(
 	if resp != nil {
 		r.Authorized = types.BoolValue(resp.Authorized)
 		configResult, _ := json.Marshal(resp.Config)
-		r.Config = types.StringValue(string(configResult))
+		r.Config = jsontypes.NewNormalizedValue(string(configResult))
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringValue(resp.DisplayName)

@@ -19,19 +19,14 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) RefreshFromSharedAiPromptTe
 		r.Config.LogOriginalRequest = types.BoolPointerValue(resp.Config.LogOriginalRequest)
 		r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
 		r.Config.Templates = []tfTypes.Templates{}
-		if len(r.Config.Templates) > len(resp.Config.Templates) {
-			r.Config.Templates = r.Config.Templates[:len(resp.Config.Templates)]
-		}
-		for templatesCount, templatesItem := range resp.Config.Templates {
+
+		for _, templatesItem := range resp.Config.Templates {
 			var templates tfTypes.Templates
+
 			templates.Name = types.StringValue(templatesItem.Name)
 			templates.Template = types.StringValue(templatesItem.Template)
-			if templatesCount+1 > len(r.Config.Templates) {
-				r.Config.Templates = append(r.Config.Templates, templates)
-			} else {
-				r.Config.Templates[templatesCount].Name = templates.Name
-				r.Config.Templates[templatesCount].Template = templates.Template
-			}
+
+			r.Config.Templates = append(r.Config.Templates, templates)
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -74,21 +69,15 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) RefreshFromSharedAiPromptTe
 		}
 		if resp.Partials != nil {
 			r.Partials = []tfTypes.Partials{}
-			if len(r.Partials) > len(resp.Partials) {
-				r.Partials = r.Partials[:len(resp.Partials)]
-			}
-			for partialsCount, partialsItem := range resp.Partials {
+
+			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.Partials
+
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringPointerValue(partialsItem.Path)
-				if partialsCount+1 > len(r.Partials) {
-					r.Partials = append(r.Partials, partials)
-				} else {
-					r.Partials[partialsCount].ID = partials.ID
-					r.Partials[partialsCount].Name = partials.Name
-					r.Partials[partialsCount].Path = partials.Path
-				}
+
+				r.Partials = append(r.Partials, partials)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))

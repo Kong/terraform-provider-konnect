@@ -17,25 +17,17 @@ func (r *CloudGatewayProviderAccountListDataSourceModel) RefreshFromSharedListPr
 
 	if resp != nil {
 		r.Data = []tfTypes.ProviderAccount{}
-		if len(r.Data) > len(resp.Data) {
-			r.Data = r.Data[:len(resp.Data)]
-		}
-		for dataCount, dataItem := range resp.Data {
+
+		for _, dataItem := range resp.Data {
 			var data tfTypes.ProviderAccount
+
 			data.CreatedAt = types.StringValue(typeconvert.TimeToString(dataItem.CreatedAt))
 			data.ID = types.StringValue(dataItem.ID)
 			data.Provider = types.StringValue(string(dataItem.Provider))
 			data.ProviderAccountID = types.StringValue(dataItem.ProviderAccountID)
 			data.UpdatedAt = types.StringValue(typeconvert.TimeToString(dataItem.UpdatedAt))
-			if dataCount+1 > len(r.Data) {
-				r.Data = append(r.Data, data)
-			} else {
-				r.Data[dataCount].CreatedAt = data.CreatedAt
-				r.Data[dataCount].ID = data.ID
-				r.Data[dataCount].Provider = data.Provider
-				r.Data[dataCount].ProviderAccountID = data.ProviderAccountID
-				r.Data[dataCount].UpdatedAt = data.UpdatedAt
-			}
+
+			r.Data = append(r.Data, data)
 		}
 		r.Meta.Page.Number = types.Float64Value(resp.Meta.Page.Number)
 		r.Meta.Page.Size = types.Float64Value(resp.Meta.Page.Size)

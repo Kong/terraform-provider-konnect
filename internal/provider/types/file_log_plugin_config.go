@@ -3,11 +3,12 @@
 package types
 
 import (
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type FileLogPluginConfig struct {
-	CustomFieldsByLua map[string]types.String `tfsdk:"custom_fields_by_lua"`
-	Path              types.String            `tfsdk:"path"`
-	Reopen            types.Bool              `tfsdk:"reopen"`
+	CustomFieldsByLua map[string]jsontypes.Normalized `tfsdk:"custom_fields_by_lua"`
+	Path              types.String                    `tfsdk:"path"`
+	Reopen            types.Bool                      `tfsdk:"reopen"`
 }
