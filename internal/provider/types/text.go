@@ -3,12 +3,12 @@
 package types
 
 type Text struct {
-	Accent    AppearanceColorVariable `tfsdk:"accent"`
-	Footer    AppearanceColorVariable `tfsdk:"footer"`
-	Header    AppearanceColorVariable `tfsdk:"header"`
-	Headings  AppearanceColorVariable `tfsdk:"headings"`
-	Hero      AppearanceColorVariable `tfsdk:"hero"`
-	Link      AppearanceColorVariable `tfsdk:"link"`
-	Primary   AppearanceColorVariable `tfsdk:"primary"`
-	Secondary AppearanceColorVariable `tfsdk:"secondary"`
+	Accent    V2AppearanceColorVariable `tfsdk:"accent"`
+	Footer    V2AppearanceColorVariable `tfsdk:"footer"`
+	Header    V2AppearanceColorVariable `tfsdk:"header"`
+	Headings  V2AppearanceColorVariable `tfsdk:"headings"`
+	Hero      V2AppearanceColorVariable `tfsdk:"hero"`
+	Link      V2AppearanceColorVariable `tfsdk:"link"`
+	Primary   V2AppearanceColorVariable `tfsdk:"primary"`
+	Secondary V2AppearanceColorVariable `tfsdk:"secondary"`
 }

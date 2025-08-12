@@ -65,7 +65,7 @@ func (s *PortalTeams) CreatePortalTeam(ctx context.Context, request operations.C
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "PortalCreateTeamRequest", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "V2PortalCreateTeamRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -148,12 +148,12 @@ func (s *PortalTeams) CreatePortalTeam(ctx context.Context, request operations.C
 				return nil, err
 			}
 
-			var out shared.PortalTeamResponse
+			var out shared.V2PortalTeamResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.PortalTeamResponse = &out
+			res.V2PortalTeamResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -368,12 +368,12 @@ func (s *PortalTeams) GetPortalTeam(ctx context.Context, request operations.GetP
 				return nil, err
 			}
 
-			var out shared.PortalTeamResponse
+			var out shared.V2PortalTeamResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.PortalTeamResponse = &out
+			res.V2PortalTeamResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -491,7 +491,7 @@ func (s *PortalTeams) UpdatePortalTeam(ctx context.Context, request operations.U
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "PortalUpdateTeamRequest", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "V2PortalUpdateTeamRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -574,12 +574,12 @@ func (s *PortalTeams) UpdatePortalTeam(ctx context.Context, request operations.U
 				return nil, err
 			}
 
-			var out shared.PortalTeamResponse
+			var out shared.V2PortalTeamResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.PortalTeamResponse = &out
+			res.V2PortalTeamResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

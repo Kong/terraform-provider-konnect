@@ -35,13 +35,13 @@ type PortalAppearanceResource struct {
 
 // PortalAppearanceResourceModel describes the resource data model.
 type PortalAppearanceResourceModel struct {
-	CustomFonts    *tfTypes.NullableAppearanceFonts          `tfsdk:"custom_fonts"`
-	CustomTheme    *tfTypes.NullableAppearanceThemeVariables `tfsdk:"custom_theme"`
-	Images         *tfTypes.AppearanceImages                 `tfsdk:"images"`
-	PortalID       types.String                              `tfsdk:"portal_id"`
-	Text           *tfTypes.NullableAppearanceTextVariables  `tfsdk:"text"`
-	ThemeName      types.String                              `tfsdk:"theme_name"`
-	UseCustomFonts types.Bool                                `tfsdk:"use_custom_fonts"`
+	CustomFonts    *tfTypes.V2NullableAppearanceFonts          `tfsdk:"custom_fonts"`
+	CustomTheme    *tfTypes.V2NullableAppearanceThemeVariables `tfsdk:"custom_theme"`
+	Images         *tfTypes.V2AppearanceImages                 `tfsdk:"images"`
+	PortalID       types.String                                `tfsdk:"portal_id"`
+	Text           *tfTypes.V2NullableAppearanceTextVariables  `tfsdk:"text"`
+	ThemeName      types.String                                `tfsdk:"theme_name"`
+	UseCustomFonts types.Bool                                  `tfsdk:"use_custom_fonts"`
 }
 
 func (r *PortalAppearanceResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -828,11 +828,11 @@ func (r *PortalAppearanceResource) Create(ctx context.Context, req resource.Crea
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.UpdatePortalAppearanceResponse != nil) {
+	if !(res.V2UpdatePortalAppearanceResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedUpdatePortalAppearanceResponse(ctx, res.UpdatePortalAppearanceResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedV2UpdatePortalAppearanceResponse(ctx, res.V2UpdatePortalAppearanceResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -892,11 +892,11 @@ func (r *PortalAppearanceResource) Read(ctx context.Context, req resource.ReadRe
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.GetPortalAppearanceResponse != nil) {
+	if !(res.V2GetPortalAppearanceResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedGetPortalAppearanceResponse(ctx, res.GetPortalAppearanceResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedV2GetPortalAppearanceResponse(ctx, res.V2GetPortalAppearanceResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -942,11 +942,11 @@ func (r *PortalAppearanceResource) Update(ctx context.Context, req resource.Upda
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.UpdatePortalAppearanceResponse != nil) {
+	if !(res.V2UpdatePortalAppearanceResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedUpdatePortalAppearanceResponse(ctx, res.UpdatePortalAppearanceResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedV2UpdatePortalAppearanceResponse(ctx, res.V2UpdatePortalAppearanceResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

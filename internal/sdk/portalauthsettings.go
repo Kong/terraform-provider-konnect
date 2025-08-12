@@ -141,12 +141,12 @@ func (s *PortalAuthSettings) GetPortalAuthenticationSettings(ctx context.Context
 				return nil, err
 			}
 
-			var out shared.PortalAuthenticationSettingsResponse
+			var out shared.V2PortalAuthenticationSettingsResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.PortalAuthenticationSettingsResponse = &out
+			res.V2PortalAuthenticationSettingsResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -222,7 +222,7 @@ func (s *PortalAuthSettings) UpdatePortalAuthenticationSettings(ctx context.Cont
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "PortalAuthenticationSettingsUpdateRequest", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "V2PortalAuthenticationSettingsUpdateRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -305,12 +305,12 @@ func (s *PortalAuthSettings) UpdatePortalAuthenticationSettings(ctx context.Cont
 				return nil, err
 			}
 
-			var out shared.PortalAuthenticationSettingsResponse
+			var out shared.V2PortalAuthenticationSettingsResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.PortalAuthenticationSettingsResponse = &out
+			res.V2PortalAuthenticationSettingsResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

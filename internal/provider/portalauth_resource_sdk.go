@@ -11,7 +11,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *PortalAuthResourceModel) RefreshFromSharedPortalAuthenticationSettingsResponse(ctx context.Context, resp *shared.PortalAuthenticationSettingsResponse) diag.Diagnostics {
+func (r *PortalAuthResourceModel) RefreshFromSharedV2PortalAuthenticationSettingsResponse(ctx context.Context, resp *shared.V2PortalAuthenticationSettingsResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -22,11 +22,11 @@ func (r *PortalAuthResourceModel) RefreshFromSharedPortalAuthenticationSettingsR
 		if resp.OidcConfig == nil {
 			r.OidcConfig = nil
 		} else {
-			r.OidcConfig = &tfTypes.PortalOIDCConfig{}
+			r.OidcConfig = &tfTypes.V2PortalOIDCConfig{}
 			if resp.OidcConfig.ClaimMappings == nil {
 				r.OidcConfig.ClaimMappings = nil
 			} else {
-				r.OidcConfig.ClaimMappings = &tfTypes.PortalClaimMappings{}
+				r.OidcConfig.ClaimMappings = &tfTypes.V2PortalClaimMappings{}
 				r.OidcConfig.ClaimMappings.Email = types.StringPointerValue(resp.OidcConfig.ClaimMappings.Email)
 				r.OidcConfig.ClaimMappings.Groups = types.StringPointerValue(resp.OidcConfig.ClaimMappings.Groups)
 				r.OidcConfig.ClaimMappings.Name = types.StringPointerValue(resp.OidcConfig.ClaimMappings.Name)
@@ -64,8 +64,8 @@ func (r *PortalAuthResourceModel) ToOperationsUpdatePortalAuthenticationSettings
 	var portalID string
 	portalID = r.PortalID.ValueString()
 
-	portalAuthenticationSettingsUpdateRequest, portalAuthenticationSettingsUpdateRequestDiags := r.ToSharedPortalAuthenticationSettingsUpdateRequest(ctx)
-	diags.Append(portalAuthenticationSettingsUpdateRequestDiags...)
+	v2PortalAuthenticationSettingsUpdateRequest, v2PortalAuthenticationSettingsUpdateRequestDiags := r.ToSharedV2PortalAuthenticationSettingsUpdateRequest(ctx)
+	diags.Append(v2PortalAuthenticationSettingsUpdateRequestDiags...)
 
 	if diags.HasError() {
 		return nil, diags
@@ -73,13 +73,13 @@ func (r *PortalAuthResourceModel) ToOperationsUpdatePortalAuthenticationSettings
 
 	out := operations.UpdatePortalAuthenticationSettingsRequest{
 		PortalID: portalID,
-		PortalAuthenticationSettingsUpdateRequest: portalAuthenticationSettingsUpdateRequest,
+		V2PortalAuthenticationSettingsUpdateRequest: v2PortalAuthenticationSettingsUpdateRequest,
 	}
 
 	return &out, diags
 }
 
-func (r *PortalAuthResourceModel) ToSharedPortalAuthenticationSettingsUpdateRequest(ctx context.Context) (*shared.PortalAuthenticationSettingsUpdateRequest, diag.Diagnostics) {
+func (r *PortalAuthResourceModel) ToSharedV2PortalAuthenticationSettingsUpdateRequest(ctx context.Context) (*shared.V2PortalAuthenticationSettingsUpdateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	basicAuthEnabled := new(bool)
@@ -140,7 +140,7 @@ func (r *PortalAuthResourceModel) ToSharedPortalAuthenticationSettingsUpdateRequ
 	for _, oidcScopesItem := range r.OidcScopes {
 		oidcScopes = append(oidcScopes, oidcScopesItem.ValueString())
 	}
-	var oidcClaimMappings *shared.PortalClaimMappings
+	var oidcClaimMappings *shared.V2PortalClaimMappings
 	if r.OidcClaimMappings != nil {
 		name := new(string)
 		if !r.OidcClaimMappings.Name.IsUnknown() && !r.OidcClaimMappings.Name.IsNull() {
@@ -160,13 +160,13 @@ func (r *PortalAuthResourceModel) ToSharedPortalAuthenticationSettingsUpdateRequ
 		} else {
 			groups = nil
 		}
-		oidcClaimMappings = &shared.PortalClaimMappings{
+		oidcClaimMappings = &shared.V2PortalClaimMappings{
 			Name:   name,
 			Email:  email,
 			Groups: groups,
 		}
 	}
-	out := shared.PortalAuthenticationSettingsUpdateRequest{
+	out := shared.V2PortalAuthenticationSettingsUpdateRequest{
 		BasicAuthEnabled:       basicAuthEnabled,
 		OidcAuthEnabled:        oidcAuthEnabled,
 		SamlAuthEnabled:        samlAuthEnabled,

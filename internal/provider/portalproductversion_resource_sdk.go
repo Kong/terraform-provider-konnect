@@ -12,7 +12,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *PortalProductVersionResourceModel) RefreshFromSharedPortalProductVersion(ctx context.Context, resp *shared.PortalProductVersion) diag.Diagnostics {
+func (r *PortalProductVersionResourceModel) RefreshFromSharedV2PortalProductVersion(ctx context.Context, resp *shared.V2PortalProductVersion) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -104,26 +104,26 @@ func (r *PortalProductVersionResourceModel) ToOperationsReplacePortalProductVers
 	var portalID string
 	portalID = r.PortalID.ValueString()
 
-	replacePortalProductVersionPayload, replacePortalProductVersionPayloadDiags := r.ToSharedReplacePortalProductVersionPayload(ctx)
-	diags.Append(replacePortalProductVersionPayloadDiags...)
+	v2ReplacePortalProductVersionPayload, v2ReplacePortalProductVersionPayloadDiags := r.ToSharedV2ReplacePortalProductVersionPayload(ctx)
+	diags.Append(v2ReplacePortalProductVersionPayloadDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := operations.ReplacePortalProductVersionRequest{
-		ProductVersionID:                   productVersionID,
-		PortalID:                           portalID,
-		ReplacePortalProductVersionPayload: *replacePortalProductVersionPayload,
+		ProductVersionID:                     productVersionID,
+		PortalID:                             portalID,
+		V2ReplacePortalProductVersionPayload: *v2ReplacePortalProductVersionPayload,
 	}
 
 	return &out, diags
 }
 
-func (r *PortalProductVersionResourceModel) ToSharedReplacePortalProductVersionPayload(ctx context.Context) (*shared.ReplacePortalProductVersionPayload, diag.Diagnostics) {
+func (r *PortalProductVersionResourceModel) ToSharedV2ReplacePortalProductVersionPayload(ctx context.Context) (*shared.V2ReplacePortalProductVersionPayload, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	publishStatus := shared.PortalProductVersionPublishStatus(r.PublishStatus.ValueString())
+	publishStatus := shared.V2PortalProductVersionPublishStatus(r.PublishStatus.ValueString())
 	authStrategyIds := make([]string, 0, len(r.AuthStrategyIds))
 	for _, authStrategyIdsItem := range r.AuthStrategyIds {
 		authStrategyIds = append(authStrategyIds, authStrategyIdsItem.ValueString())
@@ -143,7 +143,7 @@ func (r *PortalProductVersionResourceModel) ToSharedReplacePortalProductVersionP
 	} else {
 		notifyDevelopers = nil
 	}
-	out := shared.ReplacePortalProductVersionPayload{
+	out := shared.V2ReplacePortalProductVersionPayload{
 		PublishStatus:                  publishStatus,
 		AuthStrategyIds:                authStrategyIds,
 		ApplicationRegistrationEnabled: applicationRegistrationEnabled,

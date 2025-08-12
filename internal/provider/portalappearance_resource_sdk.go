@@ -11,14 +11,14 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *PortalAppearanceResourceModel) RefreshFromSharedGetPortalAppearanceResponse(ctx context.Context, resp *shared.GetPortalAppearanceResponse) diag.Diagnostics {
+func (r *PortalAppearanceResourceModel) RefreshFromSharedV2GetPortalAppearanceResponse(ctx context.Context, resp *shared.V2GetPortalAppearanceResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
 		if resp.CustomFonts == nil {
 			r.CustomFonts = nil
 		} else {
-			r.CustomFonts = &tfTypes.NullableAppearanceFonts{}
+			r.CustomFonts = &tfTypes.V2NullableAppearanceFonts{}
 			r.CustomFonts.Base = types.StringValue(string(resp.CustomFonts.Base))
 			r.CustomFonts.Code = types.StringValue(string(resp.CustomFonts.Code))
 			r.CustomFonts.Headings = types.StringValue(string(resp.CustomFonts.Headings))
@@ -26,7 +26,7 @@ func (r *PortalAppearanceResourceModel) RefreshFromSharedGetPortalAppearanceResp
 		if resp.CustomTheme == nil {
 			r.CustomTheme = nil
 		} else {
-			r.CustomTheme = &tfTypes.NullableAppearanceThemeVariables{}
+			r.CustomTheme = &tfTypes.V2NullableAppearanceThemeVariables{}
 			r.CustomTheme.Colors.Button.PrimaryFill.Description = types.StringPointerValue(resp.CustomTheme.Colors.Button.PrimaryFill.Description)
 			r.CustomTheme.Colors.Button.PrimaryFill.Value = types.StringValue(resp.CustomTheme.Colors.Button.PrimaryFill.Value)
 			r.CustomTheme.Colors.Button.PrimaryText.Description = types.StringPointerValue(resp.CustomTheme.Colors.Button.PrimaryText.Description)
@@ -65,25 +65,25 @@ func (r *PortalAppearanceResourceModel) RefreshFromSharedGetPortalAppearanceResp
 		if resp.Images == nil {
 			r.Images = nil
 		} else {
-			r.Images = &tfTypes.AppearanceImages{}
+			r.Images = &tfTypes.V2AppearanceImages{}
 			if resp.Images.CatalogCover == nil {
 				r.Images.CatalogCover = nil
 			} else {
-				r.Images.CatalogCover = &tfTypes.AppearanceImage{}
+				r.Images.CatalogCover = &tfTypes.V2AppearanceImage{}
 				r.Images.CatalogCover.Data = types.StringValue(resp.Images.CatalogCover.Data)
 				r.Images.CatalogCover.Filename = types.StringPointerValue(resp.Images.CatalogCover.Filename)
 			}
 			if resp.Images.Favicon == nil {
 				r.Images.Favicon = nil
 			} else {
-				r.Images.Favicon = &tfTypes.AppearanceImage{}
+				r.Images.Favicon = &tfTypes.V2AppearanceImage{}
 				r.Images.Favicon.Data = types.StringValue(resp.Images.Favicon.Data)
 				r.Images.Favicon.Filename = types.StringPointerValue(resp.Images.Favicon.Filename)
 			}
 			if resp.Images.Logo == nil {
 				r.Images.Logo = nil
 			} else {
-				r.Images.Logo = &tfTypes.AppearanceImage{}
+				r.Images.Logo = &tfTypes.V2AppearanceImage{}
 				r.Images.Logo.Data = types.StringValue(resp.Images.Logo.Data)
 				r.Images.Logo.Filename = types.StringPointerValue(resp.Images.Logo.Filename)
 			}
@@ -91,7 +91,7 @@ func (r *PortalAppearanceResourceModel) RefreshFromSharedGetPortalAppearanceResp
 		if resp.Text == nil {
 			r.Text = nil
 		} else {
-			r.Text = &tfTypes.NullableAppearanceTextVariables{}
+			r.Text = &tfTypes.V2NullableAppearanceTextVariables{}
 			r.Text.Catalog.PrimaryHeader = types.StringValue(resp.Text.Catalog.PrimaryHeader)
 			r.Text.Catalog.WelcomeMessage = types.StringValue(resp.Text.Catalog.WelcomeMessage)
 		}
@@ -102,14 +102,14 @@ func (r *PortalAppearanceResourceModel) RefreshFromSharedGetPortalAppearanceResp
 	return diags
 }
 
-func (r *PortalAppearanceResourceModel) RefreshFromSharedUpdatePortalAppearanceResponse(ctx context.Context, resp *shared.UpdatePortalAppearanceResponse) diag.Diagnostics {
+func (r *PortalAppearanceResourceModel) RefreshFromSharedV2UpdatePortalAppearanceResponse(ctx context.Context, resp *shared.V2UpdatePortalAppearanceResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
 		if resp.CustomFonts == nil {
 			r.CustomFonts = nil
 		} else {
-			r.CustomFonts = &tfTypes.NullableAppearanceFonts{}
+			r.CustomFonts = &tfTypes.V2NullableAppearanceFonts{}
 			r.CustomFonts.Base = types.StringValue(string(resp.CustomFonts.Base))
 			r.CustomFonts.Code = types.StringValue(string(resp.CustomFonts.Code))
 			r.CustomFonts.Headings = types.StringValue(string(resp.CustomFonts.Headings))
@@ -117,7 +117,7 @@ func (r *PortalAppearanceResourceModel) RefreshFromSharedUpdatePortalAppearanceR
 		if resp.CustomTheme == nil {
 			r.CustomTheme = nil
 		} else {
-			r.CustomTheme = &tfTypes.NullableAppearanceThemeVariables{}
+			r.CustomTheme = &tfTypes.V2NullableAppearanceThemeVariables{}
 			r.CustomTheme.Colors.Button.PrimaryFill.Description = types.StringPointerValue(resp.CustomTheme.Colors.Button.PrimaryFill.Description)
 			r.CustomTheme.Colors.Button.PrimaryFill.Value = types.StringValue(resp.CustomTheme.Colors.Button.PrimaryFill.Value)
 			r.CustomTheme.Colors.Button.PrimaryText.Description = types.StringPointerValue(resp.CustomTheme.Colors.Button.PrimaryText.Description)
@@ -156,25 +156,25 @@ func (r *PortalAppearanceResourceModel) RefreshFromSharedUpdatePortalAppearanceR
 		if resp.Images == nil {
 			r.Images = nil
 		} else {
-			r.Images = &tfTypes.AppearanceImages{}
+			r.Images = &tfTypes.V2AppearanceImages{}
 			if resp.Images.CatalogCover == nil {
 				r.Images.CatalogCover = nil
 			} else {
-				r.Images.CatalogCover = &tfTypes.AppearanceImage{}
+				r.Images.CatalogCover = &tfTypes.V2AppearanceImage{}
 				r.Images.CatalogCover.Data = types.StringValue(resp.Images.CatalogCover.Data)
 				r.Images.CatalogCover.Filename = types.StringPointerValue(resp.Images.CatalogCover.Filename)
 			}
 			if resp.Images.Favicon == nil {
 				r.Images.Favicon = nil
 			} else {
-				r.Images.Favicon = &tfTypes.AppearanceImage{}
+				r.Images.Favicon = &tfTypes.V2AppearanceImage{}
 				r.Images.Favicon.Data = types.StringValue(resp.Images.Favicon.Data)
 				r.Images.Favicon.Filename = types.StringPointerValue(resp.Images.Favicon.Filename)
 			}
 			if resp.Images.Logo == nil {
 				r.Images.Logo = nil
 			} else {
-				r.Images.Logo = &tfTypes.AppearanceImage{}
+				r.Images.Logo = &tfTypes.V2AppearanceImage{}
 				r.Images.Logo.Data = types.StringValue(resp.Images.Logo.Data)
 				r.Images.Logo.Filename = types.StringPointerValue(resp.Images.Logo.Filename)
 			}
@@ -182,7 +182,7 @@ func (r *PortalAppearanceResourceModel) RefreshFromSharedUpdatePortalAppearanceR
 		if resp.Text == nil {
 			r.Text = nil
 		} else {
-			r.Text = &tfTypes.NullableAppearanceTextVariables{}
+			r.Text = &tfTypes.V2NullableAppearanceTextVariables{}
 			r.Text.Catalog.PrimaryHeader = types.StringValue(resp.Text.Catalog.PrimaryHeader)
 			r.Text.Catalog.WelcomeMessage = types.StringValue(resp.Text.Catalog.WelcomeMessage)
 		}
@@ -212,31 +212,31 @@ func (r *PortalAppearanceResourceModel) ToOperationsUpdatePortalAppearanceReques
 	var portalID string
 	portalID = r.PortalID.ValueString()
 
-	portalAppearance, portalAppearanceDiags := r.ToSharedPortalAppearance(ctx)
-	diags.Append(portalAppearanceDiags...)
+	v2PortalAppearance, v2PortalAppearanceDiags := r.ToSharedV2PortalAppearance(ctx)
+	diags.Append(v2PortalAppearanceDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := operations.UpdatePortalAppearanceRequest{
-		PortalID:         portalID,
-		PortalAppearance: *portalAppearance,
+		PortalID:           portalID,
+		V2PortalAppearance: *v2PortalAppearance,
 	}
 
 	return &out, diags
 }
 
-func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Context) (*shared.PortalAppearance, diag.Diagnostics) {
+func (r *PortalAppearanceResourceModel) ToSharedV2PortalAppearance(ctx context.Context) (*shared.V2PortalAppearance, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	themeName := new(shared.PortalTheme)
+	themeName := new(shared.V2PortalTheme)
 	if !r.ThemeName.IsUnknown() && !r.ThemeName.IsNull() {
-		*themeName = shared.PortalTheme(r.ThemeName.ValueString())
+		*themeName = shared.V2PortalTheme(r.ThemeName.ValueString())
 	} else {
 		themeName = nil
 	}
-	var customTheme *shared.NullableAppearanceThemeVariables
+	var customTheme *shared.V2NullableAppearanceThemeVariables
 	if r.CustomTheme != nil {
 		var value string
 		value = r.CustomTheme.Colors.Section.Header.Value.ValueString()
@@ -247,7 +247,7 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Con
 		} else {
 			description = nil
 		}
-		header := shared.AppearanceColorVariable{
+		header := shared.V2AppearanceColorVariable{
 			Value:       value,
 			Description: description,
 		}
@@ -260,7 +260,7 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Con
 		} else {
 			description1 = nil
 		}
-		body := shared.AppearanceColorVariable{
+		body := shared.V2AppearanceColorVariable{
 			Value:       value1,
 			Description: description1,
 		}
@@ -273,7 +273,7 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Con
 		} else {
 			description2 = nil
 		}
-		hero := shared.AppearanceColorVariable{
+		hero := shared.V2AppearanceColorVariable{
 			Value:       value2,
 			Description: description2,
 		}
@@ -286,7 +286,7 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Con
 		} else {
 			description3 = nil
 		}
-		accent := shared.AppearanceColorVariable{
+		accent := shared.V2AppearanceColorVariable{
 			Value:       value3,
 			Description: description3,
 		}
@@ -299,7 +299,7 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Con
 		} else {
 			description4 = nil
 		}
-		tertiary := shared.AppearanceColorVariable{
+		tertiary := shared.V2AppearanceColorVariable{
 			Value:       value4,
 			Description: description4,
 		}
@@ -312,7 +312,7 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Con
 		} else {
 			description5 = nil
 		}
-		stroke := shared.AppearanceColorVariable{
+		stroke := shared.V2AppearanceColorVariable{
 			Value:       value5,
 			Description: description5,
 		}
@@ -325,7 +325,7 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Con
 		} else {
 			description6 = nil
 		}
-		footer := shared.AppearanceColorVariable{
+		footer := shared.V2AppearanceColorVariable{
 			Value:       value6,
 			Description: description6,
 		}
@@ -347,7 +347,7 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Con
 		} else {
 			description7 = nil
 		}
-		header1 := shared.AppearanceColorVariable{
+		header1 := shared.V2AppearanceColorVariable{
 			Value:       value7,
 			Description: description7,
 		}
@@ -360,7 +360,7 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Con
 		} else {
 			description8 = nil
 		}
-		hero1 := shared.AppearanceColorVariable{
+		hero1 := shared.V2AppearanceColorVariable{
 			Value:       value8,
 			Description: description8,
 		}
@@ -373,7 +373,7 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Con
 		} else {
 			description9 = nil
 		}
-		headings := shared.AppearanceColorVariable{
+		headings := shared.V2AppearanceColorVariable{
 			Value:       value9,
 			Description: description9,
 		}
@@ -386,7 +386,7 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Con
 		} else {
 			description10 = nil
 		}
-		primary := shared.AppearanceColorVariable{
+		primary := shared.V2AppearanceColorVariable{
 			Value:       value10,
 			Description: description10,
 		}
@@ -399,7 +399,7 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Con
 		} else {
 			description11 = nil
 		}
-		secondary := shared.AppearanceColorVariable{
+		secondary := shared.V2AppearanceColorVariable{
 			Value:       value11,
 			Description: description11,
 		}
@@ -412,7 +412,7 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Con
 		} else {
 			description12 = nil
 		}
-		accent1 := shared.AppearanceColorVariable{
+		accent1 := shared.V2AppearanceColorVariable{
 			Value:       value12,
 			Description: description12,
 		}
@@ -425,7 +425,7 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Con
 		} else {
 			description13 = nil
 		}
-		link := shared.AppearanceColorVariable{
+		link := shared.V2AppearanceColorVariable{
 			Value:       value13,
 			Description: description13,
 		}
@@ -438,7 +438,7 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Con
 		} else {
 			description14 = nil
 		}
-		footer1 := shared.AppearanceColorVariable{
+		footer1 := shared.V2AppearanceColorVariable{
 			Value:       value14,
 			Description: description14,
 		}
@@ -461,7 +461,7 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Con
 		} else {
 			description15 = nil
 		}
-		primaryFill := shared.AppearanceColorVariable{
+		primaryFill := shared.V2AppearanceColorVariable{
 			Value:       value15,
 			Description: description15,
 		}
@@ -474,7 +474,7 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Con
 		} else {
 			description16 = nil
 		}
-		primaryText := shared.AppearanceColorVariable{
+		primaryText := shared.V2AppearanceColorVariable{
 			Value:       value16,
 			Description: description16,
 		}
@@ -482,21 +482,21 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Con
 			PrimaryFill: primaryFill,
 			PrimaryText: primaryText,
 		}
-		colors := shared.AppearanceThemeColorVariables{
+		colors := shared.V2AppearanceThemeColorVariables{
 			Section: section,
 			Text:    text,
 			Button:  button,
 		}
-		customTheme = &shared.NullableAppearanceThemeVariables{
+		customTheme = &shared.V2NullableAppearanceThemeVariables{
 			Colors: colors,
 		}
 	}
-	var customFonts *shared.NullableAppearanceFonts
+	var customFonts *shared.V2NullableAppearanceFonts
 	if r.CustomFonts != nil {
-		base := shared.AppearanceFontName(r.CustomFonts.Base.ValueString())
-		code := shared.AppearanceFontName(r.CustomFonts.Code.ValueString())
-		headings1 := shared.AppearanceFontName(r.CustomFonts.Headings.ValueString())
-		customFonts = &shared.NullableAppearanceFonts{
+		base := shared.V2AppearanceFontName(r.CustomFonts.Base.ValueString())
+		code := shared.V2AppearanceFontName(r.CustomFonts.Code.ValueString())
+		headings1 := shared.V2AppearanceFontName(r.CustomFonts.Headings.ValueString())
+		customFonts = &shared.V2NullableAppearanceFonts{
 			Base:     base,
 			Code:     code,
 			Headings: headings1,
@@ -508,7 +508,7 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Con
 	} else {
 		useCustomFonts = nil
 	}
-	var text1 *shared.NullableAppearanceTextVariables
+	var text1 *shared.V2NullableAppearanceTextVariables
 	if r.Text != nil {
 		var welcomeMessage string
 		welcomeMessage = r.Text.Catalog.WelcomeMessage.ValueString()
@@ -520,13 +520,13 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Con
 			WelcomeMessage: welcomeMessage,
 			PrimaryHeader:  primaryHeader,
 		}
-		text1 = &shared.NullableAppearanceTextVariables{
+		text1 = &shared.V2NullableAppearanceTextVariables{
 			Catalog: catalog,
 		}
 	}
-	var images *shared.AppearanceImages
+	var images *shared.V2AppearanceImages
 	if r.Images != nil {
-		var logo *shared.AppearanceImage
+		var logo *shared.V2AppearanceImage
 		if r.Images.Logo != nil {
 			var data string
 			data = r.Images.Logo.Data.ValueString()
@@ -537,12 +537,12 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Con
 			} else {
 				filename = nil
 			}
-			logo = &shared.AppearanceImage{
+			logo = &shared.V2AppearanceImage{
 				Data:     data,
 				Filename: filename,
 			}
 		}
-		var favicon *shared.AppearanceImage
+		var favicon *shared.V2AppearanceImage
 		if r.Images.Favicon != nil {
 			var data1 string
 			data1 = r.Images.Favicon.Data.ValueString()
@@ -553,12 +553,12 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Con
 			} else {
 				filename1 = nil
 			}
-			favicon = &shared.AppearanceImage{
+			favicon = &shared.V2AppearanceImage{
 				Data:     data1,
 				Filename: filename1,
 			}
 		}
-		var catalogCover *shared.AppearanceImage
+		var catalogCover *shared.V2AppearanceImage
 		if r.Images.CatalogCover != nil {
 			var data2 string
 			data2 = r.Images.CatalogCover.Data.ValueString()
@@ -569,18 +569,18 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Con
 			} else {
 				filename2 = nil
 			}
-			catalogCover = &shared.AppearanceImage{
+			catalogCover = &shared.V2AppearanceImage{
 				Data:     data2,
 				Filename: filename2,
 			}
 		}
-		images = &shared.AppearanceImages{
+		images = &shared.V2AppearanceImages{
 			Logo:         logo,
 			Favicon:      favicon,
 			CatalogCover: catalogCover,
 		}
 	}
-	out := shared.PortalAppearance{
+	out := shared.V2PortalAppearance{
 		ThemeName:      themeName,
 		CustomTheme:    customTheme,
 		CustomFonts:    customFonts,

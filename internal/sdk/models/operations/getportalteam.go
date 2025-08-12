@@ -36,7 +36,7 @@ type GetPortalTeamResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Details about a team of developers in a portal.
-	PortalTeamResponse *shared.PortalTeamResponse
+	V2PortalTeamResponse *shared.V2PortalTeamResponse
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
@@ -66,11 +66,11 @@ func (o *GetPortalTeamResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *GetPortalTeamResponse) GetPortalTeamResponse() *shared.PortalTeamResponse {
+func (o *GetPortalTeamResponse) GetV2PortalTeamResponse() *shared.V2PortalTeamResponse {
 	if o == nil {
 		return nil
 	}
-	return o.PortalTeamResponse
+	return o.V2PortalTeamResponse
 }
 
 func (o *GetPortalTeamResponse) GetUnauthorizedError() *shared.UnauthorizedError {

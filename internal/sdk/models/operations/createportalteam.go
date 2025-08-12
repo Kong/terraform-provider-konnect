@@ -11,7 +11,7 @@ type CreatePortalTeamRequest struct {
 	// ID of the portal.
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// Create a team in a portal.
-	PortalCreateTeamRequest *shared.PortalCreateTeamRequest `request:"mediaType=application/json"`
+	V2PortalCreateTeamRequest *shared.V2PortalCreateTeamRequest `request:"mediaType=application/json"`
 }
 
 func (o *CreatePortalTeamRequest) GetPortalID() string {
@@ -21,11 +21,11 @@ func (o *CreatePortalTeamRequest) GetPortalID() string {
 	return o.PortalID
 }
 
-func (o *CreatePortalTeamRequest) GetPortalCreateTeamRequest() *shared.PortalCreateTeamRequest {
+func (o *CreatePortalTeamRequest) GetV2PortalCreateTeamRequest() *shared.V2PortalCreateTeamRequest {
 	if o == nil {
 		return nil
 	}
-	return o.PortalCreateTeamRequest
+	return o.V2PortalCreateTeamRequest
 }
 
 type CreatePortalTeamResponse struct {
@@ -36,7 +36,7 @@ type CreatePortalTeamResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Details about a team of developers in a portal.
-	PortalTeamResponse *shared.PortalTeamResponse
+	V2PortalTeamResponse *shared.V2PortalTeamResponse
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -68,11 +68,11 @@ func (o *CreatePortalTeamResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *CreatePortalTeamResponse) GetPortalTeamResponse() *shared.PortalTeamResponse {
+func (o *CreatePortalTeamResponse) GetV2PortalTeamResponse() *shared.V2PortalTeamResponse {
 	if o == nil {
 		return nil
 	}
-	return o.PortalTeamResponse
+	return o.V2PortalTeamResponse
 }
 
 func (o *CreatePortalTeamResponse) GetBadRequestError() *shared.BadRequestError {
