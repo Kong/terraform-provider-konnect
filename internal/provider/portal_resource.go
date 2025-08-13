@@ -230,7 +230,7 @@ func (r *PortalResource) Create(ctx context.Context, req resource.CreateRequest,
 		return
 	}
 
-	request, requestDiags := data.ToSharedCreatePortalRequest(ctx)
+	request, requestDiags := data.ToSharedV2CreatePortalRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
@@ -252,11 +252,11 @@ func (r *PortalResource) Create(ctx context.Context, req resource.CreateRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CreatePortalResponse != nil) {
+	if !(res.V2CreatePortalResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedCreatePortalResponse(ctx, res.CreatePortalResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedV2CreatePortalResponse(ctx, res.V2CreatePortalResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -316,11 +316,11 @@ func (r *PortalResource) Read(ctx context.Context, req resource.ReadRequest, res
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CreatePortalResponse != nil) {
+	if !(res.V2CreatePortalResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedCreatePortalResponse(ctx, res.CreatePortalResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedV2CreatePortalResponse(ctx, res.V2CreatePortalResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -366,11 +366,11 @@ func (r *PortalResource) Update(ctx context.Context, req resource.UpdateRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CreatePortalResponse != nil) {
+	if !(res.V2CreatePortalResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedCreatePortalResponse(ctx, res.CreatePortalResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedV2CreatePortalResponse(ctx, res.V2CreatePortalResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

@@ -11,7 +11,7 @@ type UpdatePortalAppearanceRequest struct {
 	// ID of the portal.
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// Update a portal's appearance settings
-	PortalAppearance shared.PortalAppearance `request:"mediaType=application/json"`
+	V2PortalAppearance shared.V2PortalAppearance `request:"mediaType=application/json"`
 }
 
 func (o *UpdatePortalAppearanceRequest) GetPortalID() string {
@@ -21,11 +21,11 @@ func (o *UpdatePortalAppearanceRequest) GetPortalID() string {
 	return o.PortalID
 }
 
-func (o *UpdatePortalAppearanceRequest) GetPortalAppearance() shared.PortalAppearance {
+func (o *UpdatePortalAppearanceRequest) GetV2PortalAppearance() shared.V2PortalAppearance {
 	if o == nil {
-		return shared.PortalAppearance{}
+		return shared.V2PortalAppearance{}
 	}
-	return o.PortalAppearance
+	return o.V2PortalAppearance
 }
 
 type UpdatePortalAppearanceResponse struct {
@@ -36,7 +36,7 @@ type UpdatePortalAppearanceResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Details about the appearance settings being updated.
-	UpdatePortalAppearanceResponse *shared.UpdatePortalAppearanceResponse
+	V2UpdatePortalAppearanceResponse *shared.V2UpdatePortalAppearanceResponse
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -68,11 +68,11 @@ func (o *UpdatePortalAppearanceResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *UpdatePortalAppearanceResponse) GetUpdatePortalAppearanceResponse() *shared.UpdatePortalAppearanceResponse {
+func (o *UpdatePortalAppearanceResponse) GetV2UpdatePortalAppearanceResponse() *shared.V2UpdatePortalAppearanceResponse {
 	if o == nil {
 		return nil
 	}
-	return o.UpdatePortalAppearanceResponse
+	return o.V2UpdatePortalAppearanceResponse
 }
 
 func (o *UpdatePortalAppearanceResponse) GetBadRequestError() *shared.BadRequestError {

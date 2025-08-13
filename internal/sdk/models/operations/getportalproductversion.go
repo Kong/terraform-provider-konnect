@@ -36,7 +36,7 @@ type GetPortalProductVersionResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// A response containing a portal product version
-	PortalProductVersion *shared.PortalProductVersion
+	V2PortalProductVersion *shared.V2PortalProductVersion
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -68,11 +68,11 @@ func (o *GetPortalProductVersionResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *GetPortalProductVersionResponse) GetPortalProductVersion() *shared.PortalProductVersion {
+func (o *GetPortalProductVersionResponse) GetV2PortalProductVersion() *shared.V2PortalProductVersion {
 	if o == nil {
 		return nil
 	}
-	return o.PortalProductVersion
+	return o.V2PortalProductVersion
 }
 
 func (o *GetPortalProductVersionResponse) GetBadRequestError() *shared.BadRequestError {

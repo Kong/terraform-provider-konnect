@@ -65,7 +65,7 @@ type AppAuthStrategyOpenIDConnectRequest struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 }
 
 func (o *AppAuthStrategyOpenIDConnectRequest) GetName() string {
@@ -103,7 +103,7 @@ func (o *AppAuthStrategyOpenIDConnectRequest) GetDcrProviderID() *string {
 	return o.DcrProviderID
 }
 
-func (o *AppAuthStrategyOpenIDConnectRequest) GetLabels() map[string]*string {
+func (o *AppAuthStrategyOpenIDConnectRequest) GetLabels() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -164,7 +164,7 @@ type AppAuthStrategyKeyAuthRequest struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 }
 
 func (o *AppAuthStrategyKeyAuthRequest) GetName() string {
@@ -195,7 +195,7 @@ func (o *AppAuthStrategyKeyAuthRequest) GetConfigs() AppAuthStrategyKeyAuthReque
 	return o.Configs
 }
 
-func (o *AppAuthStrategyKeyAuthRequest) GetLabels() map[string]*string {
+func (o *AppAuthStrategyKeyAuthRequest) GetLabels() map[string]string {
 	if o == nil {
 		return nil
 	}

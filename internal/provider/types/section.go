@@ -3,11 +3,11 @@
 package types
 
 type Section struct {
-	Accent   AppearanceColorVariable `tfsdk:"accent"`
-	Body     AppearanceColorVariable `tfsdk:"body"`
-	Footer   AppearanceColorVariable `tfsdk:"footer"`
-	Header   AppearanceColorVariable `tfsdk:"header"`
-	Hero     AppearanceColorVariable `tfsdk:"hero"`
-	Stroke   AppearanceColorVariable `tfsdk:"stroke"`
-	Tertiary AppearanceColorVariable `tfsdk:"tertiary"`
+	Accent   V2AppearanceColorVariable `tfsdk:"accent"`
+	Body     V2AppearanceColorVariable `tfsdk:"body"`
+	Footer   V2AppearanceColorVariable `tfsdk:"footer"`
+	Header   V2AppearanceColorVariable `tfsdk:"header"`
+	Hero     V2AppearanceColorVariable `tfsdk:"hero"`
+	Stroke   V2AppearanceColorVariable `tfsdk:"stroke"`
+	Tertiary V2AppearanceColorVariable `tfsdk:"tertiary"`
 }

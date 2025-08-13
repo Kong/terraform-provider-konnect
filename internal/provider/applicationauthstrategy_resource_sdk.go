@@ -43,7 +43,7 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			if len(resp.AppAuthStrategyKeyAuthResponse.Labels) > 0 {
 				r.KeyAuth.Labels = make(map[string]types.String, len(resp.AppAuthStrategyKeyAuthResponse.Labels))
 				for key, value := range resp.AppAuthStrategyKeyAuthResponse.Labels {
-					r.KeyAuth.Labels[key] = types.StringPointerValue(value)
+					r.KeyAuth.Labels[key] = types.StringValue(value)
 				}
 			}
 			r.KeyAuth.Name = types.StringValue(resp.AppAuthStrategyKeyAuthResponse.Name)
@@ -91,7 +91,7 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			if len(resp.AppAuthStrategyOpenIDConnectResponse.Labels) > 0 {
 				r.OpenidConnect.Labels = make(map[string]types.String, len(resp.AppAuthStrategyOpenIDConnectResponse.Labels))
 				for key1, value1 := range resp.AppAuthStrategyOpenIDConnectResponse.Labels {
-					r.OpenidConnect.Labels[key1] = types.StringPointerValue(value1)
+					r.OpenidConnect.Labels[key1] = types.StringValue(value1)
 				}
 			}
 			r.OpenidConnect.Name = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponse.Name)
@@ -174,14 +174,11 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 		configs := shared.AppAuthStrategyKeyAuthRequestConfigs{
 			KeyAuth: keyAuth,
 		}
-		labels := make(map[string]*string)
+		labels := make(map[string]string)
 		for labelsKey, labelsValue := range r.KeyAuth.Labels {
-			labelsInst := new(string)
-			if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-				*labelsInst = labelsValue.ValueString()
-			} else {
-				labelsInst = nil
-			}
+			var labelsInst string
+			labelsInst = labelsValue.ValueString()
+
 			labels[labelsKey] = labelsInst
 		}
 		appAuthStrategyKeyAuthRequest = &shared.AppAuthStrategyKeyAuthRequest{
@@ -241,14 +238,11 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 		} else {
 			dcrProviderID = nil
 		}
-		labels1 := make(map[string]*string)
+		labels1 := make(map[string]string)
 		for labelsKey1, labelsValue1 := range r.OpenidConnect.Labels {
-			labelsInst1 := new(string)
-			if !labelsValue1.IsUnknown() && !labelsValue1.IsNull() {
-				*labelsInst1 = labelsValue1.ValueString()
-			} else {
-				labelsInst1 = nil
-			}
+			var labelsInst1 string
+			labelsInst1 = labelsValue1.ValueString()
+
 			labels1[labelsKey1] = labelsInst1
 		}
 		appAuthStrategyOpenIDConnectRequest = &shared.AppAuthStrategyOpenIDConnectRequest{

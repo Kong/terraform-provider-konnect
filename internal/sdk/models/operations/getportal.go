@@ -27,7 +27,7 @@ type GetPortalResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Details about a portal and its current settings.
-	CreatePortalResponse *shared.CreatePortalResponse
+	V2CreatePortalResponse *shared.V2CreatePortalResponse
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
@@ -57,11 +57,11 @@ func (o *GetPortalResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *GetPortalResponse) GetCreatePortalResponse() *shared.CreatePortalResponse {
+func (o *GetPortalResponse) GetV2CreatePortalResponse() *shared.V2CreatePortalResponse {
 	if o == nil {
 		return nil
 	}
-	return o.CreatePortalResponse
+	return o.V2CreatePortalResponse
 }
 
 func (o *GetPortalResponse) GetUnauthorizedError() *shared.UnauthorizedError {
