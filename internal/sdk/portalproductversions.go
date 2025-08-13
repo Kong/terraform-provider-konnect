@@ -146,12 +146,12 @@ func (s *PortalProductVersions) GetPortalProductVersion(ctx context.Context, req
 				return nil, err
 			}
 
-			var out shared.PortalProductVersion
+			var out shared.V2PortalProductVersion
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.PortalProductVersion = &out
+			res.V2PortalProductVersion = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -290,7 +290,7 @@ func (s *PortalProductVersions) ReplacePortalProductVersion(ctx context.Context,
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ReplacePortalProductVersionPayload", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "V2ReplacePortalProductVersionPayload", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -373,12 +373,12 @@ func (s *PortalProductVersions) ReplacePortalProductVersion(ctx context.Context,
 				return nil, err
 			}
 
-			var out shared.PortalProductVersion
+			var out shared.V2PortalProductVersion
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.PortalProductVersion = &out
+			res.V2PortalProductVersion = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

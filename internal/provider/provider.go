@@ -286,6 +286,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewPortalResource,
 		NewPortalAppearanceResource,
 		NewPortalAuthResource,
+		NewPortalClassicResource,
 		NewPortalProductVersionResource,
 		NewPortalTeamResource,
 		NewRealmResource,
@@ -306,6 +307,7 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewCloudGatewayProviderAccountListDataSource,
 		NewGatewayControlPlaneListDataSource,
 		NewMeshControlPlanesDataSource,
+		NewPortalClassicListDataSource,
 		NewPortalListDataSource,
 	}
 }

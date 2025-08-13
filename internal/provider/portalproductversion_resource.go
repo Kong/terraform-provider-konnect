@@ -268,11 +268,11 @@ func (r *PortalProductVersionResource) Create(ctx context.Context, req resource.
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.PortalProductVersion != nil) {
+	if !(res.V2PortalProductVersion != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPortalProductVersion(ctx, res.PortalProductVersion)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedV2PortalProductVersion(ctx, res.V2PortalProductVersion)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -305,11 +305,11 @@ func (r *PortalProductVersionResource) Create(ctx context.Context, req resource.
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.PortalProductVersion != nil) {
+	if !(res1.V2PortalProductVersion != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPortalProductVersion(ctx, res1.PortalProductVersion)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedV2PortalProductVersion(ctx, res1.V2PortalProductVersion)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -369,11 +369,11 @@ func (r *PortalProductVersionResource) Read(ctx context.Context, req resource.Re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.PortalProductVersion != nil) {
+	if !(res.V2PortalProductVersion != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPortalProductVersion(ctx, res.PortalProductVersion)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedV2PortalProductVersion(ctx, res.V2PortalProductVersion)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -419,11 +419,11 @@ func (r *PortalProductVersionResource) Update(ctx context.Context, req resource.
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.PortalProductVersion != nil) {
+	if !(res.V2PortalProductVersion != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPortalProductVersion(ctx, res.PortalProductVersion)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedV2PortalProductVersion(ctx, res.V2PortalProductVersion)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -456,11 +456,11 @@ func (r *PortalProductVersionResource) Update(ctx context.Context, req resource.
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.PortalProductVersion != nil) {
+	if !(res1.V2PortalProductVersion != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPortalProductVersion(ctx, res1.PortalProductVersion)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedV2PortalProductVersion(ctx, res1.V2PortalProductVersion)...)
 
 	if resp.Diagnostics.HasError() {
 		return

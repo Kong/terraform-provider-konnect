@@ -141,12 +141,12 @@ func (s *PortalAppearance) GetPortalAppearance(ctx context.Context, request oper
 				return nil, err
 			}
 
-			var out shared.GetPortalAppearanceResponse
+			var out shared.V2GetPortalAppearanceResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.GetPortalAppearanceResponse = &out
+			res.V2GetPortalAppearanceResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -264,7 +264,7 @@ func (s *PortalAppearance) UpdatePortalAppearance(ctx context.Context, request o
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "PortalAppearance", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "V2PortalAppearance", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -347,12 +347,12 @@ func (s *PortalAppearance) UpdatePortalAppearance(ctx context.Context, request o
 				return nil, err
 			}
 
-			var out shared.UpdatePortalAppearanceResponse
+			var out shared.V2UpdatePortalAppearanceResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.UpdatePortalAppearanceResponse = &out
+			res.V2UpdatePortalAppearanceResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
