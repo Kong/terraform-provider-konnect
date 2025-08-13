@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2.14.0
-> Released on 2025/??/??
+> Released on 2025/08/13
 
 ### Features
 * Introduce new resources `konnect_portal_classic` into which `konnect_portal` can be imported
