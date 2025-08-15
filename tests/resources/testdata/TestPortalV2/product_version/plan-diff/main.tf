@@ -1,4 +1,4 @@
-resource "konnect_portal" "my_portal" {
+resource "konnect_portal_classic" "my_portal" {
   name                      = "My Portal for API Product Version"
   auto_approve_applications = false
   auto_approve_developers   = false
@@ -10,7 +10,7 @@ resource "konnect_portal" "my_portal" {
 resource "konnect_api_product" "my_apiproduct" {
   name = "My API Product"
   portal_ids = [
-    konnect_portal.my_portal.id
+    konnect_portal_classic.my_portal.id
   ]
 }
 
@@ -27,6 +27,6 @@ resource "konnect_portal_product_version" "my_portalproductversion" {
   publish_status                   = "published"
   auth_strategy_ids = [
   ]
-  portal_id          = konnect_portal.my_portal.id
+  portal_id          = konnect_portal_classic.my_portal.id
   product_version_id = konnect_api_product_version.my_apiproductversion.id
 }

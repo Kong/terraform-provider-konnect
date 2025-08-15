@@ -1,4 +1,4 @@
-resource "konnect_portal" "my_portal" {
+resource "konnect_portal_classic" "my_portal" {
   name                      = "My v2 Developer Portal for auth"
   auto_approve_applications = false
   auto_approve_developers   = false
@@ -8,7 +8,7 @@ resource "konnect_portal" "my_portal" {
 }
 
 resource "konnect_portal_auth" "my_portalauth" {
-  portal_id               = konnect_portal.my_portal.id
+  portal_id               = konnect_portal_classic.my_portal.id
   basic_auth_enabled      = true
   konnect_mapping_enabled = true
 

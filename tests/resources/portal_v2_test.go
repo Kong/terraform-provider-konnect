@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 )
 
-func TestPortal(t *testing.T) {
+func TestPortalV2(t *testing.T) {
 	t.Run("appearance", func(t *testing.T) {
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
@@ -41,7 +41,7 @@ func TestPortal(t *testing.T) {
 					Config:          providerConfigUs,
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_portal.my_portal", "name", "My v2 Developer Portal"),
+						resource.TestCheckResourceAttr("konnect_portal_classic.my_portal", "name", "My v2 Developer Portal"),
 					),
 				},
 				{
