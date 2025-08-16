@@ -1,4 +1,4 @@
-resource "konnect_portal" "my_portal" {
+resource "konnect_portal_classic" "my_portal" {
   name                      = "My New Test Portal"
   auto_approve_applications = false
   auto_approve_developers   = false
@@ -14,7 +14,7 @@ resource "konnect_api_product" "my_apiproduct" {
   }
   name = "API Product"
   portal_ids = [
-    konnect_portal.my_portal.id
+    konnect_portal_classic.my_portal.id
   ]
 }
 
