@@ -8,83 +8,52 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type Two struct {
-	// The most basic mode to configure an Application Auth Strategy for an API Product Version.
-	// Using this mode will allow developers to generate API keys that will authenticate their application requests.
-	// Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for Key Auth.
-	//
-	KeyAuth AppAuthStrategyConfigKeyAuth `json:"key-auth"`
-}
-
-func (o *Two) GetKeyAuth() AppAuthStrategyConfigKeyAuth {
-	if o == nil {
-		return AppAuthStrategyConfigKeyAuth{}
-	}
-	return o.KeyAuth
-}
-
-type One struct {
-	// A more advanced mode to configure an API Product Version’s Application Auth Strategy.
-	// Using this mode will allow developers to use API credentials issued from an external IdP that will authenticate their application requests.
-	// Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy.
-	// An OIDC strategy may be used in conjunction with a DCR provider to automatically create the IdP application.
-	//
-	OpenidConnect PartialAppAuthStrategyConfigOpenIDConnect `json:"openid-connect"`
-}
-
-func (o *One) GetOpenidConnect() PartialAppAuthStrategyConfigOpenIDConnect {
-	if o == nil {
-		return PartialAppAuthStrategyConfigOpenIDConnect{}
-	}
-	return o.OpenidConnect
-}
-
 type ConfigsType string
 
 const (
-	ConfigsTypeOne ConfigsType = "1"
-	ConfigsTypeTwo ConfigsType = "2"
+	ConfigsTypeUpdateAppAuthStrategyRequestOpenIDConnect ConfigsType = "UpdateAppAuthStrategyRequestOpenIdConnect"
+	ConfigsTypeUpdateAppAuthStrategyRequestKeyAuth       ConfigsType = "UpdateAppAuthStrategyRequestKeyAuth"
 )
 
 // Configs - JSON-B object containing the configuration for the OIDC strategy under the key 'openid-connect' or the configuration for the Key Auth strategy under the key 'key-auth'
 type Configs struct {
-	One *One `queryParam:"inline"`
-	Two *Two `queryParam:"inline"`
+	UpdateAppAuthStrategyRequestOpenIDConnect *UpdateAppAuthStrategyRequestOpenIDConnect `queryParam:"inline"`
+	UpdateAppAuthStrategyRequestKeyAuth       *UpdateAppAuthStrategyRequestKeyAuth       `queryParam:"inline"`
 
 	Type ConfigsType
 }
 
-func CreateConfigsOne(one One) Configs {
-	typ := ConfigsTypeOne
+func CreateConfigsUpdateAppAuthStrategyRequestOpenIDConnect(updateAppAuthStrategyRequestOpenIDConnect UpdateAppAuthStrategyRequestOpenIDConnect) Configs {
+	typ := ConfigsTypeUpdateAppAuthStrategyRequestOpenIDConnect
 
 	return Configs{
-		One:  &one,
+		UpdateAppAuthStrategyRequestOpenIDConnect: &updateAppAuthStrategyRequestOpenIDConnect,
 		Type: typ,
 	}
 }
 
-func CreateConfigsTwo(two Two) Configs {
-	typ := ConfigsTypeTwo
+func CreateConfigsUpdateAppAuthStrategyRequestKeyAuth(updateAppAuthStrategyRequestKeyAuth UpdateAppAuthStrategyRequestKeyAuth) Configs {
+	typ := ConfigsTypeUpdateAppAuthStrategyRequestKeyAuth
 
 	return Configs{
-		Two:  &two,
-		Type: typ,
+		UpdateAppAuthStrategyRequestKeyAuth: &updateAppAuthStrategyRequestKeyAuth,
+		Type:                                typ,
 	}
 }
 
 func (u *Configs) UnmarshalJSON(data []byte) error {
 
-	var one One = One{}
-	if err := utils.UnmarshalJSON(data, &one, "", true, true); err == nil {
-		u.One = &one
-		u.Type = ConfigsTypeOne
+	var updateAppAuthStrategyRequestOpenIDConnect UpdateAppAuthStrategyRequestOpenIDConnect = UpdateAppAuthStrategyRequestOpenIDConnect{}
+	if err := utils.UnmarshalJSON(data, &updateAppAuthStrategyRequestOpenIDConnect, "", true, true); err == nil {
+		u.UpdateAppAuthStrategyRequestOpenIDConnect = &updateAppAuthStrategyRequestOpenIDConnect
+		u.Type = ConfigsTypeUpdateAppAuthStrategyRequestOpenIDConnect
 		return nil
 	}
 
-	var two Two = Two{}
-	if err := utils.UnmarshalJSON(data, &two, "", true, true); err == nil {
-		u.Two = &two
-		u.Type = ConfigsTypeTwo
+	var updateAppAuthStrategyRequestKeyAuth UpdateAppAuthStrategyRequestKeyAuth = UpdateAppAuthStrategyRequestKeyAuth{}
+	if err := utils.UnmarshalJSON(data, &updateAppAuthStrategyRequestKeyAuth, "", true, true); err == nil {
+		u.UpdateAppAuthStrategyRequestKeyAuth = &updateAppAuthStrategyRequestKeyAuth
+		u.Type = ConfigsTypeUpdateAppAuthStrategyRequestKeyAuth
 		return nil
 	}
 
@@ -92,12 +61,12 @@ func (u *Configs) UnmarshalJSON(data []byte) error {
 }
 
 func (u Configs) MarshalJSON() ([]byte, error) {
-	if u.One != nil {
-		return utils.MarshalJSON(u.One, "", true)
+	if u.UpdateAppAuthStrategyRequestOpenIDConnect != nil {
+		return utils.MarshalJSON(u.UpdateAppAuthStrategyRequestOpenIDConnect, "", true)
 	}
 
-	if u.Two != nil {
-		return utils.MarshalJSON(u.Two, "", true)
+	if u.UpdateAppAuthStrategyRequestKeyAuth != nil {
+		return utils.MarshalJSON(u.UpdateAppAuthStrategyRequestKeyAuth, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type Configs: all fields are null")

@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 1147881d03ea29af554cf581542d13ba
+  docChecksum: 72a1cdd91b4d0b594eb214dd7bc83c72
   docVersion: 2.0.0
   speakeasyVersion: 1.602.0
   generationVersion: 2.681.1
@@ -35,7 +35,6 @@ generatedFiles:
   - examples/data-sources/konnect_gateway_control_plane_list/data-source.tf
   - examples/data-sources/konnect_mesh_control_planes/data-source.tf
   - examples/data-sources/konnect_portal_classic_list/data-source.tf
-  - examples/data-sources/konnect_portal_list/data-source.tf
   - examples/provider/provider.tf
   - examples/resources/konnect_api_product/import.sh
   - examples/resources/konnect_api_product/resource.tf
@@ -336,8 +335,20 @@ generatedFiles:
   - examples/resources/konnect_portal_auth/resource.tf
   - examples/resources/konnect_portal_classic/import.sh
   - examples/resources/konnect_portal_classic/resource.tf
+  - examples/resources/konnect_portal_custom_domain/import.sh
+  - examples/resources/konnect_portal_custom_domain/resource.tf
+  - examples/resources/konnect_portal_customization/import.sh
+  - examples/resources/konnect_portal_customization/resource.tf
+  - examples/resources/konnect_portal_favicon/import.sh
+  - examples/resources/konnect_portal_favicon/resource.tf
+  - examples/resources/konnect_portal_logo/import.sh
+  - examples/resources/konnect_portal_logo/resource.tf
+  - examples/resources/konnect_portal_page/import.sh
+  - examples/resources/konnect_portal_page/resource.tf
   - examples/resources/konnect_portal_product_version/import.sh
   - examples/resources/konnect_portal_product_version/resource.tf
+  - examples/resources/konnect_portal_snippet/import.sh
+  - examples/resources/konnect_portal_snippet/resource.tf
   - examples/resources/konnect_portal_team/import.sh
   - examples/resources/konnect_portal_team/resource.tf
   - examples/resources/konnect_realm/import.sh
@@ -678,10 +689,20 @@ generatedFiles:
   - internal/provider/portalclassic_resource_sdk.go
   - internal/provider/portalclassiclist_data_source.go
   - internal/provider/portalclassiclist_data_source_sdk.go
-  - internal/provider/portallist_data_source.go
-  - internal/provider/portallist_data_source_sdk.go
+  - internal/provider/portalcustomdomain_resource.go
+  - internal/provider/portalcustomdomain_resource_sdk.go
+  - internal/provider/portalcustomization_resource.go
+  - internal/provider/portalcustomization_resource_sdk.go
+  - internal/provider/portalfavicon_resource.go
+  - internal/provider/portalfavicon_resource_sdk.go
+  - internal/provider/portallogo_resource.go
+  - internal/provider/portallogo_resource_sdk.go
+  - internal/provider/portalpage_resource.go
+  - internal/provider/portalpage_resource_sdk.go
   - internal/provider/portalproductversion_resource.go
   - internal/provider/portalproductversion_resource_sdk.go
+  - internal/provider/portalsnippet_resource.go
+  - internal/provider/portalsnippet_resource_sdk.go
   - internal/provider/portalteam_resource.go
   - internal/provider/portalteam_resource_sdk.go
   - internal/provider/provider.go
@@ -769,6 +790,9 @@ generatedFiles:
   - internal/provider/types/aws_private_dns_resolver_response.go
   - internal/provider/types/aws_private_hosted_zone_attachment_config.go
   - internal/provider/types/aws_private_hosted_zone_response.go
+  - internal/provider/types/aws_resource_endpoint_attachment_config_response.go
+  - internal/provider/types/aws_resource_endpoint_config_response.go
+  - internal/provider/types/aws_resource_endpoint_gateway_response.go
   - internal/provider/types/aws_transit_gateway.go
   - internal/provider/types/aws_transit_gateway_attachment_config.go
   - internal/provider/types/aws_transit_gateway_response.go
@@ -798,6 +822,7 @@ generatedFiles:
   - internal/provider/types/client_jwk.go
   - internal/provider/types/cluster_type.go
   - internal/provider/types/cohere.go
+  - internal/provider/types/colors.go
   - internal/provider/types/compression_ranges.go
   - internal/provider/types/config.go
   - internal/provider/types/configuration_data_plane_group.go
@@ -817,6 +842,7 @@ generatedFiles:
   - internal/provider/types/correlation_id_plugin_config.go
   - internal/provider/types/cors_plugin_config.go
   - internal/provider/types/create_multi_key_auth_credential_config.go
+  - internal/provider/types/create_portal_custom_domain_ssl.go
   - internal/provider/types/custom_domain_state_metadata.go
   - internal/provider/types/custom_injections.go
   - internal/provider/types/custom_patterns.go
@@ -832,6 +858,8 @@ generatedFiles:
   - internal/provider/types/file_log_plugin_config.go
   - internal/provider/types/forward_proxy_plugin_config.go
   - internal/provider/types/gateway_service_payload.go
+  - internal/provider/types/gcp_vpc_peering_transit_gateway.go
+  - internal/provider/types/gcpvpc_peering_attachment_config.go
   - internal/provider/types/gemini.go
   - internal/provider/types/graphql_proxy_cache_advanced_plugin_config.go
   - internal/provider/types/graphql_rate_limiting_advanced_plugin_config.go
@@ -871,6 +899,7 @@ generatedFiles:
   - internal/provider/types/loggly_plugin_config.go
   - internal/provider/types/members.go
   - internal/provider/types/memory.go
+  - internal/provider/types/menu.go
   - internal/provider/types/mesh_control_plane.go
   - internal/provider/types/mesh_control_plane_feature.go
   - internal/provider/types/mesh_control_plane_feature_hostname_generation_creation.go
@@ -909,6 +938,8 @@ generatedFiles:
   - internal/provider/types/passive.go
   - internal/provider/types/pem.go
   - internal/provider/types/pgvector.go
+  - internal/provider/types/portal_footer_menu_section.go
+  - internal/provider/types/portal_menu_item.go
   - internal/provider/types/post_function_plugin_config.go
   - internal/provider/types/private_dns_attachment_config.go
   - internal/provider/types/private_dns_resolver_config.go
@@ -971,6 +1002,7 @@ generatedFiles:
   - internal/provider/types/solace_upstream_plugin_authentication.go
   - internal/provider/types/solace_upstream_plugin_config.go
   - internal/provider/types/solace_upstream_plugin_destinations.go
+  - internal/provider/types/spec_renderer.go
   - internal/provider/types/standard_webhooks_plugin_config.go
   - internal/provider/types/statsd_advanced_plugin_config.go
   - internal/provider/types/statsd_plugin_config.go
@@ -981,6 +1013,7 @@ generatedFiles:
   - internal/provider/types/tcp_log_plugin_config.go
   - internal/provider/types/templates.go
   - internal/provider/types/text.go
+  - internal/provider/types/theme.go
   - internal/provider/types/timeouts.go
   - internal/provider/types/tls_handshake_modifier_plugin_config.go
   - internal/provider/types/tls_metadata_headers_plugin_config.go
@@ -1021,6 +1054,7 @@ generatedFiles:
   - internal/sdk/apiproductversions.go
   - internal/sdk/apiproductversionspecification.go
   - internal/sdk/appauthstrategies.go
+  - internal/sdk/assets.go
   - internal/sdk/auditlogs.go
   - internal/sdk/basicauthcredentials.go
   - internal/sdk/cacertificates.go
@@ -1162,6 +1196,9 @@ generatedFiles:
   - internal/sdk/models/operations/createpluginschemas.go
   - internal/sdk/models/operations/createportal.go
   - internal/sdk/models/operations/createportalclassic.go
+  - internal/sdk/models/operations/createportalcustomdomain.go
+  - internal/sdk/models/operations/createportalpage.go
+  - internal/sdk/models/operations/createportalsnippet.go
   - internal/sdk/models/operations/createportalteam.go
   - internal/sdk/models/operations/createpostfunctionplugin.go
   - internal/sdk/models/operations/createprefunctionplugin.go
@@ -1313,7 +1350,10 @@ generatedFiles:
   - internal/sdk/models/operations/deletepluginschemas.go
   - internal/sdk/models/operations/deleteportal.go
   - internal/sdk/models/operations/deleteportalclassic.go
+  - internal/sdk/models/operations/deleteportalcustomdomain.go
+  - internal/sdk/models/operations/deleteportalpage.go
   - internal/sdk/models/operations/deleteportalproductversion.go
+  - internal/sdk/models/operations/deleteportalsnippet.go
   - internal/sdk/models/operations/deleteportalteam.go
   - internal/sdk/models/operations/deletepostfunctionplugin.go
   - internal/sdk/models/operations/deleteprefunctionplugin.go
@@ -1471,9 +1511,15 @@ generatedFiles:
   - internal/sdk/models/operations/getpluginschema.go
   - internal/sdk/models/operations/getportal.go
   - internal/sdk/models/operations/getportalappearance.go
+  - internal/sdk/models/operations/getportalassetfavicon.go
+  - internal/sdk/models/operations/getportalassetlogo.go
   - internal/sdk/models/operations/getportalauthenticationsettings.go
   - internal/sdk/models/operations/getportalclassic.go
+  - internal/sdk/models/operations/getportalcustomdomain.go
+  - internal/sdk/models/operations/getportalcustomization.go
+  - internal/sdk/models/operations/getportalpage.go
   - internal/sdk/models/operations/getportalproductversion.go
+  - internal/sdk/models/operations/getportalsnippet.go
   - internal/sdk/models/operations/getportalteam.go
   - internal/sdk/models/operations/getpostfunctionplugin.go
   - internal/sdk/models/operations/getprefunctionplugin.go
@@ -1529,7 +1575,6 @@ generatedFiles:
   - internal/sdk/models/operations/getzipkinplugin.go
   - internal/sdk/models/operations/listcontrolplanes.go
   - internal/sdk/models/operations/listmeshcontrolplanes.go
-  - internal/sdk/models/operations/listportals.go
   - internal/sdk/models/operations/listportalsclassic.go
   - internal/sdk/models/operations/listprovideraccounts.go
   - internal/sdk/models/operations/options.go
@@ -1544,6 +1589,9 @@ generatedFiles:
   - internal/sdk/models/operations/putcmek.go
   - internal/sdk/models/operations/removeconsumerfromgroup.go
   - internal/sdk/models/operations/removeuserfromteam.go
+  - internal/sdk/models/operations/replaceportalassetfavicon.go
+  - internal/sdk/models/operations/replaceportalassetlogo.go
+  - internal/sdk/models/operations/replaceportalcustomization.go
   - internal/sdk/models/operations/replaceportalproductversion.go
   - internal/sdk/models/operations/teamsassignrole.go
   - internal/sdk/models/operations/teamsremoverole.go
@@ -1628,6 +1676,9 @@ generatedFiles:
   - internal/sdk/models/operations/updateportalappearance.go
   - internal/sdk/models/operations/updateportalauthenticationsettings.go
   - internal/sdk/models/operations/updateportalclassic.go
+  - internal/sdk/models/operations/updateportalcustomdomain.go
+  - internal/sdk/models/operations/updateportalpage.go
+  - internal/sdk/models/operations/updateportalsnippet.go
   - internal/sdk/models/operations/updateportalteam.go
   - internal/sdk/models/operations/updatepostfunctionplugin.go
   - internal/sdk/models/operations/updateprefunctionplugin.go
@@ -1732,6 +1783,10 @@ generatedFiles:
   - internal/sdk/models/shared/awsprivatednsresolverresponse.go
   - internal/sdk/models/shared/awsprivatehostedzoneattachmentconfig.go
   - internal/sdk/models/shared/awsprivatehostedzoneresponse.go
+  - internal/sdk/models/shared/awsresourceendpointattachmentconfigresponse.go
+  - internal/sdk/models/shared/awsresourceendpointconfigresponse.go
+  - internal/sdk/models/shared/awsresourceendpointconfigstate.go
+  - internal/sdk/models/shared/awsresourceendpointgatewayresponse.go
   - internal/sdk/models/shared/awstransitgateway.go
   - internal/sdk/models/shared/awstransitgatewayattachmentconfig.go
   - internal/sdk/models/shared/awstransitgatewayresponse.go
@@ -1800,6 +1855,11 @@ generatedFiles:
   - internal/sdk/models/shared/createmeshcontrolplanerequest.go
   - internal/sdk/models/shared/createnetworkrequest.go
   - internal/sdk/models/shared/createpluginschemas.go
+  - internal/sdk/models/shared/createportal.go
+  - internal/sdk/models/shared/createportalcustomdomainrequest.go
+  - internal/sdk/models/shared/createportalcustomdomainssl.go
+  - internal/sdk/models/shared/createportalpagerequest.go
+  - internal/sdk/models/shared/createportalsnippetrequest.go
   - internal/sdk/models/shared/createprivatednsrequest.go
   - internal/sdk/models/shared/createserverlesscloudgatewayrequest.go
   - internal/sdk/models/shared/createsystemaccount.go
@@ -1823,6 +1883,8 @@ generatedFiles:
   - internal/sdk/models/shared/forwardproxyplugin.go
   - internal/sdk/models/shared/gatewayservicepayload.go
   - internal/sdk/models/shared/gatewayunauthorizederror.go
+  - internal/sdk/models/shared/gcpvpcpeeringattachmentconfig.go
+  - internal/sdk/models/shared/gcpvpcpeeringtransitgateway.go
   - internal/sdk/models/shared/getpluginschemaresponse.go
   - internal/sdk/models/shared/graphqlproxycacheadvancedplugin.go
   - internal/sdk/models/shared/graphqlratelimitingadvancedplugin.go
@@ -1904,6 +1966,7 @@ generatedFiles:
   - internal/sdk/models/shared/openidconnectplugin.go
   - internal/sdk/models/shared/opentelemetryplugin.go
   - internal/sdk/models/shared/pagemeta.go
+  - internal/sdk/models/shared/pagevisibilitystatus.go
   - internal/sdk/models/shared/paginatedmeta.go
   - internal/sdk/models/shared/partial.go
   - internal/sdk/models/shared/partialappauthstrategyconfigopenidconnect.go
@@ -1911,6 +1974,18 @@ generatedFiles:
   - internal/sdk/models/shared/patchprivatednsrequest.go
   - internal/sdk/models/shared/plugin.go
   - internal/sdk/models/shared/pluginschemas.go
+  - internal/sdk/models/shared/portalassetresponse.go
+  - internal/sdk/models/shared/portalcustomdomain.go
+  - internal/sdk/models/shared/portalcustomdomaincnamestatus.go
+  - internal/sdk/models/shared/portalcustomdomainssl.go
+  - internal/sdk/models/shared/portalcustomdomainverificationmethod.go
+  - internal/sdk/models/shared/portalcustomdomainverificationstatus.go
+  - internal/sdk/models/shared/portalcustomization.go
+  - internal/sdk/models/shared/portalfootermenusection.go
+  - internal/sdk/models/shared/portalmenuitem.go
+  - internal/sdk/models/shared/portalpageresponse.go
+  - internal/sdk/models/shared/portalresponse.go
+  - internal/sdk/models/shared/portalsnippetresponse.go
   - internal/sdk/models/shared/postfunctionplugin.go
   - internal/sdk/models/shared/prefunctionplugin.go
   - internal/sdk/models/shared/privatednsresolverconfig.go
@@ -1922,12 +1997,14 @@ generatedFiles:
   - internal/sdk/models/shared/proxycacheadvancedplugin.go
   - internal/sdk/models/shared/proxycacheplugin.go
   - internal/sdk/models/shared/proxyurl.go
+  - internal/sdk/models/shared/publishedstatus.go
   - internal/sdk/models/shared/publishstatus.go
   - internal/sdk/models/shared/putmeshcontrolplanerequest.go
   - internal/sdk/models/shared/ratelimitingadvancedplugin.go
   - internal/sdk/models/shared/ratelimitingplugin.go
   - internal/sdk/models/shared/redirectplugin.go
   - internal/sdk/models/shared/replacecmek.go
+  - internal/sdk/models/shared/replaceportalimageasset.go
   - internal/sdk/models/shared/requestcalloutplugin.go
   - internal/sdk/models/shared/requestsizelimitingplugin.go
   - internal/sdk/models/shared/requestterminationplugin.go
@@ -1951,6 +2028,7 @@ generatedFiles:
   - internal/sdk/models/shared/sessionplugin.go
   - internal/sdk/models/shared/slugconflict.go
   - internal/sdk/models/shared/sni.go
+  - internal/sdk/models/shared/snippetvisibilitystatus.go
   - internal/sdk/models/shared/solaceupstreamplugin.go
   - internal/sdk/models/shared/standardwebhooksplugin.go
   - internal/sdk/models/shared/statsdadvancedplugin.go
@@ -1976,6 +2054,8 @@ generatedFiles:
   - internal/sdk/models/shared/updateapiproductversiondto.go
   - internal/sdk/models/shared/updateapiproductversionspecdto.go
   - internal/sdk/models/shared/updateappauthstrategyrequest.go
+  - internal/sdk/models/shared/updateappauthstrategyrequestkeyauth.go
+  - internal/sdk/models/shared/updateappauthstrategyrequestopenidconnect.go
   - internal/sdk/models/shared/updateauditlogdestination.go
   - internal/sdk/models/shared/updateauditlogwebhook.go
   - internal/sdk/models/shared/updatecatalogservice.go
@@ -1983,6 +2063,10 @@ generatedFiles:
   - internal/sdk/models/shared/updateconsumerpayload.go
   - internal/sdk/models/shared/updatecontrolplanerequest.go
   - internal/sdk/models/shared/updateintegrationinstance.go
+  - internal/sdk/models/shared/updateportal.go
+  - internal/sdk/models/shared/updateportalcustomdomainrequest.go
+  - internal/sdk/models/shared/updateportalpagerequest.go
+  - internal/sdk/models/shared/updateportalsnippetrequest.go
   - internal/sdk/models/shared/updatesystemaccount.go
   - internal/sdk/models/shared/updatesystemaccountaccesstoken.go
   - internal/sdk/models/shared/updateteam.go
@@ -1996,8 +2080,8 @@ generatedFiles:
   - internal/sdk/models/shared/v2appearanceimages.go
   - internal/sdk/models/shared/v2appearancethemecolorvariables.go
   - internal/sdk/models/shared/v2createportalrequest.go
-  - internal/sdk/models/shared/v2createportalresponse.go
   - internal/sdk/models/shared/v2getportalappearanceresponse.go
+  - internal/sdk/models/shared/v2getportalresponse.go
   - internal/sdk/models/shared/v2listportalsresponse.go
   - internal/sdk/models/shared/v2nullableappearancefonts.go
   - internal/sdk/models/shared/v2nullableappearancetextvariables.go
@@ -2019,15 +2103,19 @@ generatedFiles:
   - internal/sdk/models/shared/v2updateportalrequest.go
   - internal/sdk/models/shared/vault.go
   - internal/sdk/models/shared/vaultauthplugin.go
+  - internal/sdk/models/shared/visibilitystatus.go
   - internal/sdk/models/shared/websocketsizelimitplugin.go
   - internal/sdk/models/shared/websocketvalidatorplugin.go
   - internal/sdk/models/shared/xmlthreatprotectionplugin.go
   - internal/sdk/models/shared/zipkinplugin.go
   - internal/sdk/mtlsauthcredentials.go
+  - internal/sdk/pages.go
   - internal/sdk/partials.go
   - internal/sdk/plugins.go
   - internal/sdk/portalappearance.go
   - internal/sdk/portalauthsettings.go
+  - internal/sdk/portalcustomdomains.go
+  - internal/sdk/portalcustomization.go
   - internal/sdk/portalproductversions.go
   - internal/sdk/portals.go
   - internal/sdk/portalteams.go
@@ -2037,6 +2125,7 @@ generatedFiles:
   - internal/sdk/routes.go
   - internal/sdk/serverlesscloudgateways.go
   - internal/sdk/services.go
+  - internal/sdk/snippets.go
   - internal/sdk/snis.go
   - internal/sdk/systemaccounts.go
   - internal/sdk/systemaccountsaccesstokens.go
@@ -12014,10 +12103,10 @@ examples:
   create-portal:
     speakeasy-default-create-portal:
       requestBody:
-        application/json: {"name": "DevPortal", "is_public": false, "rbac_enabled": true, "auto_approve_applications": false, "auto_approve_developers": false, "custom_domain": "api.example.com", "custom_client_domain": "portal.example.com", "default_application_auth_strategy_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"}
+        application/json: {"name": "DevPortal", "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"id": "9f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-02-07T17:46:57.52Z", "updated_at": "2022-10-08T17:00:00.52Z", "name": "Portal A", "display_name": "Developer Portal A", "description": "The Portal A", "default_domain": "123455678abcd.us.portal.konghq.com", "is_public": false, "rbac_enabled": true, "auto_approve_applications": false, "auto_approve_developers": true, "custom_domain": "api.example.com", "custom_client_domain": "portal.example.com", "application_count": 0, "developer_count": 0, "published_product_count": 0}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "Portal A", "display_name": "Developer Portal A", "description": "The Portal A", "authentication_enabled": true, "rbac_enabled": true, "default_api_visibility": "public", "default_page_visibility": "private", "default_application_auth_strategy_id": "6dd2e0bd-9a5a-41a7-9f54-c8169109bd4d", "auto_approve_developers": true, "auto_approve_applications": false, "default_domain": "123455678abcd.us.portal.konghq.com", "canonical_domain": "insistent-elevator.org", "labels": {"env": "test"}}
         "400":
           application/problem+json: {"status": 17949, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -12030,10 +12119,10 @@ examples:
         path:
           portalId: "efe853b6-a55c-4929-9b80-c39a22b01c7a"
       requestBody:
-        application/json: {"name": "Aperture", "is_public": false, "rbac_enabled": true, "auto_approve_applications": false, "auto_approve_developers": false, "custom_domain": "api.example.com", "custom_client_domain": "portal.example.com", "default_application_auth_strategy_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"}
+        application/json: {"labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "9f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-02-07T17:46:57.52Z", "updated_at": "2022-10-08T17:00:00.52Z", "name": "Portal A", "display_name": "Developer Portal A", "description": "The Portal A", "default_domain": "123455678abcd.us.portal.konghq.com", "is_public": false, "rbac_enabled": true, "auto_approve_applications": false, "auto_approve_developers": true, "custom_domain": "api.example.com", "custom_client_domain": "portal.example.com", "application_count": 0, "developer_count": 0, "published_product_count": 0}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "Portal A", "display_name": "Developer Portal A", "description": "The Portal A", "authentication_enabled": false, "rbac_enabled": true, "default_api_visibility": "private", "default_page_visibility": "private", "default_application_auth_strategy_id": "53b6a55c-929b-480c-839a-22b01c7a606a", "auto_approve_developers": true, "auto_approve_applications": false, "default_domain": "123455678abcd.us.portal.konghq.com", "canonical_domain": "international-flight.biz", "labels": {"env": "test"}}
         "400":
           application/problem+json: {"status": 7211, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": [], "source": "body"}]}
         "401":
@@ -12699,7 +12788,7 @@ examples:
           portalId: "1672e313-9f8e-4485-a62b-716aad351889"
       responses:
         "200":
-          application/json: {"id": "9f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-02-07T17:46:57.52Z", "updated_at": "2022-10-08T17:00:00.52Z", "name": "Portal A", "display_name": "Developer Portal A", "description": "The Portal A", "default_domain": "123455678abcd.us.portal.konghq.com", "is_public": false, "rbac_enabled": true, "auto_approve_applications": false, "auto_approve_developers": true, "custom_domain": "api.example.com", "custom_client_domain": "portal.example.com", "application_count": 0, "developer_count": 0, "published_product_count": 0}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "Portal A", "display_name": "Developer Portal A", "description": "The Portal A", "authentication_enabled": true, "rbac_enabled": true, "default_api_visibility": "public", "default_page_visibility": "public", "default_application_auth_strategy_id": "e3139f8e-4856-42b7-816a-ad35188982bf", "auto_approve_developers": true, "auto_approve_applications": false, "default_domain": "123455678abcd.us.portal.konghq.com", "canonical_domain": "normal-reconsideration.name", "labels": {"env": "test"}}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -13274,5 +13363,277 @@ examples:
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  get-portal-asset-favicon:
+    speakeasy-default-get-portal-asset-favicon:
+      parameters:
+        path:
+          portalId: "83d0fdd0-92cf-41c3-ac6e-b118cecbe1d1"
+      responses:
+        "200":
+          application/json: {"data": "data:image/png;base64,YW5faW1hZ2VfZmlsZQ=="}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  replace-portal-asset-favicon:
+    speakeasy-default-replace-portal-asset-favicon:
+      parameters:
+        path:
+          portalId: "7f853491-69c1-4d40-be61-685d07b2f760"
+      requestBody:
+        application/json: {"data": "data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU="}
+      responses:
+        "200":
+          application/json: {"data": "data:image/png;base64,YW5faW1hZ2VfZmlsZQ=="}
+        "400":
+          application/problem+json: {"status": 62395, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": [], "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  get-portal-asset-logo:
+    speakeasy-default-get-portal-asset-logo:
+      parameters:
+        path:
+          portalId: "13651a01-1e1a-4623-952e-542e2c8cff28"
+      responses:
+        "200":
+          application/json: {"data": "data:image/png;base64,YW5faW1hZ2VfZmlsZQ=="}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  replace-portal-asset-logo:
+    speakeasy-default-replace-portal-asset-logo:
+      parameters:
+        path:
+          portalId: "cda1dc59-271f-49ef-980f-7b8196a21446"
+      requestBody:
+        application/json: {"data": "data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU="}
+      responses:
+        "200":
+          application/json: {"data": "data:image/png;base64,YW5faW1hZ2VfZmlsZQ=="}
+        "400":
+          application/problem+json: {"status": 514959, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  get-portal-custom-domain:
+    speakeasy-default-get-portal-custom-domain:
+      parameters:
+        path:
+          portalId: "349a4004-fa8b-44b6-a955-c02ce8852489"
+      responses:
+        "200":
+          application/json: {"hostname": "messy-assist.info", "enabled": true, "ssl": {"domain_verification_method": "http", "verification_status": "verified"}, "cname_status": "pending", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-portal-custom-domain:
+    speakeasy-default-create-portal-custom-domain:
+      parameters:
+        path:
+          portalId: "7214f7a3-cfb5-409a-8855-df062f1a8e9d"
+      requestBody:
+        application/json: {"hostname": "lavish-custody.org", "enabled": true, "ssl": {}}
+      responses:
+        "201":
+          application/json: {"hostname": "royal-challenge.com", "enabled": false, "ssl": {"domain_verification_method": "custom_certificate", "verification_status": "error"}, "cname_status": "verified", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 842364, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-portal-custom-domain:
+    speakeasy-default-update-portal-custom-domain:
+      parameters:
+        path:
+          portalId: "04342a18-001b-4cc0-ac8d-c94855fa89a2"
+      requestBody:
+        application/json: {}
+      responses:
+        "200":
+          application/json: {"hostname": "sorrowful-couch.name", "enabled": true, "ssl": {"domain_verification_method": "http", "verification_status": "pending"}, "cname_status": "verified", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 515147, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-portal-custom-domain:
+    speakeasy-default-delete-portal-custom-domain:
+      parameters:
+        path:
+          portalId: "a48d4afb-4d59-41db-8c31-069c58386d0d"
+      responses:
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  get-portal-customization:
+    speakeasy-default-get-portal-customization:
+      parameters:
+        path:
+          portalId: "c1f26ac2-4d98-4500-9c10-c369f4997443"
+      responses:
+        "200":
+          application/json: {"theme": {"colors": {"primary": "#000000"}}, "menu": {"main": [{"path": "/about/company", "title": "My Page", "visibility": "public", "external": true}], "footer_sections": [{"title": "<value>", "items": []}], "footer_bottom": [{"path": "/about/company", "title": "My Page", "visibility": "public", "external": false}]}}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  replace-portal-customization:
+    speakeasy-default-replace-portal-customization:
+      parameters:
+        path:
+          portalId: "9d054504-6858-4150-8873-e6b55940b5b5"
+      requestBody:
+        application/json: {"theme": {"colors": {"primary": "#000000"}}, "menu": {"main": [{"path": "/about/company", "title": "My Page", "visibility": "public", "external": false}], "footer_sections": [{"title": "<value>", "items": []}], "footer_bottom": [{"path": "/about/company", "title": "My Page", "visibility": "public", "external": false}]}}
+      responses:
+        "200":
+          application/json: {"theme": {"colors": {"primary": "#000000"}}, "menu": {"main": [{"path": "/about/company", "title": "My Page", "visibility": "public", "external": false}], "footer_sections": [{"title": "<value>", "items": []}], "footer_bottom": [{"path": "/about/company", "title": "My Page", "visibility": "public", "external": false}]}}
+        "400":
+          application/problem+json: {"status": 833416, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-portal-page:
+    speakeasy-default-create-portal-page:
+      parameters:
+        path:
+          portalId: "6c3d8c1f-13c7-44a5-9df6-146de589cfbc"
+      requestBody:
+        application/json: {"slug": "/my-page", "title": "My Page", "content": "# Welcome to My Page", "visibility": "public", "status": "published", "description": "A custom page about developer portals", "parent_page_id": null}
+      responses:
+        "201":
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "slug": "/my-page", "title": "My Page", "content": "# Welcome to My Page", "visibility": "public", "status": "published", "description": "A custom page about developer portals", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "parent_page_id": null}
+        "400":
+          application/problem+json: {"status": 557861, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  get-portal-page:
+    speakeasy-default-get-portal-page:
+      parameters:
+        path:
+          portalId: "95525c0c-4073-4aa1-b28a-8a59b435ba90"
+          pageId: "ebbac5b0-ac89-45c3-9d2e-c4542c657e79"
+      responses:
+        "200":
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "slug": "/my-page", "title": "My Page", "content": "# Welcome to My Page", "visibility": "public", "status": "published", "description": "A custom page about developer portals", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "parent_page_id": null}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-portal-page:
+    speakeasy-default-update-portal-page:
+      parameters:
+        path:
+          portalId: "59d4cbb3-3cd1-471f-aa42-8d29eb415e40"
+          pageId: "ebbac5b0-ac89-45c3-9d2e-c4542c657e79"
+      requestBody:
+        application/json: {"slug": "/my-page", "title": "My Page", "content": "# Welcome to My Page", "visibility": "public", "status": "published", "description": "A custom page about developer portals", "parent_page_id": null}
+      responses:
+        "200":
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "slug": "/my-page", "title": "My Page", "content": "# Welcome to My Page", "visibility": "public", "status": "published", "description": "A custom page about developer portals", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "parent_page_id": null}
+        "400":
+          application/problem+json: {"status": 324324, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  delete-portal-page:
+    speakeasy-default-delete-portal-page:
+      parameters:
+        path:
+          portalId: "28e99d39-bf30-4daf-94d1-aea58c8fd6a3"
+          pageId: "ebbac5b0-ac89-45c3-9d2e-c4542c657e79"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-portal-snippet:
+    speakeasy-default-create-portal-snippet:
+      parameters:
+        path:
+          portalId: "83cb3bb5-8fd9-4714-92ea-93920ce10070"
+      requestBody:
+        application/json: {"name": "my-snippet", "title": "My Snippet", "content": "# Welcome to My Snippet", "visibility": "public", "status": "published", "description": "A custom page about developer portals"}
+      responses:
+        "201":
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "my-snippet", "title": "My Snippet", "content": "# Welcome to My Snippet", "visibility": "public", "status": "published", "description": "A custom page about developer portals", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 519130, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max_length", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  get-portal-snippet:
+    speakeasy-default-get-portal-snippet:
+      parameters:
+        path:
+          portalId: "4bda1b08-1e5f-4dfa-8643-af0101fa674e"
+          snippetId: "ebbac5b0-ac89-45c3-9d2e-c4542c657e79"
+      responses:
+        "200":
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "my-snippet", "title": "My Snippet", "content": "# Welcome to My Snippet", "visibility": "public", "status": "published", "description": "A custom page about developer portals", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-portal-snippet:
+    speakeasy-default-update-portal-snippet:
+      parameters:
+        path:
+          portalId: "e5297401-d60b-49df-8410-5bfbe7ef1471"
+          snippetId: "ebbac5b0-ac89-45c3-9d2e-c4542c657e79"
+      requestBody:
+        application/json: {"name": "my-snippet", "title": "My Snippet", "content": "# Welcome to My Snippet", "visibility": "public", "status": "published", "description": "A custom page about developer portals"}
+      responses:
+        "200":
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "my-snippet", "title": "My Snippet", "content": "# Welcome to My Snippet", "visibility": "public", "status": "published", "description": "A custom page about developer portals", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 418372, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  delete-portal-snippet:
+    speakeasy-default-delete-portal-snippet:
+      parameters:
+        path:
+          portalId: "2728e88d-81de-42ce-b3b1-8237438fc559"
+          snippetId: "ebbac5b0-ac89-45c3-9d2e-c4542c657e79"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
 examplesVersion: 1.0.2
 generatedTests: {}

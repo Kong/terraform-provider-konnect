@@ -53,7 +53,7 @@ type CreateAPIProductVersionDTO struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels         map[string]string      `json:"labels,omitempty"`
+	Labels         map[string]*string     `json:"labels,omitempty"`
 	GatewayService *GatewayServicePayload `json:"gateway_service,omitempty"`
 }
 
@@ -78,7 +78,7 @@ func (o *CreateAPIProductVersionDTO) GetDeprecated() *bool {
 	return o.Deprecated
 }
 
-func (o *CreateAPIProductVersionDTO) GetLabels() map[string]string {
+func (o *CreateAPIProductVersionDTO) GetLabels() map[string]*string {
 	if o == nil {
 		return nil
 	}

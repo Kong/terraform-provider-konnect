@@ -1,13 +1,8 @@
 # Create a new Dev Portal
 resource "konnect_portal" "my_portal" {
-  name                      = "My New Portal"
-  auto_approve_applications = false
-  auto_approve_developers   = false
-  custom_domain             = "demo.example.com"
-  is_public                 = false
-  rbac_enabled              = false
+  force_destroy                        = "true"
+  name         = "My v3 portal name"
 }
-
 # Create a new team in the Dev Portal
 resource "konnect_portal_team" "myteam" {
     portal_id = konnect_portal.my_portal.id

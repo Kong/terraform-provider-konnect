@@ -10,18 +10,18 @@ import (
 	"net/http"
 )
 
-// DeletePortalClassicQueryParamForce - If true, delete specified portal and all related entities, even if there are developers registered to portal or if there are portal product versions with application registration enabled. If false, do not allow deletion if there are developers registered to portal or if there are portal product versions with application registration enabled.
-type DeletePortalClassicQueryParamForce string
+// QueryParamForce - If true, delete specified portal and all related entities, even if there are developers registered to portal or if there are portal product versions with application registration enabled. If false, do not allow deletion if there are developers registered to portal or if there are portal product versions with application registration enabled.
+type QueryParamForce string
 
 const (
-	DeletePortalClassicQueryParamForceTrue  DeletePortalClassicQueryParamForce = "true"
-	DeletePortalClassicQueryParamForceFalse DeletePortalClassicQueryParamForce = "false"
+	QueryParamForceTrue  QueryParamForce = "true"
+	QueryParamForceFalse QueryParamForce = "false"
 )
 
-func (e DeletePortalClassicQueryParamForce) ToPointer() *DeletePortalClassicQueryParamForce {
+func (e QueryParamForce) ToPointer() *QueryParamForce {
 	return &e
 }
-func (e *DeletePortalClassicQueryParamForce) UnmarshalJSON(data []byte) error {
+func (e *QueryParamForce) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -30,10 +30,10 @@ func (e *DeletePortalClassicQueryParamForce) UnmarshalJSON(data []byte) error {
 	case "true":
 		fallthrough
 	case "false":
-		*e = DeletePortalClassicQueryParamForce(v)
+		*e = QueryParamForce(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for DeletePortalClassicQueryParamForce: %v", v)
+		return fmt.Errorf("invalid value for QueryParamForce: %v", v)
 	}
 }
 
@@ -41,7 +41,7 @@ type DeletePortalClassicRequest struct {
 	// ID of the portal.
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// If true, delete specified portal and all related entities, even if there are developers registered to portal or if there are portal product versions with application registration enabled. If false, do not allow deletion if there are developers registered to portal or if there are portal product versions with application registration enabled.
-	Force *DeletePortalClassicQueryParamForce `default:"false" queryParam:"style=form,explode=true,name=force"`
+	Force *QueryParamForce `default:"false" queryParam:"style=form,explode=true,name=force"`
 }
 
 func (d DeletePortalClassicRequest) MarshalJSON() ([]byte, error) {
@@ -62,7 +62,7 @@ func (o *DeletePortalClassicRequest) GetPortalID() string {
 	return o.PortalID
 }
 
-func (o *DeletePortalClassicRequest) GetForce() *DeletePortalClassicQueryParamForce {
+func (o *DeletePortalClassicRequest) GetForce() *QueryParamForce {
 	if o == nil {
 		return nil
 	}

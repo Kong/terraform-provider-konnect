@@ -89,7 +89,7 @@ type APIProductVersion struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]string `json:"labels"`
+	Labels map[string]*string `json:"labels"`
 	// The set of errors encountered when trying to sync the auth strategies on the version
 	AuthStrategySyncErrors []AuthStrategySyncError `json:"auth_strategy_sync_errors,omitempty"`
 	// The list of portals which this API product version is configured for
@@ -146,9 +146,9 @@ func (o *APIProductVersion) GetDeprecated() bool {
 	return o.Deprecated
 }
 
-func (o *APIProductVersion) GetLabels() map[string]string {
+func (o *APIProductVersion) GetLabels() map[string]*string {
 	if o == nil {
-		return map[string]string{}
+		return map[string]*string{}
 	}
 	return o.Labels
 }

@@ -223,8 +223,6 @@ type Konnect struct {
 	// DP Certificates
 	DPCertificates     *DPCertificates
 	ControlPlaneGroups *ControlPlaneGroups
-	// APIs related to Configuration of Konnect Developer Portals.
-	Portals *Portals
 	// APIs related to Konnect Developer Portal Appearance Settings.
 	PortalAppearance *PortalAppearance
 	// APIs related to Konnect Developer Portal Authentication Settings.
@@ -238,7 +236,19 @@ type Konnect struct {
 	//
 	PortalProductVersions *PortalProductVersions
 	// APIs related to Konnect Developer Portal Developer Teams.
-	PortalTeams                  *PortalTeams
+	PortalTeams *PortalTeams
+	// APIs related to Configuration of Konnect Developer Portals.
+	Portals *Portals
+	// APIs for managing static assets for Konnect Developer Portals.
+	Assets *Assets
+	// APIs related to configuration of Konnect Developer Portals custom domains.
+	PortalCustomDomains *PortalCustomDomains
+	// APIs related to Konnect Developer Portal Customization.
+	PortalCustomization *PortalCustomization
+	// APIs related to Konnect Developer Portal Custom Pages.
+	Pages *Pages
+	// APIs related to Konnect Developer Portal Custom Snippets.
+	Snippets                     *Snippets
 	SystemAccounts               *SystemAccounts
 	SystemAccountsAccessTokens   *SystemAccountsAccessTokens
 	SystemAccountsRoles          *SystemAccountsRoles
@@ -387,11 +397,16 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.Vaults = newVaults(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.DPCertificates = newDPCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ControlPlaneGroups = newControlPlaneGroups(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.Portals = newPortals(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalAppearance = newPortalAppearance(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalAuthSettings = newPortalAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalProductVersions = newPortalProductVersions(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalTeams = newPortalTeams(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Portals = newPortals(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Assets = newAssets(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalCustomDomains = newPortalCustomDomains(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalCustomization = newPortalCustomization(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Pages = newPages(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Snippets = newSnippets(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SystemAccounts = newSystemAccounts(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SystemAccountsAccessTokens = newSystemAccountsAccessTokens(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SystemAccountsRoles = newSystemAccountsRoles(sdk, sdk.sdkConfiguration, sdk.hooks)
