@@ -28,7 +28,7 @@ type V2CreatePortalRequest struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]string `json:"labels,omitempty"`
+	Labels map[string]*string `json:"labels,omitempty"`
 }
 
 func (o *V2CreatePortalRequest) GetName() string {
@@ -101,7 +101,7 @@ func (o *V2CreatePortalRequest) GetDefaultApplicationAuthStrategyID() *string {
 	return o.DefaultApplicationAuthStrategyID
 }
 
-func (o *V2CreatePortalRequest) GetLabels() map[string]string {
+func (o *V2CreatePortalRequest) GetLabels() map[string]*string {
 	if o == nil {
 		return nil
 	}

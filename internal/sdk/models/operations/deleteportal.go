@@ -10,18 +10,20 @@ import (
 	"net/http"
 )
 
-// QueryParamForce - If true, delete specified portal and all related entities, even if there are developers registered to portal or if there are portal product versions with application registration enabled. If false, do not allow deletion if there are developers registered to portal or if there are portal product versions with application registration enabled.
-type QueryParamForce string
+// DeletePortalQueryParamForce - If set to "true", the portal and all child entities will be deleted when running `terraform destroy`.
+// If set to "false", the portal will not be deleted until all child entities are manually removed.
+// This will IRREVERSIBLY DELETE ALL REGISTERED DEVELOPERS AND THEIR CREDENTIALS. Only set to "true" if you want this behavior.
+type DeletePortalQueryParamForce string
 
 const (
-	QueryParamForceTrue  QueryParamForce = "true"
-	QueryParamForceFalse QueryParamForce = "false"
+	DeletePortalQueryParamForceTrue  DeletePortalQueryParamForce = "true"
+	DeletePortalQueryParamForceFalse DeletePortalQueryParamForce = "false"
 )
 
-func (e QueryParamForce) ToPointer() *QueryParamForce {
+func (e DeletePortalQueryParamForce) ToPointer() *DeletePortalQueryParamForce {
 	return &e
 }
-func (e *QueryParamForce) UnmarshalJSON(data []byte) error {
+func (e *DeletePortalQueryParamForce) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -30,18 +32,21 @@ func (e *QueryParamForce) UnmarshalJSON(data []byte) error {
 	case "true":
 		fallthrough
 	case "false":
-		*e = QueryParamForce(v)
+		*e = DeletePortalQueryParamForce(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for QueryParamForce: %v", v)
+		return fmt.Errorf("invalid value for DeletePortalQueryParamForce: %v", v)
 	}
 }
 
 type DeletePortalRequest struct {
 	// ID of the portal.
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
-	// If true, delete specified portal and all related entities, even if there are developers registered to portal or if there are portal product versions with application registration enabled. If false, do not allow deletion if there are developers registered to portal or if there are portal product versions with application registration enabled.
-	Force *QueryParamForce `default:"false" queryParam:"style=form,explode=true,name=force"`
+	// If set to "true", the portal and all child entities will be deleted when running `terraform destroy`.
+	// If set to "false", the portal will not be deleted until all child entities are manually removed.
+	// This will IRREVERSIBLY DELETE ALL REGISTERED DEVELOPERS AND THEIR CREDENTIALS. Only set to "true" if you want this behavior.
+	//
+	ForceDestroy *DeletePortalQueryParamForce `default:"false" queryParam:"style=form,explode=true,name=force"`
 }
 
 func (d DeletePortalRequest) MarshalJSON() ([]byte, error) {
@@ -62,11 +67,11 @@ func (o *DeletePortalRequest) GetPortalID() string {
 	return o.PortalID
 }
 
-func (o *DeletePortalRequest) GetForce() *QueryParamForce {
+func (o *DeletePortalRequest) GetForceDestroy() *DeletePortalQueryParamForce {
 	if o == nil {
 		return nil
 	}
-	return o.Force
+	return o.ForceDestroy
 }
 
 type DeletePortalResponse struct {
@@ -76,8 +81,6 @@ type DeletePortalResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Bad Request
-	BadRequestError *shared.BadRequestError
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
@@ -105,13 +108,6 @@ func (o *DeletePortalResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
-}
-
-func (o *DeletePortalResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
-		return nil
-	}
-	return o.BadRequestError
 }
 
 func (o *DeletePortalResponse) GetUnauthorizedError() *shared.UnauthorizedError {

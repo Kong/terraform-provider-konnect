@@ -252,11 +252,11 @@ func (r *PortalClassicResource) Create(ctx context.Context, req resource.CreateR
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.V2CreatePortalResponse != nil) {
+	if !(res.V2GetPortalResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedV2CreatePortalResponse(ctx, res.V2CreatePortalResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedV2GetPortalResponse(ctx, res.V2GetPortalResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -316,11 +316,11 @@ func (r *PortalClassicResource) Read(ctx context.Context, req resource.ReadReque
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.V2CreatePortalResponse != nil) {
+	if !(res.V2GetPortalResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedV2CreatePortalResponse(ctx, res.V2CreatePortalResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedV2GetPortalResponse(ctx, res.V2GetPortalResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -366,11 +366,11 @@ func (r *PortalClassicResource) Update(ctx context.Context, req resource.UpdateR
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.V2CreatePortalResponse != nil) {
+	if !(res.V2GetPortalResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedV2CreatePortalResponse(ctx, res.V2CreatePortalResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedV2GetPortalResponse(ctx, res.V2GetPortalResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

@@ -16,16 +16,12 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.AwsTransitGatewayResponse != nil {
-			r.AwsTransitGatewayResponse = &tfTypes.AwsTransitGatewayResponse{}
-			r.AwsTransitGatewayResponse.CidrBlocks = make([]types.String, 0, len(resp.AwsTransitGatewayResponse.CidrBlocks))
-			for _, v := range resp.AwsTransitGatewayResponse.CidrBlocks {
-				r.AwsTransitGatewayResponse.CidrBlocks = append(r.AwsTransitGatewayResponse.CidrBlocks, types.StringValue(v))
-			}
-			r.AwsTransitGatewayResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsTransitGatewayResponse.CreatedAt))
-			r.AwsTransitGatewayResponse.DNSConfig = []tfTypes.TransitGatewayDNSConfig{}
+		if resp.AwsResourceEndpointGatewayResponse != nil {
+			r.AwsResourceEndpointGatewayResponse = &tfTypes.AwsResourceEndpointGatewayResponse{}
+			r.AwsResourceEndpointGatewayResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsResourceEndpointGatewayResponse.CreatedAt))
+			r.AwsResourceEndpointGatewayResponse.DNSConfig = []tfTypes.TransitGatewayDNSConfig{}
 
-			for _, dnsConfigItem := range resp.AwsTransitGatewayResponse.DNSConfig {
+			for _, dnsConfigItem := range resp.AwsResourceEndpointGatewayResponse.DNSConfig {
 				var dnsConfig tfTypes.TransitGatewayDNSConfig
 
 				dnsConfig.DomainProxyList = make([]types.String, 0, len(dnsConfigItem.DomainProxyList))
@@ -37,7 +33,59 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 					dnsConfig.RemoteDNSServerIPAddresses = append(dnsConfig.RemoteDNSServerIPAddresses, types.StringValue(v))
 				}
 
-				r.AwsTransitGatewayResponse.DNSConfig = append(r.AwsTransitGatewayResponse.DNSConfig, dnsConfig)
+				r.AwsResourceEndpointGatewayResponse.DNSConfig = append(r.AwsResourceEndpointGatewayResponse.DNSConfig, dnsConfig)
+			}
+			r.AwsResourceEndpointGatewayResponse.EntityVersion = types.Int64Value(resp.AwsResourceEndpointGatewayResponse.EntityVersion)
+			r.EntityVersion = r.AwsResourceEndpointGatewayResponse.EntityVersion
+			r.AwsResourceEndpointGatewayResponse.ID = types.StringValue(resp.AwsResourceEndpointGatewayResponse.ID)
+			r.ID = r.AwsResourceEndpointGatewayResponse.ID
+			r.AwsResourceEndpointGatewayResponse.Name = types.StringValue(resp.AwsResourceEndpointGatewayResponse.Name)
+			r.Name = r.AwsResourceEndpointGatewayResponse.Name
+			r.AwsResourceEndpointGatewayResponse.State = types.StringValue(string(resp.AwsResourceEndpointGatewayResponse.State))
+			if resp.AwsResourceEndpointGatewayResponse.StateMetadata == nil {
+				r.AwsResourceEndpointGatewayResponse.StateMetadata = nil
+			} else {
+				r.AwsResourceEndpointGatewayResponse.StateMetadata = &tfTypes.CustomDomainStateMetadata{}
+				r.AwsResourceEndpointGatewayResponse.StateMetadata.Reason = types.StringPointerValue(resp.AwsResourceEndpointGatewayResponse.StateMetadata.Reason)
+				r.AwsResourceEndpointGatewayResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AwsResourceEndpointGatewayResponse.StateMetadata.ReportedStatus)
+			}
+			r.AwsResourceEndpointGatewayResponse.TransitGatewayAttachmentConfig.Kind = types.StringValue(string(resp.AwsResourceEndpointGatewayResponse.TransitGatewayAttachmentConfig.Kind))
+			r.AwsResourceEndpointGatewayResponse.TransitGatewayAttachmentConfig.RAMShareArn = types.StringValue(resp.AwsResourceEndpointGatewayResponse.TransitGatewayAttachmentConfig.RAMShareArn)
+			r.AwsResourceEndpointGatewayResponse.TransitGatewayAttachmentConfig.ResourceConfig = []tfTypes.AwsResourceEndpointConfigResponse{}
+
+			for _, resourceConfigItem := range resp.AwsResourceEndpointGatewayResponse.TransitGatewayAttachmentConfig.ResourceConfig {
+				var resourceConfig tfTypes.AwsResourceEndpointConfigResponse
+
+				resourceConfig.DomainName = types.StringValue(resourceConfigItem.DomainName)
+				resourceConfig.ResourceConfigID = types.StringValue(resourceConfigItem.ResourceConfigID)
+				resourceConfig.State = types.StringValue(string(resourceConfigItem.State))
+
+				r.AwsResourceEndpointGatewayResponse.TransitGatewayAttachmentConfig.ResourceConfig = append(r.AwsResourceEndpointGatewayResponse.TransitGatewayAttachmentConfig.ResourceConfig, resourceConfig)
+			}
+			r.AwsResourceEndpointGatewayResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsResourceEndpointGatewayResponse.UpdatedAt))
+		}
+		if resp.AwsTransitGatewayResponse != nil {
+			r.AwsTransitGatewayResponse = &tfTypes.AwsTransitGatewayResponse{}
+			r.AwsTransitGatewayResponse.CidrBlocks = make([]types.String, 0, len(resp.AwsTransitGatewayResponse.CidrBlocks))
+			for _, v := range resp.AwsTransitGatewayResponse.CidrBlocks {
+				r.AwsTransitGatewayResponse.CidrBlocks = append(r.AwsTransitGatewayResponse.CidrBlocks, types.StringValue(v))
+			}
+			r.AwsTransitGatewayResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsTransitGatewayResponse.CreatedAt))
+			r.AwsTransitGatewayResponse.DNSConfig = []tfTypes.TransitGatewayDNSConfig{}
+
+			for _, dnsConfigItem1 := range resp.AwsTransitGatewayResponse.DNSConfig {
+				var dnsConfig1 tfTypes.TransitGatewayDNSConfig
+
+				dnsConfig1.DomainProxyList = make([]types.String, 0, len(dnsConfigItem1.DomainProxyList))
+				for _, v := range dnsConfigItem1.DomainProxyList {
+					dnsConfig1.DomainProxyList = append(dnsConfig1.DomainProxyList, types.StringValue(v))
+				}
+				dnsConfig1.RemoteDNSServerIPAddresses = make([]types.String, 0, len(dnsConfigItem1.RemoteDNSServerIPAddresses))
+				for _, v := range dnsConfigItem1.RemoteDNSServerIPAddresses {
+					dnsConfig1.RemoteDNSServerIPAddresses = append(dnsConfig1.RemoteDNSServerIPAddresses, types.StringValue(v))
+				}
+
+				r.AwsTransitGatewayResponse.DNSConfig = append(r.AwsTransitGatewayResponse.DNSConfig, dnsConfig1)
 			}
 			r.AwsTransitGatewayResponse.EntityVersion = types.Int64Value(resp.AwsTransitGatewayResponse.EntityVersion)
 			r.EntityVersion = r.AwsTransitGatewayResponse.EntityVersion
@@ -67,19 +115,19 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 			r.AwsVpcPeeringGatewayResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsVpcPeeringGatewayResponse.CreatedAt))
 			r.AwsVpcPeeringGatewayResponse.DNSConfig = []tfTypes.TransitGatewayDNSConfig{}
 
-			for _, dnsConfigItem1 := range resp.AwsVpcPeeringGatewayResponse.DNSConfig {
-				var dnsConfig1 tfTypes.TransitGatewayDNSConfig
+			for _, dnsConfigItem2 := range resp.AwsVpcPeeringGatewayResponse.DNSConfig {
+				var dnsConfig2 tfTypes.TransitGatewayDNSConfig
 
-				dnsConfig1.DomainProxyList = make([]types.String, 0, len(dnsConfigItem1.DomainProxyList))
-				for _, v := range dnsConfigItem1.DomainProxyList {
-					dnsConfig1.DomainProxyList = append(dnsConfig1.DomainProxyList, types.StringValue(v))
+				dnsConfig2.DomainProxyList = make([]types.String, 0, len(dnsConfigItem2.DomainProxyList))
+				for _, v := range dnsConfigItem2.DomainProxyList {
+					dnsConfig2.DomainProxyList = append(dnsConfig2.DomainProxyList, types.StringValue(v))
 				}
-				dnsConfig1.RemoteDNSServerIPAddresses = make([]types.String, 0, len(dnsConfigItem1.RemoteDNSServerIPAddresses))
-				for _, v := range dnsConfigItem1.RemoteDNSServerIPAddresses {
-					dnsConfig1.RemoteDNSServerIPAddresses = append(dnsConfig1.RemoteDNSServerIPAddresses, types.StringValue(v))
+				dnsConfig2.RemoteDNSServerIPAddresses = make([]types.String, 0, len(dnsConfigItem2.RemoteDNSServerIPAddresses))
+				for _, v := range dnsConfigItem2.RemoteDNSServerIPAddresses {
+					dnsConfig2.RemoteDNSServerIPAddresses = append(dnsConfig2.RemoteDNSServerIPAddresses, types.StringValue(v))
 				}
 
-				r.AwsVpcPeeringGatewayResponse.DNSConfig = append(r.AwsVpcPeeringGatewayResponse.DNSConfig, dnsConfig1)
+				r.AwsVpcPeeringGatewayResponse.DNSConfig = append(r.AwsVpcPeeringGatewayResponse.DNSConfig, dnsConfig2)
 			}
 			r.AwsVpcPeeringGatewayResponse.EntityVersion = types.Int64Value(resp.AwsVpcPeeringGatewayResponse.EntityVersion)
 			r.EntityVersion = r.AwsVpcPeeringGatewayResponse.EntityVersion
@@ -106,19 +154,19 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 			r.AzureTransitGatewayResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AzureTransitGatewayResponse.CreatedAt))
 			r.AzureTransitGatewayResponse.DNSConfig = []tfTypes.TransitGatewayDNSConfig{}
 
-			for _, dnsConfigItem2 := range resp.AzureTransitGatewayResponse.DNSConfig {
-				var dnsConfig2 tfTypes.TransitGatewayDNSConfig
+			for _, dnsConfigItem3 := range resp.AzureTransitGatewayResponse.DNSConfig {
+				var dnsConfig3 tfTypes.TransitGatewayDNSConfig
 
-				dnsConfig2.DomainProxyList = make([]types.String, 0, len(dnsConfigItem2.DomainProxyList))
-				for _, v := range dnsConfigItem2.DomainProxyList {
-					dnsConfig2.DomainProxyList = append(dnsConfig2.DomainProxyList, types.StringValue(v))
+				dnsConfig3.DomainProxyList = make([]types.String, 0, len(dnsConfigItem3.DomainProxyList))
+				for _, v := range dnsConfigItem3.DomainProxyList {
+					dnsConfig3.DomainProxyList = append(dnsConfig3.DomainProxyList, types.StringValue(v))
 				}
-				dnsConfig2.RemoteDNSServerIPAddresses = make([]types.String, 0, len(dnsConfigItem2.RemoteDNSServerIPAddresses))
-				for _, v := range dnsConfigItem2.RemoteDNSServerIPAddresses {
-					dnsConfig2.RemoteDNSServerIPAddresses = append(dnsConfig2.RemoteDNSServerIPAddresses, types.StringValue(v))
+				dnsConfig3.RemoteDNSServerIPAddresses = make([]types.String, 0, len(dnsConfigItem3.RemoteDNSServerIPAddresses))
+				for _, v := range dnsConfigItem3.RemoteDNSServerIPAddresses {
+					dnsConfig3.RemoteDNSServerIPAddresses = append(dnsConfig3.RemoteDNSServerIPAddresses, types.StringValue(v))
 				}
 
-				r.AzureTransitGatewayResponse.DNSConfig = append(r.AzureTransitGatewayResponse.DNSConfig, dnsConfig2)
+				r.AzureTransitGatewayResponse.DNSConfig = append(r.AzureTransitGatewayResponse.DNSConfig, dnsConfig3)
 			}
 			r.AzureTransitGatewayResponse.EntityVersion = types.Int64Value(resp.AzureTransitGatewayResponse.EntityVersion)
 			r.EntityVersion = r.AzureTransitGatewayResponse.EntityVersion
@@ -354,6 +402,49 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 	if azureTransitGateway != nil {
 		out = shared.CreateTransitGatewayRequest{
 			AzureTransitGateway: azureTransitGateway,
+		}
+	}
+	var gcpVpcPeeringTransitGateway *shared.GcpVpcPeeringTransitGateway
+	if r.GcpVpcPeeringTransitGateway != nil {
+		var name3 string
+		name3 = r.GcpVpcPeeringTransitGateway.Name.ValueString()
+
+		dnsConfig3 := make([]shared.TransitGatewayDNSConfig, 0, len(r.GcpVpcPeeringTransitGateway.DNSConfig))
+		for _, dnsConfigItem3 := range r.GcpVpcPeeringTransitGateway.DNSConfig {
+			remoteDNSServerIPAddresses3 := make([]string, 0, len(dnsConfigItem3.RemoteDNSServerIPAddresses))
+			for _, remoteDNSServerIPAddressesItem3 := range dnsConfigItem3.RemoteDNSServerIPAddresses {
+				remoteDNSServerIPAddresses3 = append(remoteDNSServerIPAddresses3, remoteDNSServerIPAddressesItem3.ValueString())
+			}
+			domainProxyList3 := make([]string, 0, len(dnsConfigItem3.DomainProxyList))
+			for _, domainProxyListItem3 := range dnsConfigItem3.DomainProxyList {
+				domainProxyList3 = append(domainProxyList3, domainProxyListItem3.ValueString())
+			}
+			dnsConfig3 = append(dnsConfig3, shared.TransitGatewayDNSConfig{
+				RemoteDNSServerIPAddresses: remoteDNSServerIPAddresses3,
+				DomainProxyList:            domainProxyList3,
+			})
+		}
+		kind3 := shared.GCPVPCPeeringAttachmentType(r.GcpVpcPeeringTransitGateway.TransitGatewayAttachmentConfig.Kind.ValueString())
+		var peerProjectID string
+		peerProjectID = r.GcpVpcPeeringTransitGateway.TransitGatewayAttachmentConfig.PeerProjectID.ValueString()
+
+		var peerVpcName string
+		peerVpcName = r.GcpVpcPeeringTransitGateway.TransitGatewayAttachmentConfig.PeerVpcName.ValueString()
+
+		transitGatewayAttachmentConfig3 := shared.GCPVPCPeeringAttachmentConfig{
+			Kind:          kind3,
+			PeerProjectID: peerProjectID,
+			PeerVpcName:   peerVpcName,
+		}
+		gcpVpcPeeringTransitGateway = &shared.GcpVpcPeeringTransitGateway{
+			Name:                           name3,
+			DNSConfig:                      dnsConfig3,
+			TransitGatewayAttachmentConfig: transitGatewayAttachmentConfig3,
+		}
+	}
+	if gcpVpcPeeringTransitGateway != nil {
+		out = shared.CreateTransitGatewayRequest{
+			GcpVpcPeeringTransitGateway: gcpVpcPeeringTransitGateway,
 		}
 	}
 

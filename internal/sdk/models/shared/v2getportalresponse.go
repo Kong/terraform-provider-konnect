@@ -7,8 +7,8 @@ import (
 	"time"
 )
 
-// V2CreatePortalResponse - Details about the portal that was created.
-type V2CreatePortalResponse struct {
+// V2GetPortalResponse - Details about a portal and its current settings.
+type V2GetPortalResponse struct {
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// An ISO-8601 timestamp representation of entity creation date.
@@ -41,7 +41,7 @@ type V2CreatePortalResponse struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]string `json:"labels,omitempty"`
+	Labels map[string]*string `json:"labels,omitempty"`
 	// Number of applications created in the portal.
 	ApplicationCount float64 `json:"application_count"`
 	// Number of developers using the portal.
@@ -50,137 +50,137 @@ type V2CreatePortalResponse struct {
 	PublishedProductCount float64 `json:"published_product_count"`
 }
 
-func (v V2CreatePortalResponse) MarshalJSON() ([]byte, error) {
+func (v V2GetPortalResponse) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(v, "", false)
 }
 
-func (v *V2CreatePortalResponse) UnmarshalJSON(data []byte) error {
+func (v *V2GetPortalResponse) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *V2CreatePortalResponse) GetID() string {
+func (o *V2GetPortalResponse) GetID() string {
 	if o == nil {
 		return ""
 	}
 	return o.ID
 }
 
-func (o *V2CreatePortalResponse) GetCreatedAt() time.Time {
+func (o *V2GetPortalResponse) GetCreatedAt() time.Time {
 	if o == nil {
 		return time.Time{}
 	}
 	return o.CreatedAt
 }
 
-func (o *V2CreatePortalResponse) GetUpdatedAt() time.Time {
+func (o *V2GetPortalResponse) GetUpdatedAt() time.Time {
 	if o == nil {
 		return time.Time{}
 	}
 	return o.UpdatedAt
 }
 
-func (o *V2CreatePortalResponse) GetName() string {
+func (o *V2GetPortalResponse) GetName() string {
 	if o == nil {
 		return ""
 	}
 	return o.Name
 }
 
-func (o *V2CreatePortalResponse) GetDisplayName() string {
+func (o *V2GetPortalResponse) GetDisplayName() string {
 	if o == nil {
 		return ""
 	}
 	return o.DisplayName
 }
 
-func (o *V2CreatePortalResponse) GetDescription() *string {
+func (o *V2GetPortalResponse) GetDescription() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Description
 }
 
-func (o *V2CreatePortalResponse) GetDefaultDomain() string {
+func (o *V2GetPortalResponse) GetDefaultDomain() string {
 	if o == nil {
 		return ""
 	}
 	return o.DefaultDomain
 }
 
-func (o *V2CreatePortalResponse) GetIsPublic() bool {
+func (o *V2GetPortalResponse) GetIsPublic() bool {
 	if o == nil {
 		return false
 	}
 	return o.IsPublic
 }
 
-func (o *V2CreatePortalResponse) GetRbacEnabled() bool {
+func (o *V2GetPortalResponse) GetRbacEnabled() bool {
 	if o == nil {
 		return false
 	}
 	return o.RbacEnabled
 }
 
-func (o *V2CreatePortalResponse) GetAutoApproveApplications() bool {
+func (o *V2GetPortalResponse) GetAutoApproveApplications() bool {
 	if o == nil {
 		return false
 	}
 	return o.AutoApproveApplications
 }
 
-func (o *V2CreatePortalResponse) GetAutoApproveDevelopers() bool {
+func (o *V2GetPortalResponse) GetAutoApproveDevelopers() bool {
 	if o == nil {
 		return false
 	}
 	return o.AutoApproveDevelopers
 }
 
-func (o *V2CreatePortalResponse) GetCustomDomain() *string {
+func (o *V2GetPortalResponse) GetCustomDomain() *string {
 	if o == nil {
 		return nil
 	}
 	return o.CustomDomain
 }
 
-func (o *V2CreatePortalResponse) GetCustomClientDomain() *string {
+func (o *V2GetPortalResponse) GetCustomClientDomain() *string {
 	if o == nil {
 		return nil
 	}
 	return o.CustomClientDomain
 }
 
-func (o *V2CreatePortalResponse) GetDefaultApplicationAuthStrategyID() *string {
+func (o *V2GetPortalResponse) GetDefaultApplicationAuthStrategyID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.DefaultApplicationAuthStrategyID
 }
 
-func (o *V2CreatePortalResponse) GetLabels() map[string]string {
+func (o *V2GetPortalResponse) GetLabels() map[string]*string {
 	if o == nil {
 		return nil
 	}
 	return o.Labels
 }
 
-func (o *V2CreatePortalResponse) GetApplicationCount() float64 {
+func (o *V2GetPortalResponse) GetApplicationCount() float64 {
 	if o == nil {
 		return 0.0
 	}
 	return o.ApplicationCount
 }
 
-func (o *V2CreatePortalResponse) GetDeveloperCount() float64 {
+func (o *V2GetPortalResponse) GetDeveloperCount() float64 {
 	if o == nil {
 		return 0.0
 	}
 	return o.DeveloperCount
 }
 
-func (o *V2CreatePortalResponse) GetPublishedProductCount() float64 {
+func (o *V2GetPortalResponse) GetPublishedProductCount() float64 {
 	if o == nil {
 		return 0.0
 	}

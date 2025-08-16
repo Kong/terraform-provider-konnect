@@ -41,7 +41,7 @@ func (r *GatewayControlPlaneListDataSourceModel) RefreshFromSharedListControlPla
 			if len(dataItem.Labels) > 0 {
 				data.Labels = make(map[string]types.String, len(dataItem.Labels))
 				for key, value := range dataItem.Labels {
-					data.Labels[key] = types.StringValue(value)
+					data.Labels[key] = types.StringPointerValue(value)
 				}
 			}
 			data.Name = types.StringValue(dataItem.Name)
