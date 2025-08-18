@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 72a1cdd91b4d0b594eb214dd7bc83c72
+  docChecksum: 3ec8149c59261764a14f2893d16ea24a
   docVersion: 2.0.0
   speakeasyVersion: 1.602.0
   generationVersion: 2.681.1
@@ -790,9 +790,6 @@ generatedFiles:
   - internal/provider/types/aws_private_dns_resolver_response.go
   - internal/provider/types/aws_private_hosted_zone_attachment_config.go
   - internal/provider/types/aws_private_hosted_zone_response.go
-  - internal/provider/types/aws_resource_endpoint_attachment_config_response.go
-  - internal/provider/types/aws_resource_endpoint_config_response.go
-  - internal/provider/types/aws_resource_endpoint_gateway_response.go
   - internal/provider/types/aws_transit_gateway.go
   - internal/provider/types/aws_transit_gateway_attachment_config.go
   - internal/provider/types/aws_transit_gateway_response.go
@@ -860,6 +857,7 @@ generatedFiles:
   - internal/provider/types/gateway_service_payload.go
   - internal/provider/types/gcp_vpc_peering_transit_gateway.go
   - internal/provider/types/gcpvpc_peering_attachment_config.go
+  - internal/provider/types/gcpvpc_peering_gateway_response.go
   - internal/provider/types/gemini.go
   - internal/provider/types/graphql_proxy_cache_advanced_plugin_config.go
   - internal/provider/types/graphql_rate_limiting_advanced_plugin_config.go
@@ -1783,10 +1781,6 @@ generatedFiles:
   - internal/sdk/models/shared/awsprivatednsresolverresponse.go
   - internal/sdk/models/shared/awsprivatehostedzoneattachmentconfig.go
   - internal/sdk/models/shared/awsprivatehostedzoneresponse.go
-  - internal/sdk/models/shared/awsresourceendpointattachmentconfigresponse.go
-  - internal/sdk/models/shared/awsresourceendpointconfigresponse.go
-  - internal/sdk/models/shared/awsresourceendpointconfigstate.go
-  - internal/sdk/models/shared/awsresourceendpointgatewayresponse.go
   - internal/sdk/models/shared/awstransitgateway.go
   - internal/sdk/models/shared/awstransitgatewayattachmentconfig.go
   - internal/sdk/models/shared/awstransitgatewayresponse.go
@@ -1884,6 +1878,7 @@ generatedFiles:
   - internal/sdk/models/shared/gatewayservicepayload.go
   - internal/sdk/models/shared/gatewayunauthorizederror.go
   - internal/sdk/models/shared/gcpvpcpeeringattachmentconfig.go
+  - internal/sdk/models/shared/gcpvpcpeeringgatewayresponse.go
   - internal/sdk/models/shared/gcpvpcpeeringtransitgateway.go
   - internal/sdk/models/shared/getpluginschemaresponse.go
   - internal/sdk/models/shared/graphqlproxycacheadvancedplugin.go

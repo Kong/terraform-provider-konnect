@@ -7,8 +7,8 @@ import (
 	"time"
 )
 
-// AwsResourceEndpointGatewayResponseTransitGatewayStateMetadata - Metadata describing the backing state of the transit gateway and why it may be in an erroneous state.
-type AwsResourceEndpointGatewayResponseTransitGatewayStateMetadata struct {
+// GCPVPCPeeringGatewayResponseTransitGatewayStateMetadata - Metadata describing the backing state of the transit gateway and why it may be in an erroneous state.
+type GCPVPCPeeringGatewayResponseTransitGatewayStateMetadata struct {
 	// Reported status of the transit gateway from backing infrastructure.
 	ReportedStatus *string `json:"reported_status,omitempty"`
 	// Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
@@ -16,29 +16,29 @@ type AwsResourceEndpointGatewayResponseTransitGatewayStateMetadata struct {
 	Reason *string `json:"reason,omitempty"`
 }
 
-func (o *AwsResourceEndpointGatewayResponseTransitGatewayStateMetadata) GetReportedStatus() *string {
+func (o *GCPVPCPeeringGatewayResponseTransitGatewayStateMetadata) GetReportedStatus() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ReportedStatus
 }
 
-func (o *AwsResourceEndpointGatewayResponseTransitGatewayStateMetadata) GetReason() *string {
+func (o *GCPVPCPeeringGatewayResponseTransitGatewayStateMetadata) GetReason() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Reason
 }
 
-type AwsResourceEndpointGatewayResponse struct {
+type GCPVPCPeeringGatewayResponse struct {
 	// Human-readable name of the transit gateway.
 	Name string `json:"name"`
 	// List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway
 	// attachment.
 	//
-	DNSConfig                      []TransitGatewayDNSConfig                   `json:"dns_config"`
-	TransitGatewayAttachmentConfig AwsResourceEndpointAttachmentConfigResponse `json:"transit_gateway_attachment_config"`
-	ID                             string                                      `json:"id"`
+	DNSConfig                      []TransitGatewayDNSConfig     `json:"dns_config"`
+	TransitGatewayAttachmentConfig GCPVPCPeeringAttachmentConfig `json:"transit_gateway_attachment_config"`
+	ID                             string                        `json:"id"`
 	// The current state of the Transit Gateway. Possible values:
 	// - `created` - The attachment has been created but is not attached to transit gateway.
 	// - `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
@@ -51,7 +51,7 @@ type AwsResourceEndpointGatewayResponse struct {
 	State TransitGatewayState `json:"state"`
 	// Metadata describing the backing state of the transit gateway and why it may be in an erroneous state.
 	//
-	StateMetadata *AwsResourceEndpointGatewayResponseTransitGatewayStateMetadata `json:"state_metadata,omitempty"`
+	StateMetadata *GCPVPCPeeringGatewayResponseTransitGatewayStateMetadata `json:"state_metadata,omitempty"`
 	// Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
 	// transit gateway.
 	//
@@ -62,74 +62,74 @@ type AwsResourceEndpointGatewayResponse struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-func (a AwsResourceEndpointGatewayResponse) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
+func (g GCPVPCPeeringGatewayResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
 }
 
-func (a *AwsResourceEndpointGatewayResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, true); err != nil {
+func (g *GCPVPCPeeringGatewayResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, true); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AwsResourceEndpointGatewayResponse) GetName() string {
+func (o *GCPVPCPeeringGatewayResponse) GetName() string {
 	if o == nil {
 		return ""
 	}
 	return o.Name
 }
 
-func (o *AwsResourceEndpointGatewayResponse) GetDNSConfig() []TransitGatewayDNSConfig {
+func (o *GCPVPCPeeringGatewayResponse) GetDNSConfig() []TransitGatewayDNSConfig {
 	if o == nil {
 		return []TransitGatewayDNSConfig{}
 	}
 	return o.DNSConfig
 }
 
-func (o *AwsResourceEndpointGatewayResponse) GetTransitGatewayAttachmentConfig() AwsResourceEndpointAttachmentConfigResponse {
+func (o *GCPVPCPeeringGatewayResponse) GetTransitGatewayAttachmentConfig() GCPVPCPeeringAttachmentConfig {
 	if o == nil {
-		return AwsResourceEndpointAttachmentConfigResponse{}
+		return GCPVPCPeeringAttachmentConfig{}
 	}
 	return o.TransitGatewayAttachmentConfig
 }
 
-func (o *AwsResourceEndpointGatewayResponse) GetID() string {
+func (o *GCPVPCPeeringGatewayResponse) GetID() string {
 	if o == nil {
 		return ""
 	}
 	return o.ID
 }
 
-func (o *AwsResourceEndpointGatewayResponse) GetState() TransitGatewayState {
+func (o *GCPVPCPeeringGatewayResponse) GetState() TransitGatewayState {
 	if o == nil {
 		return TransitGatewayState("")
 	}
 	return o.State
 }
 
-func (o *AwsResourceEndpointGatewayResponse) GetStateMetadata() *AwsResourceEndpointGatewayResponseTransitGatewayStateMetadata {
+func (o *GCPVPCPeeringGatewayResponse) GetStateMetadata() *GCPVPCPeeringGatewayResponseTransitGatewayStateMetadata {
 	if o == nil {
 		return nil
 	}
 	return o.StateMetadata
 }
 
-func (o *AwsResourceEndpointGatewayResponse) GetEntityVersion() int64 {
+func (o *GCPVPCPeeringGatewayResponse) GetEntityVersion() int64 {
 	if o == nil {
 		return 0
 	}
 	return o.EntityVersion
 }
 
-func (o *AwsResourceEndpointGatewayResponse) GetCreatedAt() time.Time {
+func (o *GCPVPCPeeringGatewayResponse) GetCreatedAt() time.Time {
 	if o == nil {
 		return time.Time{}
 	}
 	return o.CreatedAt
 }
 
-func (o *AwsResourceEndpointGatewayResponse) GetUpdatedAt() time.Time {
+func (o *GCPVPCPeeringGatewayResponse) GetUpdatedAt() time.Time {
 	if o == nil {
 		return time.Time{}
 	}
