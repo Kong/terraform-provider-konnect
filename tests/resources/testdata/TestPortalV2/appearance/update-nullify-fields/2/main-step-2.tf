@@ -1,4 +1,4 @@
-resource "konnect_portal" "my_portal" {
+resource "konnect_portal_classic" "my_portal" {
   name                      = "My New Portal for appearance nullify"
   auto_approve_applications = false
   auto_approve_developers   = false
@@ -8,5 +8,5 @@ resource "konnect_portal" "my_portal" {
 }
 
 resource "konnect_portal_appearance" "nullify_appearance_test" {
-  portal_id = konnect_portal.my_portal.id
+  portal_id = konnect_portal_classic.my_portal.id
 }
