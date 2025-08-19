@@ -13,7 +13,7 @@ type UpdatePortalTeamRequest struct {
 	// ID of the portal.
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// Update a team in a portal.
-	V2PortalUpdateTeamRequest *shared.V2PortalUpdateTeamRequest `request:"mediaType=application/json"`
+	PortalUpdateTeamRequest *shared.PortalUpdateTeamRequest `request:"mediaType=application/json"`
 }
 
 func (o *UpdatePortalTeamRequest) GetTeamID() string {
@@ -30,11 +30,11 @@ func (o *UpdatePortalTeamRequest) GetPortalID() string {
 	return o.PortalID
 }
 
-func (o *UpdatePortalTeamRequest) GetV2PortalUpdateTeamRequest() *shared.V2PortalUpdateTeamRequest {
+func (o *UpdatePortalTeamRequest) GetPortalUpdateTeamRequest() *shared.PortalUpdateTeamRequest {
 	if o == nil {
 		return nil
 	}
-	return o.V2PortalUpdateTeamRequest
+	return o.PortalUpdateTeamRequest
 }
 
 type UpdatePortalTeamResponse struct {
@@ -45,7 +45,7 @@ type UpdatePortalTeamResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Details about a team of developers in a portal.
-	V2PortalTeamResponse *shared.V2PortalTeamResponse
+	PortalTeamResponse *shared.PortalTeamResponse
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
@@ -75,11 +75,11 @@ func (o *UpdatePortalTeamResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *UpdatePortalTeamResponse) GetV2PortalTeamResponse() *shared.V2PortalTeamResponse {
+func (o *UpdatePortalTeamResponse) GetPortalTeamResponse() *shared.PortalTeamResponse {
 	if o == nil {
 		return nil
 	}
-	return o.V2PortalTeamResponse
+	return o.PortalTeamResponse
 }
 
 func (o *UpdatePortalTeamResponse) GetUnauthorizedError() *shared.UnauthorizedError {

@@ -11,7 +11,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *PortalClassicResourceModel) RefreshFromSharedV2CreatePortalResponse(ctx context.Context, resp *shared.V2CreatePortalResponse) diag.Diagnostics {
+func (r *PortalClassicResourceModel) RefreshFromSharedV2GetPortalResponse(ctx context.Context, resp *shared.V2GetPortalResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -31,7 +31,7 @@ func (r *PortalClassicResourceModel) RefreshFromSharedV2CreatePortalResponse(ctx
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringValue(value)
+				r.Labels[key] = types.StringPointerValue(value)
 			}
 		}
 		r.Name = types.StringValue(resp.Name)
@@ -49,9 +49,9 @@ func (r *PortalClassicResourceModel) ToOperationsDeletePortalClassicRequest(ctx 
 	var portalID string
 	portalID = r.ID.ValueString()
 
-	force := new(operations.DeletePortalClassicQueryParamForce)
+	force := new(operations.QueryParamForce)
 	if !r.Force.IsUnknown() && !r.Force.IsNull() {
-		*force = operations.DeletePortalClassicQueryParamForce(r.Force.ValueString())
+		*force = operations.QueryParamForce(r.Force.ValueString())
 	} else {
 		force = nil
 	}
@@ -157,11 +157,14 @@ func (r *PortalClassicResourceModel) ToSharedV2CreatePortalRequest(ctx context.C
 	} else {
 		defaultApplicationAuthStrategyID = nil
 	}
-	labels := make(map[string]string)
+	labels := make(map[string]*string)
 	for labelsKey, labelsValue := range r.Labels {
-		var labelsInst string
-		labelsInst = labelsValue.ValueString()
-
+		labelsInst := new(string)
+		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
+			*labelsInst = labelsValue.ValueString()
+		} else {
+			labelsInst = nil
+		}
 		labels[labelsKey] = labelsInst
 	}
 	out := shared.V2CreatePortalRequest{

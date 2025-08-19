@@ -15,7 +15,7 @@ import (
 	"net/http"
 )
 
-// PortalAuthSettings - APIs related to Konnect Developer Portal Authentication Settings.
+// PortalAuthSettings - APIs related to configuration of Konnect Developer Portal auth settings.
 type PortalAuthSettings struct {
 	rootSDK          *Konnect
 	sdkConfiguration config.SDKConfiguration
@@ -31,6 +31,9 @@ func newPortalAuthSettings(rootSDK *Konnect, sdkConfig config.SDKConfiguration, 
 }
 
 // GetPortalAuthenticationSettings - Get Auth Settings
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Returns the developer authentication configuration for a portal, which determines how developers can log in and how they are assigned to teams.
 func (s *PortalAuthSettings) GetPortalAuthenticationSettings(ctx context.Context, request operations.GetPortalAuthenticationSettingsRequest, opts ...operations.Option) (*operations.GetPortalAuthenticationSettingsResponse, error) {
 	o := operations.Options{}
@@ -51,7 +54,7 @@ func (s *PortalAuthSettings) GetPortalAuthenticationSettings(ctx context.Context
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/portals/{portalId}/authentication-settings", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/portals/{portalId}/authentication-settings", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -141,12 +144,12 @@ func (s *PortalAuthSettings) GetPortalAuthenticationSettings(ctx context.Context
 				return nil, err
 			}
 
-			var out shared.V2PortalAuthenticationSettingsResponse
+			var out shared.PortalAuthenticationSettingsResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.V2PortalAuthenticationSettingsResponse = &out
+			res.PortalAuthenticationSettingsResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -188,6 +191,9 @@ func (s *PortalAuthSettings) GetPortalAuthenticationSettings(ctx context.Context
 }
 
 // UpdatePortalAuthenticationSettings - Update Auth Settings
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Updates the developer authentication configuration for a portal. Developers can be allowed to login using basic auth (email & password) or use Single-Sign-On (SSO) through an OIDC Identity Provider (IdP). Developers can be automatically assigned to teams by mapping claims from thier IdP account.
 func (s *PortalAuthSettings) UpdatePortalAuthenticationSettings(ctx context.Context, request operations.UpdatePortalAuthenticationSettingsRequest, opts ...operations.Option) (*operations.UpdatePortalAuthenticationSettingsResponse, error) {
 	o := operations.Options{}
@@ -208,7 +214,7 @@ func (s *PortalAuthSettings) UpdatePortalAuthenticationSettings(ctx context.Cont
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/portals/{portalId}/authentication-settings", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/portals/{portalId}/authentication-settings", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -222,7 +228,7 @@ func (s *PortalAuthSettings) UpdatePortalAuthenticationSettings(ctx context.Cont
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "V2PortalAuthenticationSettingsUpdateRequest", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "PortalAuthenticationSettingsUpdateRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -305,12 +311,12 @@ func (s *PortalAuthSettings) UpdatePortalAuthenticationSettings(ctx context.Cont
 				return nil, err
 			}
 
-			var out shared.V2PortalAuthenticationSettingsResponse
+			var out shared.PortalAuthenticationSettingsResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.V2PortalAuthenticationSettingsResponse = &out
+			res.PortalAuthenticationSettingsResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

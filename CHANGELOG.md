@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.0.0
+> Released on 2025/08/??
+
+### BREAKING CHANGES
+* `konnect_portal` resource on v2.x of terraform-provider-konnect no longer works with v3.x. Kindly import into `konnect_portal_classic`
+
+### Features
+* New resources `konnect_portal`, `konnect_portal_logo`, `konnect_portal_favicon`, `konnect_portal_custom_domain`, `konnect_portal_snippet`, `konnect_portal_page`, `konnect_portal_customization` are now supported
+* Add support for `gcp_vpc_peering_transit_gateway` in `konnect_cloud_gateway_transit_gateway` resource
+
 ## 2.14.0
 > Released on 2025/08/13
 

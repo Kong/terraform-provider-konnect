@@ -77,6 +77,24 @@ resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway"
       vnet_name           = "...my_vnet_name..."
     }
   }
+  gcp_vpc_peering_transit_gateway = {
+    dns_config = [
+      {
+        domain_proxy_list = [
+          "..."
+        ]
+        remote_dns_server_ip_addresses = [
+          "..."
+        ]
+      }
+    ]
+    name = "us-east-2 transit gateway"
+    transit_gateway_attachment_config = {
+      kind            = "gcp-vpc-peering-attachment"
+      peer_project_id = "...my_peer_project_id..."
+      peer_vpc_name   = "...my_peer_vpc_name..."
+    }
+  }
   network_id = "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
 }
 ```
@@ -93,6 +111,7 @@ resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway"
 - `aws_transit_gateway` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_transit_gateway))
 - `aws_vpc_peering_gateway` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_vpc_peering_gateway))
 - `azure_transit_gateway` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--azure_transit_gateway))
+- `gcp_vpc_peering_transit_gateway` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--gcp_vpc_peering_transit_gateway))
 
 ### Read-Only
 
@@ -101,6 +120,7 @@ resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway"
 - `azure_transit_gateway_response` (Attributes) (see [below for nested schema](#nestedatt--azure_transit_gateway_response))
 - `entity_version` (Number) Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
 transit gateway.
+- `gcpvpc_peering_gateway_response` (Attributes) (see [below for nested schema](#nestedatt--gcpvpc_peering_gateway_response))
 - `id` (String) The ID of this resource.
 - `name` (String) Human-readable name of the transit gateway.
 
@@ -221,6 +241,42 @@ Requires replacement if changed.
 
 
 
+<a id="nestedatt--gcp_vpc_peering_transit_gateway"></a>
+### Nested Schema for `gcp_vpc_peering_transit_gateway`
+
+Required:
+
+- `name` (String) Human-readable name of the transit gateway. Requires replacement if changed.
+- `transit_gateway_attachment_config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--gcp_vpc_peering_transit_gateway--transit_gateway_attachment_config))
+
+Optional:
+
+- `dns_config` (Attributes List) List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway
+attachment.
+Requires replacement if changed. (see [below for nested schema](#nestedatt--gcp_vpc_peering_transit_gateway--dns_config))
+
+<a id="nestedatt--gcp_vpc_peering_transit_gateway--transit_gateway_attachment_config"></a>
+### Nested Schema for `gcp_vpc_peering_transit_gateway.transit_gateway_attachment_config`
+
+Required:
+
+- `kind` (String) must be "gcp-vpc-peering-attachment"; Requires replacement if changed.
+- `peer_project_id` (String) GCP Project ID of the peer account to create attachment to. Requires replacement if changed.
+- `peer_vpc_name` (String) GCP VPC Name of the peer account to create attachment to. Requires replacement if changed.
+
+
+<a id="nestedatt--gcp_vpc_peering_transit_gateway--dns_config"></a>
+### Nested Schema for `gcp_vpc_peering_transit_gateway.dns_config`
+
+Required:
+
+- `domain_proxy_list` (List of String) Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,
+for a transit gateway.
+Requires replacement if changed.
+- `remote_dns_server_ip_addresses` (List of String) Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway. Requires replacement if changed.
+
+
+
 <a id="nestedatt--aws_transit_gateway_response"></a>
 ### Nested Schema for `aws_transit_gateway_response`
 
@@ -239,10 +295,11 @@ transit gateway.
 - `created` - The attachment has been created but is not attached to transit gateway.
 - `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
 - `pending-acceptance` The attachment request is awaiting acceptance in customer VPC.
+- `pending-user-action` The attachment request is awaiting user action in customer VPC.
 - `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
 - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
 - `terminated` - The attachment has been fully deleted and is no longer available.
-must be one of ["created", "initializing", "pending-acceptance", "ready", "terminating", "terminated"]
+must be one of ["created", "initializing", "pending-acceptance", "pending-user-action", "ready", "terminating", "terminated"]
 - `state_metadata` (Attributes) Metadata describing the backing state of the transit gateway and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--aws_transit_gateway_response--state_metadata))
 - `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--aws_transit_gateway_response--transit_gateway_attachment_config))
 - `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
@@ -295,10 +352,11 @@ transit gateway.
 - `created` - The attachment has been created but is not attached to transit gateway.
 - `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
 - `pending-acceptance` The attachment request is awaiting acceptance in customer VPC.
+- `pending-user-action` The attachment request is awaiting user action in customer VPC.
 - `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
 - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
 - `terminated` - The attachment has been fully deleted and is no longer available.
-must be one of ["created", "initializing", "pending-acceptance", "ready", "terminating", "terminated"]
+must be one of ["created", "initializing", "pending-acceptance", "pending-user-action", "ready", "terminating", "terminated"]
 - `state_metadata` (Attributes) Metadata describing the backing state of the transit gateway and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--aws_vpc_peering_gateway_response--state_metadata))
 - `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--aws_vpc_peering_gateway_response--transit_gateway_attachment_config))
 - `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
@@ -350,10 +408,11 @@ transit gateway.
 - `created` - The attachment has been created but is not attached to transit gateway.
 - `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
 - `pending-acceptance` The attachment request is awaiting acceptance in customer VPC.
+- `pending-user-action` The attachment request is awaiting user action in customer VPC.
 - `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
 - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
 - `terminated` - The attachment has been fully deleted and is no longer available.
-must be one of ["created", "initializing", "pending-acceptance", "ready", "terminating", "terminated"]
+must be one of ["created", "initializing", "pending-acceptance", "pending-user-action", "ready", "terminating", "terminated"]
 - `state_metadata` (Attributes) Metadata describing the backing state of the transit gateway and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--azure_transit_gateway_response--state_metadata))
 - `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--azure_transit_gateway_response--transit_gateway_attachment_config))
 - `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
@@ -387,6 +446,61 @@ Read-Only:
 - `subscription_id` (String) Subscription ID for the Azure VNET Peering attachment.
 - `tenant_id` (String) Tenant ID for the Azure VNET Peering attachment.
 - `vnet_name` (String) VNET Name for the Azure VNET Peering attachment.
+
+
+
+<a id="nestedatt--gcpvpc_peering_gateway_response"></a>
+### Nested Schema for `gcpvpc_peering_gateway_response`
+
+Read-Only:
+
+- `created_at` (String) An RFC-3339 timestamp representation of transit gateway creation date.
+- `dns_config` (Attributes List) List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway
+attachment. (see [below for nested schema](#nestedatt--gcpvpc_peering_gateway_response--dns_config))
+- `entity_version` (Number) Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
+transit gateway.
+- `id` (String)
+- `name` (String) Human-readable name of the transit gateway.
+- `state` (String) The current state of the Transit Gateway. Possible values:
+- `created` - The attachment has been created but is not attached to transit gateway.
+- `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
+- `pending-acceptance` The attachment request is awaiting acceptance in customer VPC.
+- `pending-user-action` The attachment request is awaiting user action in customer VPC.
+- `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
+- `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
+- `terminated` - The attachment has been fully deleted and is no longer available.
+must be one of ["created", "initializing", "pending-acceptance", "pending-user-action", "ready", "terminating", "terminated"]
+- `state_metadata` (Attributes) Metadata describing the backing state of the transit gateway and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--gcpvpc_peering_gateway_response--state_metadata))
+- `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--gcpvpc_peering_gateway_response--transit_gateway_attachment_config))
+- `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
+
+<a id="nestedatt--gcpvpc_peering_gateway_response--dns_config"></a>
+### Nested Schema for `gcpvpc_peering_gateway_response.dns_config`
+
+Read-Only:
+
+- `domain_proxy_list` (List of String) Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,
+for a transit gateway.
+- `remote_dns_server_ip_addresses` (List of String) Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway.
+
+
+<a id="nestedatt--gcpvpc_peering_gateway_response--state_metadata"></a>
+### Nested Schema for `gcpvpc_peering_gateway_response.state_metadata`
+
+Read-Only:
+
+- `reason` (String) Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
+- `reported_status` (String) Reported status of the transit gateway from backing infrastructure.
+
+
+<a id="nestedatt--gcpvpc_peering_gateway_response--transit_gateway_attachment_config"></a>
+### Nested Schema for `gcpvpc_peering_gateway_response.transit_gateway_attachment_config`
+
+Read-Only:
+
+- `kind` (String) must be "gcp-vpc-peering-attachment"
+- `peer_project_id` (String) GCP Project ID of the peer account to create attachment to.
+- `peer_vpc_name` (String) GCP VPC Name of the peer account to create attachment to.
 
 ## Import
 

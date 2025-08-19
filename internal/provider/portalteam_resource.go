@@ -148,11 +148,11 @@ func (r *PortalTeamResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.V2PortalTeamResponse != nil) {
+	if !(res.PortalTeamResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedV2PortalTeamResponse(ctx, res.V2PortalTeamResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalTeamResponse(ctx, res.PortalTeamResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -212,11 +212,11 @@ func (r *PortalTeamResource) Read(ctx context.Context, req resource.ReadRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.V2PortalTeamResponse != nil) {
+	if !(res.PortalTeamResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedV2PortalTeamResponse(ctx, res.V2PortalTeamResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalTeamResponse(ctx, res.PortalTeamResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -262,11 +262,11 @@ func (r *PortalTeamResource) Update(ctx context.Context, req resource.UpdateRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.V2PortalTeamResponse != nil) {
+	if !(res.PortalTeamResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedV2PortalTeamResponse(ctx, res.V2PortalTeamResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalTeamResponse(ctx, res.PortalTeamResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

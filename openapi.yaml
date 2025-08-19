@@ -13467,145 +13467,6 @@ paths:
           $ref: '#/components/responses/ServiceUnavailable'
       tags:
         - Control Plane Groups
-  /v2/portals:
-    get:
-      x-speakeasy-entity-operation: PortalList#read
-      operationId: list-portals
-      summary: List Portals
-      description: 'Lists developer portals defined in this region for this organization. Each developer portal is available at a unique address and has isolated appearance, configuration, developers, and applications.'
-      parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
-        - $ref: '#/components/parameters/V2SortPortals'
-      responses:
-        '200':
-          $ref: '#/components/responses/V2ListPortals'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-      tags:
-        - Portals
-    post:
-      x-speakeasy-entity-operation:
-        terraform-resource: Portal#create
-        terraform-datasource: null
-      operationId: create-portal
-      summary: Create Portal
-      description: Creates a new developer portal scoped in this region for this organization.
-      requestBody:
-        $ref: '#/components/requestBodies/V2CreatePortal'
-      responses:
-        '201':
-          $ref: '#/components/responses/V2CreatePortal'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-      tags:
-        - Portals
-  '/v2/portals/{portalId}':
-    parameters:
-      - name: portalId
-        in: path
-        description: ID of the portal.
-        required: true
-        schema:
-          type: string
-          format: uuid
-        x-speakeasy-match: id
-    get:
-      x-speakeasy-entity-operation:
-        terraform-resource: Portal#read
-        terraform-datasource: null
-      operationId: get-portal
-      summary: Get Portal
-      description: 'Returns the configuration for a single developer portal. This allows you to understand the current visibility, access, and domain settings.'
-      responses:
-        '200':
-          $ref: '#/components/responses/V2GetPortal'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portals
-    patch:
-      x-speakeasy-entity-operation:
-        terraform-resource: Portal#update
-        terraform-datasource: null
-      operationId: update-portal
-      summary: Update Portal
-      description: 'Updates the configuration for a single portal including the visibility, access, and custom domain settings.'
-      requestBody:
-        $ref: '#/components/requestBodies/V2UpdatePortal'
-      responses:
-        '200':
-          $ref: '#/components/responses/V2UpdatePortal'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-      tags:
-        - Portals
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-resource: Portal#delete
-        terraform-datasource: null
-      operationId: delete-portal
-      summary: Delete Portal
-      description: 'Deletes a single portal, along with all related entities. Will not allow deletion if there are developers registered to portal or if there are portal product versions with application registration enabled, unless force=true query param is included in the request.'
-      parameters:
-        - name: force
-          in: query
-          description: 'If true, delete specified portal and all related entities, even if there are developers registered to portal or if there are portal product versions with application registration enabled. If false, do not allow deletion if there are developers registered to portal or if there are portal product versions with application registration enabled.'
-          schema:
-            type: string
-            default: 'false'
-            enum:
-              - 'true'
-              - 'false'
-      responses:
-        '204':
-          description: No Content
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portals
   '/v2/portals/{portalId}/appearance':
     get:
       x-speakeasy-entity-operation:
@@ -13655,47 +13516,6 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Appearance
-  '/v2/portals/{portalId}/authentication-settings':
-    parameters:
-      - $ref: '#/components/parameters/PortalId'
-    get:
-      x-speakeasy-entity-operation:
-        terraform-resource: PortalAuth#read
-        terraform-datasource: null
-      operationId: get-portal-authentication-settings
-      summary: Get Auth Settings
-      description: 'Returns the developer authentication configuration for a portal, which determines how developers can log in and how they are assigned to teams.'
-      responses:
-        '200':
-          $ref: '#/components/responses/V2PortalAuthenticationSettings'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-      tags:
-        - Portal Auth Settings
-    patch:
-      x-speakeasy-entity-operation:
-        terraform-resource: 'PortalAuth#create,update'
-        terraform-datasource: null
-      operationId: update-portal-authentication-settings
-      summary: Update Auth Settings
-      description: Updates the developer authentication configuration for a portal. Developers can be allowed to login using basic auth (email & password) or use Single-Sign-On (SSO) through an OIDC Identity Provider (IdP). Developers can be automatically assigned to teams by mapping claims from thier IdP account.
-      requestBody:
-        $ref: '#/components/requestBodies/V2UpdatePortalAuthenticationSettings'
-      responses:
-        '200':
-          $ref: '#/components/responses/V2PortalAuthenticationSettings'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-      tags:
-        - Portal Auth Settings
   '/v2/portals/{portalId}/product-versions/{productVersionId}':
     parameters:
       - $ref: '#/components/parameters/V2ProductVersionId'
@@ -13760,95 +13580,6 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Product Versions
-  '/v2/portals/{portalId}/teams':
-    parameters:
-      - $ref: '#/components/parameters/PortalId'
-    post:
-      x-speakeasy-entity-operation:
-        terraform-resource: PortalTeam#create
-        terraform-datasource: null
-      operationId: create-portal-team
-      summary: Create Team
-      description: Creates a developer team in a portal. Developers can be added to teams to provide RBAC access to API products. Teams can be assigned roles that grant permissions to perform an action on a resource.
-      requestBody:
-        $ref: '#/components/requestBodies/V2PortalCreateTeam'
-      responses:
-        '201':
-          $ref: '#/components/responses/V2PortalTeam'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Teams
-  '/v2/portals/{portalId}/teams/{teamId}':
-    parameters:
-      - $ref: '#/components/parameters/TeamId'
-      - $ref: '#/components/parameters/PortalId'
-    get:
-      x-speakeasy-entity-operation:
-        terraform-resource: PortalTeam#read
-        terraform-datasource: null
-      operationId: get-portal-team
-      summary: Get Team
-      description: Get an individual team.
-      responses:
-        '200':
-          $ref: '#/components/responses/V2PortalTeam'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Teams
-    patch:
-      x-speakeasy-entity-operation:
-        terraform-resource: PortalTeam#update
-        terraform-datasource: null
-      operationId: update-portal-team
-      summary: Update Team
-      description: Updates an individual developer team for a portal.
-      requestBody:
-        $ref: '#/components/requestBodies/V2PortalUpdateTeam'
-      responses:
-        '200':
-          $ref: '#/components/responses/V2PortalTeam'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Teams
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-resource: PortalTeam#delete
-        terraform-datasource: null
-      operationId: delete-portal-team
-      summary: Delete Team
-      description: 'Deletes a developer team from a portal. Deleting a team also deletes its assigned roles. Members of the team are not deleted, but they will lose any access provided through the team.'
-      responses:
-        '204':
-          description: No Content
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Teams
   '/v2/portals/{portalId}#classic':
     parameters:
       - name: portalId
@@ -13988,6 +13719,677 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Portals
+  /v3/portals:
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: Portal#create
+        terraform-datasource: null
+      operationId: create-portal
+      summary: Create Portal
+      description: Creates a new developer portal scoped in this region for this organization.
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePortal'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Portals
+  '/v3/portals/{portalId}':
+    parameters:
+      - name: portalId
+        in: path
+        description: ID of the portal.
+        required: true
+        schema:
+          type: string
+          format: uuid
+        x-speakeasy-match: id
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: Portal#read
+        terraform-datasource: null
+      operationId: get-portal
+      summary: Fetch Portal
+      description: 'Returns the configuration for a single developer portal, including the current visibility, access, and domain settings.'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portals
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: Portal#update
+        terraform-datasource: null
+      operationId: update-portal
+      summary: Update Portal
+      description: 'Updates the configuration for a single portal including the visibility, access, and custom domain settings.'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortal'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Portals
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: Portal#delete
+        terraform-datasource: null
+      operationId: delete-portal
+      summary: Delete Portal
+      description: 'Deletes a single portal, along with all related entities.'
+      parameters:
+        - name: force
+          in: query
+          description: |
+            If set to "true", the portal and all child entities will be deleted when running `terraform destroy`.
+            If set to "false", the portal will not be deleted until all child entities are manually removed.
+            This will IRREVERSIBLY DELETE ALL REGISTERED DEVELOPERS AND THEIR CREDENTIALS. Only set to "true" if you want this behavior.
+          schema:
+            type: string
+            default: 'false'
+            enum:
+              - 'true'
+              - 'false'
+          x-speakeasy-name-override: force_destroy
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portals
+  '/v3/portals/{portalId}/assets/favicon':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalFavicon#read
+        terraform-datasource: null
+      operationId: get-portal-asset-favicon
+      summary: Get Favicon
+      description: Returns the favicon of the portal.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAssetResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Assets
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: 'PortalFavicon#create,update'
+        terraform-datasource: null
+      operationId: replace-portal-asset-favicon
+      summary: Replace Favicon
+      description: Replaces the favicon of the portal. The favicon is used in the browser tab of the portal.
+      requestBody:
+        $ref: '#/components/requestBodies/ReplacePortalImageAsset'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAssetResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Assets
+  '/v3/portals/{portalId}/assets/logo':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalLogo#read
+        terraform-datasource: null
+      operationId: get-portal-asset-logo
+      summary: Get Logo
+      description: Returns the logo of the portal.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAssetResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Assets
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: 'PortalLogo#create,update'
+        terraform-datasource: null
+      operationId: replace-portal-asset-logo
+      summary: Replace Logo
+      description: Replaces the logo of the portal.
+      requestBody:
+        $ref: '#/components/requestBodies/ReplacePortalImageAsset'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAssetResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Assets
+  '/v3/portals/{portalId}/authentication-settings':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalAuth#read
+        terraform-datasource: null
+      operationId: get-portal-authentication-settings
+      summary: Get Auth Settings
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Returns the developer authentication configuration for a portal, which determines how developers can log in and how they are assigned to teams.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAuthenticationSettings'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      tags:
+        - Portal Auth Settings
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: 'PortalAuth#create,update'
+        terraform-datasource: null
+      operationId: update-portal-authentication-settings
+      summary: Update Auth Settings
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Updates the developer authentication configuration for a portal. Developers can be allowed to login using basic auth (email & password) or use Single-Sign-On (SSO) through an OIDC Identity Provider (IdP). Developers can be automatically assigned to teams by mapping claims from thier IdP account.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalAuthenticationSettings'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAuthenticationSettings'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Portal Auth Settings
+  '/v3/portals/{portalId}/custom-domain':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalCustomDomain#read
+        terraform-datasource: null
+      operationId: get-portal-custom-domain
+      summary: Get Custom Domain
+      description: Get the custom domain associated to the portal.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalCustomDomain'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Custom Domains
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalCustomDomain#create
+        terraform-datasource: null
+      operationId: create-portal-custom-domain
+      summary: Create Custom Domain
+      description: Creates the custom domain associated with the portal. Only one custom domain can be associated with a portal at a time.
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePortalCustomDomain'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalCustomDomain'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Custom Domains
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalCustomDomain#update
+        terraform-datasource: null
+      operationId: update-portal-custom-domain
+      summary: Enable or Disable Domain
+      description: Updates the portal domain associated with the portal.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalCustomDomain'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalCustomDomain'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Portal Custom Domains
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalCustomDomain#delete
+        terraform-datasource: null
+      operationId: delete-portal-custom-domain
+      summary: Remove Domain
+      description: Deletes the custom domain associated with the portal.
+      responses:
+        '204':
+          description: No Content
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Custom Domains
+  '/v3/portals/{portalId}/customization':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalCustomization#read
+        terraform-datasource: null
+      operationId: get-portal-customization
+      summary: Get Customization
+      description: Returns the portal customization options.
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalCustomizationResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Customization
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: 'PortalCustomization#create,update'
+        terraform-datasource: null
+      operationId: replace-portal-customization
+      summary: Replace Customization
+      description: Replace the portal customization options.
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+      requestBody:
+        $ref: '#/components/requestBodies/ReplacePortalCustomization'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalCustomizationResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Customization
+  '/v3/portals/{portalId}/pages':
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalPage#create
+        terraform-datasource: null
+      operationId: create-portal-page
+      summary: Create Page
+      description: 'Creates a new custom page for this portal. Custom pages can be used to display static content, documentation, or other information to developers. Title and Description properties may be provided in the frontmatter section of `content`. If you set values in both the `POST` request _and_ in the frontmatter, the values in frontmatter will take precedence.'
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePortalPage'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalPage'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Pages
+  '/v3/portals/{portalId}/pages/{pageId}':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalPage#read
+        terraform-datasource: null
+      operationId: get-portal-page
+      summary: Fetch Page
+      description: 'Returns the configuration of a single custom page for this portal. Custom pages can be used to display static content, documentation, or other information to developers.'
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/PageId'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Pages
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalPage#update
+        terraform-datasource: null
+      operationId: update-portal-page
+      summary: Update Page
+      description: Updates the configuration of a single custom page for this portal.
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/PageId'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalPage'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalPage'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Pages
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalPage#delete
+        terraform-datasource: null
+      operationId: delete-portal-page
+      summary: Delete Page
+      description: Deletes a single custom page for this portal.
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/PageId'
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Pages
+  '/v3/portals/{portalId}/snippets':
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalSnippet#create
+        terraform-datasource: null
+      operationId: create-portal-snippet
+      summary: Create Snippet
+      description: 'Creates a new custom snippet for this portal. Custom snippets can be used to display static content, documentation, or other information to developers. Title and Description properties may be provided in the frontmatter section of `content`. If you set values in both the `POST` request _and_ in the frontmatter, the values in the frontmatter will take precedence.'
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePortalSnippet'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalSnippet'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Snippets
+  '/v3/portals/{portalId}/snippets/{snippetId}':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalSnippet#read
+        terraform-datasource: null
+      operationId: get-portal-snippet
+      summary: Fetch Snippet
+      description: 'Returns the configuration of a single custom snippet for this portal. Custom snippets can be used to display static content, documentation, or other information to developers.'
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/SnippetId'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalSnippet'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Snippets
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalSnippet#update
+        terraform-datasource: null
+      operationId: update-portal-snippet
+      summary: Update Snippet
+      description: Updates the configuration of a single custom snippet for this portal.
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/SnippetId'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalSnippet'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalSnippet'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Snippets
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalSnippet#delete
+        terraform-datasource: null
+      operationId: delete-portal-snippet
+      summary: Delete Snippet
+      description: Deletes a single custom snippet for this portal.
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/SnippetId'
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Snippets
+  '/v3/portals/{portalId}/teams':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalTeam#create
+        terraform-datasource: null
+      operationId: create-portal-team
+      summary: Create Team
+      description: Creates a developer team in a portal. Developers can be added to teams to provide RBAC access to API products. Teams can be assigned roles that grant permissions to perform an action on a resource.
+      requestBody:
+        $ref: '#/components/requestBodies/PortalCreateTeam'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalTeam'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Teams
+  '/v3/portals/{portalId}/teams/{teamId}':
+    parameters:
+      - $ref: '#/components/parameters/TeamId'
+      - $ref: '#/components/parameters/PortalId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalTeam#read
+        terraform-datasource: null
+      operationId: get-portal-team
+      summary: Get Team
+      description: Get an individual team.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalTeam'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Teams
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalTeam#update
+        terraform-datasource: null
+      operationId: update-portal-team
+      summary: Update Team
+      description: Updates an individual developer team for a portal.
+      requestBody:
+        $ref: '#/components/requestBodies/PortalUpdateTeam'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalTeam'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Teams
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalTeam#delete
+        terraform-datasource: null
+      operationId: delete-portal-team
+      summary: Delete Team
+      description: 'Deletes a developer team from a portal. Deleting a team also deletes its assigned roles. Members of the team are not deleted, but they will lose any access provided through the team.'
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Teams
   /v3/system-accounts:
     post:
       x-speakeasy-entity-operation:
@@ -14806,6 +15208,16 @@ components:
       schema:
         $ref: '#/components/schemas/NetworkId'
       x-speakeasy-match: id
+    PageId:
+      schema:
+        type: string
+        format: uuid
+        example: ebbac5b0-ac89-45c3-9d2e-c4542c657e79
+      name: pageId
+      in: path
+      required: true
+      description: ID of the page.
+      x-speakeasy-match: id
     PageNumber:
       name: 'page[number]'
       description: Determines which page of the entities to retrieve.
@@ -14884,6 +15296,16 @@ components:
       required: true
       schema:
         type: string
+      x-speakeasy-match: id
+    SnippetId:
+      schema:
+        type: string
+        format: uuid
+        example: ebbac5b0-ac89-45c3-9d2e-c4542c657e79
+      name: snippetId
+      in: path
+      required: true
+      description: ID of the snippet.
       x-speakeasy-match: id
     TargetId:
       description: ID of the Target to lookup
@@ -15224,6 +15646,7 @@ components:
         pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
         minLength: 1
         maxLength: 63
+        nullable: true
       maxProperties: 50
       title: Labels
     ProxyURL:
@@ -16222,6 +16645,7 @@ components:
         - `created` - The attachment has been created but is not attached to transit gateway.
         - `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
         - `pending-acceptance` The attachment request is awaiting acceptance in customer VPC.
+        - `pending-user-action` The attachment request is awaiting user action in customer VPC.
         - `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
         - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
         - `terminated` - The attachment has been fully deleted and is no longer available.
@@ -16230,6 +16654,7 @@ components:
         - created
         - initializing
         - pending-acceptance
+        - pending-user-action
         - ready
         - terminating
         - terminated
@@ -16307,6 +16732,27 @@ components:
         - resource_group_name
         - vnet_name
       title: Azure VNET Peering Attachment Config
+    GCPVPCPeeringAttachmentConfig:
+      type: object
+      properties:
+        kind:
+          enum:
+            - gcp-vpc-peering-attachment
+          title: GCP VPC Peering Attachment Type
+        peer_project_id:
+          description: GCP Project ID of the peer account to create attachment to.
+          type: string
+          title: GCP Project ID
+        peer_vpc_name:
+          description: GCP VPC Name of the peer account to create attachment to.
+          type: string
+          title: GCP VPC Name
+      additionalProperties: false
+      required:
+        - kind
+        - peer_project_id
+        - peer_vpc_name
+      title: GCP VPC Peering Attachment Config
     TransitGatewayDnsConfig:
       description: |
         List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway
@@ -16760,11 +17206,72 @@ components:
         - created_at
         - updated_at
       title: Azure Transit Gateway
+    GCPVPCPeeringGatewayResponse:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+        transit_gateway_attachment_config:
+          $ref: '#/components/schemas/GCPVPCPeeringAttachmentConfig'
+        id:
+          $ref: '#/components/schemas/TransitGatewayId'
+        state:
+          $ref: '#/components/schemas/TransitGatewayState'
+        state_metadata:
+          description: |
+            Metadata describing the backing state of the transit gateway and why it may be in an erroneous state.
+          type: object
+          additionalProperties: false
+          properties:
+            reported_status:
+              description: Reported status of the transit gateway from backing infrastructure.
+              type: string
+              example: ERROR
+            reason:
+              description: |
+                Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
+              type: string
+              example: |
+                Transit Gateway Attachment configuration could not find a resource with the provided ram share arn.
+          readOnly: true
+          title: TransitGatewayStateMetadata
+        entity_version:
+          description: |
+            Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
+            transit gateway.
+          type: integer
+          example: 1
+          readOnly: true
+        created_at:
+          description: An RFC-3339 timestamp representation of transit gateway creation date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        updated_at:
+          description: An RFC-3339 timestamp representation of transit gateway update date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+      required:
+        - name
+        - transit_gateway_attachment_config
+        - id
+        - dns_config
+        - state
+        - entity_version
+        - created_at
+        - updated_at
+      title: GCP VPC Peering Transit Gateway
     TransitGatewayResponse:
       oneOf:
         - $ref: '#/components/schemas/AwsTransitGatewayResponse'
         - $ref: '#/components/schemas/AwsVpcPeeringGatewayResponse'
         - $ref: '#/components/schemas/AzureTransitGatewayResponse'
+        - $ref: '#/components/schemas/GCPVPCPeeringGatewayResponse'
     CreateAwsTransitGateway:
       type: object
       properties:
@@ -16813,6 +17320,20 @@ components:
         - transit_gateway_attachment_config
       title: Azure Transit Gateway
       x-speakeasy-name-override: AzureTransitGateway
+    CreateGCPVPCPeeringTransitGateway:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+        transit_gateway_attachment_config:
+          $ref: '#/components/schemas/GCPVPCPeeringAttachmentConfig'
+      required:
+        - name
+        - transit_gateway_attachment_config
+      title: GCP VPC Peering Transit Gateway
+      x-speakeasy-name-override: GcpVpcPeeringTransitGateway
     CreateTransitGatewayRequest:
       description: Request schema for creating a transit gateway.
       type: object
@@ -16820,6 +17341,7 @@ components:
         - $ref: '#/components/schemas/CreateAwsTransitGateway'
         - $ref: '#/components/schemas/CreateAwsVpcPeeringGateway'
         - $ref: '#/components/schemas/CreateAzureTransitGateway'
+        - $ref: '#/components/schemas/CreateGCPVPCPeeringTransitGateway'
       title: CreateTransitGatewayRequest
     CustomDomainState:
       description: State of the custom domain.
@@ -18176,22 +18698,26 @@ components:
           description: JSON-B object containing the configuration for the OIDC strategy under the key 'openid-connect' or the configuration for the Key Auth strategy under the key 'key-auth'
           type: object
           oneOf:
-            - type: object
-              additionalProperties: false
-              required:
-                - openid-connect
-              properties:
-                openid-connect:
-                  $ref: '#/components/schemas/PartialAppAuthStrategyConfigOpenIDConnect'
-            - type: object
-              additionalProperties: false
-              required:
-                - key-auth
-              properties:
-                key-auth:
-                  $ref: '#/components/schemas/AppAuthStrategyConfigKeyAuth'
+            - $ref: '#/components/schemas/UpdateAppAuthStrategyRequestOpenIdConnect'
+            - $ref: '#/components/schemas/UpdateAppAuthStrategyRequestKeyAuth'
       additionalProperties: false
       title: UpdateAppAuthStrategyRequest
+    UpdateAppAuthStrategyRequestOpenIdConnect:
+      type: object
+      properties:
+        openid-connect:
+          $ref: '#/components/schemas/PartialAppAuthStrategyConfigOpenIDConnect'
+      additionalProperties: false
+      required:
+        - openid-connect
+    UpdateAppAuthStrategyRequestKeyAuth:
+      type: object
+      properties:
+        key-auth:
+          $ref: '#/components/schemas/AppAuthStrategyConfigKeyAuth'
+      additionalProperties: false
+      required:
+        - key-auth
     CreateAppAuthStrategyResponse:
       $ref: '#/components/schemas/AppAuthStrategy'
     UpdateAppAuthStrategyResponse:
@@ -19331,6 +19857,1733 @@ components:
         - id
         - name
         - display_name
+    V2ListPortalsResponse:
+      description: A paginated list of portals in the current region in the organization.
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/V2Portal'
+      example:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 1
+        data:
+          - id: 8f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            created_at: '2022-02-07T17:46:57.52Z'
+            updated_at: '2022-10-08T17:00:00.52Z'
+            name: Portal A
+            display_name: Developer Portal A
+            description: The Portal A
+            default_domain: 123455678abcd.us.portal.konghq.com
+            is_public: false
+            rbac_enabled: true
+            auto_approve_applications: false
+            auto_approve_developers: true
+            custom_domain: api.example.com
+            custom_client_domain: portal.example.com
+            application_count: 0
+            developer_count: 0
+            published_product_count: 0
+      additionalProperties: false
+      required:
+        - data
+        - meta
+    V2PortalProductVersionPublishStatus:
+      description: Publication status of the API product version on the portal
+      type: string
+      enum:
+        - published
+        - unpublished
+    V2PortalProductVersionDeprecated:
+      description: Whether the api product version on the portal is deprecated
+      type: boolean
+    V2NotifyDevelopers:
+      description: Whether to notify developers who are affected by this change
+      type: boolean
+      title: NotifyDevelopers
+    V2ApplicationRegistrationEnabled:
+      description: Whether the application registration on this portal for the api product version is enabled
+      type: boolean
+    V2AutoApproveRegistration:
+      description: Whether the application registration auto approval on this portal for the api product version is enabled
+      type: boolean
+    V2AuthStrategies:
+      description: A list of authentication strategies
+      type: array
+      items:
+        $ref: '#/components/schemas/AuthStrategy'
+      maxItems: 1
+      minItems: 0
+    V2AuthStrategyIDs:
+      description: A list of authentication strategy IDs
+      type: array
+      items:
+        $ref: '#/components/schemas/UUID_RW'
+      maxItems: 1
+      minItems: 0
+    V2ReplacePortalProductVersionPayload:
+      description: Payload to update a Portal Product Version
+      type: object
+      properties:
+        publish_status:
+          $ref: '#/components/schemas/V2PortalProductVersionPublishStatus'
+        auth_strategy_ids:
+          $ref: '#/components/schemas/V2AuthStrategyIDs'
+        application_registration_enabled:
+          $ref: '#/components/schemas/V2ApplicationRegistrationEnabled'
+        auto_approve_registration:
+          $ref: '#/components/schemas/V2AutoApproveRegistration'
+        deprecated:
+          $ref: '#/components/schemas/V2PortalProductVersionDeprecated'
+        notify_developers:
+          $ref: '#/components/schemas/V2NotifyDevelopers'
+      additionalProperties: false
+      required:
+        - publish_status
+        - application_registration_enabled
+        - auto_approve_registration
+        - deprecated
+        - auth_strategy_ids
+      title: ReplacePortalProductVersionPayload
+    V2PortalProductVersion:
+      description: |
+        A Portal Product Version holds metadata that describes how a Product Version is configured for a specific portal.
+
+        It contains:
+        - Lifecyle and deprecation statuses
+        - Application registration settings like auto approve or whether application registration is enabled
+        - The Authentication Strategy (if present) that is enabled for Application Registration
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        publish_status:
+          $ref: '#/components/schemas/V2PortalProductVersionPublishStatus'
+        product_version_id:
+          $ref: '#/components/schemas/UUID_RW'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        auth_strategies:
+          $ref: '#/components/schemas/V2AuthStrategies'
+        application_registration_enabled:
+          $ref: '#/components/schemas/V2ApplicationRegistrationEnabled'
+        auto_approve_registration:
+          $ref: '#/components/schemas/V2AutoApproveRegistration'
+        deprecated:
+          $ref: '#/components/schemas/V2PortalProductVersionDeprecated'
+      additionalProperties: false
+      required:
+        - id
+        - publish_status
+        - application_registration_enabled
+        - auto_approve_registration
+        - product_version_id
+        - deprecated
+        - auth_strategies
+        - created_at
+        - updated_at
+      title: PortalProductVersion
+    V2GetPortalResponse:
+      $ref: '#/components/schemas/V2Portal'
+    V2UpdatePortalResponse:
+      $ref: '#/components/schemas/V2Portal'
+    V2CreatePortalResponse:
+      $ref: '#/components/schemas/V2Portal'
+    V2GetPortalAppearanceResponse:
+      example:
+        theme_name: custom
+        use_custom_fonts: true
+        custom_theme:
+          colors:
+            section:
+              header:
+                value: '#F8F8F8'
+                description: Background for header
+              body:
+                value: '#FFFFFF'
+                description: Background for main content
+              hero:
+                value: '#F8F8F8'
+                description: Background for hero section
+              accent:
+                value: '#F8F8F8'
+                description: Subtle background
+              tertiary:
+                value: '#FFFFFF'
+                description: Tertiary background
+              stroke:
+                value: 'rgba(0,0,0,0.1)'
+                description: Border color
+              footer:
+                value: '#07A88D'
+                description: Background for footer
+            text:
+              header:
+                value: 'rgba(0,0,0,0.8)'
+                description: Header text
+              hero:
+                value: '#FFFFFF'
+                description: Hero text
+              headings:
+                value: 'rgba(0,0,0,0.8)'
+                description: Headings text
+              primary:
+                value: 'rgba(0,0,0,0.8)'
+                description: Main content text
+              secondary:
+                value: 'rgba(0,0,0,0.8)'
+                description: Supporting text
+              accent:
+                value: '#07A88D'
+                description: Subtle text
+              link:
+                value: '#07A88D'
+                description: Link text
+              footer:
+                value: '#FFFFFF'
+                description: Footer text
+            button:
+              primary_fill:
+                value: '#1155CB'
+                description: Background for Primary Button
+              primary_text:
+                value: '#FFFFFF'
+                description: Text for Primary Button
+        custom_fonts:
+          base: Roboto
+          code: Roboto
+          headings: Roboto
+        text:
+          catalog:
+            welcome_message: Welcome
+            primary_header: Come on in!
+        images:
+          favicon:
+            data: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+            filename: favicon.ico
+          logo:
+            data: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+            filename: logo.png
+          catalog_cover:
+            data: 'data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+      allOf:
+        - $ref: '#/components/schemas/V2PortalAppearance'
+        - type: object
+          required:
+            - theme_name
+            - use_custom_fonts
+            - custom_theme
+            - custom_fonts
+            - text
+            - images
+    V2UpdatePortalAppearanceResponse:
+      example:
+        theme_name: custom
+        use_custom_fonts: true
+        custom_theme:
+          colors:
+            section:
+              header:
+                value: '#F8F8F8'
+                description: Background for header
+              body:
+                value: '#FFFFFF'
+                description: Background for main content
+              hero:
+                value: '#F8F8F8'
+                description: Background for hero section
+              accent:
+                value: '#F8F8F8'
+                description: Subtle background
+              tertiary:
+                value: '#FFFFFF'
+                description: Tertiary background
+              stroke:
+                value: 'rgba(0,0,0,0.1)'
+                description: Border color
+              footer:
+                value: '#07A88D'
+                description: Background for footer
+            text:
+              header:
+                value: 'rgba(0,0,0,0.8)'
+                description: Header text
+              hero:
+                value: '#FFFFFF'
+                description: Hero text
+              headings:
+                value: 'rgba(0,0,0,0.8)'
+                description: Headings text
+              primary:
+                value: 'rgba(0,0,0,0.8)'
+                description: Main content text
+              secondary:
+                value: 'rgba(0,0,0,0.8)'
+                description: Supporting text
+              accent:
+                value: '#07A88D'
+                description: Subtle text
+              link:
+                value: '#07A88D'
+                description: Link text
+              footer:
+                value: '#FFFFFF'
+                description: Footer text
+            button:
+              primary_fill:
+                value: '#1155CB'
+                description: Background for Primary Button
+              primary_text:
+                value: '#FFFFFF'
+                description: Text for Primary Button
+        custom_fonts:
+          base: Roboto
+          code: Roboto
+          headings: Roboto
+        text:
+          catalog:
+            welcome_message: Welcome
+            primary_header: Come on in!
+        images:
+          favicon:
+            data: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+            filename: favicon.ico
+          logo:
+            data: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+            filename: logo.png
+          catalog_cover:
+            data: 'data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+      allOf:
+        - $ref: '#/components/schemas/V2PortalAppearance'
+        - type: object
+          required:
+            - theme_name
+            - use_custom_fonts
+            - custom_theme
+            - custom_fonts
+            - text
+            - images
+    V2Portal:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        name:
+          $ref: '#/components/schemas/V2PortalName'
+        display_name:
+          $ref: '#/components/schemas/V2PortalDisplayName'
+        description:
+          $ref: '#/components/schemas/V2PortalDescription'
+        default_domain:
+          description: The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
+          type: string
+          format: hostname
+          readOnly: true
+        is_public:
+          description: Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.
+          type: boolean
+        rbac_enabled:
+          description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for products until unless assigned to teams with access to view and consume specific products.'
+          type: boolean
+        auto_approve_applications:
+          description: 'Whether the requests from applications to register for products will be automatically approved, or if they will be set to pending until approved by an admin.'
+          type: boolean
+        auto_approve_developers:
+          description: 'Whether the developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.'
+          type: boolean
+        custom_domain:
+          description: 'The custom domain to access the developer portal. A CNAME for the portal''s default domain must be able to be set for the custom domain for it to be valid. After setting a valid CNAME, an SSL/TLS certificate will be automatically manged for the custom domain, and traffic will be able to use the custom domain to route to the portal''s web client and API.'
+          type: string
+          format: hostname
+          nullable: true
+        custom_client_domain:
+          description: 'The custom domain to access a self-hosted customized developer portal client. If this is set, the Konnect-hosted portal client will no longer be available. `custom_domain` must be also set for this value to be set. See https://github.com/Kong/konnect-portal for information on how to get started deploying and customizing your own Konnect portal.'
+          type: string
+          format: hostname
+          nullable: true
+        default_application_auth_strategy_id:
+          $ref: '#/components/schemas/V2DefaultApplicationAuthStratID'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        application_count:
+          description: Number of applications created in the portal.
+          type: number
+        developer_count:
+          description: Number of developers using the portal.
+          type: number
+        published_product_count:
+          description: Number of api products published to the portal
+          type: number
+      example:
+        id: 9f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        created_at: '2022-02-07T17:46:57.52Z'
+        updated_at: '2022-10-08T17:00:00.52Z'
+        name: Portal A
+        display_name: Developer Portal A
+        description: The Portal A
+        default_domain: 123455678abcd.us.portal.konghq.com
+        is_public: false
+        rbac_enabled: true
+        auto_approve_applications: false
+        auto_approve_developers: true
+        custom_domain: api.example.com
+        custom_client_domain: portal.example.com
+        application_count: 0
+        developer_count: 0
+        published_product_count: 0
+      additionalProperties: false
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+        - display_name
+        - default_domain
+        - is_public
+        - rbac_enabled
+        - auto_approve_applications
+        - auto_approve_developers
+        - custom_domain
+        - custom_client_domain
+        - description
+        - application_count
+        - developer_count
+        - published_product_count
+    V2PortalDescription:
+      description: The description of the portal.
+      type: string
+      maxLength: 512
+      nullable: true
+    V2DefaultApplicationAuthStratID:
+      description: Default strategy ID applied on applications for the portal
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      nullable: true
+    V2CreatePortalRequest:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/V2PortalName'
+        display_name:
+          $ref: '#/components/schemas/V2PortalDisplayName'
+        description:
+          $ref: '#/components/schemas/V2PortalDescription'
+        is_public:
+          description: Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.
+          type: boolean
+        rbac_enabled:
+          description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for products until unless assigned to teams with access to view and consume specific products.'
+          type: boolean
+        auto_approve_applications:
+          description: 'Whether the requests from applications to register for products will be automatically approved, or if they will be set to pending until approved by an admin.'
+          type: boolean
+        auto_approve_developers:
+          description: 'Whether the developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.'
+          type: boolean
+        custom_domain:
+          description: 'The custom domain to access the developer portal. A CNAME for the portal''s default domain must be able to be set for the custom domain for it to be valid. After setting a valid CNAME, an SSL/TLS certificate will be automatically manged for the custom domain, and traffic will be able to use the custom domain to route to the portal''s web client and API.'
+          type: string
+          format: hostname
+          maxLength: 1024
+          nullable: true
+        custom_client_domain:
+          description: 'The custom domain to access a self-hosted customized developer portal client. If this is set, the Konnect-hosted portal will no longer be available.  `custom_domain` must be also set for this value to be set. See https://github.com/Kong/konnect-portal for information on how to get started deploying and customizing your own Konnect portal.'
+          type: string
+          format: hostname
+          maxLength: 1024
+          nullable: true
+        default_application_auth_strategy_id:
+          $ref: '#/components/schemas/V2DefaultApplicationAuthStratID'
+        labels:
+          $ref: '#/components/schemas/Labels'
+      example:
+        name: DevPortal
+        is_public: false
+        rbac_enabled: true
+        auto_approve_applications: false
+        auto_approve_developers: false
+        custom_domain: api.example.com
+        custom_client_domain: portal.example.com
+        default_application_auth_strategy_id: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      additionalProperties: false
+      required:
+        - name
+    V2PortalName:
+      description: 'The name of the portal, used to distinguish it from other portals. Name must be unique.'
+      type: string
+      maxLength: 255
+      minLength: 1
+    V2PortalDisplayName:
+      description: The display name of the portal. This value will be the portal's `name` in Portal API.
+      type: string
+      maxLength: 255
+      minLength: 1
+    V2UpdatePortalRequest:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/V2PortalName'
+        display_name:
+          $ref: '#/components/schemas/V2PortalDisplayName'
+        description:
+          $ref: '#/components/schemas/V2PortalDescription'
+        is_public:
+          description: Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.
+          type: boolean
+        rbac_enabled:
+          description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for products until unless assigned to teams with access to view and consume specific products.'
+          type: boolean
+        auto_approve_applications:
+          description: 'Whether the requests from applications to register for products will be automatically approved, or if they will be set to pending until approved by an admin.'
+          type: boolean
+        auto_approve_developers:
+          description: 'Whether the developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.'
+          type: boolean
+        custom_domain:
+          description: 'The custom domain to access the developer portal. A CNAME for the portal''s default domain must be able to be set for the custom domain for it to be valid. After setting a valid CNAME, an SSL/TLS certificate will be automatically manged for the custom domain, and traffic will be able to use the custom domain to route to the portal''s web client and API.'
+          type: string
+          format: hostname
+          maxLength: 1024
+          nullable: true
+        custom_client_domain:
+          description: 'The custom domain to access a self-hosted customized developer portal client. If this is set, the Konnect-hosted portal will no longer be available.  `custom_domain` must be also set for this value to be set. See https://github.com/Kong/konnect-portal for information on how to get started deploying and customizing your own Konnect portal.'
+          type: string
+          format: hostname
+          maxLength: 1024
+          nullable: true
+        default_application_auth_strategy_id:
+          $ref: '#/components/schemas/V2DefaultApplicationAuthStratID'
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
+      example:
+        name: Aperture
+        is_public: false
+        rbac_enabled: true
+        auto_approve_applications: false
+        auto_approve_developers: false
+        custom_domain: api.example.com
+        custom_client_domain: portal.example.com
+        default_application_auth_strategy_id: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      additionalProperties: false
+    V2UpdatePortalAppearanceRequest:
+      $ref: '#/components/schemas/V2PortalAppearance'
+    V2AppearanceColorVariable:
+      type: object
+      properties:
+        value:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          maxLength: 512
+      example:
+        value: '#000000'
+        description: The color for a type of thing
+      additionalProperties: false
+      required:
+        - value
+    V2AppearanceThemeColorVariables:
+      type: object
+      properties:
+        section:
+          type: object
+          additionalProperties: false
+          properties:
+            header:
+              $ref: '#/components/schemas/V2AppearanceColorVariable'
+            body:
+              $ref: '#/components/schemas/V2AppearanceColorVariable'
+            hero:
+              $ref: '#/components/schemas/V2AppearanceColorVariable'
+            accent:
+              $ref: '#/components/schemas/V2AppearanceColorVariable'
+            tertiary:
+              $ref: '#/components/schemas/V2AppearanceColorVariable'
+            stroke:
+              $ref: '#/components/schemas/V2AppearanceColorVariable'
+            footer:
+              $ref: '#/components/schemas/V2AppearanceColorVariable'
+          required:
+            - header
+            - body
+            - hero
+            - accent
+            - tertiary
+            - stroke
+            - footer
+        text:
+          type: object
+          additionalProperties: false
+          properties:
+            header:
+              $ref: '#/components/schemas/V2AppearanceColorVariable'
+            hero:
+              $ref: '#/components/schemas/V2AppearanceColorVariable'
+            headings:
+              $ref: '#/components/schemas/V2AppearanceColorVariable'
+            primary:
+              $ref: '#/components/schemas/V2AppearanceColorVariable'
+            secondary:
+              $ref: '#/components/schemas/V2AppearanceColorVariable'
+            accent:
+              $ref: '#/components/schemas/V2AppearanceColorVariable'
+            link:
+              $ref: '#/components/schemas/V2AppearanceColorVariable'
+            footer:
+              $ref: '#/components/schemas/V2AppearanceColorVariable'
+          required:
+            - header
+            - hero
+            - headings
+            - primary
+            - secondary
+            - accent
+            - link
+            - footer
+        button:
+          type: object
+          additionalProperties: false
+          properties:
+            primary_fill:
+              $ref: '#/components/schemas/V2AppearanceColorVariable'
+            primary_text:
+              $ref: '#/components/schemas/V2AppearanceColorVariable'
+          required:
+            - primary_fill
+            - primary_text
+      example:
+        section:
+          header:
+            value: '#0A161E'
+            description: Background for header
+          body:
+            value: '#0C0C0C'
+            description: Background for main content
+          hero:
+            value: '#1A1D21'
+            description: Background for hero section
+          accent:
+            value: '#1F1F1F'
+            description: Subtle background
+          tertiary:
+            value: '#222529'
+            description: Tertiary background
+          stroke:
+            value: '#34393F'
+            description: Border color
+          footer:
+            value: '#212429'
+            description: Background for footer
+        text:
+          header:
+            value: '#FFFFFF'
+            description: Header text
+          hero:
+            value: 'rgba(255,255,255,0.8)'
+            description: Hero text
+          headings:
+            value: '#FFFFFF'
+            description: Headings text
+          primary:
+            value: '#C8C8C9'
+            description: Main content text
+          secondary:
+            value: '#919294'
+            description: Supporting text
+          accent:
+            value: '#FFFFFF'
+            description: Subtle text
+          link:
+            value: '#2977FF'
+            description: Link text
+          footer:
+            value: '#FFFFFF'
+            description: Footer text
+        button:
+          primary_fill:
+            value: '#1155CB'
+            description: Background for Primary Button
+          primary_text:
+            value: '#FFFFFF'
+            description: Text for Primary Button
+      additionalProperties: false
+      required:
+        - section
+        - text
+        - button
+    V2NullableAppearanceThemeVariables:
+      description: Groups of variables for configuring visual details of the portal user interface. Set theme_name to 'custom' to use custom values for theme variables.
+      type: object
+      properties:
+        colors:
+          $ref: '#/components/schemas/V2AppearanceThemeColorVariables'
+      example:
+        colors:
+          section:
+            header:
+              value: '#F8F8F8'
+              description: Background for header
+            body:
+              value: '#FFFFFF'
+              description: Background for main content
+            hero:
+              value: '#F8F8F8'
+              description: Background for hero section
+            accent:
+              value: '#F8F8F8'
+              description: Subtle background
+            tertiary:
+              value: '#FFFFFF'
+              description: Tertiary background
+            stroke:
+              value: 'rgba(0,0,0,0.1)'
+              description: Border color
+            footer:
+              value: '#07A88D'
+              description: Background for footer
+          text:
+            header:
+              value: 'rgba(0,0,0,0.8)'
+              description: Header text
+            hero:
+              value: '#FFFFFF'
+              description: Hero text
+            headings:
+              value: 'rgba(0,0,0,0.8)'
+              description: Headings text
+            primary:
+              value: 'rgba(0,0,0,0.8)'
+              description: Main content text
+            secondary:
+              value: 'rgba(0,0,0,0.8)'
+              description: Supporting text
+            accent:
+              value: '#07A88D'
+              description: Subtle text
+            link:
+              value: '#07A88D'
+              description: Link text
+            footer:
+              value: '#FFFFFF'
+              description: Footer text
+          button:
+            primary_fill:
+              value: '#1155CB'
+              description: Background for Primary Button
+            primary_text:
+              value: '#FFFFFF'
+              description: Text for Primary Button
+      additionalProperties: false
+      nullable: true
+      required:
+        - colors
+      title: AppearanceThemeVariables
+    V2NullableAppearanceFonts:
+      description: Font selections to render text in the portal user interface. Must set use_custom_fonts to true to enable using custom font values.
+      type: object
+      properties:
+        base:
+          $ref: '#/components/schemas/V2AppearanceFontName'
+        code:
+          $ref: '#/components/schemas/V2AppearanceFontName'
+        headings:
+          $ref: '#/components/schemas/V2AppearanceFontName'
+      additionalProperties: false
+      nullable: true
+      required:
+        - base
+        - code
+        - headings
+    V2AppearanceFontName:
+      description: The name of the font to render in the browser.
+      type: string
+      example: Roboto
+      enum:
+        - Roboto
+        - Inter
+        - Open Sans
+        - Lato
+        - Slabo 27px
+        - Slabo 13px
+        - Oswald
+        - Source Sans Pro
+        - Montserrat
+        - Raleway
+        - PT Sans
+        - Lora
+        - Roboto Mono
+        - Inconsolata
+        - Source Code Pro
+        - PT Mono
+        - Ubuntu Mono
+        - IBM Plex Mono
+    V2AppearanceImage:
+      description: 'The image data to upload, along with an optional filename. Images must be a data URL with binary image data in base 64 format. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.'
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/ImageDataUri'
+        filename:
+          type: string
+          maxLength: 512
+      example:
+        data: 'data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+      additionalProperties: false
+      nullable: true
+      required:
+        - data
+    V2AppearanceImages:
+      description: A collection of binary image data to customize images in the portal
+      type: object
+      properties:
+        logo:
+          $ref: '#/components/schemas/V2AppearanceImage'
+        favicon:
+          $ref: '#/components/schemas/V2AppearanceImage'
+        catalog_cover:
+          $ref: '#/components/schemas/V2AppearanceImage'
+      example:
+        logo:
+          data: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+        favicon:
+          data: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+        catalog_cover:
+          data: 'data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+      additionalProperties: false
+      nullable: true
+    V2NullableAppearanceTextVariables:
+      description: Values to display for customizable text in the portal user interface
+      type: object
+      properties:
+        catalog:
+          type: object
+          additionalProperties: false
+          properties:
+            welcome_message:
+              type: string
+              maxLength: 512
+            primary_header:
+              type: string
+              maxLength: 512
+          required:
+            - welcome_message
+            - primary_header
+      example:
+        catalog:
+          welcome_message: Welcome to our service catalog
+          primary_header: Find All of Our Services in a Single Place
+      additionalProperties: false
+      nullable: true
+      required:
+        - catalog
+    V2PortalAppearance:
+      type: object
+      properties:
+        theme_name:
+          $ref: '#/components/schemas/V2PortalTheme'
+        custom_theme:
+          $ref: '#/components/schemas/V2NullableAppearanceThemeVariables'
+        custom_fonts:
+          $ref: '#/components/schemas/V2NullableAppearanceFonts'
+        use_custom_fonts:
+          description: 'If true, fonts in custom_fonts will be used over the theme''s default fonts'
+          type: boolean
+        text:
+          $ref: '#/components/schemas/V2NullableAppearanceTextVariables'
+        images:
+          $ref: '#/components/schemas/V2AppearanceImages'
+      example:
+        theme_name: custom
+        use_custom_fonts: true
+        custom_theme:
+          colors:
+            section:
+              header:
+                value: '#F8F8F8'
+                description: Background for header
+              body:
+                value: '#FFFFFF'
+                description: Background for main content
+              hero:
+                value: '#F8F8F8'
+                description: Background for hero section
+              accent:
+                value: '#F8F8F8'
+                description: Subtle background
+              tertiary:
+                value: '#FFFFFF'
+                description: Tertiary background
+              stroke:
+                value: 'rgba(0,0,0,0.1)'
+                description: Border color
+              footer:
+                value: '#07A88D'
+                description: Background for footer
+            text:
+              header:
+                value: 'rgba(0,0,0,0.8)'
+                description: Header text
+              hero:
+                value: '#FFFFFF'
+                description: Hero text
+              headings:
+                value: 'rgba(0,0,0,0.8)'
+                description: Headings text
+              primary:
+                value: 'rgba(0,0,0,0.8)'
+                description: Main content text
+              secondary:
+                value: 'rgba(0,0,0,0.8)'
+                description: Supporting text
+              accent:
+                value: '#07A88D'
+                description: Subtle text
+              link:
+                value: '#07A88D'
+                description: Link text
+              footer:
+                value: '#FFFFFF'
+                description: Footer text
+            button:
+              primary_fill:
+                value: '#1155CB'
+                description: Background for Primary Button
+              primary_text:
+                value: '#FFFFFF'
+                description: Text for Primary Button
+        custom_fonts:
+          base: Roboto
+          code: Roboto
+          headings: Roboto
+        text:
+          catalog:
+            welcome_message: Welcome
+            primary_header: Come one in!
+        images:
+          favicon:
+            data: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+            filename: favicon.ico
+          logo:
+            data: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+            filename: logo.png
+          catalog_cover:
+            data: 'data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+      additionalProperties: false
+    V2PortalTheme:
+      description: Select a pre-existing default theme or specify 'custom' to use custom_theme variables.
+      type: string
+      example: mint_rocket
+      enum:
+        - mint_rocket
+        - dark_mode
+        - custom
+    UUID_RW:
+      description: Contains a unique identifier used for this resource.
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+    AuthStrategyKeyAuth:
+      description: KeyAuth Auth strategy that the application uses.
+      type: object
+      properties:
+        id:
+          description: The Application Auth Strategy ID.
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          readOnly: true
+        name:
+          type: string
+          example: name
+        credential_type:
+          type: string
+          enum:
+            - key_auth
+        key_names:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - credential_type
+        - key_names
+    AuthMethods:
+      type: array
+      items:
+        description: Auth Methods enabled for this strategy
+        type: string
+      example:
+        - bearer
+    AvailableScopes:
+      description: Possible developer selectable scopes for an application. Only present when using DCR Provider that supports it.
+      type: array
+      items:
+        type: string
+      example:
+        - scope1
+        - scope2
+    AuthStrategyClientCredentials:
+      description: Client Credential Auth strategy that the application uses.
+      type: object
+      properties:
+        id:
+          description: The Application Auth Strategy ID.
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          readOnly: true
+        name:
+          type: string
+          example: name
+        credential_type:
+          type: string
+          enum:
+            - client_credentials
+            - self_managed_client_credentials
+        auth_methods:
+          $ref: '#/components/schemas/AuthMethods'
+        available_scopes:
+          $ref: '#/components/schemas/AvailableScopes'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - credential_type
+        - auth_methods
+    AuthStrategy:
+      type: object
+      discriminator:
+        propertyName: credential_type
+        mapping:
+          key_auth: '#/components/schemas/AuthStrategyKeyAuth'
+          client_credentials: '#/components/schemas/AuthStrategyClientCredentials'
+          self_managed_client_credentials: '#/components/schemas/AuthStrategyClientCredentials'
+      oneOf:
+        - $ref: '#/components/schemas/AuthStrategyKeyAuth'
+        - $ref: '#/components/schemas/AuthStrategyClientCredentials'
+    ImageDataUri:
+      description: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
+      type: string
+      format: uri
+      example: 'data:image/png,YW5faW1hZ2VfZmlsZQ=='
+      pattern: '^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
+      title: ImageDataUri
+      x-validation-message: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
+    PortalMenuItem:
+      type: object
+      properties:
+        path:
+          description: The absolute path of a page in a portal with a leading slash.
+          type: string
+          example: /about/company
+          maxLength: 512
+        title:
+          description: The link display text
+          type: string
+          example: My Page
+        visibility:
+          description: Whether a menu item is public or private. Private menu items are only accessible to authenticated users.
+          type: string
+          example: public
+          enum:
+            - public
+            - private
+        external:
+          description: 'When clicked, open the link in a new window'
+          type: boolean
+      additionalProperties: false
+      required:
+        - path
+        - title
+        - visibility
+        - external
+    PortalFooterMenuSection:
+      type: object
+      properties:
+        title:
+          description: The footer menu section title
+          type: string
+          maxLength: 512
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalMenuItem'
+      additionalProperties: false
+      required:
+        - title
+        - items
+    PortalCustomization:
+      description: The custom settings of this portal
+      type: object
+      properties:
+        theme:
+          type: object
+          additionalProperties: false
+          properties:
+            name:
+              type: string
+              nullable: false
+            mode:
+              type: string
+              enum:
+                - light
+                - dark
+                - system
+            colors:
+              type: object
+              additionalProperties: false
+              properties:
+                primary:
+                  type: string
+                  example: '#000000'
+                  nullable: false
+                  pattern: '^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$'
+                  x-validation-message: must be a valid hex color value
+        layout:
+          type: string
+          nullable: false
+        css:
+          type: string
+          nullable: true
+        menu:
+          type: object
+          additionalProperties: false
+          properties:
+            main:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalMenuItem'
+            footer_sections:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalFooterMenuSection'
+            footer_bottom:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalMenuItem'
+        spec_renderer:
+          type: object
+          additionalProperties: false
+          properties:
+            try_it_ui:
+              type: boolean
+            try_it_insomnia:
+              type: boolean
+            infinite_scroll:
+              type: boolean
+            show_schemas:
+              type: boolean
+            hide_internal:
+              type: boolean
+            hide_deprecated:
+              type: boolean
+        robots:
+          type: string
+          nullable: true
+      additionalProperties: false
+      title: PortalCustomization
+    PortalImageDataUri:
+      description: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
+      type: string
+      format: uri
+      example: 'data:image/png;base64,YW5faW1hZ2VfZmlsZQ=='
+      pattern: '^data:image/(png|jpeg|svg\+xml|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
+      title: PortalImageDataUri
+      x-validation-message: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
+    ReplacePortalImageAsset:
+      description: 'The image data to upload. Images must be a data URL with binary image data in base 64 format. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.'
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/PortalImageDataUri'
+      example:
+        data: 'data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+      additionalProperties: false
+      nullable: true
+      required:
+        - data
+      title: ReplacePortalImageAsset
+    PageSlug:
+      description: |
+        The slug of a page in a portal, used to compute its full URL path within the portal hierarchy. 
+        When a page has a `parent_page_id`, its full path is built by joining the parent’s slug with its own. 
+        For example, if a parent page has the slug `slug1` and this page’s slug is `slug2`, the resulting path will be `/slug1/slug2`. 
+        This enables nested page structures like `/slug1/slug2/slug3`.
+      type: string
+      example: /my-page
+      maxLength: 512
+      title: PageSlug
+    ParentPageId:
+      description: |
+        Pages may be rendered as a tree of files.
+
+        Specify the `id` of another page as the `parent_page_id` to add some hierarchy to your pages.
+      type: string
+      format: uuid
+      example: null
+      nullable: true
+    PageTitle:
+      description: The title of a page in a portal.
+      type: string
+      example: My Page
+      maxLength: 512
+      title: PageTitle
+    PageContent:
+      description: The renderable markdown content of a page in a portal.
+      type: string
+      example: '# Welcome to My Page'
+      maxLength: 1000000
+      title: PageContent
+    SnippetName:
+      description: The unique name of a snippet in a portal.
+      type: string
+      example: my-snippet
+      maxLength: 512
+      title: SnippetName
+    SnippetTitle:
+      description: The display title of a snippet in a portal.
+      type: string
+      example: My Snippet
+      maxLength: 512
+      title: SnippetTitle
+    SnippetContent:
+      description: The renderable markdown content of a page in a portal.
+      type: string
+      example: '# Welcome to My Snippet'
+      maxLength: 1000000
+      title: SnippetContent
+    VisibilityStatus:
+      description: Whether the resource is publicly accessible to non-authenticated users.
+      type: string
+      example: public
+      enum:
+        - public
+        - private
+      title: VisibilityStatus
+    PublishedStatus:
+      description: Whether the resource is visible on a given portal. Defaults to unpublished.
+      type: string
+      example: published
+      enum:
+        - published
+        - unpublished
+      title: PublishedStatus
+    Description:
+      type: string
+      example: A custom page about developer portals
+      maxLength: 160
+      title: ResourceDescription
+    PageVisibilityStatus:
+      description: |
+        Whether a page is publicly accessible to non-authenticated users.
+        If not provided, the default_page_visibility value of the portal will be used.
+      type: string
+      example: public
+      enum:
+        - public
+        - private
+      title: PageVisibilityStatus
+    SnippetVisibilityStatus:
+      description: |
+        Whether a snippet is publicly accessible to non-authenticated users.
+        If not provided, the default_page_visibility value of the portal will be used.
+      type: string
+      example: public
+      enum:
+        - public
+        - private
+      title: PageVisibilityStatus
+    UpdatePortalPageRequest:
+      description: Update a page in a portal.
+      type: object
+      properties:
+        slug:
+          $ref: '#/components/schemas/PageSlug'
+        title:
+          $ref: '#/components/schemas/PageTitle'
+        content:
+          $ref: '#/components/schemas/PageContent'
+        visibility:
+          $ref: '#/components/schemas/VisibilityStatus'
+        status:
+          $ref: '#/components/schemas/PublishedStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+        parent_page_id:
+          $ref: '#/components/schemas/ParentPageId'
+      additionalProperties: false
+      title: UpdatePortalPageRequest
+    CreatePortalPageRequest:
+      description: Create a page in a portal.
+      type: object
+      properties:
+        slug:
+          $ref: '#/components/schemas/PageSlug'
+        title:
+          $ref: '#/components/schemas/PageTitle'
+        content:
+          $ref: '#/components/schemas/PageContent'
+        visibility:
+          $ref: '#/components/schemas/PageVisibilityStatus'
+        status:
+          $ref: '#/components/schemas/PublishedStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+        parent_page_id:
+          $ref: '#/components/schemas/ParentPageId'
+      additionalProperties: false
+      required:
+        - slug
+        - content
+      title: CreatePortalPageRequest
+    PortalPageResponse:
+      description: Details about a page in a portal.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        slug:
+          $ref: '#/components/schemas/PageSlug'
+        title:
+          $ref: '#/components/schemas/PageTitle'
+        content:
+          $ref: '#/components/schemas/PageContent'
+        visibility:
+          $ref: '#/components/schemas/VisibilityStatus'
+        status:
+          $ref: '#/components/schemas/PublishedStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        parent_page_id:
+          $ref: '#/components/schemas/ParentPageId'
+      additionalProperties: false
+      required:
+        - id
+        - slug
+        - title
+        - content
+        - visibility
+        - status
+        - created_at
+        - updated_at
+        - parent_page_id
+      title: PortalPageResponse
+    PortalSnippetResponse:
+      description: Details about a page in a portal.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/SnippetName'
+        title:
+          $ref: '#/components/schemas/SnippetTitle'
+        content:
+          $ref: '#/components/schemas/SnippetContent'
+        visibility:
+          $ref: '#/components/schemas/VisibilityStatus'
+        status:
+          $ref: '#/components/schemas/PublishedStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - content
+        - visibility
+        - status
+        - created_at
+        - updated_at
+      title: PortalSnippetResponse
+    UpdatePortalSnippetRequest:
+      description: Update a snippet in a portal.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/SnippetName'
+        title:
+          $ref: '#/components/schemas/SnippetTitle'
+        content:
+          $ref: '#/components/schemas/SnippetContent'
+        visibility:
+          $ref: '#/components/schemas/VisibilityStatus'
+        status:
+          $ref: '#/components/schemas/PublishedStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+      additionalProperties: false
+      title: UpdatePortalSnippetRequest
+    CreatePortalSnippetRequest:
+      description: Create a snippet in a portal.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/SnippetName'
+        title:
+          $ref: '#/components/schemas/SnippetTitle'
+        content:
+          $ref: '#/components/schemas/SnippetContent'
+        visibility:
+          $ref: '#/components/schemas/SnippetVisibilityStatus'
+        status:
+          $ref: '#/components/schemas/PublishedStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+      additionalProperties: false
+      required:
+        - name
+        - content
+      title: CreatePortalSnippetRequest
+    PortalCustomDomain:
+      type: object
+      properties:
+        hostname:
+          type: string
+        enabled:
+          type: boolean
+        ssl:
+          $ref: '#/components/schemas/PortalCustomDomainSSL'
+        cname_status:
+          $ref: '#/components/schemas/PortalCustomDomainCnameStatus'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - hostname
+        - enabled
+        - ssl
+        - cname_status
+        - created_at
+        - updated_at
+      title: PortalCustomDomain
+    PortalCustomDomainSSL:
+      type: object
+      properties:
+        domain_verification_method:
+          $ref: '#/components/schemas/PortalCustomDomainVerificationMethod'
+        verification_status:
+          $ref: '#/components/schemas/PortalCustomDomainVerificationStatus'
+        validation_errors:
+          $ref: '#/components/schemas/PortalCustomDomainValidationErrors'
+      additionalProperties: false
+      required:
+        - domain_verification_method
+        - verification_status
+      title: PortalCustomDomainSSL
+    PortalCustomDomainVerificationMethod:
+      type: string
+      enum:
+        - http
+        - custom_certificate
+      title: PortalCustomDomainVerificationMethod
+    PortalCustomDomainVerificationStatus:
+      type: string
+      enum:
+        - verified
+        - pending
+        - error
+      readOnly: true
+      title: PortalCustomDomainVerificationStatus
+    PortalCustomDomainCnameStatus:
+      type: string
+      enum:
+        - verified
+        - pending
+      readOnly: true
+      title: PortalCustomDomainCnameStatus
+    PortalCustomDomainValidationErrors:
+      type: array
+      items:
+        type: string
+      readOnly: true
+      title: PortalCustomDomainValidationErrors
+    CreatePortalCustomDomainRequest:
+      type: object
+      properties:
+        hostname:
+          type: string
+        enabled:
+          type: boolean
+        ssl:
+          $ref: '#/components/schemas/CreatePortalCustomDomainSSL'
+      additionalProperties: false
+      required:
+        - hostname
+        - enabled
+        - ssl
+      title: CreatePortalCustomDomainRequest
+    UpdatePortalCustomDomainRequest:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+      additionalProperties: false
+      title: UpdatePortalCustomDomainRequest
+    PortalClaimMappings:
+      description: Mappings from a portal developer atribute to an Identity Provider claim.
+      type: object
+      properties:
+        name:
+          type: string
+          example: name
+        email:
+          type: string
+          example: email
+        groups:
+          type: string
+          example: custom-group-claim
+      example:
+        name: name
+        email: email
+        groups: custom-group-claim
+      maxProperties: 3
+      minProperties: 0
+      title: PortalClaimMappings
+    PortalOIDCConfig:
+      description: Configuration properties for an OpenID Connect Identity Provider.
+      type: object
+      properties:
+        issuer:
+          type: string
+          example: 'https://identity.example.com/v2'
+        client_id:
+          type: string
+          example: x7id0o42lklas0blidl2
+        scopes:
+          type: array
+          items:
+            type: string
+          example:
+            - email
+            - openid
+            - profile
+        claim_mappings:
+          $ref: '#/components/schemas/PortalClaimMappings'
+      example:
+        issuer: 'https://identity.example.com/v2'
+        client_id: x7id0o42lklas0blidl2
+        scopes:
+          - email
+          - openid
+          - profile
+        claim_mappings:
+          name: name
+          email: email
+          groups: custom-group-claim
+      required:
+        - issuer
+        - client_id
+      title: PortalOIDCConfig
+    PortalAuthenticationSettingsResponse:
+      x-speakeasy-entity: PortalAuth
+      description: The developer authentication settings for a portal.
+      type: object
+      properties:
+        basic_auth_enabled:
+          description: The portal has basic auth enabled or disabled.
+          type: boolean
+          example: true
+        oidc_auth_enabled:
+          description: The portal has OIDC enabled or disabled.
+          type: boolean
+          example: false
+        saml_auth_enabled:
+          description: The portal has SAML enabled or disabled.
+          type: boolean
+          example: false
+        oidc_team_mapping_enabled:
+          description: IdP groups determine the Portal Teams a developer has.
+          type: boolean
+          example: true
+        idp_mapping_enabled:
+          description: IdP groups determine the Portal Teams a developer has. This will soon replace oidc_team_mapping_enabled.
+          type: boolean
+          example: true
+        konnect_mapping_enabled:
+          description: A Konnect Identity Admin assigns teams to a developer.
+          type: boolean
+          example: false
+        oidc_config:
+          $ref: '#/components/schemas/PortalOIDCConfig'
+      example:
+        basic_auth_enabled: true
+        oidc_auth_enabled: true
+        oidc_team_mapping_enabled: true
+        konnect_mapping_enabled: false
+        oidc_config:
+          issuer: 'https://identity.example.com/v2'
+          client_id: x7id0o42lklas0blidl2
+          scopes:
+            - email
+            - openid
+            - profile
+          claim_mappings:
+            name: name
+            email: email
+            groups: custom-group-claim
+      required:
+        - basic_auth_enabled
+        - konnect_mapping_enabled
+        - oidc_auth_enabled
+        - oidc_team_mapping_enabled
+      title: PortalAuthenticationSettingsResponse
+    PortalAuthenticationSettingsUpdateRequest:
+      x-speakeasy-entity: PortalAuth
+      description: Properties to update a portal's developer auth settings.
+      type: object
+      properties:
+        basic_auth_enabled:
+          description: The organization has basic auth enabled.
+          type: boolean
+          example: true
+        oidc_auth_enabled:
+          description: The organization has OIDC disabled.
+          type: boolean
+          example: false
+        saml_auth_enabled:
+          description: The portal has SAML enabled or disabled.
+          type: boolean
+          example: false
+        oidc_team_mapping_enabled:
+          description: Whether IdP groups determine the Konnect Portal teams a developer has.
+          type: boolean
+          example: true
+        konnect_mapping_enabled:
+          description: Whether a Konnect Identity Admin assigns teams to a developer.
+          type: boolean
+          example: false
+        idp_mapping_enabled:
+          description: Whether IdP groups determine the Konnect Portal teams a developer has. This will soon replace oidc_team_mapping_enabled.
+          type: boolean
+          example: true
+        oidc_issuer:
+          type: string
+        oidc_client_id:
+          type: string
+        oidc_client_secret:
+          type: string
+        oidc_scopes:
+          type: array
+          items:
+            type: string
+        oidc_claim_mappings:
+          $ref: '#/components/schemas/PortalClaimMappings'
+      example:
+        basic_auth_enabled: true
+        oidc_auth_enabled: true
+        oidc_team_mapping_enabled: true
+        konnect_mapping_enabled: false
+        oidc_issuer: 'https://identity.example.com/v2'
+        oidc_client_id: x7id0o42lklas0blidl2
+        oidc_scopes:
+          - email
+          - openid
+          - profile
+        oidc_claim_mappings:
+          name: name
+          email: email
+          groups: custom-group-claim
+      title: PortalAuthenticationSettingsUpdateRequest
+    PortalUpdateTeamRequest:
+      description: Properties to update on a team.
+      type: object
+      properties:
+        name:
+          type: string
+          example: IDM - Developers
+          pattern: '^[\w \W]+$'
+          writeOnly: true
+        description:
+          type: string
+          example: The Identity Management (IDM) API team.
+          maxLength: 250
+          writeOnly: true
+      example:
+        name: IDM - Developers
+        description: The Identity Management (IDM) API team.
+      title: PortalUpdateTeamRequest
+    PortalCreateTeamRequest:
+      x-speakeasy-entity: PortalTeam
+      description: Details about a team to create.
+      type: object
+      properties:
+        name:
+          type: string
+          example: IDM - Developers
+          pattern: '^[\w \W]+$'
+          writeOnly: true
+        description:
+          type: string
+          example: The Identity Management (IDM) team.
+          maxLength: 250
+          writeOnly: true
+      example:
+        name: IDM - Developers
+        description: The Identity Management (IDM) team.
+      required:
+        - name
+      title: PortalCreateTeamRequest
+    PortalTeamResponse:
+      description: Details about a developer team.
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          readOnly: true
+        name:
+          type: string
+          example: IDM - Developers
+          maxLength: 250
+          pattern: '^[\w \W]+$'
+        description:
+          type: string
+          example: The developers for the IDM API.
+          maxLength: 250
+        created_at:
+          type: string
+          format: date-time
+          example: '1992-02-07T17:46:57.52Z'
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-02-07T17:00:00.52Z'
+          readOnly: true
+      example:
+        id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        name: IDM - Developers
+        description: The developers for the IDM API.
+        created_at: '1992-02-07T17:46:57.52Z'
+        updated_at: '2022-08-31T17:00:00.52Z'
+      title: PortalTeamResponse
     DataPlaneClientCertificate:
       x-speakeasy-entity: GatewayDataPlaneClientCertificate
       type: object
@@ -38935,1175 +41188,6 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
-    V2PortalClaimMappings:
-      description: Mappings from a portal developer atribute to an Identity Provider claim.
-      type: object
-      properties:
-        name:
-          type: string
-          example: name
-        email:
-          type: string
-          example: email
-        groups:
-          type: string
-          example: custom-group-claim
-      example:
-        name: name
-        email: email
-        groups: custom-group-claim
-      maxProperties: 3
-      minProperties: 0
-      title: PortalClaimMappings
-    V2PortalOIDCConfig:
-      description: Configuration properties for an OpenID Connect Identity Provider.
-      type: object
-      properties:
-        issuer:
-          type: string
-          example: 'https://identity.example.com/v2'
-        client_id:
-          type: string
-          example: x7id0o42lklas0blidl2
-        scopes:
-          type: array
-          items:
-            type: string
-          example:
-            - email
-            - openid
-            - profile
-        claim_mappings:
-          $ref: '#/components/schemas/V2PortalClaimMappings'
-      example:
-        issuer: 'https://identity.example.com/v2'
-        client_id: x7id0o42lklas0blidl2
-        scopes:
-          - email
-          - openid
-          - profile
-        claim_mappings:
-          name: name
-          email: email
-          groups: custom-group-claim
-      required:
-        - issuer
-        - client_id
-      title: PortalOIDCConfig
-    V2PortalAuthenticationSettingsResponse:
-      description: The developer authentication settings for a portal.
-      type: object
-      properties:
-        basic_auth_enabled:
-          description: The portal has basic auth enabled or disabled.
-          type: boolean
-          example: true
-        oidc_auth_enabled:
-          description: The portal has OIDC enabled or disabled.
-          type: boolean
-          example: false
-        saml_auth_enabled:
-          description: The portal has SAML enabled or disabled.
-          type: boolean
-          example: false
-        oidc_team_mapping_enabled:
-          description: IdP groups determine the Portal Teams a developer has.
-          type: boolean
-          example: true
-        idp_mapping_enabled:
-          description: IdP groups determine the Portal Teams a developer has. This will soon replace oidc_team_mapping_enabled.
-          type: boolean
-          example: true
-        konnect_mapping_enabled:
-          description: A Konnect Identity Admin assigns teams to a developer.
-          type: boolean
-          example: false
-        oidc_config:
-          $ref: '#/components/schemas/V2PortalOIDCConfig'
-      example:
-        basic_auth_enabled: true
-        oidc_auth_enabled: true
-        oidc_team_mapping_enabled: true
-        konnect_mapping_enabled: false
-        oidc_config:
-          issuer: 'https://identity.example.com/v2'
-          client_id: x7id0o42lklas0blidl2
-          scopes:
-            - email
-            - openid
-            - profile
-          claim_mappings:
-            name: name
-            email: email
-            groups: custom-group-claim
-      required:
-        - basic_auth_enabled
-        - konnect_mapping_enabled
-        - oidc_auth_enabled
-        - oidc_team_mapping_enabled
-      title: PortalAuthenticationSettingsResponse
-    V2PortalAuthenticationSettingsUpdateRequest:
-      description: Properties to update a portal's developer auth settings.
-      type: object
-      properties:
-        basic_auth_enabled:
-          description: The organization has basic auth enabled.
-          type: boolean
-          example: true
-        oidc_auth_enabled:
-          description: The organization has OIDC disabled.
-          type: boolean
-          example: false
-        saml_auth_enabled:
-          description: The portal has SAML enabled or disabled.
-          type: boolean
-          example: false
-        oidc_team_mapping_enabled:
-          description: Whether IdP groups determine the Konnect Portal teams a developer has.
-          type: boolean
-          example: true
-        konnect_mapping_enabled:
-          description: Whether a Konnect Identity Admin assigns teams to a developer.
-          type: boolean
-          example: false
-        idp_mapping_enabled:
-          description: Whether IdP groups determine the Konnect Portal teams a developer has. This will soon replace oidc_team_mapping_enabled.
-          type: boolean
-          example: true
-        oidc_issuer:
-          type: string
-        oidc_client_id:
-          type: string
-        oidc_client_secret:
-          type: string
-        oidc_scopes:
-          type: array
-          items:
-            type: string
-        oidc_claim_mappings:
-          $ref: '#/components/schemas/V2PortalClaimMappings'
-      example:
-        basic_auth_enabled: true
-        oidc_auth_enabled: true
-        oidc_team_mapping_enabled: true
-        konnect_mapping_enabled: false
-        oidc_issuer: 'https://identity.example.com/v2'
-        oidc_client_id: x7id0o42lklas0blidl2
-        oidc_scopes:
-          - email
-          - openid
-          - profile
-        oidc_claim_mappings:
-          name: name
-          email: email
-          groups: custom-group-claim
-      title: PortalAuthenticationSettingsUpdateRequest
-    V2PortalUpdateTeamRequest:
-      description: Properties to update on a team.
-      type: object
-      properties:
-        name:
-          type: string
-          example: IDM - Developers
-          pattern: '^[\w \W]+$'
-          writeOnly: true
-        description:
-          type: string
-          example: The Identity Management (IDM) API team.
-          maxLength: 250
-          writeOnly: true
-      example:
-        name: IDM - Developers
-        description: The Identity Management (IDM) API team.
-      title: PortalUpdateTeamRequest
-    V2PortalCreateTeamRequest:
-      description: Details about a team to create.
-      type: object
-      properties:
-        name:
-          type: string
-          example: IDM - Developers
-          pattern: '^[\w \W]+$'
-          writeOnly: true
-        description:
-          type: string
-          example: The Identity Management (IDM) team.
-          maxLength: 250
-          writeOnly: true
-      example:
-        name: IDM - Developers
-        description: The Identity Management (IDM) team.
-      required:
-        - name
-      title: PortalCreateTeamRequest
-    V2PortalTeamResponse:
-      description: Details about a developer team.
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-          readOnly: true
-        name:
-          type: string
-          example: IDM - Developers
-          maxLength: 250
-          pattern: '^[\w \W]+$'
-        description:
-          type: string
-          example: The developers for the IDM API.
-          maxLength: 250
-        created_at:
-          type: string
-          format: date-time
-          example: '1992-02-07T17:46:57.52Z'
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          example: '2022-02-07T17:00:00.52Z'
-          readOnly: true
-      example:
-        id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-        name: IDM - Developers
-        description: The developers for the IDM API.
-        created_at: '1992-02-07T17:46:57.52Z'
-        updated_at: '2022-08-31T17:00:00.52Z'
-      title: PortalTeamResponse
-    V2ListPortalsResponse:
-      description: A paginated list of portals in the current region in the organization.
-      type: object
-      properties:
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/V2Portal'
-      example:
-        meta:
-          page:
-            number: 1
-            size: 10
-            total: 1
-        data:
-          - id: 8f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-            created_at: '2022-02-07T17:46:57.52Z'
-            updated_at: '2022-10-08T17:00:00.52Z'
-            name: Portal A
-            display_name: Developer Portal A
-            description: The Portal A
-            default_domain: 123455678abcd.us.portal.konghq.com
-            is_public: false
-            rbac_enabled: true
-            auto_approve_applications: false
-            auto_approve_developers: true
-            custom_domain: api.example.com
-            custom_client_domain: portal.example.com
-            application_count: 0
-            developer_count: 0
-            published_product_count: 0
-      additionalProperties: false
-      required:
-        - data
-        - meta
-    V2PortalProductVersionPublishStatus:
-      description: Publication status of the API product version on the portal
-      type: string
-      enum:
-        - published
-        - unpublished
-    V2PortalProductVersionDeprecated:
-      description: Whether the api product version on the portal is deprecated
-      type: boolean
-    V2NotifyDevelopers:
-      description: Whether to notify developers who are affected by this change
-      type: boolean
-      title: NotifyDevelopers
-    V2ApplicationRegistrationEnabled:
-      description: Whether the application registration on this portal for the api product version is enabled
-      type: boolean
-    V2AutoApproveRegistration:
-      description: Whether the application registration auto approval on this portal for the api product version is enabled
-      type: boolean
-    V2AuthStrategies:
-      description: A list of authentication strategies
-      type: array
-      items:
-        $ref: '#/components/schemas/AuthStrategy'
-      maxItems: 1
-      minItems: 0
-    V2AuthStrategyIDs:
-      description: A list of authentication strategy IDs
-      type: array
-      items:
-        $ref: '#/components/schemas/UUID_RW'
-      maxItems: 1
-      minItems: 0
-    V2ReplacePortalProductVersionPayload:
-      description: Payload to update a Portal Product Version
-      type: object
-      properties:
-        publish_status:
-          $ref: '#/components/schemas/V2PortalProductVersionPublishStatus'
-        auth_strategy_ids:
-          $ref: '#/components/schemas/V2AuthStrategyIDs'
-        application_registration_enabled:
-          $ref: '#/components/schemas/V2ApplicationRegistrationEnabled'
-        auto_approve_registration:
-          $ref: '#/components/schemas/V2AutoApproveRegistration'
-        deprecated:
-          $ref: '#/components/schemas/V2PortalProductVersionDeprecated'
-        notify_developers:
-          $ref: '#/components/schemas/V2NotifyDevelopers'
-      additionalProperties: false
-      required:
-        - publish_status
-        - application_registration_enabled
-        - auto_approve_registration
-        - deprecated
-        - auth_strategy_ids
-      title: ReplacePortalProductVersionPayload
-    V2PortalProductVersion:
-      description: |
-        A Portal Product Version holds metadata that describes how a Product Version is configured for a specific portal.
-
-        It contains:
-        - Lifecyle and deprecation statuses
-        - Application registration settings like auto approve or whether application registration is enabled
-        - The Authentication Strategy (if present) that is enabled for Application Registration
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        publish_status:
-          $ref: '#/components/schemas/V2PortalProductVersionPublishStatus'
-        product_version_id:
-          $ref: '#/components/schemas/UUID_RW'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-        auth_strategies:
-          $ref: '#/components/schemas/V2AuthStrategies'
-        application_registration_enabled:
-          $ref: '#/components/schemas/V2ApplicationRegistrationEnabled'
-        auto_approve_registration:
-          $ref: '#/components/schemas/V2AutoApproveRegistration'
-        deprecated:
-          $ref: '#/components/schemas/V2PortalProductVersionDeprecated'
-      additionalProperties: false
-      required:
-        - id
-        - publish_status
-        - application_registration_enabled
-        - auto_approve_registration
-        - product_version_id
-        - deprecated
-        - auth_strategies
-        - created_at
-        - updated_at
-      title: PortalProductVersion
-    V2GetPortalResponse:
-      $ref: '#/components/schemas/V2Portal'
-    V2UpdatePortalResponse:
-      $ref: '#/components/schemas/V2Portal'
-    V2CreatePortalResponse:
-      $ref: '#/components/schemas/V2Portal'
-    V2GetPortalAppearanceResponse:
-      example:
-        theme_name: custom
-        use_custom_fonts: true
-        custom_theme:
-          colors:
-            section:
-              header:
-                value: '#F8F8F8'
-                description: Background for header
-              body:
-                value: '#FFFFFF'
-                description: Background for main content
-              hero:
-                value: '#F8F8F8'
-                description: Background for hero section
-              accent:
-                value: '#F8F8F8'
-                description: Subtle background
-              tertiary:
-                value: '#FFFFFF'
-                description: Tertiary background
-              stroke:
-                value: 'rgba(0,0,0,0.1)'
-                description: Border color
-              footer:
-                value: '#07A88D'
-                description: Background for footer
-            text:
-              header:
-                value: 'rgba(0,0,0,0.8)'
-                description: Header text
-              hero:
-                value: '#FFFFFF'
-                description: Hero text
-              headings:
-                value: 'rgba(0,0,0,0.8)'
-                description: Headings text
-              primary:
-                value: 'rgba(0,0,0,0.8)'
-                description: Main content text
-              secondary:
-                value: 'rgba(0,0,0,0.8)'
-                description: Supporting text
-              accent:
-                value: '#07A88D'
-                description: Subtle text
-              link:
-                value: '#07A88D'
-                description: Link text
-              footer:
-                value: '#FFFFFF'
-                description: Footer text
-            button:
-              primary_fill:
-                value: '#1155CB'
-                description: Background for Primary Button
-              primary_text:
-                value: '#FFFFFF'
-                description: Text for Primary Button
-        custom_fonts:
-          base: Roboto
-          code: Roboto
-          headings: Roboto
-        text:
-          catalog:
-            welcome_message: Welcome
-            primary_header: Come on in!
-        images:
-          favicon:
-            data: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
-            filename: favicon.ico
-          logo:
-            data: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
-            filename: logo.png
-          catalog_cover:
-            data: 'data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
-      allOf:
-        - $ref: '#/components/schemas/V2PortalAppearance'
-        - type: object
-          required:
-            - theme_name
-            - use_custom_fonts
-            - custom_theme
-            - custom_fonts
-            - text
-            - images
-    V2UpdatePortalAppearanceResponse:
-      example:
-        theme_name: custom
-        use_custom_fonts: true
-        custom_theme:
-          colors:
-            section:
-              header:
-                value: '#F8F8F8'
-                description: Background for header
-              body:
-                value: '#FFFFFF'
-                description: Background for main content
-              hero:
-                value: '#F8F8F8'
-                description: Background for hero section
-              accent:
-                value: '#F8F8F8'
-                description: Subtle background
-              tertiary:
-                value: '#FFFFFF'
-                description: Tertiary background
-              stroke:
-                value: 'rgba(0,0,0,0.1)'
-                description: Border color
-              footer:
-                value: '#07A88D'
-                description: Background for footer
-            text:
-              header:
-                value: 'rgba(0,0,0,0.8)'
-                description: Header text
-              hero:
-                value: '#FFFFFF'
-                description: Hero text
-              headings:
-                value: 'rgba(0,0,0,0.8)'
-                description: Headings text
-              primary:
-                value: 'rgba(0,0,0,0.8)'
-                description: Main content text
-              secondary:
-                value: 'rgba(0,0,0,0.8)'
-                description: Supporting text
-              accent:
-                value: '#07A88D'
-                description: Subtle text
-              link:
-                value: '#07A88D'
-                description: Link text
-              footer:
-                value: '#FFFFFF'
-                description: Footer text
-            button:
-              primary_fill:
-                value: '#1155CB'
-                description: Background for Primary Button
-              primary_text:
-                value: '#FFFFFF'
-                description: Text for Primary Button
-        custom_fonts:
-          base: Roboto
-          code: Roboto
-          headings: Roboto
-        text:
-          catalog:
-            welcome_message: Welcome
-            primary_header: Come on in!
-        images:
-          favicon:
-            data: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
-            filename: favicon.ico
-          logo:
-            data: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
-            filename: logo.png
-          catalog_cover:
-            data: 'data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
-      allOf:
-        - $ref: '#/components/schemas/V2PortalAppearance'
-        - type: object
-          required:
-            - theme_name
-            - use_custom_fonts
-            - custom_theme
-            - custom_fonts
-            - text
-            - images
-    V2Portal:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-        name:
-          $ref: '#/components/schemas/V2PortalName'
-        display_name:
-          $ref: '#/components/schemas/V2PortalDisplayName'
-        description:
-          $ref: '#/components/schemas/V2PortalDescription'
-        default_domain:
-          description: The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
-          type: string
-          format: hostname
-          readOnly: true
-        is_public:
-          description: Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.
-          type: boolean
-        rbac_enabled:
-          description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for products until unless assigned to teams with access to view and consume specific products.'
-          type: boolean
-        auto_approve_applications:
-          description: 'Whether the requests from applications to register for products will be automatically approved, or if they will be set to pending until approved by an admin.'
-          type: boolean
-        auto_approve_developers:
-          description: 'Whether the developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.'
-          type: boolean
-        custom_domain:
-          description: 'The custom domain to access the developer portal. A CNAME for the portal''s default domain must be able to be set for the custom domain for it to be valid. After setting a valid CNAME, an SSL/TLS certificate will be automatically manged for the custom domain, and traffic will be able to use the custom domain to route to the portal''s web client and API.'
-          type: string
-          format: hostname
-          nullable: true
-        custom_client_domain:
-          description: 'The custom domain to access a self-hosted customized developer portal client. If this is set, the Konnect-hosted portal client will no longer be available. `custom_domain` must be also set for this value to be set. See https://github.com/Kong/konnect-portal for information on how to get started deploying and customizing your own Konnect portal.'
-          type: string
-          format: hostname
-          nullable: true
-        default_application_auth_strategy_id:
-          $ref: '#/components/schemas/V2DefaultApplicationAuthStratID'
-        labels:
-          $ref: '#/components/schemas/Labels'
-        application_count:
-          description: Number of applications created in the portal.
-          type: number
-        developer_count:
-          description: Number of developers using the portal.
-          type: number
-        published_product_count:
-          description: Number of api products published to the portal
-          type: number
-      example:
-        id: 9f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-        created_at: '2022-02-07T17:46:57.52Z'
-        updated_at: '2022-10-08T17:00:00.52Z'
-        name: Portal A
-        display_name: Developer Portal A
-        description: The Portal A
-        default_domain: 123455678abcd.us.portal.konghq.com
-        is_public: false
-        rbac_enabled: true
-        auto_approve_applications: false
-        auto_approve_developers: true
-        custom_domain: api.example.com
-        custom_client_domain: portal.example.com
-        application_count: 0
-        developer_count: 0
-        published_product_count: 0
-      additionalProperties: false
-      required:
-        - id
-        - created_at
-        - updated_at
-        - name
-        - display_name
-        - default_domain
-        - is_public
-        - rbac_enabled
-        - auto_approve_applications
-        - auto_approve_developers
-        - custom_domain
-        - custom_client_domain
-        - description
-        - application_count
-        - developer_count
-        - published_product_count
-    V2PortalDescription:
-      description: The description of the portal.
-      type: string
-      maxLength: 512
-      nullable: true
-    V2DefaultApplicationAuthStratID:
-      description: Default strategy ID applied on applications for the portal
-      type: string
-      format: uuid
-      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-      nullable: true
-    V2CreatePortalRequest:
-      type: object
-      properties:
-        name:
-          $ref: '#/components/schemas/V2PortalName'
-        display_name:
-          $ref: '#/components/schemas/V2PortalDisplayName'
-        description:
-          $ref: '#/components/schemas/V2PortalDescription'
-        is_public:
-          description: Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.
-          type: boolean
-        rbac_enabled:
-          description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for products until unless assigned to teams with access to view and consume specific products.'
-          type: boolean
-        auto_approve_applications:
-          description: 'Whether the requests from applications to register for products will be automatically approved, or if they will be set to pending until approved by an admin.'
-          type: boolean
-        auto_approve_developers:
-          description: 'Whether the developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.'
-          type: boolean
-        custom_domain:
-          description: 'The custom domain to access the developer portal. A CNAME for the portal''s default domain must be able to be set for the custom domain for it to be valid. After setting a valid CNAME, an SSL/TLS certificate will be automatically manged for the custom domain, and traffic will be able to use the custom domain to route to the portal''s web client and API.'
-          type: string
-          format: hostname
-          maxLength: 1024
-          nullable: true
-        custom_client_domain:
-          description: 'The custom domain to access a self-hosted customized developer portal client. If this is set, the Konnect-hosted portal will no longer be available.  `custom_domain` must be also set for this value to be set. See https://github.com/Kong/konnect-portal for information on how to get started deploying and customizing your own Konnect portal.'
-          type: string
-          format: hostname
-          maxLength: 1024
-          nullable: true
-        default_application_auth_strategy_id:
-          $ref: '#/components/schemas/V2DefaultApplicationAuthStratID'
-        labels:
-          $ref: '#/components/schemas/Labels'
-      example:
-        name: DevPortal
-        is_public: false
-        rbac_enabled: true
-        auto_approve_applications: false
-        auto_approve_developers: false
-        custom_domain: api.example.com
-        custom_client_domain: portal.example.com
-        default_application_auth_strategy_id: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-      additionalProperties: false
-      required:
-        - name
-    V2PortalName:
-      description: 'The name of the portal, used to distinguish it from other portals. Name must be unique.'
-      type: string
-      maxLength: 255
-      minLength: 1
-    V2PortalDisplayName:
-      description: The display name of the portal. This value will be the portal's `name` in Portal API.
-      type: string
-      maxLength: 255
-      minLength: 1
-    V2UpdatePortalRequest:
-      type: object
-      properties:
-        name:
-          $ref: '#/components/schemas/V2PortalName'
-        display_name:
-          $ref: '#/components/schemas/V2PortalDisplayName'
-        description:
-          $ref: '#/components/schemas/V2PortalDescription'
-        is_public:
-          description: Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.
-          type: boolean
-        rbac_enabled:
-          description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for products until unless assigned to teams with access to view and consume specific products.'
-          type: boolean
-        auto_approve_applications:
-          description: 'Whether the requests from applications to register for products will be automatically approved, or if they will be set to pending until approved by an admin.'
-          type: boolean
-        auto_approve_developers:
-          description: 'Whether the developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.'
-          type: boolean
-        custom_domain:
-          description: 'The custom domain to access the developer portal. A CNAME for the portal''s default domain must be able to be set for the custom domain for it to be valid. After setting a valid CNAME, an SSL/TLS certificate will be automatically manged for the custom domain, and traffic will be able to use the custom domain to route to the portal''s web client and API.'
-          type: string
-          format: hostname
-          maxLength: 1024
-          nullable: true
-        custom_client_domain:
-          description: 'The custom domain to access a self-hosted customized developer portal client. If this is set, the Konnect-hosted portal will no longer be available.  `custom_domain` must be also set for this value to be set. See https://github.com/Kong/konnect-portal for information on how to get started deploying and customizing your own Konnect portal.'
-          type: string
-          format: hostname
-          maxLength: 1024
-          nullable: true
-        default_application_auth_strategy_id:
-          $ref: '#/components/schemas/V2DefaultApplicationAuthStratID'
-        labels:
-          $ref: '#/components/schemas/LabelsUpdate'
-      example:
-        name: Aperture
-        is_public: false
-        rbac_enabled: true
-        auto_approve_applications: false
-        auto_approve_developers: false
-        custom_domain: api.example.com
-        custom_client_domain: portal.example.com
-        default_application_auth_strategy_id: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-      additionalProperties: false
-    V2UpdatePortalAppearanceRequest:
-      $ref: '#/components/schemas/V2PortalAppearance'
-    V2AppearanceColorVariable:
-      type: object
-      properties:
-        value:
-          type: string
-          maxLength: 255
-        description:
-          type: string
-          maxLength: 512
-      example:
-        value: '#000000'
-        description: The color for a type of thing
-      additionalProperties: false
-      required:
-        - value
-    V2AppearanceThemeColorVariables:
-      type: object
-      properties:
-        section:
-          type: object
-          additionalProperties: false
-          properties:
-            header:
-              $ref: '#/components/schemas/V2AppearanceColorVariable'
-            body:
-              $ref: '#/components/schemas/V2AppearanceColorVariable'
-            hero:
-              $ref: '#/components/schemas/V2AppearanceColorVariable'
-            accent:
-              $ref: '#/components/schemas/V2AppearanceColorVariable'
-            tertiary:
-              $ref: '#/components/schemas/V2AppearanceColorVariable'
-            stroke:
-              $ref: '#/components/schemas/V2AppearanceColorVariable'
-            footer:
-              $ref: '#/components/schemas/V2AppearanceColorVariable'
-          required:
-            - header
-            - body
-            - hero
-            - accent
-            - tertiary
-            - stroke
-            - footer
-        text:
-          type: object
-          additionalProperties: false
-          properties:
-            header:
-              $ref: '#/components/schemas/V2AppearanceColorVariable'
-            hero:
-              $ref: '#/components/schemas/V2AppearanceColorVariable'
-            headings:
-              $ref: '#/components/schemas/V2AppearanceColorVariable'
-            primary:
-              $ref: '#/components/schemas/V2AppearanceColorVariable'
-            secondary:
-              $ref: '#/components/schemas/V2AppearanceColorVariable'
-            accent:
-              $ref: '#/components/schemas/V2AppearanceColorVariable'
-            link:
-              $ref: '#/components/schemas/V2AppearanceColorVariable'
-            footer:
-              $ref: '#/components/schemas/V2AppearanceColorVariable'
-          required:
-            - header
-            - hero
-            - headings
-            - primary
-            - secondary
-            - accent
-            - link
-            - footer
-        button:
-          type: object
-          additionalProperties: false
-          properties:
-            primary_fill:
-              $ref: '#/components/schemas/V2AppearanceColorVariable'
-            primary_text:
-              $ref: '#/components/schemas/V2AppearanceColorVariable'
-          required:
-            - primary_fill
-            - primary_text
-      example:
-        section:
-          header:
-            value: '#0A161E'
-            description: Background for header
-          body:
-            value: '#0C0C0C'
-            description: Background for main content
-          hero:
-            value: '#1A1D21'
-            description: Background for hero section
-          accent:
-            value: '#1F1F1F'
-            description: Subtle background
-          tertiary:
-            value: '#222529'
-            description: Tertiary background
-          stroke:
-            value: '#34393F'
-            description: Border color
-          footer:
-            value: '#212429'
-            description: Background for footer
-        text:
-          header:
-            value: '#FFFFFF'
-            description: Header text
-          hero:
-            value: 'rgba(255,255,255,0.8)'
-            description: Hero text
-          headings:
-            value: '#FFFFFF'
-            description: Headings text
-          primary:
-            value: '#C8C8C9'
-            description: Main content text
-          secondary:
-            value: '#919294'
-            description: Supporting text
-          accent:
-            value: '#FFFFFF'
-            description: Subtle text
-          link:
-            value: '#2977FF'
-            description: Link text
-          footer:
-            value: '#FFFFFF'
-            description: Footer text
-        button:
-          primary_fill:
-            value: '#1155CB'
-            description: Background for Primary Button
-          primary_text:
-            value: '#FFFFFF'
-            description: Text for Primary Button
-      additionalProperties: false
-      required:
-        - section
-        - text
-        - button
-    V2NullableAppearanceThemeVariables:
-      description: Groups of variables for configuring visual details of the portal user interface. Set theme_name to 'custom' to use custom values for theme variables.
-      type: object
-      properties:
-        colors:
-          $ref: '#/components/schemas/V2AppearanceThemeColorVariables'
-      example:
-        colors:
-          section:
-            header:
-              value: '#F8F8F8'
-              description: Background for header
-            body:
-              value: '#FFFFFF'
-              description: Background for main content
-            hero:
-              value: '#F8F8F8'
-              description: Background for hero section
-            accent:
-              value: '#F8F8F8'
-              description: Subtle background
-            tertiary:
-              value: '#FFFFFF'
-              description: Tertiary background
-            stroke:
-              value: 'rgba(0,0,0,0.1)'
-              description: Border color
-            footer:
-              value: '#07A88D'
-              description: Background for footer
-          text:
-            header:
-              value: 'rgba(0,0,0,0.8)'
-              description: Header text
-            hero:
-              value: '#FFFFFF'
-              description: Hero text
-            headings:
-              value: 'rgba(0,0,0,0.8)'
-              description: Headings text
-            primary:
-              value: 'rgba(0,0,0,0.8)'
-              description: Main content text
-            secondary:
-              value: 'rgba(0,0,0,0.8)'
-              description: Supporting text
-            accent:
-              value: '#07A88D'
-              description: Subtle text
-            link:
-              value: '#07A88D'
-              description: Link text
-            footer:
-              value: '#FFFFFF'
-              description: Footer text
-          button:
-            primary_fill:
-              value: '#1155CB'
-              description: Background for Primary Button
-            primary_text:
-              value: '#FFFFFF'
-              description: Text for Primary Button
-      additionalProperties: false
-      nullable: true
-      required:
-        - colors
-      title: AppearanceThemeVariables
-    V2NullableAppearanceFonts:
-      description: Font selections to render text in the portal user interface. Must set use_custom_fonts to true to enable using custom font values.
-      type: object
-      properties:
-        base:
-          $ref: '#/components/schemas/V2AppearanceFontName'
-        code:
-          $ref: '#/components/schemas/V2AppearanceFontName'
-        headings:
-          $ref: '#/components/schemas/V2AppearanceFontName'
-      additionalProperties: false
-      nullable: true
-      required:
-        - base
-        - code
-        - headings
-    V2AppearanceFontName:
-      description: The name of the font to render in the browser.
-      type: string
-      example: Roboto
-      enum:
-        - Roboto
-        - Inter
-        - Open Sans
-        - Lato
-        - Slabo 27px
-        - Slabo 13px
-        - Oswald
-        - Source Sans Pro
-        - Montserrat
-        - Raleway
-        - PT Sans
-        - Lora
-        - Roboto Mono
-        - Inconsolata
-        - Source Code Pro
-        - PT Mono
-        - Ubuntu Mono
-        - IBM Plex Mono
-    V2AppearanceImage:
-      description: 'The image data to upload, along with an optional filename. Images must be a data URL with binary image data in base 64 format. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.'
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/ImageDataUri'
-        filename:
-          type: string
-          maxLength: 512
-      example:
-        data: 'data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
-      additionalProperties: false
-      nullable: true
-      required:
-        - data
-    V2AppearanceImages:
-      description: A collection of binary image data to customize images in the portal
-      type: object
-      properties:
-        logo:
-          $ref: '#/components/schemas/V2AppearanceImage'
-        favicon:
-          $ref: '#/components/schemas/V2AppearanceImage'
-        catalog_cover:
-          $ref: '#/components/schemas/V2AppearanceImage'
-      example:
-        logo:
-          data: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
-        favicon:
-          data: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
-        catalog_cover:
-          data: 'data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
-      additionalProperties: false
-      nullable: true
-    V2NullableAppearanceTextVariables:
-      description: Values to display for customizable text in the portal user interface
-      type: object
-      properties:
-        catalog:
-          type: object
-          additionalProperties: false
-          properties:
-            welcome_message:
-              type: string
-              maxLength: 512
-            primary_header:
-              type: string
-              maxLength: 512
-          required:
-            - welcome_message
-            - primary_header
-      example:
-        catalog:
-          welcome_message: Welcome to our service catalog
-          primary_header: Find All of Our Services in a Single Place
-      additionalProperties: false
-      nullable: true
-      required:
-        - catalog
-    V2PortalAppearance:
-      type: object
-      properties:
-        theme_name:
-          $ref: '#/components/schemas/V2PortalTheme'
-        custom_theme:
-          $ref: '#/components/schemas/V2NullableAppearanceThemeVariables'
-        custom_fonts:
-          $ref: '#/components/schemas/V2NullableAppearanceFonts'
-        use_custom_fonts:
-          description: 'If true, fonts in custom_fonts will be used over the theme''s default fonts'
-          type: boolean
-        text:
-          $ref: '#/components/schemas/V2NullableAppearanceTextVariables'
-        images:
-          $ref: '#/components/schemas/V2AppearanceImages'
-      example:
-        theme_name: custom
-        use_custom_fonts: true
-        custom_theme:
-          colors:
-            section:
-              header:
-                value: '#F8F8F8'
-                description: Background for header
-              body:
-                value: '#FFFFFF'
-                description: Background for main content
-              hero:
-                value: '#F8F8F8'
-                description: Background for hero section
-              accent:
-                value: '#F8F8F8'
-                description: Subtle background
-              tertiary:
-                value: '#FFFFFF'
-                description: Tertiary background
-              stroke:
-                value: 'rgba(0,0,0,0.1)'
-                description: Border color
-              footer:
-                value: '#07A88D'
-                description: Background for footer
-            text:
-              header:
-                value: 'rgba(0,0,0,0.8)'
-                description: Header text
-              hero:
-                value: '#FFFFFF'
-                description: Hero text
-              headings:
-                value: 'rgba(0,0,0,0.8)'
-                description: Headings text
-              primary:
-                value: 'rgba(0,0,0,0.8)'
-                description: Main content text
-              secondary:
-                value: 'rgba(0,0,0,0.8)'
-                description: Supporting text
-              accent:
-                value: '#07A88D'
-                description: Subtle text
-              link:
-                value: '#07A88D'
-                description: Link text
-              footer:
-                value: '#FFFFFF'
-                description: Footer text
-            button:
-              primary_fill:
-                value: '#1155CB'
-                description: Background for Primary Button
-              primary_text:
-                value: '#FFFFFF'
-                description: Text for Primary Button
-        custom_fonts:
-          base: Roboto
-          code: Roboto
-          headings: Roboto
-        text:
-          catalog:
-            welcome_message: Welcome
-            primary_header: Come one in!
-        images:
-          favicon:
-            data: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
-            filename: favicon.ico
-          logo:
-            data: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
-            filename: logo.png
-          catalog_cover:
-            data: 'data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
-      additionalProperties: false
-    V2PortalTheme:
-      description: Select a pre-existing default theme or specify 'custom' to use custom_theme variables.
-      type: string
-      example: mint_rocket
-      enum:
-        - mint_rocket
-        - dark_mode
-        - custom
     KonnectCPLegacyBaseError:
       description: standard error
       type: object
@@ -40149,100 +41233,21 @@ components:
           properties:
             message:
               example: Conflict
-    UUID_RW:
-      description: Contains a unique identifier used for this resource.
-      type: string
-      format: uuid
-      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-    AuthStrategyKeyAuth:
-      description: KeyAuth Auth strategy that the application uses.
+    CreatePortalCustomDomainSSL:
       type: object
       properties:
-        id:
-          description: The Application Auth Strategy ID.
-          type: string
-          format: uuid
-          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
-          readOnly: true
-        name:
-          type: string
-          example: name
-        credential_type:
+        domain_verification_method:
           type: string
           enum:
-            - key_auth
-        key_names:
-          type: array
-          items:
-            type: string
+            - custom_certificate
+            - http
+        custom_certificate:
+          description: Custom certificate to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"
+          type: string
+        custom_private_key:
+          description: Custom certificate private key to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"
+          type: string
       additionalProperties: false
-      required:
-        - id
-        - name
-        - credential_type
-        - key_names
-    AuthMethods:
-      type: array
-      items:
-        description: Auth Methods enabled for this strategy
-        type: string
-      example:
-        - bearer
-    AvailableScopes:
-      description: Possible developer selectable scopes for an application. Only present when using DCR Provider that supports it.
-      type: array
-      items:
-        type: string
-      example:
-        - scope1
-        - scope2
-    AuthStrategyClientCredentials:
-      description: Client Credential Auth strategy that the application uses.
-      type: object
-      properties:
-        id:
-          description: The Application Auth Strategy ID.
-          type: string
-          format: uuid
-          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
-          readOnly: true
-        name:
-          type: string
-          example: name
-        credential_type:
-          type: string
-          enum:
-            - client_credentials
-            - self_managed_client_credentials
-        auth_methods:
-          $ref: '#/components/schemas/AuthMethods'
-        available_scopes:
-          $ref: '#/components/schemas/AvailableScopes'
-      additionalProperties: false
-      required:
-        - id
-        - name
-        - credential_type
-        - auth_methods
-    AuthStrategy:
-      type: object
-      discriminator:
-        propertyName: credential_type
-        mapping:
-          key_auth: '#/components/schemas/AuthStrategyKeyAuth'
-          client_credentials: '#/components/schemas/AuthStrategyClientCredentials'
-          self_managed_client_credentials: '#/components/schemas/AuthStrategyClientCredentials'
-      oneOf:
-        - $ref: '#/components/schemas/AuthStrategyKeyAuth'
-        - $ref: '#/components/schemas/AuthStrategyClientCredentials'
-    ImageDataUri:
-      description: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
-      type: string
-      format: uri
-      example: 'data:image/png,YW5faW1hZ2VfZmlsZQ=='
-      pattern: '^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
-      title: ImageDataUri
-      x-validation-message: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
     CreateApiKeyPayload:
       type: object
       properties:
@@ -40735,6 +41740,253 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpsertIntegrationInstanceAuthConfig'
+    V2CreatePortal:
+      description: Create a portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V2CreatePortalRequest'
+    V2UpdatePortal:
+      description: Update a portal's settings.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V2UpdatePortalRequest'
+    V2ReplacePortalProductVersion:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V2ReplacePortalProductVersionPayload'
+    V2UpdatePortalAppearance:
+      description: Update a portal's appearance settings
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V2UpdatePortalAppearanceRequest'
+    CreatePortalCustomDomain:
+      description: Create a portal custom domain.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePortalCustomDomainRequest'
+    UpdatePortalCustomDomain:
+      description: Create a portal custom domain.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdatePortalCustomDomainRequest'
+    CreatePortal:
+      description: Create a portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                $ref: '#/components/schemas/UUID'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+              name:
+                description: 'The name of the portal, used to distinguish it from other portals. Name must be unique.'
+                type: string
+                maxLength: 255
+                minLength: 1
+              display_name:
+                description: The display name of the portal. This value will be the portal's `name` in Portal API.
+                type: string
+                maxLength: 255
+                minLength: 1
+              description:
+                description: A description of the portal.
+                type: string
+                maxLength: 512
+                nullable: true
+              authentication_enabled:
+                description: 'Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications.'
+                type: boolean
+              rbac_enabled:
+                description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
+                type: boolean
+              default_api_visibility:
+                description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
+                type: string
+                enum:
+                  - public
+                  - private
+              default_page_visibility:
+                description: 'The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.'
+                type: string
+                enum:
+                  - public
+                  - private
+              default_application_auth_strategy_id:
+                description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
+                type: string
+                format: uuid
+                nullable: true
+              auto_approve_developers:
+                description: 'Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.'
+                type: boolean
+              auto_approve_applications:
+                description: 'Whether requests from applications to register for APIs will be automatically approved, or if they will be set to pending until approved by an admin.'
+                type: boolean
+              default_domain:
+                description: The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
+                type: string
+                format: hostname
+                readOnly: true
+              canonical_domain:
+                description: The canonical domain of the developer portal
+                type: string
+                format: hostname
+                nullable: false
+                readOnly: true
+              labels:
+                $ref: '#/components/schemas/LabelsUpdate'
+            additionalProperties: false
+            required:
+              - name
+            title: Portal
+    UpdatePortal:
+      description: Update a portal's settings.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                $ref: '#/components/schemas/UUID'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+              name:
+                description: 'The name of the portal, used to distinguish it from other portals. Name must be unique.'
+                type: string
+                maxLength: 255
+                minLength: 1
+              display_name:
+                description: The display name of the portal. This value will be the portal's `name` in Portal API.
+                type: string
+                maxLength: 255
+                minLength: 1
+              description:
+                description: A description of the portal.
+                type: string
+                maxLength: 512
+                nullable: true
+              authentication_enabled:
+                description: 'Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications.'
+                type: boolean
+              rbac_enabled:
+                description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
+                type: boolean
+              default_api_visibility:
+                description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
+                type: string
+                enum:
+                  - public
+                  - private
+              default_page_visibility:
+                description: 'The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.'
+                type: string
+                enum:
+                  - public
+                  - private
+              default_application_auth_strategy_id:
+                description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
+                type: string
+                format: uuid
+                nullable: true
+              auto_approve_developers:
+                description: 'Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.'
+                type: boolean
+              auto_approve_applications:
+                description: 'Whether requests from applications to register for APIs will be automatically approved, or if they will be set to pending until approved by an admin.'
+                type: boolean
+              default_domain:
+                description: The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
+                type: string
+                format: hostname
+                readOnly: true
+              canonical_domain:
+                description: The canonical domain of the developer portal
+                type: string
+                format: hostname
+                nullable: false
+                readOnly: true
+              labels:
+                $ref: '#/components/schemas/LabelsUpdate'
+            additionalProperties: false
+            title: Portal
+    ReplacePortalImageAsset:
+      description: Update an image asset for the portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReplacePortalImageAsset'
+    ReplacePortalCustomization:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalCustomization'
+    CreatePortalPage:
+      description: Create a page in a portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePortalPageRequest'
+    UpdatePortalPage:
+      description: Update a page in a portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdatePortalPageRequest'
+    CreatePortalSnippet:
+      description: Create a snippet in a portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePortalSnippetRequest'
+    UpdatePortalSnippet:
+      description: Update a snippet in a portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdatePortalSnippetRequest'
+    PortalUpdateTeam:
+      description: Update a team in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalUpdateTeamRequest'
+    PortalCreateTeam:
+      description: Create a team in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalCreateTeamRequest'
+    UpdatePortalAuthenticationSettings:
+      description: Update a portal's developer authentication settings.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalAuthenticationSettingsUpdateRequest'
     DataPlaneClientCertificateRequest:
       content:
         application/json:
@@ -40773,51 +42025,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdateConfigStore'
-    V2PortalUpdateTeam:
-      description: Update a team in a portal.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/V2PortalUpdateTeamRequest'
-    V2PortalCreateTeam:
-      description: Create a team in a portal.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/V2PortalCreateTeamRequest'
-    V2UpdatePortalAuthenticationSettings:
-      description: Update a portal's developer authentication settings.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/V2PortalAuthenticationSettingsUpdateRequest'
-    V2CreatePortal:
-      description: Create a portal.
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/V2CreatePortalRequest'
-    V2UpdatePortal:
-      description: Update a portal's settings.
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/V2UpdatePortalRequest'
-    V2ReplacePortalProductVersion:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/V2ReplacePortalProductVersionPayload'
-    V2UpdatePortalAppearance:
-      description: Update a portal's appearance settings
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/V2UpdatePortalAppearanceRequest'
   responses:
     RetrieveControlPlaneResponse:
       description: A response to retrieving a single control plane.
@@ -41481,6 +42688,184 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/IntegrationInstanceAuthConfig'
+    V2ListPortals:
+      description: A paginated list of portals in the current region of an organization.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V2ListPortalsResponse'
+    V2PortalProductVersion:
+      description: A response containing a portal product version
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V2PortalProductVersion'
+    V2GetPortal:
+      description: Details about a portal and its current settings.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V2GetPortalResponse'
+    V2UpdatePortal:
+      description: Details about the portal being updated.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V2UpdatePortalResponse'
+    V2CreatePortal:
+      description: Details about the portal that was created.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V2CreatePortalResponse'
+    V2GetPortalAppearance:
+      description: Details about a portal's current appearance settings.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V2GetPortalAppearanceResponse'
+    V2UpdatePortalAppearance:
+      description: Details about the appearance settings being updated.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/V2UpdatePortalAppearanceResponse'
+    PortalAuthenticationSettings:
+      description: Details about a portal's authentication settings.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalAuthenticationSettingsResponse'
+    PortalTeam:
+      description: Details about a team of developers in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalTeamResponse'
+    PortalCustomDomain:
+      description: Portal custom domain
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalCustomDomain'
+    PortalResponse:
+      description: Details about a portal.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                $ref: '#/components/schemas/UUID'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+              name:
+                description: 'The name of the portal, used to distinguish it from other portals. Name must be unique.'
+                type: string
+                maxLength: 255
+                minLength: 1
+              display_name:
+                description: The display name of the portal. This value will be the portal's `name` in Portal API.
+                type: string
+                maxLength: 255
+                minLength: 1
+              description:
+                description: A description of the portal.
+                type: string
+                maxLength: 512
+                nullable: true
+              authentication_enabled:
+                description: 'Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications.'
+                type: boolean
+              rbac_enabled:
+                description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
+                type: boolean
+              default_api_visibility:
+                description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
+                type: string
+                enum:
+                  - public
+                  - private
+              default_page_visibility:
+                description: 'The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.'
+                type: string
+                enum:
+                  - public
+                  - private
+              default_application_auth_strategy_id:
+                description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
+                type: string
+                format: uuid
+                nullable: true
+              auto_approve_developers:
+                description: 'Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.'
+                type: boolean
+              auto_approve_applications:
+                description: 'Whether requests from applications to register for APIs will be automatically approved, or if they will be set to pending until approved by an admin.'
+                type: boolean
+              default_domain:
+                description: The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
+                type: string
+                format: hostname
+                readOnly: true
+              canonical_domain:
+                description: The canonical domain of the developer portal
+                type: string
+                format: hostname
+                nullable: false
+                readOnly: true
+              labels:
+                $ref: '#/components/schemas/Labels'
+            additionalProperties: false
+            required:
+              - id
+              - name
+              - display_name
+              - description
+              - authentication_enabled
+              - rbac_enabled
+              - default_api_visibility
+              - default_page_visibility
+              - default_application_auth_strategy_id
+              - auto_approve_applications
+              - auto_approve_developers
+              - default_domain
+              - canonical_domain
+              - updated_at
+              - created_at
+            title: Portal
+    PortalAssetResponse:
+      description: 'Image asset for the portal. Can be either png, jpeg or svg'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/PortalImageDataUri'
+            additionalProperties: false
+            required:
+              - data
+    PortalCustomizationResponse:
+      description: The current customization options for a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalCustomization'
+    PortalPage:
+      description: Details about a page in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalPageResponse'
+    PortalSnippet:
+      description: Details about a snippet in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalSnippetResponse'
     DataPlaneClientCertificateResponse:
       description: Response body for retrieving a dp-client-certificate.
       content:
@@ -41553,60 +42938,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/GatewayUnauthorizedError'
-    V2PortalAuthenticationSettings:
-      description: Details about a portal's authentication settings.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/V2PortalAuthenticationSettingsResponse'
-    V2PortalTeam:
-      description: Details about a team of developers in a portal.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/V2PortalTeamResponse'
-    V2ListPortals:
-      description: A paginated list of portals in the current region of an organization.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/V2ListPortalsResponse'
-    V2PortalProductVersion:
-      description: A response containing a portal product version
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/V2PortalProductVersion'
-    V2GetPortal:
-      description: Details about a portal and its current settings.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/V2GetPortalResponse'
-    V2UpdatePortal:
-      description: Details about the portal being updated.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/V2UpdatePortalResponse'
-    V2CreatePortal:
-      description: Details about the portal that was created.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/V2CreatePortalResponse'
-    V2GetPortalAppearance:
-      description: Details about a portal's current appearance settings.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/V2GetPortalAppearanceResponse'
-    V2UpdatePortalAppearance:
-      description: Details about the appearance settings being updated.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/V2UpdatePortalAppearanceResponse'
     KonnectCPLegacyUnauthorized:
       description: Unauthorized
       content:
@@ -41743,6 +43074,32 @@ tags:
       Typically an auth config will be required when authorizing against a integration which is hosted within your organization.
       The integration instance's auth config will inform how the Service Catalog will authorize the integration instance.
       Note that updating the auth config for an instance which is already authorized will **remove the existing credential**, requiring you to re-authorize the instance.
+  - name: Portal Appearance
+    description: APIs related to Konnect Developer Portal Appearance Settings.
+  - name: Portal Product Versions
+    description: |
+      Portal Product Versions hold metadata that describes how a Product Version is configured for a specific portal.
+        
+        They contain:
+        - Lifecyle and deprecation statuses
+        - Application registration settings like auto approve or whether application registration is enabled
+        - The authentication strategy that is enabled for Application Registration
+  - name: Portals
+    description: APIs related to configuration of Konnect Developer Portals.
+  - name: Portal Custom Domains
+    description: APIs related to configuration of Konnect Developer Portals custom domains.
+  - name: Portal Customization
+    description: APIs related to customization of Konnect Developer Portals.
+  - name: Portal Auth Settings
+    description: APIs related to configuration of Konnect Developer Portal auth settings.
+  - name: Portal Teams
+    description: APIs related to configuration of Konnect Developer Portal developer teams.
+  - name: Assets
+    description: APIs for managing static assets for Konnect Developer Portals.
+  - name: Pages
+    description: APIs related to Konnect Developer Portal Custom Pages.
+  - name: Snippets
+    description: APIs related to Konnect Developer Portal Custom Snippets.
   - description: DP Certificates
     name: DP Certificates
   - description: Custom Plugin Schemas
@@ -41847,22 +43204,6 @@ tags:
       <br><br>
       Secrets rotation can be managed using [TTLs](https://developer.konghq.com/gateway/entities/vault/).
     name: Vaults
-  - name: Portals
-    description: APIs related to Configuration of Konnect Developer Portals.
-  - name: Portal Teams
-    description: APIs related to Konnect Developer Portal Developer Teams.
-  - name: Portal Auth Settings
-    description: APIs related to Konnect Developer Portal Authentication Settings.
-  - name: Portal Appearance
-    description: APIs related to Konnect Developer Portal Appearance Settings.
-  - name: Portal Product Versions
-    description: |
-      Portal Product Versions hold metadata that describes how a Product Version is configured for a specific portal.
-        
-        They contain:
-        - Lifecyle and deprecation statuses
-        - Application registration settings like auto approve or whether application registration is enabled
-        - The authentication strategy that is enabled for Application Registration
 externalDocs:
   description: Documentation for Kong Gateway and its APIs
   url: 'https://developer.konghq.com'

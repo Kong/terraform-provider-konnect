@@ -15,7 +15,7 @@ import (
 	"net/http"
 )
 
-// PortalTeams - APIs related to Konnect Developer Portal Developer Teams.
+// PortalTeams - APIs related to configuration of Konnect Developer Portal developer teams.
 type PortalTeams struct {
 	rootSDK          *Konnect
 	sdkConfiguration config.SDKConfiguration
@@ -51,7 +51,7 @@ func (s *PortalTeams) CreatePortalTeam(ctx context.Context, request operations.C
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/portals/{portalId}/teams", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/portals/{portalId}/teams", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -65,7 +65,7 @@ func (s *PortalTeams) CreatePortalTeam(ctx context.Context, request operations.C
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "V2PortalCreateTeamRequest", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "PortalCreateTeamRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -148,12 +148,12 @@ func (s *PortalTeams) CreatePortalTeam(ctx context.Context, request operations.C
 				return nil, err
 			}
 
-			var out shared.V2PortalTeamResponse
+			var out shared.PortalTeamResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.V2PortalTeamResponse = &out
+			res.PortalTeamResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -278,7 +278,7 @@ func (s *PortalTeams) GetPortalTeam(ctx context.Context, request operations.GetP
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/portals/{portalId}/teams/{teamId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/portals/{portalId}/teams/{teamId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -368,12 +368,12 @@ func (s *PortalTeams) GetPortalTeam(ctx context.Context, request operations.GetP
 				return nil, err
 			}
 
-			var out shared.V2PortalTeamResponse
+			var out shared.PortalTeamResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.V2PortalTeamResponse = &out
+			res.PortalTeamResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -477,7 +477,7 @@ func (s *PortalTeams) UpdatePortalTeam(ctx context.Context, request operations.U
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/portals/{portalId}/teams/{teamId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/portals/{portalId}/teams/{teamId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -491,7 +491,7 @@ func (s *PortalTeams) UpdatePortalTeam(ctx context.Context, request operations.U
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "V2PortalUpdateTeamRequest", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "PortalUpdateTeamRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -574,12 +574,12 @@ func (s *PortalTeams) UpdatePortalTeam(ctx context.Context, request operations.U
 				return nil, err
 			}
 
-			var out shared.V2PortalTeamResponse
+			var out shared.PortalTeamResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.V2PortalTeamResponse = &out
+			res.PortalTeamResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -682,7 +682,7 @@ func (s *PortalTeams) DeletePortalTeam(ctx context.Context, request operations.D
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/portals/{portalId}/teams/{teamId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/portals/{portalId}/teams/{teamId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
