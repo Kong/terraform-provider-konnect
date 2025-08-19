@@ -11,9 +11,7 @@ resource "konnect_gateway_plugin_request_transformer_advanced" "my_request_trans
     add = {
       headers = ["New-Header:Header Value"]
     }
-    replace = {
-      uri = "/status/(uri_captures[\"status\"])"
-    }
+    http_method = "GET"
   }
 
   control_plane_id = konnect_gateway_control_plane.plugin_request_transformer_adv_cp.id

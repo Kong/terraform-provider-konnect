@@ -11,9 +11,7 @@ resource "konnect_gateway_plugin_proxy_cache" "my_proxy_cache" {
     response_code = [200]
     request_method = ["GET"]
     content_type = ["text/plain", "application/json"]
-    response_headers = {
-      age = true
-    }
+    storage_ttl = 3600
     cache_ttl = 300
     strategy = "memory"
   }

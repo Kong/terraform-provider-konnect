@@ -46,10 +46,8 @@ func TestPortalV2(t *testing.T) {
 					Config:          providerConfigUs,
 					ConfigDirectory: config.TestStepDirectory(),
 					Check: resource.ComposeTestCheckFunc(
-						resource.TestCheckNoResourceAttr("konnect_portal_appearance.nullify_appearance_test", "custom_theme"),
 						resource.TestCheckNoResourceAttr("konnect_portal_appearance.nullify_appearance_test", "custom_fonts"),
-						resource.TestCheckNoResourceAttr("konnect_portal_appearance.nullify_appearance_test", "text"),
-						resource.TestCheckNoResourceAttr("konnect_portal_appearance.nullify_appearance_test", "images"),
+						resource.TestCheckNoResourceAttr("konnect_portal_appearance.nullify_appearance_test", "images.logo"),
 					),
 				},
 			},

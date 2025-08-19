@@ -25,7 +25,7 @@ func TestGatewayPluginProxyCache(t *testing.T) {
 					Config:          providerConfigUs,
 					ConfigDirectory: config.TestStepDirectory(),
 					Check: resource.ComposeTestCheckFunc(
-						resource.TestCheckNoResourceAttr("konnect_gateway_plugin_proxy_cache.my_proxy_cache", "config.response_headers"),
+						resource.TestCheckNoResourceAttr("konnect_gateway_plugin_proxy_cache.my_proxy_cache", "config.storage_ttl"),
 					),
 				},
 			},
