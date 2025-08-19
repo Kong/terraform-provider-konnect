@@ -13516,47 +13516,6 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Appearance
-  '/v2/portals/{portalId}/authentication-settings':
-    parameters:
-      - $ref: '#/components/parameters/PortalId'
-    get:
-      x-speakeasy-entity-operation:
-        terraform-resource: PortalAuth#read
-        terraform-datasource: null
-      operationId: get-portal-authentication-settings
-      summary: Get Auth Settings
-      description: 'Returns the developer authentication configuration for a portal, which determines how developers can log in and how they are assigned to teams.'
-      responses:
-        '200':
-          $ref: '#/components/responses/V2PortalAuthenticationSettings'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-      tags:
-        - Portal Auth Settings
-    patch:
-      x-speakeasy-entity-operation:
-        terraform-resource: 'PortalAuth#create,update'
-        terraform-datasource: null
-      operationId: update-portal-authentication-settings
-      summary: Update Auth Settings
-      description: Updates the developer authentication configuration for a portal. Developers can be allowed to login using basic auth (email & password) or use Single-Sign-On (SSO) through an OIDC Identity Provider (IdP). Developers can be automatically assigned to teams by mapping claims from thier IdP account.
-      requestBody:
-        $ref: '#/components/requestBodies/V2UpdatePortalAuthenticationSettings'
-      responses:
-        '200':
-          $ref: '#/components/responses/V2PortalAuthenticationSettings'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-      tags:
-        - Portal Auth Settings
   '/v2/portals/{portalId}/product-versions/{productVersionId}':
     parameters:
       - $ref: '#/components/parameters/V2ProductVersionId'
@@ -13621,95 +13580,6 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Product Versions
-  '/v2/portals/{portalId}/teams':
-    parameters:
-      - $ref: '#/components/parameters/PortalId'
-    post:
-      x-speakeasy-entity-operation:
-        terraform-resource: PortalTeam#create
-        terraform-datasource: null
-      operationId: create-portal-team
-      summary: Create Team
-      description: Creates a developer team in a portal. Developers can be added to teams to provide RBAC access to API products. Teams can be assigned roles that grant permissions to perform an action on a resource.
-      requestBody:
-        $ref: '#/components/requestBodies/V2PortalCreateTeam'
-      responses:
-        '201':
-          $ref: '#/components/responses/V2PortalTeam'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Teams
-  '/v2/portals/{portalId}/teams/{teamId}':
-    parameters:
-      - $ref: '#/components/parameters/TeamId'
-      - $ref: '#/components/parameters/PortalId'
-    get:
-      x-speakeasy-entity-operation:
-        terraform-resource: PortalTeam#read
-        terraform-datasource: null
-      operationId: get-portal-team
-      summary: Get Team
-      description: Get an individual team.
-      responses:
-        '200':
-          $ref: '#/components/responses/V2PortalTeam'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Teams
-    patch:
-      x-speakeasy-entity-operation:
-        terraform-resource: PortalTeam#update
-        terraform-datasource: null
-      operationId: update-portal-team
-      summary: Update Team
-      description: Updates an individual developer team for a portal.
-      requestBody:
-        $ref: '#/components/requestBodies/V2PortalUpdateTeam'
-      responses:
-        '200':
-          $ref: '#/components/responses/V2PortalTeam'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Teams
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-resource: PortalTeam#delete
-        terraform-datasource: null
-      operationId: delete-portal-team
-      summary: Delete Team
-      description: 'Deletes a developer team from a portal. Deleting a team also deletes its assigned roles. Members of the team are not deleted, but they will lose any access provided through the team.'
-      responses:
-        '204':
-          description: No Content
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Teams
   '/v2/portals/{portalId}#classic':
     parameters:
       - name: portalId
@@ -14048,6 +13918,55 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Assets
+  '/v3/portals/{portalId}/authentication-settings':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalAuth#read
+        terraform-datasource: null
+      operationId: get-portal-authentication-settings
+      summary: Get Auth Settings
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Returns the developer authentication configuration for a portal, which determines how developers can log in and how they are assigned to teams.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAuthenticationSettings'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      tags:
+        - Portal Auth Settings
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: 'PortalAuth#create,update'
+        terraform-datasource: null
+      operationId: update-portal-authentication-settings
+      summary: Update Auth Settings
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Updates the developer authentication configuration for a portal. Developers can be allowed to login using basic auth (email & password) or use Single-Sign-On (SSO) through an OIDC Identity Provider (IdP). Developers can be automatically assigned to teams by mapping claims from thier IdP account.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalAuthenticationSettings'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAuthenticationSettings'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Portal Auth Settings
   '/v3/portals/{portalId}/custom-domain':
     parameters:
       - $ref: '#/components/parameters/PortalId'
@@ -14382,6 +14301,95 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Snippets
+  '/v3/portals/{portalId}/teams':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalTeam#create
+        terraform-datasource: null
+      operationId: create-portal-team
+      summary: Create Team
+      description: Creates a developer team in a portal. Developers can be added to teams to provide RBAC access to API products. Teams can be assigned roles that grant permissions to perform an action on a resource.
+      requestBody:
+        $ref: '#/components/requestBodies/PortalCreateTeam'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalTeam'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Teams
+  '/v3/portals/{portalId}/teams/{teamId}':
+    parameters:
+      - $ref: '#/components/parameters/TeamId'
+      - $ref: '#/components/parameters/PortalId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalTeam#read
+        terraform-datasource: null
+      operationId: get-portal-team
+      summary: Get Team
+      description: Get an individual team.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalTeam'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Teams
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalTeam#update
+        terraform-datasource: null
+      operationId: update-portal-team
+      summary: Update Team
+      description: Updates an individual developer team for a portal.
+      requestBody:
+        $ref: '#/components/requestBodies/PortalUpdateTeam'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalTeam'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Teams
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalTeam#delete
+        terraform-datasource: null
+      operationId: delete-portal-team
+      summary: Delete Team
+      description: 'Deletes a developer team from a portal. Deleting a team also deletes its assigned roles. Members of the team are not deleted, but they will lose any access provided through the team.'
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Teams
   /v3/system-accounts:
     post:
       x-speakeasy-entity-operation:
@@ -19849,242 +19857,6 @@ components:
         - id
         - name
         - display_name
-    V2PortalClaimMappings:
-      description: Mappings from a portal developer atribute to an Identity Provider claim.
-      type: object
-      properties:
-        name:
-          type: string
-          example: name
-        email:
-          type: string
-          example: email
-        groups:
-          type: string
-          example: custom-group-claim
-      example:
-        name: name
-        email: email
-        groups: custom-group-claim
-      maxProperties: 3
-      minProperties: 0
-      title: PortalClaimMappings
-    V2PortalOIDCConfig:
-      description: Configuration properties for an OpenID Connect Identity Provider.
-      type: object
-      properties:
-        issuer:
-          type: string
-          example: 'https://identity.example.com/v2'
-        client_id:
-          type: string
-          example: x7id0o42lklas0blidl2
-        scopes:
-          type: array
-          items:
-            type: string
-          example:
-            - email
-            - openid
-            - profile
-        claim_mappings:
-          $ref: '#/components/schemas/V2PortalClaimMappings'
-      example:
-        issuer: 'https://identity.example.com/v2'
-        client_id: x7id0o42lklas0blidl2
-        scopes:
-          - email
-          - openid
-          - profile
-        claim_mappings:
-          name: name
-          email: email
-          groups: custom-group-claim
-      required:
-        - issuer
-        - client_id
-      title: PortalOIDCConfig
-    V2PortalAuthenticationSettingsResponse:
-      description: The developer authentication settings for a portal.
-      type: object
-      properties:
-        basic_auth_enabled:
-          description: The portal has basic auth enabled or disabled.
-          type: boolean
-          example: true
-        oidc_auth_enabled:
-          description: The portal has OIDC enabled or disabled.
-          type: boolean
-          example: false
-        saml_auth_enabled:
-          description: The portal has SAML enabled or disabled.
-          type: boolean
-          example: false
-        oidc_team_mapping_enabled:
-          description: IdP groups determine the Portal Teams a developer has.
-          type: boolean
-          example: true
-        idp_mapping_enabled:
-          description: IdP groups determine the Portal Teams a developer has. This will soon replace oidc_team_mapping_enabled.
-          type: boolean
-          example: true
-        konnect_mapping_enabled:
-          description: A Konnect Identity Admin assigns teams to a developer.
-          type: boolean
-          example: false
-        oidc_config:
-          $ref: '#/components/schemas/V2PortalOIDCConfig'
-      example:
-        basic_auth_enabled: true
-        oidc_auth_enabled: true
-        oidc_team_mapping_enabled: true
-        konnect_mapping_enabled: false
-        oidc_config:
-          issuer: 'https://identity.example.com/v2'
-          client_id: x7id0o42lklas0blidl2
-          scopes:
-            - email
-            - openid
-            - profile
-          claim_mappings:
-            name: name
-            email: email
-            groups: custom-group-claim
-      required:
-        - basic_auth_enabled
-        - konnect_mapping_enabled
-        - oidc_auth_enabled
-        - oidc_team_mapping_enabled
-      title: PortalAuthenticationSettingsResponse
-    V2PortalAuthenticationSettingsUpdateRequest:
-      description: Properties to update a portal's developer auth settings.
-      type: object
-      properties:
-        basic_auth_enabled:
-          description: The organization has basic auth enabled.
-          type: boolean
-          example: true
-        oidc_auth_enabled:
-          description: The organization has OIDC disabled.
-          type: boolean
-          example: false
-        saml_auth_enabled:
-          description: The portal has SAML enabled or disabled.
-          type: boolean
-          example: false
-        oidc_team_mapping_enabled:
-          description: Whether IdP groups determine the Konnect Portal teams a developer has.
-          type: boolean
-          example: true
-        konnect_mapping_enabled:
-          description: Whether a Konnect Identity Admin assigns teams to a developer.
-          type: boolean
-          example: false
-        idp_mapping_enabled:
-          description: Whether IdP groups determine the Konnect Portal teams a developer has. This will soon replace oidc_team_mapping_enabled.
-          type: boolean
-          example: true
-        oidc_issuer:
-          type: string
-        oidc_client_id:
-          type: string
-        oidc_client_secret:
-          type: string
-        oidc_scopes:
-          type: array
-          items:
-            type: string
-        oidc_claim_mappings:
-          $ref: '#/components/schemas/V2PortalClaimMappings'
-      example:
-        basic_auth_enabled: true
-        oidc_auth_enabled: true
-        oidc_team_mapping_enabled: true
-        konnect_mapping_enabled: false
-        oidc_issuer: 'https://identity.example.com/v2'
-        oidc_client_id: x7id0o42lklas0blidl2
-        oidc_scopes:
-          - email
-          - openid
-          - profile
-        oidc_claim_mappings:
-          name: name
-          email: email
-          groups: custom-group-claim
-      title: PortalAuthenticationSettingsUpdateRequest
-    V2PortalUpdateTeamRequest:
-      description: Properties to update on a team.
-      type: object
-      properties:
-        name:
-          type: string
-          example: IDM - Developers
-          pattern: '^[\w \W]+$'
-          writeOnly: true
-        description:
-          type: string
-          example: The Identity Management (IDM) API team.
-          maxLength: 250
-          writeOnly: true
-      example:
-        name: IDM - Developers
-        description: The Identity Management (IDM) API team.
-      title: PortalUpdateTeamRequest
-    V2PortalCreateTeamRequest:
-      description: Details about a team to create.
-      type: object
-      properties:
-        name:
-          type: string
-          example: IDM - Developers
-          pattern: '^[\w \W]+$'
-          writeOnly: true
-        description:
-          type: string
-          example: The Identity Management (IDM) team.
-          maxLength: 250
-          writeOnly: true
-      example:
-        name: IDM - Developers
-        description: The Identity Management (IDM) team.
-      required:
-        - name
-      title: PortalCreateTeamRequest
-    V2PortalTeamResponse:
-      description: Details about a developer team.
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-          readOnly: true
-        name:
-          type: string
-          example: IDM - Developers
-          maxLength: 250
-          pattern: '^[\w \W]+$'
-        description:
-          type: string
-          example: The developers for the IDM API.
-          maxLength: 250
-        created_at:
-          type: string
-          format: date-time
-          example: '1992-02-07T17:46:57.52Z'
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          example: '2022-02-07T17:00:00.52Z'
-          readOnly: true
-      example:
-        id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-        name: IDM - Developers
-        description: The developers for the IDM API.
-        created_at: '1992-02-07T17:46:57.52Z'
-        updated_at: '2022-08-31T17:00:00.52Z'
-      title: PortalTeamResponse
     V2ListPortalsResponse:
       description: A paginated list of portals in the current region in the organization.
       type: object
@@ -21573,6 +21345,245 @@ components:
           type: boolean
       additionalProperties: false
       title: UpdatePortalCustomDomainRequest
+    PortalClaimMappings:
+      description: Mappings from a portal developer atribute to an Identity Provider claim.
+      type: object
+      properties:
+        name:
+          type: string
+          example: name
+        email:
+          type: string
+          example: email
+        groups:
+          type: string
+          example: custom-group-claim
+      example:
+        name: name
+        email: email
+        groups: custom-group-claim
+      maxProperties: 3
+      minProperties: 0
+      title: PortalClaimMappings
+    PortalOIDCConfig:
+      description: Configuration properties for an OpenID Connect Identity Provider.
+      type: object
+      properties:
+        issuer:
+          type: string
+          example: 'https://identity.example.com/v2'
+        client_id:
+          type: string
+          example: x7id0o42lklas0blidl2
+        scopes:
+          type: array
+          items:
+            type: string
+          example:
+            - email
+            - openid
+            - profile
+        claim_mappings:
+          $ref: '#/components/schemas/PortalClaimMappings'
+      example:
+        issuer: 'https://identity.example.com/v2'
+        client_id: x7id0o42lklas0blidl2
+        scopes:
+          - email
+          - openid
+          - profile
+        claim_mappings:
+          name: name
+          email: email
+          groups: custom-group-claim
+      required:
+        - issuer
+        - client_id
+      title: PortalOIDCConfig
+    PortalAuthenticationSettingsResponse:
+      x-speakeasy-entity: PortalAuth
+      description: The developer authentication settings for a portal.
+      type: object
+      properties:
+        basic_auth_enabled:
+          description: The portal has basic auth enabled or disabled.
+          type: boolean
+          example: true
+        oidc_auth_enabled:
+          description: The portal has OIDC enabled or disabled.
+          type: boolean
+          example: false
+        saml_auth_enabled:
+          description: The portal has SAML enabled or disabled.
+          type: boolean
+          example: false
+        oidc_team_mapping_enabled:
+          description: IdP groups determine the Portal Teams a developer has.
+          type: boolean
+          example: true
+        idp_mapping_enabled:
+          description: IdP groups determine the Portal Teams a developer has. This will soon replace oidc_team_mapping_enabled.
+          type: boolean
+          example: true
+        konnect_mapping_enabled:
+          description: A Konnect Identity Admin assigns teams to a developer.
+          type: boolean
+          example: false
+        oidc_config:
+          $ref: '#/components/schemas/PortalOIDCConfig'
+      example:
+        basic_auth_enabled: true
+        oidc_auth_enabled: true
+        oidc_team_mapping_enabled: true
+        konnect_mapping_enabled: false
+        oidc_config:
+          issuer: 'https://identity.example.com/v2'
+          client_id: x7id0o42lklas0blidl2
+          scopes:
+            - email
+            - openid
+            - profile
+          claim_mappings:
+            name: name
+            email: email
+            groups: custom-group-claim
+      required:
+        - basic_auth_enabled
+        - konnect_mapping_enabled
+        - oidc_auth_enabled
+        - oidc_team_mapping_enabled
+      title: PortalAuthenticationSettingsResponse
+    PortalAuthenticationSettingsUpdateRequest:
+      x-speakeasy-entity: PortalAuth
+      description: Properties to update a portal's developer auth settings.
+      type: object
+      properties:
+        basic_auth_enabled:
+          description: The organization has basic auth enabled.
+          type: boolean
+          example: true
+        oidc_auth_enabled:
+          description: The organization has OIDC disabled.
+          type: boolean
+          example: false
+        saml_auth_enabled:
+          description: The portal has SAML enabled or disabled.
+          type: boolean
+          example: false
+        oidc_team_mapping_enabled:
+          description: Whether IdP groups determine the Konnect Portal teams a developer has.
+          type: boolean
+          example: true
+        konnect_mapping_enabled:
+          description: Whether a Konnect Identity Admin assigns teams to a developer.
+          type: boolean
+          example: false
+        idp_mapping_enabled:
+          description: Whether IdP groups determine the Konnect Portal teams a developer has. This will soon replace oidc_team_mapping_enabled.
+          type: boolean
+          example: true
+        oidc_issuer:
+          type: string
+        oidc_client_id:
+          type: string
+        oidc_client_secret:
+          type: string
+        oidc_scopes:
+          type: array
+          items:
+            type: string
+        oidc_claim_mappings:
+          $ref: '#/components/schemas/PortalClaimMappings'
+      example:
+        basic_auth_enabled: true
+        oidc_auth_enabled: true
+        oidc_team_mapping_enabled: true
+        konnect_mapping_enabled: false
+        oidc_issuer: 'https://identity.example.com/v2'
+        oidc_client_id: x7id0o42lklas0blidl2
+        oidc_scopes:
+          - email
+          - openid
+          - profile
+        oidc_claim_mappings:
+          name: name
+          email: email
+          groups: custom-group-claim
+      title: PortalAuthenticationSettingsUpdateRequest
+    PortalUpdateTeamRequest:
+      description: Properties to update on a team.
+      type: object
+      properties:
+        name:
+          type: string
+          example: IDM - Developers
+          pattern: '^[\w \W]+$'
+          writeOnly: true
+        description:
+          type: string
+          example: The Identity Management (IDM) API team.
+          maxLength: 250
+          writeOnly: true
+      example:
+        name: IDM - Developers
+        description: The Identity Management (IDM) API team.
+      title: PortalUpdateTeamRequest
+    PortalCreateTeamRequest:
+      x-speakeasy-entity: PortalTeam
+      description: Details about a team to create.
+      type: object
+      properties:
+        name:
+          type: string
+          example: IDM - Developers
+          pattern: '^[\w \W]+$'
+          writeOnly: true
+        description:
+          type: string
+          example: The Identity Management (IDM) team.
+          maxLength: 250
+          writeOnly: true
+      example:
+        name: IDM - Developers
+        description: The Identity Management (IDM) team.
+      required:
+        - name
+      title: PortalCreateTeamRequest
+    PortalTeamResponse:
+      description: Details about a developer team.
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          readOnly: true
+        name:
+          type: string
+          example: IDM - Developers
+          maxLength: 250
+          pattern: '^[\w \W]+$'
+        description:
+          type: string
+          example: The developers for the IDM API.
+          maxLength: 250
+        created_at:
+          type: string
+          format: date-time
+          example: '1992-02-07T17:46:57.52Z'
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-02-07T17:00:00.52Z'
+          readOnly: true
+      example:
+        id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        name: IDM - Developers
+        description: The developers for the IDM API.
+        created_at: '1992-02-07T17:46:57.52Z'
+        updated_at: '2022-08-31T17:00:00.52Z'
+      title: PortalTeamResponse
     DataPlaneClientCertificate:
       x-speakeasy-entity: GatewayDataPlaneClientCertificate
       type: object
@@ -41729,24 +41740,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpsertIntegrationInstanceAuthConfig'
-    V2PortalUpdateTeam:
-      description: Update a team in a portal.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/V2PortalUpdateTeamRequest'
-    V2PortalCreateTeam:
-      description: Create a team in a portal.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/V2PortalCreateTeamRequest'
-    V2UpdatePortalAuthenticationSettings:
-      description: Update a portal's developer authentication settings.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/V2PortalAuthenticationSettingsUpdateRequest'
     V2CreatePortal:
       description: Create a portal.
       required: true
@@ -41976,6 +41969,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdatePortalSnippetRequest'
+    PortalUpdateTeam:
+      description: Update a team in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalUpdateTeamRequest'
+    PortalCreateTeam:
+      description: Create a team in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalCreateTeamRequest'
+    UpdatePortalAuthenticationSettings:
+      description: Update a portal's developer authentication settings.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalAuthenticationSettingsUpdateRequest'
     DataPlaneClientCertificateRequest:
       content:
         application/json:
@@ -42677,18 +42688,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/IntegrationInstanceAuthConfig'
-    V2PortalAuthenticationSettings:
-      description: Details about a portal's authentication settings.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/V2PortalAuthenticationSettingsResponse'
-    V2PortalTeam:
-      description: Details about a team of developers in a portal.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/V2PortalTeamResponse'
     V2ListPortals:
       description: A paginated list of portals in the current region of an organization.
       content:
@@ -42731,6 +42730,18 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/V2UpdatePortalAppearanceResponse'
+    PortalAuthenticationSettings:
+      description: Details about a portal's authentication settings.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalAuthenticationSettingsResponse'
+    PortalTeam:
+      description: Details about a team of developers in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalTeamResponse'
     PortalCustomDomain:
       description: Portal custom domain
       content:
@@ -43063,16 +43074,8 @@ tags:
       Typically an auth config will be required when authorizing against a integration which is hosted within your organization.
       The integration instance's auth config will inform how the Service Catalog will authorize the integration instance.
       Note that updating the auth config for an instance which is already authorized will **remove the existing credential**, requiring you to re-authorize the instance.
-  - name: Portals
-    description: APIs related to Configuration of Konnect Developer Portals.
-  - name: Portal Teams
-    description: APIs related to Konnect Developer Portal Developer Teams.
-  - name: Portal Auth Settings
-    description: APIs related to Konnect Developer Portal Authentication Settings.
   - name: Portal Appearance
     description: APIs related to Konnect Developer Portal Appearance Settings.
-  - name: Portal Customization
-    description: APIs related to Konnect Developer Portal Customization.
   - name: Portal Product Versions
     description: |
       Portal Product Versions hold metadata that describes how a Product Version is configured for a specific portal.
@@ -43081,8 +43084,16 @@ tags:
         - Lifecyle and deprecation statuses
         - Application registration settings like auto approve or whether application registration is enabled
         - The authentication strategy that is enabled for Application Registration
+  - name: Portals
+    description: APIs related to configuration of Konnect Developer Portals.
   - name: Portal Custom Domains
     description: APIs related to configuration of Konnect Developer Portals custom domains.
+  - name: Portal Customization
+    description: APIs related to customization of Konnect Developer Portals.
+  - name: Portal Auth Settings
+    description: APIs related to configuration of Konnect Developer Portal auth settings.
+  - name: Portal Teams
+    description: APIs related to configuration of Konnect Developer Portal developer teams.
   - name: Assets
     description: APIs for managing static assets for Konnect Developer Portals.
   - name: Pages
