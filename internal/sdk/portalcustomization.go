@@ -15,7 +15,7 @@ import (
 	"net/http"
 )
 
-// PortalCustomization - APIs related to Konnect Developer Portal Customization.
+// PortalCustomization - APIs related to customization of Konnect Developer Portals.
 type PortalCustomization struct {
 	rootSDK          *Konnect
 	sdkConfiguration config.SDKConfiguration

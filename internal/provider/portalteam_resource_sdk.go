@@ -11,7 +11,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *PortalTeamResourceModel) RefreshFromSharedV2PortalTeamResponse(ctx context.Context, resp *shared.V2PortalTeamResponse) diag.Diagnostics {
+func (r *PortalTeamResourceModel) RefreshFromSharedPortalTeamResponse(ctx context.Context, resp *shared.PortalTeamResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -31,16 +31,16 @@ func (r *PortalTeamResourceModel) ToOperationsCreatePortalTeamRequest(ctx contex
 	var portalID string
 	portalID = r.PortalID.ValueString()
 
-	v2PortalCreateTeamRequest, v2PortalCreateTeamRequestDiags := r.ToSharedV2PortalCreateTeamRequest(ctx)
-	diags.Append(v2PortalCreateTeamRequestDiags...)
+	portalCreateTeamRequest, portalCreateTeamRequestDiags := r.ToSharedPortalCreateTeamRequest(ctx)
+	diags.Append(portalCreateTeamRequestDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := operations.CreatePortalTeamRequest{
-		PortalID:                  portalID,
-		V2PortalCreateTeamRequest: v2PortalCreateTeamRequest,
+		PortalID:                portalID,
+		PortalCreateTeamRequest: portalCreateTeamRequest,
 	}
 
 	return &out, diags
@@ -89,23 +89,23 @@ func (r *PortalTeamResourceModel) ToOperationsUpdatePortalTeamRequest(ctx contex
 	var portalID string
 	portalID = r.PortalID.ValueString()
 
-	v2PortalUpdateTeamRequest, v2PortalUpdateTeamRequestDiags := r.ToSharedV2PortalUpdateTeamRequest(ctx)
-	diags.Append(v2PortalUpdateTeamRequestDiags...)
+	portalUpdateTeamRequest, portalUpdateTeamRequestDiags := r.ToSharedPortalUpdateTeamRequest(ctx)
+	diags.Append(portalUpdateTeamRequestDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := operations.UpdatePortalTeamRequest{
-		TeamID:                    teamID,
-		PortalID:                  portalID,
-		V2PortalUpdateTeamRequest: v2PortalUpdateTeamRequest,
+		TeamID:                  teamID,
+		PortalID:                portalID,
+		PortalUpdateTeamRequest: portalUpdateTeamRequest,
 	}
 
 	return &out, diags
 }
 
-func (r *PortalTeamResourceModel) ToSharedV2PortalCreateTeamRequest(ctx context.Context) (*shared.V2PortalCreateTeamRequest, diag.Diagnostics) {
+func (r *PortalTeamResourceModel) ToSharedPortalCreateTeamRequest(ctx context.Context) (*shared.PortalCreateTeamRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var name string
@@ -117,7 +117,7 @@ func (r *PortalTeamResourceModel) ToSharedV2PortalCreateTeamRequest(ctx context.
 	} else {
 		description = nil
 	}
-	out := shared.V2PortalCreateTeamRequest{
+	out := shared.PortalCreateTeamRequest{
 		Name:        name,
 		Description: description,
 	}
@@ -125,7 +125,7 @@ func (r *PortalTeamResourceModel) ToSharedV2PortalCreateTeamRequest(ctx context.
 	return &out, diags
 }
 
-func (r *PortalTeamResourceModel) ToSharedV2PortalUpdateTeamRequest(ctx context.Context) (*shared.V2PortalUpdateTeamRequest, diag.Diagnostics) {
+func (r *PortalTeamResourceModel) ToSharedPortalUpdateTeamRequest(ctx context.Context) (*shared.PortalUpdateTeamRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	name := new(string)
@@ -140,7 +140,7 @@ func (r *PortalTeamResourceModel) ToSharedV2PortalUpdateTeamRequest(ctx context.
 	} else {
 		description = nil
 	}
-	out := shared.V2PortalUpdateTeamRequest{
+	out := shared.PortalUpdateTeamRequest{
 		Name:        name,
 		Description: description,
 	}

@@ -2,28 +2,28 @@
 
 package shared
 
-// V2PortalClaimMappings - Mappings from a portal developer atribute to an Identity Provider claim.
-type V2PortalClaimMappings struct {
+// PortalClaimMappings - Mappings from a portal developer atribute to an Identity Provider claim.
+type PortalClaimMappings struct {
 	Name   *string `json:"name,omitempty"`
 	Email  *string `json:"email,omitempty"`
 	Groups *string `json:"groups,omitempty"`
 }
 
-func (o *V2PortalClaimMappings) GetName() *string {
+func (o *PortalClaimMappings) GetName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Name
 }
 
-func (o *V2PortalClaimMappings) GetEmail() *string {
+func (o *PortalClaimMappings) GetEmail() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Email
 }
 
-func (o *V2PortalClaimMappings) GetGroups() *string {
+func (o *PortalClaimMappings) GetGroups() *string {
 	if o == nil {
 		return nil
 	}

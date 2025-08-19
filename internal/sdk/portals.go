@@ -16,7 +16,7 @@ import (
 	"net/url"
 )
 
-// Portals - APIs related to Configuration of Konnect Developer Portals.
+// Portals - APIs related to configuration of Konnect Developer Portals.
 type Portals struct {
 	rootSDK          *Konnect
 	sdkConfiguration config.SDKConfiguration

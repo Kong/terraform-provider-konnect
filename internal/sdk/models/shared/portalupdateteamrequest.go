@@ -2,20 +2,20 @@
 
 package shared
 
-// V2PortalUpdateTeamRequest - Properties to update on a team.
-type V2PortalUpdateTeamRequest struct {
+// PortalUpdateTeamRequest - Properties to update on a team.
+type PortalUpdateTeamRequest struct {
 	Name        *string `json:"name,omitempty"`
 	Description *string `json:"description,omitempty"`
 }
 
-func (o *V2PortalUpdateTeamRequest) GetName() *string {
+func (o *PortalUpdateTeamRequest) GetName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Name
 }
 
-func (o *V2PortalUpdateTeamRequest) GetDescription() *string {
+func (o *PortalUpdateTeamRequest) GetDescription() *string {
 	if o == nil {
 		return nil
 	}

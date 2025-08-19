@@ -2,8 +2,8 @@
 
 package shared
 
-// V2PortalAuthenticationSettingsUpdateRequest - Properties to update a portal's developer auth settings.
-type V2PortalAuthenticationSettingsUpdateRequest struct {
+// PortalAuthenticationSettingsUpdateRequest - Properties to update a portal's developer auth settings.
+type PortalAuthenticationSettingsUpdateRequest struct {
 	// The organization has basic auth enabled.
 	BasicAuthEnabled *bool `json:"basic_auth_enabled,omitempty"`
 	// The organization has OIDC disabled.
@@ -21,80 +21,80 @@ type V2PortalAuthenticationSettingsUpdateRequest struct {
 	OidcClientSecret  *string  `json:"oidc_client_secret,omitempty"`
 	OidcScopes        []string `json:"oidc_scopes,omitempty"`
 	// Mappings from a portal developer atribute to an Identity Provider claim.
-	OidcClaimMappings *V2PortalClaimMappings `json:"oidc_claim_mappings,omitempty"`
+	OidcClaimMappings *PortalClaimMappings `json:"oidc_claim_mappings,omitempty"`
 }
 
-func (o *V2PortalAuthenticationSettingsUpdateRequest) GetBasicAuthEnabled() *bool {
+func (o *PortalAuthenticationSettingsUpdateRequest) GetBasicAuthEnabled() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.BasicAuthEnabled
 }
 
-func (o *V2PortalAuthenticationSettingsUpdateRequest) GetOidcAuthEnabled() *bool {
+func (o *PortalAuthenticationSettingsUpdateRequest) GetOidcAuthEnabled() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.OidcAuthEnabled
 }
 
-func (o *V2PortalAuthenticationSettingsUpdateRequest) GetSamlAuthEnabled() *bool {
+func (o *PortalAuthenticationSettingsUpdateRequest) GetSamlAuthEnabled() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.SamlAuthEnabled
 }
 
-func (o *V2PortalAuthenticationSettingsUpdateRequest) GetOidcTeamMappingEnabled() *bool {
+func (o *PortalAuthenticationSettingsUpdateRequest) GetOidcTeamMappingEnabled() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.OidcTeamMappingEnabled
 }
 
-func (o *V2PortalAuthenticationSettingsUpdateRequest) GetKonnectMappingEnabled() *bool {
+func (o *PortalAuthenticationSettingsUpdateRequest) GetKonnectMappingEnabled() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.KonnectMappingEnabled
 }
 
-func (o *V2PortalAuthenticationSettingsUpdateRequest) GetIdpMappingEnabled() *bool {
+func (o *PortalAuthenticationSettingsUpdateRequest) GetIdpMappingEnabled() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.IdpMappingEnabled
 }
 
-func (o *V2PortalAuthenticationSettingsUpdateRequest) GetOidcIssuer() *string {
+func (o *PortalAuthenticationSettingsUpdateRequest) GetOidcIssuer() *string {
 	if o == nil {
 		return nil
 	}
 	return o.OidcIssuer
 }
 
-func (o *V2PortalAuthenticationSettingsUpdateRequest) GetOidcClientID() *string {
+func (o *PortalAuthenticationSettingsUpdateRequest) GetOidcClientID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.OidcClientID
 }
 
-func (o *V2PortalAuthenticationSettingsUpdateRequest) GetOidcClientSecret() *string {
+func (o *PortalAuthenticationSettingsUpdateRequest) GetOidcClientSecret() *string {
 	if o == nil {
 		return nil
 	}
 	return o.OidcClientSecret
 }
 
-func (o *V2PortalAuthenticationSettingsUpdateRequest) GetOidcScopes() []string {
+func (o *PortalAuthenticationSettingsUpdateRequest) GetOidcScopes() []string {
 	if o == nil {
 		return nil
 	}
 	return o.OidcScopes
 }
 
-func (o *V2PortalAuthenticationSettingsUpdateRequest) GetOidcClaimMappings() *V2PortalClaimMappings {
+func (o *PortalAuthenticationSettingsUpdateRequest) GetOidcClaimMappings() *PortalClaimMappings {
 	if o == nil {
 		return nil
 	}

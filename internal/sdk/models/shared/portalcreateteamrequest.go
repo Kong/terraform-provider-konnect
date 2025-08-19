@@ -2,20 +2,20 @@
 
 package shared
 
-// V2PortalCreateTeamRequest - Details about a team to create.
-type V2PortalCreateTeamRequest struct {
+// PortalCreateTeamRequest - Details about a team to create.
+type PortalCreateTeamRequest struct {
 	Name        string  `json:"name"`
 	Description *string `json:"description,omitempty"`
 }
 
-func (o *V2PortalCreateTeamRequest) GetName() string {
+func (o *PortalCreateTeamRequest) GetName() string {
 	if o == nil {
 		return ""
 	}
 	return o.Name
 }
 
-func (o *V2PortalCreateTeamRequest) GetDescription() *string {
+func (o *PortalCreateTeamRequest) GetDescription() *string {
 	if o == nil {
 		return nil
 	}

@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 3ec8149c59261764a14f2893d16ea24a
+  docChecksum: c1837e400d2d512c530016e57ba6d339
   docVersion: 2.0.0
   speakeasyVersion: 1.602.0
   generationVersion: 2.681.1
@@ -936,8 +936,10 @@ generatedFiles:
   - internal/provider/types/passive.go
   - internal/provider/types/pem.go
   - internal/provider/types/pgvector.go
+  - internal/provider/types/portal_claim_mappings.go
   - internal/provider/types/portal_footer_menu_section.go
   - internal/provider/types/portal_menu_item.go
+  - internal/provider/types/portal_oidc_config.go
   - internal/provider/types/post_function_plugin_config.go
   - internal/provider/types/private_dns_attachment_config.go
   - internal/provider/types/private_dns_resolver_config.go
@@ -1034,8 +1036,6 @@ generatedFiles:
   - internal/provider/types/v2_nullable_appearance_text_variables.go
   - internal/provider/types/v2_nullable_appearance_theme_variables.go
   - internal/provider/types/v2_portal.go
-  - internal/provider/types/v2_portal_claim_mappings.go
-  - internal/provider/types/v2_portal_oidc_config.go
   - internal/provider/types/vault_auth_plugin_config.go
   - internal/provider/types/vectordb.go
   - internal/provider/types/websocket_size_limit_plugin_config.go
@@ -1970,6 +1970,10 @@ generatedFiles:
   - internal/sdk/models/shared/plugin.go
   - internal/sdk/models/shared/pluginschemas.go
   - internal/sdk/models/shared/portalassetresponse.go
+  - internal/sdk/models/shared/portalauthenticationsettingsresponse.go
+  - internal/sdk/models/shared/portalauthenticationsettingsupdaterequest.go
+  - internal/sdk/models/shared/portalclaimmappings.go
+  - internal/sdk/models/shared/portalcreateteamrequest.go
   - internal/sdk/models/shared/portalcustomdomain.go
   - internal/sdk/models/shared/portalcustomdomaincnamestatus.go
   - internal/sdk/models/shared/portalcustomdomainssl.go
@@ -1978,9 +1982,12 @@ generatedFiles:
   - internal/sdk/models/shared/portalcustomization.go
   - internal/sdk/models/shared/portalfootermenusection.go
   - internal/sdk/models/shared/portalmenuitem.go
+  - internal/sdk/models/shared/portaloidcconfig.go
   - internal/sdk/models/shared/portalpageresponse.go
   - internal/sdk/models/shared/portalresponse.go
   - internal/sdk/models/shared/portalsnippetresponse.go
+  - internal/sdk/models/shared/portalteamresponse.go
+  - internal/sdk/models/shared/portalupdateteamrequest.go
   - internal/sdk/models/shared/postfunctionplugin.go
   - internal/sdk/models/shared/prefunctionplugin.go
   - internal/sdk/models/shared/privatednsresolverconfig.go
@@ -2083,16 +2090,9 @@ generatedFiles:
   - internal/sdk/models/shared/v2nullableappearancethemevariables.go
   - internal/sdk/models/shared/v2portal.go
   - internal/sdk/models/shared/v2portalappearance.go
-  - internal/sdk/models/shared/v2portalauthenticationsettingsresponse.go
-  - internal/sdk/models/shared/v2portalauthenticationsettingsupdaterequest.go
-  - internal/sdk/models/shared/v2portalclaimmappings.go
-  - internal/sdk/models/shared/v2portalcreateteamrequest.go
-  - internal/sdk/models/shared/v2portaloidcconfig.go
   - internal/sdk/models/shared/v2portalproductversion.go
   - internal/sdk/models/shared/v2portalproductversionpublishstatus.go
-  - internal/sdk/models/shared/v2portalteamresponse.go
   - internal/sdk/models/shared/v2portaltheme.go
-  - internal/sdk/models/shared/v2portalupdateteamrequest.go
   - internal/sdk/models/shared/v2replaceportalproductversionpayload.go
   - internal/sdk/models/shared/v2updateportalappearanceresponse.go
   - internal/sdk/models/shared/v2updateportalrequest.go

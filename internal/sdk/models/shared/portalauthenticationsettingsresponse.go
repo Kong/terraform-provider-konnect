@@ -2,8 +2,8 @@
 
 package shared
 
-// V2PortalAuthenticationSettingsResponse - The developer authentication settings for a portal.
-type V2PortalAuthenticationSettingsResponse struct {
+// PortalAuthenticationSettingsResponse - The developer authentication settings for a portal.
+type PortalAuthenticationSettingsResponse struct {
 	// The portal has basic auth enabled or disabled.
 	BasicAuthEnabled bool `json:"basic_auth_enabled"`
 	// The portal has OIDC enabled or disabled.
@@ -17,52 +17,52 @@ type V2PortalAuthenticationSettingsResponse struct {
 	// A Konnect Identity Admin assigns teams to a developer.
 	KonnectMappingEnabled bool `json:"konnect_mapping_enabled"`
 	// Configuration properties for an OpenID Connect Identity Provider.
-	OidcConfig *V2PortalOIDCConfig `json:"oidc_config,omitempty"`
+	OidcConfig *PortalOIDCConfig `json:"oidc_config,omitempty"`
 }
 
-func (o *V2PortalAuthenticationSettingsResponse) GetBasicAuthEnabled() bool {
+func (o *PortalAuthenticationSettingsResponse) GetBasicAuthEnabled() bool {
 	if o == nil {
 		return false
 	}
 	return o.BasicAuthEnabled
 }
 
-func (o *V2PortalAuthenticationSettingsResponse) GetOidcAuthEnabled() bool {
+func (o *PortalAuthenticationSettingsResponse) GetOidcAuthEnabled() bool {
 	if o == nil {
 		return false
 	}
 	return o.OidcAuthEnabled
 }
 
-func (o *V2PortalAuthenticationSettingsResponse) GetSamlAuthEnabled() *bool {
+func (o *PortalAuthenticationSettingsResponse) GetSamlAuthEnabled() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.SamlAuthEnabled
 }
 
-func (o *V2PortalAuthenticationSettingsResponse) GetOidcTeamMappingEnabled() bool {
+func (o *PortalAuthenticationSettingsResponse) GetOidcTeamMappingEnabled() bool {
 	if o == nil {
 		return false
 	}
 	return o.OidcTeamMappingEnabled
 }
 
-func (o *V2PortalAuthenticationSettingsResponse) GetIdpMappingEnabled() *bool {
+func (o *PortalAuthenticationSettingsResponse) GetIdpMappingEnabled() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.IdpMappingEnabled
 }
 
-func (o *V2PortalAuthenticationSettingsResponse) GetKonnectMappingEnabled() bool {
+func (o *PortalAuthenticationSettingsResponse) GetKonnectMappingEnabled() bool {
 	if o == nil {
 		return false
 	}
 	return o.KonnectMappingEnabled
 }
 
-func (o *V2PortalAuthenticationSettingsResponse) GetOidcConfig() *V2PortalOIDCConfig {
+func (o *PortalAuthenticationSettingsResponse) GetOidcConfig() *PortalOIDCConfig {
 	if o == nil {
 		return nil
 	}

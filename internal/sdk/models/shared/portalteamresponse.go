@@ -7,8 +7,8 @@ import (
 	"time"
 )
 
-// V2PortalTeamResponse - Details about a developer team.
-type V2PortalTeamResponse struct {
+// PortalTeamResponse - Details about a developer team.
+type PortalTeamResponse struct {
 	ID          *string    `json:"id,omitempty"`
 	Name        *string    `json:"name,omitempty"`
 	Description *string    `json:"description,omitempty"`
@@ -16,46 +16,46 @@ type V2PortalTeamResponse struct {
 	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
 }
 
-func (v V2PortalTeamResponse) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(v, "", false)
+func (p PortalTeamResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
 }
 
-func (v *V2PortalTeamResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
+func (p *PortalTeamResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *V2PortalTeamResponse) GetID() *string {
+func (o *PortalTeamResponse) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-func (o *V2PortalTeamResponse) GetName() *string {
+func (o *PortalTeamResponse) GetName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Name
 }
 
-func (o *V2PortalTeamResponse) GetDescription() *string {
+func (o *PortalTeamResponse) GetDescription() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Description
 }
 
-func (o *V2PortalTeamResponse) GetCreatedAt() *time.Time {
+func (o *PortalTeamResponse) GetCreatedAt() *time.Time {
 	if o == nil {
 		return nil
 	}
 	return o.CreatedAt
 }
 
-func (o *V2PortalTeamResponse) GetUpdatedAt() *time.Time {
+func (o *PortalTeamResponse) GetUpdatedAt() *time.Time {
 	if o == nil {
 		return nil
 	}

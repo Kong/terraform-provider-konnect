@@ -11,7 +11,7 @@ type UpdatePortalAuthenticationSettingsRequest struct {
 	// ID of the portal.
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// Update a portal's developer authentication settings.
-	V2PortalAuthenticationSettingsUpdateRequest *shared.V2PortalAuthenticationSettingsUpdateRequest `request:"mediaType=application/json"`
+	PortalAuthenticationSettingsUpdateRequest *shared.PortalAuthenticationSettingsUpdateRequest `request:"mediaType=application/json"`
 }
 
 func (o *UpdatePortalAuthenticationSettingsRequest) GetPortalID() string {
@@ -21,11 +21,11 @@ func (o *UpdatePortalAuthenticationSettingsRequest) GetPortalID() string {
 	return o.PortalID
 }
 
-func (o *UpdatePortalAuthenticationSettingsRequest) GetV2PortalAuthenticationSettingsUpdateRequest() *shared.V2PortalAuthenticationSettingsUpdateRequest {
+func (o *UpdatePortalAuthenticationSettingsRequest) GetPortalAuthenticationSettingsUpdateRequest() *shared.PortalAuthenticationSettingsUpdateRequest {
 	if o == nil {
 		return nil
 	}
-	return o.V2PortalAuthenticationSettingsUpdateRequest
+	return o.PortalAuthenticationSettingsUpdateRequest
 }
 
 type UpdatePortalAuthenticationSettingsResponse struct {
@@ -36,7 +36,7 @@ type UpdatePortalAuthenticationSettingsResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Details about a portal's authentication settings.
-	V2PortalAuthenticationSettingsResponse *shared.V2PortalAuthenticationSettingsResponse
+	PortalAuthenticationSettingsResponse *shared.PortalAuthenticationSettingsResponse
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -66,11 +66,11 @@ func (o *UpdatePortalAuthenticationSettingsResponse) GetRawResponse() *http.Resp
 	return o.RawResponse
 }
 
-func (o *UpdatePortalAuthenticationSettingsResponse) GetV2PortalAuthenticationSettingsResponse() *shared.V2PortalAuthenticationSettingsResponse {
+func (o *UpdatePortalAuthenticationSettingsResponse) GetPortalAuthenticationSettingsResponse() *shared.PortalAuthenticationSettingsResponse {
 	if o == nil {
 		return nil
 	}
-	return o.V2PortalAuthenticationSettingsResponse
+	return o.PortalAuthenticationSettingsResponse
 }
 
 func (o *UpdatePortalAuthenticationSettingsResponse) GetBadRequestError() *shared.BadRequestError {

@@ -225,8 +225,6 @@ type Konnect struct {
 	ControlPlaneGroups *ControlPlaneGroups
 	// APIs related to Konnect Developer Portal Appearance Settings.
 	PortalAppearance *PortalAppearance
-	// APIs related to Konnect Developer Portal Authentication Settings.
-	PortalAuthSettings *PortalAuthSettings
 	// Portal Product Versions hold metadata that describes how a Product Version is configured for a specific portal.
 	//
 	//   They contain:
@@ -235,20 +233,22 @@ type Konnect struct {
 	//   - The authentication strategy that is enabled for Application Registration
 	//
 	PortalProductVersions *PortalProductVersions
-	// APIs related to Konnect Developer Portal Developer Teams.
-	PortalTeams *PortalTeams
-	// APIs related to Configuration of Konnect Developer Portals.
+	// APIs related to configuration of Konnect Developer Portals.
 	Portals *Portals
 	// APIs for managing static assets for Konnect Developer Portals.
 	Assets *Assets
+	// APIs related to configuration of Konnect Developer Portal auth settings.
+	PortalAuthSettings *PortalAuthSettings
 	// APIs related to configuration of Konnect Developer Portals custom domains.
 	PortalCustomDomains *PortalCustomDomains
-	// APIs related to Konnect Developer Portal Customization.
+	// APIs related to customization of Konnect Developer Portals.
 	PortalCustomization *PortalCustomization
 	// APIs related to Konnect Developer Portal Custom Pages.
 	Pages *Pages
 	// APIs related to Konnect Developer Portal Custom Snippets.
-	Snippets                     *Snippets
+	Snippets *Snippets
+	// APIs related to configuration of Konnect Developer Portal developer teams.
+	PortalTeams                  *PortalTeams
 	SystemAccounts               *SystemAccounts
 	SystemAccountsAccessTokens   *SystemAccountsAccessTokens
 	SystemAccountsRoles          *SystemAccountsRoles
@@ -398,15 +398,15 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.DPCertificates = newDPCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ControlPlaneGroups = newControlPlaneGroups(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalAppearance = newPortalAppearance(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.PortalAuthSettings = newPortalAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalProductVersions = newPortalProductVersions(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.PortalTeams = newPortalTeams(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Portals = newPortals(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Assets = newAssets(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalAuthSettings = newPortalAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalCustomDomains = newPortalCustomDomains(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalCustomization = newPortalCustomization(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Pages = newPages(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Snippets = newSnippets(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalTeams = newPortalTeams(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SystemAccounts = newSystemAccounts(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SystemAccountsAccessTokens = newSystemAccountsAccessTokens(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SystemAccountsRoles = newSystemAccountsRoles(sdk, sdk.sdkConfiguration, sdk.hooks)

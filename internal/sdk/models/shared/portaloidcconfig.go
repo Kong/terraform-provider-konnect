@@ -2,37 +2,37 @@
 
 package shared
 
-// V2PortalOIDCConfig - Configuration properties for an OpenID Connect Identity Provider.
-type V2PortalOIDCConfig struct {
+// PortalOIDCConfig - Configuration properties for an OpenID Connect Identity Provider.
+type PortalOIDCConfig struct {
 	Issuer   string   `json:"issuer"`
 	ClientID string   `json:"client_id"`
 	Scopes   []string `json:"scopes,omitempty"`
 	// Mappings from a portal developer atribute to an Identity Provider claim.
-	ClaimMappings *V2PortalClaimMappings `json:"claim_mappings,omitempty"`
+	ClaimMappings *PortalClaimMappings `json:"claim_mappings,omitempty"`
 }
 
-func (o *V2PortalOIDCConfig) GetIssuer() string {
+func (o *PortalOIDCConfig) GetIssuer() string {
 	if o == nil {
 		return ""
 	}
 	return o.Issuer
 }
 
-func (o *V2PortalOIDCConfig) GetClientID() string {
+func (o *PortalOIDCConfig) GetClientID() string {
 	if o == nil {
 		return ""
 	}
 	return o.ClientID
 }
 
-func (o *V2PortalOIDCConfig) GetScopes() []string {
+func (o *PortalOIDCConfig) GetScopes() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Scopes
 }
 
-func (o *V2PortalOIDCConfig) GetClaimMappings() *V2PortalClaimMappings {
+func (o *PortalOIDCConfig) GetClaimMappings() *PortalClaimMappings {
 	if o == nil {
 		return nil
 	}
