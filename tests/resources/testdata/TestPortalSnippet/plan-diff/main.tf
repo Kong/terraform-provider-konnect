@@ -5,7 +5,7 @@ resource "konnect_portal" "my_portal_for_snippet" {
 
 resource "konnect_portal_snippet" "my_portal_snippet" {
   content     = "# Welcome to My Snippet"
-  description = "A custom page about developer portals"
+  description = "A custom snippet about developer portals"
   name        = "my-snippet"
   title       = "My Snippet"
   portal_id   = konnect_portal.my_portal_for_snippet.id

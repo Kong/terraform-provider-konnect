@@ -55,7 +55,7 @@ resource "konnect_application_auth_strategy" "my_applicationauthstrategy" {
 }
 
 # Assign the product version to a portal
-resource "konnect_portal_classic_product_version" "my_portalproductversion" {
+resource "konnect_portal_product_version" "my_portalproductversion" {
   application_registration_enabled = true
   auto_approve_registration        = true
   deprecated                       = false
