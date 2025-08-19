@@ -9,7 +9,7 @@ import (
 )
 
 type RateLimitingPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *RateLimitingPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *RateLimitingPluginAfter) GetAccess() []string {
 }
 
 type RateLimitingPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *RateLimitingPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *RateLimitingPluginBefore) GetAccess() []string {
 }
 
 type RateLimitingPluginOrdering struct {
-	After  *RateLimitingPluginAfter  `json:"after,omitempty"`
-	Before *RateLimitingPluginBefore `json:"before,omitempty"`
+	After  *RateLimitingPluginAfter  `json:"after"`
+	Before *RateLimitingPluginBefore `json:"before"`
 }
 
 func (o *RateLimitingPluginOrdering) GetAfter() *RateLimitingPluginAfter {
@@ -53,8 +53,19 @@ type RateLimitingPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (r RateLimitingPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RateLimitingPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RateLimitingPluginPartials) GetID() *string {
@@ -153,23 +164,34 @@ func (e *Policy) UnmarshalJSON(data []byte) error {
 // RateLimitingPluginRedis - Redis configuration
 type RateLimitingPluginRedis struct {
 	// Database to use for the Redis connection when using the `redis` strategy
-	Database *int64 `json:"database,omitempty"`
+	Database *int64 `default:"0" json:"database"`
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"null" json:"host"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-	Password *string `json:"password,omitempty"`
+	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
 	// A string representing an SNI (server name indication) value for TLS.
-	ServerName *string `json:"server_name,omitempty"`
+	ServerName *string `default:"null" json:"server_name"`
 	// If set to true, uses SSL to connect to Redis.
-	Ssl *bool `json:"ssl,omitempty"`
+	Ssl *bool `default:"false" json:"ssl"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-	SslVerify *bool `json:"ssl_verify,omitempty"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	Timeout *int64 `json:"timeout,omitempty"`
+	Timeout *int64 `default:"2000" json:"timeout"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
-	Username *string `json:"username,omitempty"`
+	Username *string `default:"null" json:"username"`
+}
+
+func (r RateLimitingPluginRedis) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RateLimitingPluginRedis) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RateLimitingPluginRedis) GetDatabase() *int64 {
@@ -237,37 +259,48 @@ func (o *RateLimitingPluginRedis) GetUsername() *string {
 
 type RateLimitingPluginConfig struct {
 	// The number of HTTP requests that can be made per day.
-	Day *float64 `json:"day,omitempty"`
+	Day *float64 `default:"null" json:"day"`
 	// Set a custom error code to return when the rate limit is exceeded.
-	ErrorCode *float64 `json:"error_code,omitempty"`
+	ErrorCode *float64 `default:"429" json:"error_code"`
 	// Set a custom error message to return when the rate limit is exceeded.
-	ErrorMessage *string `json:"error_message,omitempty"`
+	ErrorMessage *string `default:"API rate limit exceeded" json:"error_message"`
 	// A boolean value that determines if the requests should be proxied even if Kong has troubles connecting a third-party data store. If `true`, requests will be proxied anyway, effectively disabling the rate-limiting function until the data store is working again. If `false`, then the clients will see `500` errors.
-	FaultTolerant *bool `json:"fault_tolerant,omitempty"`
+	FaultTolerant *bool `default:"true" json:"fault_tolerant"`
 	// A string representing an HTTP header name.
-	HeaderName *string `json:"header_name,omitempty"`
+	HeaderName *string `default:"null" json:"header_name"`
 	// Optionally hide informative response headers.
-	HideClientHeaders *bool `json:"hide_client_headers,omitempty"`
+	HideClientHeaders *bool `default:"false" json:"hide_client_headers"`
 	// The number of HTTP requests that can be made per hour.
-	Hour *float64 `json:"hour,omitempty"`
+	Hour *float64 `default:"null" json:"hour"`
 	// The entity that is used when aggregating the limits.
-	LimitBy *LimitBy `json:"limit_by,omitempty"`
+	LimitBy *LimitBy `default:"consumer" json:"limit_by"`
 	// The number of HTTP requests that can be made per minute.
-	Minute *float64 `json:"minute,omitempty"`
+	Minute *float64 `default:"null" json:"minute"`
 	// The number of HTTP requests that can be made per month.
-	Month *float64 `json:"month,omitempty"`
+	Month *float64 `default:"null" json:"month"`
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
-	Path *string `json:"path,omitempty"`
+	Path *string `default:"null" json:"path"`
 	// The rate-limiting policies to use for retrieving and incrementing the limits.
-	Policy *Policy `json:"policy,omitempty"`
+	Policy *Policy `default:"local" json:"policy"`
 	// Redis configuration
 	Redis *RateLimitingPluginRedis `json:"redis,omitempty"`
 	// The number of HTTP requests that can be made per second.
-	Second *float64 `json:"second,omitempty"`
+	Second *float64 `default:"null" json:"second"`
 	// How often to sync counter data to the central data store. A value of -1 results in synchronous behavior.
-	SyncRate *float64 `json:"sync_rate,omitempty"`
+	SyncRate *float64 `default:"-1" json:"sync_rate"`
 	// The number of HTTP requests that can be made per year.
-	Year *float64 `json:"year,omitempty"`
+	Year *float64 `default:"null" json:"year"`
+}
+
+func (r RateLimitingPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RateLimitingPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RateLimitingPluginConfig) GetDay() *float64 {
@@ -467,26 +500,26 @@ type RateLimitingPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                     `json:"instance_name,omitempty"`
+	InstanceName *string                     `default:"null" json:"instance_name"`
 	name         string                      `const:"rate-limiting" json:"name"`
-	Ordering     *RateLimitingPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *RateLimitingPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []RateLimitingPluginPartials `json:"partials,omitempty"`
+	Partials []RateLimitingPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                    `json:"updated_at,omitempty"`
-	Config    *RateLimitingPluginConfig `json:"config,omitempty"`
+	Config    *RateLimitingPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *RateLimitingPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *RateLimitingPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
-	Protocols []RateLimitingPluginProtocols `json:"protocols,omitempty"`
+	Protocols []RateLimitingPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *RateLimitingPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

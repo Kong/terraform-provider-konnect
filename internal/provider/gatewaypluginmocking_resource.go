@@ -11,6 +11,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -65,29 +67,40 @@ func (r *GatewayPluginMockingResource) Schema(ctx context.Context, req resource.
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"api_specification":          types.StringType,
+					"api_specification_filename": types.StringType,
+					"custom_base_path":           types.StringType,
+					"include_base_path":          types.BoolType,
+					"included_status_codes": types.ListType{
+						ElemType: types.Int64Type,
+					},
+					"max_delay_time":     types.Float64Type,
+					"min_delay_time":     types.Float64Type,
+					"random_delay":       types.BoolType,
+					"random_examples":    types.BoolType,
+					"random_status_code": types.BoolType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"api_specification": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The contents of the specification file. You must use this option for hybrid or DB-less mode. You can include the full specification as part of the configuration. In Kong Manager, you can copy and paste the contents of the spec directly into the ` + "`" + `Config.Api Specification` + "`" + ` text field.`,
 					},
 					"api_specification_filename": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The path and name of the specification file loaded into Kong Gateway's database. You cannot use this option for DB-less or hybrid mode.`,
 					},
 					"custom_base_path": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The base path to be used for path match evaluation. This value is ignored if ` + "`" + `include_base_path` + "`" + ` is set to ` + "`" + `false` + "`" + `.`,
 					},
 					"include_base_path": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Indicates whether to include the base path when performing path match evaluation.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Indicates whether to include the base path when performing path match evaluation. Default: false`,
 					},
 					"included_status_codes": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.Int64Type,
 						Description: `A global list of the HTTP status codes that can only be selected and returned.`,
@@ -95,27 +108,32 @@ func (r *GatewayPluginMockingResource) Schema(ctx context.Context, req resource.
 					"max_delay_time": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The maximum value in seconds of delay time. Set this value when ` + "`" + `random_delay` + "`" + ` is enabled and you want to adjust the default. The value must be greater than the ` + "`" + `min_delay_time` + "`" + `.`,
+						Default:     float64default.StaticFloat64(1),
+						Description: `The maximum value in seconds of delay time. Set this value when ` + "`" + `random_delay` + "`" + ` is enabled and you want to adjust the default. The value must be greater than the ` + "`" + `min_delay_time` + "`" + `. Default: 1`,
 					},
 					"min_delay_time": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The minimum value in seconds of delay time. Set this value when ` + "`" + `random_delay` + "`" + ` is enabled and you want to adjust the default. The value must be less than the ` + "`" + `max_delay_time` + "`" + `.`,
+						Default:     float64default.StaticFloat64(0.001),
+						Description: `The minimum value in seconds of delay time. Set this value when ` + "`" + `random_delay` + "`" + ` is enabled and you want to adjust the default. The value must be less than the ` + "`" + `max_delay_time` + "`" + `. Default: 0.001`,
 					},
 					"random_delay": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Enables a random delay in the mocked response. Introduces delays to simulate real-time response times by APIs.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Enables a random delay in the mocked response. Introduces delays to simulate real-time response times by APIs. Default: false`,
 					},
 					"random_examples": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Randomly selects one example and returns it. This parameter requires the spec to have multiple examples configured.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Randomly selects one example and returns it. This parameter requires the spec to have multiple examples configured. Default: false`,
 					},
 					"random_status_code": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Determines whether to randomly select an HTTP status code from the responses of the corresponding API method. The default value is ` + "`" + `false` + "`" + `, which means the minimum HTTP status code is always selected and returned.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Determines whether to randomly select an HTTP status code from the responses of the corresponding API method. The default value is ` + "`" + `false` + "`" + `, which means the minimum HTTP status code is always selected and returned. Default: false`,
 					},
 				},
 			},
@@ -148,7 +166,8 @@ func (r *GatewayPluginMockingResource) Schema(ctx context.Context, req resource.
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -156,20 +175,39 @@ func (r *GatewayPluginMockingResource) Schema(ctx context.Context, req resource.
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -178,9 +216,13 @@ func (r *GatewayPluginMockingResource) Schema(ctx context.Context, req resource.
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -189,7 +231,6 @@ func (r *GatewayPluginMockingResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -202,12 +243,10 @@ func (r *GatewayPluginMockingResource) Schema(ctx context.Context, req resource.
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},
@@ -249,7 +288,6 @@ func (r *GatewayPluginMockingResource) Schema(ctx context.Context, req resource.
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

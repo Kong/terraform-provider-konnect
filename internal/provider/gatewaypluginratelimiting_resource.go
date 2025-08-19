@@ -13,8 +13,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -68,46 +72,78 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"day":                 types.Float64Type,
+					"error_code":          types.Float64Type,
+					"error_message":       types.StringType,
+					"fault_tolerant":      types.BoolType,
+					"header_name":         types.StringType,
+					"hide_client_headers": types.BoolType,
+					"hour":                types.Float64Type,
+					"limit_by":            types.StringType,
+					"minute":              types.Float64Type,
+					"month":               types.Float64Type,
+					"path":                types.StringType,
+					"policy":              types.StringType,
+					"redis": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`database`:    types.Int64Type,
+							`host`:        types.StringType,
+							`password`:    types.StringType,
+							`port`:        types.Int64Type,
+							`server_name`: types.StringType,
+							`ssl`:         types.BoolType,
+							`ssl_verify`:  types.BoolType,
+							`timeout`:     types.Int64Type,
+							`username`:    types.StringType,
+						},
+					},
+					"second":    types.Float64Type,
+					"sync_rate": types.Float64Type,
+					"year":      types.Float64Type,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"day": schema.Float64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The number of HTTP requests that can be made per day.`,
 					},
 					"error_code": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Set a custom error code to return when the rate limit is exceeded.`,
+						Default:     float64default.StaticFloat64(429),
+						Description: `Set a custom error code to return when the rate limit is exceeded. Default: 429`,
 					},
 					"error_message": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Set a custom error message to return when the rate limit is exceeded.`,
+						Default:     stringdefault.StaticString(`API rate limit exceeded`),
+						Description: `Set a custom error message to return when the rate limit is exceeded. Default: "API rate limit exceeded"`,
 					},
 					"fault_tolerant": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A boolean value that determines if the requests should be proxied even if Kong has troubles connecting a third-party data store. If ` + "`" + `true` + "`" + `, requests will be proxied anyway, effectively disabling the rate-limiting function until the data store is working again. If ` + "`" + `false` + "`" + `, then the clients will see ` + "`" + `500` + "`" + ` errors.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `A boolean value that determines if the requests should be proxied even if Kong has troubles connecting a third-party data store. If ` + "`" + `true` + "`" + `, requests will be proxied anyway, effectively disabling the rate-limiting function until the data store is working again. If ` + "`" + `false` + "`" + `, then the clients will see ` + "`" + `500` + "`" + ` errors. Default: true`,
 					},
 					"header_name": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing an HTTP header name.`,
 					},
 					"hide_client_headers": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Optionally hide informative response headers.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Optionally hide informative response headers. Default: false`,
 					},
 					"hour": schema.Float64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The number of HTTP requests that can be made per hour.`,
 					},
 					"limit_by": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The entity that is used when aggregating the limits. must be one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]`,
+						Default:     stringdefault.StaticString(`consumer`),
+						Description: `The entity that is used when aggregating the limits. Default: "consumer"; must be one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"consumer",
@@ -121,24 +157,22 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 						},
 					},
 					"minute": schema.Float64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The number of HTTP requests that can be made per minute.`,
 					},
 					"month": schema.Float64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The number of HTTP requests that can be made per month.`,
 					},
 					"path": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).`,
 					},
 					"policy": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The rate-limiting policies to use for retrieving and incrementing the limits. must be one of ["cluster", "local", "redis"]`,
+						Default:     stringdefault.StaticString(`local`),
+						Description: `The rate-limiting policies to use for retrieving and incrementing the limits. Default: "local"; must be one of ["cluster", "local", "redis"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"cluster",
@@ -154,51 +188,52 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 							"database": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy`,
+								Default:     int64default.StaticInt64(0),
+								Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
 							},
 							"host": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `A string representing a host name, such as example.com.`,
 							},
 							"password": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 							},
 							"port": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+								Default:     int64default.StaticInt64(6379),
+								Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 								Validators: []validator.Int64{
 									int64validator.AtMost(65535),
 								},
 							},
 							"server_name": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `A string representing an SNI (server name indication) value for TLS.`,
 							},
 							"ssl": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If set to true, uses SSL to connect to Redis.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `If set to true, uses SSL to connect to Redis. Default: false`,
 							},
 							"ssl_verify": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: false`,
 							},
 							"timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+								Default:     int64default.StaticInt64(2000),
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 								Validators: []validator.Int64{
 									int64validator.AtMost(2147483646),
 								},
 							},
 							"username": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
 							},
@@ -206,17 +241,16 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 						Description: `Redis configuration`,
 					},
 					"second": schema.Float64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The number of HTTP requests that can be made per second.`,
 					},
 					"sync_rate": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `How often to sync counter data to the central data store. A value of -1 results in synchronous behavior.`,
+						Default:     float64default.StaticFloat64(-1),
+						Description: `How often to sync counter data to the central data store. A value of -1 results in synchronous behavior. Default: -1`,
 					},
 					"year": schema.Float64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The number of HTTP requests that can be made per year.`,
 					},
@@ -265,7 +299,8 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -273,20 +308,39 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -295,9 +349,13 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -306,7 +364,6 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -319,12 +376,10 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},
@@ -366,7 +421,6 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

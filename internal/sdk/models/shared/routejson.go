@@ -5,13 +5,25 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
 type Destinations struct {
 	// A string representing an IP address or CIDR block, such as 192.168.1.1 or 192.168.0.0/16.
-	IP *string `json:"ip,omitempty"`
+	IP *string `default:"null" json:"ip"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"null" json:"port"`
+}
+
+func (d Destinations) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *Destinations) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Destinations) GetIP() *string {
@@ -156,9 +168,20 @@ func (o *RouteJSONService) GetID() *string {
 
 type Sources struct {
 	// A string representing an IP address or CIDR block, such as 192.168.1.1 or 192.168.0.0/16.
-	IP *string `json:"ip,omitempty"`
+	IP *string `default:"null" json:"ip"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"null" json:"port"`
+}
+
+func (s Sources) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *Sources) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Sources) GetIP() *string {
@@ -180,45 +203,56 @@ type RouteJSON struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// A list of IP destinations of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".
-	Destinations []Destinations `json:"destinations,omitempty"`
+	Destinations []Destinations `json:"destinations"`
 	// One or more lists of values indexed by header name that will cause this Route to match if present in the request. The `Host` header cannot be used with this attribute: hosts should be specified using the `hosts` attribute. When `headers` contains only one value and that value starts with the special prefix `~*`, the value is interpreted as a regular expression.
 	Headers map[string][]string `json:"headers,omitempty"`
 	// A list of domain names that match this Route. Note that the hosts value is case sensitive.
-	Hosts []string `json:"hosts,omitempty"`
+	Hosts []string `json:"hosts"`
 	// The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the `https` protocol.
-	HTTPSRedirectStatusCode *HTTPSRedirectStatusCode `json:"https_redirect_status_code,omitempty"`
+	HTTPSRedirectStatusCode *HTTPSRedirectStatusCode `default:"426" json:"https_redirect_status_code"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A list of HTTP methods that match this Route.
-	Methods []string `json:"methods,omitempty"`
+	Methods []string `json:"methods"`
 	// The name of the Route. Route names must be unique, and they are case sensitive. For example, there can be two different Routes named "test" and "Test".
-	Name *string `json:"name,omitempty"`
+	Name *string `default:"null" json:"name"`
 	// Controls how the Service path, Route path and requested path are combined when sending a request to the upstream. See above for a detailed description of each behavior.
-	PathHandling *PathHandling `json:"path_handling,omitempty"`
+	PathHandling *PathHandling `default:"v0" json:"path_handling"`
 	// A list of paths that match this Route.
-	Paths []string `json:"paths,omitempty"`
+	Paths []string `json:"paths"`
 	// When matching a Route via one of the `hosts` domain names, use the request `Host` header in the upstream request headers. If set to `false`, the upstream `Host` header will be that of the Service's `host`.
-	PreserveHost *bool `json:"preserve_host,omitempty"`
+	PreserveHost *bool `default:"false" json:"preserve_host"`
 	// An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only `"https"`, HTTP requests are answered with an upgrade error. When set to only `"http"`, HTTPS requests are answered with an error.
 	Protocols []RouteJSONProtocols `json:"protocols"`
 	// A number used to choose which route resolves a given request when several routes match it using regexes simultaneously. When two routes match the path and have the same `regex_priority`, the older one (lowest `created_at`) is used. Note that the priority for non-regex routes is different (longer non-regex routes are matched before shorter ones).
-	RegexPriority *int64 `json:"regex_priority,omitempty"`
+	RegexPriority *int64 `default:"0" json:"regex_priority"`
 	// Whether to enable request body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that receive data with chunked transfer encoding.
-	RequestBuffering *bool `json:"request_buffering,omitempty"`
+	RequestBuffering *bool `default:"true" json:"request_buffering"`
 	// Whether to enable response body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that send data with chunked transfer encoding.
-	ResponseBuffering *bool `json:"response_buffering,omitempty"`
+	ResponseBuffering *bool `default:"true" json:"response_buffering"`
 	// The Service this Route is associated to. This is where the Route proxies traffic to.
 	Service *RouteJSONService `json:"service"`
 	// A list of SNIs that match this Route when using stream routing.
-	Snis []string `json:"snis,omitempty"`
+	Snis []string `json:"snis"`
 	// A list of IP sources of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".
-	Sources []Sources `json:"sources,omitempty"`
+	Sources []Sources `json:"sources"`
 	// When matching a Route via one of the `paths`, strip the matching prefix from the upstream request URL.
-	StripPath *bool `json:"strip_path,omitempty"`
+	StripPath *bool `default:"true" json:"strip_path"`
 	// An optional set of strings associated with the Route for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
+}
+
+func (r RouteJSON) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteJSON) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RouteJSON) GetCreatedAt() *int64 {

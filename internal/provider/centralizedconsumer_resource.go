@@ -79,7 +79,6 @@ func (r *CentralizedConsumerResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"custom_id": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database.`,
 				Validators: []validator.String{

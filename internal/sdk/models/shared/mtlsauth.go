@@ -25,15 +25,15 @@ func (o *MTLSAuthConsumer) GetID() *string {
 }
 
 type MTLSAuth struct {
-	CaCertificate *MTLSAuthCaCertificate `json:"ca_certificate"`
-	Consumer      *MTLSAuthConsumer      `json:"consumer"`
+	CaCertificate *MTLSAuthCaCertificate `json:"ca_certificate,omitempty"`
+	Consumer      *MTLSAuthConsumer      `json:"consumer,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// A string representing a UUID (universally unique identifier).
 	ID          *string `json:"id,omitempty"`
 	SubjectName string  `json:"subject_name"`
 	// A set of strings representing tags.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 }
 
 func (o *MTLSAuth) GetCaCertificate() *MTLSAuthCaCertificate {

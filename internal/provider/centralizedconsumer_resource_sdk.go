@@ -32,7 +32,7 @@ func (r *CentralizedConsumerResourceModel) RefreshFromSharedCentralizedConsumer(
 			r.Type = types.StringNull()
 		}
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-		r.Username = types.StringPointerValue(resp.Username)
+		r.Username = types.StringValue(resp.Username)
 	}
 
 	return diags

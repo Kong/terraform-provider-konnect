@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+)
+
 // CreatePortalPageRequest - Create a page in a portal.
 type CreatePortalPageRequest struct {
 	// The slug of a page in a portal, used to compute its full URL path within the portal hierarchy.
@@ -25,7 +29,18 @@ type CreatePortalPageRequest struct {
 	//
 	// Specify the `id` of another page as the `parent_page_id` to add some hierarchy to your pages.
 	//
-	ParentPageID *string `json:"parent_page_id,omitempty"`
+	ParentPageID *string `default:"null" json:"parent_page_id"`
+}
+
+func (c CreatePortalPageRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreatePortalPageRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CreatePortalPageRequest) GetSlug() string {

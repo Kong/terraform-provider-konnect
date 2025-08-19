@@ -15,19 +15,23 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		r.Config.AllowedTopics = make([]types.String, 0, len(resp.Config.AllowedTopics))
-		for _, v := range resp.Config.AllowedTopics {
-			r.Config.AllowedTopics = append(r.Config.AllowedTopics, types.StringValue(v))
+		if resp.Config.AllowedTopics != nil {
+			r.Config.AllowedTopics = make([]types.String, 0, len(resp.Config.AllowedTopics))
+			for _, v := range resp.Config.AllowedTopics {
+				r.Config.AllowedTopics = append(r.Config.AllowedTopics, types.StringValue(v))
+			}
 		}
-		r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
+		if resp.Config.BootstrapServers != nil {
+			r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
 
-		for _, bootstrapServersItem := range resp.Config.BootstrapServers {
-			var bootstrapServers tfTypes.BootstrapServers
+			for _, bootstrapServersItem := range resp.Config.BootstrapServers {
+				var bootstrapServers tfTypes.BootstrapServers
 
-			bootstrapServers.Host = types.StringValue(bootstrapServersItem.Host)
-			bootstrapServers.Port = types.Int64Value(bootstrapServersItem.Port)
+				bootstrapServers.Host = types.StringValue(bootstrapServersItem.Host)
+				bootstrapServers.Port = types.Int64Value(bootstrapServersItem.Port)
 
-			r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
+				r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
+			}
 		}
 		r.Config.ClusterAPIKey = types.StringValue(resp.Config.ClusterAPIKey)
 		r.Config.ClusterAPISecret = types.StringValue(resp.Config.ClusterAPISecret)
@@ -41,9 +45,11 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 		r.Config.Keepalive = types.Int64PointerValue(resp.Config.Keepalive)
 		r.Config.KeepaliveEnabled = types.BoolPointerValue(resp.Config.KeepaliveEnabled)
 		r.Config.KeyQueryArg = types.StringPointerValue(resp.Config.KeyQueryArg)
-		r.Config.MessageByLuaFunctions = make([]types.String, 0, len(resp.Config.MessageByLuaFunctions))
-		for _, v := range resp.Config.MessageByLuaFunctions {
-			r.Config.MessageByLuaFunctions = append(r.Config.MessageByLuaFunctions, types.StringValue(v))
+		if resp.Config.MessageByLuaFunctions != nil {
+			r.Config.MessageByLuaFunctions = make([]types.String, 0, len(resp.Config.MessageByLuaFunctions))
+			for _, v := range resp.Config.MessageByLuaFunctions {
+				r.Config.MessageByLuaFunctions = append(r.Config.MessageByLuaFunctions, types.StringValue(v))
+			}
 		}
 		r.Config.ProducerAsync = types.BoolPointerValue(resp.Config.ProducerAsync)
 		r.Config.ProducerAsyncBufferingLimitsMessagesInMemory = types.Int64PointerValue(resp.Config.ProducerAsyncBufferingLimitsMessagesInMemory)
@@ -118,18 +124,22 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -285,9 +295,12 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 	if r.Ordering != nil {
 		var after *shared.ConfluentPluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.ConfluentPluginAfter{
 				Access: access,
@@ -295,9 +308,12 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 		}
 		var before *shared.ConfluentPluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.ConfluentPluginBefore{
 				Access: access1,
@@ -350,22 +366,28 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 	} else {
 		updatedAt = nil
 	}
-	allowedTopics := make([]string, 0, len(r.Config.AllowedTopics))
-	for _, allowedTopicsItem := range r.Config.AllowedTopics {
-		allowedTopics = append(allowedTopics, allowedTopicsItem.ValueString())
+	var allowedTopics []string
+	if r.Config.AllowedTopics != nil {
+		allowedTopics = make([]string, 0, len(r.Config.AllowedTopics))
+		for _, allowedTopicsItem := range r.Config.AllowedTopics {
+			allowedTopics = append(allowedTopics, allowedTopicsItem.ValueString())
+		}
 	}
-	bootstrapServers := make([]shared.BootstrapServers, 0, len(r.Config.BootstrapServers))
-	for _, bootstrapServersItem := range r.Config.BootstrapServers {
-		var host string
-		host = bootstrapServersItem.Host.ValueString()
+	var bootstrapServers []shared.BootstrapServers
+	if r.Config.BootstrapServers != nil {
+		bootstrapServers = make([]shared.BootstrapServers, 0, len(r.Config.BootstrapServers))
+		for _, bootstrapServersItem := range r.Config.BootstrapServers {
+			var host string
+			host = bootstrapServersItem.Host.ValueString()
 
-		var port int64
-		port = bootstrapServersItem.Port.ValueInt64()
+			var port int64
+			port = bootstrapServersItem.Port.ValueInt64()
 
-		bootstrapServers = append(bootstrapServers, shared.BootstrapServers{
-			Host: host,
-			Port: port,
-		})
+			bootstrapServers = append(bootstrapServers, shared.BootstrapServers{
+				Host: host,
+				Port: port,
+			})
+		}
 	}
 	var clusterAPIKey string
 	clusterAPIKey = r.Config.ClusterAPIKey.ValueString()
@@ -433,9 +455,12 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 	} else {
 		keyQueryArg = nil
 	}
-	messageByLuaFunctions := make([]string, 0, len(r.Config.MessageByLuaFunctions))
-	for _, messageByLuaFunctionsItem := range r.Config.MessageByLuaFunctions {
-		messageByLuaFunctions = append(messageByLuaFunctions, messageByLuaFunctionsItem.ValueString())
+	var messageByLuaFunctions []string
+	if r.Config.MessageByLuaFunctions != nil {
+		messageByLuaFunctions = make([]string, 0, len(r.Config.MessageByLuaFunctions))
+		for _, messageByLuaFunctionsItem := range r.Config.MessageByLuaFunctions {
+			messageByLuaFunctions = append(messageByLuaFunctions, messageByLuaFunctionsItem.ValueString())
+		}
 	}
 	producerAsync := new(bool)
 	if !r.Config.ProducerAsync.IsUnknown() && !r.Config.ProducerAsync.IsNull() {

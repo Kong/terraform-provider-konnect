@@ -19,15 +19,17 @@ func (r *GatewayPluginInjectionProtectionResourceModel) RefreshFromSharedInjecti
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.InjectionProtectionPluginConfig{}
-			r.Config.CustomInjections = []tfTypes.CustomInjections{}
+			if resp.Config.CustomInjections != nil {
+				r.Config.CustomInjections = []tfTypes.CustomInjections{}
 
-			for _, customInjectionsItem := range resp.Config.CustomInjections {
-				var customInjections tfTypes.CustomInjections
+				for _, customInjectionsItem := range resp.Config.CustomInjections {
+					var customInjections tfTypes.CustomInjections
 
-				customInjections.Name = types.StringValue(customInjectionsItem.Name)
-				customInjections.Regex = types.StringValue(customInjectionsItem.Regex)
+					customInjections.Name = types.StringValue(customInjectionsItem.Name)
+					customInjections.Regex = types.StringValue(customInjectionsItem.Regex)
 
-				r.Config.CustomInjections = append(r.Config.CustomInjections, customInjections)
+					r.Config.CustomInjections = append(r.Config.CustomInjections, customInjections)
+				}
 			}
 			if resp.Config.EnforcementMode != nil {
 				r.Config.EnforcementMode = types.StringValue(string(*resp.Config.EnforcementMode))
@@ -57,18 +59,22 @@ func (r *GatewayPluginInjectionProtectionResourceModel) RefreshFromSharedInjecti
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -224,9 +230,12 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToSharedInjectionProtect
 	if r.Ordering != nil {
 		var after *shared.InjectionProtectionPluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.InjectionProtectionPluginAfter{
 				Access: access,
@@ -234,9 +243,12 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToSharedInjectionProtect
 		}
 		var before *shared.InjectionProtectionPluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.InjectionProtectionPluginBefore{
 				Access: access1,
@@ -291,18 +303,21 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToSharedInjectionProtect
 	}
 	var config *shared.InjectionProtectionPluginConfig
 	if r.Config != nil {
-		customInjections := make([]shared.CustomInjections, 0, len(r.Config.CustomInjections))
-		for _, customInjectionsItem := range r.Config.CustomInjections {
-			var name1 string
-			name1 = customInjectionsItem.Name.ValueString()
+		var customInjections []shared.CustomInjections
+		if r.Config.CustomInjections != nil {
+			customInjections = make([]shared.CustomInjections, 0, len(r.Config.CustomInjections))
+			for _, customInjectionsItem := range r.Config.CustomInjections {
+				var name1 string
+				name1 = customInjectionsItem.Name.ValueString()
 
-			var regex string
-			regex = customInjectionsItem.Regex.ValueString()
+				var regex string
+				regex = customInjectionsItem.Regex.ValueString()
 
-			customInjections = append(customInjections, shared.CustomInjections{
-				Name:  name1,
-				Regex: regex,
-			})
+				customInjections = append(customInjections, shared.CustomInjections{
+					Name:  name1,
+					Regex: regex,
+				})
+			}
 		}
 		enforcementMode := new(shared.EnforcementMode)
 		if !r.Config.EnforcementMode.IsUnknown() && !r.Config.EnforcementMode.IsNull() {

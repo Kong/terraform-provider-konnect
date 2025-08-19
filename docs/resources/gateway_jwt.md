@@ -38,7 +38,7 @@ resource "konnect_gateway_jwt" "my_gatewayjwt" {
 
 ### Optional
 
-- `algorithm` (String) must be one of ["HS256", "HS384", "HS512", "RS256", "RS384", "RS512", "PS256", "PS384", "PS512", "ES256", "ES384", "ES512", "ESP256", "ESP384", "ESP512", "ESB256", "ESB320", "ESB384", "ESB512", "ES256K", "EdDSA", "Ed25519", "Ed448"]; Requires replacement if changed.
+- `algorithm` (String) Default: "HS256"; must be one of ["HS256", "HS384", "HS512", "RS256", "RS384", "RS512", "PS256", "PS384", "PS512", "ES256", "ES384", "ES512", "ESP256", "ESP384", "ESP512", "ESB256", "ESB320", "ESB384", "ESB512", "ES256K", "EdDSA", "Ed25519", "Ed448"]; Requires replacement if changed.
 - `created_at` (Number) Unix epoch when the resource was created. Requires replacement if changed.
 - `id` (String) A string representing a UUID (universally unique identifier). Requires replacement if changed.
 - `key` (String) Requires replacement if changed.

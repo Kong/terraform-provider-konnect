@@ -12,7 +12,7 @@ type ConfigStore struct {
 	// The Config Store ID.
 	ID *string `json:"id,omitempty"`
 	// The name of the Config Store
-	Name *string `json:"name,omitempty"`
+	Name *string `default:"null" json:"name"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	// An ISO-8601 timestamp representation of entity update date.

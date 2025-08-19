@@ -14,7 +14,7 @@ type APIProduct struct {
 	// The name of the API product
 	Name string `json:"name"`
 	// The description of the API product
-	Description *string `json:"description"`
+	Description *string `default:"null" json:"description"`
 	// The list of portal identifiers which this API product is published to.
 	// This property is deprecated and will be removed in a future version. Use the `portals` property instead.
 	//

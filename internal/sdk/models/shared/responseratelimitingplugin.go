@@ -9,7 +9,7 @@ import (
 )
 
 type ResponseRatelimitingPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ResponseRatelimitingPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *ResponseRatelimitingPluginAfter) GetAccess() []string {
 }
 
 type ResponseRatelimitingPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *ResponseRatelimitingPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *ResponseRatelimitingPluginBefore) GetAccess() []string {
 }
 
 type ResponseRatelimitingPluginOrdering struct {
-	After  *ResponseRatelimitingPluginAfter  `json:"after,omitempty"`
-	Before *ResponseRatelimitingPluginBefore `json:"before,omitempty"`
+	After  *ResponseRatelimitingPluginAfter  `json:"after"`
+	Before *ResponseRatelimitingPluginBefore `json:"before"`
 }
 
 func (o *ResponseRatelimitingPluginOrdering) GetAfter() *ResponseRatelimitingPluginAfter {
@@ -53,8 +53,19 @@ type ResponseRatelimitingPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (r ResponseRatelimitingPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseRatelimitingPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ResponseRatelimitingPluginPartials) GetID() *string {
@@ -141,23 +152,34 @@ func (e *ResponseRatelimitingPluginPolicy) UnmarshalJSON(data []byte) error {
 // ResponseRatelimitingPluginRedis - Redis configuration
 type ResponseRatelimitingPluginRedis struct {
 	// Database to use for the Redis connection when using the `redis` strategy
-	Database *int64 `json:"database,omitempty"`
+	Database *int64 `default:"0" json:"database"`
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"null" json:"host"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-	Password *string `json:"password,omitempty"`
+	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
 	// A string representing an SNI (server name indication) value for TLS.
-	ServerName *string `json:"server_name,omitempty"`
+	ServerName *string `default:"null" json:"server_name"`
 	// If set to true, uses SSL to connect to Redis.
-	Ssl *bool `json:"ssl,omitempty"`
+	Ssl *bool `default:"false" json:"ssl"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-	SslVerify *bool `json:"ssl_verify,omitempty"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	Timeout *int64 `json:"timeout,omitempty"`
+	Timeout *int64 `default:"2000" json:"timeout"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
-	Username *string `json:"username,omitempty"`
+	Username *string `default:"null" json:"username"`
+}
+
+func (r ResponseRatelimitingPluginRedis) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseRatelimitingPluginRedis) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ResponseRatelimitingPluginRedis) GetDatabase() *int64 {
@@ -225,21 +247,32 @@ func (o *ResponseRatelimitingPluginRedis) GetUsername() *string {
 
 type ResponseRatelimitingPluginConfig struct {
 	// A boolean value that determines if the requests should be blocked as soon as one limit is being exceeded. This will block requests that are supposed to consume other limits too.
-	BlockOnFirstViolation *bool `json:"block_on_first_violation,omitempty"`
+	BlockOnFirstViolation *bool `default:"false" json:"block_on_first_violation"`
 	// A boolean value that determines if the requests should be proxied even if Kong has troubles connecting a third-party datastore. If `true`, requests will be proxied anyway, effectively disabling the rate-limiting function until the datastore is working again. If `false`, then the clients will see `500` errors.
-	FaultTolerant *bool `json:"fault_tolerant,omitempty"`
+	FaultTolerant *bool `default:"true" json:"fault_tolerant"`
 	// The name of the response header used to increment the counters.
-	HeaderName *string `json:"header_name,omitempty"`
+	HeaderName *string `default:"x-kong-limit" json:"header_name"`
 	// Optionally hide informative response headers.
-	HideClientHeaders *bool `json:"hide_client_headers,omitempty"`
+	HideClientHeaders *bool `default:"false" json:"hide_client_headers"`
 	// The entity that will be used when aggregating the limits: `consumer`, `credential`, `ip`. If the `consumer` or the `credential` cannot be determined, the system will always fallback to `ip`.
-	LimitBy *ResponseRatelimitingPluginLimitBy `json:"limit_by,omitempty"`
+	LimitBy *ResponseRatelimitingPluginLimitBy `default:"consumer" json:"limit_by"`
 	// A map that defines rate limits for the plugin.
 	Limits map[string]any `json:"limits,omitempty"`
 	// The rate-limiting policies to use for retrieving and incrementing the limits.
-	Policy *ResponseRatelimitingPluginPolicy `json:"policy,omitempty"`
+	Policy *ResponseRatelimitingPluginPolicy `default:"local" json:"policy"`
 	// Redis configuration
-	Redis *ResponseRatelimitingPluginRedis `json:"redis,omitempty"`
+	Redis *ResponseRatelimitingPluginRedis `json:"redis"`
+}
+
+func (r ResponseRatelimitingPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseRatelimitingPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ResponseRatelimitingPluginConfig) GetBlockOnFirstViolation() *bool {
@@ -371,24 +404,24 @@ type ResponseRatelimitingPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                             `json:"instance_name,omitempty"`
+	InstanceName *string                             `default:"null" json:"instance_name"`
 	name         string                              `const:"response-ratelimiting" json:"name"`
-	Ordering     *ResponseRatelimitingPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *ResponseRatelimitingPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []ResponseRatelimitingPluginPartials `json:"partials,omitempty"`
+	Partials []ResponseRatelimitingPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                            `json:"updated_at,omitempty"`
-	Config    *ResponseRatelimitingPluginConfig `json:"config,omitempty"`
+	Config    *ResponseRatelimitingPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *ResponseRatelimitingPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
-	Protocols []ResponseRatelimitingPluginProtocols `json:"protocols,omitempty"`
+	Protocols []ResponseRatelimitingPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *ResponseRatelimitingPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

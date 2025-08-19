@@ -14,8 +14,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -71,7 +76,8 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request fails with an authentication failure ` + "`" + `4xx` + "`" + `. Note that this value must refer to the consumer ` + "`" + `id` + "`" + ` or ` + "`" + `username` + "`" + ` attribute, and **not** its ` + "`" + `custom_id` + "`" + `.`,
+						Default:     stringdefault.StaticString(``),
+						Description: `An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request fails with an authentication failure ` + "`" + `4xx` + "`" + `. Note that this value must refer to the consumer ` + "`" + `id` + "`" + ` or ` + "`" + `username` + "`" + ` attribute, and **not** its ` + "`" + `custom_id` + "`" + `. Default: ""`,
 					},
 					"authorization_value": schema.StringAttribute{
 						Required:    true,
@@ -80,7 +86,8 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 					"consumer_by": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A string indicating whether to associate OAuth2 ` + "`" + `username` + "`" + ` or ` + "`" + `client_id` + "`" + ` with the consumer's username. OAuth2 ` + "`" + `username` + "`" + ` is mapped to a consumer's ` + "`" + `username` + "`" + ` field, while an OAuth2 ` + "`" + `client_id` + "`" + ` maps to a consumer's ` + "`" + `custom_id` + "`" + `. must be one of ["client_id", "username"]`,
+						Default:     stringdefault.StaticString(`username`),
+						Description: `A string indicating whether to associate OAuth2 ` + "`" + `username` + "`" + ` or ` + "`" + `client_id` + "`" + ` with the consumer's username. OAuth2 ` + "`" + `username` + "`" + ` is mapped to a consumer's ` + "`" + `username` + "`" + ` field, while an OAuth2 ` + "`" + `client_id` + "`" + ` maps to a consumer's ` + "`" + `custom_id` + "`" + `. Default: "username"; must be one of ["client_id", "username"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"client_id",
@@ -91,11 +98,11 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 					"custom_claims_forward": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 						ElementType: types.StringType,
 						Description: `A list of custom claims to be forwarded from the introspection response to the upstream request. Claims are forwarded in headers with prefix ` + "`" + `X-Credential-{claim-name}` + "`" + `.`,
 					},
 					"custom_introspection_headers": schema.MapAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: jsontypes.NormalizedType{},
 						Description: `A list of custom headers to be added in the introspection request.`,
@@ -106,12 +113,14 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 					"hide_credentials": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional boolean value telling the plugin to hide the credential to the upstream API server. It will be removed by Kong before proxying the request.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `An optional boolean value telling the plugin to hide the credential to the upstream API server. It will be removed by Kong before proxying the request. Default: false`,
 					},
 					"introspect_request": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A boolean indicating whether to forward information about the current downstream request to the introspect endpoint. If true, headers ` + "`" + `X-Request-Path` + "`" + ` and ` + "`" + `X-Request-Http-Method` + "`" + ` will be inserted into the introspect request.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `A boolean indicating whether to forward information about the current downstream request to the introspect endpoint. If true, headers ` + "`" + `X-Request-Path` + "`" + ` and ` + "`" + `X-Request-Http-Method` + "`" + ` will be inserted into the introspect request. Default: false`,
 					},
 					"introspection_url": schema.StringAttribute{
 						Required:    true,
@@ -120,27 +129,30 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 					"keepalive": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional value in milliseconds that defines how long an idle connection lives before being closed.`,
+						Default:     int64default.StaticInt64(60000),
+						Description: `An optional value in milliseconds that defines how long an idle connection lives before being closed. Default: 60000`,
 					},
 					"run_on_preflight": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A boolean value that indicates whether the plugin should run (and try to authenticate) on ` + "`" + `OPTIONS` + "`" + ` preflight requests. If set to ` + "`" + `false` + "`" + `, then ` + "`" + `OPTIONS` + "`" + ` requests will always be allowed.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `A boolean value that indicates whether the plugin should run (and try to authenticate) on ` + "`" + `OPTIONS` + "`" + ` preflight requests. If set to ` + "`" + `false` + "`" + `, then ` + "`" + `OPTIONS` + "`" + ` requests will always be allowed. Default: true`,
 					},
 					"timeout": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional timeout in milliseconds when sending data to the upstream server.`,
+						Default:     int64default.StaticInt64(10000),
+						Description: `An optional timeout in milliseconds when sending data to the upstream server. Default: 10000`,
 					},
 					"token_type_hint": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The ` + "`" + `token_type_hint` + "`" + ` value to associate to introspection requests.`,
 					},
 					"ttl": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The TTL in seconds for the introspection response. Set to 0 to disable the expiration.`,
+						Default:     float64default.StaticFloat64(30),
+						Description: `The TTL in seconds for the introspection response. Set to 0 to disable the expiration. Default: 30`,
 					},
 				},
 			},
@@ -159,7 +171,8 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -167,20 +180,39 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -189,9 +221,13 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -200,7 +236,6 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -213,12 +248,10 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},
@@ -260,7 +293,6 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

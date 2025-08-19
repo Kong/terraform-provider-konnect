@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
 // InvalidParameterDependentItemRule - invalid parameters rules
@@ -37,7 +38,18 @@ type InvalidParameterDependentItem struct {
 	Rule       *InvalidParameterDependentItemRule `json:"rule"`
 	Reason     string                             `json:"reason"`
 	Dependents []any                              `json:"dependents"`
-	Source     *string                            `json:"source,omitempty"`
+	Source     *string                            `default:"null" json:"source"`
+}
+
+func (i InvalidParameterDependentItem) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *InvalidParameterDependentItem) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, true); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *InvalidParameterDependentItem) GetField() string {

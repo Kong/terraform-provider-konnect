@@ -2,9 +2,24 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+)
+
 type V2AppearanceColorVariable struct {
 	Value       string  `json:"value"`
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"null" json:"description"`
+}
+
+func (v V2AppearanceColorVariable) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *V2AppearanceColorVariable) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *V2AppearanceColorVariable) GetValue() string {

@@ -81,7 +81,7 @@ resource "konnect_gateway_plugin_request_termination" "my_gatewaypluginrequestte
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -99,9 +99,9 @@ Optional:
 
 - `body` (String) The raw response body to send. This is mutually exclusive with the `config.message` field.
 - `content_type` (String) Content type of the raw response configured with `config.body`.
-- `echo` (Boolean) When set, the plugin will echo a copy of the request back to the client. The main usecase for this is debugging. It can be combined with `trigger` in order to debug requests on live systems without disturbing real traffic.
+- `echo` (Boolean) When set, the plugin will echo a copy of the request back to the client. The main usecase for this is debugging. It can be combined with `trigger` in order to debug requests on live systems without disturbing real traffic. Default: false
 - `message` (String) The message to send, if using the default response generator.
-- `status_code` (Number) The response code to send. Must be an integer between 100 and 599.
+- `status_code` (Number) The response code to send. Must be an integer between 100 and 599. Default: 503
 - `trigger` (String) A string representing an HTTP header name.
 
 

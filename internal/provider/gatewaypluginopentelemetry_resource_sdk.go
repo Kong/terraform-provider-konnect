@@ -29,7 +29,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 			} else {
 				r.Config.HeaderType = types.StringNull()
 			}
-			if len(resp.Config.Headers) > 0 {
+			if resp.Config.Headers != nil {
 				r.Config.Headers = make(map[string]jsontypes.Normalized, len(resp.Config.Headers))
 				for key, value := range resp.Config.Headers {
 					result, _ := json.Marshal(value)
@@ -42,22 +42,28 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 				r.Config.Propagation = nil
 			} else {
 				r.Config.Propagation = &tfTypes.Propagation{}
-				r.Config.Propagation.Clear = make([]types.String, 0, len(resp.Config.Propagation.Clear))
-				for _, v := range resp.Config.Propagation.Clear {
-					r.Config.Propagation.Clear = append(r.Config.Propagation.Clear, types.StringValue(v))
+				if resp.Config.Propagation.Clear != nil {
+					r.Config.Propagation.Clear = make([]types.String, 0, len(resp.Config.Propagation.Clear))
+					for _, v := range resp.Config.Propagation.Clear {
+						r.Config.Propagation.Clear = append(r.Config.Propagation.Clear, types.StringValue(v))
+					}
 				}
 				if resp.Config.Propagation.DefaultFormat != nil {
 					r.Config.Propagation.DefaultFormat = types.StringValue(string(*resp.Config.Propagation.DefaultFormat))
 				} else {
 					r.Config.Propagation.DefaultFormat = types.StringNull()
 				}
-				r.Config.Propagation.Extract = make([]types.String, 0, len(resp.Config.Propagation.Extract))
-				for _, v := range resp.Config.Propagation.Extract {
-					r.Config.Propagation.Extract = append(r.Config.Propagation.Extract, types.StringValue(string(v)))
+				if resp.Config.Propagation.Extract != nil {
+					r.Config.Propagation.Extract = make([]types.String, 0, len(resp.Config.Propagation.Extract))
+					for _, v := range resp.Config.Propagation.Extract {
+						r.Config.Propagation.Extract = append(r.Config.Propagation.Extract, types.StringValue(string(v)))
+					}
 				}
-				r.Config.Propagation.Inject = make([]types.String, 0, len(resp.Config.Propagation.Inject))
-				for _, v := range resp.Config.Propagation.Inject {
-					r.Config.Propagation.Inject = append(r.Config.Propagation.Inject, types.StringValue(string(v)))
+				if resp.Config.Propagation.Inject != nil {
+					r.Config.Propagation.Inject = make([]types.String, 0, len(resp.Config.Propagation.Inject))
+					for _, v := range resp.Config.Propagation.Inject {
+						r.Config.Propagation.Inject = append(r.Config.Propagation.Inject, types.StringValue(string(v)))
+					}
 				}
 			}
 			if resp.Config.Queue == nil {
@@ -78,7 +84,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 				r.Config.Queue.MaxRetryTime = types.Float64PointerValue(resp.Config.Queue.MaxRetryTime)
 			}
 			r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
-			if len(resp.Config.ResourceAttributes) > 0 {
+			if resp.Config.ResourceAttributes != nil {
 				r.Config.ResourceAttributes = make(map[string]jsontypes.Normalized, len(resp.Config.ResourceAttributes))
 				for key1, value1 := range resp.Config.ResourceAttributes {
 					result1, _ := json.Marshal(value1)
@@ -112,18 +118,22 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -279,9 +289,12 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 	if r.Ordering != nil {
 		var after *shared.OpentelemetryPluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.OpentelemetryPluginAfter{
 				Access: access,
@@ -289,9 +302,12 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 		}
 		var before *shared.OpentelemetryPluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.OpentelemetryPluginBefore{
 				Access: access1,
@@ -390,9 +406,12 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 		}
 		var propagation *shared.Propagation
 		if r.Config.Propagation != nil {
-			clear := make([]string, 0, len(r.Config.Propagation.Clear))
-			for _, clearItem := range r.Config.Propagation.Clear {
-				clear = append(clear, clearItem.ValueString())
+			var clear []string
+			if r.Config.Propagation.Clear != nil {
+				clear = make([]string, 0, len(r.Config.Propagation.Clear))
+				for _, clearItem := range r.Config.Propagation.Clear {
+					clear = append(clear, clearItem.ValueString())
+				}
 			}
 			defaultFormat := new(shared.DefaultFormat)
 			if !r.Config.Propagation.DefaultFormat.IsUnknown() && !r.Config.Propagation.DefaultFormat.IsNull() {
@@ -400,13 +419,19 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 			} else {
 				defaultFormat = nil
 			}
-			extract := make([]shared.Extract, 0, len(r.Config.Propagation.Extract))
-			for _, extractItem := range r.Config.Propagation.Extract {
-				extract = append(extract, shared.Extract(extractItem.ValueString()))
+			var extract []shared.Extract
+			if r.Config.Propagation.Extract != nil {
+				extract = make([]shared.Extract, 0, len(r.Config.Propagation.Extract))
+				for _, extractItem := range r.Config.Propagation.Extract {
+					extract = append(extract, shared.Extract(extractItem.ValueString()))
+				}
 			}
-			inject := make([]shared.Inject, 0, len(r.Config.Propagation.Inject))
-			for _, injectItem := range r.Config.Propagation.Inject {
-				inject = append(inject, shared.Inject(injectItem.ValueString()))
+			var inject []shared.Inject
+			if r.Config.Propagation.Inject != nil {
+				inject = make([]shared.Inject, 0, len(r.Config.Propagation.Inject))
+				for _, injectItem := range r.Config.Propagation.Inject {
+					inject = append(inject, shared.Inject(injectItem.ValueString()))
+				}
 			}
 			propagation = &shared.Propagation{
 				Clear:         clear,

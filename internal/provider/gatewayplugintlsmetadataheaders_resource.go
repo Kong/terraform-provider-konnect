@@ -11,8 +11,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -64,36 +66,50 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Schema(ctx context.Context, re
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"client_cert_fingerprint_header_name": types.StringType,
+					"client_cert_header_name":             types.StringType,
+					"client_cert_issuer_dn_header_name":   types.StringType,
+					"client_cert_subject_dn_header_name":  types.StringType,
+					"client_serial_header_name":           types.StringType,
+					"inject_client_cert_details":          types.BoolType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"client_cert_fingerprint_header_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Define the HTTP header name used for the SHA1 fingerprint of the client certificate.`,
+						Default:     stringdefault.StaticString(`X-Client-Cert-Fingerprint`),
+						Description: `Define the HTTP header name used for the SHA1 fingerprint of the client certificate. Default: "X-Client-Cert-Fingerprint"`,
 					},
 					"client_cert_header_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Define the HTTP header name used for the PEM format URL encoded client certificate.`,
+						Default:     stringdefault.StaticString(`X-Client-Cert`),
+						Description: `Define the HTTP header name used for the PEM format URL encoded client certificate. Default: "X-Client-Cert"`,
 					},
 					"client_cert_issuer_dn_header_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Define the HTTP header name used for the issuer DN of the client certificate.`,
+						Default:     stringdefault.StaticString(`X-Client-Cert-Issuer-DN`),
+						Description: `Define the HTTP header name used for the issuer DN of the client certificate. Default: "X-Client-Cert-Issuer-DN"`,
 					},
 					"client_cert_subject_dn_header_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Define the HTTP header name used for the subject DN of the client certificate.`,
+						Default:     stringdefault.StaticString(`X-Client-Cert-Subject-DN`),
+						Description: `Define the HTTP header name used for the subject DN of the client certificate. Default: "X-Client-Cert-Subject-DN"`,
 					},
 					"client_serial_header_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Define the HTTP header name used for the serial number of the client certificate.`,
+						Default:     stringdefault.StaticString(`X-Client-Cert-Serial`),
+						Description: `Define the HTTP header name used for the serial number of the client certificate. Default: "X-Client-Cert-Serial"`,
 					},
 					"inject_client_cert_details": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Enables TLS client certificate metadata values to be injected into HTTP headers.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Enables TLS client certificate metadata values to be injected into HTTP headers. Default: false`,
 					},
 				},
 			},
@@ -112,7 +128,8 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Schema(ctx context.Context, re
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -120,20 +137,39 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Schema(ctx context.Context, re
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -142,9 +178,13 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Schema(ctx context.Context, re
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -153,7 +193,6 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Schema(ctx context.Context, re
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -166,12 +205,10 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Schema(ctx context.Context, re
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},
@@ -213,7 +250,6 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Schema(ctx context.Context, re
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

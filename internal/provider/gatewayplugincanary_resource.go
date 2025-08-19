@@ -14,8 +14,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -67,19 +70,34 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"canary_by_header_name": types.StringType,
+					"duration":              types.Float64Type,
+					"groups": types.ListType{
+						ElemType: types.StringType,
+					},
+					"hash":              types.StringType,
+					"hash_header":       types.StringType,
+					"percentage":        types.Float64Type,
+					"start":             types.Float64Type,
+					"steps":             types.Float64Type,
+					"upstream_fallback": types.BoolType,
+					"upstream_host":     types.StringType,
+					"upstream_port":     types.Int64Type,
+					"upstream_uri":      types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"canary_by_header_name": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing an HTTP header name.`,
 					},
 					"duration": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The duration of the canary release in seconds.`,
+						Default:     float64default.StaticFloat64(3600),
+						Description: `The duration of the canary release in seconds. Default: 3600`,
 					},
 					"groups": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `The groups allowed to access the canary release.`,
@@ -87,6 +105,7 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 					"hash": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
+						Default:  stringdefault.StaticString(`consumer`),
 						MarkdownDescription: `Hash algorithm to be used for canary release.` + "\n" +
 							`` + "\n" +
 							`* ` + "`" + `consumer` + "`" + `: The hash will be based on the consumer.` + "\n" +
@@ -95,7 +114,7 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 							`* ` + "`" + `allow` + "`" + `: Allows the specified groups to access the canary release.` + "\n" +
 							`* ` + "`" + `deny` + "`" + `: Denies the specified groups from accessing the canary release.` + "\n" +
 							`* ` + "`" + `header` + "`" + `: The hash will be based on the specified header value.` + "\n" +
-							`must be one of ["allow", "consumer", "deny", "header", "ip", "none"]`,
+							`Default: "consumer"; must be one of ["allow", "consumer", "deny", "header", "ip", "none"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"allow",
@@ -108,12 +127,10 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 						},
 					},
 					"hash_header": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing an HTTP header name.`,
 					},
 					"percentage": schema.Float64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The percentage of traffic to be routed to the canary release.`,
 						Validators: []validator.Float64{
@@ -121,14 +138,14 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 						},
 					},
 					"start": schema.Float64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Future time in seconds since epoch, when the canary release will start. Ignored when ` + "`" + `percentage` + "`" + ` is set, or when using ` + "`" + `allow` + "`" + ` or ` + "`" + `deny` + "`" + ` in ` + "`" + `hash` + "`" + `.`,
 					},
 					"steps": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The number of steps for the canary release.`,
+						Default:     float64default.StaticFloat64(1000),
+						Description: `The number of steps for the canary release. Default: 1000`,
 						Validators: []validator.Float64{
 							float64validator.AtLeast(1),
 						},
@@ -136,15 +153,14 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 					"upstream_fallback": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Specifies whether to fallback to the upstream server if the canary release fails.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Specifies whether to fallback to the upstream server if the canary release fails. Default: false`,
 					},
 					"upstream_host": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing a host name, such as example.com.`,
 					},
 					"upstream_port": schema.Int64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 						Validators: []validator.Int64{
@@ -152,7 +168,6 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 						},
 					},
 					"upstream_uri": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The URI of the upstream server to be used for the canary release.`,
 						Validators: []validator.String{
@@ -176,7 +191,8 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -184,20 +200,39 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -206,9 +241,13 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -217,7 +256,6 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -230,12 +268,10 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},
@@ -277,7 +313,6 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

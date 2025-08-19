@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -65,17 +66,20 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			"authentication_enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications. Default: true`,
 			},
 			"auto_approve_applications": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether requests from applications to register for APIs will be automatically approved, or if they will be set to pending until approved by an admin.`,
+				Default:     booldefault.StaticBool(false),
+				Description: `Whether requests from applications to register for APIs will be automatically approved, or if they will be set to pending until approved by an admin. Default: false`,
 			},
 			"auto_approve_developers": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.`,
+				Default:     booldefault.StaticBool(false),
+				Description: `Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin. Default: false`,
 			},
 			"canonical_domain": schema.StringAttribute{
 				Computed:    true,
@@ -103,7 +107,6 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				},
 			},
 			"default_application_auth_strategy_id": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to ` + "`" + `null` + "`" + `, API publications will not use an authentication strategy unless set during publication.`,
 			},
@@ -123,7 +126,6 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				},
 			},
 			"description": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A description of the portal.`,
 				Validators: []validator.String{
@@ -177,7 +179,8 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			"rbac_enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.`,
+				Default:     booldefault.StaticBool(false),
+				Description: `Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC. Default: false`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

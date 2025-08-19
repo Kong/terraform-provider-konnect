@@ -13,6 +13,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -67,27 +71,60 @@ func (r *GatewayPluginXMLThreatProtectionResource) Schema(ctx context.Context, r
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"allow_dtd": types.BoolType,
+					"allowed_content_types": types.ListType{
+						ElemType: types.StringType,
+					},
+					"attribute":             types.Int64Type,
+					"bla_max_amplification": types.Float64Type,
+					"bla_threshold":         types.Int64Type,
+					"buffer":                types.Int64Type,
+					"checked_content_types": types.ListType{
+						ElemType: types.StringType,
+					},
+					"comment":         types.Int64Type,
+					"document":        types.Int64Type,
+					"entity":          types.Int64Type,
+					"entityname":      types.Int64Type,
+					"entityproperty":  types.Int64Type,
+					"localname":       types.Int64Type,
+					"max_attributes":  types.Int64Type,
+					"max_children":    types.Int64Type,
+					"max_depth":       types.Int64Type,
+					"max_namespaces":  types.Int64Type,
+					"namespace_aware": types.BoolType,
+					"namespaceuri":    types.Int64Type,
+					"pidata":          types.Int64Type,
+					"pitarget":        types.Int64Type,
+					"prefix":          types.Int64Type,
+					"text":            types.Int64Type,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"allow_dtd": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Indicates whether an XML Document Type Definition (DTD) section is allowed.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Indicates whether an XML Document Type Definition (DTD) section is allowed. Default: false`,
 					},
 					"allowed_content_types": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 						ElementType: types.StringType,
 						Description: `A list of Content-Type values with payloads that are allowed, but aren't validated.`,
 					},
 					"attribute": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Maximum size of the attribute value.`,
+						Default:     int64default.StaticInt64(1048576),
+						Description: `Maximum size of the attribute value. Default: 1048576`,
 					},
 					"bla_max_amplification": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Sets the maximum allowed amplification. This protects against the Billion Laughs Attack.`,
+						Default:     float64default.StaticFloat64(100),
+						Description: `Sets the maximum allowed amplification. This protects against the Billion Laughs Attack. Default: 100`,
 						Validators: []validator.Float64{
 							float64validator.AtLeast(1),
 						},
@@ -95,7 +132,8 @@ func (r *GatewayPluginXMLThreatProtectionResource) Schema(ctx context.Context, r
 					"bla_threshold": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Sets the threshold after which the protection starts. This protects against the Billion Laughs Attack.`,
+						Default:     int64default.StaticInt64(8388608),
+						Description: `Sets the threshold after which the protection starts. This protects against the Billion Laughs Attack. Default: 8388608`,
 						Validators: []validator.Int64{
 							int64validator.AtLeast(1024),
 						},
@@ -103,7 +141,8 @@ func (r *GatewayPluginXMLThreatProtectionResource) Schema(ctx context.Context, r
 					"buffer": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Maximum size of the unparsed buffer (see below).`,
+						Default:     int64default.StaticInt64(1048576),
+						Description: `Maximum size of the unparsed buffer (see below). Default: 1048576`,
 					},
 					"checked_content_types": schema.ListAttribute{
 						Computed:    true,
@@ -114,82 +153,98 @@ func (r *GatewayPluginXMLThreatProtectionResource) Schema(ctx context.Context, r
 					"comment": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Maximum size of comments.`,
+						Default:     int64default.StaticInt64(1024),
+						Description: `Maximum size of comments. Default: 1024`,
 					},
 					"document": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Maximum size of the entire document.`,
+						Default:     int64default.StaticInt64(10485760),
+						Description: `Maximum size of the entire document. Default: 10485760`,
 					},
 					"entity": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Maximum size of entity values in EntityDecl.`,
+						Default:     int64default.StaticInt64(1024),
+						Description: `Maximum size of entity values in EntityDecl. Default: 1024`,
 					},
 					"entityname": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Maximum size of entity names in EntityDecl.`,
+						Default:     int64default.StaticInt64(1024),
+						Description: `Maximum size of entity names in EntityDecl. Default: 1024`,
 					},
 					"entityproperty": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Maximum size of systemId, publicId, or notationName in EntityDecl.`,
+						Default:     int64default.StaticInt64(1024),
+						Description: `Maximum size of systemId, publicId, or notationName in EntityDecl. Default: 1024`,
 					},
 					"localname": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Maximum size of the localname. This applies to tags and attributes.`,
+						Default:     int64default.StaticInt64(1024),
+						Description: `Maximum size of the localname. This applies to tags and attributes. Default: 1024`,
 					},
 					"max_attributes": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Maximum number of attributes allowed on a tag, including default ones. Note: If namespace-aware parsing is disabled, then the namespaces definitions are counted as attributes.`,
+						Default:     int64default.StaticInt64(100),
+						Description: `Maximum number of attributes allowed on a tag, including default ones. Note: If namespace-aware parsing is disabled, then the namespaces definitions are counted as attributes. Default: 100`,
 					},
 					"max_children": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Maximum number of children allowed (Element, Text, Comment, ProcessingInstruction, CDATASection). Note: Adjacent text and CDATA sections are counted as one. For example, text-cdata-text-cdata is one child.`,
+						Default:     int64default.StaticInt64(100),
+						Description: `Maximum number of children allowed (Element, Text, Comment, ProcessingInstruction, CDATASection). Note: Adjacent text and CDATA sections are counted as one. For example, text-cdata-text-cdata is one child. Default: 100`,
 					},
 					"max_depth": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Maximum depth of tags. Child elements such as Text or Comments are not counted as another level.`,
+						Default:     int64default.StaticInt64(50),
+						Description: `Maximum depth of tags. Child elements such as Text or Comments are not counted as another level. Default: 50`,
 					},
 					"max_namespaces": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Maximum number of namespaces defined on a tag. This value is required if parsing is namespace-aware.`,
+						Default:     int64default.StaticInt64(20),
+						Description: `Maximum number of namespaces defined on a tag. This value is required if parsing is namespace-aware. Default: 20`,
 					},
 					"namespace_aware": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If not parsing namespace aware, all prefixes and namespace attributes will be counted as regular attributes and element names, and validated as such.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `If not parsing namespace aware, all prefixes and namespace attributes will be counted as regular attributes and element names, and validated as such. Default: true`,
 					},
 					"namespaceuri": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Maximum size of the namespace URI. This value is required if parsing is namespace-aware.`,
+						Default:     int64default.StaticInt64(1024),
+						Description: `Maximum size of the namespace URI. This value is required if parsing is namespace-aware. Default: 1024`,
 					},
 					"pidata": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Maximum size of processing instruction data.`,
+						Default:     int64default.StaticInt64(1024),
+						Description: `Maximum size of processing instruction data. Default: 1024`,
 					},
 					"pitarget": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Maximum size of processing instruction targets.`,
+						Default:     int64default.StaticInt64(1024),
+						Description: `Maximum size of processing instruction targets. Default: 1024`,
 					},
 					"prefix": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Maximum size of the prefix. This applies to tags and attributes. This value is required if parsing is namespace-aware.`,
+						Default:     int64default.StaticInt64(1024),
+						Description: `Maximum size of the prefix. This applies to tags and attributes. This value is required if parsing is namespace-aware. Default: 1024`,
 					},
 					"text": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Maximum text inside tags (counted over all adjacent text/CDATA elements combined).`,
+						Default:     int64default.StaticInt64(1048576),
+						Description: `Maximum text inside tags (counted over all adjacent text/CDATA elements combined). Default: 1048576`,
 					},
 				},
 			},
@@ -222,7 +277,8 @@ func (r *GatewayPluginXMLThreatProtectionResource) Schema(ctx context.Context, r
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -230,20 +286,39 @@ func (r *GatewayPluginXMLThreatProtectionResource) Schema(ctx context.Context, r
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -252,9 +327,13 @@ func (r *GatewayPluginXMLThreatProtectionResource) Schema(ctx context.Context, r
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -263,7 +342,6 @@ func (r *GatewayPluginXMLThreatProtectionResource) Schema(ctx context.Context, r
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -276,12 +354,10 @@ func (r *GatewayPluginXMLThreatProtectionResource) Schema(ctx context.Context, r
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},
@@ -323,7 +399,6 @@ func (r *GatewayPluginXMLThreatProtectionResource) Schema(ctx context.Context, r
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
 // UpstreamAlgorithm - Which load balancing algorithm to use.
@@ -147,8 +148,19 @@ func (e *HashOn) UnmarshalJSON(data []byte) error {
 
 type Healthy struct {
 	HTTPStatuses []int64  `json:"http_statuses,omitempty"`
-	Interval     *float64 `json:"interval,omitempty"`
-	Successes    *int64   `json:"successes,omitempty"`
+	Interval     *float64 `default:"0" json:"interval"`
+	Successes    *int64   `default:"0" json:"successes"`
+}
+
+func (h Healthy) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *Healthy) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Healthy) GetHTTPStatuses() []int64 {
@@ -208,11 +220,22 @@ func (e *UpstreamType) UnmarshalJSON(data []byte) error {
 }
 
 type Unhealthy struct {
-	HTTPFailures *int64   `json:"http_failures,omitempty"`
+	HTTPFailures *int64   `default:"0" json:"http_failures"`
 	HTTPStatuses []int64  `json:"http_statuses,omitempty"`
-	Interval     *float64 `json:"interval,omitempty"`
-	TCPFailures  *int64   `json:"tcp_failures,omitempty"`
-	Timeouts     *int64   `json:"timeouts,omitempty"`
+	Interval     *float64 `default:"0" json:"interval"`
+	TCPFailures  *int64   `default:"0" json:"tcp_failures"`
+	Timeouts     *int64   `default:"0" json:"timeouts"`
+}
+
+func (u Unhealthy) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *Unhealthy) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Unhealthy) GetHTTPFailures() *int64 {
@@ -251,18 +274,29 @@ func (o *Unhealthy) GetTimeouts() *int64 {
 }
 
 type Active struct {
-	Concurrency *int64 `json:"concurrency,omitempty"`
+	Concurrency *int64 `default:"10" json:"concurrency"`
 	// A map of header names to arrays of header values.
 	Headers map[string][]string `json:"headers,omitempty"`
 	Healthy *Healthy            `json:"healthy,omitempty"`
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
-	HTTPPath *string `json:"http_path,omitempty"`
+	HTTPPath *string `default:"/" json:"http_path"`
 	// A string representing an SNI (server name indication) value for TLS.
 	HTTPSSni               *string       `json:"https_sni,omitempty"`
-	HTTPSVerifyCertificate *bool         `json:"https_verify_certificate,omitempty"`
-	Timeout                *float64      `json:"timeout,omitempty"`
-	Type                   *UpstreamType `json:"type,omitempty"`
+	HTTPSVerifyCertificate *bool         `default:"true" json:"https_verify_certificate"`
+	Timeout                *float64      `default:"1" json:"timeout"`
+	Type                   *UpstreamType `default:"http" json:"type"`
 	Unhealthy              *Unhealthy    `json:"unhealthy,omitempty"`
+}
+
+func (a Active) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *Active) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Active) GetConcurrency() *int64 {
@@ -330,7 +364,18 @@ func (o *Active) GetUnhealthy() *Unhealthy {
 
 type UpstreamHealthy struct {
 	HTTPStatuses []int64 `json:"http_statuses,omitempty"`
-	Successes    *int64  `json:"successes,omitempty"`
+	Successes    *int64  `default:"0" json:"successes"`
+}
+
+func (u UpstreamHealthy) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamHealthy) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpstreamHealthy) GetHTTPStatuses() []int64 {
@@ -383,10 +428,21 @@ func (e *UpstreamHealthchecksType) UnmarshalJSON(data []byte) error {
 }
 
 type UpstreamUnhealthy struct {
-	HTTPFailures *int64  `json:"http_failures,omitempty"`
+	HTTPFailures *int64  `default:"0" json:"http_failures"`
 	HTTPStatuses []int64 `json:"http_statuses,omitempty"`
-	TCPFailures  *int64  `json:"tcp_failures,omitempty"`
-	Timeouts     *int64  `json:"timeouts,omitempty"`
+	TCPFailures  *int64  `default:"0" json:"tcp_failures"`
+	Timeouts     *int64  `default:"0" json:"timeouts"`
+}
+
+func (u UpstreamUnhealthy) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamUnhealthy) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpstreamUnhealthy) GetHTTPFailures() *int64 {
@@ -418,9 +474,20 @@ func (o *UpstreamUnhealthy) GetTimeouts() *int64 {
 }
 
 type Passive struct {
-	Healthy   *UpstreamHealthy          `json:"healthy,omitempty"`
-	Type      *UpstreamHealthchecksType `json:"type,omitempty"`
-	Unhealthy *UpstreamUnhealthy        `json:"unhealthy,omitempty"`
+	Healthy   *UpstreamHealthy          `json:"healthy"`
+	Type      *UpstreamHealthchecksType `default:"http" json:"type"`
+	Unhealthy *UpstreamUnhealthy        `json:"unhealthy"`
+}
+
+func (p Passive) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *Passive) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Passive) GetHealthy() *UpstreamHealthy {
@@ -447,7 +514,18 @@ func (o *Passive) GetUnhealthy() *UpstreamUnhealthy {
 type Healthchecks struct {
 	Active    *Active  `json:"active,omitempty"`
 	Passive   *Passive `json:"passive,omitempty"`
-	Threshold *float64 `json:"threshold,omitempty"`
+	Threshold *float64 `default:"0" json:"threshold"`
+}
+
+func (h Healthchecks) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *Healthchecks) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Healthchecks) GetActive() *Active {
@@ -474,50 +552,61 @@ func (o *Healthchecks) GetThreshold() *float64 {
 // Upstream - The upstream object represents a virtual hostname and can be used to loadbalance incoming requests over multiple services (targets). So for example an upstream named `service.v1.xyz` for a Service object whose `host` is `service.v1.xyz`. Requests for this Service would be proxied to the targets defined within the upstream. An upstream also includes a [health checker][healthchecks], which is able to enable and disable targets based on their ability or inability to serve requests. The configuration for the health checker is stored in the upstream object, and applies to all of its targets.
 type Upstream struct {
 	// Which load balancing algorithm to use.
-	Algorithm *UpstreamAlgorithm `json:"algorithm,omitempty"`
+	Algorithm *UpstreamAlgorithm `default:"round-robin" json:"algorithm"`
 	// If set, the certificate to be used as client certificate while TLS handshaking to the upstream server.
 	ClientCertificate *UpstreamClientCertificate `json:"client_certificate"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// What to use as hashing input if the primary `hash_on` does not return a hash (eg. header is missing, or no Consumer identified). Not available if `hash_on` is set to `cookie`.
-	HashFallback *HashFallback `json:"hash_fallback,omitempty"`
+	HashFallback *HashFallback `default:"none" json:"hash_fallback"`
 	// The header name to take the value from as hash input. Only required when `hash_fallback` is set to `header`.
-	HashFallbackHeader *string `json:"hash_fallback_header,omitempty"`
+	HashFallbackHeader *string `default:"null" json:"hash_fallback_header"`
 	// The name of the query string argument to take the value from as hash input. Only required when `hash_fallback` is set to `query_arg`.
-	HashFallbackQueryArg *string `json:"hash_fallback_query_arg,omitempty"`
+	HashFallbackQueryArg *string `default:"null" json:"hash_fallback_query_arg"`
 	// The name of the route URI capture to take the value from as hash input. Only required when `hash_fallback` is set to `uri_capture`.
-	HashFallbackURICapture *string `json:"hash_fallback_uri_capture,omitempty"`
+	HashFallbackURICapture *string `default:"null" json:"hash_fallback_uri_capture"`
 	// What to use as hashing input. Using `none` results in a weighted-round-robin scheme with no hashing.
-	HashOn *HashOn `json:"hash_on,omitempty"`
+	HashOn *HashOn `default:"none" json:"hash_on"`
 	// The cookie name to take the value from as hash input. Only required when `hash_on` or `hash_fallback` is set to `cookie`. If the specified cookie is not in the request, Kong will generate a value and set the cookie in the response.
-	HashOnCookie *string `json:"hash_on_cookie,omitempty"`
+	HashOnCookie *string `default:"null" json:"hash_on_cookie"`
 	// The cookie path to set in the response headers. Only required when `hash_on` or `hash_fallback` is set to `cookie`.
-	HashOnCookiePath *string `json:"hash_on_cookie_path,omitempty"`
+	HashOnCookiePath *string `default:"/" json:"hash_on_cookie_path"`
 	// The header name to take the value from as hash input. Only required when `hash_on` is set to `header`.
-	HashOnHeader *string `json:"hash_on_header,omitempty"`
+	HashOnHeader *string `default:"null" json:"hash_on_header"`
 	// The name of the query string argument to take the value from as hash input. Only required when `hash_on` is set to `query_arg`.
-	HashOnQueryArg *string `json:"hash_on_query_arg,omitempty"`
+	HashOnQueryArg *string `default:"null" json:"hash_on_query_arg"`
 	// The name of the route URI capture to take the value from as hash input. Only required when `hash_on` is set to `uri_capture`.
-	HashOnURICapture *string       `json:"hash_on_uri_capture,omitempty"`
-	Healthchecks     *Healthchecks `json:"healthchecks,omitempty"`
+	HashOnURICapture *string       `default:"null" json:"hash_on_uri_capture"`
+	Healthchecks     *Healthchecks `json:"healthchecks"`
 	// The hostname to be used as `Host` header when proxying requests through Kong.
-	HostHeader *string `json:"host_header,omitempty"`
+	HostHeader *string `default:"null" json:"host_header"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// This is a hostname, which must be equal to the `host` of a Service.
 	Name string `json:"name"`
 	// The number of slots in the load balancer algorithm. If `algorithm` is set to `round-robin`, this setting determines the maximum number of slots. If `algorithm` is set to `consistent-hashing`, this setting determines the actual number of slots in the algorithm. Accepts an integer in the range `10`-`65536`.
-	Slots *int64 `json:"slots,omitempty"`
+	Slots *int64 `default:"10000" json:"slots"`
 	// The cookie name to keep sticky sessions.
-	StickySessionsCookie *string `json:"sticky_sessions_cookie,omitempty"`
+	StickySessionsCookie *string `default:"null" json:"sticky_sessions_cookie"`
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
-	StickySessionsCookiePath *string `json:"sticky_sessions_cookie_path,omitempty"`
+	StickySessionsCookiePath *string `default:"/" json:"sticky_sessions_cookie_path"`
 	// An optional set of strings associated with the Upstream for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
 	// If set, the balancer will use SRV hostname(if DNS Answer has SRV record) as the proxy upstream `Host`.
-	UseSrvName *bool `json:"use_srv_name,omitempty"`
+	UseSrvName *bool `default:"false" json:"use_srv_name"`
+}
+
+func (u Upstream) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *Upstream) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Upstream) GetAlgorithm() *UpstreamAlgorithm {

@@ -80,7 +80,6 @@ func (r *IntegrationInstanceResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"description": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Optionally provide a description of the integration instance.`,
 				Validators: []validator.String{

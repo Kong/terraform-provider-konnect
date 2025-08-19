@@ -49,22 +49,28 @@ func (r *GatewayPluginZipkinResourceModel) RefreshFromSharedZipkinPlugin(ctx con
 				r.Config.Propagation = nil
 			} else {
 				r.Config.Propagation = &tfTypes.Propagation{}
-				r.Config.Propagation.Clear = make([]types.String, 0, len(resp.Config.Propagation.Clear))
-				for _, v := range resp.Config.Propagation.Clear {
-					r.Config.Propagation.Clear = append(r.Config.Propagation.Clear, types.StringValue(v))
+				if resp.Config.Propagation.Clear != nil {
+					r.Config.Propagation.Clear = make([]types.String, 0, len(resp.Config.Propagation.Clear))
+					for _, v := range resp.Config.Propagation.Clear {
+						r.Config.Propagation.Clear = append(r.Config.Propagation.Clear, types.StringValue(v))
+					}
 				}
 				if resp.Config.Propagation.DefaultFormat != nil {
 					r.Config.Propagation.DefaultFormat = types.StringValue(string(*resp.Config.Propagation.DefaultFormat))
 				} else {
 					r.Config.Propagation.DefaultFormat = types.StringNull()
 				}
-				r.Config.Propagation.Extract = make([]types.String, 0, len(resp.Config.Propagation.Extract))
-				for _, v := range resp.Config.Propagation.Extract {
-					r.Config.Propagation.Extract = append(r.Config.Propagation.Extract, types.StringValue(string(v)))
+				if resp.Config.Propagation.Extract != nil {
+					r.Config.Propagation.Extract = make([]types.String, 0, len(resp.Config.Propagation.Extract))
+					for _, v := range resp.Config.Propagation.Extract {
+						r.Config.Propagation.Extract = append(r.Config.Propagation.Extract, types.StringValue(string(v)))
+					}
 				}
-				r.Config.Propagation.Inject = make([]types.String, 0, len(resp.Config.Propagation.Inject))
-				for _, v := range resp.Config.Propagation.Inject {
-					r.Config.Propagation.Inject = append(r.Config.Propagation.Inject, types.StringValue(string(v)))
+				if resp.Config.Propagation.Inject != nil {
+					r.Config.Propagation.Inject = make([]types.String, 0, len(resp.Config.Propagation.Inject))
+					for _, v := range resp.Config.Propagation.Inject {
+						r.Config.Propagation.Inject = append(r.Config.Propagation.Inject, types.StringValue(string(v)))
+					}
 				}
 			}
 			if resp.Config.Queue == nil {
@@ -87,15 +93,17 @@ func (r *GatewayPluginZipkinResourceModel) RefreshFromSharedZipkinPlugin(ctx con
 			r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
 			r.Config.SampleRatio = types.Float64PointerValue(resp.Config.SampleRatio)
 			r.Config.SendTimeout = types.Int64PointerValue(resp.Config.SendTimeout)
-			r.Config.StaticTags = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
+			if resp.Config.StaticTags != nil {
+				r.Config.StaticTags = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
 
-			for _, staticTagsItem := range resp.Config.StaticTags {
-				var staticTags tfTypes.ConfigurationDataPlaneGroupEnvironmentField
+				for _, staticTagsItem := range resp.Config.StaticTags {
+					var staticTags tfTypes.ConfigurationDataPlaneGroupEnvironmentField
 
-				staticTags.Name = types.StringValue(staticTagsItem.Name)
-				staticTags.Value = types.StringValue(staticTagsItem.Value)
+					staticTags.Name = types.StringValue(staticTagsItem.Name)
+					staticTags.Value = types.StringValue(staticTagsItem.Value)
 
-				r.Config.StaticTags = append(r.Config.StaticTags, staticTags)
+					r.Config.StaticTags = append(r.Config.StaticTags, staticTags)
+				}
 			}
 			r.Config.TagsHeader = types.StringPointerValue(resp.Config.TagsHeader)
 			if resp.Config.TraceidByteCount != nil {
@@ -122,18 +130,22 @@ func (r *GatewayPluginZipkinResourceModel) RefreshFromSharedZipkinPlugin(ctx con
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -289,9 +301,12 @@ func (r *GatewayPluginZipkinResourceModel) ToSharedZipkinPlugin(ctx context.Cont
 	if r.Ordering != nil {
 		var after *shared.ZipkinPluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.ZipkinPluginAfter{
 				Access: access,
@@ -299,9 +314,12 @@ func (r *GatewayPluginZipkinResourceModel) ToSharedZipkinPlugin(ctx context.Cont
 		}
 		var before *shared.ZipkinPluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.ZipkinPluginBefore{
 				Access: access1,
@@ -418,9 +436,12 @@ func (r *GatewayPluginZipkinResourceModel) ToSharedZipkinPlugin(ctx context.Cont
 		}
 		var propagation *shared.ZipkinPluginPropagation
 		if r.Config.Propagation != nil {
-			clear := make([]string, 0, len(r.Config.Propagation.Clear))
-			for _, clearItem := range r.Config.Propagation.Clear {
-				clear = append(clear, clearItem.ValueString())
+			var clear []string
+			if r.Config.Propagation.Clear != nil {
+				clear = make([]string, 0, len(r.Config.Propagation.Clear))
+				for _, clearItem := range r.Config.Propagation.Clear {
+					clear = append(clear, clearItem.ValueString())
+				}
 			}
 			defaultFormat := new(shared.ZipkinPluginDefaultFormat)
 			if !r.Config.Propagation.DefaultFormat.IsUnknown() && !r.Config.Propagation.DefaultFormat.IsNull() {
@@ -428,13 +449,19 @@ func (r *GatewayPluginZipkinResourceModel) ToSharedZipkinPlugin(ctx context.Cont
 			} else {
 				defaultFormat = nil
 			}
-			extract := make([]shared.ZipkinPluginExtract, 0, len(r.Config.Propagation.Extract))
-			for _, extractItem := range r.Config.Propagation.Extract {
-				extract = append(extract, shared.ZipkinPluginExtract(extractItem.ValueString()))
+			var extract []shared.ZipkinPluginExtract
+			if r.Config.Propagation.Extract != nil {
+				extract = make([]shared.ZipkinPluginExtract, 0, len(r.Config.Propagation.Extract))
+				for _, extractItem := range r.Config.Propagation.Extract {
+					extract = append(extract, shared.ZipkinPluginExtract(extractItem.ValueString()))
+				}
 			}
-			inject := make([]shared.ZipkinPluginInject, 0, len(r.Config.Propagation.Inject))
-			for _, injectItem := range r.Config.Propagation.Inject {
-				inject = append(inject, shared.ZipkinPluginInject(injectItem.ValueString()))
+			var inject []shared.ZipkinPluginInject
+			if r.Config.Propagation.Inject != nil {
+				inject = make([]shared.ZipkinPluginInject, 0, len(r.Config.Propagation.Inject))
+				for _, injectItem := range r.Config.Propagation.Inject {
+					inject = append(inject, shared.ZipkinPluginInject(injectItem.ValueString()))
+				}
 			}
 			propagation = &shared.ZipkinPluginPropagation{
 				Clear:         clear,
@@ -522,18 +549,21 @@ func (r *GatewayPluginZipkinResourceModel) ToSharedZipkinPlugin(ctx context.Cont
 		} else {
 			sendTimeout = nil
 		}
-		staticTags := make([]shared.StaticTags, 0, len(r.Config.StaticTags))
-		for _, staticTagsItem := range r.Config.StaticTags {
-			var name1 string
-			name1 = staticTagsItem.Name.ValueString()
+		var staticTags []shared.StaticTags
+		if r.Config.StaticTags != nil {
+			staticTags = make([]shared.StaticTags, 0, len(r.Config.StaticTags))
+			for _, staticTagsItem := range r.Config.StaticTags {
+				var name1 string
+				name1 = staticTagsItem.Name.ValueString()
 
-			var value string
-			value = staticTagsItem.Value.ValueString()
+				var value string
+				value = staticTagsItem.Value.ValueString()
 
-			staticTags = append(staticTags, shared.StaticTags{
-				Name:  name1,
-				Value: value,
-			})
+				staticTags = append(staticTags, shared.StaticTags{
+					Name:  name1,
+					Value: value,
+				})
+			}
 		}
 		tagsHeader := new(string)
 		if !r.Config.TagsHeader.IsUnknown() && !r.Config.TagsHeader.IsNull() {

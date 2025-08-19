@@ -9,7 +9,7 @@ import (
 )
 
 type DegraphqlPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *DegraphqlPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *DegraphqlPluginAfter) GetAccess() []string {
 }
 
 type DegraphqlPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *DegraphqlPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *DegraphqlPluginBefore) GetAccess() []string {
 }
 
 type DegraphqlPluginOrdering struct {
-	After  *DegraphqlPluginAfter  `json:"after,omitempty"`
-	Before *DegraphqlPluginBefore `json:"before,omitempty"`
+	After  *DegraphqlPluginAfter  `json:"after"`
+	Before *DegraphqlPluginBefore `json:"before"`
 }
 
 func (o *DegraphqlPluginOrdering) GetAfter() *DegraphqlPluginAfter {
@@ -53,8 +53,19 @@ type DegraphqlPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (d DegraphqlPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DegraphqlPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *DegraphqlPluginPartials) GetID() *string {
@@ -80,7 +91,18 @@ func (o *DegraphqlPluginPartials) GetPath() *string {
 
 type DegraphqlPluginConfig struct {
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
-	GraphqlServerPath *string `json:"graphql_server_path,omitempty"`
+	GraphqlServerPath *string `default:"/graphql" json:"graphql_server_path"`
+}
+
+func (d DegraphqlPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DegraphqlPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *DegraphqlPluginConfig) GetGraphqlServerPath() *string {
@@ -151,22 +173,22 @@ type DegraphqlPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                  `json:"instance_name,omitempty"`
+	InstanceName *string                  `default:"null" json:"instance_name"`
 	name         string                   `const:"degraphql" json:"name"`
-	Ordering     *DegraphqlPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *DegraphqlPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []DegraphqlPluginPartials `json:"partials,omitempty"`
+	Partials []DegraphqlPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                 `json:"updated_at,omitempty"`
-	Config    *DegraphqlPluginConfig `json:"config,omitempty"`
+	Config    *DegraphqlPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
-	Protocols []DegraphqlPluginProtocols `json:"protocols,omitempty"`
+	Protocols []DegraphqlPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *DegraphqlPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

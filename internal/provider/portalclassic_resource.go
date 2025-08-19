@@ -69,12 +69,10 @@ func (r *PortalClassicResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `Number of applications created in the portal.`,
 			},
 			"auto_approve_applications": schema.BoolAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Whether the requests from applications to register for products will be automatically approved, or if they will be set to pending until approved by an admin.`,
 			},
 			"auto_approve_developers": schema.BoolAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Whether the developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.`,
 			},
@@ -89,7 +87,6 @@ func (r *PortalClassicResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"custom_client_domain": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The custom domain to access a self-hosted customized developer portal client. If this is set, the Konnect-hosted portal will no longer be available.  ` + "`" + `custom_domain` + "`" + ` must be also set for this value to be set. See https://github.com/Kong/konnect-portal for information on how to get started deploying and customizing your own Konnect portal.`,
 				Validators: []validator.String{
@@ -97,7 +94,6 @@ func (r *PortalClassicResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"custom_domain": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The custom domain to access the developer portal. A CNAME for the portal's default domain must be able to be set for the custom domain for it to be valid. After setting a valid CNAME, an SSL/TLS certificate will be automatically manged for the custom domain, and traffic will be able to use the custom domain to route to the portal's web client and API.`,
 				Validators: []validator.String{
@@ -114,7 +110,6 @@ func (r *PortalClassicResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a ` + "`" + `custom_domain` + "``" + `.`,
 			},
 			"description": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The description of the portal.`,
 				Validators: []validator.String{
@@ -150,7 +145,6 @@ func (r *PortalClassicResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `Contains a unique identifier used for this resource.`,
 			},
 			"is_public": schema.BoolAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.`,
 			},
@@ -174,7 +168,6 @@ func (r *PortalClassicResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `Number of api products published to the portal`,
 			},
 			"rbac_enabled": schema.BoolAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for products until unless assigned to teams with access to view and consume specific products.`,
 			},

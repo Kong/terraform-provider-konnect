@@ -13,8 +13,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -69,17 +72,18 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 					"allow_partial_chain": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Allow certificate verification with only an intermediate certificate. When this is enabled, you don't need to upload the full chain to Kong Certificates.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Allow certificate verification with only an intermediate certificate. When this is enabled, you don't need to upload the full chain to Kong Certificates. Default: false`,
 					},
 					"anonymous": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request fails with an authentication failure ` + "`" + `4xx` + "`" + `. Note that this value must refer to the consumer ` + "`" + `id` + "`" + ` or ` + "`" + `username` + "`" + ` attribute, and **not** its ` + "`" + `custom_id` + "`" + `.`,
 					},
 					"authenticated_group_by": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Certificate property to use as the authenticated group. Valid values are ` + "`" + `CN` + "`" + ` (Common Name) or ` + "`" + `DN` + "`" + ` (Distinguished Name). Once ` + "`" + `skip_consumer_lookup` + "`" + ` is applied, any client with a valid certificate can access the Service/API. To restrict usage to only some of the authenticated users, also add the ACL plugin (not covered here) and create allowed or denied groups of users. must be one of ["CN", "DN"]`,
+						Default:     stringdefault.StaticString(`CN`),
+						Description: `Certificate property to use as the authenticated group. Valid values are ` + "`" + `CN` + "`" + ` (Common Name) or ` + "`" + `DN` + "`" + ` (Distinguished Name). Once ` + "`" + `skip_consumer_lookup` + "`" + ` is applied, any client with a valid certificate can access the Service/API. To restrict usage to only some of the authenticated users, also add the ACL plugin (not covered here) and create allowed or denied groups of users. Default: "CN"; must be one of ["CN", "DN"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf("CN", "DN"),
 						},
@@ -92,12 +96,14 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 					"cache_ttl": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Cache expiry time in seconds.`,
+						Default:     float64default.StaticFloat64(60),
+						Description: `Cache expiry time in seconds. Default: 60`,
 					},
 					"cert_cache_ttl": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The length of time in milliseconds between refreshes of the revocation check status cache.`,
+						Default:     float64default.StaticFloat64(60000),
+						Description: `The length of time in milliseconds between refreshes of the revocation check status cache. Default: 60000`,
 					},
 					"certificate_header_format": schema.StringAttribute{
 						Required:    true,
@@ -120,17 +126,14 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 						Description: `Whether to match the subject name of the client-supplied certificate against consumer's ` + "`" + `username` + "`" + ` and/or ` + "`" + `custom_id` + "`" + ` attribute. If set to ` + "`" + `[]` + "`" + ` (the empty array), then auto-matching is disabled.`,
 					},
 					"default_consumer": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The UUID or username of the consumer to use when a trusted client certificate is presented but no consumer matches. Note that this value must refer to the consumer ` + "`" + `id` + "`" + ` or ` + "`" + `username` + "`" + ` attribute, and **not** its ` + "`" + `custom_id` + "`" + `.`,
 					},
 					"http_proxy_host": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing a host name, such as example.com.`,
 					},
 					"http_proxy_port": schema.Int64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 						Validators: []validator.Int64{
@@ -140,15 +143,14 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 					"http_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `HTTP timeout threshold in milliseconds when communicating with the OCSP server or downloading CRL.`,
+						Default:     float64default.StaticFloat64(30000),
+						Description: `HTTP timeout threshold in milliseconds when communicating with the OCSP server or downloading CRL. Default: 30000`,
 					},
 					"https_proxy_host": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing a host name, such as example.com.`,
 					},
 					"https_proxy_port": schema.Int64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 						Validators: []validator.Int64{
@@ -158,7 +160,8 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 					"revocation_check_mode": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Controls client certificate revocation check behavior. If set to ` + "`" + `SKIP` + "`" + `, no revocation check is performed. If set to ` + "`" + `IGNORE_CA_ERROR` + "`" + `, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to ` + "`" + `STRICT` + "`" + `, the plugin only treats the certificate as valid when it's able to verify the revocation status. must be one of ["IGNORE_CA_ERROR", "SKIP", "STRICT"]`,
+						Default:     stringdefault.StaticString(`IGNORE_CA_ERROR`),
+						Description: `Controls client certificate revocation check behavior. If set to ` + "`" + `SKIP` + "`" + `, no revocation check is performed. If set to ` + "`" + `IGNORE_CA_ERROR` + "`" + `, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to ` + "`" + `STRICT` + "`" + `, the plugin only treats the certificate as valid when it's able to verify the revocation status. Default: "IGNORE_CA_ERROR"; must be one of ["IGNORE_CA_ERROR", "SKIP", "STRICT"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"IGNORE_CA_ERROR",
@@ -170,12 +173,14 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 					"secure_source": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Whether to secure the source of the request. If set to ` + "`" + `true` + "`" + `, the plugin will only allow requests from trusted IPs (configured by the ` + "`" + `trusted_ips` + "`" + ` config option).`,
+						Default:     booldefault.StaticBool(true),
+						Description: `Whether to secure the source of the request. If set to ` + "`" + `true` + "`" + `, the plugin will only allow requests from trusted IPs (configured by the ` + "`" + `trusted_ips` + "`" + ` config option). Default: true`,
 					},
 					"skip_consumer_lookup": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Skip consumer lookup once certificate is trusted against the configured CA list.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Skip consumer lookup once certificate is trusted against the configured CA list. Default: false`,
 					},
 				},
 			},
@@ -194,7 +199,8 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -202,20 +208,39 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -224,9 +249,13 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -235,7 +264,6 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -248,12 +276,10 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},
@@ -295,7 +321,6 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

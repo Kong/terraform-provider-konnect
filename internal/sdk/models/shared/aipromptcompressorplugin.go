@@ -9,7 +9,7 @@ import (
 )
 
 type AiPromptCompressorPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiPromptCompressorPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *AiPromptCompressorPluginAfter) GetAccess() []string {
 }
 
 type AiPromptCompressorPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiPromptCompressorPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *AiPromptCompressorPluginBefore) GetAccess() []string {
 }
 
 type AiPromptCompressorPluginOrdering struct {
-	After  *AiPromptCompressorPluginAfter  `json:"after,omitempty"`
-	Before *AiPromptCompressorPluginBefore `json:"before,omitempty"`
+	After  *AiPromptCompressorPluginAfter  `json:"after"`
+	Before *AiPromptCompressorPluginBefore `json:"before"`
 }
 
 func (o *AiPromptCompressorPluginOrdering) GetAfter() *AiPromptCompressorPluginAfter {
@@ -53,8 +53,19 @@ type AiPromptCompressorPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (a AiPromptCompressorPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptCompressorPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiPromptCompressorPluginPartials) GetID() *string {
@@ -165,18 +176,29 @@ type AiPromptCompressorPluginConfig struct {
 	// What value to be used to compress with. The 'value' is interpreted as rate or target_token depending on compressor_type.
 	CompressionRanges []CompressionRanges `json:"compression_ranges"`
 	// What compression type to use to compress with
-	CompressorType *CompressorType `json:"compressor_type,omitempty"`
+	CompressorType *CompressorType `default:"rate" json:"compressor_type"`
 	// The url of the compressor
-	CompressorURL *string `json:"compressor_url,omitempty"`
+	CompressorURL *string `default:"http://localhost:8080" json:"compressor_url"`
 	// The keepalive timeout for the established http connnection
-	KeepaliveTimeout *float64 `json:"keepalive_timeout,omitempty"`
+	KeepaliveTimeout *float64 `default:"60000" json:"keepalive_timeout"`
 	// Log the text data
-	LogTextData *bool         `json:"log_text_data,omitempty"`
+	LogTextData *bool         `default:"false" json:"log_text_data"`
 	MessageType []MessageType `json:"message_type,omitempty"`
 	// Stop processing if an error occurs
-	StopOnError *bool `json:"stop_on_error,omitempty"`
+	StopOnError *bool `default:"true" json:"stop_on_error"`
 	// Connection timeout with the compressor
-	Timeout *float64 `json:"timeout,omitempty"`
+	Timeout *float64 `default:"10000" json:"timeout"`
+}
+
+func (a AiPromptCompressorPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptCompressorPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiPromptCompressorPluginConfig) GetCompressionRanges() []CompressionRanges {
@@ -320,17 +342,17 @@ type AiPromptCompressorPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                           `json:"instance_name,omitempty"`
+	InstanceName *string                           `default:"null" json:"instance_name"`
 	name         string                            `const:"ai-prompt-compressor" json:"name"`
-	Ordering     *AiPromptCompressorPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *AiPromptCompressorPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []AiPromptCompressorPluginPartials `json:"partials,omitempty"`
+	Partials []AiPromptCompressorPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                         `json:"updated_at,omitempty"`
 	Config    AiPromptCompressorPluginConfig `json:"config"`
@@ -339,7 +361,7 @@ type AiPromptCompressorPlugin struct {
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *AiPromptCompressorPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
-	Protocols []AiPromptCompressorPluginProtocols `json:"protocols,omitempty"`
+	Protocols []AiPromptCompressorPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *AiPromptCompressorPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

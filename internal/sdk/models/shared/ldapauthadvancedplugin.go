@@ -9,7 +9,7 @@ import (
 )
 
 type LdapAuthAdvancedPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *LdapAuthAdvancedPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *LdapAuthAdvancedPluginAfter) GetAccess() []string {
 }
 
 type LdapAuthAdvancedPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *LdapAuthAdvancedPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *LdapAuthAdvancedPluginBefore) GetAccess() []string {
 }
 
 type LdapAuthAdvancedPluginOrdering struct {
-	After  *LdapAuthAdvancedPluginAfter  `json:"after,omitempty"`
-	Before *LdapAuthAdvancedPluginBefore `json:"before,omitempty"`
+	After  *LdapAuthAdvancedPluginAfter  `json:"after"`
+	Before *LdapAuthAdvancedPluginBefore `json:"before"`
 }
 
 func (o *LdapAuthAdvancedPluginOrdering) GetAfter() *LdapAuthAdvancedPluginAfter {
@@ -53,8 +53,19 @@ type LdapAuthAdvancedPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (l LdapAuthAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LdapAuthAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *LdapAuthAdvancedPluginPartials) GetID() *string {
@@ -106,51 +117,62 @@ func (e *LdapAuthAdvancedPluginConsumerBy) UnmarshalJSON(data []byte) error {
 
 type LdapAuthAdvancedPluginConfig struct {
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`. Note that this value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
-	Anonymous *string `json:"anonymous,omitempty"`
+	Anonymous *string `default:"" json:"anonymous"`
 	// Attribute to be used to search the user; e.g., "cn".
 	Attribute string `json:"attribute"`
 	// Base DN as the starting point for the search; e.g., 'dc=example,dc=com'.
 	BaseDn string `json:"base_dn"`
 	// The DN to bind to. Used to perform LDAP search of user. This `bind_dn` should have permissions to search for the user being authenticated.
-	BindDn *string `json:"bind_dn,omitempty"`
+	BindDn *string `default:"null" json:"bind_dn"`
 	// Cache expiry time in seconds.
-	CacheTTL *float64 `json:"cache_ttl,omitempty"`
+	CacheTTL *float64 `default:"60" json:"cache_ttl"`
 	// Whether to authenticate consumers based on `username`, `custom_id`, or both.
 	ConsumerBy []LdapAuthAdvancedPluginConsumerBy `json:"consumer_by,omitempty"`
 	// Whether consumer mapping is optional. If `consumer_optional=true`, the plugin will not attempt to associate a consumer with the LDAP authenticated user.
-	ConsumerOptional *bool `json:"consumer_optional,omitempty"`
+	ConsumerOptional *bool `default:"false" json:"consumer_optional"`
 	// Sets a distinguished name (DN) for the entry where LDAP searches for groups begin. This field is case-insensitive.',dc=com'.
-	GroupBaseDn *string `json:"group_base_dn,omitempty"`
+	GroupBaseDn *string `default:"null" json:"group_base_dn"`
 	// Sets the attribute holding the members of the LDAP group. This field is case-sensitive.
-	GroupMemberAttribute *string `json:"group_member_attribute,omitempty"`
+	GroupMemberAttribute *string `default:"memberOf" json:"group_member_attribute"`
 	// Sets the attribute holding the name of a group, typically called `name` (in Active Directory) or `cn` (in OpenLDAP). This field is case-insensitive.
-	GroupNameAttribute *string `json:"group_name_attribute,omitempty"`
+	GroupNameAttribute *string `default:"null" json:"group_name_attribute"`
 	// The groups required to be present in the LDAP search result for successful authorization. This config parameter works in both **AND** / **OR** cases. - When `["group1 group2"]` are in the same array indices, both `group1` AND `group2` need to be present in the LDAP search result. - When `["group1", "group2"]` are in different array indices, either `group1` OR `group2` need to be present in the LDAP search result.
-	GroupsRequired []string `json:"groups_required,omitempty"`
+	GroupsRequired []string `json:"groups_required"`
 	// An optional string to use as part of the Authorization header. By default, a valid Authorization header looks like this: `Authorization: ldap base64(username:password)`. If `header_type` is set to "basic", then the Authorization header would be `Authorization: basic base64(username:password)`. Note that `header_type` can take any string, not just `'ldap'` and `'basic'`.
-	HeaderType *string `json:"header_type,omitempty"`
+	HeaderType *string `default:"ldap" json:"header_type"`
 	// An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request.
-	HideCredentials *bool `json:"hide_credentials,omitempty"`
+	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// An optional value in milliseconds that defines how long an idle connection to LDAP server will live before being closed.
-	Keepalive *float64 `json:"keepalive,omitempty"`
+	Keepalive *float64 `default:"60000" json:"keepalive"`
 	// Host on which the LDAP server is running.
 	LdapHost string `json:"ldap_host"`
 	// The password to the LDAP server.
-	LdapPassword *string `json:"ldap_password,omitempty"`
+	LdapPassword *string `default:"null" json:"ldap_password"`
 	// TCP port where the LDAP server is listening. 389 is the default port for non-SSL LDAP and AD. 636 is the port required for SSL LDAP and AD. If `ldaps` is configured, you must use port 636.
-	LdapPort *float64 `json:"ldap_port,omitempty"`
+	LdapPort *float64 `default:"389" json:"ldap_port"`
 	// Set it to `true` to use `ldaps`, a secure protocol (that can be configured to TLS) to connect to the LDAP server. When `ldaps` is configured, you must use port 636. If the `ldap` setting is enabled, ensure the `start_tls` setting is disabled.
-	Ldaps *bool `json:"ldaps,omitempty"`
+	Ldaps *bool `default:"false" json:"ldaps"`
 	// Displays all the LDAP search results received from the LDAP server for debugging purposes. Not recommended to be enabled in a production environment.
-	LogSearchResults *bool `json:"log_search_results,omitempty"`
+	LogSearchResults *bool `default:"false" json:"log_search_results"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
-	Realm *string `json:"realm,omitempty"`
+	Realm *string `default:"null" json:"realm"`
 	// Set it to `true` to issue StartTLS (Transport Layer Security) extended operation over `ldap` connection. If the `start_tls` setting is enabled, ensure the `ldaps` setting is disabled.
-	StartTLS *bool `json:"start_tls,omitempty"`
+	StartTLS *bool `default:"false" json:"start_tls"`
 	// An optional timeout in milliseconds when waiting for connection with LDAP server.
-	Timeout *float64 `json:"timeout,omitempty"`
+	Timeout *float64 `default:"10000" json:"timeout"`
 	// Set to `true` to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the `lua_ssl_trusted_certificate` directive.
-	VerifyLdapHost *bool `json:"verify_ldap_host,omitempty"`
+	VerifyLdapHost *bool `default:"false" json:"verify_ldap_host"`
+}
+
+func (l LdapAuthAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LdapAuthAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *LdapAuthAdvancedPluginConfig) GetAnonymous() *string {
@@ -381,22 +403,22 @@ type LdapAuthAdvancedPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                         `json:"instance_name,omitempty"`
+	InstanceName *string                         `default:"null" json:"instance_name"`
 	name         string                          `const:"ldap-auth-advanced" json:"name"`
-	Ordering     *LdapAuthAdvancedPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *LdapAuthAdvancedPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []LdapAuthAdvancedPluginPartials `json:"partials,omitempty"`
+	Partials []LdapAuthAdvancedPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                       `json:"updated_at,omitempty"`
 	Config    LdapAuthAdvancedPluginConfig `json:"config"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
-	Protocols []LdapAuthAdvancedPluginProtocols `json:"protocols,omitempty"`
+	Protocols []LdapAuthAdvancedPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *LdapAuthAdvancedPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

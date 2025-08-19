@@ -9,7 +9,7 @@ import (
 )
 
 type AiPromptGuardPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiPromptGuardPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *AiPromptGuardPluginAfter) GetAccess() []string {
 }
 
 type AiPromptGuardPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *AiPromptGuardPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *AiPromptGuardPluginBefore) GetAccess() []string {
 }
 
 type AiPromptGuardPluginOrdering struct {
-	After  *AiPromptGuardPluginAfter  `json:"after,omitempty"`
-	Before *AiPromptGuardPluginBefore `json:"before,omitempty"`
+	After  *AiPromptGuardPluginAfter  `json:"after"`
+	Before *AiPromptGuardPluginBefore `json:"before"`
 }
 
 func (o *AiPromptGuardPluginOrdering) GetAfter() *AiPromptGuardPluginAfter {
@@ -53,8 +53,19 @@ type AiPromptGuardPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (a AiPromptGuardPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptGuardPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiPromptGuardPluginPartials) GetID() *string {
@@ -155,19 +166,30 @@ func (e *AiPromptGuardPluginLlmFormat) UnmarshalJSON(data []byte) error {
 
 type AiPromptGuardPluginConfig struct {
 	// If true, will ignore all previous chat prompts from the conversation history.
-	AllowAllConversationHistory *bool `json:"allow_all_conversation_history,omitempty"`
+	AllowAllConversationHistory *bool `default:"false" json:"allow_all_conversation_history"`
 	// Array of valid regex patterns, or valid questions from the 'user' role in chat.
-	AllowPatterns []string `json:"allow_patterns,omitempty"`
+	AllowPatterns []string `json:"allow_patterns"`
 	// Array of invalid regex patterns, or invalid questions from the 'user' role in chat.
-	DenyPatterns []string `json:"deny_patterns,omitempty"`
+	DenyPatterns []string `json:"deny_patterns"`
 	// Generative AI category of the request
-	GenaiCategory *GenaiCategory `json:"genai_category,omitempty"`
+	GenaiCategory *GenaiCategory `default:"text/generation" json:"genai_category"`
 	// LLM input and output format and schema to use
-	LlmFormat *AiPromptGuardPluginLlmFormat `json:"llm_format,omitempty"`
+	LlmFormat *AiPromptGuardPluginLlmFormat `default:"openai" json:"llm_format"`
 	// If true, will match all roles in addition to 'user' role in conversation history.
-	MatchAllRoles *bool `json:"match_all_roles,omitempty"`
+	MatchAllRoles *bool `default:"false" json:"match_all_roles"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
-	MaxRequestBodySize *int64 `json:"max_request_body_size,omitempty"`
+	MaxRequestBodySize *int64 `default:"8192" json:"max_request_body_size"`
+}
+
+func (a AiPromptGuardPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptGuardPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiPromptGuardPluginConfig) GetAllowAllConversationHistory() *bool {
@@ -304,26 +326,26 @@ type AiPromptGuardPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                      `json:"instance_name,omitempty"`
+	InstanceName *string                      `default:"null" json:"instance_name"`
 	name         string                       `const:"ai-prompt-guard" json:"name"`
-	Ordering     *AiPromptGuardPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *AiPromptGuardPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []AiPromptGuardPluginPartials `json:"partials,omitempty"`
+	Partials []AiPromptGuardPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                     `json:"updated_at,omitempty"`
-	Config    *AiPromptGuardPluginConfig `json:"config,omitempty"`
+	Config    *AiPromptGuardPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *AiPromptGuardPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *AiPromptGuardPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
-	Protocols []AiPromptGuardPluginProtocols `json:"protocols,omitempty"`
+	Protocols []AiPromptGuardPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *AiPromptGuardPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

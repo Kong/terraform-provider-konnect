@@ -9,7 +9,7 @@ import (
 )
 
 type SyslogPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *SyslogPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *SyslogPluginAfter) GetAccess() []string {
 }
 
 type SyslogPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *SyslogPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *SyslogPluginBefore) GetAccess() []string {
 }
 
 type SyslogPluginOrdering struct {
-	After  *SyslogPluginAfter  `json:"after,omitempty"`
-	Before *SyslogPluginBefore `json:"before,omitempty"`
+	After  *SyslogPluginAfter  `json:"after"`
+	Before *SyslogPluginBefore `json:"before"`
 }
 
 func (o *SyslogPluginOrdering) GetAfter() *SyslogPluginAfter {
@@ -53,8 +53,19 @@ type SyslogPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (s SyslogPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SyslogPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *SyslogPluginPartials) GetID() *string {
@@ -336,14 +347,25 @@ func (e *SyslogPluginSuccessfulSeverity) UnmarshalJSON(data []byte) error {
 }
 
 type SyslogPluginConfig struct {
-	ClientErrorsSeverity *SyslogPluginClientErrorsSeverity `json:"client_errors_severity,omitempty"`
+	ClientErrorsSeverity *SyslogPluginClientErrorsSeverity `default:"info" json:"client_errors_severity"`
 	// Lua code as a key-value map
 	CustomFieldsByLua map[string]any `json:"custom_fields_by_lua,omitempty"`
 	// The facility is used by the operating system to decide how to handle each log message.
-	Facility             *Facility                         `json:"facility,omitempty"`
-	LogLevel             *SyslogPluginLogLevel             `json:"log_level,omitempty"`
-	ServerErrorsSeverity *SyslogPluginServerErrorsSeverity `json:"server_errors_severity,omitempty"`
-	SuccessfulSeverity   *SyslogPluginSuccessfulSeverity   `json:"successful_severity,omitempty"`
+	Facility             *Facility                         `default:"user" json:"facility"`
+	LogLevel             *SyslogPluginLogLevel             `default:"info" json:"log_level"`
+	ServerErrorsSeverity *SyslogPluginServerErrorsSeverity `default:"info" json:"server_errors_severity"`
+	SuccessfulSeverity   *SyslogPluginSuccessfulSeverity   `default:"info" json:"successful_severity"`
+}
+
+func (s SyslogPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SyslogPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *SyslogPluginConfig) GetClientErrorsSeverity() *SyslogPluginClientErrorsSeverity {
@@ -480,24 +502,24 @@ type SyslogPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string               `json:"instance_name,omitempty"`
+	InstanceName *string               `default:"null" json:"instance_name"`
 	name         string                `const:"syslog" json:"name"`
-	Ordering     *SyslogPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *SyslogPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []SyslogPluginPartials `json:"partials,omitempty"`
+	Partials []SyslogPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64              `json:"updated_at,omitempty"`
-	Config    *SyslogPluginConfig `json:"config,omitempty"`
+	Config    *SyslogPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *SyslogPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
-	Protocols []SyslogPluginProtocols `json:"protocols,omitempty"`
+	Protocols []SyslogPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *SyslogPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

@@ -9,7 +9,7 @@ import (
 )
 
 type MockingPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *MockingPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *MockingPluginAfter) GetAccess() []string {
 }
 
 type MockingPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *MockingPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *MockingPluginBefore) GetAccess() []string {
 }
 
 type MockingPluginOrdering struct {
-	After  *MockingPluginAfter  `json:"after,omitempty"`
-	Before *MockingPluginBefore `json:"before,omitempty"`
+	After  *MockingPluginAfter  `json:"after"`
+	Before *MockingPluginBefore `json:"before"`
 }
 
 func (o *MockingPluginOrdering) GetAfter() *MockingPluginAfter {
@@ -53,8 +53,19 @@ type MockingPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (m MockingPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MockingPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *MockingPluginPartials) GetID() *string {
@@ -80,25 +91,36 @@ func (o *MockingPluginPartials) GetPath() *string {
 
 type MockingPluginConfig struct {
 	// The contents of the specification file. You must use this option for hybrid or DB-less mode. You can include the full specification as part of the configuration. In Kong Manager, you can copy and paste the contents of the spec directly into the `Config.Api Specification` text field.
-	APISpecification *string `json:"api_specification,omitempty"`
+	APISpecification *string `default:"null" json:"api_specification"`
 	// The path and name of the specification file loaded into Kong Gateway's database. You cannot use this option for DB-less or hybrid mode.
-	APISpecificationFilename *string `json:"api_specification_filename,omitempty"`
+	APISpecificationFilename *string `default:"null" json:"api_specification_filename"`
 	// The base path to be used for path match evaluation. This value is ignored if `include_base_path` is set to `false`.
-	CustomBasePath *string `json:"custom_base_path,omitempty"`
+	CustomBasePath *string `default:"null" json:"custom_base_path"`
 	// Indicates whether to include the base path when performing path match evaluation.
-	IncludeBasePath *bool `json:"include_base_path,omitempty"`
+	IncludeBasePath *bool `default:"false" json:"include_base_path"`
 	// A global list of the HTTP status codes that can only be selected and returned.
-	IncludedStatusCodes []int64 `json:"included_status_codes,omitempty"`
+	IncludedStatusCodes []int64 `json:"included_status_codes"`
 	// The maximum value in seconds of delay time. Set this value when `random_delay` is enabled and you want to adjust the default. The value must be greater than the `min_delay_time`.
-	MaxDelayTime *float64 `json:"max_delay_time,omitempty"`
+	MaxDelayTime *float64 `default:"1" json:"max_delay_time"`
 	// The minimum value in seconds of delay time. Set this value when `random_delay` is enabled and you want to adjust the default. The value must be less than the `max_delay_time`.
-	MinDelayTime *float64 `json:"min_delay_time,omitempty"`
+	MinDelayTime *float64 `default:"0.001" json:"min_delay_time"`
 	// Enables a random delay in the mocked response. Introduces delays to simulate real-time response times by APIs.
-	RandomDelay *bool `json:"random_delay,omitempty"`
+	RandomDelay *bool `default:"false" json:"random_delay"`
 	// Randomly selects one example and returns it. This parameter requires the spec to have multiple examples configured.
-	RandomExamples *bool `json:"random_examples,omitempty"`
+	RandomExamples *bool `default:"false" json:"random_examples"`
 	// Determines whether to randomly select an HTTP status code from the responses of the corresponding API method. The default value is `false`, which means the minimum HTTP status code is always selected and returned.
-	RandomStatusCode *bool `json:"random_status_code,omitempty"`
+	RandomStatusCode *bool `default:"false" json:"random_status_code"`
+}
+
+func (m MockingPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MockingPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *MockingPluginConfig) GetAPISpecification() *string {
@@ -244,24 +266,24 @@ type MockingPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                `json:"instance_name,omitempty"`
+	InstanceName *string                `default:"null" json:"instance_name"`
 	name         string                 `const:"mocking" json:"name"`
-	Ordering     *MockingPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *MockingPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []MockingPluginPartials `json:"partials,omitempty"`
+	Partials []MockingPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64               `json:"updated_at,omitempty"`
-	Config    *MockingPluginConfig `json:"config,omitempty"`
+	Config    *MockingPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *MockingPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
-	Protocols []MockingPluginProtocols `json:"protocols,omitempty"`
+	Protocols []MockingPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *MockingPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

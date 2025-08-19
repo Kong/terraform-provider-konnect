@@ -10,10 +10,21 @@ import (
 // GCPVPCPeeringGatewayResponseTransitGatewayStateMetadata - Metadata describing the backing state of the transit gateway and why it may be in an erroneous state.
 type GCPVPCPeeringGatewayResponseTransitGatewayStateMetadata struct {
 	// Reported status of the transit gateway from backing infrastructure.
-	ReportedStatus *string `json:"reported_status,omitempty"`
+	ReportedStatus *string `default:"null" json:"reported_status"`
 	// Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
 	//
-	Reason *string `json:"reason,omitempty"`
+	Reason *string `default:"null" json:"reason"`
+}
+
+func (g GCPVPCPeeringGatewayResponseTransitGatewayStateMetadata) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GCPVPCPeeringGatewayResponseTransitGatewayStateMetadata) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *GCPVPCPeeringGatewayResponseTransitGatewayStateMetadata) GetReportedStatus() *string {

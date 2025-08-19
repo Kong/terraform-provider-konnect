@@ -35,18 +35,20 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 			r.Config.Authentication.Tokenauth = types.BoolPointerValue(resp.Config.Authentication.Tokenauth)
 			r.Config.Authentication.User = types.StringPointerValue(resp.Config.Authentication.User)
 		}
-		r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
+		if resp.Config.BootstrapServers != nil {
+			r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
 
-		for _, bootstrapServersItem := range resp.Config.BootstrapServers {
-			var bootstrapServers tfTypes.BootstrapServers
+			for _, bootstrapServersItem := range resp.Config.BootstrapServers {
+				var bootstrapServers tfTypes.BootstrapServers
 
-			bootstrapServers.Host = types.StringValue(bootstrapServersItem.Host)
-			bootstrapServers.Port = types.Int64Value(bootstrapServersItem.Port)
+				bootstrapServers.Host = types.StringValue(bootstrapServersItem.Host)
+				bootstrapServers.Port = types.Int64Value(bootstrapServersItem.Port)
 
-			r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
+				r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
+			}
 		}
 		r.Config.ClusterName = types.StringPointerValue(resp.Config.ClusterName)
-		if len(resp.Config.CustomFieldsByLua) > 0 {
+		if resp.Config.CustomFieldsByLua != nil {
 			r.Config.CustomFieldsByLua = make(map[string]jsontypes.Normalized, len(resp.Config.CustomFieldsByLua))
 			for key, value := range resp.Config.CustomFieldsByLua {
 				result, _ := json.Marshal(value)
@@ -135,18 +137,22 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -302,9 +308,12 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.
 	if r.Ordering != nil {
 		var after *shared.KafkaLogPluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.KafkaLogPluginAfter{
 				Access: access,
@@ -312,9 +321,12 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.
 		}
 		var before *shared.KafkaLogPluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.KafkaLogPluginBefore{
 				Access: access1,
@@ -407,18 +419,21 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.
 			User:      user,
 		}
 	}
-	bootstrapServers := make([]shared.KafkaLogPluginBootstrapServers, 0, len(r.Config.BootstrapServers))
-	for _, bootstrapServersItem := range r.Config.BootstrapServers {
-		var host string
-		host = bootstrapServersItem.Host.ValueString()
+	var bootstrapServers []shared.KafkaLogPluginBootstrapServers
+	if r.Config.BootstrapServers != nil {
+		bootstrapServers = make([]shared.KafkaLogPluginBootstrapServers, 0, len(r.Config.BootstrapServers))
+		for _, bootstrapServersItem := range r.Config.BootstrapServers {
+			var host string
+			host = bootstrapServersItem.Host.ValueString()
 
-		var port int64
-		port = bootstrapServersItem.Port.ValueInt64()
+			var port int64
+			port = bootstrapServersItem.Port.ValueInt64()
 
-		bootstrapServers = append(bootstrapServers, shared.KafkaLogPluginBootstrapServers{
-			Host: host,
-			Port: port,
-		})
+			bootstrapServers = append(bootstrapServers, shared.KafkaLogPluginBootstrapServers{
+				Host: host,
+				Port: port,
+			})
+		}
 	}
 	clusterName := new(string)
 	if !r.Config.ClusterName.IsUnknown() && !r.Config.ClusterName.IsNull() {

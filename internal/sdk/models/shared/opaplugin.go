@@ -9,7 +9,7 @@ import (
 )
 
 type OpaPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *OpaPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *OpaPluginAfter) GetAccess() []string {
 }
 
 type OpaPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *OpaPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *OpaPluginBefore) GetAccess() []string {
 }
 
 type OpaPluginOrdering struct {
-	After  *OpaPluginAfter  `json:"after,omitempty"`
-	Before *OpaPluginBefore `json:"before,omitempty"`
+	After  *OpaPluginAfter  `json:"after"`
+	Before *OpaPluginBefore `json:"before"`
 }
 
 func (o *OpaPluginOrdering) GetAfter() *OpaPluginAfter {
@@ -53,8 +53,19 @@ type OpaPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (o OpaPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpaPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OpaPluginPartials) GetID() *string {
@@ -106,27 +117,38 @@ func (e *OpaProtocol) UnmarshalJSON(data []byte) error {
 }
 
 type OpaPluginConfig struct {
-	IncludeBodyInOpaInput *bool `json:"include_body_in_opa_input,omitempty"`
+	IncludeBodyInOpaInput *bool `default:"false" json:"include_body_in_opa_input"`
 	// If set to true, the Kong Gateway Consumer object in use for the current request (if any) is included as input to OPA.
-	IncludeConsumerInOpaInput *bool `json:"include_consumer_in_opa_input,omitempty"`
+	IncludeConsumerInOpaInput *bool `default:"false" json:"include_consumer_in_opa_input"`
 	// If set to true and the `Content-Type` header of the current request is `application/json`, the request body will be JSON decoded and the decoded struct is included as input to OPA.
-	IncludeParsedJSONBodyInOpaInput *bool `json:"include_parsed_json_body_in_opa_input,omitempty"`
+	IncludeParsedJSONBodyInOpaInput *bool `default:"false" json:"include_parsed_json_body_in_opa_input"`
 	// If set to true, the Kong Gateway Route object in use for the current request is included as input to OPA.
-	IncludeRouteInOpaInput *bool `json:"include_route_in_opa_input,omitempty"`
+	IncludeRouteInOpaInput *bool `default:"false" json:"include_route_in_opa_input"`
 	// If set to true, the Kong Gateway Service object in use for the current request is included as input to OPA.
-	IncludeServiceInOpaInput *bool `json:"include_service_in_opa_input,omitempty"`
+	IncludeServiceInOpaInput *bool `default:"false" json:"include_service_in_opa_input"`
 	// If set to true, the regex capture groups captured on the Kong Gateway Route's path field in the current request (if any) are included as input to OPA.
-	IncludeURICapturesInOpaInput *bool `json:"include_uri_captures_in_opa_input,omitempty"`
+	IncludeURICapturesInOpaInput *bool `default:"false" json:"include_uri_captures_in_opa_input"`
 	// A string representing a host name, such as example.com.
-	OpaHost *string `json:"opa_host,omitempty"`
+	OpaHost *string `default:"localhost" json:"opa_host"`
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
 	OpaPath string `json:"opa_path"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	OpaPort *int64 `json:"opa_port,omitempty"`
+	OpaPort *int64 `default:"8181" json:"opa_port"`
 	// The protocol to use when talking to Open Policy Agent (OPA) server. Allowed protocols are `http` and `https`.
-	OpaProtocol *OpaProtocol `json:"opa_protocol,omitempty"`
+	OpaProtocol *OpaProtocol `default:"http" json:"opa_protocol"`
 	// If set to true, the OPA certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate.
-	SslVerify *bool `json:"ssl_verify,omitempty"`
+	SslVerify *bool `default:"true" json:"ssl_verify"`
+}
+
+func (o OpaPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpaPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OpaPluginConfig) GetIncludeBodyInOpaInput() *bool {
@@ -267,22 +289,22 @@ type OpaPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string            `json:"instance_name,omitempty"`
+	InstanceName *string            `default:"null" json:"instance_name"`
 	name         string             `const:"opa" json:"name"`
-	Ordering     *OpaPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *OpaPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []OpaPluginPartials `json:"partials,omitempty"`
+	Partials []OpaPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64          `json:"updated_at,omitempty"`
 	Config    OpaPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
-	Protocols []OpaPluginProtocols `json:"protocols,omitempty"`
+	Protocols []OpaPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *OpaPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

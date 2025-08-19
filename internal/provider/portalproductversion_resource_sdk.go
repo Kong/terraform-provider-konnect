@@ -34,7 +34,7 @@ func (r *PortalProductVersionResourceModel) RefreshFromSharedV2PortalProductVers
 				}
 				authStrategies.ClientCredentials.CredentialType = types.StringValue(string(authStrategiesItem.AuthStrategyClientCredentials.CredentialType))
 				authStrategies.ClientCredentials.ID = types.StringValue(authStrategiesItem.AuthStrategyClientCredentials.ID)
-				authStrategies.ClientCredentials.Name = types.StringValue(authStrategiesItem.AuthStrategyClientCredentials.Name)
+				authStrategies.ClientCredentials.Name = types.StringPointerValue(authStrategiesItem.AuthStrategyClientCredentials.Name)
 			}
 			if authStrategiesItem.AuthStrategyKeyAuth != nil {
 				authStrategies.KeyAuth = &tfTypes.AuthStrategyKeyAuth{}
@@ -44,7 +44,7 @@ func (r *PortalProductVersionResourceModel) RefreshFromSharedV2PortalProductVers
 				for _, v := range authStrategiesItem.AuthStrategyKeyAuth.KeyNames {
 					authStrategies.KeyAuth.KeyNames = append(authStrategies.KeyAuth.KeyNames, types.StringValue(v))
 				}
-				authStrategies.KeyAuth.Name = types.StringValue(authStrategiesItem.AuthStrategyKeyAuth.Name)
+				authStrategies.KeyAuth.Name = types.StringPointerValue(authStrategiesItem.AuthStrategyKeyAuth.Name)
 			}
 
 			r.AuthStrategies = append(r.AuthStrategies, authStrategies)

@@ -13,8 +13,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -69,6 +72,28 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"anonymize": types.ListType{
+						ElemType: types.StringType,
+					},
+					"custom_patterns": types.ListType{
+						ElemType: types.ObjectType{
+							AttrTypes: map[string]attr.Type{
+								`name`:  types.StringType,
+								`regex`: types.StringType,
+								`score`: types.Float64Type,
+							},
+						},
+					},
+					"host":              types.StringType,
+					"keepalive_timeout": types.Float64Type,
+					"port":              types.Float64Type,
+					"recover_redacted":  types.BoolType,
+					"redact_type":       types.StringType,
+					"scheme":            types.StringType,
+					"stop_on_error":     types.BoolType,
+					"timeout":           types.Float64Type,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"anonymize": schema.ListAttribute{
 						Computed:    true,
@@ -77,7 +102,6 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 						Description: `List of types to be anonymized`,
 					},
 					"custom_patterns": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -101,8 +125,10 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 									},
 								},
 								"score": schema.Float64Attribute{
-									Computed: true,
-									Optional: true,
+									Computed:    true,
+									Optional:    true,
+									Default:     float64default.StaticFloat64(0.5),
+									Description: `Default: 0.5`,
 									Validators: []validator.Float64{
 										float64validator.AtMost(1),
 									},
@@ -114,27 +140,32 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 					"host": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The host of the sanitizer`,
+						Default:     stringdefault.StaticString(`localhost`),
+						Description: `The host of the sanitizer. Default: "localhost"`,
 					},
 					"keepalive_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The keepalive timeout for the established http connnection`,
+						Default:     float64default.StaticFloat64(60000),
+						Description: `The keepalive timeout for the established http connnection. Default: 60000`,
 					},
 					"port": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The port of the sanitizer`,
+						Default:     float64default.StaticFloat64(8080),
+						Description: `The port of the sanitizer. Default: 8080`,
 					},
 					"recover_redacted": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Whether to recover redacted data`,
+						Default:     booldefault.StaticBool(true),
+						Description: `Whether to recover redacted data. Default: true`,
 					},
 					"redact_type": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `What value to be used to redacted to. must be one of ["placeholder", "synthetic"]`,
+						Default:     stringdefault.StaticString(`placeholder`),
+						Description: `What value to be used to redacted to. Default: "placeholder"; must be one of ["placeholder", "synthetic"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"placeholder",
@@ -145,17 +176,20 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 					"scheme": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The protocol can be http and https`,
+						Default:     stringdefault.StaticString(`http`),
+						Description: `The protocol can be http and https. Default: "http"`,
 					},
 					"stop_on_error": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Stop processing if an error occurs`,
+						Default:     booldefault.StaticBool(true),
+						Description: `Stop processing if an error occurs. Default: true`,
 					},
 					"timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Connection timeout with the sanitizer`,
+						Default:     float64default.StaticFloat64(10000),
+						Description: `Connection timeout with the sanitizer. Default: 10000`,
 					},
 				},
 			},
@@ -202,7 +236,8 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -210,20 +245,39 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -232,9 +286,13 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -243,7 +301,6 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -256,12 +313,10 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},
@@ -303,7 +358,6 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

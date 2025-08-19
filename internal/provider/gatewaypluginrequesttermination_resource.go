@@ -12,6 +12,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -67,37 +69,43 @@ func (r *GatewayPluginRequestTerminationResource) Schema(ctx context.Context, re
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"body":         types.StringType,
+					"content_type": types.StringType,
+					"echo":         types.BoolType,
+					"message":      types.StringType,
+					"status_code":  types.Int64Type,
+					"trigger":      types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"body": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The raw response body to send. This is mutually exclusive with the ` + "`" + `config.message` + "`" + ` field.`,
 					},
 					"content_type": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Content type of the raw response configured with ` + "`" + `config.body` + "`" + `.`,
 					},
 					"echo": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `When set, the plugin will echo a copy of the request back to the client. The main usecase for this is debugging. It can be combined with ` + "`" + `trigger` + "`" + ` in order to debug requests on live systems without disturbing real traffic.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `When set, the plugin will echo a copy of the request back to the client. The main usecase for this is debugging. It can be combined with ` + "`" + `trigger` + "`" + ` in order to debug requests on live systems without disturbing real traffic. Default: false`,
 					},
 					"message": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The message to send, if using the default response generator.`,
 					},
 					"status_code": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The response code to send. Must be an integer between 100 and 599.`,
+						Default:     int64default.StaticInt64(503),
+						Description: `The response code to send. Must be an integer between 100 and 599. Default: 503`,
 						Validators: []validator.Int64{
 							int64validator.Between(100, 599),
 						},
 					},
 					"trigger": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing an HTTP header name.`,
 					},
@@ -146,7 +154,8 @@ func (r *GatewayPluginRequestTerminationResource) Schema(ctx context.Context, re
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -154,20 +163,39 @@ func (r *GatewayPluginRequestTerminationResource) Schema(ctx context.Context, re
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -176,9 +204,13 @@ func (r *GatewayPluginRequestTerminationResource) Schema(ctx context.Context, re
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -187,7 +219,6 @@ func (r *GatewayPluginRequestTerminationResource) Schema(ctx context.Context, re
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -200,12 +231,10 @@ func (r *GatewayPluginRequestTerminationResource) Schema(ctx context.Context, re
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},
@@ -247,7 +276,6 @@ func (r *GatewayPluginRequestTerminationResource) Schema(ctx context.Context, re
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

@@ -6,9 +6,12 @@ import (
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -55,7 +58,6 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "PortalCustomization Resource",
 		Attributes: map[string]schema.Attribute{
 			"css": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 			},
 			"layout": schema.StringAttribute{
@@ -65,9 +67,47 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 			"menu": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"footer_bottom": types.ListType{
+						ElemType: types.ObjectType{
+							AttrTypes: map[string]attr.Type{
+								`external`:   types.BoolType,
+								`path`:       types.StringType,
+								`title`:      types.StringType,
+								`visibility`: types.StringType,
+							},
+						},
+					},
+					"footer_sections": types.ListType{
+						ElemType: types.ObjectType{
+							AttrTypes: map[string]attr.Type{
+								`items`: types.ListType{
+									ElemType: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`external`:   types.BoolType,
+											`path`:       types.StringType,
+											`title`:      types.StringType,
+											`visibility`: types.StringType,
+										},
+									},
+								},
+								`title`: types.StringType,
+							},
+						},
+					},
+					"main": types.ListType{
+						ElemType: types.ObjectType{
+							AttrTypes: map[string]attr.Type{
+								`external`:   types.BoolType,
+								`path`:       types.StringType,
+								`title`:      types.StringType,
+								`visibility`: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"footer_bottom": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -115,7 +155,6 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 						},
 					},
 					"footer_sections": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -187,7 +226,6 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 						},
 					},
 					"main": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -241,46 +279,77 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 				Description: `ID of the portal.`,
 			},
 			"robots": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 			},
 			"spec_renderer": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"hide_deprecated": types.BoolType,
+					"hide_internal":   types.BoolType,
+					"infinite_scroll": types.BoolType,
+					"show_schemas":    types.BoolType,
+					"try_it_insomnia": types.BoolType,
+					"try_it_ui":       types.BoolType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"hide_deprecated": schema.BoolAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Default: false`,
 					},
 					"hide_internal": schema.BoolAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Default: false`,
 					},
 					"infinite_scroll": schema.BoolAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(true),
+						Description: `Default: true`,
 					},
 					"show_schemas": schema.BoolAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(true),
+						Description: `Default: true`,
 					},
 					"try_it_insomnia": schema.BoolAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(true),
+						Description: `Default: true`,
 					},
 					"try_it_ui": schema.BoolAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(true),
+						Description: `Default: true`,
 					},
 				},
 			},
 			"theme": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"colors": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`primary`: types.StringType,
+						},
+					},
+					"mode": types.StringType,
+					"name": types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"colors": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"primary": types.StringType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"primary": schema.StringAttribute{
 								Computed: true,

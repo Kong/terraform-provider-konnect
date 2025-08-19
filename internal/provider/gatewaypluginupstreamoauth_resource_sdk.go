@@ -46,17 +46,19 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 			if resp.Config.Cache.Redis == nil {
 				r.Config.Cache.Redis = nil
 			} else {
-				r.Config.Cache.Redis = &tfTypes.PartialRedisEeConfig{}
+				r.Config.Cache.Redis = &tfTypes.AiProxyAdvancedPluginRedis{}
 				r.Config.Cache.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Cache.Redis.ClusterMaxRedirections)
-				r.Config.Cache.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+				if resp.Config.Cache.Redis.ClusterNodes != nil {
+					r.Config.Cache.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
 
-				for _, clusterNodesItem := range resp.Config.Cache.Redis.ClusterNodes {
-					var clusterNodes tfTypes.PartialRedisEeClusterNodes
+					for _, clusterNodesItem := range resp.Config.Cache.Redis.ClusterNodes {
+						var clusterNodes tfTypes.PartialRedisEeClusterNodes
 
-					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
-					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
+						clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
+						clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
 
-					r.Config.Cache.Redis.ClusterNodes = append(r.Config.Cache.Redis.ClusterNodes, clusterNodes)
+						r.Config.Cache.Redis.ClusterNodes = append(r.Config.Cache.Redis.ClusterNodes, clusterNodes)
+					}
 				}
 				r.Config.Cache.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ConnectTimeout)
 				r.Config.Cache.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Cache.Redis.ConnectionIsProxied)
@@ -69,15 +71,17 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 				r.Config.Cache.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ReadTimeout)
 				r.Config.Cache.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.SendTimeout)
 				r.Config.Cache.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Cache.Redis.SentinelMaster)
-				r.Config.Cache.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+				if resp.Config.Cache.Redis.SentinelNodes != nil {
+					r.Config.Cache.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
 
-				for _, sentinelNodesItem := range resp.Config.Cache.Redis.SentinelNodes {
-					var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+					for _, sentinelNodesItem := range resp.Config.Cache.Redis.SentinelNodes {
+						var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
 
-					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
-					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+						sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
+						sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 
-					r.Config.Cache.Redis.SentinelNodes = append(r.Config.Cache.Redis.SentinelNodes, sentinelNodes)
+						r.Config.Cache.Redis.SentinelNodes = append(r.Config.Cache.Redis.SentinelNodes, sentinelNodes)
+					}
 				}
 				r.Config.Cache.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Cache.Redis.SentinelPassword)
 				if resp.Config.Cache.Redis.SentinelRole != nil {
@@ -179,18 +183,22 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -346,9 +354,12 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 	if r.Ordering != nil {
 		var after *shared.UpstreamOauthPluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.UpstreamOauthPluginAfter{
 				Access: access,
@@ -356,9 +367,12 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 		}
 		var before *shared.UpstreamOauthPluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.UpstreamOauthPluginBefore{
 				Access: access1,
@@ -490,24 +504,27 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 			} else {
 				clusterMaxRedirections = nil
 			}
-			clusterNodes := make([]shared.UpstreamOauthPluginClusterNodes, 0, len(r.Config.Cache.Redis.ClusterNodes))
-			for _, clusterNodesItem := range r.Config.Cache.Redis.ClusterNodes {
-				ip := new(string)
-				if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
-					*ip = clusterNodesItem.IP.ValueString()
-				} else {
-					ip = nil
+			var clusterNodes []shared.UpstreamOauthPluginClusterNodes
+			if r.Config.Cache.Redis.ClusterNodes != nil {
+				clusterNodes = make([]shared.UpstreamOauthPluginClusterNodes, 0, len(r.Config.Cache.Redis.ClusterNodes))
+				for _, clusterNodesItem := range r.Config.Cache.Redis.ClusterNodes {
+					ip := new(string)
+					if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
+						*ip = clusterNodesItem.IP.ValueString()
+					} else {
+						ip = nil
+					}
+					port := new(int64)
+					if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
+						*port = clusterNodesItem.Port.ValueInt64()
+					} else {
+						port = nil
+					}
+					clusterNodes = append(clusterNodes, shared.UpstreamOauthPluginClusterNodes{
+						IP:   ip,
+						Port: port,
+					})
 				}
-				port := new(int64)
-				if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
-					*port = clusterNodesItem.Port.ValueInt64()
-				} else {
-					port = nil
-				}
-				clusterNodes = append(clusterNodes, shared.UpstreamOauthPluginClusterNodes{
-					IP:   ip,
-					Port: port,
-				})
 			}
 			connectTimeout := new(int64)
 			if !r.Config.Cache.Redis.ConnectTimeout.IsUnknown() && !r.Config.Cache.Redis.ConnectTimeout.IsNull() {
@@ -575,24 +592,27 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 			} else {
 				sentinelMaster = nil
 			}
-			sentinelNodes := make([]shared.UpstreamOauthPluginSentinelNodes, 0, len(r.Config.Cache.Redis.SentinelNodes))
-			for _, sentinelNodesItem := range r.Config.Cache.Redis.SentinelNodes {
-				host1 := new(string)
-				if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
-					*host1 = sentinelNodesItem.Host.ValueString()
-				} else {
-					host1 = nil
+			var sentinelNodes []shared.UpstreamOauthPluginSentinelNodes
+			if r.Config.Cache.Redis.SentinelNodes != nil {
+				sentinelNodes = make([]shared.UpstreamOauthPluginSentinelNodes, 0, len(r.Config.Cache.Redis.SentinelNodes))
+				for _, sentinelNodesItem := range r.Config.Cache.Redis.SentinelNodes {
+					host1 := new(string)
+					if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
+						*host1 = sentinelNodesItem.Host.ValueString()
+					} else {
+						host1 = nil
+					}
+					port2 := new(int64)
+					if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
+						*port2 = sentinelNodesItem.Port.ValueInt64()
+					} else {
+						port2 = nil
+					}
+					sentinelNodes = append(sentinelNodes, shared.UpstreamOauthPluginSentinelNodes{
+						Host: host1,
+						Port: port2,
+					})
 				}
-				port2 := new(int64)
-				if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
-					*port2 = sentinelNodesItem.Port.ValueInt64()
-				} else {
-					port2 = nil
-				}
-				sentinelNodes = append(sentinelNodes, shared.UpstreamOauthPluginSentinelNodes{
-					Host: host1,
-					Port: port2,
-				})
 			}
 			sentinelPassword := new(string)
 			if !r.Config.Cache.Redis.SentinelPassword.IsUnknown() && !r.Config.Cache.Redis.SentinelPassword.IsNull() {

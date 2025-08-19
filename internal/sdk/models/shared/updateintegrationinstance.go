@@ -2,18 +2,33 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+)
+
 type UpdateIntegrationInstance struct {
 	// The machine name of the integration instance that uniquely identifies it within the catalog.
 	//
-	Name *string `json:"name,omitempty"`
+	Name *string `default:"null" json:"name"`
 	// The display name of the integration instance.
-	DisplayName *string `json:"display_name,omitempty"`
+	DisplayName *string `default:"null" json:"display_name"`
 	// Optionally provide a description of the integration instance.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"null" json:"description"`
 	// JSON object representing configuration specific to the integration instance.
 	// The expected schema depends on the integration type and is dynamically registered at runtime.
 	//
 	Config any `json:"config,omitempty"`
+}
+
+func (u UpdateIntegrationInstance) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateIntegrationInstance) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpdateIntegrationInstance) GetName() *string {

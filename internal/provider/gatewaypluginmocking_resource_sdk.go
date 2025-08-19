@@ -23,9 +23,11 @@ func (r *GatewayPluginMockingResourceModel) RefreshFromSharedMockingPlugin(ctx c
 			r.Config.APISpecificationFilename = types.StringPointerValue(resp.Config.APISpecificationFilename)
 			r.Config.CustomBasePath = types.StringPointerValue(resp.Config.CustomBasePath)
 			r.Config.IncludeBasePath = types.BoolPointerValue(resp.Config.IncludeBasePath)
-			r.Config.IncludedStatusCodes = make([]types.Int64, 0, len(resp.Config.IncludedStatusCodes))
-			for _, v := range resp.Config.IncludedStatusCodes {
-				r.Config.IncludedStatusCodes = append(r.Config.IncludedStatusCodes, types.Int64Value(v))
+			if resp.Config.IncludedStatusCodes != nil {
+				r.Config.IncludedStatusCodes = make([]types.Int64, 0, len(resp.Config.IncludedStatusCodes))
+				for _, v := range resp.Config.IncludedStatusCodes {
+					r.Config.IncludedStatusCodes = append(r.Config.IncludedStatusCodes, types.Int64Value(v))
+				}
 			}
 			r.Config.MaxDelayTime = types.Float64PointerValue(resp.Config.MaxDelayTime)
 			r.Config.MinDelayTime = types.Float64PointerValue(resp.Config.MinDelayTime)
@@ -51,18 +53,22 @@ func (r *GatewayPluginMockingResourceModel) RefreshFromSharedMockingPlugin(ctx c
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -218,9 +224,12 @@ func (r *GatewayPluginMockingResourceModel) ToSharedMockingPlugin(ctx context.Co
 	if r.Ordering != nil {
 		var after *shared.MockingPluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.MockingPluginAfter{
 				Access: access,
@@ -228,9 +237,12 @@ func (r *GatewayPluginMockingResourceModel) ToSharedMockingPlugin(ctx context.Co
 		}
 		var before *shared.MockingPluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.MockingPluginBefore{
 				Access: access1,
@@ -309,9 +321,12 @@ func (r *GatewayPluginMockingResourceModel) ToSharedMockingPlugin(ctx context.Co
 		} else {
 			includeBasePath = nil
 		}
-		includedStatusCodes := make([]int64, 0, len(r.Config.IncludedStatusCodes))
-		for _, includedStatusCodesItem := range r.Config.IncludedStatusCodes {
-			includedStatusCodes = append(includedStatusCodes, includedStatusCodesItem.ValueInt64())
+		var includedStatusCodes []int64
+		if r.Config.IncludedStatusCodes != nil {
+			includedStatusCodes = make([]int64, 0, len(r.Config.IncludedStatusCodes))
+			for _, includedStatusCodesItem := range r.Config.IncludedStatusCodes {
+				includedStatusCodes = append(includedStatusCodes, includedStatusCodesItem.ValueInt64())
+			}
 		}
 		maxDelayTime := new(float64)
 		if !r.Config.MaxDelayTime.IsUnknown() && !r.Config.MaxDelayTime.IsNull() {

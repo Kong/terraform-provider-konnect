@@ -9,7 +9,7 @@ import (
 )
 
 type JweDecryptPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *JweDecryptPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *JweDecryptPluginAfter) GetAccess() []string {
 }
 
 type JweDecryptPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *JweDecryptPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *JweDecryptPluginBefore) GetAccess() []string {
 }
 
 type JweDecryptPluginOrdering struct {
-	After  *JweDecryptPluginAfter  `json:"after,omitempty"`
-	Before *JweDecryptPluginBefore `json:"before,omitempty"`
+	After  *JweDecryptPluginAfter  `json:"after"`
+	Before *JweDecryptPluginBefore `json:"before"`
 }
 
 func (o *JweDecryptPluginOrdering) GetAfter() *JweDecryptPluginAfter {
@@ -53,8 +53,19 @@ type JweDecryptPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (j JweDecryptPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JweDecryptPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *JweDecryptPluginPartials) GetID() *string {
@@ -80,13 +91,24 @@ func (o *JweDecryptPluginPartials) GetPath() *string {
 
 type JweDecryptPluginConfig struct {
 	// The name of the header that is used to set the decrypted value.
-	ForwardHeaderName *string `json:"forward_header_name,omitempty"`
+	ForwardHeaderName *string `default:"Authorization" json:"forward_header_name"`
 	// Denote the name or names of all Key Sets that should be inspected when trying to find a suitable key to decrypt the JWE token.
 	KeySets []string `json:"key_sets"`
 	// The name of the header to look for the JWE token.
-	LookupHeaderName *string `json:"lookup_header_name,omitempty"`
+	LookupHeaderName *string `default:"Authorization" json:"lookup_header_name"`
 	// Defines how the plugin behaves in cases where no token was found in the request. When using `strict` mode, the request requires a token to be present and subsequently raise an error if none could be found.
-	Strict *bool `json:"strict,omitempty"`
+	Strict *bool `default:"true" json:"strict"`
+}
+
+func (j JweDecryptPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JweDecryptPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *JweDecryptPluginConfig) GetForwardHeaderName() *string {
@@ -178,22 +200,22 @@ type JweDecryptPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                   `json:"instance_name,omitempty"`
+	InstanceName *string                   `default:"null" json:"instance_name"`
 	name         string                    `const:"jwe-decrypt" json:"name"`
-	Ordering     *JweDecryptPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *JweDecryptPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []JweDecryptPluginPartials `json:"partials,omitempty"`
+	Partials []JweDecryptPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                 `json:"updated_at,omitempty"`
 	Config    JweDecryptPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
-	Protocols []JweDecryptPluginProtocols `json:"protocols,omitempty"`
+	Protocols []JweDecryptPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *JweDecryptPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

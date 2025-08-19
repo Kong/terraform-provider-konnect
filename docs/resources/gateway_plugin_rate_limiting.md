@@ -101,7 +101,7 @@ resource "konnect_gateway_plugin_rate_limiting" "my_gatewaypluginratelimiting" {
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -118,20 +118,20 @@ resource "konnect_gateway_plugin_rate_limiting" "my_gatewaypluginratelimiting" {
 Optional:
 
 - `day` (Number) The number of HTTP requests that can be made per day.
-- `error_code` (Number) Set a custom error code to return when the rate limit is exceeded.
-- `error_message` (String) Set a custom error message to return when the rate limit is exceeded.
-- `fault_tolerant` (Boolean) A boolean value that determines if the requests should be proxied even if Kong has troubles connecting a third-party data store. If `true`, requests will be proxied anyway, effectively disabling the rate-limiting function until the data store is working again. If `false`, then the clients will see `500` errors.
+- `error_code` (Number) Set a custom error code to return when the rate limit is exceeded. Default: 429
+- `error_message` (String) Set a custom error message to return when the rate limit is exceeded. Default: "API rate limit exceeded"
+- `fault_tolerant` (Boolean) A boolean value that determines if the requests should be proxied even if Kong has troubles connecting a third-party data store. If `true`, requests will be proxied anyway, effectively disabling the rate-limiting function until the data store is working again. If `false`, then the clients will see `500` errors. Default: true
 - `header_name` (String) A string representing an HTTP header name.
-- `hide_client_headers` (Boolean) Optionally hide informative response headers.
+- `hide_client_headers` (Boolean) Optionally hide informative response headers. Default: false
 - `hour` (Number) The number of HTTP requests that can be made per hour.
-- `limit_by` (String) The entity that is used when aggregating the limits. must be one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]
+- `limit_by` (String) The entity that is used when aggregating the limits. Default: "consumer"; must be one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]
 - `minute` (Number) The number of HTTP requests that can be made per minute.
 - `month` (Number) The number of HTTP requests that can be made per month.
 - `path` (String) A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
-- `policy` (String) The rate-limiting policies to use for retrieving and incrementing the limits. must be one of ["cluster", "local", "redis"]
+- `policy` (String) The rate-limiting policies to use for retrieving and incrementing the limits. Default: "local"; must be one of ["cluster", "local", "redis"]
 - `redis` (Attributes) Redis configuration (see [below for nested schema](#nestedatt--config--redis))
 - `second` (Number) The number of HTTP requests that can be made per second.
-- `sync_rate` (Number) How often to sync counter data to the central data store. A value of -1 results in synchronous behavior.
+- `sync_rate` (Number) How often to sync counter data to the central data store. A value of -1 results in synchronous behavior. Default: -1
 - `year` (Number) The number of HTTP requests that can be made per year.
 
 <a id="nestedatt--config--redis"></a>
@@ -139,14 +139,14 @@ Optional:
 
 Optional:
 
-- `database` (Number) Database to use for the Redis connection when using the `redis` strategy
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
 - `host` (String) A string representing a host name, such as example.com.
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
-- `ssl` (Boolean) If set to true, uses SSL to connect to Redis.
-- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-- `timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: false
+- `timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
 - `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 
 

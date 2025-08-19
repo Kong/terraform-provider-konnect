@@ -159,7 +159,7 @@ resource "konnect_gateway_plugin_upstream_oauth" "my_gatewaypluginupstreamoauth"
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -195,7 +195,7 @@ Optional:
 - `audience` (List of String) List of audiences passed to the IdP when obtaining a new token.
 - `client_id` (String) The client ID for the application registration in the IdP.
 - `client_secret` (String) The client secret for the application registration in the IdP.
-- `grant_type` (String) The OAuth grant type to be used. must be one of ["client_credentials", "password"]
+- `grant_type` (String) The OAuth grant type to be used. Default: "client_credentials"; must be one of ["client_credentials", "password"]
 - `password` (String) The password to use if `config.oauth.grant_type` is set to `password`.
 - `scopes` (List of String) List of scopes to request from the IdP when obtaining a new token.
 - `token_headers` (Map of String) Extra headers to be passed in the token endpoint request.
@@ -208,12 +208,12 @@ Optional:
 
 Optional:
 
-- `idp_error_response_body_template` (String) The template to use to create the body of the response to return to the consumer if Kong fails to obtain a token from the IdP.
-- `idp_error_response_content_type` (String) The Content-Type of the response to return to the consumer if Kong fails to obtain a token from the IdP.
-- `idp_error_response_message` (String) The message to embed in the body of the response to return to the consumer if Kong fails to obtain a token from the IdP.
-- `idp_error_response_status_code` (Number) The response code to return to the consumer if Kong fails to obtain a token from the IdP.
+- `idp_error_response_body_template` (String) The template to use to create the body of the response to return to the consumer if Kong fails to obtain a token from the IdP. Default: "{ \"code\": \"{{status}}\", \"message\": \"{{message}}\" }"
+- `idp_error_response_content_type` (String) The Content-Type of the response to return to the consumer if Kong fails to obtain a token from the IdP. Default: "application/json; charset=utf-8"
+- `idp_error_response_message` (String) The message to embed in the body of the response to return to the consumer if Kong fails to obtain a token from the IdP. Default: "Failed to authenticate request to upstream"
+- `idp_error_response_status_code` (Number) The response code to return to the consumer if Kong fails to obtain a token from the IdP. Default: 502
 - `purge_token_on_upstream_status_codes` (List of Number) An array of status codes which will force an access token to be purged when returned by the upstream. An empty array will disable this functionality.
-- `upstream_access_token_header_name` (String) The name of the header used to send the access token (obtained from the IdP) to the upstream service.
+- `upstream_access_token_header_name` (String) The name of the header used to send the access token (obtained from the IdP) to the upstream service. Default: "Authorization"
 
 
 <a id="nestedatt--config--cache"></a>
@@ -221,18 +221,18 @@ Optional:
 
 Optional:
 
-- `default_ttl` (Number) The lifetime of a token without an explicit `expires_in` value.
-- `eagerly_expire` (Number) The number of seconds to eagerly expire a cached token. By default, a cached token expires 5 seconds before its lifetime as defined in `expires_in`.
+- `default_ttl` (Number) The lifetime of a token without an explicit `expires_in` value. Default: 3600
+- `eagerly_expire` (Number) The number of seconds to eagerly expire a cached token. By default, a cached token expires 5 seconds before its lifetime as defined in `expires_in`. Default: 5
 - `memory` (Attributes) (see [below for nested schema](#nestedatt--config--cache--memory))
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--cache--redis))
-- `strategy` (String) The method Kong should use to cache tokens issued by the IdP. must be one of ["memory", "redis"]
+- `strategy` (String) The method Kong should use to cache tokens issued by the IdP. Default: "memory"; must be one of ["memory", "redis"]
 
 <a id="nestedatt--config--cache--memory"></a>
 ### Nested Schema for `config.cache.memory`
 
 Optional:
 
-- `dictionary_name` (String) The shared dictionary used by the plugin to cache tokens if `config.cache.strategy` is set to `memory`.
+- `dictionary_name` (String) The shared dictionary used by the plugin to cache tokens if `config.cache.strategy` is set to `memory`. Default: "kong_db_cache"
 
 
 <a id="nestedatt--config--cache--redis"></a>
@@ -240,26 +240,26 @@ Optional:
 
 Optional:
 
-- `cluster_max_redirections` (Number) Maximum retry attempts for redirection.
+- `cluster_max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
 - `cluster_nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--cache--redis--cluster_nodes))
-- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
-- `database` (Number) Database to use for the Redis connection when using the `redis` strategy
-- `host` (String) A string representing a host name, such as example.com.
+- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
 - `keepalive_backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
-- `keepalive_pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
+- `keepalive_pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
-- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--cache--redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
 - `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
-- `ssl` (Boolean) If set to true, uses SSL to connect to Redis.
-- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: false
 - `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 
 <a id="nestedatt--config--cache--redis--cluster_nodes"></a>
@@ -267,8 +267,8 @@ Optional:
 
 Optional:
 
-- `ip` (String) A string representing a host name, such as example.com.
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
+- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
 
 
 <a id="nestedatt--config--cache--redis--sentinel_nodes"></a>
@@ -276,8 +276,8 @@ Optional:
 
 Optional:
 
-- `host` (String) A string representing a host name, such as example.com.
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
 
 
 
@@ -287,17 +287,17 @@ Optional:
 
 Optional:
 
-- `auth_method` (String) The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body. must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none"]
-- `client_secret_jwt_alg` (String) The algorithm to use with JWT when using `client_secret_jwt` authentication. must be one of ["HS256", "HS512"]
+- `auth_method` (String) The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body. Default: "client_secret_post"; must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none"]
+- `client_secret_jwt_alg` (String) The algorithm to use with JWT when using `client_secret_jwt` authentication. Default: "HS512"; must be one of ["HS256", "HS512"]
 - `http_proxy` (String) The proxy to use when making HTTP requests to the IdP.
 - `http_proxy_authorization` (String) The `Proxy-Authorization` header value to be used with `http_proxy`.
-- `http_version` (Number) The HTTP version used for requests made by this plugin. Supported values: `1.1` for HTTP 1.1 and `1.0` for HTTP 1.0.
+- `http_version` (Number) The HTTP version used for requests made by this plugin. Supported values: `1.1` for HTTP 1.1 and `1.0` for HTTP 1.0. Default: 1.1
 - `https_proxy` (String) The proxy to use when making HTTPS requests to the IdP.
 - `https_proxy_authorization` (String) The `Proxy-Authorization` header value to be used with `https_proxy`.
-- `keep_alive` (Boolean) Whether to use keepalive connections to the IdP.
+- `keep_alive` (Boolean) Whether to use keepalive connections to the IdP. Default: true
 - `no_proxy` (String) A comma-separated list of hosts that should not be proxied.
-- `ssl_verify` (Boolean) Whether to verify the certificate presented by the IdP when using HTTPS.
-- `timeout` (Number) Network I/O timeout for requests to the IdP in milliseconds.
+- `ssl_verify` (Boolean) Whether to verify the certificate presented by the IdP when using HTTPS. Default: false
+- `timeout` (Number) Network I/O timeout for requests to the IdP in milliseconds. Default: 10000
 
 
 

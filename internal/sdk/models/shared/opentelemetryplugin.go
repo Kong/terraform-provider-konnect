@@ -9,7 +9,7 @@ import (
 )
 
 type OpentelemetryPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *OpentelemetryPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *OpentelemetryPluginAfter) GetAccess() []string {
 }
 
 type OpentelemetryPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *OpentelemetryPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *OpentelemetryPluginBefore) GetAccess() []string {
 }
 
 type OpentelemetryPluginOrdering struct {
-	After  *OpentelemetryPluginAfter  `json:"after,omitempty"`
-	Before *OpentelemetryPluginBefore `json:"before,omitempty"`
+	After  *OpentelemetryPluginAfter  `json:"after"`
+	Before *OpentelemetryPluginBefore `json:"before"`
 }
 
 func (o *OpentelemetryPluginOrdering) GetAfter() *OpentelemetryPluginAfter {
@@ -53,8 +53,19 @@ type OpentelemetryPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (o OpentelemetryPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpentelemetryPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OpentelemetryPluginPartials) GetID() *string {
@@ -275,13 +286,24 @@ func (e *Inject) UnmarshalJSON(data []byte) error {
 
 type Propagation struct {
 	// Header names to clear after context extraction. This allows to extract the context from a certain header and then remove it from the request, useful when extraction and injection are performed on different header formats and the original header should not be sent to the upstream. If left empty, no headers are cleared.
-	Clear []string `json:"clear,omitempty"`
+	Clear []string `json:"clear"`
 	// The default header format to use when extractors did not match any format in the incoming headers and `inject` is configured with the value: `preserve`. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in `extract`.
-	DefaultFormat *DefaultFormat `json:"default_format,omitempty"`
+	DefaultFormat *DefaultFormat `default:"w3c" json:"default_format"`
 	// Header formats used to extract tracing context from incoming requests. If multiple values are specified, the first one found will be used for extraction. If left empty, Kong will not extract any tracing context information from incoming requests and generate a trace with no parent and a new trace ID.
-	Extract []Extract `json:"extract,omitempty"`
+	Extract []Extract `json:"extract"`
 	// Header formats used to inject tracing context. The value `preserve` will use the same header format as the incoming request. If multiple values are specified, all of them will be used during injection. If left empty, Kong will not inject any tracing context information in outgoing requests.
-	Inject []Inject `json:"inject,omitempty"`
+	Inject []Inject `json:"inject"`
+}
+
+func (p Propagation) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *Propagation) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Propagation) GetClear() []string {
@@ -341,21 +363,32 @@ func (e *OpentelemetryPluginConcurrencyLimit) UnmarshalJSON(data []byte) error {
 
 type OpentelemetryPluginQueue struct {
 	// The number of of queue delivery timers. -1 indicates unlimited.
-	ConcurrencyLimit *OpentelemetryPluginConcurrencyLimit `json:"concurrency_limit,omitempty"`
+	ConcurrencyLimit *OpentelemetryPluginConcurrencyLimit `default:"1" json:"concurrency_limit"`
 	// Time in seconds before the initial retry is made for a failing batch.
-	InitialRetryDelay *float64 `json:"initial_retry_delay,omitempty"`
+	InitialRetryDelay *float64 `default:"0.01" json:"initial_retry_delay"`
 	// Maximum number of entries that can be processed at a time.
-	MaxBatchSize *int64 `json:"max_batch_size,omitempty"`
+	MaxBatchSize *int64 `default:"200" json:"max_batch_size"`
 	// Maximum number of bytes that can be waiting on a queue, requires string content.
-	MaxBytes *int64 `json:"max_bytes,omitempty"`
+	MaxBytes *int64 `default:"null" json:"max_bytes"`
 	// Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.
-	MaxCoalescingDelay *float64 `json:"max_coalescing_delay,omitempty"`
+	MaxCoalescingDelay *float64 `default:"1" json:"max_coalescing_delay"`
 	// Maximum number of entries that can be waiting on the queue.
-	MaxEntries *int64 `json:"max_entries,omitempty"`
+	MaxEntries *int64 `default:"10000" json:"max_entries"`
 	// Maximum time in seconds between retries, caps exponential backoff.
-	MaxRetryDelay *float64 `json:"max_retry_delay,omitempty"`
+	MaxRetryDelay *float64 `default:"60" json:"max_retry_delay"`
 	// Time in seconds before the queue gives up calling a failed handler for a batch.
-	MaxRetryTime *float64 `json:"max_retry_time,omitempty"`
+	MaxRetryTime *float64 `default:"60" json:"max_retry_time"`
+}
+
+func (o OpentelemetryPluginQueue) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpentelemetryPluginQueue) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OpentelemetryPluginQueue) GetConcurrencyLimit() *OpentelemetryPluginConcurrencyLimit {
@@ -443,30 +476,41 @@ func (e *SamplingStrategy) UnmarshalJSON(data []byte) error {
 
 type OpentelemetryPluginConfig struct {
 	// The delay, in seconds, between two consecutive batches.
-	BatchFlushDelay *int64 `json:"batch_flush_delay,omitempty"`
+	BatchFlushDelay *int64 `default:"null" json:"batch_flush_delay"`
 	// The number of spans to be sent in a single batch.
-	BatchSpanCount *int64 `json:"batch_span_count,omitempty"`
+	BatchSpanCount *int64 `default:"null" json:"batch_span_count"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ConnectTimeout *int64      `json:"connect_timeout,omitempty"`
-	HeaderType     *HeaderType `json:"header_type,omitempty"`
+	ConnectTimeout *int64      `default:"1000" json:"connect_timeout"`
+	HeaderType     *HeaderType `default:"preserve" json:"header_type"`
 	// The custom headers to be added in the HTTP request sent to the OTLP server. This setting is useful for adding the authentication headers (token) for the APM backend.
 	Headers                      map[string]any `json:"headers,omitempty"`
-	HTTPResponseHeaderForTraceid *string        `json:"http_response_header_for_traceid,omitempty"`
+	HTTPResponseHeaderForTraceid *string        `default:"null" json:"http_response_header_for_traceid"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
-	LogsEndpoint *string                   `json:"logs_endpoint,omitempty"`
+	LogsEndpoint *string                   `default:"null" json:"logs_endpoint"`
 	Propagation  *Propagation              `json:"propagation,omitempty"`
 	Queue        *OpentelemetryPluginQueue `json:"queue,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ReadTimeout        *int64         `json:"read_timeout,omitempty"`
+	ReadTimeout        *int64         `default:"5000" json:"read_timeout"`
 	ResourceAttributes map[string]any `json:"resource_attributes,omitempty"`
 	// Tracing sampling rate for configuring the probability-based sampler. When set, this value supersedes the global `tracing_sampling_rate` setting from kong.conf.
-	SamplingRate *float64 `json:"sampling_rate,omitempty"`
+	SamplingRate *float64 `default:"null" json:"sampling_rate"`
 	// The sampling strategy to use for OTLP `traces`. Set `parent_drop_probability_fallback` if you want parent-based sampling when the parent span contains a `false` sampled flag, and fallback to probability-based sampling otherwise. Set `parent_probability_fallback` if you want parent-based sampling when the parent span contains a valid sampled flag (`true` or `false`), and fallback to probability-based sampling otherwise.
-	SamplingStrategy *SamplingStrategy `json:"sampling_strategy,omitempty"`
+	SamplingStrategy *SamplingStrategy `default:"parent_drop_probability_fallback" json:"sampling_strategy"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	SendTimeout *int64 `json:"send_timeout,omitempty"`
+	SendTimeout *int64 `default:"5000" json:"send_timeout"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
-	TracesEndpoint *string `json:"traces_endpoint,omitempty"`
+	TracesEndpoint *string `default:"null" json:"traces_endpoint"`
+}
+
+func (o OpentelemetryPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpentelemetryPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OpentelemetryPluginConfig) GetBatchFlushDelay() *int64 {
@@ -647,24 +691,24 @@ type OpentelemetryPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                      `json:"instance_name,omitempty"`
+	InstanceName *string                      `default:"null" json:"instance_name"`
 	name         string                       `const:"opentelemetry" json:"name"`
-	Ordering     *OpentelemetryPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *OpentelemetryPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []OpentelemetryPluginPartials `json:"partials,omitempty"`
+	Partials []OpentelemetryPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                     `json:"updated_at,omitempty"`
-	Config    *OpentelemetryPluginConfig `json:"config,omitempty"`
+	Config    *OpentelemetryPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *OpentelemetryPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
-	Protocols []OpentelemetryPluginProtocols `json:"protocols,omitempty"`
+	Protocols []OpentelemetryPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *OpentelemetryPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

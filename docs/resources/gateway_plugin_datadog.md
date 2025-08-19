@@ -101,7 +101,7 @@ resource "konnect_gateway_plugin_datadog" "my_gatewayplugindatadog" {
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -117,17 +117,17 @@ resource "konnect_gateway_plugin_datadog" "my_gatewayplugindatadog" {
 
 Optional:
 
-- `consumer_tag` (String) String to be attached as tag of the consumer.
+- `consumer_tag` (String) String to be attached as tag of the consumer. Default: "consumer"
 - `flush_timeout` (Number) Optional time in seconds. If `queue_size` > 1, this is the max idle time before sending a log with less than `queue_size` records.
-- `host` (String) A string representing a host name, such as example.com.
+- `host` (String) A string representing a host name, such as example.com. Default: "localhost"
 - `metrics` (Attributes List) List of metrics to be logged. (see [below for nested schema](#nestedatt--config--metrics))
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
-- `prefix` (String) String to be attached as a prefix to a metric's name.
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 8125
+- `prefix` (String) String to be attached as a prefix to a metric's name. Default: "kong"
 - `queue` (Attributes) (see [below for nested schema](#nestedatt--config--queue))
 - `queue_size` (Number) Maximum number of log entries to be sent on each message to the upstream server.
 - `retry_count` (Number) Number of times to retry when sending data to the upstream server.
-- `service_name_tag` (String) String to be attached as the name of the service.
-- `status_tag` (String) String to be attached as the tag of the HTTP status.
+- `service_name_tag` (String) String to be attached as the name of the service. Default: "name"
+- `status_tag` (String) String to be attached as the tag of the HTTP status. Default: "status"
 
 <a id="nestedatt--config--metrics"></a>
 ### Nested Schema for `config.metrics`
@@ -146,14 +146,14 @@ Optional:
 
 Optional:
 
-- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. must be one of ["-1", "1"]
-- `initial_retry_delay` (Number) Time in seconds before the initial retry is made for a failing batch.
-- `max_batch_size` (Number) Maximum number of entries that can be processed at a time.
+- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of ["-1", "1"]
+- `initial_retry_delay` (Number) Time in seconds before the initial retry is made for a failing batch. Default: 0.01
+- `max_batch_size` (Number) Maximum number of entries that can be processed at a time. Default: 1
 - `max_bytes` (Number) Maximum number of bytes that can be waiting on a queue, requires string content.
-- `max_coalescing_delay` (Number) Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.
-- `max_entries` (Number) Maximum number of entries that can be waiting on the queue.
-- `max_retry_delay` (Number) Maximum time in seconds between retries, caps exponential backoff.
-- `max_retry_time` (Number) Time in seconds before the queue gives up calling a failed handler for a batch.
+- `max_coalescing_delay` (Number) Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler. Default: 1
+- `max_entries` (Number) Maximum number of entries that can be waiting on the queue. Default: 10000
+- `max_retry_delay` (Number) Maximum time in seconds between retries, caps exponential backoff. Default: 60
+- `max_retry_time` (Number) Time in seconds before the queue gives up calling a failed handler for a batch. Default: 60
 
 
 

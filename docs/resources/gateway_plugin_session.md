@@ -98,7 +98,7 @@ resource "konnect_gateway_plugin_session" "my_gatewaypluginsession" {
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -114,31 +114,31 @@ resource "konnect_gateway_plugin_session" "my_gatewaypluginsession" {
 
 Optional:
 
-- `absolute_timeout` (Number) The session cookie absolute timeout, in seconds. Specifies how long the session can be used until it is no longer valid.
-- `audience` (String) The session audience, which is the intended target application. For example `"my-application"`.
+- `absolute_timeout` (Number) The session cookie absolute timeout, in seconds. Specifies how long the session can be used until it is no longer valid. Default: 86400
+- `audience` (String) The session audience, which is the intended target application. For example `"my-application"`. Default: "default"
 - `cookie_domain` (String) The domain with which the cookie is intended to be exchanged.
-- `cookie_http_only` (Boolean) Applies the `HttpOnly` tag so that the cookie is sent only to a server.
-- `cookie_name` (String) The name of the cookie.
-- `cookie_path` (String) The resource in the host where the cookie is available.
-- `cookie_same_site` (String) Determines whether and how a cookie may be sent with cross-site requests. must be one of ["Default", "Lax", "None", "Strict"]
-- `cookie_secure` (Boolean) Applies the Secure directive so that the cookie may be sent to the server only with an encrypted request over the HTTPS protocol.
-- `hash_subject` (Boolean) Whether to hash or not the subject when store_metadata is enabled.
-- `idling_timeout` (Number) The session cookie idle time, in seconds.
+- `cookie_http_only` (Boolean) Applies the `HttpOnly` tag so that the cookie is sent only to a server. Default: true
+- `cookie_name` (String) The name of the cookie. Default: "session"
+- `cookie_path` (String) The resource in the host where the cookie is available. Default: "/"
+- `cookie_same_site` (String) Determines whether and how a cookie may be sent with cross-site requests. Default: "Strict"; must be one of ["Default", "Lax", "None", "Strict"]
+- `cookie_secure` (Boolean) Applies the Secure directive so that the cookie may be sent to the server only with an encrypted request over the HTTPS protocol. Default: true
+- `hash_subject` (Boolean) Whether to hash or not the subject when store_metadata is enabled. Default: false
+- `idling_timeout` (Number) The session cookie idle time, in seconds. Default: 900
 - `logout_methods` (List of String) A set of HTTP methods that the plugin will respond to.
-- `logout_post_arg` (String) The POST argument passed to logout requests. Do not change this property.
-- `logout_query_arg` (String) The query argument passed to logout requests.
-- `read_body_for_logout` (Boolean)
-- `remember` (Boolean) Enables or disables persistent sessions.
-- `remember_absolute_timeout` (Number) The persistent session absolute timeout limit, in seconds.
-- `remember_cookie_name` (String) Persistent session cookie name. Use with the `remember` configuration parameter.
-- `remember_rolling_timeout` (Number) The persistent session rolling timeout window, in seconds.
+- `logout_post_arg` (String) The POST argument passed to logout requests. Do not change this property. Default: "session_logout"
+- `logout_query_arg` (String) The query argument passed to logout requests. Default: "session_logout"
+- `read_body_for_logout` (Boolean) Default: false
+- `remember` (Boolean) Enables or disables persistent sessions. Default: false
+- `remember_absolute_timeout` (Number) The persistent session absolute timeout limit, in seconds. Default: 2592000
+- `remember_cookie_name` (String) Persistent session cookie name. Use with the `remember` configuration parameter. Default: "remember"
+- `remember_rolling_timeout` (Number) The persistent session rolling timeout window, in seconds. Default: 604800
 - `request_headers` (List of String) List of information to include, as headers, in the response to the downstream.
 - `response_headers` (List of String) List of information to include, as headers, in the response to the downstream.
-- `rolling_timeout` (Number) The session cookie rolling timeout, in seconds. Specifies how long the session can be used until it needs to be renewed.
-- `secret` (String) The secret that is used in keyed HMAC generation.
-- `stale_ttl` (Number) The duration, in seconds, after which an old cookie is discarded, starting from the moment when the session becomes outdated and is replaced by a new one.
-- `storage` (String) Determines where the session data is stored. `kong`: Stores encrypted session data into Kong's current database strategy; the cookie will not contain any session data. `cookie`: Stores encrypted session data within the cookie itself. must be one of ["cookie", "kong"]
-- `store_metadata` (Boolean) Whether to also store metadata of sessions, such as collecting data of sessions for a specific audience belonging to a specific subject.
+- `rolling_timeout` (Number) The session cookie rolling timeout, in seconds. Specifies how long the session can be used until it needs to be renewed. Default: 3600
+- `secret` (String) The secret that is used in keyed HMAC generation. Default: "M5N0CyFrAZwpB7F72PpY3J4S5n3KL77fs6xMuY8b7SMc"
+- `stale_ttl` (Number) The duration, in seconds, after which an old cookie is discarded, starting from the moment when the session becomes outdated and is replaced by a new one. Default: 10
+- `storage` (String) Determines where the session data is stored. `kong`: Stores encrypted session data into Kong's current database strategy; the cookie will not contain any session data. `cookie`: Stores encrypted session data within the cookie itself. Default: "cookie"; must be one of ["cookie", "kong"]
+- `store_metadata` (Boolean) Whether to also store metadata of sessions, such as collecting data of sessions for a specific audience belonging to a specific subject. Default: false
 
 
 <a id="nestedatt--ordering"></a>

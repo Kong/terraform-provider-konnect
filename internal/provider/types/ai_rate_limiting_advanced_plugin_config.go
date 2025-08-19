@@ -7,23 +7,23 @@ import (
 )
 
 type AiRateLimitingAdvancedPluginConfig struct {
-	DictionaryName             types.String          `tfsdk:"dictionary_name"`
-	DisablePenalty             types.Bool            `tfsdk:"disable_penalty"`
-	ErrorCode                  types.Float64         `tfsdk:"error_code"`
-	ErrorHideProviders         types.Bool            `tfsdk:"error_hide_providers"`
-	ErrorMessage               types.String          `tfsdk:"error_message"`
-	HeaderName                 types.String          `tfsdk:"header_name"`
-	HideClientHeaders          types.Bool            `tfsdk:"hide_client_headers"`
-	Identifier                 types.String          `tfsdk:"identifier"`
-	LlmFormat                  types.String          `tfsdk:"llm_format"`
-	LlmProviders               []LlmProviders        `tfsdk:"llm_providers"`
-	Namespace                  types.String          `tfsdk:"namespace"`
-	Path                       types.String          `tfsdk:"path"`
-	Redis                      *PartialRedisEeConfig `tfsdk:"redis"`
-	RequestPromptCountFunction types.String          `tfsdk:"request_prompt_count_function"`
-	RetryAfterJitterMax        types.Float64         `tfsdk:"retry_after_jitter_max"`
-	Strategy                   types.String          `tfsdk:"strategy"`
-	SyncRate                   types.Float64         `tfsdk:"sync_rate"`
-	TokensCountStrategy        types.String          `tfsdk:"tokens_count_strategy"`
-	WindowType                 types.String          `tfsdk:"window_type"`
+	DictionaryName             types.String                `tfsdk:"dictionary_name"`
+	DisablePenalty             types.Bool                  `tfsdk:"disable_penalty"`
+	ErrorCode                  types.Float64               `tfsdk:"error_code"`
+	ErrorHideProviders         types.Bool                  `tfsdk:"error_hide_providers"`
+	ErrorMessage               types.String                `tfsdk:"error_message"`
+	HeaderName                 types.String                `tfsdk:"header_name"`
+	HideClientHeaders          types.Bool                  `tfsdk:"hide_client_headers"`
+	Identifier                 types.String                `tfsdk:"identifier"`
+	LlmFormat                  types.String                `tfsdk:"llm_format"`
+	LlmProviders               []LlmProviders              `tfsdk:"llm_providers"`
+	Namespace                  types.String                `tfsdk:"namespace"`
+	Path                       types.String                `tfsdk:"path"`
+	Redis                      *AiProxyAdvancedPluginRedis `tfsdk:"redis"`
+	RequestPromptCountFunction types.String                `tfsdk:"request_prompt_count_function"`
+	RetryAfterJitterMax        types.Float64               `tfsdk:"retry_after_jitter_max"`
+	Strategy                   types.String                `tfsdk:"strategy"`
+	SyncRate                   types.Float64               `tfsdk:"sync_rate"`
+	TokensCountStrategy        types.String                `tfsdk:"tokens_count_strategy"`
+	WindowType                 types.String                `tfsdk:"window_type"`
 }

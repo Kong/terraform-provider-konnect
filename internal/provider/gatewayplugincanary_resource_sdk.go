@@ -21,9 +21,11 @@ func (r *GatewayPluginCanaryResourceModel) RefreshFromSharedCanaryPlugin(ctx con
 			r.Config = &tfTypes.CanaryPluginConfig{}
 			r.Config.CanaryByHeaderName = types.StringPointerValue(resp.Config.CanaryByHeaderName)
 			r.Config.Duration = types.Float64PointerValue(resp.Config.Duration)
-			r.Config.Groups = make([]types.String, 0, len(resp.Config.Groups))
-			for _, v := range resp.Config.Groups {
-				r.Config.Groups = append(r.Config.Groups, types.StringValue(v))
+			if resp.Config.Groups != nil {
+				r.Config.Groups = make([]types.String, 0, len(resp.Config.Groups))
+				for _, v := range resp.Config.Groups {
+					r.Config.Groups = append(r.Config.Groups, types.StringValue(v))
+				}
 			}
 			if resp.Config.Hash != nil {
 				r.Config.Hash = types.StringValue(string(*resp.Config.Hash))
@@ -51,18 +53,22 @@ func (r *GatewayPluginCanaryResourceModel) RefreshFromSharedCanaryPlugin(ctx con
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -218,9 +224,12 @@ func (r *GatewayPluginCanaryResourceModel) ToSharedCanaryPlugin(ctx context.Cont
 	if r.Ordering != nil {
 		var after *shared.CanaryPluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.CanaryPluginAfter{
 				Access: access,
@@ -228,9 +237,12 @@ func (r *GatewayPluginCanaryResourceModel) ToSharedCanaryPlugin(ctx context.Cont
 		}
 		var before *shared.CanaryPluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.CanaryPluginBefore{
 				Access: access1,
@@ -297,9 +309,12 @@ func (r *GatewayPluginCanaryResourceModel) ToSharedCanaryPlugin(ctx context.Cont
 		} else {
 			duration = nil
 		}
-		groups := make([]string, 0, len(r.Config.Groups))
-		for _, groupsItem := range r.Config.Groups {
-			groups = append(groups, groupsItem.ValueString())
+		var groups []string
+		if r.Config.Groups != nil {
+			groups = make([]string, 0, len(r.Config.Groups))
+			for _, groupsItem := range r.Config.Groups {
+				groups = append(groups, groupsItem.ValueString())
+			}
 		}
 		hash := new(shared.Hash)
 		if !r.Config.Hash.IsUnknown() && !r.Config.Hash.IsNull() {

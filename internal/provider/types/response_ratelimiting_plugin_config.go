@@ -15,5 +15,5 @@ type ResponseRatelimitingPluginConfig struct {
 	LimitBy               types.String                    `tfsdk:"limit_by"`
 	Limits                map[string]jsontypes.Normalized `tfsdk:"limits"`
 	Policy                types.String                    `tfsdk:"policy"`
-	Redis                 *PartialRedisCeConfig           `tfsdk:"redis"`
+	Redis                 *RateLimitingPluginRedis        `tfsdk:"redis"`
 }

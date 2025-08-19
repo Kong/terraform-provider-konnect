@@ -9,7 +9,7 @@ import (
 )
 
 type PrometheusPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *PrometheusPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *PrometheusPluginAfter) GetAccess() []string {
 }
 
 type PrometheusPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *PrometheusPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *PrometheusPluginBefore) GetAccess() []string {
 }
 
 type PrometheusPluginOrdering struct {
-	After  *PrometheusPluginAfter  `json:"after,omitempty"`
-	Before *PrometheusPluginBefore `json:"before,omitempty"`
+	After  *PrometheusPluginAfter  `json:"after"`
+	Before *PrometheusPluginBefore `json:"before"`
 }
 
 func (o *PrometheusPluginOrdering) GetAfter() *PrometheusPluginAfter {
@@ -53,8 +53,19 @@ type PrometheusPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (p PrometheusPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PrometheusPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *PrometheusPluginPartials) GetID() *string {
@@ -80,19 +91,30 @@ func (o *PrometheusPluginPartials) GetPath() *string {
 
 type PrometheusPluginConfig struct {
 	// A boolean value that determines if ai metrics should be collected. If enabled, the `ai_llm_requests_total`, `ai_llm_cost_total` and `ai_llm_tokens_total` metrics will be exported.
-	AiMetrics *bool `json:"ai_metrics,omitempty"`
+	AiMetrics *bool `default:"false" json:"ai_metrics"`
 	// A boolean value that determines if bandwidth metrics should be collected. If enabled, `bandwidth_bytes` and `stream_sessions_total` metrics will be exported.
-	BandwidthMetrics *bool `json:"bandwidth_metrics,omitempty"`
+	BandwidthMetrics *bool `default:"false" json:"bandwidth_metrics"`
 	// A boolean value that determines if latency metrics should be collected. If enabled, `kong_latency_ms`, `upstream_latency_ms` and `request_latency_ms` metrics will be exported.
-	LatencyMetrics *bool `json:"latency_metrics,omitempty"`
+	LatencyMetrics *bool `default:"false" json:"latency_metrics"`
 	// A boolean value that determines if per-consumer metrics should be collected. If enabled, the `kong_http_requests_total` and `kong_bandwidth_bytes` metrics fill in the consumer label when available.
-	PerConsumer *bool `json:"per_consumer,omitempty"`
+	PerConsumer *bool `default:"false" json:"per_consumer"`
 	// A boolean value that determines if status code metrics should be collected. If enabled, `http_requests_total`, `stream_sessions_total` metrics will be exported.
-	StatusCodeMetrics *bool `json:"status_code_metrics,omitempty"`
+	StatusCodeMetrics *bool `default:"false" json:"status_code_metrics"`
 	// A boolean value that determines if upstream metrics should be collected. If enabled, `upstream_target_health` metric will be exported.
-	UpstreamHealthMetrics *bool `json:"upstream_health_metrics,omitempty"`
+	UpstreamHealthMetrics *bool `default:"false" json:"upstream_health_metrics"`
 	// A boolean value that determines if Wasm metrics should be collected.
-	WasmMetrics *bool `json:"wasm_metrics,omitempty"`
+	WasmMetrics *bool `default:"false" json:"wasm_metrics"`
+}
+
+func (p PrometheusPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PrometheusPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *PrometheusPluginConfig) GetAiMetrics() *bool {
@@ -236,24 +258,24 @@ type PrometheusPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                   `json:"instance_name,omitempty"`
+	InstanceName *string                   `default:"null" json:"instance_name"`
 	name         string                    `const:"prometheus" json:"name"`
-	Ordering     *PrometheusPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *PrometheusPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []PrometheusPluginPartials `json:"partials,omitempty"`
+	Partials []PrometheusPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                  `json:"updated_at,omitempty"`
-	Config    *PrometheusPluginConfig `json:"config,omitempty"`
+	Config    *PrometheusPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *PrometheusPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
-	Protocols []PrometheusPluginProtocols `json:"protocols,omitempty"`
+	Protocols []PrometheusPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *PrometheusPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

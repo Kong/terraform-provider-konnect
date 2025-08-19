@@ -9,7 +9,7 @@ import (
 )
 
 type TCPLogPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *TCPLogPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *TCPLogPluginAfter) GetAccess() []string {
 }
 
 type TCPLogPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *TCPLogPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *TCPLogPluginBefore) GetAccess() []string {
 }
 
 type TCPLogPluginOrdering struct {
-	After  *TCPLogPluginAfter  `json:"after,omitempty"`
-	Before *TCPLogPluginBefore `json:"before,omitempty"`
+	After  *TCPLogPluginAfter  `json:"after"`
+	Before *TCPLogPluginBefore `json:"before"`
 }
 
 func (o *TCPLogPluginOrdering) GetAfter() *TCPLogPluginAfter {
@@ -53,8 +53,19 @@ type TCPLogPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (t TCPLogPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TCPLogPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *TCPLogPluginPartials) GetID() *string {
@@ -84,15 +95,26 @@ type TCPLogPluginConfig struct {
 	// The IP address or host name to send data to.
 	Host string `json:"host"`
 	// An optional value in milliseconds that defines how long an idle connection lives before being closed.
-	Keepalive *float64 `json:"keepalive,omitempty"`
+	Keepalive *float64 `default:"60000" json:"keepalive"`
 	// The port to send data to on the upstream server.
 	Port int64 `json:"port"`
 	// An optional timeout in milliseconds when sending data to the upstream server.
-	Timeout *float64 `json:"timeout,omitempty"`
+	Timeout *float64 `default:"10000" json:"timeout"`
 	// Indicates whether to perform a TLS handshake against the remote server.
-	TLS *bool `json:"tls,omitempty"`
+	TLS *bool `default:"false" json:"tls"`
 	// An optional string that defines the SNI (Server Name Indication) hostname to send in the TLS handshake.
-	TLSSni *string `json:"tls_sni,omitempty"`
+	TLSSni *string `default:"null" json:"tls_sni"`
+}
+
+func (t TCPLogPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TCPLogPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *TCPLogPluginConfig) GetCustomFieldsByLua() map[string]any {
@@ -236,24 +258,24 @@ type TCPLogPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string               `json:"instance_name,omitempty"`
+	InstanceName *string               `default:"null" json:"instance_name"`
 	name         string                `const:"tcp-log" json:"name"`
-	Ordering     *TCPLogPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *TCPLogPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []TCPLogPluginPartials `json:"partials,omitempty"`
+	Partials []TCPLogPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64             `json:"updated_at,omitempty"`
 	Config    TCPLogPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *TCPLogPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
-	Protocols []TCPLogPluginProtocols `json:"protocols,omitempty"`
+	Protocols []TCPLogPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *TCPLogPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

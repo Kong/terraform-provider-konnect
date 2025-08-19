@@ -32,9 +32,11 @@ func (r *GatewayPluginAcmeResourceModel) RefreshFromSharedAcmePlugin(ctx context
 		} else {
 			r.Config.CertType = types.StringNull()
 		}
-		r.Config.Domains = make([]types.String, 0, len(resp.Config.Domains))
-		for _, v := range resp.Config.Domains {
-			r.Config.Domains = append(r.Config.Domains, types.StringValue(v))
+		if resp.Config.Domains != nil {
+			r.Config.Domains = make([]types.String, 0, len(resp.Config.Domains))
+			for _, v := range resp.Config.Domains {
+				r.Config.Domains = append(r.Config.Domains, types.StringValue(v))
+			}
 		}
 		r.Config.EabHmacKey = types.StringPointerValue(resp.Config.EabHmacKey)
 		r.Config.EabKid = types.StringPointerValue(resp.Config.EabKid)
@@ -67,7 +69,7 @@ func (r *GatewayPluginAcmeResourceModel) RefreshFromSharedAcmePlugin(ctx context
 				r.Config.StorageConfig.Consul.Timeout = types.Float64PointerValue(resp.Config.StorageConfig.Consul.Timeout)
 				r.Config.StorageConfig.Consul.Token = types.StringPointerValue(resp.Config.StorageConfig.Consul.Token)
 			}
-			if len(resp.Config.StorageConfig.Kong) > 0 {
+			if resp.Config.StorageConfig.Kong != nil {
 				r.Config.StorageConfig.Kong = make(map[string]jsontypes.Normalized, len(resp.Config.StorageConfig.Kong))
 				for key, value := range resp.Config.StorageConfig.Kong {
 					result, _ := json.Marshal(value)
@@ -136,18 +138,22 @@ func (r *GatewayPluginAcmeResourceModel) RefreshFromSharedAcmePlugin(ctx context
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -291,9 +297,12 @@ func (r *GatewayPluginAcmeResourceModel) ToSharedAcmePlugin(ctx context.Context)
 	if r.Ordering != nil {
 		var after *shared.AcmePluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.AcmePluginAfter{
 				Access: access,
@@ -301,9 +310,12 @@ func (r *GatewayPluginAcmeResourceModel) ToSharedAcmePlugin(ctx context.Context)
 		}
 		var before *shared.AcmePluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.AcmePluginBefore{
 				Access: access1,
@@ -393,9 +405,12 @@ func (r *GatewayPluginAcmeResourceModel) ToSharedAcmePlugin(ctx context.Context)
 	} else {
 		certType = nil
 	}
-	domains := make([]string, 0, len(r.Config.Domains))
-	for _, domainsItem := range r.Config.Domains {
-		domains = append(domains, domainsItem.ValueString())
+	var domains []string
+	if r.Config.Domains != nil {
+		domains = make([]string, 0, len(r.Config.Domains))
+		for _, domainsItem := range r.Config.Domains {
+			domains = append(domains, domainsItem.ValueString())
+		}
 	}
 	eabHmacKey := new(string)
 	if !r.Config.EabHmacKey.IsUnknown() && !r.Config.EabHmacKey.IsNull() {

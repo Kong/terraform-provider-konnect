@@ -9,7 +9,7 @@ import (
 )
 
 type WebsocketSizeLimitPluginAfter struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *WebsocketSizeLimitPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *WebsocketSizeLimitPluginAfter) GetAccess() []string {
 }
 
 type WebsocketSizeLimitPluginBefore struct {
-	Access []string `json:"access,omitempty"`
+	Access []string `json:"access"`
 }
 
 func (o *WebsocketSizeLimitPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *WebsocketSizeLimitPluginBefore) GetAccess() []string {
 }
 
 type WebsocketSizeLimitPluginOrdering struct {
-	After  *WebsocketSizeLimitPluginAfter  `json:"after,omitempty"`
-	Before *WebsocketSizeLimitPluginBefore `json:"before,omitempty"`
+	After  *WebsocketSizeLimitPluginAfter  `json:"after"`
+	Before *WebsocketSizeLimitPluginBefore `json:"before"`
 }
 
 func (o *WebsocketSizeLimitPluginOrdering) GetAfter() *WebsocketSizeLimitPluginAfter {
@@ -53,8 +53,19 @@ type WebsocketSizeLimitPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (w WebsocketSizeLimitPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(w, "", false)
+}
+
+func (w *WebsocketSizeLimitPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &w, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *WebsocketSizeLimitPluginPartials) GetID() *string {
@@ -79,8 +90,19 @@ func (o *WebsocketSizeLimitPluginPartials) GetPath() *string {
 }
 
 type WebsocketSizeLimitPluginConfig struct {
-	ClientMaxPayload   *int64 `json:"client_max_payload,omitempty"`
-	UpstreamMaxPayload *int64 `json:"upstream_max_payload,omitempty"`
+	ClientMaxPayload   *int64 `default:"null" json:"client_max_payload"`
+	UpstreamMaxPayload *int64 `default:"null" json:"upstream_max_payload"`
+}
+
+func (w WebsocketSizeLimitPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(w, "", false)
+}
+
+func (w *WebsocketSizeLimitPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &w, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *WebsocketSizeLimitPluginConfig) GetClientMaxPayload() *int64 {
@@ -164,24 +186,24 @@ type WebsocketSizeLimitPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                           `json:"instance_name,omitempty"`
+	InstanceName *string                           `default:"null" json:"instance_name"`
 	name         string                            `const:"websocket-size-limit" json:"name"`
-	Ordering     *WebsocketSizeLimitPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *WebsocketSizeLimitPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []WebsocketSizeLimitPluginPartials `json:"partials,omitempty"`
+	Partials []WebsocketSizeLimitPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                          `json:"updated_at,omitempty"`
-	Config    *WebsocketSizeLimitPluginConfig `json:"config,omitempty"`
+	Config    *WebsocketSizeLimitPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *WebsocketSizeLimitPluginConsumer `json:"consumer"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
-	Protocols []WebsocketSizeLimitPluginProtocols `json:"protocols,omitempty"`
+	Protocols []WebsocketSizeLimitPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *WebsocketSizeLimitPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

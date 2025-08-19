@@ -13,8 +13,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -67,63 +71,94 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"aws_assume_role_arn":       types.StringType,
+					"aws_imds_protocol_version": types.StringType,
+					"aws_key":                   types.StringType,
+					"aws_region":                types.StringType,
+					"aws_role_session_name":     types.StringType,
+					"aws_secret":                types.StringType,
+					"aws_sts_endpoint_url":      types.StringType,
+					"awsgateway_compatible":     types.BoolType,
+					"base64_encode_body":        types.BoolType,
+					"disable_https":             types.BoolType,
+					"empty_arrays_mode":         types.StringType,
+					"forward_request_body":      types.BoolType,
+					"forward_request_headers":   types.BoolType,
+					"forward_request_method":    types.BoolType,
+					"forward_request_uri":       types.BoolType,
+					"function_name":             types.StringType,
+					"host":                      types.StringType,
+					"invocation_type":           types.StringType,
+					"is_proxy_integration":      types.BoolType,
+					"keepalive":                 types.Float64Type,
+					"log_type":                  types.StringType,
+					"port":                      types.Int64Type,
+					"proxy_url":                 types.StringType,
+					"qualifier":                 types.StringType,
+					"skip_large_bodies":         types.BoolType,
+					"timeout":                   types.Float64Type,
+					"unhandled_status":          types.Int64Type,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"aws_assume_role_arn": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The target AWS IAM role ARN used to invoke the Lambda function.`,
 					},
 					"aws_imds_protocol_version": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Identifier to select the IMDS protocol version to use: ` + "`" + `v1` + "`" + ` or ` + "`" + `v2` + "`" + `. must be one of ["v1", "v2"]`,
+						Default:     stringdefault.StaticString(`v1`),
+						Description: `Identifier to select the IMDS protocol version to use: ` + "`" + `v1` + "`" + ` or ` + "`" + `v2` + "`" + `. Default: "v1"; must be one of ["v1", "v2"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf("v1", "v2"),
 						},
 					},
 					"aws_key": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The AWS key credential to be used when invoking the function.`,
 					},
 					"aws_region": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing a host name, such as example.com.`,
 					},
 					"aws_role_session_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The identifier of the assumed role session.`,
+						Default:     stringdefault.StaticString(`kong`),
+						Description: `The identifier of the assumed role session. Default: "kong"`,
 					},
 					"aws_secret": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The AWS secret credential to be used when invoking the function.`,
 					},
 					"aws_sts_endpoint_url": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
 					},
 					"awsgateway_compatible": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional value that defines whether the plugin should wrap requests into the Amazon API gateway.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `An optional value that defines whether the plugin should wrap requests into the Amazon API gateway. Default: false`,
 					},
 					"base64_encode_body": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional value that Base64-encodes the request body.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `An optional value that Base64-encodes the request body. Default: true`,
 					},
 					"disable_https": schema.BoolAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Default: false`,
 					},
 					"empty_arrays_mode": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional value that defines whether Kong should send empty arrays (returned by Lambda function) as ` + "`" + `[]` + "`" + ` arrays or ` + "`" + `{}` + "`" + ` objects in JSON responses. The value ` + "`" + `legacy` + "`" + ` means Kong will send empty arrays as ` + "`" + `{}` + "`" + ` objects in response. must be one of ["correct", "legacy"]`,
+						Default:     stringdefault.StaticString(`legacy`),
+						Description: `An optional value that defines whether Kong should send empty arrays (returned by Lambda function) as ` + "`" + `[]` + "`" + ` arrays or ` + "`" + `{}` + "`" + ` objects in JSON responses. The value ` + "`" + `legacy` + "`" + ` means Kong will send empty arrays as ` + "`" + `{}` + "`" + ` objects in response. Default: "legacy"; must be one of ["correct", "legacy"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"correct",
@@ -134,37 +169,40 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 					"forward_request_body": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional value that defines whether the request body is sent in the request_body field of the JSON-encoded request. If the body arguments can be parsed, they are sent in the separate request_body_args field of the request.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `An optional value that defines whether the request body is sent in the request_body field of the JSON-encoded request. If the body arguments can be parsed, they are sent in the separate request_body_args field of the request. Default: false`,
 					},
 					"forward_request_headers": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional value that defines whether the original HTTP request headers are sent as a map in the request_headers field of the JSON-encoded request.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `An optional value that defines whether the original HTTP request headers are sent as a map in the request_headers field of the JSON-encoded request. Default: false`,
 					},
 					"forward_request_method": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional value that defines whether the original HTTP request method verb is sent in the request_method field of the JSON-encoded request.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `An optional value that defines whether the original HTTP request method verb is sent in the request_method field of the JSON-encoded request. Default: false`,
 					},
 					"forward_request_uri": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional value that defines whether the original HTTP request URI is sent in the request_uri field of the JSON-encoded request.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `An optional value that defines whether the original HTTP request URI is sent in the request_uri field of the JSON-encoded request. Default: false`,
 					},
 					"function_name": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The AWS Lambda function to invoke. Both function name and function ARN (including partial) are supported.`,
 					},
 					"host": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing a host name, such as example.com.`,
 					},
 					"invocation_type": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The InvocationType to use when invoking the function. Available types are RequestResponse, Event, DryRun. must be one of ["DryRun", "Event", "RequestResponse"]`,
+						Default:     stringdefault.StaticString(`RequestResponse`),
+						Description: `The InvocationType to use when invoking the function. Available types are RequestResponse, Event, DryRun. Default: "RequestResponse"; must be one of ["DryRun", "Event", "RequestResponse"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"DryRun",
@@ -176,17 +214,20 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 					"is_proxy_integration": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional value that defines whether the response format to receive from the Lambda to this format.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `An optional value that defines whether the response format to receive from the Lambda to this format. Default: false`,
 					},
 					"keepalive": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional value in milliseconds that defines how long an idle connection lives before being closed.`,
+						Default:     float64default.StaticFloat64(60000),
+						Description: `An optional value in milliseconds that defines how long an idle connection lives before being closed. Default: 60000`,
 					},
 					"log_type": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The LogType to use when invoking the function. By default, None and Tail are supported. must be one of ["None", "Tail"]`,
+						Default:     stringdefault.StaticString(`Tail`),
+						Description: `The LogType to use when invoking the function. By default, None and Tail are supported. Default: "Tail"; must be one of ["None", "Tail"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"None",
@@ -197,33 +238,33 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 					"port": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+						Default:     int64default.StaticInt64(443),
+						Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 443`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(65535),
 						},
 					},
 					"proxy_url": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
 					},
 					"qualifier": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The qualifier to use when invoking the function.`,
 					},
 					"skip_large_bodies": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional value that defines whether Kong should send large bodies that are buffered to disk`,
+						Default:     booldefault.StaticBool(true),
+						Description: `An optional value that defines whether Kong should send large bodies that are buffered to disk. Default: true`,
 					},
 					"timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional timeout in milliseconds when invoking the function.`,
+						Default:     float64default.StaticFloat64(60000),
+						Description: `An optional timeout in milliseconds when invoking the function. Default: 60000`,
 					},
 					"unhandled_status": schema.Int64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The response status code to use (instead of the default 200, 202, or 204) in the case of an Unhandled Function Error.`,
 						Validators: []validator.Int64{
@@ -261,7 +302,8 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -269,20 +311,39 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -291,9 +352,13 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -302,7 +367,6 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -315,12 +379,10 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},
@@ -362,7 +424,6 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

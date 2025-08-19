@@ -14,8 +14,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -69,21 +73,58 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"consumer_tag":  types.StringType,
+					"flush_timeout": types.Float64Type,
+					"host":          types.StringType,
+					"metrics": types.ListType{
+						ElemType: types.ObjectType{
+							AttrTypes: map[string]attr.Type{
+								`consumer_identifier`: types.StringType,
+								`name`:                types.StringType,
+								`sample_rate`:         types.Float64Type,
+								`stat_type`:           types.StringType,
+								`tags`: types.ListType{
+									ElemType: types.StringType,
+								},
+							},
+						},
+					},
+					"port":   types.Int64Type,
+					"prefix": types.StringType,
+					"queue": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`concurrency_limit`:    types.Int64Type,
+							`initial_retry_delay`:  types.Float64Type,
+							`max_batch_size`:       types.Int64Type,
+							`max_bytes`:            types.Int64Type,
+							`max_coalescing_delay`: types.Float64Type,
+							`max_entries`:          types.Int64Type,
+							`max_retry_delay`:      types.Float64Type,
+							`max_retry_time`:       types.Float64Type,
+						},
+					},
+					"queue_size":       types.Int64Type,
+					"retry_count":      types.Int64Type,
+					"service_name_tag": types.StringType,
+					"status_tag":       types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"consumer_tag": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `String to be attached as tag of the consumer.`,
+						Default:     stringdefault.StaticString(`consumer`),
+						Description: `String to be attached as tag of the consumer. Default: "consumer"`,
 					},
 					"flush_timeout": schema.Float64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Optional time in seconds. If ` + "`" + `queue_size` + "`" + ` > 1, this is the max idle time before sending a log with less than ` + "`" + `queue_size` + "`" + ` records.`,
 					},
 					"host": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A string representing a host name, such as example.com.`,
+						Default:     stringdefault.StaticString(`localhost`),
+						Description: `A string representing a host name, such as example.com. Default: "localhost"`,
 					},
 					"metrics": schema.ListNestedAttribute{
 						Computed: true,
@@ -122,7 +163,6 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"sample_rate": schema.Float64Attribute{
-									Computed:    true,
 									Optional:    true,
 									Description: `Sampling rate`,
 									Validators: []validator.Float64{
@@ -147,7 +187,6 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"tags": schema.ListAttribute{
-									Computed:    true,
 									Optional:    true,
 									ElementType: types.StringType,
 									Description: `List of tags`,
@@ -159,7 +198,8 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 					"port": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+						Default:     int64default.StaticInt64(8125),
+						Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 8125`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(65535),
 						},
@@ -167,16 +207,28 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 					"prefix": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `String to be attached as a prefix to a metric's name.`,
+						Default:     stringdefault.StaticString(`kong`),
+						Description: `String to be attached as a prefix to a metric's name. Default: "kong"`,
 					},
 					"queue": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"concurrency_limit":    types.Int64Type,
+							"initial_retry_delay":  types.Float64Type,
+							"max_batch_size":       types.Int64Type,
+							"max_bytes":            types.Int64Type,
+							"max_coalescing_delay": types.Float64Type,
+							"max_entries":          types.Int64Type,
+							"max_retry_delay":      types.Float64Type,
+							"max_retry_time":       types.Float64Type,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"concurrency_limit": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The number of of queue delivery timers. -1 indicates unlimited. must be one of ["-1", "1"]`,
+								Default:     int64default.StaticInt64(1),
+								Description: `The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of ["-1", "1"]`,
 								Validators: []validator.Int64{
 									int64validator.OneOf(-1, 1),
 								},
@@ -184,7 +236,8 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 							"initial_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Time in seconds before the initial retry is made for a failing batch.`,
+								Default:     float64default.StaticFloat64(0.01),
+								Description: `Time in seconds before the initial retry is made for a failing batch. Default: 0.01`,
 								Validators: []validator.Float64{
 									float64validator.AtMost(1000000),
 								},
@@ -192,20 +245,21 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 							"max_batch_size": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Maximum number of entries that can be processed at a time.`,
+								Default:     int64default.StaticInt64(1),
+								Description: `Maximum number of entries that can be processed at a time. Default: 1`,
 								Validators: []validator.Int64{
 									int64validator.Between(1, 1000000),
 								},
 							},
 							"max_bytes": schema.Int64Attribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Maximum number of bytes that can be waiting on a queue, requires string content.`,
 							},
 							"max_coalescing_delay": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.`,
+								Default:     float64default.StaticFloat64(1),
+								Description: `Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler. Default: 1`,
 								Validators: []validator.Float64{
 									float64validator.AtMost(3600),
 								},
@@ -213,7 +267,8 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 							"max_entries": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Maximum number of entries that can be waiting on the queue.`,
+								Default:     int64default.StaticInt64(10000),
+								Description: `Maximum number of entries that can be waiting on the queue. Default: 10000`,
 								Validators: []validator.Int64{
 									int64validator.Between(1, 1000000),
 								},
@@ -221,7 +276,8 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 							"max_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Maximum time in seconds between retries, caps exponential backoff.`,
+								Default:     float64default.StaticFloat64(60),
+								Description: `Maximum time in seconds between retries, caps exponential backoff. Default: 60`,
 								Validators: []validator.Float64{
 									float64validator.AtMost(1000000),
 								},
@@ -229,29 +285,30 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 							"max_retry_time": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Time in seconds before the queue gives up calling a failed handler for a batch.`,
+								Default:     float64default.StaticFloat64(60),
+								Description: `Time in seconds before the queue gives up calling a failed handler for a batch. Default: 60`,
 							},
 						},
 					},
 					"queue_size": schema.Int64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Maximum number of log entries to be sent on each message to the upstream server.`,
 					},
 					"retry_count": schema.Int64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Number of times to retry when sending data to the upstream server.`,
 					},
 					"service_name_tag": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `String to be attached as the name of the service.`,
+						Default:     stringdefault.StaticString(`name`),
+						Description: `String to be attached as the name of the service. Default: "name"`,
 					},
 					"status_tag": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `String to be attached as the tag of the HTTP status.`,
+						Default:     stringdefault.StaticString(`status`),
+						Description: `String to be attached as the tag of the HTTP status. Default: "status"`,
 					},
 				},
 			},
@@ -284,7 +341,8 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -292,20 +350,39 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -314,9 +391,13 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -325,7 +406,6 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -338,12 +418,10 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},
@@ -385,7 +463,6 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

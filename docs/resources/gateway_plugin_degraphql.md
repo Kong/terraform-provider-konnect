@@ -68,7 +68,7 @@ resource "konnect_gateway_plugin_degraphql" "my_gatewayplugindegraphql" {
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -84,7 +84,7 @@ resource "konnect_gateway_plugin_degraphql" "my_gatewayplugindegraphql" {
 
 Optional:
 
-- `graphql_server_path` (String) A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
+- `graphql_server_path` (String) A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes). Default: "/graphql"
 
 
 <a id="nestedatt--ordering"></a>

@@ -91,7 +91,7 @@ resource "konnect_gateway_plugin_websocket_validator" "my_gatewaypluginwebsocket
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -121,19 +121,19 @@ Optional:
 <a id="nestedatt--config--client--binary"></a>
 ### Nested Schema for `config.client.binary`
 
-Optional:
+Required:
 
-- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`. Not Null
-- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. Not Null; must be "draft4"
+- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`.
+- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. must be "draft4"
 
 
 <a id="nestedatt--config--client--text"></a>
 ### Nested Schema for `config.client.text`
 
-Optional:
+Required:
 
-- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`. Not Null
-- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. Not Null; must be "draft4"
+- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`.
+- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. must be "draft4"
 
 
 
@@ -148,19 +148,19 @@ Optional:
 <a id="nestedatt--config--upstream--binary"></a>
 ### Nested Schema for `config.upstream.binary`
 
-Optional:
+Required:
 
-- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`. Not Null
-- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. Not Null; must be "draft4"
+- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`.
+- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. must be "draft4"
 
 
 <a id="nestedatt--config--upstream--text"></a>
 ### Nested Schema for `config.upstream.text`
 
-Optional:
+Required:
 
-- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`. Not Null
-- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. Not Null; must be "draft4"
+- `schema` (String) Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`.
+- `type` (String) The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported. must be "draft4"
 
 
 

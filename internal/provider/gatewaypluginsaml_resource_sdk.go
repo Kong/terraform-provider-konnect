@@ -30,15 +30,17 @@ func (r *GatewayPluginSamlResourceModel) RefreshFromSharedSamlPlugin(ctx context
 		} else {
 			r.Config.Redis = &tfTypes.OpenidConnectPluginRedis{}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
-			r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+			if resp.Config.Redis.ClusterNodes != nil {
+				r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
 
-			for _, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
-				var clusterNodes tfTypes.PartialRedisEeClusterNodes
+				for _, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
+					var clusterNodes tfTypes.PartialRedisEeClusterNodes
 
-				clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
-				clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
+					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
+					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
 
-				r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes)
+					r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes)
+				}
 			}
 			r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
 			r.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Redis.ConnectionIsProxied)
@@ -52,15 +54,17 @@ func (r *GatewayPluginSamlResourceModel) RefreshFromSharedSamlPlugin(ctx context
 			r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
 			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
-			r.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+			if resp.Config.Redis.SentinelNodes != nil {
+				r.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
 
-			for _, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
-				var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+				for _, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
+					var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
 
-				sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
-				sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
+					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 
-				r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes)
+					r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes)
+				}
 			}
 			r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
 			if resp.Config.Redis.SentinelRole != nil {
@@ -122,13 +126,17 @@ func (r *GatewayPluginSamlResourceModel) RefreshFromSharedSamlPlugin(ctx context
 		r.Config.SessionRememberAbsoluteTimeout = types.Float64PointerValue(resp.Config.SessionRememberAbsoluteTimeout)
 		r.Config.SessionRememberCookieName = types.StringPointerValue(resp.Config.SessionRememberCookieName)
 		r.Config.SessionRememberRollingTimeout = types.Float64PointerValue(resp.Config.SessionRememberRollingTimeout)
-		r.Config.SessionRequestHeaders = make([]types.String, 0, len(resp.Config.SessionRequestHeaders))
-		for _, v := range resp.Config.SessionRequestHeaders {
-			r.Config.SessionRequestHeaders = append(r.Config.SessionRequestHeaders, types.StringValue(string(v)))
+		if resp.Config.SessionRequestHeaders != nil {
+			r.Config.SessionRequestHeaders = make([]types.String, 0, len(resp.Config.SessionRequestHeaders))
+			for _, v := range resp.Config.SessionRequestHeaders {
+				r.Config.SessionRequestHeaders = append(r.Config.SessionRequestHeaders, types.StringValue(string(v)))
+			}
 		}
-		r.Config.SessionResponseHeaders = make([]types.String, 0, len(resp.Config.SessionResponseHeaders))
-		for _, v := range resp.Config.SessionResponseHeaders {
-			r.Config.SessionResponseHeaders = append(r.Config.SessionResponseHeaders, types.StringValue(string(v)))
+		if resp.Config.SessionResponseHeaders != nil {
+			r.Config.SessionResponseHeaders = make([]types.String, 0, len(resp.Config.SessionResponseHeaders))
+			for _, v := range resp.Config.SessionResponseHeaders {
+				r.Config.SessionResponseHeaders = append(r.Config.SessionResponseHeaders, types.StringValue(string(v)))
+			}
 		}
 		r.Config.SessionRollingTimeout = types.Float64PointerValue(resp.Config.SessionRollingTimeout)
 		r.Config.SessionSecret = types.StringValue(resp.Config.SessionSecret)
@@ -151,18 +159,22 @@ func (r *GatewayPluginSamlResourceModel) RefreshFromSharedSamlPlugin(ctx context
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+				if resp.Ordering.After.Access != nil {
+					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+					for _, v := range resp.Ordering.After.Access {
+						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+				if resp.Ordering.Before.Access != nil {
+					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+					for _, v := range resp.Ordering.Before.Access {
+						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
+					}
 				}
 			}
 		}
@@ -318,9 +330,12 @@ func (r *GatewayPluginSamlResourceModel) ToSharedSamlPlugin(ctx context.Context)
 	if r.Ordering != nil {
 		var after *shared.SamlPluginAfter
 		if r.Ordering.After != nil {
-			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			var access []string
+			if r.Ordering.After.Access != nil {
+				access = make([]string, 0, len(r.Ordering.After.Access))
+				for _, accessItem := range r.Ordering.After.Access {
+					access = append(access, accessItem.ValueString())
+				}
 			}
 			after = &shared.SamlPluginAfter{
 				Access: access,
@@ -328,9 +343,12 @@ func (r *GatewayPluginSamlResourceModel) ToSharedSamlPlugin(ctx context.Context)
 		}
 		var before *shared.SamlPluginBefore
 		if r.Ordering.Before != nil {
-			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			var access1 []string
+			if r.Ordering.Before.Access != nil {
+				access1 = make([]string, 0, len(r.Ordering.Before.Access))
+				for _, accessItem1 := range r.Ordering.Before.Access {
+					access1 = append(access1, accessItem1.ValueString())
+				}
 			}
 			before = &shared.SamlPluginBefore{
 				Access: access1,
@@ -418,24 +436,27 @@ func (r *GatewayPluginSamlResourceModel) ToSharedSamlPlugin(ctx context.Context)
 		} else {
 			clusterMaxRedirections = nil
 		}
-		clusterNodes := make([]shared.SamlPluginClusterNodes, 0, len(r.Config.Redis.ClusterNodes))
-		for _, clusterNodesItem := range r.Config.Redis.ClusterNodes {
-			ip := new(string)
-			if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
-				*ip = clusterNodesItem.IP.ValueString()
-			} else {
-				ip = nil
+		var clusterNodes []shared.SamlPluginClusterNodes
+		if r.Config.Redis.ClusterNodes != nil {
+			clusterNodes = make([]shared.SamlPluginClusterNodes, 0, len(r.Config.Redis.ClusterNodes))
+			for _, clusterNodesItem := range r.Config.Redis.ClusterNodes {
+				ip := new(string)
+				if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
+					*ip = clusterNodesItem.IP.ValueString()
+				} else {
+					ip = nil
+				}
+				port := new(int64)
+				if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
+					*port = clusterNodesItem.Port.ValueInt64()
+				} else {
+					port = nil
+				}
+				clusterNodes = append(clusterNodes, shared.SamlPluginClusterNodes{
+					IP:   ip,
+					Port: port,
+				})
 			}
-			port := new(int64)
-			if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
-				*port = clusterNodesItem.Port.ValueInt64()
-			} else {
-				port = nil
-			}
-			clusterNodes = append(clusterNodes, shared.SamlPluginClusterNodes{
-				IP:   ip,
-				Port: port,
-			})
 		}
 		connectTimeout := new(int64)
 		if !r.Config.Redis.ConnectTimeout.IsUnknown() && !r.Config.Redis.ConnectTimeout.IsNull() {
@@ -509,24 +530,27 @@ func (r *GatewayPluginSamlResourceModel) ToSharedSamlPlugin(ctx context.Context)
 		} else {
 			sentinelMaster = nil
 		}
-		sentinelNodes := make([]shared.SamlPluginSentinelNodes, 0, len(r.Config.Redis.SentinelNodes))
-		for _, sentinelNodesItem := range r.Config.Redis.SentinelNodes {
-			host1 := new(string)
-			if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
-				*host1 = sentinelNodesItem.Host.ValueString()
-			} else {
-				host1 = nil
+		var sentinelNodes []shared.SamlPluginSentinelNodes
+		if r.Config.Redis.SentinelNodes != nil {
+			sentinelNodes = make([]shared.SamlPluginSentinelNodes, 0, len(r.Config.Redis.SentinelNodes))
+			for _, sentinelNodesItem := range r.Config.Redis.SentinelNodes {
+				host1 := new(string)
+				if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
+					*host1 = sentinelNodesItem.Host.ValueString()
+				} else {
+					host1 = nil
+				}
+				port2 := new(int64)
+				if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
+					*port2 = sentinelNodesItem.Port.ValueInt64()
+				} else {
+					port2 = nil
+				}
+				sentinelNodes = append(sentinelNodes, shared.SamlPluginSentinelNodes{
+					Host: host1,
+					Port: port2,
+				})
 			}
-			port2 := new(int64)
-			if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
-				*port2 = sentinelNodesItem.Port.ValueInt64()
-			} else {
-				port2 = nil
-			}
-			sentinelNodes = append(sentinelNodes, shared.SamlPluginSentinelNodes{
-				Host: host1,
-				Port: port2,
-			})
 		}
 		sentinelPassword := new(string)
 		if !r.Config.Redis.SentinelPassword.IsUnknown() && !r.Config.Redis.SentinelPassword.IsNull() {
@@ -764,13 +788,19 @@ func (r *GatewayPluginSamlResourceModel) ToSharedSamlPlugin(ctx context.Context)
 	} else {
 		sessionRememberRollingTimeout = nil
 	}
-	sessionRequestHeaders := make([]shared.SamlPluginSessionRequestHeaders, 0, len(r.Config.SessionRequestHeaders))
-	for _, sessionRequestHeadersItem := range r.Config.SessionRequestHeaders {
-		sessionRequestHeaders = append(sessionRequestHeaders, shared.SamlPluginSessionRequestHeaders(sessionRequestHeadersItem.ValueString()))
+	var sessionRequestHeaders []shared.SamlPluginSessionRequestHeaders
+	if r.Config.SessionRequestHeaders != nil {
+		sessionRequestHeaders = make([]shared.SamlPluginSessionRequestHeaders, 0, len(r.Config.SessionRequestHeaders))
+		for _, sessionRequestHeadersItem := range r.Config.SessionRequestHeaders {
+			sessionRequestHeaders = append(sessionRequestHeaders, shared.SamlPluginSessionRequestHeaders(sessionRequestHeadersItem.ValueString()))
+		}
 	}
-	sessionResponseHeaders := make([]shared.SamlPluginSessionResponseHeaders, 0, len(r.Config.SessionResponseHeaders))
-	for _, sessionResponseHeadersItem := range r.Config.SessionResponseHeaders {
-		sessionResponseHeaders = append(sessionResponseHeaders, shared.SamlPluginSessionResponseHeaders(sessionResponseHeadersItem.ValueString()))
+	var sessionResponseHeaders []shared.SamlPluginSessionResponseHeaders
+	if r.Config.SessionResponseHeaders != nil {
+		sessionResponseHeaders = make([]shared.SamlPluginSessionResponseHeaders, 0, len(r.Config.SessionResponseHeaders))
+		for _, sessionResponseHeadersItem := range r.Config.SessionResponseHeaders {
+			sessionResponseHeaders = append(sessionResponseHeaders, shared.SamlPluginSessionResponseHeaders(sessionResponseHeadersItem.ValueString()))
+		}
 	}
 	sessionRollingTimeout := new(float64)
 	if !r.Config.SessionRollingTimeout.IsUnknown() && !r.Config.SessionRollingTimeout.IsNull() {

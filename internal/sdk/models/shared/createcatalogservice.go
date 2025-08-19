@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+)
+
 type CreateCatalogService struct {
 	// The machine name of the Service that uniquely identifies it within the catalog.
 	//
@@ -9,7 +13,7 @@ type CreateCatalogService struct {
 	// The display name of the Service.
 	DisplayName string `json:"display_name"`
 	// Optionally provide a description of the Service.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"null" json:"description"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -18,6 +22,17 @@ type CreateCatalogService struct {
 	// Map of customizable, catalog-defined fields providing information about a service.
 	//
 	CustomFields any `json:"custom_fields,omitempty"`
+}
+
+func (c CreateCatalogService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateCatalogService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CreateCatalogService) GetName() string {

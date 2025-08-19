@@ -91,7 +91,7 @@ resource "konnect_gateway_plugin_ai_prompt_compressor" "my_gatewaypluginaiprompt
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -111,13 +111,13 @@ Required:
 
 Optional:
 
-- `compressor_type` (String) What compression type to use to compress with. must be one of ["rate", "target_token"]
-- `compressor_url` (String) The url of the compressor
-- `keepalive_timeout` (Number) The keepalive timeout for the established http connnection
-- `log_text_data` (Boolean) Log the text data
+- `compressor_type` (String) What compression type to use to compress with. Default: "rate"; must be one of ["rate", "target_token"]
+- `compressor_url` (String) The url of the compressor. Default: "http://localhost:8080"
+- `keepalive_timeout` (Number) The keepalive timeout for the established http connnection. Default: 60000
+- `log_text_data` (Boolean) Log the text data. Default: false
 - `message_type` (List of String)
-- `stop_on_error` (Boolean) Stop processing if an error occurs
-- `timeout` (Number) Connection timeout with the compressor
+- `stop_on_error` (Boolean) Stop processing if an error occurs. Default: true
+- `timeout` (Number) Connection timeout with the compressor. Default: 10000
 
 <a id="nestedatt--config--compression_ranges"></a>
 ### Nested Schema for `config.compression_ranges`

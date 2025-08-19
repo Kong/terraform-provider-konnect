@@ -12,8 +12,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -67,20 +70,32 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"allow_all_conversation_history": types.BoolType,
+					"allow_patterns": types.ListType{
+						ElemType: types.StringType,
+					},
+					"deny_patterns": types.ListType{
+						ElemType: types.StringType,
+					},
+					"genai_category":        types.StringType,
+					"llm_format":            types.StringType,
+					"match_all_roles":       types.BoolType,
+					"max_request_body_size": types.Int64Type,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"allow_all_conversation_history": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If true, will ignore all previous chat prompts from the conversation history.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If true, will ignore all previous chat prompts from the conversation history. Default: false`,
 					},
 					"allow_patterns": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Array of valid regex patterns, or valid questions from the 'user' role in chat.`,
 					},
 					"deny_patterns": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Array of invalid regex patterns, or invalid questions from the 'user' role in chat.`,
@@ -88,7 +103,8 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 					"genai_category": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Generative AI category of the request. must be one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation"]`,
+						Default:     stringdefault.StaticString(`text/generation`),
+						Description: `Generative AI category of the request. Default: "text/generation"; must be one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"audio/speech",
@@ -103,7 +119,8 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 					"llm_format": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `LLM input and output format and schema to use. must be one of ["bedrock", "cohere", "gemini", "huggingface", "openai"]`,
+						Default:     stringdefault.StaticString(`openai`),
+						Description: `LLM input and output format and schema to use. Default: "openai"; must be one of ["bedrock", "cohere", "gemini", "huggingface", "openai"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"bedrock",
@@ -117,12 +134,14 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 					"match_all_roles": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If true, will match all roles in addition to 'user' role in conversation history.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If true, will match all roles in addition to 'user' role in conversation history. Default: false`,
 					},
 					"max_request_body_size": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.`,
+						Default:     int64default.StaticInt64(8192),
+						Description: `max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 8192`,
 					},
 				},
 			},
@@ -169,7 +188,8 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -177,20 +197,39 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -199,9 +238,13 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"access": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -210,7 +253,6 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -223,12 +265,10 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},
@@ -270,7 +310,6 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

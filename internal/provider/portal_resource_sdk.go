@@ -15,9 +15,9 @@ func (r *PortalResourceModel) RefreshFromSharedPortalResponse(ctx context.Contex
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		r.AuthenticationEnabled = types.BoolValue(resp.AuthenticationEnabled)
-		r.AutoApproveApplications = types.BoolValue(resp.AutoApproveApplications)
-		r.AutoApproveDevelopers = types.BoolValue(resp.AutoApproveDevelopers)
+		r.AuthenticationEnabled = types.BoolPointerValue(resp.AuthenticationEnabled)
+		r.AutoApproveApplications = types.BoolPointerValue(resp.AutoApproveApplications)
+		r.AutoApproveDevelopers = types.BoolPointerValue(resp.AutoApproveDevelopers)
 		r.CanonicalDomain = types.StringValue(resp.CanonicalDomain)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.DefaultAPIVisibility = types.StringValue(string(resp.DefaultAPIVisibility))
@@ -34,7 +34,7 @@ func (r *PortalResourceModel) RefreshFromSharedPortalResponse(ctx context.Contex
 			}
 		}
 		r.Name = types.StringValue(resp.Name)
-		r.RbacEnabled = types.BoolValue(resp.RbacEnabled)
+		r.RbacEnabled = types.BoolPointerValue(resp.RbacEnabled)
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
 
