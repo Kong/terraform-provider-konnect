@@ -3,6 +3,6 @@ resource "konnect_api_product" "httpbin" {
   description = "This is a description for my API Product"
 
   portal_ids = [
-    data.konnect_portal_list.my_portallist.data[0].id
+    data.konnect_portal_classic_list.my_portallist.data[0].id
   ]
 }

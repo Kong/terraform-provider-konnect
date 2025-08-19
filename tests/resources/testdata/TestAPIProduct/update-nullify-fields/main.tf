@@ -1,4 +1,4 @@
-resource "konnect_portal" "my_portal" {
+resource "konnect_portal_classic" "my_portal" {
   name                      = "APIProductForNullTest"
   auto_approve_applications = false
   auto_approve_developers   = false
@@ -12,6 +12,6 @@ resource "konnect_api_product" "my_null_desc_apiproduct" {
 
   name = "API Product for null description"
   portal_ids = [
-    konnect_portal.my_portal.id
+    konnect_portal_classic.my_portal.id
   ]
 }

@@ -13,7 +13,7 @@ resource "konnect_gateway_service" "my_httpbin_api_product_version_svc" {
   control_plane_id = konnect_gateway_control_plane.api_product_version_linked_cp.id
 }
 
-resource "konnect_portal" "my_portal" {
+resource "konnect_portal_classic" "my_portal" {
   name                      = "APIProductVersionNullTestPortal"
   auto_approve_applications = false
   auto_approve_developers   = false
@@ -27,7 +27,7 @@ resource "konnect_api_product" "my_apiproduct" {
 
   name = "API Product for version with null description"
   portal_ids = [
-    konnect_portal.my_portal.id
+    konnect_portal_classic.my_portal.id
   ]
 }
 
