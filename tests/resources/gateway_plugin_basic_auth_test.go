@@ -18,6 +18,7 @@ func TestGatewayPluginBasicAuth(t *testing.T) {
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_plugin_basic_auth.my_basic_auth", "enabled", "true"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_basic_auth.my_basic_auth", "config.anonymous"),
 					),
 				},
 				{

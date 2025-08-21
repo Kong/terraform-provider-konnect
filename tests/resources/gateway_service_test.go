@@ -1,7 +1,5 @@
 package tests
 
-/*
-todo: Enable after null support changes since leads to dangling resources.
 import (
 	"testing"
 
@@ -19,6 +17,12 @@ func TestGatewayService(t *testing.T) {
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_service.httpbin-nullify", "name", "my-service-name"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_service.httpbin-nullify", "path"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_service.httpbin-nullify", "ca_certificates.0"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_service.httpbin-nullify", "tls_verify"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_service.httpbin-nullify", "tls_sans.dnsnames.0"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_service.httpbin-nullify", "client_certificate.id"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_service.httpbin-nullify", "tls_verify_depth"),
 					),
 				},
 				{
@@ -39,4 +43,3 @@ func TestGatewayService(t *testing.T) {
 		})
 	})
 }
-*/

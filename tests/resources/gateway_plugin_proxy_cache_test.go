@@ -18,6 +18,7 @@ func TestGatewayPluginProxyCache(t *testing.T) {
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_plugin_proxy_cache.my_proxy_cache", "enabled", "true"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_proxy_cache.my_proxy_cache", "config.storage_ttl"),
 					),
 				},
 				{

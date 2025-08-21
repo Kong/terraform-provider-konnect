@@ -18,6 +18,7 @@ func TestGatewayPluginRequestTransformer(t *testing.T) {
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_plugin_request_transformer.my_request_transformer", "enabled", "true"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_request_transformer.my_request_transformer", "config.http_method"),
 					),
 				},
 				{

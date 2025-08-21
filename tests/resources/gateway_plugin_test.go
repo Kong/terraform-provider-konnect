@@ -20,6 +20,7 @@ func TestGatewayPlugin(t *testing.T) {
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_plugin_key_auth.my_key_auth", "instance_name", "my_key_auth_plugin"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_key_auth.my_key_auth", "ordering.after.access.0"),
 					),
 				},
 				{

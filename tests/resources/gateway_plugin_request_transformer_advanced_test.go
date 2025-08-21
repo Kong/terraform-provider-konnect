@@ -18,6 +18,7 @@ func TestGatewayPluginRequestTransformerAdvanced(t *testing.T) {
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_plugin_request_transformer_advanced.my_request_transformer_advanced", "enabled", "true"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_request_transformer_advanced.my_request_transformer_advanced", "config.http_method"),
 					),
 				},
 				{

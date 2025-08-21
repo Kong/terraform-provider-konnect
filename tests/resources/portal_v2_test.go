@@ -40,6 +40,10 @@ func TestPortalV2(t *testing.T) {
 				{
 					Config:          providerConfigUs,
 					ConfigDirectory: config.TestNameDirectory(),
+					Check: resource.ComposeTestCheckFunc(
+						resource.TestCheckResourceAttrSet("konnect_portal_appearance.nullify_appearance_test", "custom_fonts.base"),
+						resource.TestCheckResourceAttrSet("konnect_portal_appearance.nullify_appearance_test", "images.logo.filename"),
+					),
 				},
 				{
 					// Update some fields to null

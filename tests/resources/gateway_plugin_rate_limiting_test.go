@@ -17,6 +17,9 @@ func TestGatewayPluginRateLimiting(t *testing.T) {
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting.my_nullable_rate_limiting", "instance_name", "nullable-rl-plugin"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_rate_limiting.my_nullable_rate_limiting", "service.id"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_rate_limiting.my_nullable_rate_limiting", "route.id"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_rate_limiting.my_nullable_rate_limiting", "consumer.id"),
 					),
 				},
 				{

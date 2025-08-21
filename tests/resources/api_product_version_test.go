@@ -17,6 +17,7 @@ func TestAPIProductVersion(t *testing.T) {
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_api_product_version.my_null_api_product_version", "name", "v1"),
+						resource.TestCheckResourceAttrSet("konnect_api_product_version.my_null_api_product_version", "gateway_service.id"),
 					),
 				},
 				{

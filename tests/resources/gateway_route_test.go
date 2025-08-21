@@ -17,6 +17,10 @@ func TestGatewayRoute(t *testing.T) {
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_route.my_nullify_route", "name", "my-route-name"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_route.my_nullify_route", "methods.0"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_route.my_nullify_route", "snis.0"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_route.my_nullify_route", "hosts.0"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_route.my_nullify_route", "service.id"),
 					),
 				},
 				{

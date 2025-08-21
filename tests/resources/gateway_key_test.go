@@ -1,6 +1,5 @@
 package tests
 
-/*
 import (
 	"testing"
 
@@ -9,8 +8,7 @@ import (
 )
 
 func TestGatewayKey(t *testing.T) {
-	// Todo: fix non-empty refresh plan
-	t.Sterrkip("update-nullify-fields", func(t *testing.T) {
+	t.Run("update-nullify-fields", func(t *testing.T) {
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
@@ -19,6 +17,7 @@ func TestGatewayKey(t *testing.T) {
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_key.my_nullable_key", "name", "my-test-nullify-jwk"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_key.my_nullable_key", "set.id"),
 					),
 				},
 				{
@@ -33,4 +32,3 @@ func TestGatewayKey(t *testing.T) {
 		})
 	})
 }
-*/

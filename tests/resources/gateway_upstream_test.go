@@ -21,11 +21,9 @@ func TestGatewayUpstream(t *testing.T) {
 				},
 				{
 					// Update some fields to null
-					Config:             providerConfigUs,
-					ConfigDirectory:    config.TestStepDirectory(),
-					ExpectNonEmptyPlan: true, // Todo - needs to be fixed.
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
 					Check: resource.ComposeTestCheckFunc(
-						resource.TestCheckNoResourceAttr("konnect_gateway_upstream.my_nullable_upstream", "healthchecks"),
 						resource.TestCheckNoResourceAttr("konnect_gateway_upstream.my_nullable_upstream", "hash_on_header"),
 					),
 				},

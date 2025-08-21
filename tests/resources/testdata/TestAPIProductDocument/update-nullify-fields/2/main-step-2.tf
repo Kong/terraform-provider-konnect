@@ -21,7 +21,7 @@ resource "konnect_api_product" "my_apiproduct" {
 resource "konnect_api_product_document" "my_apiproduct_parent_document" {
   api_product_id = konnect_api_product.my_apiproduct.id
   content        = "YmFzZTY0LWVuY29kZWQgdGV4dCBzdHJpbmc="
-  slug               = "path-for-seo"
+  slug               = "path-for-seo-parent"
   status             = "unpublished"
   title              = "My Konnect API Product Parent Document"
   metadata = {
@@ -32,7 +32,7 @@ resource "konnect_api_product_document" "my_apiproduct_parent_document" {
 resource "konnect_api_product_document" "my_apiproduct_child_document" {
   api_product_id = konnect_api_product.my_apiproduct.id
   content        = "YmFzZTY0LWVuY29kZWQgdGV4dCBzdHJpbmc="
-  slug               = "path-for-seo"
+  slug               = "path-for-seo-child"
   status             = "unpublished"
   title              = "My Konnect API Product Child Document"
   metadata = {

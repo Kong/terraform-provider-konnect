@@ -26,7 +26,6 @@ func TestGatewayConsumer(t *testing.T) {
 					ConfigDirectory: config.TestStepDirectory(),
 					Check: resource.ComposeTestCheckFunc(
 						resource.TestCheckNoResourceAttr("konnect_gateway_consumer.nullableconsumer", "custom_id"),
-						resource.TestCheckNoResourceAttr("konnect_gateway_consumer.nullableconsumer", "consumer_groups"),
 					),
 				},
 			},

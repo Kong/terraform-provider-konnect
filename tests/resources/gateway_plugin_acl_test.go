@@ -18,6 +18,7 @@ func TestGatewayPluginACL(t *testing.T) {
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_plugin_acl.my_acl", "enabled", "true"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_acl.my_acl", "config.allow.0"),
 					),
 				},
 				{

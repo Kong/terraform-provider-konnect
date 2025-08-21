@@ -16,18 +16,19 @@ func TestGatewayPluginOpenTelemetry(t *testing.T) {
 				{
 					Config:             providerConfigUs,
 					ConfigDirectory:    config.TestNameDirectory(),
-					ExpectNonEmptyPlan: true,
+					ExpectNonEmptyPlan: true, // todo: remove after false diff is fixed
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_plugin_opentelemetry.my_opentelemetry", "enabled", "true"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_opentelemetry.my_opentelemetry", "config.logs_endpoint"),
 					),
 				},
 				{
 					// Update some fields to null
 					Config:             providerConfigUs,
 					ConfigDirectory:    config.TestStepDirectory(),
-					ExpectNonEmptyPlan: true,
+					ExpectNonEmptyPlan: true, // todo: remove after false diff is fixed
 					Check: resource.ComposeTestCheckFunc(
-						resource.TestCheckNoResourceAttr("konnect_gateway_plugin_opentelemetry.my_opentelemetry", "logs_endpoint"),
+						resource.TestCheckNoResourceAttr("konnect_gateway_plugin_opentelemetry.my_opentelemetry", "config.logs_endpoint"),
 					),
 				},
 			},

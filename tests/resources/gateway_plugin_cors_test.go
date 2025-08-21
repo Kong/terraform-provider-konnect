@@ -18,6 +18,8 @@ func TestGatewayPluginCors(t *testing.T) {
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_plugin_cors.my_cors", "enabled", "true"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_cors.my_cors", "config.origins.0"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_cors.my_cors", "config.headers.0"),
 					),
 				},
 				{

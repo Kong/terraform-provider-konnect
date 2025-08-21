@@ -18,6 +18,7 @@ func TestGatewayPluginJWT(t *testing.T) {
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_plugin_jwt.my_jwt", "enabled", "true"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_jwt.my_jwt", "config.anonymous"),
 					),
 				},
 				{
