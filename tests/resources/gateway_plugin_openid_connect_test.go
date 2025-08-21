@@ -16,9 +16,8 @@ func TestGatewayPluginOpenidConnect(t *testing.T) {
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
 				{
-					Config:             providerConfigUs,
-					ConfigDirectory:    config.TestNameDirectory(),
-					ExpectNonEmptyPlan: true, // todo: remove after false diff is fixed
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_plugin_openid_connect.test", "config.scopes.#", "0"),
 					),

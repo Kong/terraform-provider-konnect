@@ -14,9 +14,8 @@ func TestGatewayPluginOpenTelemetry(t *testing.T) {
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
 				{
-					Config:             providerConfigUs,
-					ConfigDirectory:    config.TestNameDirectory(),
-					ExpectNonEmptyPlan: true, // todo: remove after false diff is fixed
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_plugin_opentelemetry.my_opentelemetry", "enabled", "true"),
 						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_opentelemetry.my_opentelemetry", "config.logs_endpoint"),
@@ -24,9 +23,8 @@ func TestGatewayPluginOpenTelemetry(t *testing.T) {
 				},
 				{
 					// Update some fields to null
-					Config:             providerConfigUs,
-					ConfigDirectory:    config.TestStepDirectory(),
-					ExpectNonEmptyPlan: true, // todo: remove after false diff is fixed
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
 					Check: resource.ComposeTestCheckFunc(
 						resource.TestCheckNoResourceAttr("konnect_gateway_plugin_opentelemetry.my_opentelemetry", "config.logs_endpoint"),
 					),
