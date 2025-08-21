@@ -36267,9 +36267,7 @@ components:
             cache_tokens_salt:
               description: Salt used for generating the cache key that is used for caching the token endpoint requests.
               type: string
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             cache_ttl:
               description: The default cache ttl in seconds that is used in case the cached object does not specify the expiry.
               type: number
@@ -36521,8 +36519,6 @@ components:
               x-speakeasy-param-computed: false
             cluster_cache_redis:
               type: object
-              default: null
-              nullable: true
               properties:
                 cluster_max_redirections:
                   description: Maximum retry attempts for redirection.
@@ -36682,7 +36678,7 @@ components:
                   type: array
                 timeout:
                   type: integer
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             cluster_cache_strategy:
               description: 'The strategy to use for the cluster cache. If set, the plugin will share cache with nodes configured with the same strategy backend. Currentlly only introspection cache is shared.'
               type: string
@@ -36925,7 +36921,7 @@ components:
             http_version:
               description: 'The HTTP version used for the requests by this plugin: - `1.1`: HTTP 1.1 (the default) - `1.0`: HTTP 1.0.'
               type: number
-              default: 1.1
+              x-speakeasy-param-computed: true
             https_proxy:
               description: The HTTPS proxy.
               type: string
@@ -37300,8 +37296,6 @@ components:
               x-speakeasy-param-computed: false
             redis:
               type: object
-              default: null
-              nullable: true
               properties:
                 cluster_max_redirections:
                   description: Maximum retry attempts for redirection.
@@ -37473,7 +37467,7 @@ components:
                   type: array
                 timeout:
                   type: integer
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             rediscovery_lifetime:
               description: Specifies how long (in seconds) the plugin waits between discovery attempts. Discovery is still triggered on an as-needed basis.
               type: number
@@ -38188,8 +38182,6 @@ components:
       properties:
         config:
           type: object
-          default: null
-          nullable: true
           properties:
             batch_flush_delay:
               description: 'The delay, in seconds, between two consecutive batches.'
@@ -38320,9 +38312,9 @@ components:
                 initial_retry_delay:
                   description: Time in seconds before the initial retry is made for a failing batch.
                   type: number
-                  default: 0.01
                   maximum: 1000000
                   minimum: 0.001
+                  x-speakeasy-param-computed: true
                 max_batch_size:
                   description: Maximum number of entries that can be processed at a time.
                   type: integer
@@ -38365,10 +38357,8 @@ components:
               minimum: 0
             resource_attributes:
               type: object
-              default: null
               additionalProperties: true
-              nullable: true
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             sampling_rate:
               description: 'Tracing sampling rate for configuring the probability-based sampler. When set, this value supersedes the global `tracing_sampling_rate` setting from kong.conf.'
               type: number
@@ -38400,7 +38390,7 @@ components:
             endpoint:
               description: 'A string representing a URL, such as https://example.com/path/to/resource?q=search.'
               type: string
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -46182,7 +46172,7 @@ components:
                 http_version:
                   description: 'The HTTP version used for requests made by this plugin. Supported values: `1.1` for HTTP 1.1 and `1.0` for HTTP 1.0.'
                   type: number
-                  default: 1.1
+                  x-speakeasy-param-computed: true
                 https_proxy:
                   description: The proxy to use when making HTTPS requests to the IdP.
                   type: string
