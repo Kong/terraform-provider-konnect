@@ -9,7 +9,7 @@ import (
 )
 
 type AiSemanticCachePluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *AiSemanticCachePluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *AiSemanticCachePluginAfter) GetAccess() []string {
 }
 
 type AiSemanticCachePluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *AiSemanticCachePluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *AiSemanticCachePluginBefore) GetAccess() []string {
 }
 
 type AiSemanticCachePluginOrdering struct {
-	After  *AiSemanticCachePluginAfter  `json:"after"`
-	Before *AiSemanticCachePluginBefore `json:"before"`
+	After  *AiSemanticCachePluginAfter  `json:"after,omitempty"`
+	Before *AiSemanticCachePluginBefore `json:"before,omitempty"`
 }
 
 func (o *AiSemanticCachePluginOrdering) GetAfter() *AiSemanticCachePluginAfter {

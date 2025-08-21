@@ -9,7 +9,7 @@ import (
 )
 
 type AiResponseTransformerPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *AiResponseTransformerPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *AiResponseTransformerPluginAfter) GetAccess() []string {
 }
 
 type AiResponseTransformerPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *AiResponseTransformerPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *AiResponseTransformerPluginBefore) GetAccess() []string {
 }
 
 type AiResponseTransformerPluginOrdering struct {
-	After  *AiResponseTransformerPluginAfter  `json:"after"`
-	Before *AiResponseTransformerPluginBefore `json:"before"`
+	After  *AiResponseTransformerPluginAfter  `json:"after,omitempty"`
+	Before *AiResponseTransformerPluginBefore `json:"before,omitempty"`
 }
 
 func (o *AiResponseTransformerPluginOrdering) GetAfter() *AiResponseTransformerPluginAfter {

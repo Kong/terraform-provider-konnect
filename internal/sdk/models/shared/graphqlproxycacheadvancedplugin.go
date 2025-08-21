@@ -9,7 +9,7 @@ import (
 )
 
 type GraphqlProxyCacheAdvancedPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *GraphqlProxyCacheAdvancedPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *GraphqlProxyCacheAdvancedPluginAfter) GetAccess() []string {
 }
 
 type GraphqlProxyCacheAdvancedPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *GraphqlProxyCacheAdvancedPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *GraphqlProxyCacheAdvancedPluginBefore) GetAccess() []string {
 }
 
 type GraphqlProxyCacheAdvancedPluginOrdering struct {
-	After  *GraphqlProxyCacheAdvancedPluginAfter  `json:"after"`
-	Before *GraphqlProxyCacheAdvancedPluginBefore `json:"before"`
+	After  *GraphqlProxyCacheAdvancedPluginAfter  `json:"after,omitempty"`
+	Before *GraphqlProxyCacheAdvancedPluginBefore `json:"before,omitempty"`
 }
 
 func (o *GraphqlProxyCacheAdvancedPluginOrdering) GetAfter() *GraphqlProxyCacheAdvancedPluginAfter {

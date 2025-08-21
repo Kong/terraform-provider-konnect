@@ -9,7 +9,7 @@ import (
 )
 
 type AwsLambdaPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *AwsLambdaPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *AwsLambdaPluginAfter) GetAccess() []string {
 }
 
 type AwsLambdaPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *AwsLambdaPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *AwsLambdaPluginBefore) GetAccess() []string {
 }
 
 type AwsLambdaPluginOrdering struct {
-	After  *AwsLambdaPluginAfter  `json:"after"`
-	Before *AwsLambdaPluginBefore `json:"before"`
+	After  *AwsLambdaPluginAfter  `json:"after,omitempty"`
+	Before *AwsLambdaPluginBefore `json:"before,omitempty"`
 }
 
 func (o *AwsLambdaPluginOrdering) GetAfter() *AwsLambdaPluginAfter {

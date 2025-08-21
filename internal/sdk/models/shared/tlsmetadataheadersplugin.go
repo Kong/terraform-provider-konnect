@@ -9,7 +9,7 @@ import (
 )
 
 type TLSMetadataHeadersPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *TLSMetadataHeadersPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *TLSMetadataHeadersPluginAfter) GetAccess() []string {
 }
 
 type TLSMetadataHeadersPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *TLSMetadataHeadersPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *TLSMetadataHeadersPluginBefore) GetAccess() []string {
 }
 
 type TLSMetadataHeadersPluginOrdering struct {
-	After  *TLSMetadataHeadersPluginAfter  `json:"after"`
-	Before *TLSMetadataHeadersPluginBefore `json:"before"`
+	After  *TLSMetadataHeadersPluginAfter  `json:"after,omitempty"`
+	Before *TLSMetadataHeadersPluginBefore `json:"before,omitempty"`
 }
 
 func (o *TLSMetadataHeadersPluginOrdering) GetAfter() *TLSMetadataHeadersPluginAfter {

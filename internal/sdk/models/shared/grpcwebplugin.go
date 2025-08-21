@@ -9,7 +9,7 @@ import (
 )
 
 type GrpcWebPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *GrpcWebPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *GrpcWebPluginAfter) GetAccess() []string {
 }
 
 type GrpcWebPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *GrpcWebPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *GrpcWebPluginBefore) GetAccess() []string {
 }
 
 type GrpcWebPluginOrdering struct {
-	After  *GrpcWebPluginAfter  `json:"after"`
-	Before *GrpcWebPluginBefore `json:"before"`
+	After  *GrpcWebPluginAfter  `json:"after,omitempty"`
+	Before *GrpcWebPluginBefore `json:"before,omitempty"`
 }
 
 func (o *GrpcWebPluginOrdering) GetAfter() *GrpcWebPluginAfter {

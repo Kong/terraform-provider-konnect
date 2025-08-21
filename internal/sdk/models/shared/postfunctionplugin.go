@@ -9,7 +9,7 @@ import (
 )
 
 type PostFunctionPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *PostFunctionPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *PostFunctionPluginAfter) GetAccess() []string {
 }
 
 type PostFunctionPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *PostFunctionPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *PostFunctionPluginBefore) GetAccess() []string {
 }
 
 type PostFunctionPluginOrdering struct {
-	After  *PostFunctionPluginAfter  `json:"after"`
-	Before *PostFunctionPluginBefore `json:"before"`
+	After  *PostFunctionPluginAfter  `json:"after,omitempty"`
+	Before *PostFunctionPluginBefore `json:"before,omitempty"`
 }
 
 func (o *PostFunctionPluginOrdering) GetAfter() *PostFunctionPluginAfter {

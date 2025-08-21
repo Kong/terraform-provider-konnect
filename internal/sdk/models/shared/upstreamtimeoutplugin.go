@@ -9,7 +9,7 @@ import (
 )
 
 type UpstreamTimeoutPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *UpstreamTimeoutPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *UpstreamTimeoutPluginAfter) GetAccess() []string {
 }
 
 type UpstreamTimeoutPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *UpstreamTimeoutPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *UpstreamTimeoutPluginBefore) GetAccess() []string {
 }
 
 type UpstreamTimeoutPluginOrdering struct {
-	After  *UpstreamTimeoutPluginAfter  `json:"after"`
-	Before *UpstreamTimeoutPluginBefore `json:"before"`
+	After  *UpstreamTimeoutPluginAfter  `json:"after,omitempty"`
+	Before *UpstreamTimeoutPluginBefore `json:"before,omitempty"`
 }
 
 func (o *UpstreamTimeoutPluginOrdering) GetAfter() *UpstreamTimeoutPluginAfter {

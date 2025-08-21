@@ -9,7 +9,7 @@ import (
 )
 
 type KeyAuthPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *KeyAuthPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *KeyAuthPluginAfter) GetAccess() []string {
 }
 
 type KeyAuthPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *KeyAuthPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *KeyAuthPluginBefore) GetAccess() []string {
 }
 
 type KeyAuthPluginOrdering struct {
-	After  *KeyAuthPluginAfter  `json:"after"`
-	Before *KeyAuthPluginBefore `json:"before"`
+	After  *KeyAuthPluginAfter  `json:"after,omitempty"`
+	Before *KeyAuthPluginBefore `json:"before,omitempty"`
 }
 
 func (o *KeyAuthPluginOrdering) GetAfter() *KeyAuthPluginAfter {

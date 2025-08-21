@@ -9,7 +9,7 @@ import (
 )
 
 type OpenidConnectPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *OpenidConnectPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *OpenidConnectPluginAfter) GetAccess() []string {
 }
 
 type OpenidConnectPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *OpenidConnectPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *OpenidConnectPluginBefore) GetAccess() []string {
 }
 
 type OpenidConnectPluginOrdering struct {
-	After  *OpenidConnectPluginAfter  `json:"after"`
-	Before *OpenidConnectPluginBefore `json:"before"`
+	After  *OpenidConnectPluginAfter  `json:"after,omitempty"`
+	Before *OpenidConnectPluginBefore `json:"before,omitempty"`
 }
 
 func (o *OpenidConnectPluginOrdering) GetAfter() *OpenidConnectPluginAfter {

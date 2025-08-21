@@ -9,7 +9,7 @@ import (
 )
 
 type SamlPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *SamlPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *SamlPluginAfter) GetAccess() []string {
 }
 
 type SamlPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *SamlPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *SamlPluginBefore) GetAccess() []string {
 }
 
 type SamlPluginOrdering struct {
-	After  *SamlPluginAfter  `json:"after"`
-	Before *SamlPluginBefore `json:"before"`
+	After  *SamlPluginAfter  `json:"after,omitempty"`
+	Before *SamlPluginBefore `json:"before,omitempty"`
 }
 
 func (o *SamlPluginOrdering) GetAfter() *SamlPluginAfter {

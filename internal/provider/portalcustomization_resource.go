@@ -67,45 +67,6 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 			"menu": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"footer_bottom": types.ListType{
-						ElemType: types.ObjectType{
-							AttrTypes: map[string]attr.Type{
-								`external`:   types.BoolType,
-								`path`:       types.StringType,
-								`title`:      types.StringType,
-								`visibility`: types.StringType,
-							},
-						},
-					},
-					"footer_sections": types.ListType{
-						ElemType: types.ObjectType{
-							AttrTypes: map[string]attr.Type{
-								`items`: types.ListType{
-									ElemType: types.ObjectType{
-										AttrTypes: map[string]attr.Type{
-											`external`:   types.BoolType,
-											`path`:       types.StringType,
-											`title`:      types.StringType,
-											`visibility`: types.StringType,
-										},
-									},
-								},
-								`title`: types.StringType,
-							},
-						},
-					},
-					"main": types.ListType{
-						ElemType: types.ObjectType{
-							AttrTypes: map[string]attr.Type{
-								`external`:   types.BoolType,
-								`path`:       types.StringType,
-								`title`:      types.StringType,
-								`visibility`: types.StringType,
-							},
-						},
-					},
-				})),
 				Attributes: map[string]schema.Attribute{
 					"footer_bottom": schema.ListNestedAttribute{
 						Optional: true,
@@ -284,14 +245,6 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 			"spec_renderer": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"hide_deprecated": types.BoolType,
-					"hide_internal":   types.BoolType,
-					"infinite_scroll": types.BoolType,
-					"show_schemas":    types.BoolType,
-					"try_it_insomnia": types.BoolType,
-					"try_it_ui":       types.BoolType,
-				})),
 				Attributes: map[string]schema.Attribute{
 					"hide_deprecated": schema.BoolAttribute{
 						Computed:    true,

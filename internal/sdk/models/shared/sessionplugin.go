@@ -9,7 +9,7 @@ import (
 )
 
 type SessionPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *SessionPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *SessionPluginAfter) GetAccess() []string {
 }
 
 type SessionPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *SessionPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *SessionPluginBefore) GetAccess() []string {
 }
 
 type SessionPluginOrdering struct {
-	After  *SessionPluginAfter  `json:"after"`
-	Before *SessionPluginBefore `json:"before"`
+	After  *SessionPluginAfter  `json:"after,omitempty"`
+	Before *SessionPluginBefore `json:"before,omitempty"`
 }
 
 func (o *SessionPluginOrdering) GetAfter() *SessionPluginAfter {

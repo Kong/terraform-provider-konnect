@@ -9,7 +9,7 @@ import (
 )
 
 type KafkaConsumePluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *KafkaConsumePluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *KafkaConsumePluginAfter) GetAccess() []string {
 }
 
 type KafkaConsumePluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *KafkaConsumePluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *KafkaConsumePluginBefore) GetAccess() []string {
 }
 
 type KafkaConsumePluginOrdering struct {
-	After  *KafkaConsumePluginAfter  `json:"after"`
-	Before *KafkaConsumePluginBefore `json:"before"`
+	After  *KafkaConsumePluginAfter  `json:"after,omitempty"`
+	Before *KafkaConsumePluginBefore `json:"before,omitempty"`
 }
 
 func (o *KafkaConsumePluginOrdering) GetAfter() *KafkaConsumePluginAfter {

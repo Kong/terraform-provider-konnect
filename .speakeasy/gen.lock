@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: a29a185798a5180854d8c8908f33fd1b
+  docChecksum: a60e59eaa025e4737c2eaecf80678bde
   docVersion: 2.0.0
   speakeasyVersion: 1.602.0
   generationVersion: 2.681.1
@@ -13482,7 +13482,7 @@ examples:
           portalId: "c1f26ac2-4d98-4500-9c10-c369f4997443"
       responses:
         "200":
-          application/json: {"theme": null, "css": null, "menu": null, "spec_renderer": null, "robots": null}
+          application/json: {"theme": null, "css": null, "menu": {"main": null, "footer_sections": null, "footer_bottom": null}, "robots": null}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -13495,10 +13495,10 @@ examples:
         path:
           portalId: "9d054504-6858-4150-8873-e6b55940b5b5"
       requestBody:
-        application/json: {"theme": null, "css": null, "menu": null, "spec_renderer": null, "robots": null}
+        application/json: {"theme": null, "css": null, "menu": {"main": null, "footer_sections": null, "footer_bottom": null}, "robots": null}
       responses:
         "200":
-          application/json: {"theme": null, "css": null, "menu": null, "spec_renderer": null, "robots": null}
+          application/json: {"theme": null, "css": null, "menu": {"main": null, "footer_sections": null, "footer_bottom": null}, "robots": null}
         "400":
           application/problem+json: {"status": 833416, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":

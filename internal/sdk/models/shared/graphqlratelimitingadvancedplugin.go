@@ -9,7 +9,7 @@ import (
 )
 
 type GraphqlRateLimitingAdvancedPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *GraphqlRateLimitingAdvancedPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *GraphqlRateLimitingAdvancedPluginAfter) GetAccess() []string {
 }
 
 type GraphqlRateLimitingAdvancedPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *GraphqlRateLimitingAdvancedPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *GraphqlRateLimitingAdvancedPluginBefore) GetAccess() []string {
 }
 
 type GraphqlRateLimitingAdvancedPluginOrdering struct {
-	After  *GraphqlRateLimitingAdvancedPluginAfter  `json:"after"`
-	Before *GraphqlRateLimitingAdvancedPluginBefore `json:"before"`
+	After  *GraphqlRateLimitingAdvancedPluginAfter  `json:"after,omitempty"`
+	Before *GraphqlRateLimitingAdvancedPluginBefore `json:"before,omitempty"`
 }
 
 func (o *GraphqlRateLimitingAdvancedPluginOrdering) GetAfter() *GraphqlRateLimitingAdvancedPluginAfter {

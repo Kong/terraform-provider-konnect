@@ -9,7 +9,7 @@ import (
 )
 
 type HmacAuthPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *HmacAuthPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *HmacAuthPluginAfter) GetAccess() []string {
 }
 
 type HmacAuthPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *HmacAuthPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *HmacAuthPluginBefore) GetAccess() []string {
 }
 
 type HmacAuthPluginOrdering struct {
-	After  *HmacAuthPluginAfter  `json:"after"`
-	Before *HmacAuthPluginBefore `json:"before"`
+	After  *HmacAuthPluginAfter  `json:"after,omitempty"`
+	Before *HmacAuthPluginBefore `json:"before,omitempty"`
 }
 
 func (o *HmacAuthPluginOrdering) GetAfter() *HmacAuthPluginAfter {

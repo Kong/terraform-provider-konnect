@@ -190,67 +190,6 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 			"healthchecks": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"active": types.ObjectType{
-						AttrTypes: map[string]attr.Type{
-							`concurrency`: types.Int64Type,
-							`headers`: types.MapType{
-								ElemType: types.ListType{
-									ElemType: types.StringType,
-								},
-							},
-							`healthy`: types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									`http_statuses`: types.ListType{
-										ElemType: types.Int64Type,
-									},
-									`interval`:  types.Float64Type,
-									`successes`: types.Int64Type,
-								},
-							},
-							`http_path`:                types.StringType,
-							`https_sni`:                types.StringType,
-							`https_verify_certificate`: types.BoolType,
-							`timeout`:                  types.Float64Type,
-							`type`:                     types.StringType,
-							`unhealthy`: types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									`http_failures`: types.Int64Type,
-									`http_statuses`: types.ListType{
-										ElemType: types.Int64Type,
-									},
-									`interval`:     types.Float64Type,
-									`tcp_failures`: types.Int64Type,
-									`timeouts`:     types.Int64Type,
-								},
-							},
-						},
-					},
-					"passive": types.ObjectType{
-						AttrTypes: map[string]attr.Type{
-							`healthy`: types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									`http_statuses`: types.ListType{
-										ElemType: types.Int64Type,
-									},
-									`successes`: types.Int64Type,
-								},
-							},
-							`type`: types.StringType,
-							`unhealthy`: types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									`http_failures`: types.Int64Type,
-									`http_statuses`: types.ListType{
-										ElemType: types.Int64Type,
-									},
-									`tcp_failures`: types.Int64Type,
-									`timeouts`:     types.Int64Type,
-								},
-							},
-						},
-					},
-					"threshold": types.Float64Type,
-				})),
 				Attributes: map[string]schema.Attribute{
 					"active": schema.SingleNestedAttribute{
 						Computed: true,
@@ -374,12 +313,6 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 							"healthy": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"http_statuses": types.ListType{
-										ElemType: types.Int64Type,
-									},
-									"successes": types.Int64Type,
-								})),
 								Attributes: map[string]schema.Attribute{
 									"http_statuses": schema.ListAttribute{
 										Computed:    true,
@@ -412,14 +345,6 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 							"unhealthy": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"http_failures": types.Int64Type,
-									"http_statuses": types.ListType{
-										ElemType: types.Int64Type,
-									},
-									"tcp_failures": types.Int64Type,
-									"timeouts":     types.Int64Type,
-								})),
 								Attributes: map[string]schema.Attribute{
 									"http_failures": schema.Int64Attribute{
 										Computed:    true,

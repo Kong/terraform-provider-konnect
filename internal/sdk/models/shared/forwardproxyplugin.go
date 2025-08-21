@@ -9,7 +9,7 @@ import (
 )
 
 type ForwardProxyPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *ForwardProxyPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *ForwardProxyPluginAfter) GetAccess() []string {
 }
 
 type ForwardProxyPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *ForwardProxyPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *ForwardProxyPluginBefore) GetAccess() []string {
 }
 
 type ForwardProxyPluginOrdering struct {
-	After  *ForwardProxyPluginAfter  `json:"after"`
-	Before *ForwardProxyPluginBefore `json:"before"`
+	After  *ForwardProxyPluginAfter  `json:"after,omitempty"`
+	Before *ForwardProxyPluginBefore `json:"before,omitempty"`
 }
 
 func (o *ForwardProxyPluginOrdering) GetAfter() *ForwardProxyPluginAfter {

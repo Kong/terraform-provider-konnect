@@ -9,7 +9,7 @@ import (
 )
 
 type JqPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *JqPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *JqPluginAfter) GetAccess() []string {
 }
 
 type JqPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *JqPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *JqPluginBefore) GetAccess() []string {
 }
 
 type JqPluginOrdering struct {
-	After  *JqPluginAfter  `json:"after"`
-	Before *JqPluginBefore `json:"before"`
+	After  *JqPluginAfter  `json:"after,omitempty"`
+	Before *JqPluginBefore `json:"before,omitempty"`
 }
 
 func (o *JqPluginOrdering) GetAfter() *JqPluginAfter {

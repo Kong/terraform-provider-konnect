@@ -9,7 +9,7 @@ import (
 )
 
 type HTTPLogPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *HTTPLogPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *HTTPLogPluginAfter) GetAccess() []string {
 }
 
 type HTTPLogPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *HTTPLogPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *HTTPLogPluginBefore) GetAccess() []string {
 }
 
 type HTTPLogPluginOrdering struct {
-	After  *HTTPLogPluginAfter  `json:"after"`
-	Before *HTTPLogPluginBefore `json:"before"`
+	After  *HTTPLogPluginAfter  `json:"after,omitempty"`
+	Before *HTTPLogPluginBefore `json:"before,omitempty"`
 }
 
 func (o *HTTPLogPluginOrdering) GetAfter() *HTTPLogPluginAfter {

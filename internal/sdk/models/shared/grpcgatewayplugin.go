@@ -9,7 +9,7 @@ import (
 )
 
 type GrpcGatewayPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *GrpcGatewayPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *GrpcGatewayPluginAfter) GetAccess() []string {
 }
 
 type GrpcGatewayPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *GrpcGatewayPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *GrpcGatewayPluginBefore) GetAccess() []string {
 }
 
 type GrpcGatewayPluginOrdering struct {
-	After  *GrpcGatewayPluginAfter  `json:"after"`
-	Before *GrpcGatewayPluginBefore `json:"before"`
+	After  *GrpcGatewayPluginAfter  `json:"after,omitempty"`
+	Before *GrpcGatewayPluginBefore `json:"before,omitempty"`
 }
 
 func (o *GrpcGatewayPluginOrdering) GetAfter() *GrpcGatewayPluginAfter {

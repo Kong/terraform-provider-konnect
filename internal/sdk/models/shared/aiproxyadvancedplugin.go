@@ -9,7 +9,7 @@ import (
 )
 
 type AiProxyAdvancedPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *AiProxyAdvancedPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *AiProxyAdvancedPluginAfter) GetAccess() []string {
 }
 
 type AiProxyAdvancedPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *AiProxyAdvancedPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *AiProxyAdvancedPluginBefore) GetAccess() []string {
 }
 
 type AiProxyAdvancedPluginOrdering struct {
-	After  *AiProxyAdvancedPluginAfter  `json:"after"`
-	Before *AiProxyAdvancedPluginBefore `json:"before"`
+	After  *AiProxyAdvancedPluginAfter  `json:"after,omitempty"`
+	Before *AiProxyAdvancedPluginBefore `json:"before,omitempty"`
 }
 
 func (o *AiProxyAdvancedPluginOrdering) GetAfter() *AiProxyAdvancedPluginAfter {

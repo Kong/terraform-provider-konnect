@@ -9,7 +9,7 @@ import (
 )
 
 type IPRestrictionPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *IPRestrictionPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *IPRestrictionPluginAfter) GetAccess() []string {
 }
 
 type IPRestrictionPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *IPRestrictionPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *IPRestrictionPluginBefore) GetAccess() []string {
 }
 
 type IPRestrictionPluginOrdering struct {
-	After  *IPRestrictionPluginAfter  `json:"after"`
-	Before *IPRestrictionPluginBefore `json:"before"`
+	After  *IPRestrictionPluginAfter  `json:"after,omitempty"`
+	Before *IPRestrictionPluginBefore `json:"before,omitempty"`
 }
 
 func (o *IPRestrictionPluginOrdering) GetAfter() *IPRestrictionPluginAfter {

@@ -9,7 +9,7 @@ import (
 )
 
 type AiRateLimitingAdvancedPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *AiRateLimitingAdvancedPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *AiRateLimitingAdvancedPluginAfter) GetAccess() []string {
 }
 
 type AiRateLimitingAdvancedPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *AiRateLimitingAdvancedPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *AiRateLimitingAdvancedPluginBefore) GetAccess() []string {
 }
 
 type AiRateLimitingAdvancedPluginOrdering struct {
-	After  *AiRateLimitingAdvancedPluginAfter  `json:"after"`
-	Before *AiRateLimitingAdvancedPluginBefore `json:"before"`
+	After  *AiRateLimitingAdvancedPluginAfter  `json:"after,omitempty"`
+	Before *AiRateLimitingAdvancedPluginBefore `json:"before,omitempty"`
 }
 
 func (o *AiRateLimitingAdvancedPluginOrdering) GetAfter() *AiRateLimitingAdvancedPluginAfter {

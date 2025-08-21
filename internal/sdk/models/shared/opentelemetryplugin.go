@@ -9,7 +9,7 @@ import (
 )
 
 type OpentelemetryPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *OpentelemetryPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *OpentelemetryPluginAfter) GetAccess() []string {
 }
 
 type OpentelemetryPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *OpentelemetryPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *OpentelemetryPluginBefore) GetAccess() []string {
 }
 
 type OpentelemetryPluginOrdering struct {
-	After  *OpentelemetryPluginAfter  `json:"after"`
-	Before *OpentelemetryPluginBefore `json:"before"`
+	After  *OpentelemetryPluginAfter  `json:"after,omitempty"`
+	Before *OpentelemetryPluginBefore `json:"before,omitempty"`
 }
 
 func (o *OpentelemetryPluginOrdering) GetAfter() *OpentelemetryPluginAfter {

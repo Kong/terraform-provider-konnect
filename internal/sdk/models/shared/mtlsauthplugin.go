@@ -9,7 +9,7 @@ import (
 )
 
 type MtlsAuthPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *MtlsAuthPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *MtlsAuthPluginAfter) GetAccess() []string {
 }
 
 type MtlsAuthPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *MtlsAuthPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *MtlsAuthPluginBefore) GetAccess() []string {
 }
 
 type MtlsAuthPluginOrdering struct {
-	After  *MtlsAuthPluginAfter  `json:"after"`
-	Before *MtlsAuthPluginBefore `json:"before"`
+	After  *MtlsAuthPluginAfter  `json:"after,omitempty"`
+	Before *MtlsAuthPluginBefore `json:"before,omitempty"`
 }
 
 func (o *MtlsAuthPluginOrdering) GetAfter() *MtlsAuthPluginAfter {

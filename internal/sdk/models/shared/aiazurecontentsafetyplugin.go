@@ -9,7 +9,7 @@ import (
 )
 
 type AiAzureContentSafetyPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *AiAzureContentSafetyPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *AiAzureContentSafetyPluginAfter) GetAccess() []string {
 }
 
 type AiAzureContentSafetyPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *AiAzureContentSafetyPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *AiAzureContentSafetyPluginBefore) GetAccess() []string {
 }
 
 type AiAzureContentSafetyPluginOrdering struct {
-	After  *AiAzureContentSafetyPluginAfter  `json:"after"`
-	Before *AiAzureContentSafetyPluginBefore `json:"before"`
+	After  *AiAzureContentSafetyPluginAfter  `json:"after,omitempty"`
+	Before *AiAzureContentSafetyPluginBefore `json:"before,omitempty"`
 }
 
 func (o *AiAzureContentSafetyPluginOrdering) GetAfter() *AiAzureContentSafetyPluginAfter {

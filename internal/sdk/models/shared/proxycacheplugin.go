@@ -9,7 +9,7 @@ import (
 )
 
 type ProxyCachePluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *ProxyCachePluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *ProxyCachePluginAfter) GetAccess() []string {
 }
 
 type ProxyCachePluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *ProxyCachePluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *ProxyCachePluginBefore) GetAccess() []string {
 }
 
 type ProxyCachePluginOrdering struct {
-	After  *ProxyCachePluginAfter  `json:"after"`
-	Before *ProxyCachePluginBefore `json:"before"`
+	After  *ProxyCachePluginAfter  `json:"after,omitempty"`
+	Before *ProxyCachePluginBefore `json:"before,omitempty"`
 }
 
 func (o *ProxyCachePluginOrdering) GetAfter() *ProxyCachePluginAfter {

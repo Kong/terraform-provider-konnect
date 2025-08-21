@@ -9,7 +9,7 @@ import (
 )
 
 type SolaceUpstreamPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *SolaceUpstreamPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *SolaceUpstreamPluginAfter) GetAccess() []string {
 }
 
 type SolaceUpstreamPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *SolaceUpstreamPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *SolaceUpstreamPluginBefore) GetAccess() []string {
 }
 
 type SolaceUpstreamPluginOrdering struct {
-	After  *SolaceUpstreamPluginAfter  `json:"after"`
-	Before *SolaceUpstreamPluginBefore `json:"before"`
+	After  *SolaceUpstreamPluginAfter  `json:"after,omitempty"`
+	Before *SolaceUpstreamPluginBefore `json:"before,omitempty"`
 }
 
 func (o *SolaceUpstreamPluginOrdering) GetAfter() *SolaceUpstreamPluginAfter {

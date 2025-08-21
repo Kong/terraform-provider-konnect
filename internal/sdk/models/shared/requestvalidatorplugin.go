@@ -9,7 +9,7 @@ import (
 )
 
 type RequestValidatorPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *RequestValidatorPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *RequestValidatorPluginAfter) GetAccess() []string {
 }
 
 type RequestValidatorPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *RequestValidatorPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *RequestValidatorPluginBefore) GetAccess() []string {
 }
 
 type RequestValidatorPluginOrdering struct {
-	After  *RequestValidatorPluginAfter  `json:"after"`
-	Before *RequestValidatorPluginBefore `json:"before"`
+	After  *RequestValidatorPluginAfter  `json:"after,omitempty"`
+	Before *RequestValidatorPluginBefore `json:"before,omitempty"`
 }
 
 func (o *RequestValidatorPluginOrdering) GetAfter() *RequestValidatorPluginAfter {

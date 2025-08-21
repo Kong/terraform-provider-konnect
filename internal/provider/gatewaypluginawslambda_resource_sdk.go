@@ -81,22 +81,18 @@ func (r *GatewayPluginAwsLambdaResourceModel) RefreshFromSharedAwsLambdaPlugin(c
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				if resp.Ordering.After.Access != nil {
-					r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-					for _, v := range resp.Ordering.After.Access {
-						r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
-					}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+				for _, v := range resp.Ordering.After.Access {
+					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
 				}
 			}
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				if resp.Ordering.Before.Access != nil {
-					r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-					for _, v := range resp.Ordering.Before.Access {
-						r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
-					}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+				for _, v := range resp.Ordering.Before.Access {
+					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
 				}
 			}
 		}
@@ -252,12 +248,9 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToSharedAwsLambdaPlugin(ctx contex
 	if r.Ordering != nil {
 		var after *shared.AwsLambdaPluginAfter
 		if r.Ordering.After != nil {
-			var access []string
-			if r.Ordering.After.Access != nil {
-				access = make([]string, 0, len(r.Ordering.After.Access))
-				for _, accessItem := range r.Ordering.After.Access {
-					access = append(access, accessItem.ValueString())
-				}
+			access := make([]string, 0, len(r.Ordering.After.Access))
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
 			}
 			after = &shared.AwsLambdaPluginAfter{
 				Access: access,
@@ -265,12 +258,9 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToSharedAwsLambdaPlugin(ctx contex
 		}
 		var before *shared.AwsLambdaPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string
-			if r.Ordering.Before.Access != nil {
-				access1 = make([]string, 0, len(r.Ordering.Before.Access))
-				for _, accessItem1 := range r.Ordering.Before.Access {
-					access1 = append(access1, accessItem1.ValueString())
-				}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
 			}
 			before = &shared.AwsLambdaPluginBefore{
 				Access: access1,

@@ -9,7 +9,7 @@ import (
 )
 
 type AiPromptDecoratorPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *AiPromptDecoratorPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *AiPromptDecoratorPluginAfter) GetAccess() []string {
 }
 
 type AiPromptDecoratorPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *AiPromptDecoratorPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *AiPromptDecoratorPluginBefore) GetAccess() []string {
 }
 
 type AiPromptDecoratorPluginOrdering struct {
-	After  *AiPromptDecoratorPluginAfter  `json:"after"`
-	Before *AiPromptDecoratorPluginBefore `json:"before"`
+	After  *AiPromptDecoratorPluginAfter  `json:"after,omitempty"`
+	Before *AiPromptDecoratorPluginBefore `json:"before,omitempty"`
 }
 
 func (o *AiPromptDecoratorPluginOrdering) GetAfter() *AiPromptDecoratorPluginAfter {

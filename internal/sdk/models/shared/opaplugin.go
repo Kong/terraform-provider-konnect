@@ -9,7 +9,7 @@ import (
 )
 
 type OpaPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *OpaPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *OpaPluginAfter) GetAccess() []string {
 }
 
 type OpaPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *OpaPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *OpaPluginBefore) GetAccess() []string {
 }
 
 type OpaPluginOrdering struct {
-	After  *OpaPluginAfter  `json:"after"`
-	Before *OpaPluginBefore `json:"before"`
+	After  *OpaPluginAfter  `json:"after,omitempty"`
+	Before *OpaPluginBefore `json:"before,omitempty"`
 }
 
 func (o *OpaPluginOrdering) GetAfter() *OpaPluginAfter {

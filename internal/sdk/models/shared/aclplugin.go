@@ -9,7 +9,7 @@ import (
 )
 
 type ACLPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *ACLPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *ACLPluginAfter) GetAccess() []string {
 }
 
 type ACLPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *ACLPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *ACLPluginBefore) GetAccess() []string {
 }
 
 type ACLPluginOrdering struct {
-	After  *ACLPluginAfter  `json:"after"`
-	Before *ACLPluginBefore `json:"before"`
+	After  *ACLPluginAfter  `json:"after,omitempty"`
+	Before *ACLPluginBefore `json:"before,omitempty"`
 }
 
 func (o *ACLPluginOrdering) GetAfter() *ACLPluginAfter {

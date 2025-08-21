@@ -9,7 +9,7 @@ import (
 )
 
 type DatadogTracingPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *DatadogTracingPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *DatadogTracingPluginAfter) GetAccess() []string {
 }
 
 type DatadogTracingPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *DatadogTracingPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *DatadogTracingPluginBefore) GetAccess() []string {
 }
 
 type DatadogTracingPluginOrdering struct {
-	After  *DatadogTracingPluginAfter  `json:"after"`
-	Before *DatadogTracingPluginBefore `json:"before"`
+	After  *DatadogTracingPluginAfter  `json:"after,omitempty"`
+	Before *DatadogTracingPluginBefore `json:"before,omitempty"`
 }
 
 func (o *DatadogTracingPluginOrdering) GetAfter() *DatadogTracingPluginAfter {

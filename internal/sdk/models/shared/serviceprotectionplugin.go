@@ -9,7 +9,7 @@ import (
 )
 
 type ServiceProtectionPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *ServiceProtectionPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *ServiceProtectionPluginAfter) GetAccess() []string {
 }
 
 type ServiceProtectionPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *ServiceProtectionPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *ServiceProtectionPluginBefore) GetAccess() []string {
 }
 
 type ServiceProtectionPluginOrdering struct {
-	After  *ServiceProtectionPluginAfter  `json:"after"`
-	Before *ServiceProtectionPluginBefore `json:"before"`
+	After  *ServiceProtectionPluginAfter  `json:"after,omitempty"`
+	Before *ServiceProtectionPluginBefore `json:"before,omitempty"`
 }
 
 func (o *ServiceProtectionPluginOrdering) GetAfter() *ServiceProtectionPluginAfter {

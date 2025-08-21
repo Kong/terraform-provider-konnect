@@ -9,7 +9,7 @@ import (
 )
 
 type PrometheusPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *PrometheusPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *PrometheusPluginAfter) GetAccess() []string {
 }
 
 type PrometheusPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *PrometheusPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *PrometheusPluginBefore) GetAccess() []string {
 }
 
 type PrometheusPluginOrdering struct {
-	After  *PrometheusPluginAfter  `json:"after"`
-	Before *PrometheusPluginBefore `json:"before"`
+	After  *PrometheusPluginAfter  `json:"after,omitempty"`
+	Before *PrometheusPluginBefore `json:"before,omitempty"`
 }
 
 func (o *PrometheusPluginOrdering) GetAfter() *PrometheusPluginAfter {

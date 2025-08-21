@@ -9,7 +9,7 @@ import (
 )
 
 type SyslogPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *SyslogPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *SyslogPluginAfter) GetAccess() []string {
 }
 
 type SyslogPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *SyslogPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *SyslogPluginBefore) GetAccess() []string {
 }
 
 type SyslogPluginOrdering struct {
-	After  *SyslogPluginAfter  `json:"after"`
-	Before *SyslogPluginBefore `json:"before"`
+	After  *SyslogPluginAfter  `json:"after,omitempty"`
+	Before *SyslogPluginBefore `json:"before,omitempty"`
 }
 
 func (o *SyslogPluginOrdering) GetAfter() *SyslogPluginAfter {

@@ -9,7 +9,7 @@ import (
 )
 
 type TCPLogPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *TCPLogPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *TCPLogPluginAfter) GetAccess() []string {
 }
 
 type TCPLogPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *TCPLogPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *TCPLogPluginBefore) GetAccess() []string {
 }
 
 type TCPLogPluginOrdering struct {
-	After  *TCPLogPluginAfter  `json:"after"`
-	Before *TCPLogPluginBefore `json:"before"`
+	After  *TCPLogPluginAfter  `json:"after,omitempty"`
+	Before *TCPLogPluginBefore `json:"before,omitempty"`
 }
 
 func (o *TCPLogPluginOrdering) GetAfter() *TCPLogPluginAfter {

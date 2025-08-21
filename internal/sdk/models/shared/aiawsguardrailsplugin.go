@@ -9,7 +9,7 @@ import (
 )
 
 type AiAwsGuardrailsPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *AiAwsGuardrailsPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *AiAwsGuardrailsPluginAfter) GetAccess() []string {
 }
 
 type AiAwsGuardrailsPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *AiAwsGuardrailsPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *AiAwsGuardrailsPluginBefore) GetAccess() []string {
 }
 
 type AiAwsGuardrailsPluginOrdering struct {
-	After  *AiAwsGuardrailsPluginAfter  `json:"after"`
-	Before *AiAwsGuardrailsPluginBefore `json:"before"`
+	After  *AiAwsGuardrailsPluginAfter  `json:"after,omitempty"`
+	Before *AiAwsGuardrailsPluginBefore `json:"before,omitempty"`
 }
 
 func (o *AiAwsGuardrailsPluginOrdering) GetAfter() *AiAwsGuardrailsPluginAfter {

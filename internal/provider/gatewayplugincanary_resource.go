@@ -226,13 +226,9 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"access": types.ListType{
-								ElemType: types.StringType,
-							},
-						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
+								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -241,13 +237,9 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 					"before": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"access": types.ListType{
-								ElemType: types.StringType,
-							},
-						})),
 						Attributes: map[string]schema.Attribute{
 							"access": schema.ListAttribute{
+								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},

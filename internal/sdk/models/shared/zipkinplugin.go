@@ -9,7 +9,7 @@ import (
 )
 
 type ZipkinPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *ZipkinPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *ZipkinPluginAfter) GetAccess() []string {
 }
 
 type ZipkinPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *ZipkinPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *ZipkinPluginBefore) GetAccess() []string {
 }
 
 type ZipkinPluginOrdering struct {
-	After  *ZipkinPluginAfter  `json:"after"`
-	Before *ZipkinPluginBefore `json:"before"`
+	After  *ZipkinPluginAfter  `json:"after,omitempty"`
+	Before *ZipkinPluginBefore `json:"before,omitempty"`
 }
 
 func (o *ZipkinPluginOrdering) GetAfter() *ZipkinPluginAfter {

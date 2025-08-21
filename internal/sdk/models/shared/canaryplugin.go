@@ -9,7 +9,7 @@ import (
 )
 
 type CanaryPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *CanaryPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *CanaryPluginAfter) GetAccess() []string {
 }
 
 type CanaryPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *CanaryPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *CanaryPluginBefore) GetAccess() []string {
 }
 
 type CanaryPluginOrdering struct {
-	After  *CanaryPluginAfter  `json:"after"`
-	Before *CanaryPluginBefore `json:"before"`
+	After  *CanaryPluginAfter  `json:"after,omitempty"`
+	Before *CanaryPluginBefore `json:"before,omitempty"`
 }
 
 func (o *CanaryPluginOrdering) GetAfter() *CanaryPluginAfter {

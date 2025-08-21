@@ -9,7 +9,7 @@ import (
 )
 
 type WebsocketValidatorPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *WebsocketValidatorPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *WebsocketValidatorPluginAfter) GetAccess() []string {
 }
 
 type WebsocketValidatorPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *WebsocketValidatorPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *WebsocketValidatorPluginBefore) GetAccess() []string {
 }
 
 type WebsocketValidatorPluginOrdering struct {
-	After  *WebsocketValidatorPluginAfter  `json:"after"`
-	Before *WebsocketValidatorPluginBefore `json:"before"`
+	After  *WebsocketValidatorPluginAfter  `json:"after,omitempty"`
+	Before *WebsocketValidatorPluginBefore `json:"before,omitempty"`
 }
 
 func (o *WebsocketValidatorPluginOrdering) GetAfter() *WebsocketValidatorPluginAfter {

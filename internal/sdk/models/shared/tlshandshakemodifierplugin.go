@@ -9,7 +9,7 @@ import (
 )
 
 type TLSHandshakeModifierPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *TLSHandshakeModifierPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *TLSHandshakeModifierPluginAfter) GetAccess() []string {
 }
 
 type TLSHandshakeModifierPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *TLSHandshakeModifierPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *TLSHandshakeModifierPluginBefore) GetAccess() []string {
 }
 
 type TLSHandshakeModifierPluginOrdering struct {
-	After  *TLSHandshakeModifierPluginAfter  `json:"after"`
-	Before *TLSHandshakeModifierPluginBefore `json:"before"`
+	After  *TLSHandshakeModifierPluginAfter  `json:"after,omitempty"`
+	Before *TLSHandshakeModifierPluginBefore `json:"before,omitempty"`
 }
 
 func (o *TLSHandshakeModifierPluginOrdering) GetAfter() *TLSHandshakeModifierPluginAfter {

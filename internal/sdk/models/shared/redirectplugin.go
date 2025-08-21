@@ -9,7 +9,7 @@ import (
 )
 
 type RedirectPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *RedirectPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *RedirectPluginAfter) GetAccess() []string {
 }
 
 type RedirectPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *RedirectPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *RedirectPluginBefore) GetAccess() []string {
 }
 
 type RedirectPluginOrdering struct {
-	After  *RedirectPluginAfter  `json:"after"`
-	Before *RedirectPluginBefore `json:"before"`
+	After  *RedirectPluginAfter  `json:"after,omitempty"`
+	Before *RedirectPluginBefore `json:"before,omitempty"`
 }
 
 func (o *RedirectPluginOrdering) GetAfter() *RedirectPluginAfter {

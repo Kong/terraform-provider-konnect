@@ -9,7 +9,7 @@ import (
 )
 
 type WebsocketSizeLimitPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *WebsocketSizeLimitPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *WebsocketSizeLimitPluginAfter) GetAccess() []string {
 }
 
 type WebsocketSizeLimitPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *WebsocketSizeLimitPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *WebsocketSizeLimitPluginBefore) GetAccess() []string {
 }
 
 type WebsocketSizeLimitPluginOrdering struct {
-	After  *WebsocketSizeLimitPluginAfter  `json:"after"`
-	Before *WebsocketSizeLimitPluginBefore `json:"before"`
+	After  *WebsocketSizeLimitPluginAfter  `json:"after,omitempty"`
+	Before *WebsocketSizeLimitPluginBefore `json:"before,omitempty"`
 }
 
 func (o *WebsocketSizeLimitPluginOrdering) GetAfter() *WebsocketSizeLimitPluginAfter {

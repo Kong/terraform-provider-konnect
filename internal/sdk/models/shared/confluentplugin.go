@@ -9,7 +9,7 @@ import (
 )
 
 type ConfluentPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *ConfluentPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *ConfluentPluginAfter) GetAccess() []string {
 }
 
 type ConfluentPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *ConfluentPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *ConfluentPluginBefore) GetAccess() []string {
 }
 
 type ConfluentPluginOrdering struct {
-	After  *ConfluentPluginAfter  `json:"after"`
-	Before *ConfluentPluginBefore `json:"before"`
+	After  *ConfluentPluginAfter  `json:"after,omitempty"`
+	Before *ConfluentPluginBefore `json:"before,omitempty"`
 }
 
 func (o *ConfluentPluginOrdering) GetAfter() *ConfluentPluginAfter {

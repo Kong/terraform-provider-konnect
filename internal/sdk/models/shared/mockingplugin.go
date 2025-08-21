@@ -9,7 +9,7 @@ import (
 )
 
 type MockingPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *MockingPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *MockingPluginAfter) GetAccess() []string {
 }
 
 type MockingPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *MockingPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *MockingPluginBefore) GetAccess() []string {
 }
 
 type MockingPluginOrdering struct {
-	After  *MockingPluginAfter  `json:"after"`
-	Before *MockingPluginBefore `json:"before"`
+	After  *MockingPluginAfter  `json:"after,omitempty"`
+	Before *MockingPluginBefore `json:"before,omitempty"`
 }
 
 func (o *MockingPluginOrdering) GetAfter() *MockingPluginAfter {

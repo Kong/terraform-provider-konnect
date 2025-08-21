@@ -9,7 +9,7 @@ import (
 )
 
 type FileLogPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *FileLogPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *FileLogPluginAfter) GetAccess() []string {
 }
 
 type FileLogPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *FileLogPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *FileLogPluginBefore) GetAccess() []string {
 }
 
 type FileLogPluginOrdering struct {
-	After  *FileLogPluginAfter  `json:"after"`
-	Before *FileLogPluginBefore `json:"before"`
+	After  *FileLogPluginAfter  `json:"after,omitempty"`
+	Before *FileLogPluginBefore `json:"before,omitempty"`
 }
 
 func (o *FileLogPluginOrdering) GetAfter() *FileLogPluginAfter {

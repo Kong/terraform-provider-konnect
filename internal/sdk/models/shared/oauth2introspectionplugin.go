@@ -9,7 +9,7 @@ import (
 )
 
 type Oauth2IntrospectionPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *Oauth2IntrospectionPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *Oauth2IntrospectionPluginAfter) GetAccess() []string {
 }
 
 type Oauth2IntrospectionPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *Oauth2IntrospectionPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *Oauth2IntrospectionPluginBefore) GetAccess() []string {
 }
 
 type Oauth2IntrospectionPluginOrdering struct {
-	After  *Oauth2IntrospectionPluginAfter  `json:"after"`
-	Before *Oauth2IntrospectionPluginBefore `json:"before"`
+	After  *Oauth2IntrospectionPluginAfter  `json:"after,omitempty"`
+	Before *Oauth2IntrospectionPluginBefore `json:"before,omitempty"`
 }
 
 func (o *Oauth2IntrospectionPluginOrdering) GetAfter() *Oauth2IntrospectionPluginAfter {

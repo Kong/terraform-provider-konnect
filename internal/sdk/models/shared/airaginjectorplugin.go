@@ -9,7 +9,7 @@ import (
 )
 
 type AiRagInjectorPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *AiRagInjectorPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *AiRagInjectorPluginAfter) GetAccess() []string {
 }
 
 type AiRagInjectorPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *AiRagInjectorPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *AiRagInjectorPluginBefore) GetAccess() []string {
 }
 
 type AiRagInjectorPluginOrdering struct {
-	After  *AiRagInjectorPluginAfter  `json:"after"`
-	Before *AiRagInjectorPluginBefore `json:"before"`
+	After  *AiRagInjectorPluginAfter  `json:"after,omitempty"`
+	Before *AiRagInjectorPluginBefore `json:"before,omitempty"`
 }
 
 func (o *AiRagInjectorPluginOrdering) GetAfter() *AiRagInjectorPluginAfter {

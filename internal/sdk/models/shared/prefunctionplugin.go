@@ -9,7 +9,7 @@ import (
 )
 
 type PreFunctionPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *PreFunctionPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *PreFunctionPluginAfter) GetAccess() []string {
 }
 
 type PreFunctionPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *PreFunctionPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *PreFunctionPluginBefore) GetAccess() []string {
 }
 
 type PreFunctionPluginOrdering struct {
-	After  *PreFunctionPluginAfter  `json:"after"`
-	Before *PreFunctionPluginBefore `json:"before"`
+	After  *PreFunctionPluginAfter  `json:"after,omitempty"`
+	Before *PreFunctionPluginBefore `json:"before,omitempty"`
 }
 
 func (o *PreFunctionPluginOrdering) GetAfter() *PreFunctionPluginAfter {

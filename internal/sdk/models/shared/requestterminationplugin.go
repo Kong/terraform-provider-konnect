@@ -9,7 +9,7 @@ import (
 )
 
 type RequestTerminationPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *RequestTerminationPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *RequestTerminationPluginAfter) GetAccess() []string {
 }
 
 type RequestTerminationPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *RequestTerminationPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *RequestTerminationPluginBefore) GetAccess() []string {
 }
 
 type RequestTerminationPluginOrdering struct {
-	After  *RequestTerminationPluginAfter  `json:"after"`
-	Before *RequestTerminationPluginBefore `json:"before"`
+	After  *RequestTerminationPluginAfter  `json:"after,omitempty"`
+	Before *RequestTerminationPluginBefore `json:"before,omitempty"`
 }
 
 func (o *RequestTerminationPluginOrdering) GetAfter() *RequestTerminationPluginAfter {

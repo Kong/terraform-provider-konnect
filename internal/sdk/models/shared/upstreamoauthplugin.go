@@ -9,7 +9,7 @@ import (
 )
 
 type UpstreamOauthPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *UpstreamOauthPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *UpstreamOauthPluginAfter) GetAccess() []string {
 }
 
 type UpstreamOauthPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *UpstreamOauthPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *UpstreamOauthPluginBefore) GetAccess() []string {
 }
 
 type UpstreamOauthPluginOrdering struct {
-	After  *UpstreamOauthPluginAfter  `json:"after"`
-	Before *UpstreamOauthPluginBefore `json:"before"`
+	After  *UpstreamOauthPluginAfter  `json:"after,omitempty"`
+	Before *UpstreamOauthPluginBefore `json:"before,omitempty"`
 }
 
 func (o *UpstreamOauthPluginOrdering) GetAfter() *UpstreamOauthPluginAfter {

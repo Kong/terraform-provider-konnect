@@ -9,7 +9,7 @@ import (
 )
 
 type XMLThreatProtectionPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *XMLThreatProtectionPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *XMLThreatProtectionPluginAfter) GetAccess() []string {
 }
 
 type XMLThreatProtectionPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *XMLThreatProtectionPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *XMLThreatProtectionPluginBefore) GetAccess() []string {
 }
 
 type XMLThreatProtectionPluginOrdering struct {
-	After  *XMLThreatProtectionPluginAfter  `json:"after"`
-	Before *XMLThreatProtectionPluginBefore `json:"before"`
+	After  *XMLThreatProtectionPluginAfter  `json:"after,omitempty"`
+	Before *XMLThreatProtectionPluginBefore `json:"before,omitempty"`
 }
 
 func (o *XMLThreatProtectionPluginOrdering) GetAfter() *XMLThreatProtectionPluginAfter {

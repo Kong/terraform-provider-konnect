@@ -9,7 +9,7 @@ import (
 )
 
 type CorrelationIDPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *CorrelationIDPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *CorrelationIDPluginAfter) GetAccess() []string {
 }
 
 type CorrelationIDPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *CorrelationIDPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *CorrelationIDPluginBefore) GetAccess() []string {
 }
 
 type CorrelationIDPluginOrdering struct {
-	After  *CorrelationIDPluginAfter  `json:"after"`
-	Before *CorrelationIDPluginBefore `json:"before"`
+	After  *CorrelationIDPluginAfter  `json:"after,omitempty"`
+	Before *CorrelationIDPluginBefore `json:"before,omitempty"`
 }
 
 func (o *CorrelationIDPluginOrdering) GetAfter() *CorrelationIDPluginAfter {

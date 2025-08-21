@@ -9,7 +9,7 @@ import (
 )
 
 type RequestCalloutPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *RequestCalloutPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *RequestCalloutPluginAfter) GetAccess() []string {
 }
 
 type RequestCalloutPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *RequestCalloutPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *RequestCalloutPluginBefore) GetAccess() []string {
 }
 
 type RequestCalloutPluginOrdering struct {
-	After  *RequestCalloutPluginAfter  `json:"after"`
-	Before *RequestCalloutPluginBefore `json:"before"`
+	After  *RequestCalloutPluginAfter  `json:"after,omitempty"`
+	Before *RequestCalloutPluginBefore `json:"before,omitempty"`
 }
 
 func (o *RequestCalloutPluginOrdering) GetAfter() *RequestCalloutPluginAfter {

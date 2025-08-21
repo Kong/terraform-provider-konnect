@@ -9,7 +9,7 @@ import (
 )
 
 type BotDetectionPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *BotDetectionPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *BotDetectionPluginAfter) GetAccess() []string {
 }
 
 type BotDetectionPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *BotDetectionPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *BotDetectionPluginBefore) GetAccess() []string {
 }
 
 type BotDetectionPluginOrdering struct {
-	After  *BotDetectionPluginAfter  `json:"after"`
-	Before *BotDetectionPluginBefore `json:"before"`
+	After  *BotDetectionPluginAfter  `json:"after,omitempty"`
+	Before *BotDetectionPluginBefore `json:"before,omitempty"`
 }
 
 func (o *BotDetectionPluginOrdering) GetAfter() *BotDetectionPluginAfter {

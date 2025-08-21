@@ -9,7 +9,7 @@ import (
 )
 
 type AiSanitizerPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *AiSanitizerPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *AiSanitizerPluginAfter) GetAccess() []string {
 }
 
 type AiSanitizerPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *AiSanitizerPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *AiSanitizerPluginBefore) GetAccess() []string {
 }
 
 type AiSanitizerPluginOrdering struct {
-	After  *AiSanitizerPluginAfter  `json:"after"`
-	Before *AiSanitizerPluginBefore `json:"before"`
+	After  *AiSanitizerPluginAfter  `json:"after,omitempty"`
+	Before *AiSanitizerPluginBefore `json:"before,omitempty"`
 }
 
 func (o *AiSanitizerPluginOrdering) GetAfter() *AiSanitizerPluginAfter {

@@ -474,9 +474,9 @@ func (o *UpstreamUnhealthy) GetTimeouts() *int64 {
 }
 
 type Passive struct {
-	Healthy   *UpstreamHealthy          `json:"healthy"`
+	Healthy   *UpstreamHealthy          `json:"healthy,omitempty"`
 	Type      *UpstreamHealthchecksType `default:"http" json:"type"`
-	Unhealthy *UpstreamUnhealthy        `json:"unhealthy"`
+	Unhealthy *UpstreamUnhealthy        `json:"unhealthy,omitempty"`
 }
 
 func (p Passive) MarshalJSON() ([]byte, error) {
@@ -577,7 +577,7 @@ type Upstream struct {
 	HashOnQueryArg *string `default:"null" json:"hash_on_query_arg"`
 	// The name of the route URI capture to take the value from as hash input. Only required when `hash_on` is set to `uri_capture`.
 	HashOnURICapture *string       `default:"null" json:"hash_on_uri_capture"`
-	Healthchecks     *Healthchecks `json:"healthchecks"`
+	Healthchecks     *Healthchecks `json:"healthchecks,omitempty"`
 	// The hostname to be used as `Host` header when proxying requests through Kong.
 	HostHeader *string `default:"null" json:"host_header"`
 	// A string representing a UUID (universally unique identifier).

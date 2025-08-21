@@ -9,7 +9,7 @@ import (
 )
 
 type RequestSizeLimitingPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *RequestSizeLimitingPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *RequestSizeLimitingPluginAfter) GetAccess() []string {
 }
 
 type RequestSizeLimitingPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *RequestSizeLimitingPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *RequestSizeLimitingPluginBefore) GetAccess() []string {
 }
 
 type RequestSizeLimitingPluginOrdering struct {
-	After  *RequestSizeLimitingPluginAfter  `json:"after"`
-	Before *RequestSizeLimitingPluginBefore `json:"before"`
+	After  *RequestSizeLimitingPluginAfter  `json:"after,omitempty"`
+	Before *RequestSizeLimitingPluginBefore `json:"before,omitempty"`
 }
 
 func (o *RequestSizeLimitingPluginOrdering) GetAfter() *RequestSizeLimitingPluginAfter {

@@ -9,7 +9,7 @@ import (
 )
 
 type RouteByHeaderPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *RouteByHeaderPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *RouteByHeaderPluginAfter) GetAccess() []string {
 }
 
 type RouteByHeaderPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *RouteByHeaderPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *RouteByHeaderPluginBefore) GetAccess() []string {
 }
 
 type RouteByHeaderPluginOrdering struct {
-	After  *RouteByHeaderPluginAfter  `json:"after"`
-	Before *RouteByHeaderPluginBefore `json:"before"`
+	After  *RouteByHeaderPluginAfter  `json:"after,omitempty"`
+	Before *RouteByHeaderPluginBefore `json:"before,omitempty"`
 }
 
 func (o *RouteByHeaderPluginOrdering) GetAfter() *RouteByHeaderPluginAfter {

@@ -9,7 +9,7 @@ import (
 )
 
 type DatakitPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *DatakitPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *DatakitPluginAfter) GetAccess() []string {
 }
 
 type DatakitPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *DatakitPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *DatakitPluginBefore) GetAccess() []string {
 }
 
 type DatakitPluginOrdering struct {
-	After  *DatakitPluginAfter  `json:"after"`
-	Before *DatakitPluginBefore `json:"before"`
+	After  *DatakitPluginAfter  `json:"after,omitempty"`
+	Before *DatakitPluginBefore `json:"before,omitempty"`
 }
 
 func (o *DatakitPluginOrdering) GetAfter() *DatakitPluginAfter {

@@ -9,7 +9,7 @@ import (
 )
 
 type InjectionProtectionPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *InjectionProtectionPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *InjectionProtectionPluginAfter) GetAccess() []string {
 }
 
 type InjectionProtectionPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *InjectionProtectionPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *InjectionProtectionPluginBefore) GetAccess() []string {
 }
 
 type InjectionProtectionPluginOrdering struct {
-	After  *InjectionProtectionPluginAfter  `json:"after"`
-	Before *InjectionProtectionPluginBefore `json:"before"`
+	After  *InjectionProtectionPluginAfter  `json:"after,omitempty"`
+	Before *InjectionProtectionPluginBefore `json:"before,omitempty"`
 }
 
 func (o *InjectionProtectionPluginOrdering) GetAfter() *InjectionProtectionPluginAfter {

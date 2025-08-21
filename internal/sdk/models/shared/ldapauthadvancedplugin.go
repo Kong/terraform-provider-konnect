@@ -9,7 +9,7 @@ import (
 )
 
 type LdapAuthAdvancedPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *LdapAuthAdvancedPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *LdapAuthAdvancedPluginAfter) GetAccess() []string {
 }
 
 type LdapAuthAdvancedPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *LdapAuthAdvancedPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *LdapAuthAdvancedPluginBefore) GetAccess() []string {
 }
 
 type LdapAuthAdvancedPluginOrdering struct {
-	After  *LdapAuthAdvancedPluginAfter  `json:"after"`
-	Before *LdapAuthAdvancedPluginBefore `json:"before"`
+	After  *LdapAuthAdvancedPluginAfter  `json:"after,omitempty"`
+	Before *LdapAuthAdvancedPluginBefore `json:"before,omitempty"`
 }
 
 func (o *LdapAuthAdvancedPluginOrdering) GetAfter() *LdapAuthAdvancedPluginAfter {

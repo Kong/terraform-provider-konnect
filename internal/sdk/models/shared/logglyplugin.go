@@ -9,7 +9,7 @@ import (
 )
 
 type LogglyPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *LogglyPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *LogglyPluginAfter) GetAccess() []string {
 }
 
 type LogglyPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *LogglyPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *LogglyPluginBefore) GetAccess() []string {
 }
 
 type LogglyPluginOrdering struct {
-	After  *LogglyPluginAfter  `json:"after"`
-	Before *LogglyPluginBefore `json:"before"`
+	After  *LogglyPluginAfter  `json:"after,omitempty"`
+	Before *LogglyPluginBefore `json:"before,omitempty"`
 }
 
 func (o *LogglyPluginOrdering) GetAfter() *LogglyPluginAfter {

@@ -169,8 +169,8 @@ type PortalCustomization struct {
 	Theme        *Theme        `json:"theme"`
 	Layout       *string       `json:"layout,omitempty"`
 	CSS          *string       `default:"null" json:"css"`
-	Menu         *Menu         `json:"menu"`
-	SpecRenderer *SpecRenderer `json:"spec_renderer"`
+	Menu         *Menu         `json:"menu,omitempty"`
+	SpecRenderer *SpecRenderer `json:"spec_renderer,omitempty"`
 	Robots       *string       `default:"null" json:"robots"`
 }
 

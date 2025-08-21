@@ -9,7 +9,7 @@ import (
 )
 
 type RouteTransformerAdvancedPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *RouteTransformerAdvancedPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *RouteTransformerAdvancedPluginAfter) GetAccess() []string {
 }
 
 type RouteTransformerAdvancedPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *RouteTransformerAdvancedPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *RouteTransformerAdvancedPluginBefore) GetAccess() []string {
 }
 
 type RouteTransformerAdvancedPluginOrdering struct {
-	After  *RouteTransformerAdvancedPluginAfter  `json:"after"`
-	Before *RouteTransformerAdvancedPluginBefore `json:"before"`
+	After  *RouteTransformerAdvancedPluginAfter  `json:"after,omitempty"`
+	Before *RouteTransformerAdvancedPluginBefore `json:"before,omitempty"`
 }
 
 func (o *RouteTransformerAdvancedPluginOrdering) GetAfter() *RouteTransformerAdvancedPluginAfter {

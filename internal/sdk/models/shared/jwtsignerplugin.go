@@ -9,7 +9,7 @@ import (
 )
 
 type JwtSignerPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *JwtSignerPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *JwtSignerPluginAfter) GetAccess() []string {
 }
 
 type JwtSignerPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *JwtSignerPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *JwtSignerPluginBefore) GetAccess() []string {
 }
 
 type JwtSignerPluginOrdering struct {
-	After  *JwtSignerPluginAfter  `json:"after"`
-	Before *JwtSignerPluginBefore `json:"before"`
+	After  *JwtSignerPluginAfter  `json:"after,omitempty"`
+	Before *JwtSignerPluginBefore `json:"before,omitempty"`
 }
 
 func (o *JwtSignerPluginOrdering) GetAfter() *JwtSignerPluginAfter {

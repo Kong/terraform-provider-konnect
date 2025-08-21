@@ -9,7 +9,7 @@ import (
 )
 
 type BasicAuthPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *BasicAuthPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *BasicAuthPluginAfter) GetAccess() []string {
 }
 
 type BasicAuthPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *BasicAuthPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *BasicAuthPluginBefore) GetAccess() []string {
 }
 
 type BasicAuthPluginOrdering struct {
-	After  *BasicAuthPluginAfter  `json:"after"`
-	Before *BasicAuthPluginBefore `json:"before"`
+	After  *BasicAuthPluginAfter  `json:"after,omitempty"`
+	Before *BasicAuthPluginBefore `json:"before,omitempty"`
 }
 
 func (o *BasicAuthPluginOrdering) GetAfter() *BasicAuthPluginAfter {

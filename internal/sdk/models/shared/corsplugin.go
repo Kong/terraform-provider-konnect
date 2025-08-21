@@ -9,7 +9,7 @@ import (
 )
 
 type CorsPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *CorsPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *CorsPluginAfter) GetAccess() []string {
 }
 
 type CorsPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *CorsPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *CorsPluginBefore) GetAccess() []string {
 }
 
 type CorsPluginOrdering struct {
-	After  *CorsPluginAfter  `json:"after"`
-	Before *CorsPluginBefore `json:"before"`
+	After  *CorsPluginAfter  `json:"after,omitempty"`
+	Before *CorsPluginBefore `json:"before,omitempty"`
 }
 
 func (o *CorsPluginOrdering) GetAfter() *CorsPluginAfter {

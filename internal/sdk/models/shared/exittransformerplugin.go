@@ -9,7 +9,7 @@ import (
 )
 
 type ExitTransformerPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *ExitTransformerPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *ExitTransformerPluginAfter) GetAccess() []string {
 }
 
 type ExitTransformerPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *ExitTransformerPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *ExitTransformerPluginBefore) GetAccess() []string {
 }
 
 type ExitTransformerPluginOrdering struct {
-	After  *ExitTransformerPluginAfter  `json:"after"`
-	Before *ExitTransformerPluginBefore `json:"before"`
+	After  *ExitTransformerPluginAfter  `json:"after,omitempty"`
+	Before *ExitTransformerPluginBefore `json:"before,omitempty"`
 }
 
 func (o *ExitTransformerPluginOrdering) GetAfter() *ExitTransformerPluginAfter {

@@ -9,7 +9,7 @@ import (
 )
 
 type OasValidationPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *OasValidationPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *OasValidationPluginAfter) GetAccess() []string {
 }
 
 type OasValidationPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *OasValidationPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *OasValidationPluginBefore) GetAccess() []string {
 }
 
 type OasValidationPluginOrdering struct {
-	After  *OasValidationPluginAfter  `json:"after"`
-	Before *OasValidationPluginBefore `json:"before"`
+	After  *OasValidationPluginAfter  `json:"after,omitempty"`
+	Before *OasValidationPluginBefore `json:"before,omitempty"`
 }
 
 func (o *OasValidationPluginOrdering) GetAfter() *OasValidationPluginAfter {

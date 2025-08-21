@@ -9,7 +9,7 @@ import (
 )
 
 type DegraphqlPluginAfter struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *DegraphqlPluginAfter) GetAccess() []string {
@@ -20,7 +20,7 @@ func (o *DegraphqlPluginAfter) GetAccess() []string {
 }
 
 type DegraphqlPluginBefore struct {
-	Access []string `json:"access"`
+	Access []string `json:"access,omitempty"`
 }
 
 func (o *DegraphqlPluginBefore) GetAccess() []string {
@@ -31,8 +31,8 @@ func (o *DegraphqlPluginBefore) GetAccess() []string {
 }
 
 type DegraphqlPluginOrdering struct {
-	After  *DegraphqlPluginAfter  `json:"after"`
-	Before *DegraphqlPluginBefore `json:"before"`
+	After  *DegraphqlPluginAfter  `json:"after,omitempty"`
+	Before *DegraphqlPluginBefore `json:"before,omitempty"`
 }
 
 func (o *DegraphqlPluginOrdering) GetAfter() *DegraphqlPluginAfter {
