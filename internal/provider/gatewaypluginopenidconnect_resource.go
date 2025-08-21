@@ -202,6 +202,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Description: `Cache the token endpoint requests. Default: true`,
 					},
 					"cache_tokens_salt": schema.StringAttribute{
+						Computed:    true,
 						Optional:    true,
 						Description: `Salt used for generating the cache key that is used for caching the token endpoint requests.`,
 					},
@@ -361,43 +362,6 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"cluster_cache_redis": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"cluster_max_redirections": types.Int64Type,
-							"cluster_nodes": types.ListType{
-								ElemType: types.ObjectType{
-									AttrTypes: map[string]attr.Type{
-										`ip`:   types.StringType,
-										`port`: types.Int64Type,
-									},
-								},
-							},
-							"connect_timeout":       types.Int64Type,
-							"connection_is_proxied": types.BoolType,
-							"database":              types.Int64Type,
-							"host":                  types.StringType,
-							"keepalive_backlog":     types.Int64Type,
-							"keepalive_pool_size":   types.Int64Type,
-							"password":              types.StringType,
-							"port":                  types.Int64Type,
-							"read_timeout":          types.Int64Type,
-							"send_timeout":          types.Int64Type,
-							"sentinel_master":       types.StringType,
-							"sentinel_nodes": types.ListType{
-								ElemType: types.ObjectType{
-									AttrTypes: map[string]attr.Type{
-										`host`: types.StringType,
-										`port`: types.Int64Type,
-									},
-								},
-							},
-							"sentinel_password": types.StringType,
-							"sentinel_role":     types.StringType,
-							"sentinel_username": types.StringType,
-							"server_name":       types.StringType,
-							"ssl":               types.BoolType,
-							"ssl_verify":        types.BoolType,
-							"username":          types.StringType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"cluster_max_redirections": schema.Int64Attribute{
 								Computed:    true,
@@ -766,8 +730,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"http_version": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     float64default.StaticFloat64(1.1),
-						Description: `The HTTP version used for the requests by this plugin: - ` + "`" + `1.1` + "`" + `: HTTP 1.1 (the default) - ` + "`" + `1.0` + "`" + `: HTTP 1.0. Default: 1.1`,
+						Description: `The HTTP version used for the requests by this plugin: - ` + "`" + `1.1` + "`" + `: HTTP 1.1 (the default) - ` + "`" + `1.0` + "`" + `: HTTP 1.0.`,
 					},
 					"https_proxy": schema.StringAttribute{
 						Optional:    true,
@@ -1095,45 +1058,6 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"redis": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"cluster_max_redirections": types.Int64Type,
-							"cluster_nodes": types.ListType{
-								ElemType: types.ObjectType{
-									AttrTypes: map[string]attr.Type{
-										`ip`:   types.StringType,
-										`port`: types.Int64Type,
-									},
-								},
-							},
-							"connect_timeout":       types.Int64Type,
-							"connection_is_proxied": types.BoolType,
-							"database":              types.Int64Type,
-							"host":                  types.StringType,
-							"keepalive_backlog":     types.Int64Type,
-							"keepalive_pool_size":   types.Int64Type,
-							"password":              types.StringType,
-							"port":                  types.Int64Type,
-							"prefix":                types.StringType,
-							"read_timeout":          types.Int64Type,
-							"send_timeout":          types.Int64Type,
-							"sentinel_master":       types.StringType,
-							"sentinel_nodes": types.ListType{
-								ElemType: types.ObjectType{
-									AttrTypes: map[string]attr.Type{
-										`host`: types.StringType,
-										`port`: types.Int64Type,
-									},
-								},
-							},
-							"sentinel_password": types.StringType,
-							"sentinel_role":     types.StringType,
-							"sentinel_username": types.StringType,
-							"server_name":       types.StringType,
-							"socket":            types.StringType,
-							"ssl":               types.BoolType,
-							"ssl_verify":        types.BoolType,
-							"username":          types.StringType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"cluster_max_redirections": schema.Int64Attribute{
 								Computed:    true,

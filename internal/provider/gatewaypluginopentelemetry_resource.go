@@ -75,51 +75,6 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"batch_flush_delay": types.Int64Type,
-					"batch_span_count":  types.Int64Type,
-					"connect_timeout":   types.Int64Type,
-					"header_type":       types.StringType,
-					"headers": types.MapType{
-						ElemType: jsontypes.NormalizedType{},
-					},
-					"http_response_header_for_traceid": types.StringType,
-					"logs_endpoint":                    types.StringType,
-					"propagation": types.ObjectType{
-						AttrTypes: map[string]attr.Type{
-							`clear`: types.ListType{
-								ElemType: types.StringType,
-							},
-							`default_format`: types.StringType,
-							`extract`: types.ListType{
-								ElemType: types.StringType,
-							},
-							`inject`: types.ListType{
-								ElemType: types.StringType,
-							},
-						},
-					},
-					"queue": types.ObjectType{
-						AttrTypes: map[string]attr.Type{
-							`concurrency_limit`:    types.Int64Type,
-							`initial_retry_delay`:  types.Float64Type,
-							`max_batch_size`:       types.Int64Type,
-							`max_bytes`:            types.Int64Type,
-							`max_coalescing_delay`: types.Float64Type,
-							`max_entries`:          types.Int64Type,
-							`max_retry_delay`:      types.Float64Type,
-							`max_retry_time`:       types.Float64Type,
-						},
-					},
-					"read_timeout": types.Int64Type,
-					"resource_attributes": types.MapType{
-						ElemType: jsontypes.NormalizedType{},
-					},
-					"sampling_rate":     types.Float64Type,
-					"sampling_strategy": types.StringType,
-					"send_timeout":      types.Int64Type,
-					"traces_endpoint":   types.StringType,
-				})),
 				Attributes: map[string]schema.Attribute{
 					"batch_flush_delay": schema.Int64Attribute{
 						Optional:    true,
@@ -230,8 +185,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 							"initial_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     float64default.StaticFloat64(0.01),
-								Description: `Time in seconds before the initial retry is made for a failing batch. Default: 0.01`,
+								Description: `Time in seconds before the initial retry is made for a failing batch.`,
 								Validators: []validator.Float64{
 									float64validator.AtMost(1000000),
 								},
@@ -294,6 +248,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						},
 					},
 					"resource_attributes": schema.MapAttribute{
+						Computed:    true,
 						Optional:    true,
 						ElementType: jsontypes.NormalizedType{},
 						Validators: []validator.Map{

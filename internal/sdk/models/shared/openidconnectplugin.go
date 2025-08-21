@@ -2110,7 +2110,7 @@ type OpenidConnectPluginConfig struct {
 	// Cache the token endpoint requests.
 	CacheTokens *bool `default:"true" json:"cache_tokens"`
 	// Salt used for generating the cache key that is used for caching the token endpoint requests.
-	CacheTokensSalt *string `default:"null" json:"cache_tokens_salt"`
+	CacheTokensSalt *string `json:"cache_tokens_salt,omitempty"`
 	// The default cache ttl in seconds that is used in case the cached object does not specify the expiry.
 	CacheTTL *float64 `default:"3600" json:"cache_ttl"`
 	// The maximum cache ttl in seconds (enforced).
@@ -2139,7 +2139,7 @@ type OpenidConnectPluginConfig struct {
 	ClientJwk []ClientJwk `json:"client_jwk"`
 	// The client secret.
 	ClientSecret      []string           `json:"client_secret"`
-	ClusterCacheRedis *ClusterCacheRedis `json:"cluster_cache_redis"`
+	ClusterCacheRedis *ClusterCacheRedis `json:"cluster_cache_redis,omitempty"`
 	// The strategy to use for the cluster cache. If set, the plugin will share cache with nodes configured with the same strategy backend. Currentlly only introspection cache is shared.
 	ClusterCacheStrategy *ClusterCacheStrategy `default:"off" json:"cluster_cache_strategy"`
 	// Consumer fields used for mapping: - `id`: try to find the matching Consumer by `id` - `username`: try to find the matching Consumer by `username` - `custom_id`: try to find the matching Consumer by `custom_id`.
@@ -2213,7 +2213,7 @@ type OpenidConnectPluginConfig struct {
 	// The HTTP proxy authorization.
 	HTTPProxyAuthorization *string `default:"null" json:"http_proxy_authorization"`
 	// The HTTP version used for the requests by this plugin: - `1.1`: HTTP 1.1 (the default) - `1.0`: HTTP 1.0.
-	HTTPVersion *float64 `default:"1.1" json:"http_version"`
+	HTTPVersion *float64 `json:"http_version,omitempty"`
 	// The HTTPS proxy.
 	HTTPSProxy *string `default:"null" json:"https_proxy"`
 	// The HTTPS proxy authorization.
@@ -2318,7 +2318,7 @@ type OpenidConnectPluginConfig struct {
 	PushedAuthorizationRequestEndpointAuthMethod *PushedAuthorizationRequestEndpointAuthMethod `json:"pushed_authorization_request_endpoint_auth_method,omitempty"`
 	// The redirect URI passed to the authorization and token endpoints.
 	RedirectURI []string                  `json:"redirect_uri"`
-	Redis       *OpenidConnectPluginRedis `json:"redis"`
+	Redis       *OpenidConnectPluginRedis `json:"redis,omitempty"`
 	// Specifies how long (in seconds) the plugin waits between discovery attempts. Discovery is still triggered on an as-needed basis.
 	RediscoveryLifetime *float64 `default:"30" json:"rediscovery_lifetime"`
 	// The name of the parameter used to pass the refresh token.

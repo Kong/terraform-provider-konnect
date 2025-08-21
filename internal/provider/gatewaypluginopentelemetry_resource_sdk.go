@@ -84,7 +84,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 				r.Config.Queue.MaxRetryTime = types.Float64PointerValue(resp.Config.Queue.MaxRetryTime)
 			}
 			r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
-			if resp.Config.ResourceAttributes != nil {
+			if len(resp.Config.ResourceAttributes) > 0 {
 				r.Config.ResourceAttributes = make(map[string]jsontypes.Normalized, len(resp.Config.ResourceAttributes))
 				for key1, value1 := range resp.Config.ResourceAttributes {
 					result1, _ := json.Marshal(value1)

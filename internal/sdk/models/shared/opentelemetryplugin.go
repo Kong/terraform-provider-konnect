@@ -365,7 +365,7 @@ type OpentelemetryPluginQueue struct {
 	// The number of of queue delivery timers. -1 indicates unlimited.
 	ConcurrencyLimit *OpentelemetryPluginConcurrencyLimit `default:"1" json:"concurrency_limit"`
 	// Time in seconds before the initial retry is made for a failing batch.
-	InitialRetryDelay *float64 `default:"0.01" json:"initial_retry_delay"`
+	InitialRetryDelay *float64 `json:"initial_retry_delay,omitempty"`
 	// Maximum number of entries that can be processed at a time.
 	MaxBatchSize *int64 `default:"200" json:"max_batch_size"`
 	// Maximum number of bytes that can be waiting on a queue, requires string content.
@@ -704,7 +704,7 @@ type OpentelemetryPlugin struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                     `json:"updated_at,omitempty"`
-	Config    *OpentelemetryPluginConfig `json:"config"`
+	Config    *OpentelemetryPluginConfig `json:"config,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *OpentelemetryPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.

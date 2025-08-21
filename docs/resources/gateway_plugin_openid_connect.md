@@ -625,7 +625,7 @@ Optional:
 - `hide_credentials` (Boolean) Remove the credentials used for authentication from the request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication. Default: false
 - `http_proxy` (String) The HTTP proxy.
 - `http_proxy_authorization` (String) The HTTP proxy authorization.
-- `http_version` (Number) The HTTP version used for the requests by this plugin: - `1.1`: HTTP 1.1 (the default) - `1.0`: HTTP 1.0. Default: 1.1
+- `http_version` (Number) The HTTP version used for the requests by this plugin: - `1.1`: HTTP 1.1 (the default) - `1.0`: HTTP 1.0.
 - `https_proxy` (String) The HTTPS proxy.
 - `https_proxy_authorization` (String) The HTTPS proxy authorization.
 - `id_token_param_name` (String) The name of the parameter used to pass the id token.
