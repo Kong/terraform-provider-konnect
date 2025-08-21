@@ -21285,9 +21285,8 @@ components:
           x-speakeasy-param-computed: false
         menu:
           type: object
-          default: null
           additionalProperties: false
-          nullable: true
+          nullable: false
           properties:
             main:
               type: array
@@ -21310,12 +21309,10 @@ components:
               default: null
               nullable: true
               x-speakeasy-param-computed: false
-          x-speakeasy-param-computed: false
         spec_renderer:
           type: object
-          default: null
           additionalProperties: false
-          nullable: true
+          nullable: false
           properties:
             try_it_ui:
               type: boolean
@@ -21335,7 +21332,6 @@ components:
             hide_deprecated:
               type: boolean
               default: false
-          x-speakeasy-param-computed: false
         robots:
           type: string
           default: null
@@ -38579,7 +38575,8 @@ components:
                     type: integer
                     default: 6379
                 type: object
-              nullable: false
+              nullable: true
+              x-speakeasy-param-computed: true
             connect_timeout:
               description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
               type: integer
@@ -38640,7 +38637,8 @@ components:
                     type: integer
                     default: 6379
                 type: object
-              nullable: false
+              nullable: true
+              x-speakeasy-param-computed: true
             sentinel_password:
               description: 'Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.'
               type: string
@@ -38926,30 +38924,22 @@ components:
           properties:
             after:
               type: object
-              default: null
-              nullable: true
+              nullable: false
               properties:
                 access:
                   type: array
                   items:
                     type: string
-                  default: null
-                  nullable: true
-                  x-speakeasy-param-computed: false
-              x-speakeasy-param-computed: false
+                  nullable: false
             before:
               type: object
-              default: null
-              nullable: true
+              nullable: false
               properties:
                 access:
                   type: array
                   items:
                     type: string
-                  default: null
-                  nullable: true
-                  x-speakeasy-param-computed: false
-              x-speakeasy-param-computed: false
+                  nullable: false
           x-speakeasy-param-computed: false
         partials:
           description: A list of partials to be used by the plugin.
@@ -45645,7 +45635,6 @@ components:
           x-speakeasy-param-computed: false
         healthchecks:
           type: object
-          default: null
           nullable: true
           properties:
             active:
@@ -45739,8 +45728,6 @@ components:
               properties:
                 healthy:
                   type: object
-                  default: null
-                  nullable: true
                   properties:
                     http_statuses:
                       type: array
@@ -45769,7 +45756,7 @@ components:
                     successes:
                       type: integer
                       default: 0
-                  x-speakeasy-param-computed: false
+                  x-speakeasy-param-computed: true
                 type:
                   type: string
                   default: http
@@ -45781,8 +45768,6 @@ components:
                     - grpcs
                 unhealthy:
                   type: object
-                  default: null
-                  nullable: true
                   properties:
                     http_failures:
                       type: integer
@@ -45801,12 +45786,12 @@ components:
                     timeouts:
                       type: integer
                       default: 0
-                  x-speakeasy-param-computed: false
+                  x-speakeasy-param-computed: true
               x-speakeasy-param-computed: true
             threshold:
               type: number
               default: 0
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         host_header:
           description: The hostname to be used as `Host` header when proxying requests through Kong.
           type: string
