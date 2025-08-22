@@ -8,7 +8,8 @@
 * `konnect_control_plane_list` data source has been removed. The `konnect_control_plane` data source is now available
 
 ### Features
-* New resources `konnect_portal`, `konnect_portal_logo`, `konnect_portal_favicon`, `konnect_portal_custom_domain`, `konnect_portal_snippet`, `konnect_portal_page`, `konnect_portal_customization` are now supported
+* New resources `konnect_portal`, `konnect_portal_logo`, `konnect_portal_favicon`, `konnect_portal_custom_domain`, `konnect_portal_snippet`, `konnect_portal_page`, `konnect_portal_customization` for Portal are now supported
+* New data source `konnect_portal` is now supported
 * New resources `konnect_api`, `konnect_api_version`, `konnect_api_implementation`, `konnect_api_document`, `konnect_api_specification`, `konnect_api_publication` for API Builder are now supported
 * Add support for `gcp_vpc_peering_transit_gateway` in `konnect_cloud_gateway_transit_gateway` resource
 
