@@ -3,7 +3,7 @@
 package shared
 
 import (
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 // AppAuthStrategyConfigOpenIDConnect - A more advanced mode to configure an API Product Version’s Application Auth Strategy.

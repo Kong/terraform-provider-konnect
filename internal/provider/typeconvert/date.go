@@ -3,7 +3,7 @@
 package typeconvert
 
 import (
-	sdkTypes "github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
+	sdkTypes "github.com/kong/terraform-provider-konnect/v3/internal/sdk/types"
 )
 
 // Converts a date types.Date to string.
