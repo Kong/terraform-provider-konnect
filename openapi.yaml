@@ -14293,6 +14293,40 @@ paths:
       tags:
         - API Version
   /v3/portals:
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: null
+        terraform-datasource:
+          - Portal#read
+      operationId: list-portals
+      summary: List Portals
+      description: 'Lists developer portals defined in this region for this organization. Each developer portal is available at a unique address and has isolated configuration, customization, developers, and applications.'
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/SortPortals'
+        - name: filter
+          in: query
+          description: Filter portals returned in the response.
+          required: false
+          schema:
+            $ref: '#/components/schemas/PortalFilterParameters'
+          style: deepObject
+      responses:
+        '200':
+          $ref: '#/components/responses/ListPortalsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Portals
     post:
       x-speakeasy-entity-operation:
         terraform-resource: Portal#create
@@ -15911,6 +15945,24 @@ components:
       required: true
       description: ID of the snippet.
       x-speakeasy-match: id
+    SortPortals:
+      name: sort
+      description: |
+        Sorts a collection of portals. Supported sort attributes are:
+          - name
+          - description
+          - authentication_enabled
+          - rbac_enabled
+          - auto_approve_applications
+          - auto_approve_developers
+          - default_domain
+          - canonical_domain
+          - created_at
+          - updated_at
+      in: query
+      required: false
+      schema:
+        type: string
     SpecId:
       schema:
         type: string
@@ -19061,6 +19113,21 @@ components:
         - id
         - control_plane_id
       x-speakeasy-param-computed: false
+    StringFieldFilter:
+      description: Filters on the given string field value by exact match inequality.
+      type: object
+      properties:
+        eq:
+          type: string
+        contains:
+          type: string
+        ocontains:
+          type: string
+        oeq:
+          type: string
+        neq:
+          type: string
+      additionalProperties: false
     PublicLabels:
       description: |
         Public labels store information about an entity that can be used for filtering a list of objects.
@@ -19137,6 +19204,17 @@ components:
       enum:
         - published
         - unpublished
+    UuidFieldFilter:
+      description: Filters on the given string field value by exact match inequality.
+      type: object
+      properties:
+        eq:
+          type: string
+        oeq:
+          type: string
+        neq:
+          type: string
+      additionalProperties: false
     DcrProviderType:
       description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
       type: string
@@ -22225,6 +22303,34 @@ components:
         - name
         - content
       title: CreatePortalSnippetRequest
+    PortalFilterParameters:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UuidFieldFilter'
+        name:
+          $ref: '#/components/schemas/StringFieldFilter'
+        description:
+          $ref: '#/components/schemas/StringFieldFilter'
+        authentication_enabled:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+        rbac_enabled:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+        default_api_visibility:
+          $ref: '#/components/schemas/StringFieldFilter'
+        default_page_visibility:
+          $ref: '#/components/schemas/StringFieldFilter'
+        default_application_auth_strategy_id:
+          $ref: '#/components/schemas/UuidFieldFilter'
+        auto_approve_developers:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+        auto_approve_applications:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+        default_domain:
+          $ref: '#/components/schemas/StringFieldFilter'
+        canonical_domain:
+          $ref: '#/components/schemas/StringFieldFilter'
+      title: PortalFilterParameters
     PortalCustomDomain:
       type: object
       properties:
@@ -49017,6 +49123,7 @@ components:
       content:
         application/json:
           schema:
+            x-speakeasy-entity: Portal
             type: object
             properties:
               id:
@@ -49101,6 +49208,7 @@ components:
       content:
         application/json:
           schema:
+            x-speakeasy-entity: Portal
             type: object
             properties:
               id:
@@ -50393,11 +50501,121 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalCustomDomain'
+    ListPortalsResponse:
+      description: A paginated list of portals in the current region of an organization.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  x-speakeasy-entity: Portal
+                  title: Portal
+                  type: object
+                  additionalProperties: false
+                  properties:
+                    id:
+                      $ref: '#/components/schemas/UUID'
+                    created_at:
+                      $ref: '#/components/schemas/CreatedAt'
+                    updated_at:
+                      $ref: '#/components/schemas/UpdatedAt'
+                    name:
+                      description: 'The name of the portal, used to distinguish it from other portals. Name must be unique.'
+                      type: string
+                      maxLength: 255
+                      minLength: 1
+                    display_name:
+                      description: The display name of the portal. This value will be the portal's `name` in Portal API.
+                      type: string
+                      maxLength: 255
+                      minLength: 1
+                      nullable: false
+                    description:
+                      description: A description of the portal.
+                      type: string
+                      default: null
+                      maxLength: 512
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    authentication_enabled:
+                      description: 'Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications.'
+                      type: boolean
+                      default: true
+                    rbac_enabled:
+                      description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
+                      type: boolean
+                      default: false
+                    default_api_visibility:
+                      description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
+                      type: string
+                      enum:
+                        - public
+                        - private
+                    default_page_visibility:
+                      description: 'The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.'
+                      type: string
+                      enum:
+                        - public
+                        - private
+                    default_application_auth_strategy_id:
+                      description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
+                      type: string
+                      format: uuid
+                      default: null
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    auto_approve_developers:
+                      description: 'Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.'
+                      type: boolean
+                      default: false
+                    auto_approve_applications:
+                      description: 'Whether requests from applications to register for APIs will be automatically approved, or if they will be set to pending until approved by an admin.'
+                      type: boolean
+                      default: false
+                    default_domain:
+                      description: The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
+                      type: string
+                      format: hostname
+                      readOnly: true
+                    canonical_domain:
+                      description: The canonical domain of the developer portal
+                      type: string
+                      format: hostname
+                      nullable: false
+                      readOnly: true
+                    labels:
+                      $ref: '#/components/schemas/Labels'
+                  required:
+                    - id
+                    - name
+                    - display_name
+                    - description
+                    - authentication_enabled
+                    - rbac_enabled
+                    - default_api_visibility
+                    - default_page_visibility
+                    - default_application_auth_strategy_id
+                    - auto_approve_applications
+                    - auto_approve_developers
+                    - default_domain
+                    - canonical_domain
+                    - created_at
+                    - updated_at
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+            additionalProperties: false
+            required:
+              - data
+              - meta
     PortalResponse:
       description: Details about a portal.
       content:
         application/json:
           schema:
+            x-speakeasy-entity: Portal
             type: object
             properties:
               id:
