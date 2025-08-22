@@ -11,52 +11,39 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
-func (r *GatewayControlPlaneListDataSourceModel) RefreshFromSharedListControlPlanesResponse(ctx context.Context, resp *shared.ListControlPlanesResponse) diag.Diagnostics {
+func (r *GatewayControlPlaneDataSourceModel) RefreshFromSharedControlPlane(ctx context.Context, resp *shared.ControlPlane) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	if resp != nil {
-		r.Data = []tfTypes.ControlPlane{}
+	r.Config.AuthType = types.StringValue(string(resp.Config.AuthType))
+	r.Config.CloudGateway = types.BoolValue(resp.Config.CloudGateway)
+	r.Config.ClusterType = types.StringValue(string(resp.Config.ClusterType))
+	r.Config.ControlPlaneEndpoint = types.StringValue(resp.Config.ControlPlaneEndpoint)
+	r.Config.ProxyUrls = []tfTypes.ProxyURL{}
 
-		for _, dataItem := range resp.Data {
-			var data tfTypes.ControlPlane
+	for _, proxyUrlsItem := range resp.Config.ProxyUrls {
+		var proxyUrls tfTypes.ProxyURL
 
-			data.Config.AuthType = types.StringValue(string(dataItem.Config.AuthType))
-			data.Config.CloudGateway = types.BoolValue(dataItem.Config.CloudGateway)
-			data.Config.ClusterType = types.StringValue(string(dataItem.Config.ClusterType))
-			data.Config.ControlPlaneEndpoint = types.StringValue(dataItem.Config.ControlPlaneEndpoint)
-			data.Config.ProxyUrls = []tfTypes.ProxyURL{}
+		proxyUrls.Host = types.StringValue(proxyUrlsItem.Host)
+		proxyUrls.Port = types.Int64Value(proxyUrlsItem.Port)
+		proxyUrls.Protocol = types.StringValue(proxyUrlsItem.Protocol)
 
-			for _, proxyUrlsItem := range dataItem.Config.ProxyUrls {
-				var proxyUrls tfTypes.ProxyURL
-
-				proxyUrls.Host = types.StringValue(proxyUrlsItem.Host)
-				proxyUrls.Port = types.Int64Value(proxyUrlsItem.Port)
-				proxyUrls.Protocol = types.StringValue(proxyUrlsItem.Protocol)
-
-				data.Config.ProxyUrls = append(data.Config.ProxyUrls, proxyUrls)
-			}
-			data.Config.TelemetryEndpoint = types.StringValue(dataItem.Config.TelemetryEndpoint)
-			data.Description = types.StringPointerValue(dataItem.Description)
-			data.ID = types.StringValue(dataItem.ID)
-			if len(dataItem.Labels) > 0 {
-				data.Labels = make(map[string]types.String, len(dataItem.Labels))
-				for key, value := range dataItem.Labels {
-					data.Labels[key] = types.StringPointerValue(value)
-				}
-			}
-			data.Name = types.StringValue(dataItem.Name)
-
-			r.Data = append(r.Data, data)
-		}
-		r.Meta.Page.Number = types.Float64Value(resp.Meta.Page.Number)
-		r.Meta.Page.Size = types.Float64Value(resp.Meta.Page.Size)
-		r.Meta.Page.Total = types.Float64Value(resp.Meta.Page.Total)
+		r.Config.ProxyUrls = append(r.Config.ProxyUrls, proxyUrls)
 	}
+	r.Config.TelemetryEndpoint = types.StringValue(resp.Config.TelemetryEndpoint)
+	r.Description = types.StringPointerValue(resp.Description)
+	r.ID = types.StringValue(resp.ID)
+	if len(resp.Labels) > 0 {
+		r.Labels = make(map[string]types.String, len(resp.Labels))
+		for key, value := range resp.Labels {
+			r.Labels[key] = types.StringPointerValue(value)
+		}
+	}
+	r.Name = types.StringValue(resp.Name)
 
 	return diags
 }
 
-func (r *GatewayControlPlaneListDataSourceModel) ToOperationsListControlPlanesRequest(ctx context.Context) (*operations.ListControlPlanesRequest, diag.Diagnostics) {
+func (r *GatewayControlPlaneDataSourceModel) ToOperationsListControlPlanesRequest(ctx context.Context) (*operations.ListControlPlanesRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	pageSize := new(int64)
@@ -150,11 +137,11 @@ func (r *GatewayControlPlaneListDataSourceModel) ToOperationsListControlPlanesRe
 			CloudGateway: cloudGateway,
 		}
 	}
-	labels := new(string)
-	if !r.Labels.IsUnknown() && !r.Labels.IsNull() {
-		*labels = r.Labels.ValueString()
+	filterLabels := new(string)
+	if !r.FilterLabels.IsUnknown() && !r.FilterLabels.IsNull() {
+		*filterLabels = r.FilterLabels.ValueString()
 	} else {
-		labels = nil
+		filterLabels = nil
 	}
 	sort := new(string)
 	if !r.Sort.IsUnknown() && !r.Sort.IsNull() {
@@ -163,11 +150,11 @@ func (r *GatewayControlPlaneListDataSourceModel) ToOperationsListControlPlanesRe
 		sort = nil
 	}
 	out := operations.ListControlPlanesRequest{
-		PageSize:   pageSize,
-		PageNumber: pageNumber,
-		Filter:     filter,
-		Labels:     labels,
-		Sort:       sort,
+		PageSize:     pageSize,
+		PageNumber:   pageNumber,
+		Filter:       filter,
+		FilterLabels: filterLabels,
+		Sort:         sort,
 	}
 
 	return &out, diags

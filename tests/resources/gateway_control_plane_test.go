@@ -75,4 +75,19 @@ func TestGatewayControlPlane(t *testing.T) {
 			},
 		})
 	})
+
+	t.Run("data source", func(t *testing.T) {
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestNameDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckOutput("control_plane", "Lookup Control Plane"),
+					),
+				},
+			},
+		})
+	})
 }

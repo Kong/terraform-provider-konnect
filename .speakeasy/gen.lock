@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 0184e9c3266d42302b8508d5696084c3
+  docChecksum: 8482c15eed4c4329478fdcf8a466b0bc
   docVersion: 2.0.0
   speakeasyVersion: 1.602.0
   generationVersion: 2.681.1
@@ -32,7 +32,7 @@ generatedFiles:
   - USAGE.md
   - examples/README.md
   - examples/data-sources/konnect_cloud_gateway_provider_account_list/data-source.tf
-  - examples/data-sources/konnect_gateway_control_plane_list/data-source.tf
+  - examples/data-sources/konnect_gateway_control_plane/data-source.tf
   - examples/data-sources/konnect_mesh_control_planes/data-source.tf
   - examples/data-sources/konnect_portal_classic_list/data-source.tf
   - examples/provider/provider.tf
@@ -453,10 +453,10 @@ generatedFiles:
   - internal/provider/gatewayconsumergroup_resource_sdk.go
   - internal/provider/gatewayconsumergroupmember_resource.go
   - internal/provider/gatewayconsumergroupmember_resource_sdk.go
+  - internal/provider/gatewaycontrolplane_data_source.go
+  - internal/provider/gatewaycontrolplane_data_source_sdk.go
   - internal/provider/gatewaycontrolplane_resource.go
   - internal/provider/gatewaycontrolplane_resource_sdk.go
-  - internal/provider/gatewaycontrolplanelist_data_source.go
-  - internal/provider/gatewaycontrolplanelist_data_source_sdk.go
   - internal/provider/gatewaycontrolplanemembership_resource.go
   - internal/provider/gatewaycontrolplanemembership_resource_sdk.go
   - internal/provider/gatewaycustompluginschema_resource.go
@@ -861,7 +861,6 @@ generatedFiles:
   - internal/provider/types/confluent_plugin_authentication.go
   - internal/provider/types/confluent_plugin_config.go
   - internal/provider/types/consul.go
-  - internal/provider/types/control_plane.go
   - internal/provider/types/control_plane_filter_parameters.go
   - internal/provider/types/correlation_id_plugin_config.go
   - internal/provider/types/cors_plugin_config.go
