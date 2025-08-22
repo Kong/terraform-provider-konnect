@@ -2165,7 +2165,10 @@ paths:
       x-speakeasy-group: CloudGateways
   /v2/control-planes:
     get:
-      x-speakeasy-entity-operation: GatewayControlPlaneList#read
+      x-speakeasy-entity-operation:
+        terraform-resource: null
+        terraform-datasource:
+          - GatewayControlPlane#read
       operationId: list-control-planes
       summary: List Control Planes
       description: Returns an array of control plane objects containing information about the Konnect Control Planes.
@@ -15728,6 +15731,7 @@ components:
       required: true
       x-speakeasy-match: id
     FilterByLabels:
+      x-speakeasy-name-override: filter_labels
       name: labels
       description: Filter control planes in the response by associated labels.
       in: query
