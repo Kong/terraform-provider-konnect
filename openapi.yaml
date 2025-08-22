@@ -13722,6 +13722,573 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Portals
+  /v3/apis:
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: Api#create
+        terraform-datasource: null
+      operationId: create-api
+      summary: Create API
+      description: Creates an API.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApiRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/ApiResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API
+  '/v3/apis/{apiId}':
+    parameters:
+      - name: apiId
+        in: path
+        description: The UUID API identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+        x-speakeasy-match: id
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: Api#read
+        terraform-datasource: null
+      operationId: fetch-api
+      summary: Fetch API
+      description: Fetches an API.
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiResponse'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: Api#update
+        terraform-datasource: null
+      operationId: update-api
+      summary: Update API
+      description: Updates an API.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateApiRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: Api#delete
+        terraform-datasource: null
+      operationId: delete-api
+      summary: Delete API
+      description: Deletes an API.
+      responses:
+        '204':
+          description: API was deleted successfully.
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API
+  '/v3/apis/{apiId}/documents':
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: ApiDocument#create
+        terraform-datasource: null
+      operationId: create-api-document
+      summary: Create API Document
+      description: |
+        Publish a new document attached to an API.
+
+        All configuration options may be provided in the frontmatter section of `content`. If you set values in both the `POST` request _and_ in the frontmatter, the values in the `POST` request will take precedence.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApiDocumentRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/ApiDocumentResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '409':
+          $ref: '#/components/responses/ApiSlugConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API Documentation
+  '/v3/apis/{apiId}/documents/{documentId}':
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+      - $ref: '#/components/parameters/DocumentId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: ApiDocument#read
+        terraform-datasource: null
+      operationId: fetch-api-document
+      summary: Fetch API Document
+      description: Returns a document for the API.
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiDocumentResponse'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Documentation
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: ApiDocument#update
+        terraform-datasource: null
+      operationId: update-api-document
+      summary: Update API Document
+      description: Updates a document for an API.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateApiDocumentRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiDocumentResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '409':
+          $ref: '#/components/responses/ApiSlugConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API Documentation
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: ApiDocument#delete
+        terraform-datasource: null
+      operationId: delete-api-document
+      summary: Delete API Documentation
+      description: Removes a document from an API.
+      responses:
+        '204':
+          description: Document for the API was deleted successfully.
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Documentation
+  '/v3/apis/{apiId}/implementations':
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: ApiImplementation#create
+        terraform-datasource: null
+      operationId: create-api-implementation
+      summary: Create API Implementation
+      description: |
+        Creates an implementation for an API.
+        An API can be implemented by a single Gateway Service.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApiImplementationRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/ApiImplementationResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '409':
+          $ref: '#/components/responses/ApiImplementationConflict'
+      tags:
+        - API Implementation
+  '/v3/apis/{apiId}/implementations/{implementationId}':
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+      - $ref: '#/components/parameters/ImplementationId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: ApiImplementation#read
+        terraform-datasource: null
+      operationId: fetch-api-implementation
+      summary: Fetch API Implementation
+      description: Retrieve a gateway implementation for this API
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiImplementationResponse'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Implementation
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: ApiImplementation#delete
+        terraform-datasource: null
+      operationId: delete-api-implementation
+      summary: Delete API Implementation
+      description: Unlink a gateway implementation from this API
+      responses:
+        '204':
+          description: API implementation was unlinked successfully.
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Implementation
+  '/v3/apis/{apiId}/publications/{portalId}':
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+      - $ref: '#/components/parameters/PortalId'
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: 'ApiPublication#create,update'
+        terraform-datasource: null
+      operationId: publish-api-to-portal
+      summary: Publish API
+      description: |
+        Publish an API to a portal.
+      requestBody:
+        $ref: '#/components/requestBodies/PutApiPublicationRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiPublicationResponse'
+        '400':
+          $ref: '#/components/responses/ApiPublicationBadRequest'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Publication
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: ApiPublication#read
+        terraform-datasource: null
+      operationId: fetch-publication
+      summary: Fetch Publication
+      description: |
+        Retrieve an API's publication in a portal.
+        If the API is not published to the portal, a 404 response is returned.
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiPublicationResponse'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Publication
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: ApiPublication#delete
+        terraform-datasource: null
+      operationId: delete-publication
+      summary: Delete Publication
+      description: Unpublish an API from a portal.
+      responses:
+        '204':
+          description: API was successfully unpublished from portal.
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Publication
+  '/v3/apis/{apiId}/specifications':
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: ApiSpecification#create
+        terraform-datasource: null
+      operationId: create-api-spec
+      summary: Create API Specification
+      description: |
+        Creates a specification (OpenAPI or AsyncAPI) for an API.
+        **Note:** You can only have one specification for an API. This endpoint is deprecated and will be removed: use /versions instead.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApiSpecRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/ApiSpecResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '409':
+          $ref: '#/components/responses/ApiSpecConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      deprecated: true
+      tags:
+        - API Specification
+  '/v3/apis/{apiId}/specifications/{specId}':
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+      - $ref: '#/components/parameters/SpecId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: ApiSpecification#read
+        terraform-datasource: null
+      operationId: fetch-api-spec
+      summary: Fetch API Specification
+      description: |
+        Fetches the specification (OpenAPI or AsyncAPI) of an API.
+        **Note:** This endpoint is deprecated and will be removed: use /versions instead.
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiSpecResponse'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      deprecated: true
+      tags:
+        - API Specification
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: ApiSpecification#update
+        terraform-datasource: null
+      operationId: update-api-spec
+      summary: Update API Specification
+      description: |
+        Updates the specification (OpenAPI or AsyncAPI) of an API.
+        **Note:** This endpoint is deprecated and will be removed: use /versions instead.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateApiSpecRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiSpecResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '409':
+          $ref: '#/components/responses/ApiSpecHiddenConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      deprecated: true
+      tags:
+        - API Specification
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: ApiSpecification#delete
+        terraform-datasource: null
+      operationId: delete-api-spec
+      summary: Delete API Specification
+      description: |
+        Deletes the specification (OpenAPI or AsyncAPI) of an API.
+        **Note:** This endpoint is deprecated and will be removed: use /versions instead.
+      responses:
+        '204':
+          description: API Specification was deleted successfully.
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      deprecated: true
+      tags:
+        - API Specification
+  '/v3/apis/{apiId}/versions':
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: ApiVersion#create
+        terraform-datasource: null
+      operationId: create-api-version
+      summary: Create API Version
+      description: |
+        Creates a version (OpenAPI or AsyncAPI) for an API.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApiVersionRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/ApiVersionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '409':
+          $ref: '#/components/responses/ApiSpecConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API Version
+  '/v3/apis/{apiId}/versions/{versionId}':
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+      - $ref: '#/components/parameters/VersionId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: ApiVersion#read
+        terraform-datasource: null
+      operationId: fetch-api-version
+      summary: Fetch API Version
+      description: Fetches the version (OpenAPI or AsyncAPI) of an API.
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiVersionResponse'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Version
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: ApiVersion#update
+        terraform-datasource: null
+      operationId: update-api-version
+      summary: Update API Version
+      description: Updates the version (OpenAPI or AsyncAPI) of an API.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateApiVersionRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiVersionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '409':
+          $ref: '#/components/responses/ApiSpecHiddenConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API Version
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: ApiVersion#delete
+        terraform-datasource: null
+      operationId: delete-api-version
+      summary: Delete API Version
+      description: Deletes the version (OpenAPI or AsyncAPI) of an API.
+      responses:
+        '204':
+          description: API Version was deleted successfully.
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Version
   /v3/portals:
     post:
       x-speakeasy-entity-operation:
@@ -15012,6 +15579,15 @@ components:
       schema:
         type: string
       x-speakeasy-match: id
+    ApiId:
+      schema:
+        type: string
+        format: uuid
+        example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+      name: apiId
+      in: path
+      required: true
+      description: The UUID API identifier
     AuditLogDestinationId:
       schema:
         type: string
@@ -15141,6 +15717,16 @@ components:
         type: string
       required: true
       x-speakeasy-match: id
+    DocumentId:
+      schema:
+        type: string
+        format: uuid
+        example: de5c9818-be5c-42e6-b514-e3d4bc30ddeb
+      name: documentId
+      description: The document identifier related to the API
+      in: path
+      required: true
+      x-speakeasy-match: id
     FilterByLabels:
       name: labels
       description: Filter control planes in the response by associated labels.
@@ -15157,6 +15743,16 @@ components:
       required: true
       schema:
         type: string
+      x-speakeasy-match: id
+    ImplementationId:
+      schema:
+        type: string
+        format: uuid
+        example: 032d905a-ed33-46a3-a093-d8f536af9a8a
+      name: implementationId
+      in: path
+      required: true
+      description: The Portal identifier
       x-speakeasy-match: id
     JWTId:
       description: ID of the JWT to lookup
@@ -15261,10 +15857,11 @@ components:
       schema:
         type: string
         format: uuid
+        example: f32d905a-ed33-46a3-a093-d8f536af9a8a
       name: portalId
       in: path
       required: true
-      description: ID of the portal.
+      description: The Portal identifier
     PrivateDnsId:
       name: privateDnsId
       in: path
@@ -15309,6 +15906,16 @@ components:
       in: path
       required: true
       description: ID of the snippet.
+      x-speakeasy-match: id
+    SpecId:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: specId
+      description: The API specification identifier
+      in: path
+      required: true
       x-speakeasy-match: id
     TargetId:
       description: ID of the Target to lookup
@@ -15389,6 +15996,16 @@ components:
       required: true
       schema:
         type: string
+      x-speakeasy-match: id
+    VersionId:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: versionId
+      description: The API version identifier
+      in: path
+      required: true
       x-speakeasy-match: id
     centralizedConsumerIdForChildren:
       name: consumerId
@@ -21980,6 +22597,474 @@ components:
         created_at: '1992-02-07T17:46:57.52Z'
         updated_at: '2022-08-31T17:00:00.52Z'
       title: PortalTeamResponse
+    ApiResponseSchema:
+      type: object
+      properties:
+        id:
+          description: The API identifier.
+          type: string
+          format: uuid
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+          readOnly: true
+        name:
+          description: |
+            The name of your API. The `name + version` combination must be unique for each API you publish.
+          type: string
+          example: MyAPI
+          maxLength: 255
+          minLength: 1
+        description:
+          description: A description of your API. Will be visible on your live Portal.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        version:
+          description: An optional version for your API. Leave this empty if your API is unversioned.
+          type: string
+          default: null
+          maxLength: 255
+          minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+        current_version_summary:
+          $ref: '#/components/schemas/ApiVersionSummary'
+        slug:
+          description: |
+            The `slug` is used in generated URLs to provide human readable paths.
+
+            Defaults to `slugify(name + version)`
+          type: string
+          example: my-api-v1
+          default: null
+          nullable: true
+          pattern: '^[\w-]+$'
+          x-speakeasy-param-computed: false
+        api_spec_ids:
+          description: The list of API specification ids for the API.
+          type: array
+          items:
+            type: string
+            format: uuid
+            description: The id of the API specification.
+            example: 123e4567-e89b-12d3-a456-426614174000
+          deprecated: true
+          readOnly: true
+        portals:
+          description: The list of portals which this API is published to.
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            required:
+              - id
+              - name
+              - display_name
+            properties:
+              id:
+                description: The portal identifier.
+                type: string
+                format: uuid
+                example: 25a2624c-49fc-4764-99e1-224ed819f200
+              name:
+                description: 'The name of the portal, used to distinguish it from other portals.'
+                type: string
+                example: My Portal
+              display_name:
+                description: The display name of the portal. This value will be the portal's `name` in Portal API.
+                type: string
+                example: My Portal
+          nullable: false
+          readOnly: true
+          uniqueItems: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        attributes:
+          $ref: '#/components/schemas/ApiAttributes'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - version
+        - labels
+        - created_at
+        - updated_at
+        - slug
+        - portals
+        - api_spec_ids
+        - current_version_summary
+      title: API
+    AuthStrategyApiSyncError:
+      type: object
+      properties:
+        control_plane_error:
+          type: string
+          enum:
+            - control_plane_error_no_response
+            - control_plane_error_invalid_response
+            - control_plane_error_unavailable
+            - control_plane_error_internal_error
+            - control_plane_error_bad_request
+            - control_plane_error_plugin_conflict
+            - control_plane_error_data_constraint_error
+            - control_plane_error_implementation_not_found
+        message:
+          type: string
+        info:
+          type: object
+          additionalProperties: true
+          properties:
+            details:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+                properties:
+                  type:
+                    type: string
+                  message:
+                    type: array
+                    items:
+                      type: string
+      example:
+        control_plane_error: control_plane_error_unavailable
+        message: Unable to connect to the control plane to update plugin
+      additionalProperties: false
+      nullable: true
+      required:
+        - message
+    ApiDocumentId:
+      description: The API document identifier.
+      type: string
+      format: uuid
+      example: de5c9818-be5c-42e6-b514-e3d4bc30ddeb
+      readOnly: true
+      title: API Document ID
+    ApiDocumentContent:
+      description: Raw markdown content to display in your Portal
+      type: string
+      title: API Document Content
+    ApiDocumentTitle:
+      description: The title of the document. Used to populate the `<title>` tag for the page
+      type: string
+      example: API Document
+      title: API Document Title
+    ApiDocumentStatus:
+      description: If `status=published` the document will be visible in your live portal
+      type: string
+      default: unpublished
+      enum:
+        - published
+        - unpublished
+    ApiDocumentParentDocumentId:
+      description: |
+        API Documents may be rendered as a tree of files.
+
+        Specify the `id` of another API Document as the `parent_document_id` to add some heirarchy do your documents.
+      type: string
+      format: uuid
+      example: null
+      default: null
+      nullable: true
+      title: API Document Parent Document ID
+      x-speakeasy-param-computed: false
+    ApiDocumentSlug:
+      description: |
+        The `slug` is used in generated URLs to provide human readable paths.
+
+        Defaults to `slugify(title)`
+      type: string
+      example: api-document
+      pattern: '^[\w-]+$'
+      title: API Document Slug
+    ApiDocument:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ApiDocumentId'
+        content:
+          $ref: '#/components/schemas/ApiDocumentContent'
+        title:
+          $ref: '#/components/schemas/ApiDocumentTitle'
+        slug:
+          $ref: '#/components/schemas/ApiDocumentSlug'
+        status:
+          $ref: '#/components/schemas/ApiDocumentStatus'
+        parent_document_id:
+          $ref: '#/components/schemas/ApiDocumentParentDocumentId'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      title: API Document
+    ApiVersion:
+      type: object
+      properties:
+        id:
+          description: The API version identifier.
+          type: string
+          format: uuid
+          example: 7710d5c4-d902-410b-992f-18b814155b53
+          readOnly: true
+        version:
+          description: The version of the api.
+          type: string
+          example: 1.0.0
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        spec:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            content:
+              default: null
+              description: |
+                The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).
+              example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
+              nullable: true
+              type: string
+              x-speakeasy-param-computed: false
+            type:
+              description: |
+                The type of specification being stored. This allows us to render the specification correctly.
+              type: string
+              example: oas3
+              enum:
+                - oas2
+                - oas3
+                - asyncapi
+              readOnly: true
+              title: API Spec Type
+            validation_messages:
+              description: The errors that occurred while parsing the API version spec.
+              type: array
+              items:
+                type: object
+                additionalProperties: false
+                required:
+                  - message
+                properties:
+                  message:
+                    type: string
+              readOnly: true
+          x-speakeasy-param-computed: false
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      title: API Version
+    ApiVersionSummary:
+      type: object
+      properties:
+        id:
+          description: The API version identifier.
+          type: string
+          format: uuid
+          example: 7710d5c4-d902-410b-992f-18b814155b53
+          readOnly: true
+        version:
+          description: The version of this api spec.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        spec:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            type:
+              $ref: '#/components/schemas/ApiSpecType'
+          x-speakeasy-param-computed: false
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      default: null
+      additionalProperties: false
+      nullable: true
+      readOnly: true
+      title: API Version Summary
+      x-speakeasy-param-computed: false
+    ApiSpec:
+      type: object
+      properties:
+        id:
+          description: The API specification identifier.
+          type: string
+          format: uuid
+          example: 7710d5c4-d902-410b-992f-18b814155b53
+          readOnly: true
+        content:
+          default: null
+          description: |
+            The raw content of your API specification, in json or yaml format (OpenAPI or AsyncAPI).
+          example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
+          nullable: true
+          type: string
+          x-speakeasy-param-computed: false
+        validation_messages:
+          description: The errors that occurred while parsing the API specification.
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            required:
+              - message
+            properties:
+              message:
+                type: string
+          readOnly: true
+        type:
+          description: |
+            The type of specification being stored. This allows us to render the specification correctly.
+          type: string
+          example: oas3
+          enum:
+            - oas2
+            - oas3
+            - asyncapi
+          title: API Spec Type
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      title: API Specification
+    ApiPublicationVisibility:
+      description: |
+        The visibility of the API in the portal.
+        Public API publications do not require authentication to view and retrieve information about them.
+        Private API publications require authentication to retrieve information about them.
+      type: string
+      default: private
+      enum:
+        - public
+        - private
+      title: API Publication Visibility
+    ApiPublicationAuthStrategyIds:
+      description: |
+        The auth strategy the API enforces for applications in the portal.
+        Omitting this property means the portal's default application auth strategy will be used.
+        Setting to null means the API will not require application authentication.
+        DCR support for application registration is currently in development.
+      type: array
+      items:
+        type: string
+        format: uuid
+      default: null
+      maxItems: 1
+      minItems: 1
+      nullable: true
+      title: API Publication Auth Strategy IDs
+      x-speakeasy-param-computed: false
+    AutoApproveRegistrations:
+      description: 'Whether the application registration auto approval on this portal for the api is enabled. If set to false, fallbacks on portal''s auto_approve_applications value.'
+      type: boolean
+      title: Auto Approve Registrations
+    ApiPublication:
+      description: An API publication in a portal
+      type: object
+      properties:
+        auto_approve_registrations:
+          $ref: '#/components/schemas/AutoApproveRegistrations'
+        auth_strategy_ids:
+          $ref: '#/components/schemas/ApiPublicationAuthStrategyIds'
+        visibility:
+          $ref: '#/components/schemas/ApiPublicationVisibility'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      title: API Publication
+    ApiImplementationService:
+      description: A Gateway service that implements an API
+      type: object
+      properties:
+        control_plane_id:
+          type: string
+          format: uuid
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+        id:
+          type: string
+          format: uuid
+          example: 7710d5c4-d902-410b-992f-18b814155b53
+        auth_strategy_sync_error:
+          allOf:
+            - $ref: '#/components/schemas/AuthStrategyApiSyncError'
+          readOnly: true
+          x-speakeasy-ignore: true
+      additionalProperties: false
+      required:
+        - control_plane_id
+        - id
+      title: API Implementation Service
+    ApiImplementation:
+      description: An entity that implements an API
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/ApiImplementationGatewayServiceEntity'
+      title: API Implementation
+    ApiImplementationGatewayServiceEntity:
+      description: A gateway service that implements an API
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        service:
+          $ref: '#/components/schemas/ApiImplementationService'
+      additionalProperties: false
+      title: ApiImplementationGatewayServiceEntity
+      x-speakeasy-name-override: Service Reference
+    ApiAttributes:
+      description: A set of attributes that describe the API
+      type: object
+      example:
+        env:
+          - production
+        domains:
+          - web
+          - mobile
+      default: {}
+      additionalProperties:
+        nullable: true
+        description: 'Set of attributes with unique keys. Each key can include lowercase letters, numbers, hyphens, and underscores.'
+        type: array
+        minItems: 1
+        maxItems: 20
+        items:
+          type: string
+          minLength: 1
+          maxLength: 512
+          pattern: '^[^,<>]*$'
+      nullable: false
+      title: API Attributes
+      x-speakeasy-type-override: any
+    ApiSpecType:
+      description: |
+        The type of specification being stored. This allows us to render the specification correctly.
+      type: string
+      example: oas3
+      enum:
+        - oas2
+        - oas3
+        - asyncapi
+      title: API Spec Type
     DataPlaneClientCertificate:
       x-speakeasy-entity: GatewayDataPlaneClientCertificate
       type: object
@@ -48149,6 +49234,372 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalAuthenticationSettingsUpdateRequest'
+    CreateApiRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                description: The API identifier.
+                type: string
+                format: uuid
+                example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+                readOnly: true
+              name:
+                description: |
+                  The name of your API. The `name + version` combination must be unique for each API you publish.
+                type: string
+                example: MyAPI
+                maxLength: 255
+                minLength: 1
+              description:
+                description: A description of your API. Will be visible on your live Portal.
+                type: string
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+              version:
+                description: An optional version for your API. Leave this empty if your API is unversioned.
+                type: string
+                default: null
+                maxLength: 255
+                minLength: 1
+                nullable: true
+                x-speakeasy-param-computed: false
+              current_version_summary:
+                $ref: '#/components/schemas/ApiVersionSummary'
+              slug:
+                description: |
+                  The `slug` is used in generated URLs to provide human readable paths.
+
+                  Defaults to `slugify(name + version)`
+                type: string
+                example: my-api-v1
+                default: null
+                nullable: true
+                pattern: '^[\w-]+$'
+                x-speakeasy-param-computed: false
+              api_spec_ids:
+                description: The list of API specification ids for the API.
+                type: array
+                items:
+                  type: string
+                  format: uuid
+                  description: The id of the API specification.
+                  example: 123e4567-e89b-12d3-a456-426614174000
+                deprecated: true
+                readOnly: true
+              portals:
+                description: The list of portals which this API is published to.
+                type: array
+                items:
+                  type: object
+                  additionalProperties: false
+                  required:
+                    - id
+                    - name
+                    - display_name
+                  properties:
+                    id:
+                      description: The portal identifier.
+                      type: string
+                      format: uuid
+                      example: 25a2624c-49fc-4764-99e1-224ed819f200
+                    name:
+                      description: 'The name of the portal, used to distinguish it from other portals.'
+                      type: string
+                      example: My Portal
+                    display_name:
+                      description: The display name of the portal. This value will be the portal's `name` in Portal API.
+                      type: string
+                      example: My Portal
+                nullable: false
+                readOnly: true
+                uniqueItems: true
+              labels:
+                $ref: '#/components/schemas/Labels'
+              attributes:
+                $ref: '#/components/schemas/ApiAttributes'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+              spec_content:
+                description: 'The content of the API specification. This is the raw content of the API specification, in json or yaml. By including this field, you can add a API specification without having to make a separate call to update the API specification.'
+                type: string
+                nullable: false
+                writeOnly: true
+            additionalProperties: false
+            required:
+              - name
+            title: API
+    CreateApiSpecRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                description: The API specification identifier.
+                type: string
+                format: uuid
+                example: 7710d5c4-d902-410b-992f-18b814155b53
+                readOnly: true
+              content:
+                description: |
+                  The raw content of your API specification, in json or yaml format (OpenAPI or AsyncAPI).
+                example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
+                type: string
+              validation_messages:
+                description: The errors that occurred while parsing the API specification.
+                type: array
+                items:
+                  type: object
+                  additionalProperties: false
+                  required:
+                    - message
+                  properties:
+                    message:
+                      type: string
+                readOnly: true
+              type:
+                description: |
+                  The type of specification being stored. This allows us to render the specification correctly.
+                type: string
+                example: oas3
+                enum:
+                  - oas2
+                  - oas3
+                  - asyncapi
+                title: API Spec Type
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+            additionalProperties: false
+            required:
+              - content
+            title: API Specification
+    CreateApiVersionRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                description: The API version identifier.
+                type: string
+                format: uuid
+                example: 7710d5c4-d902-410b-992f-18b814155b53
+                readOnly: true
+              version:
+                description: The version of the api.
+                type: string
+                example: 1.0.0
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+              spec:
+                type: object
+                additionalProperties: false
+                properties:
+                  content:
+                    default: null
+                    description: |
+                      The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).
+                    example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
+                    nullable: true
+                    type: string
+                    x-speakeasy-param-computed: false
+                  type:
+                    description: |
+                      The type of specification being stored. This allows us to render the specification correctly.
+                    type: string
+                    example: oas3
+                    enum:
+                      - oas2
+                      - oas3
+                      - asyncapi
+                    readOnly: true
+                    title: API Spec Type
+                  validation_messages:
+                    description: The errors that occurred while parsing the API version spec.
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: false
+                      required:
+                        - message
+                      properties:
+                        message:
+                          type: string
+                    readOnly: true
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+            additionalProperties: false
+            required:
+              - spec
+            title: API Version
+    CreateApiDocumentRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                $ref: '#/components/schemas/ApiDocumentId'
+              content:
+                $ref: '#/components/schemas/ApiDocumentContent'
+              title:
+                $ref: '#/components/schemas/ApiDocumentTitle'
+              slug:
+                $ref: '#/components/schemas/ApiDocumentSlug'
+              status:
+                $ref: '#/components/schemas/ApiDocumentStatus'
+              parent_document_id:
+                $ref: '#/components/schemas/ApiDocumentParentDocumentId'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+            additionalProperties: false
+            required:
+              - content
+            title: API Document
+    UpdateApiRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                description: The API identifier.
+                type: string
+                format: uuid
+                example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+                readOnly: true
+              name:
+                description: |
+                  The name of your API. The `name + version` combination must be unique for each API you publish.
+                type: string
+                example: MyAPI
+                default: null
+                maxLength: 255
+                minLength: 1
+                nullable: true
+                x-speakeasy-param-computed: false
+              description:
+                description: A description of your API. Will be visible on your live Portal.
+                type: string
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+              version:
+                description: An optional version for your API. Leave this empty if your API is unversioned.
+                type: string
+                default: null
+                maxLength: 255
+                minLength: 1
+                nullable: true
+                x-speakeasy-param-computed: false
+              current_version_summary:
+                $ref: '#/components/schemas/ApiVersionSummary'
+              slug:
+                description: |
+                  The `slug` is used in generated URLs to provide human readable paths.
+
+                  Defaults to `slugify(name + version)`
+                type: string
+                example: my-api-v1
+                default: null
+                nullable: true
+                pattern: '^[\w-]+$'
+                x-speakeasy-param-computed: false
+              api_spec_ids:
+                description: The list of API specification ids for the API.
+                type: array
+                items:
+                  type: string
+                  format: uuid
+                  description: The id of the API specification.
+                  example: 123e4567-e89b-12d3-a456-426614174000
+                deprecated: true
+                readOnly: true
+              portals:
+                description: The list of portals which this API is published to.
+                type: array
+                items:
+                  type: object
+                  additionalProperties: false
+                  required:
+                    - id
+                    - name
+                    - display_name
+                  properties:
+                    id:
+                      description: The portal identifier.
+                      type: string
+                      format: uuid
+                      example: 25a2624c-49fc-4764-99e1-224ed819f200
+                    name:
+                      description: 'The name of the portal, used to distinguish it from other portals.'
+                      type: string
+                      example: My Portal
+                    display_name:
+                      description: The display name of the portal. This value will be the portal's `name` in Portal API.
+                      type: string
+                      example: My Portal
+                nullable: false
+                readOnly: true
+                uniqueItems: true
+              labels:
+                $ref: '#/components/schemas/LabelsUpdate'
+              attributes:
+                $ref: '#/components/schemas/ApiAttributes'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+            additionalProperties: false
+            title: API
+    UpdateApiDocumentRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiDocument'
+    UpdateApiSpecRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiSpec'
+    UpdateApiVersionRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiVersion'
+    PutApiPublicationRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiPublication'
+    CreateApiImplementationRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiImplementation'
     DataPlaneClientCertificateRequest:
       content:
         application/json:
@@ -49065,6 +50516,268 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalSnippetResponse'
+    ApiSlugConflict:
+      description: Conflict - `slug` property must be unique
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
+              title:
+                type: string
+              type:
+                type: string
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+              instance:
+                type: string
+            required:
+              - status
+              - title
+              - instance
+    ApiSpecConflict:
+      description: Conflict - An API may only have one specification
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+    ApiSpecHiddenConflict:
+      description: Conflict - name attribute must be unique across specifications
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+    ApiImplementationConflict:
+      description: Conflict - A gateway service can only be linked to a single API
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+    ApiUnauthorized:
+      description: ApiUnauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+    ApiNotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotFoundError'
+    ApiForbidden:
+      description: ApiForbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
+    ApiPublicationBadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+    ApiResponse:
+      description: API
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponseSchema'
+    ApiDocumentResponse:
+      description: API document
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                $ref: '#/components/schemas/ApiDocumentId'
+              content:
+                $ref: '#/components/schemas/ApiDocumentContent'
+              title:
+                $ref: '#/components/schemas/ApiDocumentTitle'
+              slug:
+                $ref: '#/components/schemas/ApiDocumentSlug'
+              status:
+                $ref: '#/components/schemas/ApiDocumentStatus'
+              parent_document_id:
+                $ref: '#/components/schemas/ApiDocumentParentDocumentId'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+            additionalProperties: false
+            required:
+              - id
+              - parent_document_id
+              - title
+              - slug
+              - status
+              - content
+              - updated_at
+              - created_at
+            title: API Document
+    ApiSpecResponse:
+      description: API specification (OpenAPI or AsyncAPI)
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                description: The API specification identifier.
+                type: string
+                format: uuid
+                example: 7710d5c4-d902-410b-992f-18b814155b53
+                readOnly: true
+              content:
+                description: |
+                  The raw content of your API specification, in json or yaml format (OpenAPI or AsyncAPI).
+                example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
+                type: string
+              validation_messages:
+                description: The errors that occurred while parsing the API specification.
+                type: array
+                items:
+                  type: object
+                  additionalProperties: false
+                  required:
+                    - message
+                  properties:
+                    message:
+                      type: string
+                readOnly: true
+              type:
+                description: |
+                  The type of specification being stored. This allows us to render the specification correctly.
+                type: string
+                example: oas3
+                enum:
+                  - oas2
+                  - oas3
+                  - asyncapi
+                title: API Spec Type
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+            additionalProperties: false
+            required:
+              - id
+              - content
+              - type
+              - created_at
+              - updated_at
+              - validation_messages
+            title: API Specification
+    ApiVersionResponse:
+      description: API version (OpenAPI or AsyncAPI)
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                description: The API version identifier.
+                type: string
+                format: uuid
+                example: 7710d5c4-d902-410b-992f-18b814155b53
+                readOnly: true
+              version:
+                description: The version of the api.
+                type: string
+                example: 1.0.0
+              spec:
+                type: object
+                default: null
+                additionalProperties: false
+                nullable: true
+                properties:
+                  content:
+                    default: null
+                    description: |
+                      The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).
+                    example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
+                    nullable: true
+                    type: string
+                    x-speakeasy-param-computed: false
+                  type:
+                    description: |
+                      The type of specification being stored. This allows us to render the specification correctly.
+                    type: string
+                    example: oas3
+                    enum:
+                      - oas2
+                      - oas3
+                      - asyncapi
+                    readOnly: true
+                    title: API Spec Type
+                  validation_messages:
+                    description: The errors that occurred while parsing the API version spec.
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: false
+                      required:
+                        - message
+                      properties:
+                        message:
+                          type: string
+                    readOnly: true
+                x-speakeasy-param-computed: false
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+            additionalProperties: false
+            required:
+              - id
+              - version
+              - created_at
+              - updated_at
+            title: API Version
+    ApiPublicationResponse:
+      description: An API publication in a portal
+      content:
+        application/json:
+          schema:
+            description: An API publication in a portal
+            type: object
+            properties:
+              auto_approve_registrations:
+                $ref: '#/components/schemas/AutoApproveRegistrations'
+              auth_strategy_ids:
+                $ref: '#/components/schemas/ApiPublicationAuthStrategyIds'
+              visibility:
+                $ref: '#/components/schemas/ApiPublicationVisibility'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+            additionalProperties: false
+            required:
+              - visibility
+              - created_at
+              - updated_at
+              - auth_strategy_ids
+            title: API Publication
+    ApiImplementationResponse:
+      description: An API implementation
+      content:
+        application/json:
+          schema:
+            description: An entity that implements an API
+            type: object
+            oneOf:
+              - $ref: '#/components/schemas/ApiImplementationGatewayServiceEntity'
+            required:
+              - id
+              - created_at
+              - updated_at
+            title: API Implementation
     DataPlaneClientCertificateResponse:
       description: Response body for retrieving a dp-client-certificate.
       content:
@@ -49311,6 +51024,11 @@ tags:
     description: APIs related to Konnect Developer Portal Custom Pages.
   - name: Snippets
     description: APIs related to Konnect Developer Portal Custom Snippets.
+  - name: API
+  - name: API Documentation
+  - name: API Specification
+  - name: API Publication
+  - name: API Implementation
   - description: DP Certificates
     name: DP Certificates
   - description: Custom Plugin Schemas

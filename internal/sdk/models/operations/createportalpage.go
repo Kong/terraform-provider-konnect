@@ -8,7 +8,7 @@ import (
 )
 
 type CreatePortalPageRequest struct {
-	// ID of the portal.
+	// The Portal identifier
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// Create a page in a portal.
 	CreatePortalPageRequest shared.CreatePortalPageRequest `request:"mediaType=application/json"`

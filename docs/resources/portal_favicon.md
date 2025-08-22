@@ -15,7 +15,7 @@ PortalFavicon Resource
 ```terraform
 resource "konnect_portal_favicon" "my_portalfavicon" {
   data      = "data:image/png;base64,YW5faW1hZ2VfZmlsZQ=="
-  portal_id = "81658de1-1bd0-4d39-8e2b-4df052f97612"
+  portal_id = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
 }
 ```
 
@@ -25,12 +25,12 @@ resource "konnect_portal_favicon" "my_portalfavicon" {
 ### Required
 
 - `data` (String) must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>
-- `portal_id` (String) ID of the portal.
+- `portal_id` (String) The Portal identifier
 
 ## Import
 
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_portal_favicon.my_konnect_portal_favicon ""
+terraform import konnect_portal_favicon.my_konnect_portal_favicon "f32d905a-ed33-46a3-a093-d8f536af9a8a"
 ```

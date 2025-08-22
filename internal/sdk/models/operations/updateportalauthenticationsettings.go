@@ -8,7 +8,7 @@ import (
 )
 
 type UpdatePortalAuthenticationSettingsRequest struct {
-	// ID of the portal.
+	// The Portal identifier
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// Update a portal's developer authentication settings.
 	PortalAuthenticationSettingsUpdateRequest *shared.PortalAuthenticationSettingsUpdateRequest `request:"mediaType=application/json"`

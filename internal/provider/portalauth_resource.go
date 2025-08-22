@@ -155,7 +155,7 @@ func (r *PortalAuthResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"portal_id": schema.StringAttribute{
 				Required:    true,
-				Description: `ID of the portal.`,
+				Description: `The Portal identifier`,
 			},
 			"saml_auth_enabled": schema.BoolAttribute{
 				Computed:    true,

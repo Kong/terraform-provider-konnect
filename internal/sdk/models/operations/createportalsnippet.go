@@ -8,7 +8,7 @@ import (
 )
 
 type CreatePortalSnippetRequest struct {
-	// ID of the portal.
+	// The Portal identifier
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// Create a snippet in a portal.
 	CreatePortalSnippetRequest shared.CreatePortalSnippetRequest `request:"mediaType=application/json"`

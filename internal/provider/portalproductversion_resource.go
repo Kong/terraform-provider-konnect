@@ -183,7 +183,7 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 			},
 			"portal_id": schema.StringAttribute{
 				Required:    true,
-				Description: `ID of the portal.`,
+				Description: `The Portal identifier`,
 			},
 			"product_version_id": schema.StringAttribute{
 				Required:    true,
@@ -533,12 +533,12 @@ func (r *PortalProductVersionResource) ImportState(ctx context.Context, req reso
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"portal_id": "", "product_version_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a", "product_version_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"}': `+err.Error())
 		return
 	}
 
 	if len(data.PortalID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field portal_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field portal_id is required but was not found in the json encoded ID. It's expected to be a value alike '"f32d905a-ed33-46a3-a093-d8f536af9a8a"`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("portal_id"), data.PortalID)...)

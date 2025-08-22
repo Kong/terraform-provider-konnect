@@ -8,7 +8,7 @@ import (
 )
 
 type CreatePortalTeamRequest struct {
-	// ID of the portal.
+	// The Portal identifier
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// Create a team in a portal.
 	PortalCreateTeamRequest *shared.PortalCreateTeamRequest `request:"mediaType=application/json"`

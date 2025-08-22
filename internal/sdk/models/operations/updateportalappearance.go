@@ -8,7 +8,7 @@ import (
 )
 
 type UpdatePortalAppearanceRequest struct {
-	// ID of the portal.
+	// The Portal identifier
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// Update a portal's appearance settings
 	V2PortalAppearance shared.V2PortalAppearance `request:"mediaType=application/json"`

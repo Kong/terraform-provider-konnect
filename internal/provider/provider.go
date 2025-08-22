@@ -136,10 +136,16 @@ func (p *KonnectProvider) Configure(ctx context.Context, req provider.ConfigureR
 
 func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
+		NewAPIResource,
+		NewAPIDocumentResource,
+		NewAPIImplementationResource,
 		NewAPIProductResource,
 		NewAPIProductDocumentResource,
 		NewAPIProductSpecificationResource,
 		NewAPIProductVersionResource,
+		NewAPIPublicationResource,
+		NewAPISpecificationResource,
+		NewAPIVersionResource,
 		NewApplicationAuthStrategyResource,
 		NewAuditLogResource,
 		NewAuditLogDestinationResource,

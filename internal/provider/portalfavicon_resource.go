@@ -53,7 +53,7 @@ func (r *PortalFaviconResource) Schema(ctx context.Context, req resource.SchemaR
 			},
 			"portal_id": schema.StringAttribute{
 				Required:    true,
-				Description: `ID of the portal.`,
+				Description: `The Portal identifier`,
 			},
 		},
 	}

@@ -20,7 +20,7 @@ resource "konnect_portal_product_version" "my_portalproductversion" {
   auto_approve_registration = true
   deprecated                = false
   notify_developers         = false
-  portal_id                 = "47a7b8c6-b8ad-4388-ba4c-746cd81f772c"
+  portal_id                 = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
   product_version_id        = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
   publish_status            = "published"
 }
@@ -35,7 +35,7 @@ resource "konnect_portal_product_version" "my_portalproductversion" {
 - `auth_strategy_ids` (List of String) A list of authentication strategy IDs
 - `auto_approve_registration` (Boolean) Whether the application registration auto approval on this portal for the api product version is enabled
 - `deprecated` (Boolean) Whether the api product version on the portal is deprecated
-- `portal_id` (String) ID of the portal.
+- `portal_id` (String) The Portal identifier
 - `product_version_id` (String) API product version identifier
 - `publish_status` (String) Publication status of the API product version on the portal. must be one of ["published", "unpublished"]
 
@@ -85,5 +85,5 @@ Read-Only:
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_portal_product_version.my_konnect_portal_product_version '{"portal_id": "", "product_version_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"}'
+terraform import konnect_portal_product_version.my_konnect_portal_product_version '{"portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a", "product_version_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"}'
 ```

@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type IntegrationInstanceRef struct {
+type Portals struct {
 	DisplayName types.String `tfsdk:"display_name"`
 	ID          types.String `tfsdk:"id"`
 	Name        types.String `tfsdk:"name"`

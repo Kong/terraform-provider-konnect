@@ -17,7 +17,7 @@ resource "konnect_portal_snippet" "my_portalsnippet" {
   content     = "# Welcome to My Snippet"
   description = "A custom page about developer portals"
   name        = "my-snippet"
-  portal_id   = "d861d300-fccb-49c4-9de1-8f3665c29307"
+  portal_id   = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
   status      = "published"
   title       = "My Snippet"
   visibility  = "public"
@@ -31,7 +31,7 @@ resource "konnect_portal_snippet" "my_portalsnippet" {
 
 - `content` (String) The renderable markdown content of a page in a portal.
 - `name` (String) The unique name of a snippet in a portal.
-- `portal_id` (String) ID of the portal.
+- `portal_id` (String) The Portal identifier
 
 ### Optional
 
@@ -53,5 +53,5 @@ must be one of ["public", "private"]
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_portal_snippet.my_konnect_portal_snippet '{"id": "ebbac5b0-ac89-45c3-9d2e-c4542c657e79", "portal_id": ""}'
+terraform import konnect_portal_snippet.my_konnect_portal_snippet '{"id": "ebbac5b0-ac89-45c3-9d2e-c4542c657e79", "portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a"}'
 ```

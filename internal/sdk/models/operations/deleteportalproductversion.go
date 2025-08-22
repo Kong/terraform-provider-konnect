@@ -10,7 +10,7 @@ import (
 type DeletePortalProductVersionRequest struct {
 	// API product version identifier
 	ProductVersionID string `pathParam:"style=simple,explode=false,name=productVersionId"`
-	// ID of the portal.
+	// The Portal identifier
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 }
 

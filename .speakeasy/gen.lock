@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 6d9784a786b5d6a4cdb0a65c1bdbb6d7
+  docChecksum: 0184e9c3266d42302b8508d5696084c3
   docVersion: 2.0.0
   speakeasyVersion: 1.602.0
   generationVersion: 2.681.1
@@ -36,6 +36,12 @@ generatedFiles:
   - examples/data-sources/konnect_mesh_control_planes/data-source.tf
   - examples/data-sources/konnect_portal_classic_list/data-source.tf
   - examples/provider/provider.tf
+  - examples/resources/konnect_api/import.sh
+  - examples/resources/konnect_api/resource.tf
+  - examples/resources/konnect_api_document/import.sh
+  - examples/resources/konnect_api_document/resource.tf
+  - examples/resources/konnect_api_implementation/import.sh
+  - examples/resources/konnect_api_implementation/resource.tf
   - examples/resources/konnect_api_product/import.sh
   - examples/resources/konnect_api_product/resource.tf
   - examples/resources/konnect_api_product_document/import.sh
@@ -44,6 +50,12 @@ generatedFiles:
   - examples/resources/konnect_api_product_specification/resource.tf
   - examples/resources/konnect_api_product_version/import.sh
   - examples/resources/konnect_api_product_version/resource.tf
+  - examples/resources/konnect_api_publication/import.sh
+  - examples/resources/konnect_api_publication/resource.tf
+  - examples/resources/konnect_api_specification/import.sh
+  - examples/resources/konnect_api_specification/resource.tf
+  - examples/resources/konnect_api_version/import.sh
+  - examples/resources/konnect_api_version/resource.tf
   - examples/resources/konnect_application_auth_strategy/import.sh
   - examples/resources/konnect_application_auth_strategy/resource.tf
   - examples/resources/konnect_audit_log/resource.tf
@@ -379,6 +391,12 @@ generatedFiles:
   - internal/planmodifiers/setplanmodifier/suppress_diff.go
   - internal/planmodifiers/stringplanmodifier/suppress_diff.go
   - internal/planmodifiers/utils/state_check.go
+  - internal/provider/api_resource.go
+  - internal/provider/api_resource_sdk.go
+  - internal/provider/apidocument_resource.go
+  - internal/provider/apidocument_resource_sdk.go
+  - internal/provider/apiimplementation_resource.go
+  - internal/provider/apiimplementation_resource_sdk.go
   - internal/provider/apiproduct_resource.go
   - internal/provider/apiproduct_resource_sdk.go
   - internal/provider/apiproductdocument_resource.go
@@ -387,6 +405,12 @@ generatedFiles:
   - internal/provider/apiproductspecification_resource_sdk.go
   - internal/provider/apiproductversion_resource.go
   - internal/provider/apiproductversion_resource_sdk.go
+  - internal/provider/apipublication_resource.go
+  - internal/provider/apipublication_resource_sdk.go
+  - internal/provider/apispecification_resource.go
+  - internal/provider/apispecification_resource_sdk.go
+  - internal/provider/apiversion_resource.go
+  - internal/provider/apiversion_resource_sdk.go
   - internal/provider/applicationauthstrategy_resource.go
   - internal/provider/applicationauthstrategy_resource_sdk.go
   - internal/provider/auditlog_resource.go
@@ -772,9 +796,11 @@ generatedFiles:
   - internal/provider/types/ai_semantic_cache_plugin_vectordb.go
   - internal/provider/types/ai_semantic_prompt_guard_plugin_config.go
   - internal/provider/types/allow.go
+  - internal/provider/types/api_implementation_service.go
   - internal/provider/types/api_product_portal.go
   - internal/provider/types/api_product_version_auth_strategy.go
   - internal/provider/types/api_product_version_portal.go
+  - internal/provider/types/api_version_summary.go
   - internal/provider/types/app_auth_strategy_config_key_auth.go
   - internal/provider/types/app_auth_strategy_config_open_id_connect.go
   - internal/provider/types/app_auth_strategy_key_auth_request.go
@@ -839,6 +865,7 @@ generatedFiles:
   - internal/provider/types/control_plane_filter_parameters.go
   - internal/provider/types/correlation_id_plugin_config.go
   - internal/provider/types/cors_plugin_config.go
+  - internal/provider/types/create_api_version_request_spec.go
   - internal/provider/types/create_multi_key_auth_credential_config.go
   - internal/provider/types/create_portal_custom_domain_ssl.go
   - internal/provider/types/custom_domain_state_metadata.go
@@ -876,7 +903,6 @@ generatedFiles:
   - internal/provider/types/id.go
   - internal/provider/types/identity_realms.go
   - internal/provider/types/injection_protection_plugin_config.go
-  - internal/provider/types/integration_instance_ref.go
   - internal/provider/types/integration_ref_without_instance.go
   - internal/provider/types/ip_restriction_plugin_config.go
   - internal/provider/types/jq_plugin_config.go
@@ -942,6 +968,7 @@ generatedFiles:
   - internal/provider/types/portal_footer_menu_section.go
   - internal/provider/types/portal_menu_item.go
   - internal/provider/types/portal_oidc_config.go
+  - internal/provider/types/portals.go
   - internal/provider/types/post_function_plugin_config.go
   - internal/provider/types/private_dns_attachment_config.go
   - internal/provider/types/private_dns_resolver_config.go
@@ -998,6 +1025,7 @@ generatedFiles:
   - internal/provider/types/section.go
   - internal/provider/types/serverless_control_plane.go
   - internal/provider/types/service_protection_plugin_config.go
+  - internal/provider/types/service_reference.go
   - internal/provider/types/session.go
   - internal/provider/types/session_plugin_config.go
   - internal/provider/types/set.go
@@ -1005,6 +1033,7 @@ generatedFiles:
   - internal/provider/types/solace_upstream_plugin_authentication.go
   - internal/provider/types/solace_upstream_plugin_config.go
   - internal/provider/types/solace_upstream_plugin_destinations.go
+  - internal/provider/types/spec.go
   - internal/provider/types/spec_renderer.go
   - internal/provider/types/standard_webhooks_plugin_config.go
   - internal/provider/types/statsd_advanced_plugin_config.go
@@ -1039,6 +1068,7 @@ generatedFiles:
   - internal/provider/types/v2_nullable_appearance_text_variables.go
   - internal/provider/types/v2_nullable_appearance_theme_variables.go
   - internal/provider/types/v2_portal.go
+  - internal/provider/types/validation_messages.go
   - internal/provider/types/vault_auth_plugin_config.go
   - internal/provider/types/vectordb.go
   - internal/provider/types/websocket_size_limit_plugin_config.go
@@ -1049,11 +1079,17 @@ generatedFiles:
   - internal/provider/utils.go
   - internal/sdk/.gitattributes
   - internal/sdk/acls.go
+  - internal/sdk/api.go
+  - internal/sdk/apidocumentation.go
+  - internal/sdk/apiimplementation.go
   - internal/sdk/apikeys.go
   - internal/sdk/apiproductdocumentation.go
   - internal/sdk/apiproducts.go
   - internal/sdk/apiproductversions.go
   - internal/sdk/apiproductversionspecification.go
+  - internal/sdk/apipublication.go
+  - internal/sdk/apispecification.go
+  - internal/sdk/apiversion.go
   - internal/sdk/appauthstrategies.go
   - internal/sdk/assets.go
   - internal/sdk/auditlogs.go
@@ -1117,10 +1153,15 @@ generatedFiles:
   - internal/sdk/models/operations/createaisanitizerplugin.go
   - internal/sdk/models/operations/createaisemanticcacheplugin.go
   - internal/sdk/models/operations/createaisemanticpromptguardplugin.go
+  - internal/sdk/models/operations/createapi.go
+  - internal/sdk/models/operations/createapidocument.go
+  - internal/sdk/models/operations/createapiimplementation.go
   - internal/sdk/models/operations/createapiproduct.go
   - internal/sdk/models/operations/createapiproductdocument.go
   - internal/sdk/models/operations/createapiproductversion.go
   - internal/sdk/models/operations/createapiproductversionspec.go
+  - internal/sdk/models/operations/createapispec.go
+  - internal/sdk/models/operations/createapiversion.go
   - internal/sdk/models/operations/createappauthstrategy.go
   - internal/sdk/models/operations/createauditlogdestination.go
   - internal/sdk/models/operations/createawslambdaplugin.go
@@ -1269,10 +1310,15 @@ generatedFiles:
   - internal/sdk/models/operations/deleteaisanitizerplugin.go
   - internal/sdk/models/operations/deleteaisemanticcacheplugin.go
   - internal/sdk/models/operations/deleteaisemanticpromptguardplugin.go
+  - internal/sdk/models/operations/deleteapi.go
+  - internal/sdk/models/operations/deleteapidocument.go
+  - internal/sdk/models/operations/deleteapiimplementation.go
   - internal/sdk/models/operations/deleteapiproduct.go
   - internal/sdk/models/operations/deleteapiproductdocument.go
   - internal/sdk/models/operations/deleteapiproductversion.go
   - internal/sdk/models/operations/deleteapiproductversionspec.go
+  - internal/sdk/models/operations/deleteapispec.go
+  - internal/sdk/models/operations/deleteapiversion.go
   - internal/sdk/models/operations/deleteappauthstrategy.go
   - internal/sdk/models/operations/deleteauditlogdestination.go
   - internal/sdk/models/operations/deleteauditlogwebhook.go
@@ -1362,6 +1408,7 @@ generatedFiles:
   - internal/sdk/models/operations/deleteprometheusplugin.go
   - internal/sdk/models/operations/deleteproxycacheadvancedplugin.go
   - internal/sdk/models/operations/deleteproxycacheplugin.go
+  - internal/sdk/models/operations/deletepublication.go
   - internal/sdk/models/operations/deleteratelimitingadvancedplugin.go
   - internal/sdk/models/operations/deleteratelimitingplugin.go
   - internal/sdk/models/operations/deleterealm.go
@@ -1410,9 +1457,15 @@ generatedFiles:
   - internal/sdk/models/operations/deletewebsocketvalidatorplugin.go
   - internal/sdk/models/operations/deletexmlthreatprotectionplugin.go
   - internal/sdk/models/operations/deletezipkinplugin.go
+  - internal/sdk/models/operations/fetchapi.go
+  - internal/sdk/models/operations/fetchapidocument.go
+  - internal/sdk/models/operations/fetchapiimplementation.go
+  - internal/sdk/models/operations/fetchapispec.go
+  - internal/sdk/models/operations/fetchapiversion.go
   - internal/sdk/models/operations/fetchcatalogservice.go
   - internal/sdk/models/operations/fetchintegrationinstance.go
   - internal/sdk/models/operations/fetchpluginschema.go
+  - internal/sdk/models/operations/fetchpublication.go
   - internal/sdk/models/operations/getaclplugin.go
   - internal/sdk/models/operations/getaclwithconsumer.go
   - internal/sdk/models/operations/getacmeplugin.go
@@ -1587,6 +1640,7 @@ generatedFiles:
   - internal/sdk/models/operations/postsystemaccountsaccountidassignedroles.go
   - internal/sdk/models/operations/postsystemaccountsidaccesstokens.go
   - internal/sdk/models/operations/postteamsteamidsystemaccounts.go
+  - internal/sdk/models/operations/publishapitoportal.go
   - internal/sdk/models/operations/putcmek.go
   - internal/sdk/models/operations/removeconsumerfromgroup.go
   - internal/sdk/models/operations/removeuserfromteam.go
@@ -1613,10 +1667,14 @@ generatedFiles:
   - internal/sdk/models/operations/updateaisanitizerplugin.go
   - internal/sdk/models/operations/updateaisemanticcacheplugin.go
   - internal/sdk/models/operations/updateaisemanticpromptguardplugin.go
+  - internal/sdk/models/operations/updateapi.go
+  - internal/sdk/models/operations/updateapidocument.go
   - internal/sdk/models/operations/updateapiproduct.go
   - internal/sdk/models/operations/updateapiproductdocument.go
   - internal/sdk/models/operations/updateapiproductversion.go
   - internal/sdk/models/operations/updateapiproductversionspec.go
+  - internal/sdk/models/operations/updateapispec.go
+  - internal/sdk/models/operations/updateapiversion.go
   - internal/sdk/models/operations/updateappauthstrategy.go
   - internal/sdk/models/operations/updateauditlogdestination.go
   - internal/sdk/models/operations/updateauditlogwebhook.go
@@ -1760,6 +1818,12 @@ generatedFiles:
   - internal/sdk/models/shared/aisemanticcacheplugin.go
   - internal/sdk/models/shared/aisemanticpromptguardplugin.go
   - internal/sdk/models/shared/apiaccess.go
+  - internal/sdk/models/shared/apidocument.go
+  - internal/sdk/models/shared/apidocumentresponse.go
+  - internal/sdk/models/shared/apidocumentstatus.go
+  - internal/sdk/models/shared/apiimplementation.go
+  - internal/sdk/models/shared/apiimplementationresponse.go
+  - internal/sdk/models/shared/apiimplementationservice.go
   - internal/sdk/models/shared/apikey.go
   - internal/sdk/models/shared/apiproduct.go
   - internal/sdk/models/shared/apiproductdocument.go
@@ -1769,6 +1833,17 @@ generatedFiles:
   - internal/sdk/models/shared/apiproductversionportal.go
   - internal/sdk/models/shared/apiproductversionpublishstatus.go
   - internal/sdk/models/shared/apiproductversionspec.go
+  - internal/sdk/models/shared/apipublication.go
+  - internal/sdk/models/shared/apipublicationresponse.go
+  - internal/sdk/models/shared/apipublicationvisibility.go
+  - internal/sdk/models/shared/apiresponseschema.go
+  - internal/sdk/models/shared/apislugconflict.go
+  - internal/sdk/models/shared/apispec.go
+  - internal/sdk/models/shared/apispecresponse.go
+  - internal/sdk/models/shared/apispectype.go
+  - internal/sdk/models/shared/apiversion.go
+  - internal/sdk/models/shared/apiversionresponse.go
+  - internal/sdk/models/shared/apiversionsummary.go
   - internal/sdk/models/shared/appauthstrategyconfigkeyauth.go
   - internal/sdk/models/shared/appauthstrategyconfigopenidconnect.go
   - internal/sdk/models/shared/assignedrole.go
@@ -1834,12 +1909,16 @@ generatedFiles:
   - internal/sdk/models/shared/correlationidplugin.go
   - internal/sdk/models/shared/corsplugin.go
   - internal/sdk/models/shared/cpregion.go
+  - internal/sdk/models/shared/createapidocumentrequest.go
   - internal/sdk/models/shared/createapikeypayload.go
   - internal/sdk/models/shared/createapikeyresult.go
   - internal/sdk/models/shared/createapiproductdocumentdto.go
   - internal/sdk/models/shared/createapiproductdto.go
   - internal/sdk/models/shared/createapiproductversiondto.go
   - internal/sdk/models/shared/createapiproductversionspecdto.go
+  - internal/sdk/models/shared/createapirequest.go
+  - internal/sdk/models/shared/createapispecrequest.go
+  - internal/sdk/models/shared/createapiversionrequest.go
   - internal/sdk/models/shared/createappauthstrategyrequest.go
   - internal/sdk/models/shared/createappauthstrategyresponse.go
   - internal/sdk/models/shared/createauditlogdestination.go
@@ -2031,6 +2110,7 @@ generatedFiles:
   - internal/sdk/models/shared/serverlesscontrolplane.go
   - internal/sdk/models/shared/service.go
   - internal/sdk/models/shared/serviceprotectionplugin.go
+  - internal/sdk/models/shared/servicereference.go
   - internal/sdk/models/shared/serviceunavailable.go
   - internal/sdk/models/shared/sessionplugin.go
   - internal/sdk/models/shared/slugconflict.go
@@ -2060,6 +2140,7 @@ generatedFiles:
   - internal/sdk/models/shared/updateapiproductdto.go
   - internal/sdk/models/shared/updateapiproductversiondto.go
   - internal/sdk/models/shared/updateapiproductversionspecdto.go
+  - internal/sdk/models/shared/updateapirequest.go
   - internal/sdk/models/shared/updateappauthstrategyrequest.go
   - internal/sdk/models/shared/updateappauthstrategyrequestkeyauth.go
   - internal/sdk/models/shared/updateappauthstrategyrequestopenidconnect.go
@@ -12153,7 +12234,7 @@ examples:
     speakeasy-default-get-portal-appearance:
       parameters:
         path:
-          portalId: "4e6a4cda-2b9f-4894-b532-c3a4a7b225f2"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
           application/json: {"theme_name": "custom", "custom_theme": {"colors": {"section": {"header": {"value": "#F8F8F8", "description": "Background for header"}, "body": {"value": "#FFFFFF", "description": "Background for main content"}, "hero": {"value": "#F8F8F8", "description": "Background for hero section"}, "accent": {"value": "#F8F8F8", "description": "Subtle background"}, "tertiary": {"value": "#FFFFFF", "description": "Tertiary background"}, "stroke": {"value": "rgba(0,0,0,0.1)", "description": "Border color"}, "footer": {"value": "#07A88D", "description": "Background for footer"}}, "text": {"header": {"value": "rgba(0,0,0,0.8)", "description": "Header text"}, "hero": {"value": "#FFFFFF", "description": "Hero text"}, "headings": {"value": "rgba(0,0,0,0.8)", "description": "Headings text"}, "primary": {"value": "rgba(0,0,0,0.8)", "description": "Main content text"}, "secondary": {"value": "rgba(0,0,0,0.8)", "description": "Supporting text"}, "accent": {"value": "#07A88D", "description": "Subtle text"}, "link": {"value": "#07A88D", "description": "Link text"}, "footer": {"value": "#FFFFFF", "description": "Footer text"}}, "button": {"primary_fill": {"value": "#1155CB", "description": "Background for Primary Button"}, "primary_text": {"value": "#FFFFFF", "description": "Text for Primary Button"}}}}, "custom_fonts": {"base": "Roboto", "code": "Roboto", "headings": "Roboto"}, "use_custom_fonts": true, "text": {"catalog": {"welcome_message": "Welcome", "primary_header": "Come one in!"}}, "images": {"logo": {"data": "data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=", "filename": "logo.png"}, "favicon": {"data": "data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=", "filename": "favicon.ico"}, "catalog_cover": {"data": "data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=", "filename": null}}}
@@ -12167,7 +12248,7 @@ examples:
     speakeasy-default-update-portal-appearance:
       parameters:
         path:
-          portalId: "4c947c0a-638d-4122-b69c-b507af6c6014"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
         application/json: {"theme_name": "custom", "custom_theme": {"colors": {"section": {"header": {"value": "#F8F8F8", "description": "Background for header"}, "body": {"value": "#FFFFFF", "description": "Background for main content"}, "hero": {"value": "#F8F8F8", "description": "Background for hero section"}, "accent": {"value": "#F8F8F8", "description": "Subtle background"}, "tertiary": {"value": "#FFFFFF", "description": "Tertiary background"}, "stroke": {"value": "rgba(0,0,0,0.1)", "description": "Border color"}, "footer": {"value": "#07A88D", "description": "Background for footer"}}, "text": {"header": {"value": "rgba(0,0,0,0.8)", "description": "Header text"}, "hero": {"value": "#FFFFFF", "description": "Hero text"}, "headings": {"value": "rgba(0,0,0,0.8)", "description": "Headings text"}, "primary": {"value": "rgba(0,0,0,0.8)", "description": "Main content text"}, "secondary": {"value": "rgba(0,0,0,0.8)", "description": "Supporting text"}, "accent": {"value": "#07A88D", "description": "Subtle text"}, "link": {"value": "#07A88D", "description": "Link text"}, "footer": {"value": "#FFFFFF", "description": "Footer text"}}, "button": {"primary_fill": {"value": "#1155CB", "description": "Background for Primary Button"}, "primary_text": {"value": "#FFFFFF", "description": "Text for Primary Button"}}}}, "custom_fonts": {"base": "Roboto", "code": "Roboto", "headings": "Roboto"}, "use_custom_fonts": true, "text": {"catalog": {"welcome_message": "Welcome", "primary_header": "Come one in!"}}, "images": {"logo": {"data": "data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=", "filename": "logo.png"}, "favicon": {"data": "data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=", "filename": "favicon.ico"}, "catalog_cover": {"data": "data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=", "filename": null}}}
       responses:
@@ -12185,7 +12266,7 @@ examples:
     speakeasy-default-get-portal-authentication-settings:
       parameters:
         path:
-          portalId: "2ecf05e2-2b78-40f0-ba49-470ffc6edff3"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
           application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": true, "saml_auth_enabled": false, "oidc_team_mapping_enabled": true, "idp_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_config": {"issuer": "https://identity.example.com/v2", "client_id": "x7id0o42lklas0blidl2", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}}
@@ -12195,7 +12276,7 @@ examples:
     speakeasy-default-update-portal-authentication-settings:
       parameters:
         path:
-          portalId: "2d659677-23a5-4363-9012-47d9281b04b1"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
         application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": true, "oidc_team_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_issuer": "https://identity.example.com/v2", "oidc_client_id": "x7id0o42lklas0blidl2", "oidc_client_secret": null, "oidc_scopes": ["email", "openid", "profile"], "oidc_claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}
       responses:
@@ -12212,7 +12293,7 @@ examples:
       parameters:
         path:
           productVersionId: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
-          portalId: "d5da5011-6929-4487-a96c-6f8fa3aed860"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
           application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "publish_status": "unpublished", "product_version_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "auth_strategies": [{"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "name", "credential_type": "self_managed_client_credentials", "auth_methods": ["bearer"]}, {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "name", "credential_type": "client_credentials", "auth_methods": ["bearer"]}, {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "name", "credential_type": "key_auth", "key_names": []}], "application_registration_enabled": false, "auto_approve_registration": false, "deprecated": true}
@@ -12229,7 +12310,7 @@ examples:
       parameters:
         path:
           productVersionId: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
-          portalId: "84aa3c25-968b-4324-bbd8-2ff44b64783c"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
         application/json: {"publish_status": "unpublished", "auth_strategy_ids": ["5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"], "application_registration_enabled": true, "auto_approve_registration": false, "deprecated": false}
       responses:
@@ -12248,7 +12329,7 @@ examples:
       parameters:
         path:
           productVersionId: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
-          portalId: "bc5b419e-9ab0-44dc-99bb-46e0cd989586"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
@@ -12260,7 +12341,7 @@ examples:
     speakeasy-default-create-portal-team:
       parameters:
         path:
-          portalId: "91fa73b1-388f-4e64-9ebe-135d19702a57"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
         application/json: {"name": "IDM - Developers", "description": "The Identity Management (IDM) team."}
       responses:
@@ -12279,7 +12360,7 @@ examples:
       parameters:
         path:
           teamId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
-          portalId: "f55f3964-9acd-4f1c-a7ec-bd953a040b5d"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
           application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "IDM - Developers", "description": "The developers for the IDM API.", "created_at": "1992-02-07T17:46:57.52Z", "updated_at": "2022-08-31T17:00:00.52Z"}
@@ -12294,7 +12375,7 @@ examples:
       parameters:
         path:
           teamId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
-          portalId: "20071666-09a0-41a8-9ffb-7ec9b9bbcf88"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
         application/json: {"name": "IDM - Developers", "description": "The Identity Management (IDM) API team."}
       responses:
@@ -12311,7 +12392,7 @@ examples:
       parameters:
         path:
           teamId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
-          portalId: "f25a47a6-7952-49a6-ac9f-261e474007a3"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
@@ -13367,7 +13448,7 @@ examples:
     speakeasy-default-get-portal-asset-favicon:
       parameters:
         path:
-          portalId: "83d0fdd0-92cf-41c3-ac6e-b118cecbe1d1"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
           application/json: {"data": "data:image/png;base64,YW5faW1hZ2VfZmlsZQ=="}
@@ -13379,7 +13460,7 @@ examples:
     speakeasy-default-replace-portal-asset-favicon:
       parameters:
         path:
-          portalId: "7f853491-69c1-4d40-be61-685d07b2f760"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
         application/json: {"data": "data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU="}
       responses:
@@ -13395,7 +13476,7 @@ examples:
     speakeasy-default-get-portal-asset-logo:
       parameters:
         path:
-          portalId: "13651a01-1e1a-4623-952e-542e2c8cff28"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
           application/json: {"data": "data:image/png;base64,YW5faW1hZ2VfZmlsZQ=="}
@@ -13407,7 +13488,7 @@ examples:
     speakeasy-default-replace-portal-asset-logo:
       parameters:
         path:
-          portalId: "cda1dc59-271f-49ef-980f-7b8196a21446"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
         application/json: {"data": "data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU="}
       responses:
@@ -13423,7 +13504,7 @@ examples:
     speakeasy-default-get-portal-custom-domain:
       parameters:
         path:
-          portalId: "349a4004-fa8b-44b6-a955-c02ce8852489"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
           application/json: {"hostname": "messy-assist.info", "enabled": true, "ssl": {"domain_verification_method": "http", "verification_status": "verified"}, "cname_status": "pending", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -13437,7 +13518,7 @@ examples:
     speakeasy-default-create-portal-custom-domain:
       parameters:
         path:
-          portalId: "7214f7a3-cfb5-409a-8855-df062f1a8e9d"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
         application/json: {"hostname": "lavish-custody.org", "enabled": true, "ssl": {}}
       responses:
@@ -13455,7 +13536,7 @@ examples:
     speakeasy-default-update-portal-custom-domain:
       parameters:
         path:
-          portalId: "04342a18-001b-4cc0-ac8d-c94855fa89a2"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
         application/json: {"enabled": null}
       responses:
@@ -13471,7 +13552,7 @@ examples:
     speakeasy-default-delete-portal-custom-domain:
       parameters:
         path:
-          portalId: "a48d4afb-4d59-41db-8c31-069c58386d0d"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
@@ -13479,7 +13560,7 @@ examples:
     speakeasy-default-get-portal-customization:
       parameters:
         path:
-          portalId: "c1f26ac2-4d98-4500-9c10-c369f4997443"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
           application/json: {"theme": null, "css": null, "menu": {"main": null, "footer_sections": null, "footer_bottom": null}, "robots": null}
@@ -13493,7 +13574,7 @@ examples:
     speakeasy-default-replace-portal-customization:
       parameters:
         path:
-          portalId: "9d054504-6858-4150-8873-e6b55940b5b5"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
         application/json: {"theme": null, "css": null, "menu": {"main": null, "footer_sections": null, "footer_bottom": null}, "robots": null}
       responses:
@@ -13511,7 +13592,7 @@ examples:
     speakeasy-default-create-portal-page:
       parameters:
         path:
-          portalId: "6c3d8c1f-13c7-44a5-9df6-146de589cfbc"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
         application/json: {"slug": "/my-page", "title": "My Page", "content": "# Welcome to My Page", "visibility": "public", "status": "published", "description": "A custom page about developer portals", "parent_page_id": null}
       responses:
@@ -13529,7 +13610,7 @@ examples:
     speakeasy-default-get-portal-page:
       parameters:
         path:
-          portalId: "95525c0c-4073-4aa1-b28a-8a59b435ba90"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
           pageId: "ebbac5b0-ac89-45c3-9d2e-c4542c657e79"
       responses:
         "200":
@@ -13542,7 +13623,7 @@ examples:
     speakeasy-default-update-portal-page:
       parameters:
         path:
-          portalId: "59d4cbb3-3cd1-471f-aa42-8d29eb415e40"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
           pageId: "ebbac5b0-ac89-45c3-9d2e-c4542c657e79"
       requestBody:
         application/json: {"slug": "/my-page", "title": "My Page", "content": "# Welcome to My Page", "visibility": "public", "status": "published", "description": "A custom page about developer portals", "parent_page_id": null}
@@ -13561,7 +13642,7 @@ examples:
     speakeasy-default-delete-portal-page:
       parameters:
         path:
-          portalId: "28e99d39-bf30-4daf-94d1-aea58c8fd6a3"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
           pageId: "ebbac5b0-ac89-45c3-9d2e-c4542c657e79"
       responses:
         "401":
@@ -13574,7 +13655,7 @@ examples:
     speakeasy-default-create-portal-snippet:
       parameters:
         path:
-          portalId: "83cb3bb5-8fd9-4714-92ea-93920ce10070"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
         application/json: {"name": "my-snippet", "title": "My Snippet", "content": "# Welcome to My Snippet", "visibility": "public", "status": "published", "description": "A custom page about developer portals"}
       responses:
@@ -13592,7 +13673,7 @@ examples:
     speakeasy-default-get-portal-snippet:
       parameters:
         path:
-          portalId: "4bda1b08-1e5f-4dfa-8643-af0101fa674e"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
           snippetId: "ebbac5b0-ac89-45c3-9d2e-c4542c657e79"
       responses:
         "200":
@@ -13607,7 +13688,7 @@ examples:
     speakeasy-default-update-portal-snippet:
       parameters:
         path:
-          portalId: "e5297401-d60b-49df-8410-5bfbe7ef1471"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
           snippetId: "ebbac5b0-ac89-45c3-9d2e-c4542c657e79"
       requestBody:
         application/json: {"name": "my-snippet", "title": "My Snippet", "content": "# Welcome to My Snippet", "visibility": "public", "status": "published", "description": "A custom page about developer portals"}
@@ -13626,8 +13707,385 @@ examples:
     speakeasy-default-delete-portal-snippet:
       parameters:
         path:
-          portalId: "2728e88d-81de-42ce-b3b1-8237438fc559"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
           snippetId: "ebbac5b0-ac89-45c3-9d2e-c4542c657e79"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-api:
+    speakeasy-default-create-api:
+      requestBody:
+        application/json: {"name": "MyAPI", "description": null, "version": null, "slug": "my-api-v1", "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": null, "current_version_summary": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 138119, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "415":
+          application/problem+json: {"status": 415, "title": "UnsupportedMediaType", "type": "https://httpstatuses.com/415", "instance": "kong:trace:1234567890", "detail": "UnsupportedMediaType"}
+  fetch-api:
+    speakeasy-default-fetch-api:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+      responses:
+        "200":
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": null, "current_version_summary": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-api:
+    speakeasy-default-update-api:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+      requestBody:
+        application/json: {"name": "MyAPI", "description": null, "version": null, "slug": "my-api-v1", "labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": null, "current_version_summary": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 426278, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "415":
+          application/problem+json: {"status": 415, "title": "UnsupportedMediaType", "type": "https://httpstatuses.com/415", "instance": "kong:trace:1234567890", "detail": "UnsupportedMediaType"}
+  delete-api:
+    speakeasy-default-delete-api:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-api-document:
+    speakeasy-default-create-api-document:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+      requestBody:
+        application/json: {"content": "<value>", "title": "API Document", "slug": "api-document", "status": "unpublished", "parent_document_id": null}
+      responses:
+        "201":
+          application/json: {"id": "de5c9818-be5c-42e6-b514-e3d4bc30ddeb", "content": "<value>", "title": "API Document", "slug": "api-document", "status": "unpublished", "parent_document_id": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 418392, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 8787.65, "title": "<value>", "type": null, "instance": "<value>"}
+        "415":
+          application/problem+json: {"status": 415, "title": "UnsupportedMediaType", "type": "https://httpstatuses.com/415", "instance": "kong:trace:1234567890", "detail": "UnsupportedMediaType"}
+  fetch-api-document:
+    speakeasy-default-fetch-api-document:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+          documentId: "de5c9818-be5c-42e6-b514-e3d4bc30ddeb"
+      responses:
+        "200":
+          application/json: {"id": "de5c9818-be5c-42e6-b514-e3d4bc30ddeb", "content": "<value>", "title": "API Document", "slug": "api-document", "status": "unpublished", "parent_document_id": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-api-document:
+    speakeasy-default-update-api-document:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+          documentId: "de5c9818-be5c-42e6-b514-e3d4bc30ddeb"
+      requestBody:
+        application/json: {"title": "API Document", "slug": "api-document", "status": "unpublished", "parent_document_id": null}
+      responses:
+        "200":
+          application/json: {"id": "de5c9818-be5c-42e6-b514-e3d4bc30ddeb", "content": "<value>", "title": "API Document", "slug": "api-document", "status": "unpublished", "parent_document_id": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 98738, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 6731.06, "title": "<value>", "type": null, "instance": "<value>"}
+        "415":
+          application/problem+json: {"status": 415, "title": "UnsupportedMediaType", "type": "https://httpstatuses.com/415", "instance": "kong:trace:1234567890", "detail": "UnsupportedMediaType"}
+  delete-api-document:
+    speakeasy-default-delete-api-document:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+          documentId: "de5c9818-be5c-42e6-b514-e3d4bc30ddeb"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-api-implementation:
+    speakeasy-default-create-api-implementation:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+      requestBody:
+        application/json: {"service": {"control_plane_id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "id": "7710d5c4-d902-410b-992f-18b814155b53"}}
+      responses:
+        "201":
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "service": {"control_plane_id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "id": "7710d5c4-d902-410b-992f-18b814155b53"}}
+        "400":
+          application/problem+json: {"status": 371505, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>"], "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  fetch-api-implementation:
+    speakeasy-default-fetch-api-implementation:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+          implementationId: "032d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "200":
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "service": {"control_plane_id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "id": "7710d5c4-d902-410b-992f-18b814155b53"}}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  delete-api-implementation:
+    speakeasy-default-delete-api-implementation:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+          implementationId: "032d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  publish-api-to-portal:
+    speakeasy-default-publish-api-to-portal:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+      requestBody:
+        application/json: {"auth_strategy_ids": null, "visibility": "private"}
+      responses:
+        "200":
+          application/json: {"auth_strategy_ids": null, "visibility": "private", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 423641, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_length", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  fetch-publication:
+    speakeasy-default-fetch-publication:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "200":
+          application/json: {"auth_strategy_ids": null, "visibility": "private", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  delete-publication:
+    speakeasy-default-delete-publication:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-api-spec:
+    speakeasy-default-create-api-spec:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+      requestBody:
+        application/json: {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "type": "oas3"}
+      responses:
+        "201":
+          application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "validation_messages": [{"message": "<value>"}], "type": "oas3", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 458640, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+        "415":
+          application/problem+json: {"status": 415, "title": "UnsupportedMediaType", "type": "https://httpstatuses.com/415", "instance": "kong:trace:1234567890", "detail": "UnsupportedMediaType"}
+  fetch-api-spec:
+    speakeasy-default-fetch-api-spec:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+          specId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "200":
+          application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "validation_messages": [], "type": "oas3", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-api-spec:
+    speakeasy-default-update-api-spec:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+          specId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      requestBody:
+        application/json: {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "type": "oas3"}
+      responses:
+        "200":
+          application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "validation_messages": [{"message": "<value>"}], "type": "oas3", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 845434, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+        "415":
+          application/problem+json: {"status": 415, "title": "UnsupportedMediaType", "type": "https://httpstatuses.com/415", "instance": "kong:trace:1234567890", "detail": "UnsupportedMediaType"}
+  delete-api-spec:
+    speakeasy-default-delete-api-spec:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+          specId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-api-version:
+    speakeasy-default-create-api-version:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+      requestBody:
+        application/json: {"version": "1.0.0", "spec": {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}"}}
+      responses:
+        "201":
+          application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "version": "1.0.0", "spec": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 673840, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+        "415":
+          application/problem+json: {"status": 415, "title": "UnsupportedMediaType", "type": "https://httpstatuses.com/415", "instance": "kong:trace:1234567890", "detail": "UnsupportedMediaType"}
+  fetch-api-version:
+    speakeasy-default-fetch-api-version:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+          versionId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "200":
+          application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "version": "1.0.0", "spec": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-api-version:
+    speakeasy-default-update-api-version:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+          versionId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      requestBody:
+        application/json: {"version": "1.0.0", "spec": null}
+      responses:
+        "200":
+          application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "version": "1.0.0", "spec": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 989628, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+        "415":
+          application/problem+json: {"status": 415, "title": "UnsupportedMediaType", "type": "https://httpstatuses.com/415", "instance": "kong:trace:1234567890", "detail": "UnsupportedMediaType"}
+  delete-api-version:
+    speakeasy-default-delete-api-version:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+          versionId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}

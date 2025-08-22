@@ -53,7 +53,7 @@ func (r *PortalLogoResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"portal_id": schema.StringAttribute{
 				Required:    true,
-				Description: `ID of the portal.`,
+				Description: `The Portal identifier`,
 			},
 		},
 	}

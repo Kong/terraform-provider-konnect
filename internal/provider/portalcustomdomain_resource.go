@@ -89,7 +89,7 @@ func (r *PortalCustomDomainResource) Schema(ctx context.Context, req resource.Sc
 			},
 			"portal_id": schema.StringAttribute{
 				Required:    true,
-				Description: `ID of the portal.`,
+				Description: `The Portal identifier`,
 			},
 			"ssl": schema.SingleNestedAttribute{
 				Required: true,

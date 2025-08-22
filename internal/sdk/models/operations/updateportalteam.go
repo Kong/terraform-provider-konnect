@@ -10,7 +10,7 @@ import (
 type UpdatePortalTeamRequest struct {
 	// ID of the team.
 	TeamID string `pathParam:"style=simple,explode=false,name=teamId"`
-	// ID of the portal.
+	// The Portal identifier
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// Update a team in a portal.
 	PortalUpdateTeamRequest *shared.PortalUpdateTeamRequest `request:"mediaType=application/json"`

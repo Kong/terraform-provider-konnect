@@ -8,7 +8,7 @@ import (
 )
 
 type CreatePortalCustomDomainRequest struct {
-	// ID of the portal.
+	// The Portal identifier
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// Create a portal custom domain.
 	CreatePortalCustomDomainRequest shared.CreatePortalCustomDomainRequest `request:"mediaType=application/json"`

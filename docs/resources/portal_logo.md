@@ -15,7 +15,7 @@ PortalLogo Resource
 ```terraform
 resource "konnect_portal_logo" "my_portallogo" {
   data      = "data:image/png;base64,YW5faW1hZ2VfZmlsZQ=="
-  portal_id = "46ec8a90-fe4e-4e4e-9d8d-4fa331ac94d0"
+  portal_id = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
 }
 ```
 
@@ -25,12 +25,12 @@ resource "konnect_portal_logo" "my_portallogo" {
 ### Required
 
 - `data` (String) must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>
-- `portal_id` (String) ID of the portal.
+- `portal_id` (String) The Portal identifier
 
 ## Import
 
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_portal_logo.my_konnect_portal_logo ""
+terraform import konnect_portal_logo.my_konnect_portal_logo "f32d905a-ed33-46a3-a093-d8f536af9a8a"
 ```
