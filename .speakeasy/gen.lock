@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 8482c15eed4c4329478fdcf8a466b0bc
+  docChecksum: 2b432e0c83896837a65f47b66db22016
   docVersion: 2.0.0
   speakeasyVersion: 1.602.0
   generationVersion: 2.681.1
@@ -34,6 +34,7 @@ generatedFiles:
   - examples/data-sources/konnect_cloud_gateway_provider_account_list/data-source.tf
   - examples/data-sources/konnect_gateway_control_plane/data-source.tf
   - examples/data-sources/konnect_mesh_control_planes/data-source.tf
+  - examples/data-sources/konnect_portal/data-source.tf
   - examples/data-sources/konnect_portal_classic_list/data-source.tf
   - examples/provider/provider.tf
   - examples/resources/konnect_api/import.sh
@@ -703,6 +704,8 @@ generatedFiles:
   - internal/provider/meshcontrolplane_resource_sdk.go
   - internal/provider/meshcontrolplanes_data_source.go
   - internal/provider/meshcontrolplanes_data_source_sdk.go
+  - internal/provider/portal_data_source.go
+  - internal/provider/portal_data_source_sdk.go
   - internal/provider/portal_resource.go
   - internal/provider/portal_resource_sdk.go
   - internal/provider/portalappearance_resource.go
@@ -964,6 +967,7 @@ generatedFiles:
   - internal/provider/types/pem.go
   - internal/provider/types/pgvector.go
   - internal/provider/types/portal_claim_mappings.go
+  - internal/provider/types/portal_filter_parameters.go
   - internal/provider/types/portal_footer_menu_section.go
   - internal/provider/types/portal_menu_item.go
   - internal/provider/types/portal_oidc_config.go
@@ -1039,6 +1043,7 @@ generatedFiles:
   - internal/provider/types/statsd_plugin_config.go
   - internal/provider/types/statsd_plugin_metrics.go
   - internal/provider/types/storage_config.go
+  - internal/provider/types/string_field_filter.go
   - internal/provider/types/syslog_plugin_config.go
   - internal/provider/types/targets.go
   - internal/provider/types/tcp_log_plugin_config.go
@@ -1059,6 +1064,7 @@ generatedFiles:
   - internal/provider/types/upstream_oauth_plugin_config.go
   - internal/provider/types/upstream_timeout_plugin_config.go
   - internal/provider/types/upstream_unhealthy.go
+  - internal/provider/types/uuid_field_filter.go
   - internal/provider/types/v2_appearance_color_variable.go
   - internal/provider/types/v2_appearance_image.go
   - internal/provider/types/v2_appearance_images.go
@@ -1628,6 +1634,7 @@ generatedFiles:
   - internal/sdk/models/operations/getzipkinplugin.go
   - internal/sdk/models/operations/listcontrolplanes.go
   - internal/sdk/models/operations/listmeshcontrolplanes.go
+  - internal/sdk/models/operations/listportals.go
   - internal/sdk/models/operations/listportalsclassic.go
   - internal/sdk/models/operations/listprovideraccounts.go
   - internal/sdk/models/operations/options.go
@@ -2016,6 +2023,7 @@ generatedFiles:
   - internal/sdk/models/shared/ldapauthplugin.go
   - internal/sdk/models/shared/listcontrolplanesresponse.go
   - internal/sdk/models/shared/listmeshcontrolplanesresponse.go
+  - internal/sdk/models/shared/listportalsresponse.go
   - internal/sdk/models/shared/listprovideraccountsresponse.go
   - internal/sdk/models/shared/logformat.go
   - internal/sdk/models/shared/logglyplugin.go
@@ -2063,6 +2071,7 @@ generatedFiles:
   - internal/sdk/models/shared/portalcustomdomainverificationmethod.go
   - internal/sdk/models/shared/portalcustomdomainverificationstatus.go
   - internal/sdk/models/shared/portalcustomization.go
+  - internal/sdk/models/shared/portalfilterparameters.go
   - internal/sdk/models/shared/portalfootermenusection.go
   - internal/sdk/models/shared/portalmenuitem.go
   - internal/sdk/models/shared/portaloidcconfig.go
@@ -2119,6 +2128,7 @@ generatedFiles:
   - internal/sdk/models/shared/standardwebhooksplugin.go
   - internal/sdk/models/shared/statsdadvancedplugin.go
   - internal/sdk/models/shared/statsdplugin.go
+  - internal/sdk/models/shared/stringfieldfilter.go
   - internal/sdk/models/shared/syslogplugin.go
   - internal/sdk/models/shared/systemaccount.go
   - internal/sdk/models/shared/systemaccountaccesstoken.go
@@ -2161,6 +2171,7 @@ generatedFiles:
   - internal/sdk/models/shared/upstream.go
   - internal/sdk/models/shared/upstreamoauthplugin.go
   - internal/sdk/models/shared/upstreamtimeoutplugin.go
+  - internal/sdk/models/shared/uuidfieldfilter.go
   - internal/sdk/models/shared/v2appearancecolorvariable.go
   - internal/sdk/models/shared/v2appearancefontname.go
   - internal/sdk/models/shared/v2appearanceimage.go
@@ -12171,9 +12182,10 @@ examples:
         query:
           page[size]: 10
           page[number]: 1
+          filter: {"authentication_enabled": true, "rbac_enabled": true, "auto_approve_developers": true, "auto_approve_applications": true}
       responses:
         "200":
-          application/json: {"meta": {"page": {"number": 1, "size": 10, "total": 1}}, "data": [{"id": "8f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-02-07T17:46:57.52Z", "updated_at": "2022-10-08T17:00:00.52Z", "name": "Portal A", "display_name": "Developer Portal A", "description": "The Portal A", "default_domain": "123455678abcd.us.portal.konghq.com", "is_public": false, "rbac_enabled": true, "auto_approve_applications": false, "auto_approve_developers": true, "custom_domain": "api.example.com", "custom_client_domain": "portal.example.com", "application_count": 0, "developer_count": 0, "published_product_count": 0}]}
+          application/json: {"data": [{"id": "8f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-02-07T17:46:57.52Z", "updated_at": "2022-10-08T17:00:00.52Z", "name": "Portal A", "display_name": "Developer Portal A", "description": "The Portal A", "authentication_enabled": true, "rbac_enabled": true, "default_api_visibility": "public", "default_page_visibility": "private", "default_application_auth_strategy_id": null, "auto_approve_developers": true, "auto_approve_applications": false, "default_domain": "123455678abcd.us.portal.konghq.com", "canonical_domain": "rapid-step.biz"}], "meta": {"page": {"number": 1, "size": 10, "total": 100}}}
         "400":
           application/problem+json: {"status": 55055, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>", "<value 3>"], "source": "body"}, {"field": "name", "rule": "min_uppercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>", "<value 3>"], "source": "body"}]}
         "401":
