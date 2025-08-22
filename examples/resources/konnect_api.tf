@@ -3,4 +3,7 @@ resource "konnect_api" "my_api" {
   name        = "MyAPI"
   slug        = "my-api-v1-implementation"
   version     = "v1"
+  attributes = jsonencode({
+    environment = ["staging"],
+  })
 }

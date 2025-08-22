@@ -15,6 +15,9 @@ resource "konnect_api" "my_api" {
   name         = "MyAPI"
   slug         = "my-api-v1-implementation"
   version      = "v1"
+  attributes = jsonencode({
+    environment = ["staging"],
+  })
 }
 
 resource "konnect_api_implementation" "my_apiimplementation" {
