@@ -22,7 +22,7 @@ func (r *GatewayPluginHTTPLogResourceModel) RefreshFromSharedHTTPLogPlugin(ctx c
 		} else {
 			r.Config.ContentType = types.StringNull()
 		}
-		if len(resp.Config.CustomFieldsByLua) > 0 {
+		if resp.Config.CustomFieldsByLua != nil {
 			r.Config.CustomFieldsByLua = make(map[string]jsontypes.Normalized, len(resp.Config.CustomFieldsByLua))
 			for key, value := range resp.Config.CustomFieldsByLua {
 				result, _ := json.Marshal(value)
@@ -30,7 +30,7 @@ func (r *GatewayPluginHTTPLogResourceModel) RefreshFromSharedHTTPLogPlugin(ctx c
 			}
 		}
 		r.Config.FlushTimeout = types.Float64PointerValue(resp.Config.FlushTimeout)
-		if len(resp.Config.Headers) > 0 {
+		if resp.Config.Headers != nil {
 			r.Config.Headers = make(map[string]jsontypes.Normalized, len(resp.Config.Headers))
 			for key1, value1 := range resp.Config.Headers {
 				result1, _ := json.Marshal(value1)

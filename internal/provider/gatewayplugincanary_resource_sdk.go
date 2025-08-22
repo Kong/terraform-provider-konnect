@@ -21,9 +21,11 @@ func (r *GatewayPluginCanaryResourceModel) RefreshFromSharedCanaryPlugin(ctx con
 			r.Config = &tfTypes.CanaryPluginConfig{}
 			r.Config.CanaryByHeaderName = types.StringPointerValue(resp.Config.CanaryByHeaderName)
 			r.Config.Duration = types.Float64PointerValue(resp.Config.Duration)
-			r.Config.Groups = make([]types.String, 0, len(resp.Config.Groups))
-			for _, v := range resp.Config.Groups {
-				r.Config.Groups = append(r.Config.Groups, types.StringValue(v))
+			if resp.Config.Groups != nil {
+				r.Config.Groups = make([]types.String, 0, len(resp.Config.Groups))
+				for _, v := range resp.Config.Groups {
+					r.Config.Groups = append(r.Config.Groups, types.StringValue(v))
+				}
 			}
 			if resp.Config.Hash != nil {
 				r.Config.Hash = types.StringValue(string(*resp.Config.Hash))
@@ -297,9 +299,12 @@ func (r *GatewayPluginCanaryResourceModel) ToSharedCanaryPlugin(ctx context.Cont
 		} else {
 			duration = nil
 		}
-		groups := make([]string, 0, len(r.Config.Groups))
-		for _, groupsItem := range r.Config.Groups {
-			groups = append(groups, groupsItem.ValueString())
+		var groups []string
+		if r.Config.Groups != nil {
+			groups = make([]string, 0, len(r.Config.Groups))
+			for _, groupsItem := range r.Config.Groups {
+				groups = append(groups, groupsItem.ValueString())
+			}
 		}
 		hash := new(shared.Hash)
 		if !r.Config.Hash.IsUnknown() && !r.Config.Hash.IsNull() {

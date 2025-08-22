@@ -53,8 +53,19 @@ type InjectionProtectionPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (i InjectionProtectionPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *InjectionProtectionPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *InjectionProtectionPluginPartials) GetID() *string {
@@ -195,17 +206,28 @@ func (e *Locations) UnmarshalJSON(data []byte) error {
 
 type InjectionProtectionPluginConfig struct {
 	// Custom regexes to check for.
-	CustomInjections []CustomInjections `json:"custom_injections,omitempty"`
+	CustomInjections []CustomInjections `json:"custom_injections"`
 	// Enforcement mode of the security policy.
-	EnforcementMode *EnforcementMode `json:"enforcement_mode,omitempty"`
+	EnforcementMode *EnforcementMode `default:"block" json:"enforcement_mode"`
 	// The response message when validation fails
-	ErrorMessage *string `json:"error_message,omitempty"`
+	ErrorMessage *string `default:"Bad Request" json:"error_message"`
 	// The response status code when validation fails.
-	ErrorStatusCode *int64 `json:"error_status_code,omitempty"`
+	ErrorStatusCode *int64 `default:"400" json:"error_status_code"`
 	// The type of injections to check for.
 	InjectionTypes []InjectionTypes `json:"injection_types,omitempty"`
 	// The locations to check for injection.
 	Locations []Locations `json:"locations,omitempty"`
+}
+
+func (i InjectionProtectionPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *InjectionProtectionPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *InjectionProtectionPluginConfig) GetCustomInjections() []CustomInjections {
@@ -311,22 +333,22 @@ type InjectionProtectionPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                            `json:"instance_name,omitempty"`
+	InstanceName *string                            `default:"null" json:"instance_name"`
 	name         string                             `const:"injection-protection" json:"name"`
-	Ordering     *InjectionProtectionPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *InjectionProtectionPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []InjectionProtectionPluginPartials `json:"partials,omitempty"`
+	Partials []InjectionProtectionPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                           `json:"updated_at,omitempty"`
-	Config    *InjectionProtectionPluginConfig `json:"config,omitempty"`
+	Config    *InjectionProtectionPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
-	Protocols []InjectionProtectionPluginProtocols `json:"protocols,omitempty"`
+	Protocols []InjectionProtectionPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *InjectionProtectionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

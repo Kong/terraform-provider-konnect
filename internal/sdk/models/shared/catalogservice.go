@@ -17,7 +17,7 @@ type CatalogService struct {
 	// The display name of the Service.
 	DisplayName string `json:"display_name"`
 	// Optionally provide a description of the Service.
-	Description *string `json:"description"`
+	Description *string `default:"null" json:"description"`
 	// Map of customizable, catalog-defined fields providing information about a service.
 	//
 	CustomFields any `json:"custom_fields"`

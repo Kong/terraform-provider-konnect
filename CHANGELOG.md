@@ -10,6 +10,9 @@
 * New resources `konnect_portal`, `konnect_portal_logo`, `konnect_portal_favicon`, `konnect_portal_custom_domain`, `konnect_portal_snippet`, `konnect_portal_page`, `konnect_portal_customization` are now supported
 * Add support for `gcp_vpc_peering_transit_gateway` in `konnect_cloud_gateway_transit_gateway` resource
 
+### Bug Fixes
+* Fields that are nullable can be set to null
+
 ## 2.14.0
 > Released on 2025/08/13
 

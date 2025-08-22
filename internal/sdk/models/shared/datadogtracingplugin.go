@@ -53,8 +53,19 @@ type DatadogTracingPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (d DatadogTracingPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatadogTracingPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *DatadogTracingPluginPartials) GetID() *string {
@@ -79,14 +90,25 @@ func (o *DatadogTracingPluginPartials) GetPath() *string {
 }
 
 type DatadogTracingPluginConfig struct {
-	BatchFlushDelay *int64  `json:"batch_flush_delay,omitempty"`
-	BatchSpanCount  *int64  `json:"batch_span_count,omitempty"`
-	ConnectTimeout  *int64  `json:"connect_timeout,omitempty"`
-	Endpoint        *string `json:"endpoint,omitempty"`
-	Environment     *string `json:"environment,omitempty"`
-	ReadTimeout     *int64  `json:"read_timeout,omitempty"`
-	SendTimeout     *int64  `json:"send_timeout,omitempty"`
-	ServiceName     *string `json:"service_name,omitempty"`
+	BatchFlushDelay *int64  `default:"3" json:"batch_flush_delay"`
+	BatchSpanCount  *int64  `default:"200" json:"batch_span_count"`
+	ConnectTimeout  *int64  `default:"1000" json:"connect_timeout"`
+	Endpoint        *string `default:"null" json:"endpoint"`
+	Environment     *string `default:"none" json:"environment"`
+	ReadTimeout     *int64  `default:"5000" json:"read_timeout"`
+	SendTimeout     *int64  `default:"5000" json:"send_timeout"`
+	ServiceName     *string `default:"kong" json:"service_name"`
+}
+
+func (d DatadogTracingPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatadogTracingPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *DatadogTracingPluginConfig) GetBatchFlushDelay() *int64 {
@@ -218,24 +240,24 @@ type DatadogTracingPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                       `json:"instance_name,omitempty"`
+	InstanceName *string                       `default:"null" json:"instance_name"`
 	name         string                        `const:"datadog-tracing" json:"name"`
-	Ordering     *DatadogTracingPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *DatadogTracingPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []DatadogTracingPluginPartials `json:"partials,omitempty"`
+	Partials []DatadogTracingPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                      `json:"updated_at,omitempty"`
-	Config    *DatadogTracingPluginConfig `json:"config,omitempty"`
+	Config    *DatadogTracingPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *DatadogTracingPluginConsumerGroup `json:"consumer_group"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
-	Protocols []DatadogTracingPluginProtocols `json:"protocols,omitempty"`
+	Protocols []DatadogTracingPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *DatadogTracingPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

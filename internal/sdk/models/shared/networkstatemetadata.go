@@ -2,13 +2,28 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+)
+
 // NetworkStateMetadata - Metadata describing the backing state of the network and why it may be in an erroneous state.
 type NetworkStateMetadata struct {
 	// Reported status of the network from backing infrastructure.
-	ReportedStatus *string `json:"reported_status,omitempty"`
+	ReportedStatus *string `default:"null" json:"reported_status"`
 	// Reason why the network may be in an erroneous state, reported from backing infrastructure.
 	//
-	Reason *string `json:"reason,omitempty"`
+	Reason *string `default:"null" json:"reason"`
+}
+
+func (n NetworkStateMetadata) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(n, "", false)
+}
+
+func (n *NetworkStateMetadata) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &n, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *NetworkStateMetadata) GetReportedStatus() *string {

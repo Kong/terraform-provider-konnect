@@ -19,13 +19,17 @@ func (r *GatewayPluginIPRestrictionResourceModel) RefreshFromSharedIPRestriction
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.IPRestrictionPluginConfig{}
-			r.Config.Allow = make([]types.String, 0, len(resp.Config.Allow))
-			for _, v := range resp.Config.Allow {
-				r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
+			if resp.Config.Allow != nil {
+				r.Config.Allow = make([]types.String, 0, len(resp.Config.Allow))
+				for _, v := range resp.Config.Allow {
+					r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
+				}
 			}
-			r.Config.Deny = make([]types.String, 0, len(resp.Config.Deny))
-			for _, v := range resp.Config.Deny {
-				r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
+			if resp.Config.Deny != nil {
+				r.Config.Deny = make([]types.String, 0, len(resp.Config.Deny))
+				for _, v := range resp.Config.Deny {
+					r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
+				}
 			}
 			r.Config.Message = types.StringPointerValue(resp.Config.Message)
 			r.Config.Status = types.Float64PointerValue(resp.Config.Status)
@@ -288,13 +292,19 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPlugin(ct
 	}
 	var config *shared.IPRestrictionPluginConfig
 	if r.Config != nil {
-		allow := make([]string, 0, len(r.Config.Allow))
-		for _, allowItem := range r.Config.Allow {
-			allow = append(allow, allowItem.ValueString())
+		var allow []string
+		if r.Config.Allow != nil {
+			allow = make([]string, 0, len(r.Config.Allow))
+			for _, allowItem := range r.Config.Allow {
+				allow = append(allow, allowItem.ValueString())
+			}
 		}
-		deny := make([]string, 0, len(r.Config.Deny))
-		for _, denyItem := range r.Config.Deny {
-			deny = append(deny, denyItem.ValueString())
+		var deny []string
+		if r.Config.Deny != nil {
+			deny = make([]string, 0, len(r.Config.Deny))
+			for _, denyItem := range r.Config.Deny {
+				deny = append(deny, denyItem.ValueString())
+			}
 		}
 		message := new(string)
 		if !r.Config.Message.IsUnknown() && !r.Config.Message.IsNull() {

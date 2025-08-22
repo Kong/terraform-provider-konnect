@@ -11,6 +11,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -64,6 +67,19 @@ func (r *GatewayPluginHmacAuthResource) Schema(ctx context.Context, req resource
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"algorithms": types.ListType{
+						ElemType: types.StringType,
+					},
+					"anonymous":  types.StringType,
+					"clock_skew": types.Float64Type,
+					"enforce_headers": types.ListType{
+						ElemType: types.StringType,
+					},
+					"hide_credentials":      types.BoolType,
+					"realm":                 types.StringType,
+					"validate_request_body": types.BoolType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"algorithms": schema.ListAttribute{
 						Computed:    true,
@@ -72,35 +88,37 @@ func (r *GatewayPluginHmacAuthResource) Schema(ctx context.Context, req resource
 						Description: `A list of HMAC digest algorithms that the user wants to support. Allowed values are ` + "`" + `hmac-sha1` + "`" + `, ` + "`" + `hmac-sha256` + "`" + `, ` + "`" + `hmac-sha384` + "`" + `, and ` + "`" + `hmac-sha512` + "`" + ``,
 					},
 					"anonymous": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `An optional string (Consumer UUID or username) value to use as an “anonymous” consumer if authentication fails.`,
 					},
 					"clock_skew": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Clock skew in seconds to prevent replay attacks.`,
+						Default:     float64default.StaticFloat64(300),
+						Description: `Clock skew in seconds to prevent replay attacks. Default: 300`,
 					},
 					"enforce_headers": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 						ElementType: types.StringType,
 						Description: `A list of headers that the client should at least use for HTTP signature creation.`,
 					},
 					"hide_credentials": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional boolean value telling the plugin to show or hide the credential from the upstream service.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `An optional boolean value telling the plugin to show or hide the credential from the upstream service. Default: false`,
 					},
 					"realm": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `When authentication fails the plugin sends ` + "`" + `WWW-Authenticate` + "`" + ` header with ` + "`" + `realm` + "`" + ` attribute value.`,
 					},
 					"validate_request_body": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A boolean value telling the plugin to enable body validation.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `A boolean value telling the plugin to enable body validation. Default: false`,
 					},
 				},
 			},
@@ -119,7 +137,8 @@ func (r *GatewayPluginHmacAuthResource) Schema(ctx context.Context, req resource
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -127,13 +146,28 @@ func (r *GatewayPluginHmacAuthResource) Schema(ctx context.Context, req resource
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
@@ -160,7 +194,6 @@ func (r *GatewayPluginHmacAuthResource) Schema(ctx context.Context, req resource
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -173,12 +206,10 @@ func (r *GatewayPluginHmacAuthResource) Schema(ctx context.Context, req resource
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},
@@ -220,7 +251,6 @@ func (r *GatewayPluginHmacAuthResource) Schema(ctx context.Context, req resource
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

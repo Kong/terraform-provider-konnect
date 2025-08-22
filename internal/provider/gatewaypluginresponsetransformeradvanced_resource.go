@@ -11,6 +11,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -66,29 +68,142 @@ func (r *GatewayPluginResponseTransformerAdvancedResource) Schema(ctx context.Co
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"add": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`headers`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`if_status`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`json`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`json_types`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"allow": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`json`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"append": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`headers`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`if_status`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`json`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`json_types`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"dots_in_keys": types.BoolType,
+					"remove": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`headers`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`if_status`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`json`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"rename": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`headers`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`if_status`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"replace": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`body`: types.StringType,
+							`headers`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`if_status`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`json`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`json_types`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"transform": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`functions`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`if_status`: types.ListType{
+								ElemType: types.StringType,
+							},
+							`json`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"add": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"headers": types.ListType{
+								ElemType: types.StringType,
+							},
+							"if_status": types.ListType{
+								ElemType: types.StringType,
+							},
+							"json": types.ListType{
+								ElemType: types.StringType,
+							},
+							"json_types": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"headers": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
 							},
 							"if_status": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
 							},
 							"json": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
 							},
 							"json_types": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
 							},
 						},
@@ -96,9 +211,13 @@ func (r *GatewayPluginResponseTransformerAdvancedResource) Schema(ctx context.Co
 					"allow": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"json": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"json": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
@@ -107,25 +226,43 @@ func (r *GatewayPluginResponseTransformerAdvancedResource) Schema(ctx context.Co
 					"append": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"headers": types.ListType{
+								ElemType: types.StringType,
+							},
+							"if_status": types.ListType{
+								ElemType: types.StringType,
+							},
+							"json": types.ListType{
+								ElemType: types.StringType,
+							},
+							"json_types": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"headers": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
 							},
 							"if_status": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
 							},
 							"json": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
 							},
 							"json_types": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
 							},
 						},
@@ -133,25 +270,40 @@ func (r *GatewayPluginResponseTransformerAdvancedResource) Schema(ctx context.Co
 					"dots_in_keys": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Whether dots (for example, ` + "`" + `customers.info.phone` + "`" + `) should be treated as part of a property name or used to descend into nested JSON objects..`,
+						Default:     booldefault.StaticBool(true),
+						Description: `Whether dots (for example, ` + "`" + `customers.info.phone` + "`" + `) should be treated as part of a property name or used to descend into nested JSON objects.. Default: true`,
 					},
 					"remove": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"headers": types.ListType{
+								ElemType: types.StringType,
+							},
+							"if_status": types.ListType{
+								ElemType: types.StringType,
+							},
+							"json": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"headers": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
 							},
 							"if_status": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
 							},
 							"json": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
 							},
 						},
@@ -159,15 +311,25 @@ func (r *GatewayPluginResponseTransformerAdvancedResource) Schema(ctx context.Co
 					"rename": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"headers": types.ListType{
+								ElemType: types.StringType,
+							},
+							"if_status": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"headers": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
 							},
 							"if_status": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
 							},
 						},
@@ -175,30 +337,48 @@ func (r *GatewayPluginResponseTransformerAdvancedResource) Schema(ctx context.Co
 					"replace": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"body": types.StringType,
+							"headers": types.ListType{
+								ElemType: types.StringType,
+							},
+							"if_status": types.ListType{
+								ElemType: types.StringType,
+							},
+							"json": types.ListType{
+								ElemType: types.StringType,
+							},
+							"json_types": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"body": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `String with which to replace the entire response body.`,
 							},
 							"headers": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
 							},
 							"if_status": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
 							},
 							"json": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
 							},
 							"json_types": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
 							},
 						},
@@ -206,20 +386,34 @@ func (r *GatewayPluginResponseTransformerAdvancedResource) Schema(ctx context.Co
 					"transform": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"functions": types.ListType{
+								ElemType: types.StringType,
+							},
+							"if_status": types.ListType{
+								ElemType: types.StringType,
+							},
+							"json": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"functions": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
 							},
 							"if_status": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
 							},
 							"json": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
 							},
 						},
@@ -269,7 +463,8 @@ func (r *GatewayPluginResponseTransformerAdvancedResource) Schema(ctx context.Co
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -277,13 +472,28 @@ func (r *GatewayPluginResponseTransformerAdvancedResource) Schema(ctx context.Co
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
@@ -310,7 +520,6 @@ func (r *GatewayPluginResponseTransformerAdvancedResource) Schema(ctx context.Co
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -323,12 +532,10 @@ func (r *GatewayPluginResponseTransformerAdvancedResource) Schema(ctx context.Co
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},
@@ -370,7 +577,6 @@ func (r *GatewayPluginResponseTransformerAdvancedResource) Schema(ctx context.Co
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

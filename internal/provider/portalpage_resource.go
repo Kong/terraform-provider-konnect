@@ -86,7 +86,6 @@ func (r *PortalPageResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `Contains a unique identifier used for this resource.`,
 			},
 			"parent_page_id": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 				MarkdownDescription: `Pages may be rendered as a tree of files.` + "\n" +
 					`` + "\n" +

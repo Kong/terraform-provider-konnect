@@ -34,7 +34,7 @@ type PortalPageResponse struct {
 	//
 	// Specify the `id` of another page as the `parent_page_id` to add some hierarchy to your pages.
 	//
-	ParentPageID *string `json:"parent_page_id"`
+	ParentPageID *string `default:"null" json:"parent_page_id"`
 }
 
 func (p PortalPageResponse) MarshalJSON() ([]byte, error) {

@@ -40,9 +40,9 @@ resource "konnect_portal" "my_portal" {
 
 ### Optional
 
-- `authentication_enabled` (Boolean) Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications.
-- `auto_approve_applications` (Boolean) Whether requests from applications to register for APIs will be automatically approved, or if they will be set to pending until approved by an admin.
-- `auto_approve_developers` (Boolean) Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.
+- `authentication_enabled` (Boolean) Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications. Default: true
+- `auto_approve_applications` (Boolean) Whether requests from applications to register for APIs will be automatically approved, or if they will be set to pending until approved by an admin. Default: false
+- `auto_approve_developers` (Boolean) Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin. Default: false
 - `default_api_visibility` (String) The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers. must be one of ["public", "private"]
 - `default_application_auth_strategy_id` (String) The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.
 - `default_page_visibility` (String) The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers. must be one of ["public", "private"]
@@ -57,7 +57,7 @@ Default: "false"; must be one of ["true", "false"]
 Labels are intended to store **INTERNAL** metadata.
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-- `rbac_enabled` (Boolean) Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.
+- `rbac_enabled` (Boolean) Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC. Default: false
 
 ### Read-Only
 

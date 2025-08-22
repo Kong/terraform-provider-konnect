@@ -11,8 +11,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -64,21 +66,27 @@ func (r *GatewayPluginBasicAuthResource) Schema(ctx context.Context, req resourc
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"anonymous":        types.StringType,
+					"hide_credentials": types.BoolType,
+					"realm":            types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `An optional string (Consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure ` + "`" + `4xx` + "`" + `. Please note that this value must refer to the Consumer ` + "`" + `id` + "`" + ` or ` + "`" + `username` + "`" + ` attribute, and **not** its ` + "`" + `custom_id` + "`" + `.`,
 					},
 					"hide_credentials": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional boolean value telling the plugin to show or hide the credential from the upstream service. If ` + "`" + `true` + "`" + `, the plugin will strip the credential from the request (i.e. the ` + "`" + `Authorization` + "`" + ` header) before proxying it.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `An optional boolean value telling the plugin to show or hide the credential from the upstream service. If ` + "`" + `true` + "`" + `, the plugin will strip the credential from the request (i.e. the ` + "`" + `Authorization` + "`" + ` header) before proxying it. Default: false`,
 					},
 					"realm": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `When authentication fails the plugin sends ` + "`" + `WWW-Authenticate` + "`" + ` header with ` + "`" + `realm` + "`" + ` attribute value.`,
+						Default:     stringdefault.StaticString(`service`),
+						Description: `When authentication fails the plugin sends ` + "`" + `WWW-Authenticate` + "`" + ` header with ` + "`" + `realm` + "`" + ` attribute value. Default: "service"`,
 					},
 				},
 			},
@@ -97,7 +105,8 @@ func (r *GatewayPluginBasicAuthResource) Schema(ctx context.Context, req resourc
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -105,13 +114,28 @@ func (r *GatewayPluginBasicAuthResource) Schema(ctx context.Context, req resourc
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
@@ -138,7 +162,6 @@ func (r *GatewayPluginBasicAuthResource) Schema(ctx context.Context, req resourc
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -151,12 +174,10 @@ func (r *GatewayPluginBasicAuthResource) Schema(ctx context.Context, req resourc
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},
@@ -198,7 +219,6 @@ func (r *GatewayPluginBasicAuthResource) Schema(ctx context.Context, req resourc
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

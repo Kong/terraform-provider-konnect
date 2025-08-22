@@ -2,9 +2,24 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+)
+
 // UpdatePortalCustomDomainRequest - Create a portal custom domain.
 type UpdatePortalCustomDomainRequest struct {
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"null" json:"enabled"`
+}
+
+func (u UpdatePortalCustomDomainRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdatePortalCustomDomainRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpdatePortalCustomDomainRequest) GetEnabled() *bool {

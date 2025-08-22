@@ -71,7 +71,6 @@ func (r *CatalogServiceResource) Schema(ctx context.Context, req resource.Schema
 				Description: `Map of customizable, catalog-defined fields providing information about a service. Parsed as JSON.`,
 			},
 			"description": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Optionally provide a description of the Service.`,
 				Validators: []validator.String{

@@ -83,7 +83,7 @@ resource "konnect_gateway_plugin_mocking" "my_gatewaypluginmocking" {
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -102,13 +102,13 @@ Optional:
 - `api_specification` (String) The contents of the specification file. You must use this option for hybrid or DB-less mode. You can include the full specification as part of the configuration. In Kong Manager, you can copy and paste the contents of the spec directly into the `Config.Api Specification` text field.
 - `api_specification_filename` (String) The path and name of the specification file loaded into Kong Gateway's database. You cannot use this option for DB-less or hybrid mode.
 - `custom_base_path` (String) The base path to be used for path match evaluation. This value is ignored if `include_base_path` is set to `false`.
-- `include_base_path` (Boolean) Indicates whether to include the base path when performing path match evaluation.
+- `include_base_path` (Boolean) Indicates whether to include the base path when performing path match evaluation. Default: false
 - `included_status_codes` (List of Number) A global list of the HTTP status codes that can only be selected and returned.
-- `max_delay_time` (Number) The maximum value in seconds of delay time. Set this value when `random_delay` is enabled and you want to adjust the default. The value must be greater than the `min_delay_time`.
-- `min_delay_time` (Number) The minimum value in seconds of delay time. Set this value when `random_delay` is enabled and you want to adjust the default. The value must be less than the `max_delay_time`.
-- `random_delay` (Boolean) Enables a random delay in the mocked response. Introduces delays to simulate real-time response times by APIs.
-- `random_examples` (Boolean) Randomly selects one example and returns it. This parameter requires the spec to have multiple examples configured.
-- `random_status_code` (Boolean) Determines whether to randomly select an HTTP status code from the responses of the corresponding API method. The default value is `false`, which means the minimum HTTP status code is always selected and returned.
+- `max_delay_time` (Number) The maximum value in seconds of delay time. Set this value when `random_delay` is enabled and you want to adjust the default. The value must be greater than the `min_delay_time`. Default: 1
+- `min_delay_time` (Number) The minimum value in seconds of delay time. Set this value when `random_delay` is enabled and you want to adjust the default. The value must be less than the `max_delay_time`. Default: 0.001
+- `random_delay` (Boolean) Enables a random delay in the mocked response. Introduces delays to simulate real-time response times by APIs. Default: false
+- `random_examples` (Boolean) Randomly selects one example and returns it. This parameter requires the spec to have multiple examples configured. Default: false
+- `random_status_code` (Boolean) Determines whether to randomly select an HTTP status code from the responses of the corresponding API method. The default value is `false`, which means the minimum HTTP status code is always selected and returned. Default: false
 
 
 <a id="nestedatt--consumer"></a>

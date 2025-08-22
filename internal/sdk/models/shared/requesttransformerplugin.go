@@ -53,8 +53,19 @@ type RequestTransformerPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (r RequestTransformerPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestTransformerPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestTransformerPluginPartials) GetID() *string {
@@ -190,7 +201,18 @@ type Replace struct {
 	Body        []string `json:"body,omitempty"`
 	Headers     []string `json:"headers,omitempty"`
 	Querystring []string `json:"querystring,omitempty"`
-	URI         *string  `json:"uri,omitempty"`
+	URI         *string  `default:"null" json:"uri"`
+}
+
+func (r Replace) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *Replace) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Replace) GetBody() []string {
@@ -225,10 +247,21 @@ type RequestTransformerPluginConfig struct {
 	Add    *Add    `json:"add,omitempty"`
 	Append *Append `json:"append,omitempty"`
 	// A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters.
-	HTTPMethod *string  `json:"http_method,omitempty"`
+	HTTPMethod *string  `default:"null" json:"http_method"`
 	Remove     *Remove  `json:"remove,omitempty"`
 	Rename     *Rename  `json:"rename,omitempty"`
 	Replace    *Replace `json:"replace,omitempty"`
+}
+
+func (r RequestTransformerPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestTransformerPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestTransformerPluginConfig) GetAdd() *Add {
@@ -377,26 +410,26 @@ type RequestTransformerPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                           `json:"instance_name,omitempty"`
+	InstanceName *string                           `default:"null" json:"instance_name"`
 	name         string                            `const:"request-transformer" json:"name"`
-	Ordering     *RequestTransformerPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *RequestTransformerPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []RequestTransformerPluginPartials `json:"partials,omitempty"`
+	Partials []RequestTransformerPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                          `json:"updated_at,omitempty"`
-	Config    *RequestTransformerPluginConfig `json:"config,omitempty"`
+	Config    *RequestTransformerPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *RequestTransformerPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *RequestTransformerPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing protocols.
-	Protocols []RequestTransformerPluginProtocols `json:"protocols,omitempty"`
+	Protocols []RequestTransformerPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *RequestTransformerPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

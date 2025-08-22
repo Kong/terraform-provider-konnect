@@ -22,7 +22,7 @@ func (r *GatewayPluginLogglyResourceModel) RefreshFromSharedLogglyPlugin(ctx con
 		} else {
 			r.Config.ClientErrorsSeverity = types.StringNull()
 		}
-		if len(resp.Config.CustomFieldsByLua) > 0 {
+		if resp.Config.CustomFieldsByLua != nil {
 			r.Config.CustomFieldsByLua = make(map[string]jsontypes.Normalized, len(resp.Config.CustomFieldsByLua))
 			for key, value := range resp.Config.CustomFieldsByLua {
 				result, _ := json.Marshal(value)

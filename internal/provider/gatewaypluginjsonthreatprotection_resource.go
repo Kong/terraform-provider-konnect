@@ -13,8 +13,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -66,16 +69,30 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"allow_duplicate_object_entry_name": types.BoolType,
+					"enforcement_mode":                  types.StringType,
+					"error_message":                     types.StringType,
+					"error_status_code":                 types.Int64Type,
+					"max_array_element_count":           types.Int64Type,
+					"max_body_size":                     types.Int64Type,
+					"max_container_depth":               types.Int64Type,
+					"max_object_entry_count":            types.Int64Type,
+					"max_object_entry_name_length":      types.Int64Type,
+					"max_string_value_length":           types.Int64Type,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"allow_duplicate_object_entry_name": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Allow or disallow duplicate object entry name.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `Allow or disallow duplicate object entry name. Default: true`,
 					},
 					"enforcement_mode": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Enforcement mode of the security policy. must be one of ["block", "log_only"]`,
+						Default:     stringdefault.StaticString(`block`),
+						Description: `Enforcement mode of the security policy. Default: "block"; must be one of ["block", "log_only"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"block",
@@ -86,12 +103,14 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 					"error_message": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The response message when validation fails`,
+						Default:     stringdefault.StaticString(`Bad Request`),
+						Description: `The response message when validation fails. Default: "Bad Request"`,
 					},
 					"error_status_code": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The response status code when validation fails.`,
+						Default:     int64default.StaticInt64(400),
+						Description: `The response status code when validation fails. Default: 400`,
 						Validators: []validator.Int64{
 							int64validator.Between(400, 499),
 						},
@@ -99,7 +118,8 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 					"max_array_element_count": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Max number of elements in an array. -1 means unlimited.`,
+						Default:     int64default.StaticInt64(-1),
+						Description: `Max number of elements in an array. -1 means unlimited. Default: -1`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(2147483648),
 						},
@@ -107,7 +127,8 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 					"max_body_size": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Max size of the request body. -1 means unlimited.`,
+						Default:     int64default.StaticInt64(8192),
+						Description: `Max size of the request body. -1 means unlimited. Default: 8192`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(2147483648),
 						},
@@ -115,7 +136,8 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 					"max_container_depth": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Max nested depth of objects and arrays. -1 means unlimited.`,
+						Default:     int64default.StaticInt64(-1),
+						Description: `Max nested depth of objects and arrays. -1 means unlimited. Default: -1`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(2147483648),
 						},
@@ -123,7 +145,8 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 					"max_object_entry_count": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Max number of entries in an object. -1 means unlimited.`,
+						Default:     int64default.StaticInt64(-1),
+						Description: `Max number of entries in an object. -1 means unlimited. Default: -1`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(2147483648),
 						},
@@ -131,7 +154,8 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 					"max_object_entry_name_length": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Max string length of object name. -1 means unlimited.`,
+						Default:     int64default.StaticInt64(-1),
+						Description: `Max string length of object name. -1 means unlimited. Default: -1`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(2147483648),
 						},
@@ -139,7 +163,8 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 					"max_string_value_length": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Max string value length. -1 means unlimited.`,
+						Default:     int64default.StaticInt64(-1),
+						Description: `Max string value length. -1 means unlimited. Default: -1`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(2147483648),
 						},
@@ -161,7 +186,8 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -169,13 +195,28 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
@@ -202,7 +243,6 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -215,12 +255,10 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},
@@ -262,7 +300,6 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

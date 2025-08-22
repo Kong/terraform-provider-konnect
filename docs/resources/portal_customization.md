@@ -140,12 +140,12 @@ Optional:
 
 Optional:
 
-- `hide_deprecated` (Boolean)
-- `hide_internal` (Boolean)
-- `infinite_scroll` (Boolean)
-- `show_schemas` (Boolean)
-- `try_it_insomnia` (Boolean)
-- `try_it_ui` (Boolean)
+- `hide_deprecated` (Boolean) Default: false
+- `hide_internal` (Boolean) Default: false
+- `infinite_scroll` (Boolean) Default: true
+- `show_schemas` (Boolean) Default: true
+- `try_it_insomnia` (Boolean) Default: true
+- `try_it_ui` (Boolean) Default: true
 
 
 <a id="nestedatt--theme"></a>

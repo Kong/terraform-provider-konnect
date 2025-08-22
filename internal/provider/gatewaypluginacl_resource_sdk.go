@@ -19,14 +19,18 @@ func (r *GatewayPluginACLResourceModel) RefreshFromSharedACLPlugin(ctx context.C
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.ACLPluginConfig{}
-			r.Config.Allow = make([]types.String, 0, len(resp.Config.Allow))
-			for _, v := range resp.Config.Allow {
-				r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
+			if resp.Config.Allow != nil {
+				r.Config.Allow = make([]types.String, 0, len(resp.Config.Allow))
+				for _, v := range resp.Config.Allow {
+					r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
+				}
 			}
 			r.Config.AlwaysUseAuthenticatedGroups = types.BoolPointerValue(resp.Config.AlwaysUseAuthenticatedGroups)
-			r.Config.Deny = make([]types.String, 0, len(resp.Config.Deny))
-			for _, v := range resp.Config.Deny {
-				r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
+			if resp.Config.Deny != nil {
+				r.Config.Deny = make([]types.String, 0, len(resp.Config.Deny))
+				for _, v := range resp.Config.Deny {
+					r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
+				}
 			}
 			r.Config.HideGroupsHeader = types.BoolPointerValue(resp.Config.HideGroupsHeader)
 			r.Config.IncludeConsumerGroups = types.BoolPointerValue(resp.Config.IncludeConsumerGroups)
@@ -277,9 +281,12 @@ func (r *GatewayPluginACLResourceModel) ToSharedACLPlugin(ctx context.Context) (
 	}
 	var config *shared.ACLPluginConfig
 	if r.Config != nil {
-		allow := make([]string, 0, len(r.Config.Allow))
-		for _, allowItem := range r.Config.Allow {
-			allow = append(allow, allowItem.ValueString())
+		var allow []string
+		if r.Config.Allow != nil {
+			allow = make([]string, 0, len(r.Config.Allow))
+			for _, allowItem := range r.Config.Allow {
+				allow = append(allow, allowItem.ValueString())
+			}
 		}
 		alwaysUseAuthenticatedGroups := new(bool)
 		if !r.Config.AlwaysUseAuthenticatedGroups.IsUnknown() && !r.Config.AlwaysUseAuthenticatedGroups.IsNull() {
@@ -287,9 +294,12 @@ func (r *GatewayPluginACLResourceModel) ToSharedACLPlugin(ctx context.Context) (
 		} else {
 			alwaysUseAuthenticatedGroups = nil
 		}
-		deny := make([]string, 0, len(r.Config.Deny))
-		for _, denyItem := range r.Config.Deny {
-			deny = append(deny, denyItem.ValueString())
+		var deny []string
+		if r.Config.Deny != nil {
+			deny = make([]string, 0, len(r.Config.Deny))
+			for _, denyItem := range r.Config.Deny {
+				deny = append(deny, denyItem.ValueString())
+			}
 		}
 		hideGroupsHeader := new(bool)
 		if !r.Config.HideGroupsHeader.IsUnknown() && !r.Config.HideGroupsHeader.IsNull() {

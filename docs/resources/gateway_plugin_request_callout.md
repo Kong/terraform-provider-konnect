@@ -206,7 +206,7 @@ resource "konnect_gateway_plugin_request_callout" "my_gatewaypluginrequestcallou
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -245,7 +245,7 @@ Optional:
 
 Optional:
 
-- `bypass` (Boolean) If `true`, skips caching the callout response.
+- `bypass` (Boolean) If `true`, skips caching the callout response. Default: false
 
 
 <a id="nestedatt--config--callouts--request"></a>
@@ -258,7 +258,7 @@ Optional:
 - `error` (Attributes) The error handling policy the plugin will apply to TCP and HTTP errors. Not Null (see [below for nested schema](#nestedatt--config--callouts--request--error))
 - `headers` (Attributes) Callout request header customizations. Not Null (see [below for nested schema](#nestedatt--config--callouts--request--headers))
 - `http_opts` (Attributes) HTTP connection parameters. Not Null (see [below for nested schema](#nestedatt--config--callouts--request--http_opts))
-- `method` (String) The HTTP method that will be requested.
+- `method` (String) The HTTP method that will be requested. Default: "GET"
 - `query` (Attributes) Callout request query param customizations. Not Null (see [below for nested schema](#nestedatt--config--callouts--request--query))
 - `url` (String) The URL that will be requested. Not Null
 
@@ -268,8 +268,8 @@ Optional:
 Optional:
 
 - `custom` (Map of String) The custom body fields to be added to the callout HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
-- `decode` (Boolean) If `true`, decodes the request's body and make it available for customizations. Only JSON content type is supported.
-- `forward` (Boolean) If `true`, forwards the incoming request's body to the callout request.
+- `decode` (Boolean) If `true`, decodes the request's body and make it available for customizations. Only JSON content type is supported. Default: false
+- `forward` (Boolean) If `true`, forwards the incoming request's body to the callout request. Default: false
 
 
 <a id="nestedatt--config--callouts--request--error"></a>
@@ -277,11 +277,11 @@ Optional:
 
 Optional:
 
-- `error_response_code` (Number) The error code to respond with if `on_error` is `fail` or if `retries` is achieved.
-- `error_response_msg` (String) The error mesasge to respond with if `on_error` is set to `fail` or if `retries` is achieved. Templating with Lua expressions is supported.
+- `error_response_code` (Number) The error code to respond with if `on_error` is `fail` or if `retries` is achieved. Default: 400
+- `error_response_msg` (String) The error mesasge to respond with if `on_error` is set to `fail` or if `retries` is achieved. Templating with Lua expressions is supported. Default: "service callout error"
 - `http_statuses` (List of Number) The list of HTTP status codes considered errors under the error handling policy.
-- `on_error` (String) must be one of ["continue", "fail", "retry"]
-- `retries` (Number) The number of retries the plugin will attempt on TCP and HTTP errors if `on_error` is set to `retry`.
+- `on_error` (String) Default: "fail"; must be one of ["continue", "fail", "retry"]
+- `retries` (Number) The number of retries the plugin will attempt on TCP and HTTP errors if `on_error` is set to `retry`. Default: 2
 
 
 <a id="nestedatt--config--callouts--request--headers"></a>
@@ -290,7 +290,7 @@ Optional:
 Optional:
 
 - `custom` (Map of String) The custom headers to be added in the callout HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
-- `forward` (Boolean) If `true`, forwards the incoming request's headers to the callout request.
+- `forward` (Boolean) If `true`, forwards the incoming request's headers to the callout request. Default: false
 
 
 <a id="nestedatt--config--callouts--request--http_opts"></a>
@@ -300,7 +300,7 @@ Optional:
 
 - `proxy` (Attributes) Proxy settings. (see [below for nested schema](#nestedatt--config--callouts--request--http_opts--proxy))
 - `ssl_server_name` (String) The SNI used in the callout request. Defaults to host if omitted.
-- `ssl_verify` (Boolean) If set to `true`, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
+- `ssl_verify` (Boolean) If set to `true`, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: false
 - `timeouts` (Attributes) Socket timeouts in milliseconds. All or none must be set. (see [below for nested schema](#nestedatt--config--callouts--request--http_opts--timeouts))
 
 <a id="nestedatt--config--callouts--request--http_opts--proxy"></a>
@@ -331,7 +331,7 @@ Optional:
 Optional:
 
 - `custom` (Map of String) The custom query params to be added in the callout HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
-- `forward` (Boolean) If `true`, forwards the incoming request's query params to the callout request.
+- `forward` (Boolean) If `true`, forwards the incoming request's query params to the callout request. Default: false
 
 
 
@@ -349,8 +349,8 @@ Optional:
 
 Optional:
 
-- `decode` (Boolean) If `true`, decodes the response body before storing into the context. Only JSON is supported.
-- `store` (Boolean) If `false`, skips storing the callout response body into kong.ctx.shared.callouts.<name>.response.body.
+- `decode` (Boolean) If `true`, decodes the response body before storing into the context. Only JSON is supported. Default: false
+- `store` (Boolean) If `false`, skips storing the callout response body into kong.ctx.shared.callouts.<name>.response.body. Default: true
 
 
 <a id="nestedatt--config--callouts--response--headers"></a>
@@ -358,7 +358,7 @@ Optional:
 
 Optional:
 
-- `store` (Boolean) If `false`, skips storing the callout response headers into kong.ctx.shared.callouts.<name>.response.headers.
+- `store` (Boolean) If `false`, skips storing the callout response headers into kong.ctx.shared.callouts.<name>.response.headers. Default: true
 
 
 
@@ -368,17 +368,17 @@ Optional:
 
 Optional:
 
-- `cache_ttl` (Number) TTL in seconds of cache entities.
+- `cache_ttl` (Number) TTL in seconds of cache entities. Default: 300
 - `memory` (Attributes) (see [below for nested schema](#nestedatt--config--cache--memory))
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--cache--redis))
-- `strategy` (String) The backing data store in which to hold cache entities. Accepted values are: `off`, `memory`, and `redis`. must be one of ["memory", "off", "redis"]
+- `strategy` (String) The backing data store in which to hold cache entities. Accepted values are: `off`, `memory`, and `redis`. Default: "off"; must be one of ["memory", "off", "redis"]
 
 <a id="nestedatt--config--cache--memory"></a>
 ### Nested Schema for `config.cache.memory`
 
 Optional:
 
-- `dictionary_name` (String) The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. Note that this dictionary currently must be defined manually in the Kong Nginx template.
+- `dictionary_name` (String) The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. Note that this dictionary currently must be defined manually in the Kong Nginx template. Default: "kong_db_cache"
 
 
 <a id="nestedatt--config--cache--redis"></a>
@@ -386,26 +386,26 @@ Optional:
 
 Optional:
 
-- `cluster_max_redirections` (Number) Maximum retry attempts for redirection.
+- `cluster_max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
 - `cluster_nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--cache--redis--cluster_nodes))
-- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
-- `database` (Number) Database to use for the Redis connection when using the `redis` strategy
-- `host` (String) A string representing a host name, such as example.com.
+- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
 - `keepalive_backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
-- `keepalive_pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
+- `keepalive_pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
-- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--cache--redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
 - `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
-- `ssl` (Boolean) If set to true, uses SSL to connect to Redis.
-- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: false
 - `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 
 <a id="nestedatt--config--cache--redis--cluster_nodes"></a>
@@ -413,8 +413,8 @@ Optional:
 
 Optional:
 
-- `ip` (String) A string representing a host name, such as example.com.
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
+- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
 
 
 <a id="nestedatt--config--cache--redis--sentinel_nodes"></a>
@@ -422,8 +422,8 @@ Optional:
 
 Optional:
 
-- `host` (String) A string representing a host name, such as example.com.
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
 
 
 
@@ -444,8 +444,8 @@ Optional:
 Optional:
 
 - `custom` (Map of String) The custom body fields to be added in the upstream request body. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
-- `decode` (Boolean) If `true`, decodes the request's body to make it available for upstream by_lua customizations. Only JSON content type is supported.
-- `forward` (Boolean) If `false`, skips forwarding the incoming request's body to the upstream request.
+- `decode` (Boolean) If `true`, decodes the request's body to make it available for upstream by_lua customizations. Only JSON content type is supported. Default: true
+- `forward` (Boolean) If `false`, skips forwarding the incoming request's body to the upstream request. Default: true
 
 
 <a id="nestedatt--config--upstream--headers"></a>
@@ -454,7 +454,7 @@ Optional:
 Optional:
 
 - `custom` (Map of String) The custom headers to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
-- `forward` (Boolean) If `false`, does not forward request headers to upstream request.
+- `forward` (Boolean) If `false`, does not forward request headers to upstream request. Default: true
 
 
 <a id="nestedatt--config--upstream--query"></a>
@@ -463,7 +463,7 @@ Optional:
 Optional:
 
 - `custom` (Map of String) The custom query params to be added in the upstream HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
-- `forward` (Boolean) If `false`, does not forward request query params to upstream request.
+- `forward` (Boolean) If `false`, does not forward request query params to upstream request. Default: true
 
 
 

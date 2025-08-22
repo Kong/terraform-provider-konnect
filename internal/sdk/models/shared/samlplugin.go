@@ -53,8 +53,19 @@ type SamlPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (s SamlPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SamlPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *SamlPluginPartials) GetID() *string {
@@ -113,9 +124,20 @@ func (e *NameidFormat) UnmarshalJSON(data []byte) error {
 
 type SamlPluginClusterNodes struct {
 	// A string representing a host name, such as example.com.
-	IP *string `json:"ip,omitempty"`
+	IP *string `default:"127.0.0.1" json:"ip"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (s SamlPluginClusterNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SamlPluginClusterNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *SamlPluginClusterNodes) GetIP() *string {
@@ -134,9 +156,20 @@ func (o *SamlPluginClusterNodes) GetPort() *int64 {
 
 type SamlPluginSentinelNodes struct {
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (s SamlPluginSentinelNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SamlPluginSentinelNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *SamlPluginSentinelNodes) GetHost() *string {
@@ -185,51 +218,62 @@ func (e *SamlPluginSentinelRole) UnmarshalJSON(data []byte) error {
 
 type SamlPluginRedis struct {
 	// Maximum retry attempts for redirection.
-	ClusterMaxRedirections *int64 `json:"cluster_max_redirections,omitempty"`
+	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
-	ClusterNodes []SamlPluginClusterNodes `json:"cluster_nodes,omitempty"`
+	ClusterNodes []SamlPluginClusterNodes `json:"cluster_nodes"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
+	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
-	ConnectionIsProxied *bool `json:"connection_is_proxied,omitempty"`
+	ConnectionIsProxied *bool `default:"false" json:"connection_is_proxied"`
 	// Database to use for the Redis connection when using the `redis` strategy
-	Database *int64 `json:"database,omitempty"`
+	Database *int64 `default:"0" json:"database"`
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
-	KeepaliveBacklog *int64 `json:"keepalive_backlog,omitempty"`
+	KeepaliveBacklog *int64 `default:"null" json:"keepalive_backlog"`
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
-	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
+	KeepalivePoolSize *int64 `default:"256" json:"keepalive_pool_size"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-	Password *string `json:"password,omitempty"`
+	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
 	// The Redis session key prefix.
-	Prefix *string `json:"prefix,omitempty"`
+	Prefix *string `default:"null" json:"prefix"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ReadTimeout *int64 `json:"read_timeout,omitempty"`
+	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	SendTimeout *int64 `json:"send_timeout,omitempty"`
+	SendTimeout *int64 `default:"2000" json:"send_timeout"`
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
-	SentinelMaster *string `json:"sentinel_master,omitempty"`
+	SentinelMaster *string `default:"null" json:"sentinel_master"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
-	SentinelNodes []SamlPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
+	SentinelNodes []SamlPluginSentinelNodes `json:"sentinel_nodes"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-	SentinelPassword *string `json:"sentinel_password,omitempty"`
+	SentinelPassword *string `default:"null" json:"sentinel_password"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
 	SentinelRole *SamlPluginSentinelRole `json:"sentinel_role,omitempty"`
 	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
-	SentinelUsername *string `json:"sentinel_username,omitempty"`
+	SentinelUsername *string `default:"null" json:"sentinel_username"`
 	// A string representing an SNI (server name indication) value for TLS.
-	ServerName *string `json:"server_name,omitempty"`
+	ServerName *string `default:"null" json:"server_name"`
 	// The Redis unix socket path.
-	Socket *string `json:"socket,omitempty"`
+	Socket *string `default:"null" json:"socket"`
 	// If set to true, uses SSL to connect to Redis.
-	Ssl *bool `json:"ssl,omitempty"`
+	Ssl *bool `default:"false" json:"ssl"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-	SslVerify *bool `json:"ssl_verify,omitempty"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
-	Username *string `json:"username,omitempty"`
+	Username *string `default:"null" json:"username"`
+}
+
+func (s SamlPluginRedis) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SamlPluginRedis) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *SamlPluginRedis) GetClusterMaxRedirections() *int64 {
@@ -657,84 +701,95 @@ func (e *SamlPluginSessionStorage) UnmarshalJSON(data []byte) error {
 
 type SamlPluginConfig struct {
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer. If not set, a Kong Consumer must exist for the SAML IdP user credentials, mapping the username format to the Kong Consumer username.
-	Anonymous *string `json:"anonymous,omitempty"`
+	Anonymous *string `default:"null" json:"anonymous"`
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
 	AssertionConsumerPath string `json:"assertion_consumer_path"`
 	// The public certificate provided by the IdP. This is used to validate responses from the IdP.  Only include the contents of the certificate. Do not include the header (`BEGIN CERTIFICATE`) and footer (`END CERTIFICATE`) lines.
-	IdpCertificate *string `json:"idp_certificate,omitempty"`
+	IdpCertificate *string `default:"null" json:"idp_certificate"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
 	IdpSsoURL string `json:"idp_sso_url"`
 	// The unique identifier of the IdP application. Formatted as a URL containing information about the IdP so the SP can validate that the SAML assertions it receives are issued from the correct IdP.
 	Issuer string `json:"issuer"`
 	// The requested `NameId` format. Options available are: - `Unspecified` - `EmailAddress` - `Persistent` - `Transient`
-	NameidFormat *NameidFormat    `json:"nameid_format,omitempty"`
-	Redis        *SamlPluginRedis `json:"redis,omitempty"`
+	NameidFormat *NameidFormat    `default:"EmailAddress" json:"nameid_format"`
+	Redis        *SamlPluginRedis `json:"redis"`
 	// The digest algorithm for Authn requests: - `SHA256` - `SHA1`
-	RequestDigestAlgorithm *RequestDigestAlgorithm `json:"request_digest_algorithm,omitempty"`
+	RequestDigestAlgorithm *RequestDigestAlgorithm `default:"SHA256" json:"request_digest_algorithm"`
 	// The signature algorithm for signing Authn requests. Options available are: - `SHA256` - `SHA384` - `SHA512`
-	RequestSignatureAlgorithm *RequestSignatureAlgorithm `json:"request_signature_algorithm,omitempty"`
+	RequestSignatureAlgorithm *RequestSignatureAlgorithm `default:"SHA256" json:"request_signature_algorithm"`
 	// The certificate for signing requests.
-	RequestSigningCertificate *string `json:"request_signing_certificate,omitempty"`
+	RequestSigningCertificate *string `default:"null" json:"request_signing_certificate"`
 	// The private key for signing requests.  If this parameter is set, requests sent to the IdP are signed.  The `request_signing_certificate` parameter must be set as well.
-	RequestSigningKey *string `json:"request_signing_key,omitempty"`
+	RequestSigningKey *string `default:"null" json:"request_signing_key"`
 	// The algorithm for verifying digest in SAML responses: - `SHA256` - `SHA1`
-	ResponseDigestAlgorithm *ResponseDigestAlgorithm `json:"response_digest_algorithm,omitempty"`
+	ResponseDigestAlgorithm *ResponseDigestAlgorithm `default:"SHA256" json:"response_digest_algorithm"`
 	// The private encryption key required to decrypt encrypted assertions.
-	ResponseEncryptionKey *string `json:"response_encryption_key,omitempty"`
+	ResponseEncryptionKey *string `default:"null" json:"response_encryption_key"`
 	// The algorithm for validating signatures in SAML responses. Options available are: - `SHA256` - `SHA384` - `SHA512`
-	ResponseSignatureAlgorithm *ResponseSignatureAlgorithm `json:"response_signature_algorithm,omitempty"`
+	ResponseSignatureAlgorithm *ResponseSignatureAlgorithm `default:"SHA256" json:"response_signature_algorithm"`
 	// The session cookie absolute timeout in seconds. Specifies how long the session can be used until it is no longer valid.
-	SessionAbsoluteTimeout *float64 `json:"session_absolute_timeout,omitempty"`
+	SessionAbsoluteTimeout *float64 `default:"86400" json:"session_absolute_timeout"`
 	// The session audience, for example "my-application"
-	SessionAudience *string `json:"session_audience,omitempty"`
+	SessionAudience *string `default:"default" json:"session_audience"`
 	// The session cookie domain flag.
-	SessionCookieDomain *string `json:"session_cookie_domain,omitempty"`
+	SessionCookieDomain *string `default:"null" json:"session_cookie_domain"`
 	// Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property.
-	SessionCookieHTTPOnly *bool `json:"session_cookie_http_only,omitempty"`
+	SessionCookieHTTPOnly *bool `default:"true" json:"session_cookie_http_only"`
 	// The session cookie name.
-	SessionCookieName *string `json:"session_cookie_name,omitempty"`
+	SessionCookieName *string `default:"session" json:"session_cookie_name"`
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
-	SessionCookiePath *string `json:"session_cookie_path,omitempty"`
+	SessionCookiePath *string `default:"/" json:"session_cookie_path"`
 	// Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
-	SessionCookieSameSite *SamlPluginSessionCookieSameSite `json:"session_cookie_same_site,omitempty"`
+	SessionCookieSameSite *SamlPluginSessionCookieSameSite `default:"Lax" json:"session_cookie_same_site"`
 	// The cookie is only sent to the server when a request is made with the https:scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.
-	SessionCookieSecure *bool `json:"session_cookie_secure,omitempty"`
+	SessionCookieSecure *bool `default:"null" json:"session_cookie_secure"`
 	// When set to `true`, audiences are forced to share the same subject.
-	SessionEnforceSameSubject *bool `json:"session_enforce_same_subject,omitempty"`
+	SessionEnforceSameSubject *bool `default:"false" json:"session_enforce_same_subject"`
 	// When set to `true`, the storage key (session ID) is hashed for extra security. Hashing the storage key means it is impossible to decrypt data from the storage without a cookie.
-	SessionHashStorageKey *bool `json:"session_hash_storage_key,omitempty"`
+	SessionHashStorageKey *bool `default:"false" json:"session_hash_storage_key"`
 	// When set to `true`, the value of subject is hashed before being stored. Only applies when `session_store_metadata` is enabled.
-	SessionHashSubject *bool `json:"session_hash_subject,omitempty"`
+	SessionHashSubject *bool `default:"false" json:"session_hash_subject"`
 	// The session cookie idle time in seconds.
-	SessionIdlingTimeout *float64 `json:"session_idling_timeout,omitempty"`
+	SessionIdlingTimeout *float64 `default:"900" json:"session_idling_timeout"`
 	// The memcached host.
-	SessionMemcachedHost *string `json:"session_memcached_host,omitempty"`
+	SessionMemcachedHost *string `default:"127.0.0.1" json:"session_memcached_host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	SessionMemcachedPort *int64 `json:"session_memcached_port,omitempty"`
+	SessionMemcachedPort *int64 `default:"11211" json:"session_memcached_port"`
 	// The memcached session key prefix.
-	SessionMemcachedPrefix *string `json:"session_memcached_prefix,omitempty"`
+	SessionMemcachedPrefix *string `default:"null" json:"session_memcached_prefix"`
 	// The memcached unix socket path.
-	SessionMemcachedSocket *string `json:"session_memcached_socket,omitempty"`
+	SessionMemcachedSocket *string `default:"null" json:"session_memcached_socket"`
 	// Enables or disables persistent sessions
-	SessionRemember *bool `json:"session_remember,omitempty"`
+	SessionRemember *bool `default:"false" json:"session_remember"`
 	// Persistent session absolute timeout in seconds.
-	SessionRememberAbsoluteTimeout *float64 `json:"session_remember_absolute_timeout,omitempty"`
+	SessionRememberAbsoluteTimeout *float64 `default:"2592000" json:"session_remember_absolute_timeout"`
 	// Persistent session cookie name
-	SessionRememberCookieName *string `json:"session_remember_cookie_name,omitempty"`
+	SessionRememberCookieName *string `default:"remember" json:"session_remember_cookie_name"`
 	// Persistent session rolling timeout in seconds.
-	SessionRememberRollingTimeout *float64                           `json:"session_remember_rolling_timeout,omitempty"`
-	SessionRequestHeaders         []SamlPluginSessionRequestHeaders  `json:"session_request_headers,omitempty"`
-	SessionResponseHeaders        []SamlPluginSessionResponseHeaders `json:"session_response_headers,omitempty"`
+	SessionRememberRollingTimeout *float64                           `default:"604800" json:"session_remember_rolling_timeout"`
+	SessionRequestHeaders         []SamlPluginSessionRequestHeaders  `json:"session_request_headers"`
+	SessionResponseHeaders        []SamlPluginSessionResponseHeaders `json:"session_response_headers"`
 	// The session cookie absolute timeout in seconds. Specifies how long the session can be used until it is no longer valid.
-	SessionRollingTimeout *float64 `json:"session_rolling_timeout,omitempty"`
+	SessionRollingTimeout *float64 `default:"3600" json:"session_rolling_timeout"`
 	// The session secret. This must be a random string of 32 characters from the base64 alphabet (letters, numbers, `/`, `_` and `+`). It is used as the secret key for encrypting session data as well as state information that is sent to the IdP in the authentication exchange.
 	SessionSecret string `json:"session_secret"`
 	// The session storage for session data: - `cookie`: stores session data with the session cookie. The session cannot be invalidated or revoked without changing the session secret, but is stateless, and doesn't require a database. - `memcached`: stores session data in memcached - `redis`: stores session data in Redis
-	SessionStorage *SamlPluginSessionStorage `json:"session_storage,omitempty"`
+	SessionStorage *SamlPluginSessionStorage `default:"cookie" json:"session_storage"`
 	// Configures whether or not session metadata should be stored. This includes information about the active sessions for the `specific_audience` belonging to a specific subject.
-	SessionStoreMetadata *bool `json:"session_store_metadata,omitempty"`
+	SessionStoreMetadata *bool `default:"false" json:"session_store_metadata"`
 	// Enable signature validation for SAML responses.
-	ValidateAssertionSignature *bool `json:"validate_assertion_signature,omitempty"`
+	ValidateAssertionSignature *bool `default:"true" json:"validate_assertion_signature"`
+}
+
+func (s SamlPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SamlPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *SamlPluginConfig) GetAnonymous() *string {
@@ -1085,22 +1140,22 @@ type SamlPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string             `json:"instance_name,omitempty"`
+	InstanceName *string             `default:"null" json:"instance_name"`
 	name         string              `const:"saml" json:"name"`
-	Ordering     *SamlPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *SamlPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []SamlPluginPartials `json:"partials,omitempty"`
+	Partials []SamlPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64           `json:"updated_at,omitempty"`
 	Config    SamlPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
-	Protocols []SamlPluginProtocols `json:"protocols,omitempty"`
+	Protocols []SamlPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *SamlPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

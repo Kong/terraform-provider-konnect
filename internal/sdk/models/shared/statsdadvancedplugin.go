@@ -53,8 +53,19 @@ type StatsdAdvancedPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (s StatsdAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StatsdAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *StatsdAdvancedPluginPartials) GetID() *string {
@@ -301,10 +312,21 @@ func (e *StatsdAdvancedPluginWorkspaceIdentifier) UnmarshalJSON(data []byte) err
 type StatsdAdvancedPluginMetrics struct {
 	ConsumerIdentifier  *StatsdAdvancedPluginConsumerIdentifier  `json:"consumer_identifier,omitempty"`
 	Name                StatsdAdvancedPluginName                 `json:"name"`
-	SampleRate          *float64                                 `json:"sample_rate,omitempty"`
+	SampleRate          *float64                                 `default:"null" json:"sample_rate"`
 	ServiceIdentifier   *StatsdAdvancedPluginServiceIdentifier   `json:"service_identifier,omitempty"`
 	StatType            StatsdAdvancedPluginStatType             `json:"stat_type"`
 	WorkspaceIdentifier *StatsdAdvancedPluginWorkspaceIdentifier `json:"workspace_identifier,omitempty"`
+}
+
+func (s StatsdAdvancedPluginMetrics) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StatsdAdvancedPluginMetrics) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *StatsdAdvancedPluginMetrics) GetConsumerIdentifier() *StatsdAdvancedPluginConsumerIdentifier {
@@ -378,21 +400,32 @@ func (e *StatsdAdvancedPluginConcurrencyLimit) UnmarshalJSON(data []byte) error 
 
 type StatsdAdvancedPluginQueue struct {
 	// The number of of queue delivery timers. -1 indicates unlimited.
-	ConcurrencyLimit *StatsdAdvancedPluginConcurrencyLimit `json:"concurrency_limit,omitempty"`
+	ConcurrencyLimit *StatsdAdvancedPluginConcurrencyLimit `default:"1" json:"concurrency_limit"`
 	// Time in seconds before the initial retry is made for a failing batch.
-	InitialRetryDelay *float64 `json:"initial_retry_delay,omitempty"`
+	InitialRetryDelay *float64 `default:"0.01" json:"initial_retry_delay"`
 	// Maximum number of entries that can be processed at a time.
-	MaxBatchSize *int64 `json:"max_batch_size,omitempty"`
+	MaxBatchSize *int64 `default:"1" json:"max_batch_size"`
 	// Maximum number of bytes that can be waiting on a queue, requires string content.
-	MaxBytes *int64 `json:"max_bytes,omitempty"`
+	MaxBytes *int64 `default:"null" json:"max_bytes"`
 	// Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.
-	MaxCoalescingDelay *float64 `json:"max_coalescing_delay,omitempty"`
+	MaxCoalescingDelay *float64 `default:"1" json:"max_coalescing_delay"`
 	// Maximum number of entries that can be waiting on the queue.
-	MaxEntries *int64 `json:"max_entries,omitempty"`
+	MaxEntries *int64 `default:"10000" json:"max_entries"`
 	// Maximum time in seconds between retries, caps exponential backoff.
-	MaxRetryDelay *float64 `json:"max_retry_delay,omitempty"`
+	MaxRetryDelay *float64 `default:"60" json:"max_retry_delay"`
 	// Time in seconds before the queue gives up calling a failed handler for a batch.
-	MaxRetryTime *float64 `json:"max_retry_time,omitempty"`
+	MaxRetryTime *float64 `default:"60" json:"max_retry_time"`
+}
+
+func (s StatsdAdvancedPluginQueue) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StatsdAdvancedPluginQueue) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *StatsdAdvancedPluginQueue) GetConcurrencyLimit() *StatsdAdvancedPluginConcurrencyLimit {
@@ -513,28 +546,39 @@ func (e *StatsdAdvancedPluginWorkspaceIdentifierDefault) UnmarshalJSON(data []by
 
 type StatsdAdvancedPluginConfig struct {
 	// List of status code ranges that are allowed to be logged in metrics.
-	AllowStatusCodes []string `json:"allow_status_codes,omitempty"`
+	AllowStatusCodes []string `json:"allow_status_codes"`
 	// The default consumer identifier for metrics. This will take effect when a metric's consumer identifier is omitted. Allowed values are `custom_id`, `consumer_id`, `username`.
-	ConsumerIdentifierDefault *StatsdAdvancedPluginConsumerIdentifierDefault `json:"consumer_identifier_default,omitempty"`
+	ConsumerIdentifierDefault *StatsdAdvancedPluginConsumerIdentifierDefault `default:"custom_id" json:"consumer_identifier_default"`
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"localhost" json:"host"`
 	// Include the `hostname` in the `prefix` for each metric name.
-	HostnameInPrefix *bool `json:"hostname_in_prefix,omitempty"`
+	HostnameInPrefix *bool `default:"false" json:"hostname_in_prefix"`
 	// List of Metrics to be logged.
 	Metrics []StatsdAdvancedPluginMetrics `json:"metrics,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"8125" json:"port"`
 	// String to prefix to each metric's name.
-	Prefix *string                    `json:"prefix,omitempty"`
-	Queue  *StatsdAdvancedPluginQueue `json:"queue,omitempty"`
+	Prefix *string                    `default:"kong" json:"prefix"`
+	Queue  *StatsdAdvancedPluginQueue `json:"queue"`
 	// The default service identifier for metrics. This will take effect when a metric's service identifier is omitted. Allowed values are `service_name_or_host`, `service_id`, `service_name`, `service_host`.
-	ServiceIdentifierDefault *StatsdAdvancedPluginServiceIdentifierDefault `json:"service_identifier_default,omitempty"`
+	ServiceIdentifierDefault *StatsdAdvancedPluginServiceIdentifierDefault `default:"service_name_or_host" json:"service_identifier_default"`
 	// Combine UDP packet up to the size configured. If zero (0), don't combine the UDP packet. Must be a number between 0 and 65507 (inclusive).
-	UDPPacketSize *float64 `json:"udp_packet_size,omitempty"`
+	UDPPacketSize *float64 `default:"0" json:"udp_packet_size"`
 	// Use TCP instead of UDP.
-	UseTCP *bool `json:"use_tcp,omitempty"`
+	UseTCP *bool `default:"false" json:"use_tcp"`
 	// The default workspace identifier for metrics. This will take effect when a metric's workspace identifier is omitted. Allowed values are `workspace_id`, `workspace_name`.
-	WorkspaceIdentifierDefault *StatsdAdvancedPluginWorkspaceIdentifierDefault `json:"workspace_identifier_default,omitempty"`
+	WorkspaceIdentifierDefault *StatsdAdvancedPluginWorkspaceIdentifierDefault `default:"workspace_id" json:"workspace_identifier_default"`
+}
+
+func (s StatsdAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StatsdAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *StatsdAdvancedPluginConfig) GetAllowStatusCodes() []string {
@@ -713,24 +757,24 @@ type StatsdAdvancedPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                       `json:"instance_name,omitempty"`
+	InstanceName *string                       `default:"null" json:"instance_name"`
 	name         string                        `const:"statsd-advanced" json:"name"`
-	Ordering     *StatsdAdvancedPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *StatsdAdvancedPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []StatsdAdvancedPluginPartials `json:"partials,omitempty"`
+	Partials []StatsdAdvancedPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                      `json:"updated_at,omitempty"`
-	Config    *StatsdAdvancedPluginConfig `json:"config,omitempty"`
+	Config    *StatsdAdvancedPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *StatsdAdvancedPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
-	Protocols []StatsdAdvancedPluginProtocols `json:"protocols,omitempty"`
+	Protocols []StatsdAdvancedPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *StatsdAdvancedPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

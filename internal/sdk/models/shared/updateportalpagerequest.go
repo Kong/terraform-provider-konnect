@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+)
+
 // UpdatePortalPageRequest - Update a page in a portal.
 type UpdatePortalPageRequest struct {
 	// The slug of a page in a portal, used to compute its full URL path within the portal hierarchy.
@@ -23,7 +27,18 @@ type UpdatePortalPageRequest struct {
 	//
 	// Specify the `id` of another page as the `parent_page_id` to add some hierarchy to your pages.
 	//
-	ParentPageID *string `json:"parent_page_id,omitempty"`
+	ParentPageID *string `default:"null" json:"parent_page_id"`
+}
+
+func (u UpdatePortalPageRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdatePortalPageRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpdatePortalPageRequest) GetSlug() *string {

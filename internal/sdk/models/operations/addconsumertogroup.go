@@ -3,11 +3,23 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 	"net/http"
 )
 
 type AddConsumerToGroupRequestBody struct {
-	ConsumerID *string `json:"consumer,omitempty"`
+	ConsumerID *string `default:"null" json:"consumer"`
+}
+
+func (a AddConsumerToGroupRequestBody) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AddConsumerToGroupRequestBody) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AddConsumerToGroupRequestBody) GetConsumerID() *string {

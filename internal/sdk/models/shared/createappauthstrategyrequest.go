@@ -60,12 +60,23 @@ type AppAuthStrategyOpenIDConnectRequest struct {
 	StrategyType AppAuthStrategyOpenIDConnectRequestStrategyType `json:"strategy_type"`
 	// JSON-B object containing the configuration for the OIDC strategy
 	Configs       AppAuthStrategyOpenIDConnectRequestConfigs `json:"configs"`
-	DcrProviderID *string                                    `json:"dcr_provider_id,omitempty"`
+	DcrProviderID *string                                    `default:"null" json:"dcr_provider_id"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
+}
+
+func (a AppAuthStrategyOpenIDConnectRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AppAuthStrategyOpenIDConnectRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AppAuthStrategyOpenIDConnectRequest) GetName() string {

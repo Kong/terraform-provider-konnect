@@ -53,8 +53,19 @@ type MtlsAuthPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (m MtlsAuthPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MtlsAuthPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *MtlsAuthPluginPartials) GetID() *string {
@@ -163,37 +174,48 @@ func (e *MtlsAuthPluginRevocationCheckMode) UnmarshalJSON(data []byte) error {
 
 type MtlsAuthPluginConfig struct {
 	// Allow certificate verification with only an intermediate certificate. When this is enabled, you don't need to upload the full chain to Kong Certificates.
-	AllowPartialChain *bool `json:"allow_partial_chain,omitempty"`
+	AllowPartialChain *bool `default:"false" json:"allow_partial_chain"`
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request fails with an authentication failure `4xx`. Note that this value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
-	Anonymous *string `json:"anonymous,omitempty"`
+	Anonymous *string `default:"null" json:"anonymous"`
 	// Certificate property to use as the authenticated group. Valid values are `CN` (Common Name) or `DN` (Distinguished Name). Once `skip_consumer_lookup` is applied, any client with a valid certificate can access the Service/API. To restrict usage to only some of the authenticated users, also add the ACL plugin (not covered here) and create allowed or denied groups of users.
-	AuthenticatedGroupBy *MtlsAuthPluginAuthenticatedGroupBy `json:"authenticated_group_by,omitempty"`
+	AuthenticatedGroupBy *MtlsAuthPluginAuthenticatedGroupBy `default:"CN" json:"authenticated_group_by"`
 	// List of CA Certificates strings to use as Certificate Authorities (CA) when validating a client certificate. At least one is required but you can specify as many as needed. The value of this array is comprised of primary keys (`id`).
 	CaCertificates []string `json:"ca_certificates"`
 	// Cache expiry time in seconds.
-	CacheTTL *float64 `json:"cache_ttl,omitempty"`
+	CacheTTL *float64 `default:"60" json:"cache_ttl"`
 	// The length of time in seconds between refreshes of the revocation check status cache.
-	CertCacheTTL *float64 `json:"cert_cache_ttl,omitempty"`
+	CertCacheTTL *float64 `default:"60000" json:"cert_cache_ttl"`
 	// Whether to match the subject name of the client-supplied certificate against consumer's `username` and/or `custom_id` attribute. If set to `[]` (the empty array), then auto-matching is disabled.
 	ConsumerBy []MtlsAuthPluginConsumerBy `json:"consumer_by,omitempty"`
 	// The UUID or username of the consumer to use when a trusted client certificate is presented but no consumer matches. Note that this value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
-	DefaultConsumer *string `json:"default_consumer,omitempty"`
+	DefaultConsumer *string `default:"null" json:"default_consumer"`
 	// A string representing a host name, such as example.com.
-	HTTPProxyHost *string `json:"http_proxy_host,omitempty"`
+	HTTPProxyHost *string `default:"null" json:"http_proxy_host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	HTTPProxyPort *int64 `json:"http_proxy_port,omitempty"`
+	HTTPProxyPort *int64 `default:"null" json:"http_proxy_port"`
 	// HTTP timeout threshold in milliseconds when communicating with the OCSP server or downloading CRL.
-	HTTPTimeout *float64 `json:"http_timeout,omitempty"`
+	HTTPTimeout *float64 `default:"30000" json:"http_timeout"`
 	// A string representing a host name, such as example.com.
-	HTTPSProxyHost *string `json:"https_proxy_host,omitempty"`
+	HTTPSProxyHost *string `default:"null" json:"https_proxy_host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	HTTPSProxyPort *int64 `json:"https_proxy_port,omitempty"`
+	HTTPSProxyPort *int64 `default:"null" json:"https_proxy_port"`
 	// Controls client certificate revocation check behavior. If set to `SKIP`, no revocation check is performed. If set to `IGNORE_CA_ERROR`, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to `STRICT`, the plugin only treats the certificate as valid when it's able to verify the revocation status.
-	RevocationCheckMode *MtlsAuthPluginRevocationCheckMode `json:"revocation_check_mode,omitempty"`
+	RevocationCheckMode *MtlsAuthPluginRevocationCheckMode `default:"IGNORE_CA_ERROR" json:"revocation_check_mode"`
 	// Sends the distinguished names (DN) of the configured CA list in the TLS handshake message.
-	SendCaDn *bool `json:"send_ca_dn,omitempty"`
+	SendCaDn *bool `default:"false" json:"send_ca_dn"`
 	// Skip consumer lookup once certificate is trusted against the configured CA list.
-	SkipConsumerLookup *bool `json:"skip_consumer_lookup,omitempty"`
+	SkipConsumerLookup *bool `default:"false" json:"skip_consumer_lookup"`
+}
+
+func (m MtlsAuthPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MtlsAuthPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *MtlsAuthPluginConfig) GetAllowPartialChain() *bool {
@@ -369,22 +391,22 @@ type MtlsAuthPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                 `json:"instance_name,omitempty"`
+	InstanceName *string                 `default:"null" json:"instance_name"`
 	name         string                  `const:"mtls-auth" json:"name"`
-	Ordering     *MtlsAuthPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *MtlsAuthPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []MtlsAuthPluginPartials `json:"partials,omitempty"`
+	Partials []MtlsAuthPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64               `json:"updated_at,omitempty"`
 	Config    MtlsAuthPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
-	Protocols []MtlsAuthPluginProtocols `json:"protocols,omitempty"`
+	Protocols []MtlsAuthPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *MtlsAuthPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

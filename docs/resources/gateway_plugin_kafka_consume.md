@@ -126,7 +126,7 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
 
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -148,11 +148,11 @@ Required:
 Optional:
 
 - `authentication` (Attributes) (see [below for nested schema](#nestedatt--config--authentication))
-- `auto_offset_reset` (String) The offset to start from when there is no initial offset in the consumer group. must be one of ["earliest", "latest"]
+- `auto_offset_reset` (String) The offset to start from when there is no initial offset in the consumer group. Default: "latest"; must be one of ["earliest", "latest"]
 - `cluster_name` (String) An identifier for the Kafka cluster.
-- `commit_strategy` (String) The strategy to use for committing offsets. must be one of ["auto", "off"]
-- `message_deserializer` (String) The deserializer to use for the consumed messages. must be one of ["json", "noop"]
-- `mode` (String) The mode of operation for the plugin. must be one of ["http-get", "server-sent-events", "websocket"]
+- `commit_strategy` (String) The strategy to use for committing offsets. Default: "auto"; must be one of ["auto", "off"]
+- `message_deserializer` (String) The deserializer to use for the consumed messages. Default: "noop"; must be one of ["json", "noop"]
+- `mode` (String) The mode of operation for the plugin. Default: "http-get"; must be one of ["http-get", "server-sent-events", "websocket"]
 - `schema_registry` (Attributes) The plugin-global schema registry configuration. (see [below for nested schema](#nestedatt--config--schema_registry))
 - `security` (Attributes) (see [below for nested schema](#nestedatt--config--security))
 
@@ -186,7 +186,7 @@ Optional:
 Optional:
 
 - `authentication` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--topics--schema_registry--confluent--authentication))
-- `ssl_verify` (Boolean) Set to false to disable SSL certificate verification when connecting to the schema registry.
+- `ssl_verify` (Boolean) Set to false to disable SSL certificate verification when connecting to the schema registry. Default: true
 - `ttl` (Number) The TTL in seconds for the schema registry cache.
 - `url` (String) The URL of the schema registry.
 
@@ -196,7 +196,7 @@ Optional:
 Optional:
 
 - `basic` (Attributes) (see [below for nested schema](#nestedatt--config--topics--schema_registry--confluent--authentication--basic))
-- `mode` (String) Authentication mode to use with the schema registry. must be one of ["basic", "none"]
+- `mode` (String) Authentication mode to use with the schema registry. Default: "none"; must be one of ["basic", "none"]
 
 <a id="nestedatt--config--topics--schema_registry--confluent--authentication--basic"></a>
 ### Nested Schema for `config.topics.schema_registry.confluent.authentication.basic`
@@ -233,10 +233,13 @@ Optional:
 <a id="nestedatt--config--schema_registry--confluent"></a>
 ### Nested Schema for `config.schema_registry.confluent`
 
+Required:
+
+- `authentication` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication))
+
 Optional:
 
-- `authentication` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication))
-- `ssl_verify` (Boolean) Set to false to disable SSL certificate verification when connecting to the schema registry.
+- `ssl_verify` (Boolean) Set to false to disable SSL certificate verification when connecting to the schema registry. Default: true
 - `ttl` (Number) The TTL in seconds for the schema registry cache.
 - `url` (String) The URL of the schema registry.
 
@@ -246,15 +249,15 @@ Optional:
 Optional:
 
 - `basic` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication--basic))
-- `mode` (String) Authentication mode to use with the schema registry. must be one of ["basic", "none"]
+- `mode` (String) Authentication mode to use with the schema registry. Default: "none"; must be one of ["basic", "none"]
 
 <a id="nestedatt--config--schema_registry--confluent--authentication--basic"></a>
 ### Nested Schema for `config.schema_registry.confluent.authentication.basic`
 
-Optional:
+Required:
 
-- `password` (String) Not Null
-- `username` (String) Not Null
+- `password` (String)
+- `username` (String)
 
 
 

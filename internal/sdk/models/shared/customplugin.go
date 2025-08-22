@@ -14,7 +14,7 @@ type CustomPlugin struct {
 	// The schema for the given custom plugin.
 	Schema string `json:"schema"`
 	// A set of strings representing tags.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }

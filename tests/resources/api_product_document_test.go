@@ -32,4 +32,28 @@ func TestAPIProductDocument(t *testing.T) {
 			},
 		})
 	})
+
+	t.Run("update-nullify-fields", func(t *testing.T) {
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestNameDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_api_product_document.my_apiproduct_child_document", "slug", "path-for-seo-child"),
+						resource.TestCheckResourceAttrSet("konnect_api_product_document.my_apiproduct_child_document", "parent_document_id"),
+					),
+				},
+				{
+					// Update some fields to null
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
+					Check: resource.ComposeTestCheckFunc(
+						resource.TestCheckNoResourceAttr("konnect_api_product_document.my_apiproduct_child_document", "parent_document_id"),
+					),
+				},
+			},
+		})
+	})
 }

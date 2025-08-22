@@ -44,9 +44,11 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) RefreshFromShared
 				r.Config.Allow = nil
 			} else {
 				r.Config.Allow = &tfTypes.Allow{}
-				r.Config.Allow.Body = make([]types.String, 0, len(resp.Config.Allow.Body))
-				for _, v := range resp.Config.Allow.Body {
-					r.Config.Allow.Body = append(r.Config.Allow.Body, types.StringValue(v))
+				if resp.Config.Allow.Body != nil {
+					r.Config.Allow.Body = make([]types.String, 0, len(resp.Config.Allow.Body))
+					for _, v := range resp.Config.Allow.Body {
+						r.Config.Allow.Body = append(r.Config.Allow.Body, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Config.Append == nil {
@@ -414,9 +416,12 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToSharedRequestTr
 		}
 		var allow *shared.Allow
 		if r.Config.Allow != nil {
-			body1 := make([]string, 0, len(r.Config.Allow.Body))
-			for _, bodyItem1 := range r.Config.Allow.Body {
-				body1 = append(body1, bodyItem1.ValueString())
+			var body1 []string
+			if r.Config.Allow.Body != nil {
+				body1 = make([]string, 0, len(r.Config.Allow.Body))
+				for _, bodyItem1 := range r.Config.Allow.Body {
+					body1 = append(body1, bodyItem1.ValueString())
+				}
 			}
 			allow = &shared.Allow{
 				Body: body1,

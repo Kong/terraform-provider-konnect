@@ -85,7 +85,7 @@ resource "konnect_gateway_plugin_jwt" "my_gatewaypluginjwt" {
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -105,11 +105,11 @@ Optional:
 - `claims_to_verify` (List of String) A list of registered claims (according to RFC 7519) that Kong can verify as well. Accepted values: one of exp or nbf.
 - `cookie_names` (List of String) A list of cookie names that Kong will inspect to retrieve JWTs.
 - `header_names` (List of String) A list of HTTP header names that Kong will inspect to retrieve JWTs.
-- `key_claim_name` (String) The name of the claim in which the key identifying the secret must be passed. The plugin will attempt to read this claim from the JWT payload and the header, in that order.
-- `maximum_expiration` (Number) A value between 0 and 31536000 (365 days) limiting the lifetime of the JWT to maximum_expiration seconds in the future.
+- `key_claim_name` (String) The name of the claim in which the key identifying the secret must be passed. The plugin will attempt to read this claim from the JWT payload and the header, in that order. Default: "iss"
+- `maximum_expiration` (Number) A value between 0 and 31536000 (365 days) limiting the lifetime of the JWT to maximum_expiration seconds in the future. Default: 0
 - `realm` (String) When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
-- `run_on_preflight` (Boolean) A boolean value that indicates whether the plugin should run (and try to authenticate) on OPTIONS preflight requests. If set to false, then OPTIONS requests will always be allowed.
-- `secret_is_base64` (Boolean) If true, the plugin assumes the credential’s secret to be base64 encoded. You will need to create a base64-encoded secret for your Consumer, and sign your JWT with the original secret.
+- `run_on_preflight` (Boolean) A boolean value that indicates whether the plugin should run (and try to authenticate) on OPTIONS preflight requests. If set to false, then OPTIONS requests will always be allowed. Default: true
+- `secret_is_base64` (Boolean) If true, the plugin assumes the credential’s secret to be base64 encoded. You will need to create a base64-encoded secret for your Consumer, and sign your JWT with the original secret. Default: false
 - `uri_param_names` (List of String) A list of querystring parameters that Kong will inspect to retrieve JWTs.
 
 

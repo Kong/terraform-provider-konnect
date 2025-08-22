@@ -20,9 +20,11 @@ func (r *GatewayPluginJwtResourceModel) RefreshFromSharedJwtPlugin(ctx context.C
 		} else {
 			r.Config = &tfTypes.JwtPluginConfig{}
 			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-			r.Config.ClaimsToVerify = make([]types.String, 0, len(resp.Config.ClaimsToVerify))
-			for _, v := range resp.Config.ClaimsToVerify {
-				r.Config.ClaimsToVerify = append(r.Config.ClaimsToVerify, types.StringValue(string(v)))
+			if resp.Config.ClaimsToVerify != nil {
+				r.Config.ClaimsToVerify = make([]types.String, 0, len(resp.Config.ClaimsToVerify))
+				for _, v := range resp.Config.ClaimsToVerify {
+					r.Config.ClaimsToVerify = append(r.Config.ClaimsToVerify, types.StringValue(string(v)))
+				}
 			}
 			r.Config.CookieNames = make([]types.String, 0, len(resp.Config.CookieNames))
 			for _, v := range resp.Config.CookieNames {
@@ -294,9 +296,12 @@ func (r *GatewayPluginJwtResourceModel) ToSharedJwtPlugin(ctx context.Context) (
 		} else {
 			anonymous = nil
 		}
-		claimsToVerify := make([]shared.ClaimsToVerify, 0, len(r.Config.ClaimsToVerify))
-		for _, claimsToVerifyItem := range r.Config.ClaimsToVerify {
-			claimsToVerify = append(claimsToVerify, shared.ClaimsToVerify(claimsToVerifyItem.ValueString()))
+		var claimsToVerify []shared.ClaimsToVerify
+		if r.Config.ClaimsToVerify != nil {
+			claimsToVerify = make([]shared.ClaimsToVerify, 0, len(r.Config.ClaimsToVerify))
+			for _, claimsToVerifyItem := range r.Config.ClaimsToVerify {
+				claimsToVerify = append(claimsToVerify, shared.ClaimsToVerify(claimsToVerifyItem.ValueString()))
+			}
 		}
 		cookieNames := make([]string, 0, len(r.Config.CookieNames))
 		for _, cookieNamesItem := range r.Config.CookieNames {

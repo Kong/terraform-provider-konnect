@@ -62,22 +62,22 @@ resource "konnect_gateway_service" "my_gatewayservice" {
 
 - `ca_certificates` (List of String) Array of `CA Certificate` object UUIDs that are used to build the trust store while verifying upstream server's TLS certificate. If set to `null` when Nginx default is respected. If default CA list in Nginx are not specified and TLS verification is enabled, then handshake with upstream server will always fail (because no CA are trusted).
 - `client_certificate` (Attributes) Certificate to be used as client certificate while TLS handshaking to the upstream server. (see [below for nested schema](#nestedatt--client_certificate))
-- `connect_timeout` (Number) The timeout in milliseconds for establishing a connection to the upstream server.
+- `connect_timeout` (Number) The timeout in milliseconds for establishing a connection to the upstream server. Default: 60000
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the Service is active. If set to `false`, the proxy behavior will be as if any routes attached to it do not exist (404). Default: `true`.
+- `enabled` (Boolean) Whether the Service is active. If set to `false`, the proxy behavior will be as if any routes attached to it do not exist (404). Default: `true`. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `name` (String) The Service name.
 - `path` (String) The path to be used in requests to the upstream server.
-- `port` (Number) The upstream server port.
-- `protocol` (String) The protocol used to communicate with the upstream. must be one of ["grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss"]
-- `read_timeout` (Number) The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server.
-- `retries` (Number) The number of retries to execute upon failure to proxy.
+- `port` (Number) The upstream server port. Default: 80
+- `protocol` (String) The protocol used to communicate with the upstream. Default: "http"; must be one of ["grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss"]
+- `read_timeout` (Number) The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server. Default: 60000
+- `retries` (Number) The number of retries to execute upon failure to proxy. Default: 5
 - `tags` (List of String) An optional set of strings associated with the Service for grouping and filtering.
 - `tls_sans` (Attributes) (see [below for nested schema](#nestedatt--tls_sans))
 - `tls_verify` (Boolean) Whether to enable verification of upstream server TLS certificate. If set to `null`, then the Nginx default is respected.
 - `tls_verify_depth` (Number) Maximum depth of chain while verifying Upstream server's TLS certificate. If set to `null`, then the Nginx default is respected.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
-- `write_timeout` (Number) The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server.
+- `write_timeout` (Number) The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server. Default: 60000
 
 <a id="nestedatt--client_certificate"></a>
 ### Nested Schema for `client_certificate`

@@ -28,7 +28,7 @@ func (r *GatewayPluginOauth2IntrospectionResourceModel) RefreshFromSharedOauth2I
 		for _, v := range resp.Config.CustomClaimsForward {
 			r.Config.CustomClaimsForward = append(r.Config.CustomClaimsForward, types.StringValue(v))
 		}
-		if len(resp.Config.CustomIntrospectionHeaders) > 0 {
+		if resp.Config.CustomIntrospectionHeaders != nil {
 			r.Config.CustomIntrospectionHeaders = make(map[string]jsontypes.Normalized, len(resp.Config.CustomIntrospectionHeaders))
 			for key, value := range resp.Config.CustomIntrospectionHeaders {
 				result, _ := json.Marshal(value)

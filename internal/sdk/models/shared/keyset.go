@@ -2,17 +2,32 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+)
+
 type KeySet struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// The name to associate with the given key-set.
-	Name *string `json:"name,omitempty"`
+	Name *string `default:"null" json:"name"`
 	// A set of strings representing tags.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
+}
+
+func (k KeySet) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KeySet) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KeySet) GetCreatedAt() *int64 {

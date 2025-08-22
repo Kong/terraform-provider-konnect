@@ -12,13 +12,13 @@ type SystemAccountAccessToken struct {
 	// ID of the system account access token.
 	ID *string `json:"id,omitempty"`
 	// Name of the system account access token.
-	Name *string `json:"name,omitempty"`
+	Name *string `default:"null" json:"name"`
 	// Timestamp of when the system account access token was created.
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	// Timestamp of when the system account access token was last updated.
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 	// Timestamp of when the system account access token will expire.
-	ExpiresAt *time.Time `json:"expires_at,omitempty"`
+	ExpiresAt *time.Time `default:"null" json:"expires_at"`
 	// Timestamp of when the system account access token was last used.
 	LastUsedAt *time.Time `json:"last_used_at,omitempty"`
 }

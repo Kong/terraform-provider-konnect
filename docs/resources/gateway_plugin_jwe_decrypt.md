@@ -73,7 +73,7 @@ resource "konnect_gateway_plugin_jwe_decrypt" "my_gatewaypluginjwedecrypt" {
 ### Optional
 
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -93,9 +93,9 @@ Required:
 
 Optional:
 
-- `forward_header_name` (String) The name of the header that is used to set the decrypted value.
-- `lookup_header_name` (String) The name of the header to look for the JWE token.
-- `strict` (Boolean) Defines how the plugin behaves in cases where no token was found in the request. When using `strict` mode, the request requires a token to be present and subsequently raise an error if none could be found.
+- `forward_header_name` (String) The name of the header that is used to set the decrypted value. Default: "Authorization"
+- `lookup_header_name` (String) The name of the header to look for the JWE token. Default: "Authorization"
+- `strict` (Boolean) Defines how the plugin behaves in cases where no token was found in the request. When using `strict` mode, the request requires a token to be present and subsequently raise an error if none could be found. Default: true
 
 
 <a id="nestedatt--ordering"></a>

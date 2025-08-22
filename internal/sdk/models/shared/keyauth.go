@@ -14,14 +14,14 @@ func (o *KeyAuthConsumer) GetID() *string {
 }
 
 type KeyAuth struct {
-	Consumer *KeyAuthConsumer `json:"consumer"`
+	Consumer *KeyAuthConsumer `json:"consumer,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// A string representing a UUID (universally unique identifier).
 	ID  *string `json:"id,omitempty"`
 	Key *string `json:"key,omitempty"`
 	// A set of strings representing tags.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// key-auth ttl in seconds
 	TTL *int64 `json:"ttl,omitempty"`
 }

@@ -74,9 +74,6 @@ func (r *IntegrationInstanceAuthCredentialResource) Schema(ctx context.Context, 
 			},
 			"expires_at": schema.StringAttribute{
 				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
 				MarkdownDescription: `Timestamp denoting when the when the credential will expire in RFC-3339 format with a "T" character separating date from time within the field value.` + "\n" +
 					`When expired, the credential must be replaced with a new valid credential to re-enable full functionality for the given integration instance.` + "\n" +
 					`` + "\n" +
@@ -231,9 +228,6 @@ func (r *IntegrationInstanceAuthCredentialResource) Schema(ctx context.Context, 
 					},
 					"expires_at": schema.StringAttribute{
 						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
 						MarkdownDescription: `Timestamp denoting when the when the credential will expire in RFC-3339 format with a "T" character separating date from time within the field value.` + "\n" +
 							`When expired, the credential must be replaced with a new valid credential to re-enable full functionality for the given integration instance.` + "\n" +
 							`` + "\n" +

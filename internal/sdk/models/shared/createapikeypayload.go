@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
 type CreateAPIKeyPayloadType string
@@ -34,15 +35,26 @@ func (e *CreateAPIKeyPayloadType) UnmarshalJSON(data []byte) error {
 }
 
 type CreateAPIKeyPayload struct {
-	Type CreateAPIKeyPayloadType `json:"type"`
+	Type *CreateAPIKeyPayloadType `default:"legacy" json:"type"`
 	// secret to be created. Must be unique within the realm. If not specified a secret will be automatically generated.
 	Secret *string  `json:"secret,omitempty"`
 	Tags   []string `json:"tags,omitempty"`
 }
 
-func (o *CreateAPIKeyPayload) GetType() CreateAPIKeyPayloadType {
+func (c CreateAPIKeyPayload) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAPIKeyPayload) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *CreateAPIKeyPayload) GetType() *CreateAPIKeyPayloadType {
 	if o == nil {
-		return CreateAPIKeyPayloadType("")
+		return nil
 	}
 	return o.Type
 }

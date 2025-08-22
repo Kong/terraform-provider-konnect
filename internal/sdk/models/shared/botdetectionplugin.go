@@ -53,8 +53,19 @@ type BotDetectionPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (b BotDetectionPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BotDetectionPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *BotDetectionPluginPartials) GetID() *string {
@@ -160,22 +171,22 @@ type BotDetectionPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                     `json:"instance_name,omitempty"`
+	InstanceName *string                     `default:"null" json:"instance_name"`
 	name         string                      `const:"bot-detection" json:"name"`
-	Ordering     *BotDetectionPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *BotDetectionPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []BotDetectionPluginPartials `json:"partials,omitempty"`
+	Partials []BotDetectionPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                    `json:"updated_at,omitempty"`
-	Config    *BotDetectionPluginConfig `json:"config,omitempty"`
+	Config    *BotDetectionPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
-	Protocols []BotDetectionPluginProtocols `json:"protocols,omitempty"`
+	Protocols []BotDetectionPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *BotDetectionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

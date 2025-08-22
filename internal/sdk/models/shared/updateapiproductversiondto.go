@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
 // UpdateAPIProductVersionDTOPublishStatus - The publish status of the API product version. Applies publish status to all related portal product versions. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead.
@@ -40,7 +41,7 @@ func (e *UpdateAPIProductVersionDTOPublishStatus) UnmarshalJSON(data []byte) err
 // Note that the `publish_status` and `deprecated` fields are deprecated:  Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead.
 type UpdateAPIProductVersionDTO struct {
 	// The version name of the API product version.
-	Name *string `json:"name,omitempty"`
+	Name *string `default:"null" json:"name"`
 	// The publish status of the API product version. Applies publish status to all related portal product versions. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead.
 	//
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
@@ -48,7 +49,7 @@ type UpdateAPIProductVersionDTO struct {
 	// Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead.
 	//
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
-	Deprecated *bool `json:"deprecated,omitempty"`
+	Deprecated *bool `default:"null" json:"deprecated"`
 	// When set to `true`, and all the following conditions are true:
 	// - version of the API product deprecation has changed from `false` -> `true`
 	// - version of the API product is published
@@ -56,7 +57,7 @@ type UpdateAPIProductVersionDTO struct {
 	// then consumers of the now deprecated verion of the API product will be notified.
 	//
 	Notify         *bool                  `json:"notify,omitempty"`
-	GatewayService *GatewayServicePayload `json:"gateway_service,omitempty"`
+	GatewayService *GatewayServicePayload `json:"gateway_service"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Labels are intended to store **INTERNAL** metadata.
@@ -64,6 +65,17 @@ type UpdateAPIProductVersionDTO struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
+}
+
+func (u UpdateAPIProductVersionDTO) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAPIProductVersionDTO) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpdateAPIProductVersionDTO) GetName() *string {

@@ -53,8 +53,19 @@ type AiSanitizerPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (a AiSanitizerPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSanitizerPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiSanitizerPluginPartials) GetID() *string {
@@ -161,7 +172,18 @@ func (e *Anonymize) UnmarshalJSON(data []byte) error {
 type CustomPatterns struct {
 	Name  string   `json:"name"`
 	Regex string   `json:"regex"`
-	Score *float64 `json:"score,omitempty"`
+	Score *float64 `default:"0.5" json:"score"`
+}
+
+func (c CustomPatterns) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CustomPatterns) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CustomPatterns) GetName() string {
@@ -216,23 +238,34 @@ type AiSanitizerPluginConfig struct {
 	// List of types to be anonymized
 	Anonymize []Anonymize `json:"anonymize,omitempty"`
 	// List of custom patterns to be used for anonymization
-	CustomPatterns []CustomPatterns `json:"custom_patterns,omitempty"`
+	CustomPatterns []CustomPatterns `json:"custom_patterns"`
 	// The host of the sanitizer
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"localhost" json:"host"`
 	// The keepalive timeout for the established http connnection
-	KeepaliveTimeout *float64 `json:"keepalive_timeout,omitempty"`
+	KeepaliveTimeout *float64 `default:"60000" json:"keepalive_timeout"`
 	// The port of the sanitizer
-	Port *float64 `json:"port,omitempty"`
+	Port *float64 `default:"8080" json:"port"`
 	// Whether to recover redacted data
-	RecoverRedacted *bool `json:"recover_redacted,omitempty"`
+	RecoverRedacted *bool `default:"true" json:"recover_redacted"`
 	// What value to be used to redacted to
-	RedactType *RedactType `json:"redact_type,omitempty"`
+	RedactType *RedactType `default:"placeholder" json:"redact_type"`
 	// The protocol can be http and https
-	Scheme *string `json:"scheme,omitempty"`
+	Scheme *string `default:"http" json:"scheme"`
 	// Stop processing if an error occurs
-	StopOnError *bool `json:"stop_on_error,omitempty"`
+	StopOnError *bool `default:"true" json:"stop_on_error"`
 	// Connection timeout with the sanitizer
-	Timeout *float64 `json:"timeout,omitempty"`
+	Timeout *float64 `default:"10000" json:"timeout"`
+}
+
+func (a AiSanitizerPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSanitizerPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiSanitizerPluginConfig) GetAnonymize() []Anonymize {
@@ -390,26 +423,26 @@ type AiSanitizerPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                    `json:"instance_name,omitempty"`
+	InstanceName *string                    `default:"null" json:"instance_name"`
 	name         string                     `const:"ai-sanitizer" json:"name"`
-	Ordering     *AiSanitizerPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *AiSanitizerPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []AiSanitizerPluginPartials `json:"partials,omitempty"`
+	Partials []AiSanitizerPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                   `json:"updated_at,omitempty"`
-	Config    *AiSanitizerPluginConfig `json:"config,omitempty"`
+	Config    *AiSanitizerPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *AiSanitizerPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *AiSanitizerPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
-	Protocols []AiSanitizerPluginProtocols `json:"protocols,omitempty"`
+	Protocols []AiSanitizerPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *AiSanitizerPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

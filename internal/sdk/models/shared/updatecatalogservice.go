@@ -2,14 +2,18 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+)
+
 type UpdateCatalogService struct {
 	// The machine name of the Service that uniquely identifies it within the catalog.
 	//
-	Name *string `json:"name,omitempty"`
+	Name *string `default:"null" json:"name"`
 	// The display name of the Service.
-	DisplayName *string `json:"display_name,omitempty"`
+	DisplayName *string `default:"null" json:"display_name"`
 	// Optionally provide a description of the Service.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"null" json:"description"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Labels are intended to store **INTERNAL** metadata.
@@ -20,6 +24,17 @@ type UpdateCatalogService struct {
 	// Map of customizable, catalog-defined fields providing information about a service.
 	//
 	CustomFields any `json:"custom_fields,omitempty"`
+}
+
+func (u UpdateCatalogService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateCatalogService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpdateCatalogService) GetName() *string {

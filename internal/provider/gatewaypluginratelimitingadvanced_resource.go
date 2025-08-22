@@ -13,8 +13,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -69,13 +73,11 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"compound_identifier": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Similar to ` + "`" + `identifer` + "`" + `, but supports combining multiple items. The priority of ` + "`" + `compound_identifier` + "`" + ` is higher than ` + "`" + `identifier` + "`" + `, which means if ` + "`" + `compound_identifer` + "`" + ` is set, it will be used, otherwise ` + "`" + `identifier` + "`" + ` will be used.`,
 					},
 					"consumer_groups": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `List of consumer groups allowed to override the rate limiting settings for the given Route or Service. Required if ` + "`" + `enforce_consumer_groups` + "`" + ` is set to ` + "`" + `true` + "`" + `.`,
@@ -83,42 +85,48 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 					"dictionary_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The shared dictionary where counters are stored. When the plugin is configured to synchronize counter data externally (that is ` + "`" + `config.strategy` + "`" + ` is ` + "`" + `cluster` + "`" + ` or ` + "`" + `redis` + "`" + ` and ` + "`" + `config.sync_rate` + "`" + ` isn't ` + "`" + `-1` + "`" + `), this dictionary serves as a buffer to populate counters in the data store on each synchronization cycle.`,
+						Default:     stringdefault.StaticString(`kong_rate_limiting_counters`),
+						Description: `The shared dictionary where counters are stored. When the plugin is configured to synchronize counter data externally (that is ` + "`" + `config.strategy` + "`" + ` is ` + "`" + `cluster` + "`" + ` or ` + "`" + `redis` + "`" + ` and ` + "`" + `config.sync_rate` + "`" + ` isn't ` + "`" + `-1` + "`" + `), this dictionary serves as a buffer to populate counters in the data store on each synchronization cycle. Default: "kong_rate_limiting_counters"`,
 					},
 					"disable_penalty": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If set to ` + "`" + `true` + "`" + `, this doesn't count denied requests (status = ` + "`" + `429` + "`" + `). If set to ` + "`" + `false` + "`" + `, all requests, including denied ones, are counted. This parameter only affects the ` + "`" + `sliding` + "`" + ` window_type.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If set to ` + "`" + `true` + "`" + `, this doesn't count denied requests (status = ` + "`" + `429` + "`" + `). If set to ` + "`" + `false` + "`" + `, all requests, including denied ones, are counted. This parameter only affects the ` + "`" + `sliding` + "`" + ` window_type. Default: false`,
 					},
 					"enforce_consumer_groups": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Determines if consumer groups are allowed to override the rate limiting settings for the given Route or Service. Flipping ` + "`" + `enforce_consumer_groups` + "`" + ` from ` + "`" + `true` + "`" + ` to ` + "`" + `false` + "`" + ` disables the group override, but does not clear the list of consumer groups. You can then flip ` + "`" + `enforce_consumer_groups` + "`" + ` to ` + "`" + `true` + "`" + ` to re-enforce the groups.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Determines if consumer groups are allowed to override the rate limiting settings for the given Route or Service. Flipping ` + "`" + `enforce_consumer_groups` + "`" + ` from ` + "`" + `true` + "`" + ` to ` + "`" + `false` + "`" + ` disables the group override, but does not clear the list of consumer groups. You can then flip ` + "`" + `enforce_consumer_groups` + "`" + ` to ` + "`" + `true` + "`" + ` to re-enforce the groups. Default: false`,
 					},
 					"error_code": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Set a custom error code to return when the rate limit is exceeded.`,
+						Default:     float64default.StaticFloat64(429),
+						Description: `Set a custom error code to return when the rate limit is exceeded. Default: 429`,
 					},
 					"error_message": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Set a custom error message to return when the rate limit is exceeded.`,
+						Default:     stringdefault.StaticString(`API rate limit exceeded`),
+						Description: `Set a custom error message to return when the rate limit is exceeded. Default: "API rate limit exceeded"`,
 					},
 					"header_name": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing an HTTP header name.`,
 					},
 					"hide_client_headers": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Optionally hide informative response headers that would otherwise provide information about the current status of limits and counters.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Optionally hide informative response headers that would otherwise provide information about the current status of limits and counters. Default: false`,
 					},
 					"identifier": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be ` + "`" + `ip` + "`" + `, ` + "`" + `credential` + "`" + `, ` + "`" + `consumer` + "`" + `, ` + "`" + `service` + "`" + `, ` + "`" + `header` + "`" + `, ` + "`" + `path` + "`" + ` or ` + "`" + `consumer-group` + "`" + `. Note if ` + "`" + `identifier` + "`" + ` is ` + "`" + `consumer-group` + "`" + `, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate. must be one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]`,
+						Default:     stringdefault.StaticString(`consumer`),
+						Description: `The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be ` + "`" + `ip` + "`" + `, ` + "`" + `credential` + "`" + `, ` + "`" + `consumer` + "`" + `, ` + "`" + `service` + "`" + `, ` + "`" + `header` + "`" + `, ` + "`" + `path` + "`" + ` or ` + "`" + `consumer-group` + "`" + `. Note if ` + "`" + `identifier` + "`" + ` is ` + "`" + `consumer-group` + "`" + `, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate. Default: "consumer"; must be one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"consumer",
@@ -139,15 +147,14 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 					"lock_dictionary_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The shared dictionary where concurrency control locks are stored. The default shared dictionary is ` + "`" + `kong_locks` + "`" + `. The shared dictionary should be declare in nginx-kong.conf.`,
+						Default:     stringdefault.StaticString(`kong_locks`),
+						Description: `The shared dictionary where concurrency control locks are stored. The default shared dictionary is ` + "`" + `kong_locks` + "`" + `. The shared dictionary should be declare in nginx-kong.conf. Default: "kong_locks"`,
 					},
 					"namespace": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. ` + "`" + `strategy` + "`" + `, ` + "`" + `redis` + "`" + `, ` + "`" + `sync_rate` + "`" + `, ` + "`" + `dictionary_name` + "`" + `, need to be the same.`,
 					},
 					"path": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).`,
 					},
@@ -158,10 +165,10 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 							"cluster_max_redirections": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Maximum retry attempts for redirection.`,
+								Default:     int64default.StaticInt64(5),
+								Description: `Maximum retry attempts for redirection. Default: 5`,
 							},
 							"cluster_nodes": schema.ListNestedAttribute{
-								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
@@ -171,12 +178,14 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 										"ip": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `A string representing a host name, such as example.com.`,
+											Default:     stringdefault.StaticString(`127.0.0.1`),
+											Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 										},
 										"port": schema.Int64Attribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+											Default:     int64default.StaticInt64(6379),
+											Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 											Validators: []validator.Int64{
 												int64validator.AtMost(65535),
 											},
@@ -188,7 +197,8 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 							"connect_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+								Default:     int64default.StaticInt64(2000),
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 								Validators: []validator.Int64{
 									int64validator.AtMost(2147483646),
 								},
@@ -196,20 +206,22 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 							"connection_is_proxied": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
 							},
 							"database": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy`,
+								Default:     int64default.StaticInt64(0),
+								Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
 							},
 							"host": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `A string representing a host name, such as example.com.`,
+								Default:     stringdefault.StaticString(`127.0.0.1`),
+								Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 							},
 							"keepalive_backlog": schema.Int64Attribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `keepalive_pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `keepalive_pool_size` + "`" + `.`,
 								Validators: []validator.Int64{
@@ -219,20 +231,21 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 							"keepalive_pool_size": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `keepalive_pool_size` + "`" + ` nor ` + "`" + `keepalive_backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `keepalive_pool_size` + "`" + ` isn't specified but ` + "`" + `keepalive_backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.`,
+								Default:     int64default.StaticInt64(256),
+								Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `keepalive_pool_size` + "`" + ` nor ` + "`" + `keepalive_backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `keepalive_pool_size` + "`" + ` isn't specified but ` + "`" + `keepalive_backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
 								Validators: []validator.Int64{
 									int64validator.Between(1, 2147483646),
 								},
 							},
 							"password": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 							},
 							"port": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+								Default:     int64default.StaticInt64(6379),
+								Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 								Validators: []validator.Int64{
 									int64validator.AtMost(65535),
 								},
@@ -240,7 +253,8 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 							"read_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+								Default:     int64default.StaticInt64(2000),
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 								Validators: []validator.Int64{
 									int64validator.AtMost(2147483646),
 								},
@@ -258,18 +272,17 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 							"send_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+								Default:     int64default.StaticInt64(2000),
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 								Validators: []validator.Int64{
 									int64validator.AtMost(2147483646),
 								},
 							},
 							"sentinel_master": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
 							},
 							"sentinel_nodes": schema.ListNestedAttribute{
-								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
@@ -279,12 +292,14 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 										"host": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `A string representing a host name, such as example.com.`,
+											Default:     stringdefault.StaticString(`127.0.0.1`),
+											Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 										},
 										"port": schema.Int64Attribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+											Default:     int64default.StaticInt64(6379),
+											Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 											Validators: []validator.Int64{
 												int64validator.AtMost(65535),
 											},
@@ -294,7 +309,6 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 								Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
 							},
 							"sentinel_password": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.`,
 							},
@@ -311,27 +325,26 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 								},
 							},
 							"sentinel_username": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.`,
 							},
 							"server_name": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `A string representing an SNI (server name indication) value for TLS.`,
 							},
 							"ssl": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If set to true, uses SSL to connect to Redis.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `If set to true, uses SSL to connect to Redis. Default: false`,
 							},
 							"ssl_verify": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: false`,
 							},
 							"username": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
 							},
@@ -340,12 +353,14 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 					"retry_after_jitter_max": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The upper bound of a jitter (random delay) in seconds to be added to the ` + "`" + `Retry-After` + "`" + ` header of denied requests (status = ` + "`" + `429` + "`" + `) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is ` + "`" + `0` + "`" + `; in this case, the ` + "`" + `Retry-After` + "`" + ` header is equal to the ` + "`" + `RateLimit-Reset` + "`" + ` header.`,
+						Default:     float64default.StaticFloat64(0),
+						Description: `The upper bound of a jitter (random delay) in seconds to be added to the ` + "`" + `Retry-After` + "`" + ` header of denied requests (status = ` + "`" + `429` + "`" + `) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is ` + "`" + `0` + "`" + `; in this case, the ` + "`" + `Retry-After` + "`" + ` header is equal to the ` + "`" + `RateLimit-Reset` + "`" + ` header. Default: 0`,
 					},
 					"strategy": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: ` + "`" + `local` + "`" + ` and ` + "`" + `cluster` + "`" + `. must be one of ["cluster", "local", "redis"]`,
+						Default:     stringdefault.StaticString(`local`),
+						Description: `The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: ` + "`" + `local` + "`" + ` and ` + "`" + `cluster` + "`" + `. Default: "local"; must be one of ["cluster", "local", "redis"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"cluster",
@@ -355,7 +370,6 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 						},
 					},
 					"sync_rate": schema.Float64Attribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 will sync the counters in the specified number of seconds. The minimum allowed interval is 0.02 seconds (20ms).`,
 					},
@@ -367,7 +381,8 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 					"window_type": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Sets the time window type to either ` + "`" + `sliding` + "`" + ` (default) or ` + "`" + `fixed` + "`" + `. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters. must be one of ["fixed", "sliding"]`,
+						Default:     stringdefault.StaticString(`sliding`),
+						Description: `Sets the time window type to either ` + "`" + `sliding` + "`" + ` (default) or ` + "`" + `fixed` + "`" + `. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters. Default: "sliding"; must be one of ["fixed", "sliding"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"fixed",
@@ -420,7 +435,8 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -428,13 +444,28 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
@@ -461,7 +492,6 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -474,12 +504,10 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},
@@ -521,7 +549,6 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

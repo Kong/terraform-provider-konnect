@@ -14,14 +14,14 @@ func (o *HMACAuthWithoutParentsConsumer) GetID() *string {
 }
 
 type HMACAuthWithoutParents struct {
-	Consumer *HMACAuthWithoutParentsConsumer `json:"consumer"`
+	Consumer *HMACAuthWithoutParentsConsumer `json:"consumer,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// A string representing a UUID (universally unique identifier).
 	ID     *string `json:"id,omitempty"`
 	Secret *string `json:"secret,omitempty"`
 	// A set of strings representing tags.
-	Tags     []string `json:"tags,omitempty"`
+	Tags     []string `json:"tags"`
 	Username string   `json:"username"`
 }
 

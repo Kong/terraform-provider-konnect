@@ -32,17 +32,19 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) RefreshFromSharedProxyCac
 		if resp.Config.Redis == nil {
 			r.Config.Redis = nil
 		} else {
-			r.Config.Redis = &tfTypes.PartialRedisEeConfig{}
+			r.Config.Redis = &tfTypes.AiProxyAdvancedPluginRedis{}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
-			r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+			if resp.Config.Redis.ClusterNodes != nil {
+				r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
 
-			for _, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
-				var clusterNodes tfTypes.PartialRedisEeClusterNodes
+				for _, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
+					var clusterNodes tfTypes.PartialRedisEeClusterNodes
 
-				clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
-				clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
+					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
+					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
 
-				r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes)
+					r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes)
+				}
 			}
 			r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
 			r.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Redis.ConnectionIsProxied)
@@ -55,15 +57,17 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) RefreshFromSharedProxyCac
 			r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
 			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
-			r.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+			if resp.Config.Redis.SentinelNodes != nil {
+				r.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
 
-			for _, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
-				var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+				for _, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
+					var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
 
-				sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
-				sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
+					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 
-				r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes)
+					r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes)
+				}
 			}
 			r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
 			if resp.Config.Redis.SentinelRole != nil {
@@ -95,13 +99,17 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) RefreshFromSharedProxyCac
 		}
 		r.Config.StorageTTL = types.Int64PointerValue(resp.Config.StorageTTL)
 		r.Config.Strategy = types.StringValue(string(resp.Config.Strategy))
-		r.Config.VaryHeaders = make([]types.String, 0, len(resp.Config.VaryHeaders))
-		for _, v := range resp.Config.VaryHeaders {
-			r.Config.VaryHeaders = append(r.Config.VaryHeaders, types.StringValue(v))
+		if resp.Config.VaryHeaders != nil {
+			r.Config.VaryHeaders = make([]types.String, 0, len(resp.Config.VaryHeaders))
+			for _, v := range resp.Config.VaryHeaders {
+				r.Config.VaryHeaders = append(r.Config.VaryHeaders, types.StringValue(v))
+			}
 		}
-		r.Config.VaryQueryParams = make([]types.String, 0, len(resp.Config.VaryQueryParams))
-		for _, v := range resp.Config.VaryQueryParams {
-			r.Config.VaryQueryParams = append(r.Config.VaryQueryParams, types.StringValue(v))
+		if resp.Config.VaryQueryParams != nil {
+			r.Config.VaryQueryParams = make([]types.String, 0, len(resp.Config.VaryQueryParams))
+			for _, v := range resp.Config.VaryQueryParams {
+				r.Config.VaryQueryParams = append(r.Config.VaryQueryParams, types.StringValue(v))
+			}
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -407,24 +415,27 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToSharedProxyCacheAdvance
 		} else {
 			clusterMaxRedirections = nil
 		}
-		clusterNodes := make([]shared.ProxyCacheAdvancedPluginClusterNodes, 0, len(r.Config.Redis.ClusterNodes))
-		for _, clusterNodesItem := range r.Config.Redis.ClusterNodes {
-			ip := new(string)
-			if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
-				*ip = clusterNodesItem.IP.ValueString()
-			} else {
-				ip = nil
+		var clusterNodes []shared.ProxyCacheAdvancedPluginClusterNodes
+		if r.Config.Redis.ClusterNodes != nil {
+			clusterNodes = make([]shared.ProxyCacheAdvancedPluginClusterNodes, 0, len(r.Config.Redis.ClusterNodes))
+			for _, clusterNodesItem := range r.Config.Redis.ClusterNodes {
+				ip := new(string)
+				if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
+					*ip = clusterNodesItem.IP.ValueString()
+				} else {
+					ip = nil
+				}
+				port := new(int64)
+				if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
+					*port = clusterNodesItem.Port.ValueInt64()
+				} else {
+					port = nil
+				}
+				clusterNodes = append(clusterNodes, shared.ProxyCacheAdvancedPluginClusterNodes{
+					IP:   ip,
+					Port: port,
+				})
 			}
-			port := new(int64)
-			if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
-				*port = clusterNodesItem.Port.ValueInt64()
-			} else {
-				port = nil
-			}
-			clusterNodes = append(clusterNodes, shared.ProxyCacheAdvancedPluginClusterNodes{
-				IP:   ip,
-				Port: port,
-			})
 		}
 		connectTimeout := new(int64)
 		if !r.Config.Redis.ConnectTimeout.IsUnknown() && !r.Config.Redis.ConnectTimeout.IsNull() {
@@ -492,24 +503,27 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToSharedProxyCacheAdvance
 		} else {
 			sentinelMaster = nil
 		}
-		sentinelNodes := make([]shared.ProxyCacheAdvancedPluginSentinelNodes, 0, len(r.Config.Redis.SentinelNodes))
-		for _, sentinelNodesItem := range r.Config.Redis.SentinelNodes {
-			host1 := new(string)
-			if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
-				*host1 = sentinelNodesItem.Host.ValueString()
-			} else {
-				host1 = nil
+		var sentinelNodes []shared.ProxyCacheAdvancedPluginSentinelNodes
+		if r.Config.Redis.SentinelNodes != nil {
+			sentinelNodes = make([]shared.ProxyCacheAdvancedPluginSentinelNodes, 0, len(r.Config.Redis.SentinelNodes))
+			for _, sentinelNodesItem := range r.Config.Redis.SentinelNodes {
+				host1 := new(string)
+				if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
+					*host1 = sentinelNodesItem.Host.ValueString()
+				} else {
+					host1 = nil
+				}
+				port2 := new(int64)
+				if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
+					*port2 = sentinelNodesItem.Port.ValueInt64()
+				} else {
+					port2 = nil
+				}
+				sentinelNodes = append(sentinelNodes, shared.ProxyCacheAdvancedPluginSentinelNodes{
+					Host: host1,
+					Port: port2,
+				})
 			}
-			port2 := new(int64)
-			if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
-				*port2 = sentinelNodesItem.Port.ValueInt64()
-			} else {
-				port2 = nil
-			}
-			sentinelNodes = append(sentinelNodes, shared.ProxyCacheAdvancedPluginSentinelNodes{
-				Host: host1,
-				Port: port2,
-			})
 		}
 		sentinelPassword := new(string)
 		if !r.Config.Redis.SentinelPassword.IsUnknown() && !r.Config.Redis.SentinelPassword.IsNull() {
@@ -618,13 +632,19 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToSharedProxyCacheAdvance
 		storageTTL = nil
 	}
 	strategy := shared.ProxyCacheAdvancedPluginStrategy(r.Config.Strategy.ValueString())
-	varyHeaders := make([]string, 0, len(r.Config.VaryHeaders))
-	for _, varyHeadersItem := range r.Config.VaryHeaders {
-		varyHeaders = append(varyHeaders, varyHeadersItem.ValueString())
+	var varyHeaders []string
+	if r.Config.VaryHeaders != nil {
+		varyHeaders = make([]string, 0, len(r.Config.VaryHeaders))
+		for _, varyHeadersItem := range r.Config.VaryHeaders {
+			varyHeaders = append(varyHeaders, varyHeadersItem.ValueString())
+		}
 	}
-	varyQueryParams := make([]string, 0, len(r.Config.VaryQueryParams))
-	for _, varyQueryParamsItem := range r.Config.VaryQueryParams {
-		varyQueryParams = append(varyQueryParams, varyQueryParamsItem.ValueString())
+	var varyQueryParams []string
+	if r.Config.VaryQueryParams != nil {
+		varyQueryParams = make([]string, 0, len(r.Config.VaryQueryParams))
+		for _, varyQueryParamsItem := range r.Config.VaryQueryParams {
+			varyQueryParams = append(varyQueryParams, varyQueryParamsItem.ValueString())
+		}
 	}
 	config := shared.ProxyCacheAdvancedPluginConfig{
 		BypassOnErr:     bypassOnErr,

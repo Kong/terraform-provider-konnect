@@ -20,13 +20,17 @@ func (r *GatewayPluginAiPromptGuardResourceModel) RefreshFromSharedAiPromptGuard
 		} else {
 			r.Config = &tfTypes.AiPromptGuardPluginConfig{}
 			r.Config.AllowAllConversationHistory = types.BoolPointerValue(resp.Config.AllowAllConversationHistory)
-			r.Config.AllowPatterns = make([]types.String, 0, len(resp.Config.AllowPatterns))
-			for _, v := range resp.Config.AllowPatterns {
-				r.Config.AllowPatterns = append(r.Config.AllowPatterns, types.StringValue(v))
+			if resp.Config.AllowPatterns != nil {
+				r.Config.AllowPatterns = make([]types.String, 0, len(resp.Config.AllowPatterns))
+				for _, v := range resp.Config.AllowPatterns {
+					r.Config.AllowPatterns = append(r.Config.AllowPatterns, types.StringValue(v))
+				}
 			}
-			r.Config.DenyPatterns = make([]types.String, 0, len(resp.Config.DenyPatterns))
-			for _, v := range resp.Config.DenyPatterns {
-				r.Config.DenyPatterns = append(r.Config.DenyPatterns, types.StringValue(v))
+			if resp.Config.DenyPatterns != nil {
+				r.Config.DenyPatterns = make([]types.String, 0, len(resp.Config.DenyPatterns))
+				for _, v := range resp.Config.DenyPatterns {
+					r.Config.DenyPatterns = append(r.Config.DenyPatterns, types.StringValue(v))
+				}
 			}
 			if resp.Config.GenaiCategory != nil {
 				r.Config.GenaiCategory = types.StringValue(string(*resp.Config.GenaiCategory))
@@ -305,13 +309,19 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToSharedAiPromptGuardPlugin(ct
 		} else {
 			allowAllConversationHistory = nil
 		}
-		allowPatterns := make([]string, 0, len(r.Config.AllowPatterns))
-		for _, allowPatternsItem := range r.Config.AllowPatterns {
-			allowPatterns = append(allowPatterns, allowPatternsItem.ValueString())
+		var allowPatterns []string
+		if r.Config.AllowPatterns != nil {
+			allowPatterns = make([]string, 0, len(r.Config.AllowPatterns))
+			for _, allowPatternsItem := range r.Config.AllowPatterns {
+				allowPatterns = append(allowPatterns, allowPatternsItem.ValueString())
+			}
 		}
-		denyPatterns := make([]string, 0, len(r.Config.DenyPatterns))
-		for _, denyPatternsItem := range r.Config.DenyPatterns {
-			denyPatterns = append(denyPatterns, denyPatternsItem.ValueString())
+		var denyPatterns []string
+		if r.Config.DenyPatterns != nil {
+			denyPatterns = make([]string, 0, len(r.Config.DenyPatterns))
+			for _, denyPatternsItem := range r.Config.DenyPatterns {
+				denyPatterns = append(denyPatterns, denyPatternsItem.ValueString())
+			}
 		}
 		genaiCategory := new(shared.GenaiCategory)
 		if !r.Config.GenaiCategory.IsUnknown() && !r.Config.GenaiCategory.IsNull() {

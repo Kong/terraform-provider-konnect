@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+)
+
 // PortalAuthenticationSettingsUpdateRequest - Properties to update a portal's developer auth settings.
 type PortalAuthenticationSettingsUpdateRequest struct {
 	// The organization has basic auth enabled.
@@ -16,12 +20,23 @@ type PortalAuthenticationSettingsUpdateRequest struct {
 	KonnectMappingEnabled *bool `json:"konnect_mapping_enabled,omitempty"`
 	// Whether IdP groups determine the Konnect Portal teams a developer has. This will soon replace oidc_team_mapping_enabled.
 	IdpMappingEnabled *bool    `json:"idp_mapping_enabled,omitempty"`
-	OidcIssuer        *string  `json:"oidc_issuer,omitempty"`
-	OidcClientID      *string  `json:"oidc_client_id,omitempty"`
-	OidcClientSecret  *string  `json:"oidc_client_secret,omitempty"`
-	OidcScopes        []string `json:"oidc_scopes,omitempty"`
+	OidcIssuer        *string  `default:"null" json:"oidc_issuer"`
+	OidcClientID      *string  `default:"null" json:"oidc_client_id"`
+	OidcClientSecret  *string  `default:"null" json:"oidc_client_secret"`
+	OidcScopes        []string `json:"oidc_scopes"`
 	// Mappings from a portal developer atribute to an Identity Provider claim.
 	OidcClaimMappings *PortalClaimMappings `json:"oidc_claim_mappings,omitempty"`
+}
+
+func (p PortalAuthenticationSettingsUpdateRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PortalAuthenticationSettingsUpdateRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *PortalAuthenticationSettingsUpdateRequest) GetBasicAuthEnabled() *bool {

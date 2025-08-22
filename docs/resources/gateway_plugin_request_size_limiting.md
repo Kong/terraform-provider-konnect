@@ -74,7 +74,7 @@ resource "konnect_gateway_plugin_request_size_limiting" "my_gatewaypluginrequest
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -90,9 +90,9 @@ resource "konnect_gateway_plugin_request_size_limiting" "my_gatewaypluginrequest
 
 Optional:
 
-- `allowed_payload_size` (Number) Allowed request payload size in megabytes. Default is `128` megabytes (128000000 bytes).
-- `require_content_length` (Boolean) Set to `true` to ensure a valid `Content-Length` header exists before reading the request body.
-- `size_unit` (String) Size unit can be set either in `bytes`, `kilobytes`, or `megabytes` (default). This configuration is not available in versions prior to Kong Gateway 1.3 and Kong Gateway (OSS) 2.0. must be one of ["bytes", "kilobytes", "megabytes"]
+- `allowed_payload_size` (Number) Allowed request payload size in megabytes. Default is `128` megabytes (128000000 bytes). Default: 128
+- `require_content_length` (Boolean) Set to `true` to ensure a valid `Content-Length` header exists before reading the request body. Default: false
+- `size_unit` (String) Size unit can be set either in `bytes`, `kilobytes`, or `megabytes` (default). This configuration is not available in versions prior to Kong Gateway 1.3 and Kong Gateway (OSS) 2.0. Default: "megabytes"; must be one of ["bytes", "kilobytes", "megabytes"]
 
 
 <a id="nestedatt--consumer"></a>

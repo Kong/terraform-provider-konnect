@@ -19,9 +19,11 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) RefreshFromSharedStatsdAdvanc
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.StatsdAdvancedPluginConfig{}
-			r.Config.AllowStatusCodes = make([]types.String, 0, len(resp.Config.AllowStatusCodes))
-			for _, v := range resp.Config.AllowStatusCodes {
-				r.Config.AllowStatusCodes = append(r.Config.AllowStatusCodes, types.StringValue(v))
+			if resp.Config.AllowStatusCodes != nil {
+				r.Config.AllowStatusCodes = make([]types.String, 0, len(resp.Config.AllowStatusCodes))
+				for _, v := range resp.Config.AllowStatusCodes {
+					r.Config.AllowStatusCodes = append(r.Config.AllowStatusCodes, types.StringValue(v))
+				}
 			}
 			if resp.Config.ConsumerIdentifierDefault != nil {
 				r.Config.ConsumerIdentifierDefault = types.StringValue(string(*resp.Config.ConsumerIdentifierDefault))
@@ -340,9 +342,12 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToSharedStatsdAdvancedPlugin(
 	}
 	var config *shared.StatsdAdvancedPluginConfig
 	if r.Config != nil {
-		allowStatusCodes := make([]string, 0, len(r.Config.AllowStatusCodes))
-		for _, allowStatusCodesItem := range r.Config.AllowStatusCodes {
-			allowStatusCodes = append(allowStatusCodes, allowStatusCodesItem.ValueString())
+		var allowStatusCodes []string
+		if r.Config.AllowStatusCodes != nil {
+			allowStatusCodes = make([]string, 0, len(r.Config.AllowStatusCodes))
+			for _, allowStatusCodesItem := range r.Config.AllowStatusCodes {
+				allowStatusCodes = append(allowStatusCodes, allowStatusCodesItem.ValueString())
+			}
 		}
 		consumerIdentifierDefault := new(shared.StatsdAdvancedPluginConsumerIdentifierDefault)
 		if !r.Config.ConsumerIdentifierDefault.IsUnknown() && !r.Config.ConsumerIdentifierDefault.IsNull() {

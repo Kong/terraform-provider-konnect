@@ -136,9 +136,12 @@ func (r *PortalAuthResourceModel) ToSharedPortalAuthenticationSettingsUpdateRequ
 	} else {
 		oidcClientSecret = nil
 	}
-	oidcScopes := make([]string, 0, len(r.OidcScopes))
-	for _, oidcScopesItem := range r.OidcScopes {
-		oidcScopes = append(oidcScopes, oidcScopesItem.ValueString())
+	var oidcScopes []string
+	if r.OidcScopes != nil {
+		oidcScopes = make([]string, 0, len(r.OidcScopes))
+		for _, oidcScopesItem := range r.OidcScopes {
+			oidcScopes = append(oidcScopes, oidcScopesItem.ValueString())
+		}
 	}
 	var oidcClaimMappings *shared.PortalClaimMappings
 	if r.OidcClaimMappings != nil {

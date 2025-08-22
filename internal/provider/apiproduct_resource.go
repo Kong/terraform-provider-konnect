@@ -67,7 +67,6 @@ func (r *APIProductResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"description": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The description of the API product.`,
 			},

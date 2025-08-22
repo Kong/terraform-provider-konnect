@@ -56,7 +56,6 @@ func (r *GatewayCACertificateResource) Schema(ctx context.Context, req resource.
 			},
 			"cert_digest": schema.StringAttribute{
 				Computed:    true,
-				Optional:    true,
 				Description: `SHA256 hex digest of the public certificate. This field is read-only and it cannot be set by the caller, the value is automatically computed.`,
 			},
 			"control_plane_id": schema.StringAttribute{
@@ -77,7 +76,6 @@ func (r *GatewayCACertificateResource) Schema(ctx context.Context, req resource.
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Certificate for grouping and filtering.`,

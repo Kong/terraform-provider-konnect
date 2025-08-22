@@ -28,9 +28,11 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) RefreshFromSharedLdapAuthAd
 		r.Config.GroupBaseDn = types.StringPointerValue(resp.Config.GroupBaseDn)
 		r.Config.GroupMemberAttribute = types.StringPointerValue(resp.Config.GroupMemberAttribute)
 		r.Config.GroupNameAttribute = types.StringPointerValue(resp.Config.GroupNameAttribute)
-		r.Config.GroupsRequired = make([]types.String, 0, len(resp.Config.GroupsRequired))
-		for _, v := range resp.Config.GroupsRequired {
-			r.Config.GroupsRequired = append(r.Config.GroupsRequired, types.StringValue(v))
+		if resp.Config.GroupsRequired != nil {
+			r.Config.GroupsRequired = make([]types.String, 0, len(resp.Config.GroupsRequired))
+			for _, v := range resp.Config.GroupsRequired {
+				r.Config.GroupsRequired = append(r.Config.GroupsRequired, types.StringValue(v))
+			}
 		}
 		r.Config.HeaderType = types.StringPointerValue(resp.Config.HeaderType)
 		r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
@@ -340,9 +342,12 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToSharedLdapAuthAdvancedPlu
 	} else {
 		groupNameAttribute = nil
 	}
-	groupsRequired := make([]string, 0, len(r.Config.GroupsRequired))
-	for _, groupsRequiredItem := range r.Config.GroupsRequired {
-		groupsRequired = append(groupsRequired, groupsRequiredItem.ValueString())
+	var groupsRequired []string
+	if r.Config.GroupsRequired != nil {
+		groupsRequired = make([]string, 0, len(r.Config.GroupsRequired))
+		for _, groupsRequiredItem := range r.Config.GroupsRequired {
+			groupsRequired = append(groupsRequired, groupsRequiredItem.ValueString())
+		}
 	}
 	headerType := new(string)
 	if !r.Config.HeaderType.IsUnknown() && !r.Config.HeaderType.IsNull() {
