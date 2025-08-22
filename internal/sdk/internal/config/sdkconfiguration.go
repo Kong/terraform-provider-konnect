@@ -4,7 +4,7 @@ package config
 
 import (
 	"context"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/retry"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/retry"
 	"net/http"
 	"time"
 )

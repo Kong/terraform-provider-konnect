@@ -10,9 +10,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	custom "github.com/kong/terraform-provider-konnect/v2/src"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
+	custom "github.com/kong/terraform-provider-konnect/v3/src"
 	"net/http"
 	"os"
 )

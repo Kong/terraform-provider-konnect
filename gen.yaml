@@ -22,7 +22,7 @@ generation:
     skipResponseBodyAssertions: false
   baseServerURL: ""
 terraform:
-  version: 2.14.0
+  version: 3.0.0
   additionalDataSources: []
   additionalDependencies: {}
   additionalEphemeralResources: []
@@ -30,7 +30,7 @@ terraform:
     httpHeaders: ""
   additionalResources:
     - importAlias: custom
-      importLocation: github.com/kong/terraform-provider-konnect/v2/src
+      importLocation: github.com/kong/terraform-provider-konnect/v3/src
       resource: custom.NewCustomPluginResource
   allowUnknownFieldsInWeakUnions: false
   author: kong

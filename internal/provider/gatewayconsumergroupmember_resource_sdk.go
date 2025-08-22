@@ -5,7 +5,7 @@ package provider
 import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 )
 
 func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroupRequest(ctx context.Context) (*operations.AddConsumerToGroupRequest, diag.Diagnostics) {

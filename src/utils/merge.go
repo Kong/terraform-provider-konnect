@@ -7,7 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfReflect "github.com/kong/terraform-provider-konnect/v2/internal/provider/reflect"
+	tfReflect "github.com/kong/terraform-provider-konnect/v3/internal/provider/reflect"
 )
 
 func Merge(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse, target interface{}) {
