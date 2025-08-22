@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
 
@@ -15,7 +15,7 @@ type ListControlPlanesRequest struct {
 	// Filters a collection of control-planes.
 	Filter *shared.ControlPlaneFilterParameters `queryParam:"style=deepObject,explode=true,name=filter"`
 	// Filter control planes in the response by associated labels.
-	Labels *string `queryParam:"style=form,explode=true,name=labels"`
+	FilterLabels *string `queryParam:"style=form,explode=true,name=labels"`
 	// Sorts a collection of control-planes. Supported sort attributes are:
 	//   - created_at
 	//
@@ -43,11 +43,11 @@ func (o *ListControlPlanesRequest) GetFilter() *shared.ControlPlaneFilterParamet
 	return o.Filter
 }
 
-func (o *ListControlPlanesRequest) GetLabels() *string {
+func (o *ListControlPlanesRequest) GetFilterLabels() *string {
 	if o == nil {
 		return nil
 	}
-	return o.Labels
+	return o.FilterLabels
 }
 
 func (o *ListControlPlanesRequest) GetSort() *string {

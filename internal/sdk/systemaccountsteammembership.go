@@ -6,12 +6,12 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/config"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/hooks"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/errors"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/config"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/hooks"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/errors"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
 
@@ -62,7 +62,7 @@ func (s *SystemAccountsTeamMembership) PostTeamsTeamIDSystemAccounts(ctx context
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, true, false, "AddSystemAccountToTeam", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "AddSystemAccountToTeam", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}

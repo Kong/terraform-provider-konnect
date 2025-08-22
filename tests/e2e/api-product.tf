@@ -1,5 +1,5 @@
 # Create a Portal
-resource "konnect_portal" "my_portal" {
+resource "konnect_portal_classic" "my_portal" {
   name                      = "My New Portal"
   auto_approve_applications = false
   auto_approve_developers   = false
@@ -14,7 +14,7 @@ resource "konnect_api_product" "httpbin" {
   description = "This product productizes the HTTPBin service"
 
   portal_ids = [
-    konnect_portal.my_portal.id
+    konnect_portal_classic.my_portal.id
   ]
 }
 
@@ -61,7 +61,7 @@ resource "konnect_portal_product_version" "my_portalproductversion" {
   deprecated                       = false
   publish_status                   = "published"
 
-  portal_id          = konnect_portal.my_portal.id
+  portal_id          = konnect_portal_classic.my_portal.id
   product_version_id = konnect_api_product_version.httpbin_v1.id
   auth_strategy_ids = [
     konnect_application_auth_strategy.my_applicationauthstrategy.id

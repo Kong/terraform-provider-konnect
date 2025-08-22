@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type GraphqlRateLimitingAdvancedPluginAfter struct {
@@ -53,8 +53,19 @@ type GraphqlRateLimitingAdvancedPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (g GraphqlRateLimitingAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GraphqlRateLimitingAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *GraphqlRateLimitingAdvancedPluginPartials) GetID() *string {
@@ -137,9 +148,20 @@ func (e *GraphqlRateLimitingAdvancedPluginIdentifier) UnmarshalJSON(data []byte)
 
 type GraphqlRateLimitingAdvancedPluginClusterNodes struct {
 	// A string representing a host name, such as example.com.
-	IP *string `json:"ip,omitempty"`
+	IP *string `default:"127.0.0.1" json:"ip"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (g GraphqlRateLimitingAdvancedPluginClusterNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GraphqlRateLimitingAdvancedPluginClusterNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *GraphqlRateLimitingAdvancedPluginClusterNodes) GetIP() *string {
@@ -158,9 +180,20 @@ func (o *GraphqlRateLimitingAdvancedPluginClusterNodes) GetPort() *int64 {
 
 type GraphqlRateLimitingAdvancedPluginSentinelNodes struct {
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (g GraphqlRateLimitingAdvancedPluginSentinelNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GraphqlRateLimitingAdvancedPluginSentinelNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *GraphqlRateLimitingAdvancedPluginSentinelNodes) GetHost() *string {
@@ -209,47 +242,58 @@ func (e *GraphqlRateLimitingAdvancedPluginSentinelRole) UnmarshalJSON(data []byt
 
 type GraphqlRateLimitingAdvancedPluginRedis struct {
 	// Maximum retry attempts for redirection.
-	ClusterMaxRedirections *int64 `json:"cluster_max_redirections,omitempty"`
+	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
-	ClusterNodes []GraphqlRateLimitingAdvancedPluginClusterNodes `json:"cluster_nodes,omitempty"`
+	ClusterNodes []GraphqlRateLimitingAdvancedPluginClusterNodes `json:"cluster_nodes"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
+	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
-	ConnectionIsProxied *bool `json:"connection_is_proxied,omitempty"`
+	ConnectionIsProxied *bool `default:"false" json:"connection_is_proxied"`
 	// Database to use for the Redis connection when using the `redis` strategy
-	Database *int64 `json:"database,omitempty"`
+	Database *int64 `default:"0" json:"database"`
 	// A string representing a host name, such as example.com.
-	Host *string `json:"host,omitempty"`
+	Host *string `default:"127.0.0.1" json:"host"`
 	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
-	KeepaliveBacklog *int64 `json:"keepalive_backlog,omitempty"`
+	KeepaliveBacklog *int64 `default:"null" json:"keepalive_backlog"`
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
-	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
+	KeepalivePoolSize *int64 `default:"256" json:"keepalive_pool_size"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-	Password *string `json:"password,omitempty"`
+	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64 `default:"6379" json:"port"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ReadTimeout *int64 `json:"read_timeout,omitempty"`
+	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	SendTimeout *int64 `json:"send_timeout,omitempty"`
+	SendTimeout *int64 `default:"2000" json:"send_timeout"`
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
-	SentinelMaster *string `json:"sentinel_master,omitempty"`
+	SentinelMaster *string `default:"null" json:"sentinel_master"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
-	SentinelNodes []GraphqlRateLimitingAdvancedPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
+	SentinelNodes []GraphqlRateLimitingAdvancedPluginSentinelNodes `json:"sentinel_nodes"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-	SentinelPassword *string `json:"sentinel_password,omitempty"`
+	SentinelPassword *string `default:"null" json:"sentinel_password"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
 	SentinelRole *GraphqlRateLimitingAdvancedPluginSentinelRole `json:"sentinel_role,omitempty"`
 	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
-	SentinelUsername *string `json:"sentinel_username,omitempty"`
+	SentinelUsername *string `default:"null" json:"sentinel_username"`
 	// A string representing an SNI (server name indication) value for TLS.
-	ServerName *string `json:"server_name,omitempty"`
+	ServerName *string `default:"null" json:"server_name"`
 	// If set to true, uses SSL to connect to Redis.
-	Ssl *bool `json:"ssl,omitempty"`
+	Ssl *bool `default:"false" json:"ssl"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-	SslVerify *bool `json:"ssl_verify,omitempty"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
-	Username *string `json:"username,omitempty"`
+	Username *string `default:"null" json:"username"`
+}
+
+func (g GraphqlRateLimitingAdvancedPluginRedis) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GraphqlRateLimitingAdvancedPluginRedis) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *GraphqlRateLimitingAdvancedPluginRedis) GetClusterMaxRedirections() *int64 {
@@ -455,32 +499,43 @@ func (e *GraphqlRateLimitingAdvancedPluginWindowType) UnmarshalJSON(data []byte)
 
 type GraphqlRateLimitingAdvancedPluginConfig struct {
 	// Strategy to use to evaluate query costs. Either `default` or `node_quantifier`.
-	CostStrategy *CostStrategy `json:"cost_strategy,omitempty"`
+	CostStrategy *CostStrategy `default:"default" json:"cost_strategy"`
 	// The shared dictionary where counters will be stored until the next sync cycle.
-	DictionaryName *string `json:"dictionary_name,omitempty"`
+	DictionaryName *string `default:"kong_rate_limiting_counters" json:"dictionary_name"`
 	// Optionally hide informative response headers. Available options: `true` or `false`.
-	HideClientHeaders *bool `json:"hide_client_headers,omitempty"`
+	HideClientHeaders *bool `default:"false" json:"hide_client_headers"`
 	// How to define the rate limit key. Can be `ip`, `credential`, `consumer`.
-	Identifier *GraphqlRateLimitingAdvancedPluginIdentifier `json:"identifier,omitempty"`
+	Identifier *GraphqlRateLimitingAdvancedPluginIdentifier `default:"consumer" json:"identifier"`
 	// One or more requests-per-window limits to apply.
 	Limit []float64 `json:"limit"`
 	// A defined maximum cost per query. 0 means unlimited.
-	MaxCost *float64 `json:"max_cost,omitempty"`
+	MaxCost *float64 `default:"0" json:"max_cost"`
 	// The rate limiting namespace to use for this plugin instance. This namespace is used to share rate limiting counters across different instances. If it is not provided, a random UUID is generated. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `window_size`, `dictionary_name`, need to be the same.
-	Namespace *string `json:"namespace,omitempty"`
+	Namespace *string `default:"null" json:"namespace"`
 	// pass all downstream headers to the upstream graphql server in introspection request
-	PassAllDownstreamHeaders *bool                                   `json:"pass_all_downstream_headers,omitempty"`
-	Redis                    *GraphqlRateLimitingAdvancedPluginRedis `json:"redis,omitempty"`
+	PassAllDownstreamHeaders *bool                                   `default:"false" json:"pass_all_downstream_headers"`
+	Redis                    *GraphqlRateLimitingAdvancedPluginRedis `json:"redis"`
 	// A scoring factor to multiply (or divide) the cost. The `score_factor` must always be greater than 0.
-	ScoreFactor *float64 `json:"score_factor,omitempty"`
+	ScoreFactor *float64 `default:"1" json:"score_factor"`
 	// The rate-limiting strategy to use for retrieving and incrementing the limits.
-	Strategy *GraphqlRateLimitingAdvancedPluginStrategy `json:"strategy,omitempty"`
+	Strategy *GraphqlRateLimitingAdvancedPluginStrategy `default:"cluster" json:"strategy"`
 	// How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 syncs the counters in that many number of seconds.
 	SyncRate float64 `json:"sync_rate"`
 	// One or more window sizes to apply a limit to (defined in seconds).
 	WindowSize []float64 `json:"window_size"`
 	// Sets the time window to either `sliding` or `fixed`.
-	WindowType *GraphqlRateLimitingAdvancedPluginWindowType `json:"window_type,omitempty"`
+	WindowType *GraphqlRateLimitingAdvancedPluginWindowType `default:"sliding" json:"window_type"`
+}
+
+func (g GraphqlRateLimitingAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GraphqlRateLimitingAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *GraphqlRateLimitingAdvancedPluginConfig) GetCostStrategy() *CostStrategy {
@@ -654,24 +709,24 @@ type GraphqlRateLimitingAdvancedPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                                    `json:"instance_name,omitempty"`
+	InstanceName *string                                    `default:"null" json:"instance_name"`
 	name         string                                     `const:"graphql-rate-limiting-advanced" json:"name"`
-	Ordering     *GraphqlRateLimitingAdvancedPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *GraphqlRateLimitingAdvancedPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []GraphqlRateLimitingAdvancedPluginPartials `json:"partials,omitempty"`
+	Partials []GraphqlRateLimitingAdvancedPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                                  `json:"updated_at,omitempty"`
 	Config    GraphqlRateLimitingAdvancedPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *GraphqlRateLimitingAdvancedPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
-	Protocols []GraphqlRateLimitingAdvancedPluginProtocols `json:"protocols,omitempty"`
+	Protocols []GraphqlRateLimitingAdvancedPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *GraphqlRateLimitingAdvancedPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

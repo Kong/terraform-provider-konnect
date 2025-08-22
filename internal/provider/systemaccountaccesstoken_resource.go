@@ -15,9 +15,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -66,11 +65,9 @@ func (r *SystemAccountAccessTokenResource) Schema(ctx context.Context, req resou
 				},
 			},
 			"expires_at": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `Requires replacement if changed.`,
 				Validators: []validator.String{
@@ -89,7 +86,6 @@ func (r *SystemAccountAccessTokenResource) Schema(ctx context.Context, req resou
 				},
 			},
 			"name": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 			},
 			"token": schema.StringAttribute{

@@ -15,13 +15,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
-	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/v2/internal/validators/int64validators"
-	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
-	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
+	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/v3/internal/validators/int64validators"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -130,7 +130,6 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 											},
 										},
 										"max_rps": schema.Int64Attribute{
-											Computed:           true,
 											Optional:           true,
 											DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
 											Description:        `Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps. This field is deprecated and shouldn't be used in new configurations as it will be removed in a future version. max_rps is now calculated as 10x base_rps.`,

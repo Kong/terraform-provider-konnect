@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
 
@@ -41,7 +41,7 @@ type APIProductDocumentMetadata struct {
 // APIProductDocument - an api product document
 type APIProductDocument struct {
 	ID               string                     `json:"id"`
-	ParentDocumentID *string                    `json:"parent_document_id"`
+	ParentDocumentID *string                    `default:"null" json:"parent_document_id"`
 	Title            string                     `json:"title"`
 	Slug             string                     `json:"slug"`
 	Status           Status                     `json:"status"`

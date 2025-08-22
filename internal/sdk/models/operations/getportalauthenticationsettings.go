@@ -3,12 +3,12 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
 
 type GetPortalAuthenticationSettingsRequest struct {
-	// ID of the portal.
+	// The Portal identifier
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 }
 
@@ -27,7 +27,7 @@ type GetPortalAuthenticationSettingsResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Details about a portal's authentication settings.
-	V2PortalAuthenticationSettingsResponse *shared.V2PortalAuthenticationSettingsResponse
+	PortalAuthenticationSettingsResponse *shared.PortalAuthenticationSettingsResponse
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError
 }
@@ -53,11 +53,11 @@ func (o *GetPortalAuthenticationSettingsResponse) GetRawResponse() *http.Respons
 	return o.RawResponse
 }
 
-func (o *GetPortalAuthenticationSettingsResponse) GetV2PortalAuthenticationSettingsResponse() *shared.V2PortalAuthenticationSettingsResponse {
+func (o *GetPortalAuthenticationSettingsResponse) GetPortalAuthenticationSettingsResponse() *shared.PortalAuthenticationSettingsResponse {
 	if o == nil {
 		return nil
 	}
-	return o.V2PortalAuthenticationSettingsResponse
+	return o.PortalAuthenticationSettingsResponse
 }
 
 func (o *GetPortalAuthenticationSettingsResponse) GetUnauthorizedError() *shared.UnauthorizedError {

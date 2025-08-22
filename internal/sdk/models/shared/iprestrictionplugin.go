@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type IPRestrictionPluginAfter struct {
@@ -53,8 +53,19 @@ type IPRestrictionPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (i IPRestrictionPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *IPRestrictionPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *IPRestrictionPluginPartials) GetID() *string {
@@ -80,13 +91,24 @@ func (o *IPRestrictionPluginPartials) GetPath() *string {
 
 type IPRestrictionPluginConfig struct {
 	// List of IPs or CIDR ranges to allow. One of `config.allow` or `config.deny` must be specified.
-	Allow []string `json:"allow,omitempty"`
+	Allow []string `json:"allow"`
 	// List of IPs or CIDR ranges to deny. One of `config.allow` or `config.deny` must be specified.
-	Deny []string `json:"deny,omitempty"`
+	Deny []string `json:"deny"`
 	// The message to send as a response body to rejected requests.
-	Message *string `json:"message,omitempty"`
+	Message *string `default:"null" json:"message"`
 	// The HTTP status of the requests that will be rejected by the plugin.
-	Status *float64 `json:"status,omitempty"`
+	Status *float64 `default:"null" json:"status"`
+}
+
+func (i IPRestrictionPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *IPRestrictionPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *IPRestrictionPluginConfig) GetAllow() []string {
@@ -221,26 +243,26 @@ type IPRestrictionPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                      `json:"instance_name,omitempty"`
+	InstanceName *string                      `default:"null" json:"instance_name"`
 	name         string                       `const:"ip-restriction" json:"name"`
-	Ordering     *IPRestrictionPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *IPRestrictionPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []IPRestrictionPluginPartials `json:"partials,omitempty"`
+	Partials []IPRestrictionPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                     `json:"updated_at,omitempty"`
-	Config    *IPRestrictionPluginConfig `json:"config,omitempty"`
+	Config    *IPRestrictionPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *IPRestrictionPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 	ConsumerGroup *IPRestrictionPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing protocols.
-	Protocols []IPRestrictionPluginProtocols `json:"protocols,omitempty"`
+	Protocols []IPRestrictionPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *IPRestrictionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

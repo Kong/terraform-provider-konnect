@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
 
@@ -109,7 +109,7 @@ type AppAuthStrategyOpenIDConnectResponse struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]string `json:"labels"`
+	Labels map[string]*string `json:"labels"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
@@ -176,9 +176,9 @@ func (o *AppAuthStrategyOpenIDConnectResponse) GetDcrProvider() *AppAuthStrategy
 	return o.DcrProvider
 }
 
-func (o *AppAuthStrategyOpenIDConnectResponse) GetLabels() map[string]string {
+func (o *AppAuthStrategyOpenIDConnectResponse) GetLabels() map[string]*string {
 	if o == nil {
-		return map[string]string{}
+		return map[string]*string{}
 	}
 	return o.Labels
 }
@@ -295,7 +295,7 @@ type AppAuthStrategyKeyAuthResponse struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]string `json:"labels"`
+	Labels map[string]*string `json:"labels"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
@@ -362,9 +362,9 @@ func (o *AppAuthStrategyKeyAuthResponse) GetDcrProvider() *DcrProvider {
 	return o.DcrProvider
 }
 
-func (o *AppAuthStrategyKeyAuthResponse) GetLabels() map[string]string {
+func (o *AppAuthStrategyKeyAuthResponse) GetLabels() map[string]*string {
 	if o == nil {
-		return map[string]string{}
+		return map[string]*string{}
 	}
 	return o.Labels
 }

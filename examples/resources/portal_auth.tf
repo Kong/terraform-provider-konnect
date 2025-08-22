@@ -1,5 +1,5 @@
 resource "konnect_portal_auth" "my_portalauth" {
-  portal_id               = data.konnect_portal_list.my_portallist.data[0].id
+  portal_id               = data.konnect_portal_classic_list.my_portallist.data[0].id
   basic_auth_enabled      = true
   konnect_mapping_enabled = true
 

@@ -3,7 +3,7 @@
 package shared
 
 import (
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 // PartialAppAuthStrategyConfigOpenIDConnect - A more advanced mode to configure an API Product Version’s Application Auth Strategy.
@@ -11,10 +11,10 @@ import (
 // Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy.
 // An OIDC strategy may be used in conjunction with a DCR provider to automatically create the IdP application.
 type PartialAppAuthStrategyConfigOpenIDConnect struct {
-	Issuer               *string  `json:"issuer,omitempty"`
-	CredentialClaim      []string `json:"credential_claim,omitempty"`
-	Scopes               []string `json:"scopes,omitempty"`
-	AuthMethods          []string `json:"auth_methods,omitempty"`
+	Issuer               *string  `default:"null" json:"issuer"`
+	CredentialClaim      []string `json:"credential_claim"`
+	Scopes               []string `json:"scopes"`
+	AuthMethods          []string `json:"auth_methods"`
 	AdditionalProperties any      `additionalProperties:"true" json:"-"`
 }
 

@@ -6,9 +6,9 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *CloudGatewayNetworkResourceModel) RefreshFromSharedNetwork(ctx context.Context, resp *shared.Network) diag.Diagnostics {
@@ -27,9 +27,11 @@ func (r *CloudGatewayNetworkResourceModel) RefreshFromSharedNetwork(ctx context.
 		r.EntityVersion = types.Int64Value(resp.EntityVersion)
 		r.ID = types.StringValue(resp.ID)
 		r.Name = types.StringValue(resp.Name)
-		r.ProviderMetadata.SubnetIds = make([]types.String, 0, len(resp.ProviderMetadata.SubnetIds))
-		for _, v := range resp.ProviderMetadata.SubnetIds {
-			r.ProviderMetadata.SubnetIds = append(r.ProviderMetadata.SubnetIds, types.StringValue(v))
+		if resp.ProviderMetadata.SubnetIds != nil {
+			r.ProviderMetadata.SubnetIds = make([]types.String, 0, len(resp.ProviderMetadata.SubnetIds))
+			for _, v := range resp.ProviderMetadata.SubnetIds {
+				r.ProviderMetadata.SubnetIds = append(r.ProviderMetadata.SubnetIds, types.StringValue(v))
+			}
 		}
 		r.ProviderMetadata.VpcID = types.StringPointerValue(resp.ProviderMetadata.VpcID)
 		r.Region = types.StringValue(resp.Region)

@@ -4,7 +4,7 @@ package mapplanmodifier
 
 import (
 	"context"
-	"github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/utils"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 )

@@ -6,9 +6,9 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *CentralizedConsumerKeyResourceModel) RefreshFromSharedAPIKey(ctx context.Context, resp *shared.APIKey) diag.Diagnostics {
@@ -115,7 +115,12 @@ func (r *CentralizedConsumerKeyResourceModel) ToOperationsGetConsumerKeyRequest(
 func (r *CentralizedConsumerKeyResourceModel) ToSharedCreateAPIKeyPayload(ctx context.Context) (*shared.CreateAPIKeyPayload, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	typeVar := shared.CreateAPIKeyPayloadType(r.Type.ValueString())
+	typeVar := new(shared.CreateAPIKeyPayloadType)
+	if !r.Type.IsUnknown() && !r.Type.IsNull() {
+		*typeVar = shared.CreateAPIKeyPayloadType(r.Type.ValueString())
+	} else {
+		typeVar = nil
+	}
 	secret := new(string)
 	if !r.Secret.IsUnknown() && !r.Secret.IsNull() {
 		*secret = r.Secret.ValueString()

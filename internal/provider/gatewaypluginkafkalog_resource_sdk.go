@@ -8,9 +8,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx context.Context, resp *shared.KafkaLogPlugin) diag.Diagnostics {
@@ -35,18 +35,20 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 			r.Config.Authentication.Tokenauth = types.BoolPointerValue(resp.Config.Authentication.Tokenauth)
 			r.Config.Authentication.User = types.StringPointerValue(resp.Config.Authentication.User)
 		}
-		r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
+		if resp.Config.BootstrapServers != nil {
+			r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
 
-		for _, bootstrapServersItem := range resp.Config.BootstrapServers {
-			var bootstrapServers tfTypes.BootstrapServers
+			for _, bootstrapServersItem := range resp.Config.BootstrapServers {
+				var bootstrapServers tfTypes.BootstrapServers
 
-			bootstrapServers.Host = types.StringValue(bootstrapServersItem.Host)
-			bootstrapServers.Port = types.Int64Value(bootstrapServersItem.Port)
+				bootstrapServers.Host = types.StringValue(bootstrapServersItem.Host)
+				bootstrapServers.Port = types.Int64Value(bootstrapServersItem.Port)
 
-			r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
+				r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
+			}
 		}
 		r.Config.ClusterName = types.StringPointerValue(resp.Config.ClusterName)
-		if len(resp.Config.CustomFieldsByLua) > 0 {
+		if resp.Config.CustomFieldsByLua != nil {
 			r.Config.CustomFieldsByLua = make(map[string]jsontypes.Normalized, len(resp.Config.CustomFieldsByLua))
 			for key, value := range resp.Config.CustomFieldsByLua {
 				result, _ := json.Marshal(value)
@@ -407,18 +409,21 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.
 			User:      user,
 		}
 	}
-	bootstrapServers := make([]shared.KafkaLogPluginBootstrapServers, 0, len(r.Config.BootstrapServers))
-	for _, bootstrapServersItem := range r.Config.BootstrapServers {
-		var host string
-		host = bootstrapServersItem.Host.ValueString()
+	var bootstrapServers []shared.KafkaLogPluginBootstrapServers
+	if r.Config.BootstrapServers != nil {
+		bootstrapServers = make([]shared.KafkaLogPluginBootstrapServers, 0, len(r.Config.BootstrapServers))
+		for _, bootstrapServersItem := range r.Config.BootstrapServers {
+			var host string
+			host = bootstrapServersItem.Host.ValueString()
 
-		var port int64
-		port = bootstrapServersItem.Port.ValueInt64()
+			var port int64
+			port = bootstrapServersItem.Port.ValueInt64()
 
-		bootstrapServers = append(bootstrapServers, shared.KafkaLogPluginBootstrapServers{
-			Host: host,
-			Port: port,
-		})
+			bootstrapServers = append(bootstrapServers, shared.KafkaLogPluginBootstrapServers{
+				Host: host,
+				Port: port,
+			})
+		}
 	}
 	clusterName := new(string)
 	if !r.Config.ClusterName.IsUnknown() && !r.Config.ClusterName.IsNull() {

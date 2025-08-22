@@ -9,11 +9,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	"regexp"
 )
 
@@ -58,7 +59,6 @@ func (r *TeamResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"description": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The description of the new team.`,
 				Validators: []validator.String{
@@ -87,7 +87,8 @@ func (r *TeamResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 			},
 			"system_team": schema.BoolAttribute{
 				Computed:    true,
-				Description: `Returns True if a user belongs to a ` + "`" + `system_team` + "`" + `. System teams are teams that can manage Konnect objects, like "Organization Admin", or "Service"`,
+				Default:     booldefault.StaticBool(false),
+				Description: `Returns True if a user belongs to a ` + "`" + `system_team` + "`" + `. System teams are teams that can manage Konnect objects, like "Organization Admin", or "Service". Default: false`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed:    true,

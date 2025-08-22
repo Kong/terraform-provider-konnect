@@ -9,14 +9,15 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -35,23 +36,21 @@ type PortalResource struct {
 
 // PortalResourceModel describes the resource data model.
 type PortalResourceModel struct {
-	ApplicationCount                 types.Float64           `tfsdk:"application_count"`
+	AuthenticationEnabled            types.Bool              `tfsdk:"authentication_enabled"`
 	AutoApproveApplications          types.Bool              `tfsdk:"auto_approve_applications"`
 	AutoApproveDevelopers            types.Bool              `tfsdk:"auto_approve_developers"`
+	CanonicalDomain                  types.String            `tfsdk:"canonical_domain"`
 	CreatedAt                        types.String            `tfsdk:"created_at"`
-	CustomClientDomain               types.String            `tfsdk:"custom_client_domain"`
-	CustomDomain                     types.String            `tfsdk:"custom_domain"`
+	DefaultAPIVisibility             types.String            `tfsdk:"default_api_visibility"`
 	DefaultApplicationAuthStrategyID types.String            `tfsdk:"default_application_auth_strategy_id"`
 	DefaultDomain                    types.String            `tfsdk:"default_domain"`
+	DefaultPageVisibility            types.String            `tfsdk:"default_page_visibility"`
 	Description                      types.String            `tfsdk:"description"`
-	DeveloperCount                   types.Float64           `tfsdk:"developer_count"`
 	DisplayName                      types.String            `tfsdk:"display_name"`
-	Force                            types.String            `queryParam:"style=form,explode=true,name=force" tfsdk:"force"`
+	ForceDestroy                     types.String            `queryParam:"style=form,explode=true,name=force" tfsdk:"force_destroy"`
 	ID                               types.String            `tfsdk:"id"`
-	IsPublic                         types.Bool              `tfsdk:"is_public"`
 	Labels                           map[string]types.String `tfsdk:"labels"`
 	Name                             types.String            `tfsdk:"name"`
-	PublishedProductCount            types.Float64           `tfsdk:"published_product_count"`
 	RbacEnabled                      types.Bool              `tfsdk:"rbac_enabled"`
 	UpdatedAt                        types.String            `tfsdk:"updated_at"`
 }
@@ -64,19 +63,27 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Portal Resource",
 		Attributes: map[string]schema.Attribute{
-			"application_count": schema.Float64Attribute{
+			"authentication_enabled": schema.BoolAttribute{
 				Computed:    true,
-				Description: `Number of applications created in the portal.`,
+				Optional:    true,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications. Default: true`,
 			},
 			"auto_approve_applications": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the requests from applications to register for products will be automatically approved, or if they will be set to pending until approved by an admin.`,
+				Default:     booldefault.StaticBool(false),
+				Description: `Whether requests from applications to register for APIs will be automatically approved, or if they will be set to pending until approved by an admin. Default: false`,
 			},
 			"auto_approve_developers": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.`,
+				Default:     booldefault.StaticBool(false),
+				Description: `Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin. Default: false`,
+			},
+			"canonical_domain": schema.StringAttribute{
+				Computed:    true,
+				Description: `The canonical domain of the developer portal`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -88,42 +95,42 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					validators.IsRFC3339(),
 				},
 			},
-			"custom_client_domain": schema.StringAttribute{
+			"default_api_visibility": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The custom domain to access a self-hosted customized developer portal client. If this is set, the Konnect-hosted portal will no longer be available.  ` + "`" + `custom_domain` + "`" + ` must be also set for this value to be set. See https://github.com/Kong/konnect-portal for information on how to get started deploying and customizing your own Konnect portal.`,
+				Description: `The default visibility of APIs in the portal. If set to ` + "`" + `public` + "`" + `, newly published APIs are visible to unauthenticated developers. If set to ` + "`" + `private` + "`" + `, newly published APIs are hidden from unauthenticated developers. must be one of ["public", "private"]`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtMost(1024),
-				},
-			},
-			"custom_domain": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The custom domain to access the developer portal. A CNAME for the portal's default domain must be able to be set for the custom domain for it to be valid. After setting a valid CNAME, an SSL/TLS certificate will be automatically manged for the custom domain, and traffic will be able to use the custom domain to route to the portal's web client and API.`,
-				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtMost(1024),
+					stringvalidator.OneOf(
+						"public",
+						"private",
+					),
 				},
 			},
 			"default_application_auth_strategy_id": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
-				Description: `Default strategy ID applied on applications for the portal`,
+				Description: `The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to ` + "`" + `null` + "`" + `, API publications will not use an authentication strategy unless set during publication.`,
 			},
 			"default_domain": schema.StringAttribute{
 				Computed:    true,
 				Description: `The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a ` + "`" + `custom_domain` + "``" + `.`,
 			},
-			"description": schema.StringAttribute{
+			"default_page_visibility": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The description of the portal.`,
+				Description: `The default visibility of pages in the portal. If set to ` + "`" + `public` + "`" + `, newly created pages are visible to unauthenticated developers. If set to ` + "`" + `private` + "`" + `, newly created pages are hidden from unauthenticated developers. must be one of ["public", "private"]`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"public",
+						"private",
+					),
+				},
+			},
+			"description": schema.StringAttribute{
+				Optional:    true,
+				Description: `A description of the portal.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(512),
 				},
-			},
-			"developer_count": schema.Float64Attribute{
-				Computed:    true,
-				Description: `Number of developers using the portal.`,
 			},
 			"display_name": schema.StringAttribute{
 				Computed:    true,
@@ -133,11 +140,14 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					stringvalidator.UTF8LengthBetween(1, 255),
 				},
 			},
-			"force": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Default:     stringdefault.StaticString(`false`),
-				Description: `If true, delete specified portal and all related entities, even if there are developers registered to portal or if there are portal product versions with application registration enabled. If false, do not allow deletion if there are developers registered to portal or if there are portal product versions with application registration enabled. Default: "false"; must be one of ["true", "false"]`,
+			"force_destroy": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`false`),
+				MarkdownDescription: `If set to "true", the portal and all child entities will be deleted when running ` + "`" + `terraform destroy` + "`" + `.` + "\n" +
+					`If set to "false", the portal will not be deleted until all child entities are manually removed.` + "\n" +
+					`This will IRREVERSIBLY DELETE ALL REGISTERED DEVELOPERS AND THEIR CREDENTIALS. Only set to "true" if you want this behavior.` + "\n" +
+					`Default: "false"; must be one of ["true", "false"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"true",
@@ -149,16 +159,13 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Computed:    true,
 				Description: `Contains a unique identifier used for this resource.`,
 			},
-			"is_public": schema.BoolAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.`,
-			},
 			"labels": schema.MapAttribute{
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
+					`` + "\n" +
+					`Labels are intended to store **INTERNAL** metadata.` + "\n" +
 					`` + "\n" +
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
@@ -169,14 +176,11 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					stringvalidator.UTF8LengthBetween(1, 255),
 				},
 			},
-			"published_product_count": schema.Float64Attribute{
-				Computed:    true,
-				Description: `Number of api products published to the portal`,
-			},
 			"rbac_enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for products until unless assigned to teams with access to view and consume specific products.`,
+				Default:     booldefault.StaticBool(false),
+				Description: `Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC. Default: false`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -230,7 +234,7 @@ func (r *PortalResource) Create(ctx context.Context, req resource.CreateRequest,
 		return
 	}
 
-	request, requestDiags := data.ToSharedV2CreatePortalRequest(ctx)
+	request, requestDiags := data.ToSharedCreatePortal(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
@@ -252,11 +256,11 @@ func (r *PortalResource) Create(ctx context.Context, req resource.CreateRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.V2CreatePortalResponse != nil) {
+	if !(res.PortalResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedV2CreatePortalResponse(ctx, res.V2CreatePortalResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalResponse(ctx, res.PortalResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -316,11 +320,11 @@ func (r *PortalResource) Read(ctx context.Context, req resource.ReadRequest, res
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.V2CreatePortalResponse != nil) {
+	if !(res.PortalResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedV2CreatePortalResponse(ctx, res.V2CreatePortalResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalResponse(ctx, res.PortalResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -366,11 +370,11 @@ func (r *PortalResource) Update(ctx context.Context, req resource.UpdateRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.V2CreatePortalResponse != nil) {
+	if !(res.PortalResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedV2CreatePortalResponse(ctx, res.V2CreatePortalResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalResponse(ctx, res.PortalResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

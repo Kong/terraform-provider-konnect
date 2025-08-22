@@ -2,17 +2,21 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // CreateAPIProductDTO - The request schema to create an API product.
 type CreateAPIProductDTO struct {
 	// The name of the API product.
 	Name string `json:"name"`
 	// The description of the API product.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"null" json:"description"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]string `json:"labels,omitempty"`
+	Labels map[string]*string `json:"labels,omitempty"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
 	//
 	// Public labels are intended to store **PUBLIC** metadata.
@@ -22,6 +26,17 @@ type CreateAPIProductDTO struct {
 	PublicLabels map[string]string `json:"public_labels,omitempty"`
 	// The list of portal identifiers which this API product should be published to
 	PortalIds []string `json:"portal_ids"`
+}
+
+func (c CreateAPIProductDTO) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAPIProductDTO) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CreateAPIProductDTO) GetName() string {
@@ -38,7 +53,7 @@ func (o *CreateAPIProductDTO) GetDescription() *string {
 	return o.Description
 }
 
-func (o *CreateAPIProductDTO) GetLabels() map[string]string {
+func (o *CreateAPIProductDTO) GetLabels() map[string]*string {
 	if o == nil {
 		return nil
 	}

@@ -11,15 +11,18 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -67,7 +70,8 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure ` + "`" + `4xx` + "`" + `. Note that this value must refer to the consumer ` + "`" + `id` + "`" + ` or ` + "`" + `username` + "`" + ` attribute, and **not** its ` + "`" + `custom_id` + "`" + `.`,
+						Default:     stringdefault.StaticString(``),
+						Description: `An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure ` + "`" + `4xx` + "`" + `. Note that this value must refer to the consumer ` + "`" + `id` + "`" + ` or ` + "`" + `username` + "`" + ` attribute, and **not** its ` + "`" + `custom_id` + "`" + `. Default: ""`,
 					},
 					"attribute": schema.StringAttribute{
 						Required:    true,
@@ -78,14 +82,14 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 						Description: `Base DN as the starting point for the search; e.g., 'dc=example,dc=com'.`,
 					},
 					"bind_dn": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The DN to bind to. Used to perform LDAP search of user. This ` + "`" + `bind_dn` + "`" + ` should have permissions to search for the user being authenticated.`,
 					},
 					"cache_ttl": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Cache expiry time in seconds.`,
+						Default:     float64default.StaticFloat64(60),
+						Description: `Cache expiry time in seconds. Default: 60`,
 					},
 					"consumer_by": schema.ListAttribute{
 						Computed:    true,
@@ -96,25 +100,24 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 					"consumer_optional": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Whether consumer mapping is optional. If ` + "`" + `consumer_optional=true` + "`" + `, the plugin will not attempt to associate a consumer with the LDAP authenticated user.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Whether consumer mapping is optional. If ` + "`" + `consumer_optional=true` + "`" + `, the plugin will not attempt to associate a consumer with the LDAP authenticated user. Default: false`,
 					},
 					"group_base_dn": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Sets a distinguished name (DN) for the entry where LDAP searches for groups begin. This field is case-insensitive.',dc=com'.`,
 					},
 					"group_member_attribute": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Sets the attribute holding the members of the LDAP group. This field is case-sensitive.`,
+						Default:     stringdefault.StaticString(`memberOf`),
+						Description: `Sets the attribute holding the members of the LDAP group. This field is case-sensitive. Default: "memberOf"`,
 					},
 					"group_name_attribute": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Sets the attribute holding the name of a group, typically called ` + "`" + `name` + "`" + ` (in Active Directory) or ` + "`" + `cn` + "`" + ` (in OpenLDAP). This field is case-insensitive.`,
 					},
 					"groups_required": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `The groups required to be present in the LDAP search result for successful authorization. This config parameter works in both **AND** / **OR** cases. - When ` + "`" + `["group1 group2"]` + "`" + ` are in the same array indices, both ` + "`" + `group1` + "`" + ` AND ` + "`" + `group2` + "`" + ` need to be present in the LDAP search result. - When ` + "`" + `["group1", "group2"]` + "`" + ` are in different array indices, either ` + "`" + `group1` + "`" + ` OR ` + "`" + `group2` + "`" + ` need to be present in the LDAP search result.`,
@@ -122,61 +125,68 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 					"header_type": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional string to use as part of the Authorization header. By default, a valid Authorization header looks like this: ` + "`" + `Authorization: ldap base64(username:password)` + "`" + `. If ` + "`" + `header_type` + "`" + ` is set to "basic", then the Authorization header would be ` + "`" + `Authorization: basic base64(username:password)` + "`" + `. Note that ` + "`" + `header_type` + "`" + ` can take any string, not just ` + "`" + `'ldap'` + "`" + ` and ` + "`" + `'basic'` + "`" + `.`,
+						Default:     stringdefault.StaticString(`ldap`),
+						Description: `An optional string to use as part of the Authorization header. By default, a valid Authorization header looks like this: ` + "`" + `Authorization: ldap base64(username:password)` + "`" + `. If ` + "`" + `header_type` + "`" + ` is set to "basic", then the Authorization header would be ` + "`" + `Authorization: basic base64(username:password)` + "`" + `. Note that ` + "`" + `header_type` + "`" + ` can take any string, not just ` + "`" + `'ldap'` + "`" + ` and ` + "`" + `'basic'` + "`" + `. Default: "ldap"`,
 					},
 					"hide_credentials": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request. Default: false`,
 					},
 					"keepalive": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional value in milliseconds that defines how long an idle connection to LDAP server will live before being closed.`,
+						Default:     float64default.StaticFloat64(60000),
+						Description: `An optional value in milliseconds that defines how long an idle connection to LDAP server will live before being closed. Default: 60000`,
 					},
 					"ldap_host": schema.StringAttribute{
 						Required:    true,
 						Description: `Host on which the LDAP server is running.`,
 					},
 					"ldap_password": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The password to the LDAP server.`,
 					},
 					"ldap_port": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `TCP port where the LDAP server is listening. 389 is the default port for non-SSL LDAP and AD. 636 is the port required for SSL LDAP and AD. If ` + "`" + `ldaps` + "`" + ` is configured, you must use port 636.`,
+						Default:     float64default.StaticFloat64(389),
+						Description: `TCP port where the LDAP server is listening. 389 is the default port for non-SSL LDAP and AD. 636 is the port required for SSL LDAP and AD. If ` + "`" + `ldaps` + "`" + ` is configured, you must use port 636. Default: 389`,
 					},
 					"ldaps": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Set it to ` + "`" + `true` + "`" + ` to use ` + "`" + `ldaps` + "`" + `, a secure protocol (that can be configured to TLS) to connect to the LDAP server. When ` + "`" + `ldaps` + "`" + ` is configured, you must use port 636. If the ` + "`" + `ldap` + "`" + ` setting is enabled, ensure the ` + "`" + `start_tls` + "`" + ` setting is disabled.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Set it to ` + "`" + `true` + "`" + ` to use ` + "`" + `ldaps` + "`" + `, a secure protocol (that can be configured to TLS) to connect to the LDAP server. When ` + "`" + `ldaps` + "`" + ` is configured, you must use port 636. If the ` + "`" + `ldap` + "`" + ` setting is enabled, ensure the ` + "`" + `start_tls` + "`" + ` setting is disabled. Default: false`,
 					},
 					"log_search_results": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Displays all the LDAP search results received from the LDAP server for debugging purposes. Not recommended to be enabled in a production environment.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Displays all the LDAP search results received from the LDAP server for debugging purposes. Not recommended to be enabled in a production environment. Default: false`,
 					},
 					"realm": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `When authentication fails the plugin sends ` + "`" + `WWW-Authenticate` + "`" + ` header with ` + "`" + `realm` + "`" + ` attribute value.`,
 					},
 					"start_tls": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Set it to ` + "`" + `true` + "`" + ` to issue StartTLS (Transport Layer Security) extended operation over ` + "`" + `ldap` + "`" + ` connection. If the ` + "`" + `start_tls` + "`" + ` setting is enabled, ensure the ` + "`" + `ldaps` + "`" + ` setting is disabled.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Set it to ` + "`" + `true` + "`" + ` to issue StartTLS (Transport Layer Security) extended operation over ` + "`" + `ldap` + "`" + ` connection. If the ` + "`" + `start_tls` + "`" + ` setting is enabled, ensure the ` + "`" + `ldaps` + "`" + ` setting is disabled. Default: false`,
 					},
 					"timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional timeout in milliseconds when waiting for connection with LDAP server.`,
+						Default:     float64default.StaticFloat64(10000),
+						Description: `An optional timeout in milliseconds when waiting for connection with LDAP server. Default: 10000`,
 					},
 					"verify_ldap_host": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Set to ` + "`" + `true` + "`" + ` to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` directive.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Set to ` + "`" + `true` + "`" + ` to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` directive. Default: false`,
 					},
 				},
 			},
@@ -195,7 +205,8 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -203,13 +214,28 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
@@ -236,7 +262,6 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -249,12 +274,10 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},
@@ -296,7 +319,6 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

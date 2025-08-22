@@ -6,9 +6,9 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *GatewayPluginResponseTransformerAdvancedResourceModel) RefreshFromSharedResponseTransformerAdvancedPlugin(ctx context.Context, resp *shared.ResponseTransformerAdvancedPlugin) diag.Diagnostics {
@@ -44,9 +44,11 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) RefreshFromShare
 				r.Config.Allow = nil
 			} else {
 				r.Config.Allow = &tfTypes.ResponseTransformerAdvancedPluginAllow{}
-				r.Config.Allow.JSON = make([]types.String, 0, len(resp.Config.Allow.JSON))
-				for _, v := range resp.Config.Allow.JSON {
-					r.Config.Allow.JSON = append(r.Config.Allow.JSON, types.StringValue(v))
+				if resp.Config.Allow.JSON != nil {
+					r.Config.Allow.JSON = make([]types.String, 0, len(resp.Config.Allow.JSON))
+					for _, v := range resp.Config.Allow.JSON {
+						r.Config.Allow.JSON = append(r.Config.Allow.JSON, types.StringValue(v))
+					}
 				}
 			}
 			if resp.Config.Append == nil {
@@ -426,9 +428,12 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 		}
 		var allow *shared.ResponseTransformerAdvancedPluginAllow
 		if r.Config.Allow != nil {
-			jsonVar1 := make([]string, 0, len(r.Config.Allow.JSON))
-			for _, jsonItem1 := range r.Config.Allow.JSON {
-				jsonVar1 = append(jsonVar1, jsonItem1.ValueString())
+			var jsonVar1 []string
+			if r.Config.Allow.JSON != nil {
+				jsonVar1 = make([]string, 0, len(r.Config.Allow.JSON))
+				for _, jsonItem1 := range r.Config.Allow.JSON {
+					jsonVar1 = append(jsonVar1, jsonItem1.ValueString())
+				}
 			}
 			allow = &shared.ResponseTransformerAdvancedPluginAllow{
 				JSON: jsonVar1,

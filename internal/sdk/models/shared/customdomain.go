@@ -3,17 +3,28 @@
 package shared
 
 import (
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
 
 // CustomDomainStateMetadata - Metadata describing the backing state of the custom domain and why it may be in an erroneous state.
 type CustomDomainStateMetadata struct {
 	// Reported status of the custom domain from backing infrastructure.
-	ReportedStatus *string `json:"reported_status,omitempty"`
+	ReportedStatus *string `default:"null" json:"reported_status"`
 	// Reason why the custom domain may be in an erroneous state, reported from backing infrastructure.
 	//
-	Reason *string `json:"reason,omitempty"`
+	Reason *string `default:"null" json:"reason"`
+}
+
+func (c CustomDomainStateMetadata) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CustomDomainStateMetadata) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CustomDomainStateMetadata) GetReportedStatus() *string {
@@ -41,11 +52,11 @@ type CustomDomain struct {
 	// Certificate ID for the certificate representing this domain and stored on data-planes for this
 	// control-plane. Can be retrieved via the control-planes API for this custom domain's control-plane.
 	//
-	CertificateID *string `json:"certificate_id,omitempty"`
+	CertificateID *string `default:"null" json:"certificate_id"`
 	// Server Name Indication ID for this domain and stored on data-planes for this control-plane. Can be retrieved
 	// via the control-planes API for this custom domain's control-plane.
 	//
-	SniID *string `json:"sni_id,omitempty"`
+	SniID *string `default:"null" json:"sni_id"`
 	// State of the custom domain.
 	State CustomDomainState `json:"state"`
 	// Metadata describing the backing state of the custom domain and why it may be in an erroneous state.

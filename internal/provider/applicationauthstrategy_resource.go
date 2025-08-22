@@ -9,28 +9,30 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/boolplanmodifier"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
-	speakeasy_mapplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/mapplanmodifier"
-	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/objectplanmodifier"
-	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
-	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/listvalidators"
-	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
-	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
+	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/boolplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/listplanmodifier"
+	speakeasy_mapplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/mapplanmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/objectplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
+	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/listvalidators"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -112,11 +114,9 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 								},
 								Attributes: map[string]schema.Attribute{
 									"key_names": schema.ListAttribute{
-										Computed: true,
 										Optional: true,
 										PlanModifiers: []planmodifier.List{
 											listplanmodifier.RequiresReplaceIfConfigured(),
-											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 										},
 										ElementType: types.StringType,
 										Description: `The names of the headers containing the API key. You can specify multiple header names. Requires replacement if changed.`,
@@ -152,9 +152,12 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 					},
 					"dcr_provider": schema.SingleNestedAttribute{
 						Computed: true,
-						PlanModifiers: []planmodifier.Object{
-							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-						},
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"display_name":  types.StringType,
+							"id":            types.StringType,
+							"name":          types.StringType,
+							"provider_type": types.StringType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"display_name": schema.StringAttribute{
 								Computed: true,
@@ -405,9 +408,12 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 					},
 					"dcr_provider": schema.SingleNestedAttribute{
 						Computed: true,
-						PlanModifiers: []planmodifier.Object{
-							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-						},
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"display_name":  types.StringType,
+							"id":            types.StringType,
+							"name":          types.StringType,
+							"provider_type": types.StringType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"display_name": schema.StringAttribute{
 								Computed: true,
@@ -451,11 +457,9 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						},
 					},
 					"dcr_provider_id": schema.StringAttribute{
-						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `Requires replacement if changed.`,
 					},

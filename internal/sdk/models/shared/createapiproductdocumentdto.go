@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // Metadata - metadata of the document
 type Metadata struct {
 }
@@ -9,16 +13,27 @@ type Metadata struct {
 // CreateAPIProductDocumentDTO - a document payload
 type CreateAPIProductDocumentDTO struct {
 	// parent document id
-	ParentDocumentID *string `json:"parent_document_id,omitempty"`
+	ParentDocumentID *string `default:"null" json:"parent_document_id"`
 	// document slug. must be unique accross documents belonging to an api product
 	Slug   string        `json:"slug"`
 	Status PublishStatus `json:"status"`
 	// document title
 	Title string `json:"title"`
 	// Can be markdown string content or base64 encoded string
-	Content *string `json:"content,omitempty"`
+	Content *string `default:"null" json:"content"`
 	// metadata of the document
 	Metadata *Metadata `json:"metadata,omitempty"`
+}
+
+func (c CreateAPIProductDocumentDTO) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAPIProductDocumentDTO) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CreateAPIProductDocumentDTO) GetParentDocumentID() *string {

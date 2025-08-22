@@ -3,7 +3,7 @@
 package shared
 
 import (
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
 
@@ -14,7 +14,7 @@ type APIProduct struct {
 	// The name of the API product
 	Name string `json:"name"`
 	// The description of the API product
-	Description *string `json:"description"`
+	Description *string `default:"null" json:"description"`
 	// The list of portal identifiers which this API product is published to.
 	// This property is deprecated and will be removed in a future version. Use the `portals` property instead.
 	//
@@ -33,7 +33,7 @@ type APIProduct struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]string `json:"labels"`
+	Labels map[string]*string `json:"labels"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
 	//
 	// Public labels are intended to store **PUBLIC** metadata.
@@ -110,9 +110,9 @@ func (o *APIProduct) GetUpdatedAt() time.Time {
 	return o.UpdatedAt
 }
 
-func (o *APIProduct) GetLabels() map[string]string {
+func (o *APIProduct) GetLabels() map[string]*string {
 	if o == nil {
-		return map[string]string{}
+		return map[string]*string{}
 	}
 	return o.Labels
 }

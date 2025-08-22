@@ -3,7 +3,7 @@
 package shared
 
 import (
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
 
@@ -21,7 +21,7 @@ type MultiKeyAuthCredential struct {
 	//
 	// A `null` value indicates no known expiration time.
 	//
-	ExpiresAt *time.Time `json:"expires_at"`
+	ExpiresAt *time.Time `default:"null" json:"expires_at"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	type_     string    `const:"multi_key_auth" json:"type"`

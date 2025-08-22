@@ -74,7 +74,7 @@ resource "konnect_gateway_plugin_grpc_web" "my_gatewayplugingrpcweb" {
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -90,7 +90,7 @@ resource "konnect_gateway_plugin_grpc_web" "my_gatewayplugingrpcweb" {
 
 Optional:
 
-- `allow_origin_header` (String) The value of the `Access-Control-Allow-Origin` header in the response to the gRPC-Web client.
+- `allow_origin_header` (String) The value of the `Access-Control-Allow-Origin` header in the response to the gRPC-Web client. Default: "*"
 - `pass_stripped_path` (Boolean) If set to `true` causes the plugin to pass the stripped request path to the upstream gRPC service.
 - `proto` (String) If present, describes the gRPC types and methods. Required to support payload transcoding. When absent, the web client must use application/grpw-web+proto content.
 

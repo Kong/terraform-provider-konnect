@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type ZipkinPluginAfter struct {
@@ -53,8 +53,19 @@ type ZipkinPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (z ZipkinPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(z, "", false)
+}
+
+func (z *ZipkinPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &z, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ZipkinPluginPartials) GetID() *string {
@@ -378,13 +389,24 @@ func (e *ZipkinPluginInject) UnmarshalJSON(data []byte) error {
 
 type ZipkinPluginPropagation struct {
 	// Header names to clear after context extraction. This allows to extract the context from a certain header and then remove it from the request, useful when extraction and injection are performed on different header formats and the original header should not be sent to the upstream. If left empty, no headers are cleared.
-	Clear []string `json:"clear,omitempty"`
+	Clear []string `json:"clear"`
 	// The default header format to use when extractors did not match any format in the incoming headers and `inject` is configured with the value: `preserve`. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in `extract`.
-	DefaultFormat *ZipkinPluginDefaultFormat `json:"default_format,omitempty"`
+	DefaultFormat *ZipkinPluginDefaultFormat `default:"b3" json:"default_format"`
 	// Header formats used to extract tracing context from incoming requests. If multiple values are specified, the first one found will be used for extraction. If left empty, Kong will not extract any tracing context information from incoming requests and generate a trace with no parent and a new trace ID.
-	Extract []ZipkinPluginExtract `json:"extract,omitempty"`
+	Extract []ZipkinPluginExtract `json:"extract"`
 	// Header formats used to inject tracing context. The value `preserve` will use the same header format as the incoming request. If multiple values are specified, all of them will be used during injection. If left empty, Kong will not inject any tracing context information in outgoing requests.
-	Inject []ZipkinPluginInject `json:"inject,omitempty"`
+	Inject []ZipkinPluginInject `json:"inject"`
+}
+
+func (z ZipkinPluginPropagation) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(z, "", false)
+}
+
+func (z *ZipkinPluginPropagation) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &z, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ZipkinPluginPropagation) GetClear() []string {
@@ -444,21 +466,32 @@ func (e *ZipkinPluginConcurrencyLimit) UnmarshalJSON(data []byte) error {
 
 type ZipkinPluginQueue struct {
 	// The number of of queue delivery timers. -1 indicates unlimited.
-	ConcurrencyLimit *ZipkinPluginConcurrencyLimit `json:"concurrency_limit,omitempty"`
+	ConcurrencyLimit *ZipkinPluginConcurrencyLimit `default:"1" json:"concurrency_limit"`
 	// Time in seconds before the initial retry is made for a failing batch.
-	InitialRetryDelay *float64 `json:"initial_retry_delay,omitempty"`
+	InitialRetryDelay *float64 `default:"0.01" json:"initial_retry_delay"`
 	// Maximum number of entries that can be processed at a time.
-	MaxBatchSize *int64 `json:"max_batch_size,omitempty"`
+	MaxBatchSize *int64 `default:"1" json:"max_batch_size"`
 	// Maximum number of bytes that can be waiting on a queue, requires string content.
-	MaxBytes *int64 `json:"max_bytes,omitempty"`
+	MaxBytes *int64 `default:"null" json:"max_bytes"`
 	// Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.
-	MaxCoalescingDelay *float64 `json:"max_coalescing_delay,omitempty"`
+	MaxCoalescingDelay *float64 `default:"1" json:"max_coalescing_delay"`
 	// Maximum number of entries that can be waiting on the queue.
-	MaxEntries *int64 `json:"max_entries,omitempty"`
+	MaxEntries *int64 `default:"10000" json:"max_entries"`
 	// Maximum time in seconds between retries, caps exponential backoff.
-	MaxRetryDelay *float64 `json:"max_retry_delay,omitempty"`
+	MaxRetryDelay *float64 `default:"60" json:"max_retry_delay"`
 	// Time in seconds before the queue gives up calling a failed handler for a batch.
-	MaxRetryTime *float64 `json:"max_retry_time,omitempty"`
+	MaxRetryTime *float64 `default:"60" json:"max_retry_time"`
+}
+
+func (z ZipkinPluginQueue) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(z, "", false)
+}
+
+func (z *ZipkinPluginQueue) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &z, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ZipkinPluginQueue) GetConcurrencyLimit() *ZipkinPluginConcurrencyLimit {
@@ -565,38 +598,49 @@ func (e *TraceidByteCount) UnmarshalJSON(data []byte) error {
 
 type ZipkinPluginConfig struct {
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
+	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
 	// Allows specifying the type of header to be added to requests with no pre-existing tracing headers and when `config.header_type` is set to `"preserve"`. When `header_type` is set to any other value, `default_header_type` is ignored.
-	DefaultHeaderType *DefaultHeaderType `json:"default_header_type,omitempty"`
+	DefaultHeaderType *DefaultHeaderType `default:"b3" json:"default_header_type"`
 	// Set a default service name to override `unknown-service-name` in the Zipkin spans.
-	DefaultServiceName *string `json:"default_service_name,omitempty"`
+	DefaultServiceName *string `default:"null" json:"default_service_name"`
 	// All HTTP requests going through the plugin are tagged with a tracing HTTP request. This property codifies what kind of tracing header the plugin expects on incoming requests
-	HeaderType *ZipkinPluginHeaderType `json:"header_type,omitempty"`
+	HeaderType *ZipkinPluginHeaderType `default:"preserve" json:"header_type"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
-	HTTPEndpoint                 *string `json:"http_endpoint,omitempty"`
-	HTTPResponseHeaderForTraceid *string `json:"http_response_header_for_traceid,omitempty"`
+	HTTPEndpoint                 *string `default:"null" json:"http_endpoint"`
+	HTTPResponseHeaderForTraceid *string `default:"null" json:"http_response_header_for_traceid"`
 	// Specify whether to include the HTTP path in the span name.
-	HTTPSpanName *HTTPSpanName `json:"http_span_name,omitempty"`
+	HTTPSpanName *HTTPSpanName `default:"method" json:"http_span_name"`
 	// Specify whether the credential of the currently authenticated consumer should be included in metadata sent to the Zipkin server.
-	IncludeCredential *bool `json:"include_credential,omitempty"`
+	IncludeCredential *bool `default:"true" json:"include_credential"`
 	// The name of the service as displayed in Zipkin.
-	LocalServiceName *string `json:"local_service_name,omitempty"`
+	LocalServiceName *string `default:"kong" json:"local_service_name"`
 	// Specify whether to include the duration of each phase as an annotation or a tag.
-	PhaseDurationFlavor *PhaseDurationFlavor     `json:"phase_duration_flavor,omitempty"`
+	PhaseDurationFlavor *PhaseDurationFlavor     `default:"annotations" json:"phase_duration_flavor"`
 	Propagation         *ZipkinPluginPropagation `json:"propagation,omitempty"`
-	Queue               *ZipkinPluginQueue       `json:"queue,omitempty"`
+	Queue               *ZipkinPluginQueue       `json:"queue"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ReadTimeout *int64 `json:"read_timeout,omitempty"`
+	ReadTimeout *int64 `default:"5000" json:"read_timeout"`
 	// How often to sample requests that do not contain trace IDs. Set to `0` to turn sampling off, or to `1` to sample **all** requests.
-	SampleRatio *float64 `json:"sample_ratio,omitempty"`
+	SampleRatio *float64 `default:"0.001" json:"sample_ratio"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	SendTimeout *int64 `json:"send_timeout,omitempty"`
+	SendTimeout *int64 `default:"5000" json:"send_timeout"`
 	// The tags specified on this property will be added to the generated request traces.
-	StaticTags []StaticTags `json:"static_tags,omitempty"`
+	StaticTags []StaticTags `json:"static_tags"`
 	// The Zipkin plugin will add extra headers to the tags associated with any HTTP requests that come with a header named as configured by this property.
-	TagsHeader *string `json:"tags_header,omitempty"`
+	TagsHeader *string `default:"Zipkin-Tags" json:"tags_header"`
 	// The length in bytes of each request's Trace ID.
-	TraceidByteCount *TraceidByteCount `json:"traceid_byte_count,omitempty"`
+	TraceidByteCount *TraceidByteCount `default:"16" json:"traceid_byte_count"`
+}
+
+func (z ZipkinPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(z, "", false)
+}
+
+func (z *ZipkinPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &z, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ZipkinPluginConfig) GetConnectTimeout() *int64 {
@@ -817,24 +861,24 @@ type ZipkinPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string               `json:"instance_name,omitempty"`
+	InstanceName *string               `default:"null" json:"instance_name"`
 	name         string                `const:"zipkin" json:"name"`
-	Ordering     *ZipkinPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *ZipkinPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []ZipkinPluginPartials `json:"partials,omitempty"`
+	Partials []ZipkinPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64              `json:"updated_at,omitempty"`
-	Config    *ZipkinPluginConfig `json:"config,omitempty"`
+	Config    *ZipkinPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *ZipkinPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
-	Protocols []ZipkinPluginProtocols `json:"protocols,omitempty"`
+	Protocols []ZipkinPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *ZipkinPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

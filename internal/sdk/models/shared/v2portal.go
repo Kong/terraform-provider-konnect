@@ -3,7 +3,7 @@
 package shared
 
 import (
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
 
@@ -19,7 +19,7 @@ type V2Portal struct {
 	// The display name of the portal. This value will be the portal's `name` in Portal API.
 	DisplayName string `json:"display_name"`
 	// The description of the portal.
-	Description *string `json:"description"`
+	Description *string `default:"null" json:"description"`
 	// The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
 	DefaultDomain string `json:"default_domain"`
 	// Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.
@@ -31,16 +31,16 @@ type V2Portal struct {
 	// Whether the developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.
 	AutoApproveDevelopers bool `json:"auto_approve_developers"`
 	// The custom domain to access the developer portal. A CNAME for the portal's default domain must be able to be set for the custom domain for it to be valid. After setting a valid CNAME, an SSL/TLS certificate will be automatically manged for the custom domain, and traffic will be able to use the custom domain to route to the portal's web client and API.
-	CustomDomain *string `json:"custom_domain"`
+	CustomDomain *string `default:"null" json:"custom_domain"`
 	// The custom domain to access a self-hosted customized developer portal client. If this is set, the Konnect-hosted portal client will no longer be available. `custom_domain` must be also set for this value to be set. See https://github.com/Kong/konnect-portal for information on how to get started deploying and customizing your own Konnect portal.
-	CustomClientDomain *string `json:"custom_client_domain"`
+	CustomClientDomain *string `default:"null" json:"custom_client_domain"`
 	// Default strategy ID applied on applications for the portal
 	DefaultApplicationAuthStrategyID *string `json:"default_application_auth_strategy_id,omitempty"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]string `json:"labels,omitempty"`
+	Labels map[string]*string `json:"labels,omitempty"`
 	// Number of applications created in the portal.
 	ApplicationCount float64 `json:"application_count"`
 	// Number of developers using the portal.
@@ -158,7 +158,7 @@ func (o *V2Portal) GetDefaultApplicationAuthStrategyID() *string {
 	return o.DefaultApplicationAuthStrategyID
 }
 
-func (o *V2Portal) GetLabels() map[string]string {
+func (o *V2Portal) GetLabels() map[string]*string {
 	if o == nil {
 		return nil
 	}

@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
 
@@ -15,17 +15,18 @@ type ListPortalsRequest struct {
 	// Sorts a collection of portals. Supported sort attributes are:
 	//   - name
 	//   - description
-	//   - is_public
+	//   - authentication_enabled
 	//   - rbac_enabled
 	//   - auto_approve_applications
 	//   - auto_approve_developers
 	//   - default_domain
-	//   - custom_domain
-	//   - custom_client_domain
+	//   - canonical_domain
 	//   - created_at
 	//   - updated_at
 	//
 	Sort *string `queryParam:"style=form,explode=true,name=sort"`
+	// Filter portals returned in the response.
+	Filter *shared.PortalFilterParameters `queryParam:"style=deepObject,explode=true,name=filter"`
 }
 
 func (o *ListPortalsRequest) GetPageSize() *int64 {
@@ -49,6 +50,13 @@ func (o *ListPortalsRequest) GetSort() *string {
 	return o.Sort
 }
 
+func (o *ListPortalsRequest) GetFilter() *shared.PortalFilterParameters {
+	if o == nil {
+		return nil
+	}
+	return o.Filter
+}
+
 type ListPortalsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -57,7 +65,7 @@ type ListPortalsResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// A paginated list of portals in the current region of an organization.
-	V2ListPortalsResponse *shared.V2ListPortalsResponse
+	ListPortalsResponse *shared.ListPortalsResponse
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -87,11 +95,11 @@ func (o *ListPortalsResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *ListPortalsResponse) GetV2ListPortalsResponse() *shared.V2ListPortalsResponse {
+func (o *ListPortalsResponse) GetListPortalsResponse() *shared.ListPortalsResponse {
 	if o == nil {
 		return nil
 	}
-	return o.V2ListPortalsResponse
+	return o.ListPortalsResponse
 }
 
 func (o *ListPortalsResponse) GetBadRequestError() *shared.BadRequestError {

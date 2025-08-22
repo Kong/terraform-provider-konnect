@@ -82,7 +82,7 @@ resource "konnect_gateway_plugin_injection_protection" "my_gatewayplugininjectio
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -99,9 +99,9 @@ resource "konnect_gateway_plugin_injection_protection" "my_gatewayplugininjectio
 Optional:
 
 - `custom_injections` (Attributes List) Custom regexes to check for. (see [below for nested schema](#nestedatt--config--custom_injections))
-- `enforcement_mode` (String) Enforcement mode of the security policy. must be one of ["block", "log_only"]
-- `error_message` (String) The response message when validation fails
-- `error_status_code` (Number) The response status code when validation fails.
+- `enforcement_mode` (String) Enforcement mode of the security policy. Default: "block"; must be one of ["block", "log_only"]
+- `error_message` (String) The response message when validation fails. Default: "Bad Request"
+- `error_status_code` (Number) The response status code when validation fails. Default: 400
 - `injection_types` (List of String) The type of injections to check for.
 - `locations` (List of String) The locations to check for injection.
 

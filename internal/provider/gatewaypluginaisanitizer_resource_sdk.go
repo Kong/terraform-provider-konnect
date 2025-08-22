@@ -6,9 +6,9 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *GatewayPluginAiSanitizerResourceModel) RefreshFromSharedAiSanitizerPlugin(ctx context.Context, resp *shared.AiSanitizerPlugin) diag.Diagnostics {
@@ -23,16 +23,18 @@ func (r *GatewayPluginAiSanitizerResourceModel) RefreshFromSharedAiSanitizerPlug
 			for _, v := range resp.Config.Anonymize {
 				r.Config.Anonymize = append(r.Config.Anonymize, types.StringValue(string(v)))
 			}
-			r.Config.CustomPatterns = []tfTypes.CustomPatterns{}
+			if resp.Config.CustomPatterns != nil {
+				r.Config.CustomPatterns = []tfTypes.CustomPatterns{}
 
-			for _, customPatternsItem := range resp.Config.CustomPatterns {
-				var customPatterns tfTypes.CustomPatterns
+				for _, customPatternsItem := range resp.Config.CustomPatterns {
+					var customPatterns tfTypes.CustomPatterns
 
-				customPatterns.Name = types.StringValue(customPatternsItem.Name)
-				customPatterns.Regex = types.StringValue(customPatternsItem.Regex)
-				customPatterns.Score = types.Float64PointerValue(customPatternsItem.Score)
+					customPatterns.Name = types.StringValue(customPatternsItem.Name)
+					customPatterns.Regex = types.StringValue(customPatternsItem.Regex)
+					customPatterns.Score = types.Float64PointerValue(customPatternsItem.Score)
 
-				r.Config.CustomPatterns = append(r.Config.CustomPatterns, customPatterns)
+					r.Config.CustomPatterns = append(r.Config.CustomPatterns, customPatterns)
+				}
 			}
 			r.Config.Host = types.StringPointerValue(resp.Config.Host)
 			r.Config.KeepaliveTimeout = types.Float64PointerValue(resp.Config.KeepaliveTimeout)
@@ -309,25 +311,28 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToSharedAiSanitizerPlugin(ctx co
 		for _, anonymizeItem := range r.Config.Anonymize {
 			anonymize = append(anonymize, shared.Anonymize(anonymizeItem.ValueString()))
 		}
-		customPatterns := make([]shared.CustomPatterns, 0, len(r.Config.CustomPatterns))
-		for _, customPatternsItem := range r.Config.CustomPatterns {
-			var name1 string
-			name1 = customPatternsItem.Name.ValueString()
+		var customPatterns []shared.CustomPatterns
+		if r.Config.CustomPatterns != nil {
+			customPatterns = make([]shared.CustomPatterns, 0, len(r.Config.CustomPatterns))
+			for _, customPatternsItem := range r.Config.CustomPatterns {
+				var name1 string
+				name1 = customPatternsItem.Name.ValueString()
 
-			var regex string
-			regex = customPatternsItem.Regex.ValueString()
+				var regex string
+				regex = customPatternsItem.Regex.ValueString()
 
-			score := new(float64)
-			if !customPatternsItem.Score.IsUnknown() && !customPatternsItem.Score.IsNull() {
-				*score = customPatternsItem.Score.ValueFloat64()
-			} else {
-				score = nil
+				score := new(float64)
+				if !customPatternsItem.Score.IsUnknown() && !customPatternsItem.Score.IsNull() {
+					*score = customPatternsItem.Score.ValueFloat64()
+				} else {
+					score = nil
+				}
+				customPatterns = append(customPatterns, shared.CustomPatterns{
+					Name:  name1,
+					Regex: regex,
+					Score: score,
+				})
 			}
-			customPatterns = append(customPatterns, shared.CustomPatterns{
-				Name:  name1,
-				Regex: regex,
-				Score: score,
-			})
 		}
 		host := new(string)
 		if !r.Config.Host.IsUnknown() && !r.Config.Host.IsNull() {

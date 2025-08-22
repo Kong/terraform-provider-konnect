@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
 
@@ -15,7 +15,7 @@ type CreatePortalClassicResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Details about the portal that was created.
-	V2CreatePortalResponse *shared.V2CreatePortalResponse
+	V2GetPortalResponse *shared.V2GetPortalResponse
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -45,11 +45,11 @@ func (o *CreatePortalClassicResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *CreatePortalClassicResponse) GetV2CreatePortalResponse() *shared.V2CreatePortalResponse {
+func (o *CreatePortalClassicResponse) GetV2GetPortalResponse() *shared.V2GetPortalResponse {
 	if o == nil {
 		return nil
 	}
-	return o.V2CreatePortalResponse
+	return o.V2GetPortalResponse
 }
 
 func (o *CreatePortalClassicResponse) GetBadRequestError() *shared.BadRequestError {

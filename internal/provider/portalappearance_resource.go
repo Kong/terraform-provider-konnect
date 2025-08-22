@@ -6,16 +6,17 @@ import (
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
-	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 	"regexp"
 )
 
@@ -55,13 +56,16 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 			"custom_fonts": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"base":     types.StringType,
+					"code":     types.StringType,
+					"headings": types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"base": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The name of the font to render in the browser. Not Null; must be one of ["Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono"]`,
+						Required:    true,
+						Description: `The name of the font to render in the browser. must be one of ["Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono"]`,
 						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.OneOf(
 								"Roboto",
 								"Inter",
@@ -85,11 +89,9 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 						},
 					},
 					"code": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The name of the font to render in the browser. Not Null; must be one of ["Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono"]`,
+						Required:    true,
+						Description: `The name of the font to render in the browser. must be one of ["Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono"]`,
 						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.OneOf(
 								"Roboto",
 								"Inter",
@@ -113,11 +115,9 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 						},
 					},
 					"headings": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The name of the font to render in the browser. Not Null; must be one of ["Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono"]`,
+						Required:    true,
+						Description: `The name of the font to render in the browser. must be one of ["Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono"]`,
 						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.OneOf(
 								"Roboto",
 								"Inter",
@@ -146,487 +146,434 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 			"custom_theme": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
-				Attributes: map[string]schema.Attribute{
-					"colors": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
-						Attributes: map[string]schema.Attribute{
-							"button": schema.SingleNestedAttribute{
-								Computed: true,
-								Optional: true,
-								Attributes: map[string]schema.Attribute{
-									"primary_fill": schema.SingleNestedAttribute{
-										Computed: true,
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"description": schema.StringAttribute{
-												Computed: true,
-												Optional: true,
-												Validators: []validator.String{
-													stringvalidator.UTF8LengthAtMost(512),
-												},
-											},
-											"value": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.UTF8LengthAtMost(255),
-												},
-											},
-										},
-										Description: `Not Null`,
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"colors": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`button`: types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`primary_fill`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`description`: types.StringType,
+											`value`:       types.StringType,
 										},
 									},
-									"primary_text": schema.SingleNestedAttribute{
-										Computed: true,
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"description": schema.StringAttribute{
-												Computed: true,
-												Optional: true,
-												Validators: []validator.String{
-													stringvalidator.UTF8LengthAtMost(512),
-												},
-											},
-											"value": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.UTF8LengthAtMost(255),
-												},
-											},
-										},
-										Description: `Not Null`,
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
+									`primary_text`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`description`: types.StringType,
+											`value`:       types.StringType,
 										},
 									},
-								},
-								Description: `Not Null`,
-								Validators: []validator.Object{
-									speakeasy_objectvalidators.NotNull(),
 								},
 							},
-							"section": schema.SingleNestedAttribute{
-								Computed: true,
-								Optional: true,
-								Attributes: map[string]schema.Attribute{
-									"accent": schema.SingleNestedAttribute{
-										Computed: true,
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"description": schema.StringAttribute{
-												Computed: true,
-												Optional: true,
-												Validators: []validator.String{
-													stringvalidator.UTF8LengthAtMost(512),
-												},
-											},
-											"value": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.UTF8LengthAtMost(255),
-												},
-											},
-										},
-										Description: `Not Null`,
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
+							`section`: types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`accent`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`description`: types.StringType,
+											`value`:       types.StringType,
 										},
 									},
-									"body": schema.SingleNestedAttribute{
-										Computed: true,
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"description": schema.StringAttribute{
-												Computed: true,
-												Optional: true,
-												Validators: []validator.String{
-													stringvalidator.UTF8LengthAtMost(512),
-												},
-											},
-											"value": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.UTF8LengthAtMost(255),
-												},
-											},
-										},
-										Description: `Not Null`,
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
+									`body`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`description`: types.StringType,
+											`value`:       types.StringType,
 										},
 									},
-									"footer": schema.SingleNestedAttribute{
-										Computed: true,
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"description": schema.StringAttribute{
-												Computed: true,
-												Optional: true,
-												Validators: []validator.String{
-													stringvalidator.UTF8LengthAtMost(512),
-												},
-											},
-											"value": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.UTF8LengthAtMost(255),
-												},
-											},
-										},
-										Description: `Not Null`,
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
+									`footer`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`description`: types.StringType,
+											`value`:       types.StringType,
 										},
 									},
-									"header": schema.SingleNestedAttribute{
-										Computed: true,
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"description": schema.StringAttribute{
-												Computed: true,
-												Optional: true,
-												Validators: []validator.String{
-													stringvalidator.UTF8LengthAtMost(512),
-												},
-											},
-											"value": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.UTF8LengthAtMost(255),
-												},
-											},
-										},
-										Description: `Not Null`,
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
+									`header`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`description`: types.StringType,
+											`value`:       types.StringType,
 										},
 									},
-									"hero": schema.SingleNestedAttribute{
-										Computed: true,
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"description": schema.StringAttribute{
-												Computed: true,
-												Optional: true,
-												Validators: []validator.String{
-													stringvalidator.UTF8LengthAtMost(512),
-												},
-											},
-											"value": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.UTF8LengthAtMost(255),
-												},
-											},
-										},
-										Description: `Not Null`,
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
+									`hero`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`description`: types.StringType,
+											`value`:       types.StringType,
 										},
 									},
-									"stroke": schema.SingleNestedAttribute{
-										Computed: true,
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"description": schema.StringAttribute{
-												Computed: true,
-												Optional: true,
-												Validators: []validator.String{
-													stringvalidator.UTF8LengthAtMost(512),
-												},
-											},
-											"value": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.UTF8LengthAtMost(255),
-												},
-											},
-										},
-										Description: `Not Null`,
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
+									`stroke`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`description`: types.StringType,
+											`value`:       types.StringType,
 										},
 									},
-									"tertiary": schema.SingleNestedAttribute{
-										Computed: true,
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"description": schema.StringAttribute{
-												Computed: true,
-												Optional: true,
-												Validators: []validator.String{
-													stringvalidator.UTF8LengthAtMost(512),
-												},
-											},
-											"value": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.UTF8LengthAtMost(255),
-												},
-											},
-										},
-										Description: `Not Null`,
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
+									`tertiary`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`description`: types.StringType,
+											`value`:       types.StringType,
 										},
 									},
-								},
-								Description: `Not Null`,
-								Validators: []validator.Object{
-									speakeasy_objectvalidators.NotNull(),
 								},
 							},
-							"text": schema.SingleNestedAttribute{
-								Computed: true,
-								Optional: true,
-								Attributes: map[string]schema.Attribute{
-									"accent": schema.SingleNestedAttribute{
-										Computed: true,
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"description": schema.StringAttribute{
-												Computed: true,
-												Optional: true,
-												Validators: []validator.String{
-													stringvalidator.UTF8LengthAtMost(512),
-												},
-											},
-											"value": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.UTF8LengthAtMost(255),
-												},
-											},
-										},
-										Description: `Not Null`,
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
+							`text`: types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`accent`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`description`: types.StringType,
+											`value`:       types.StringType,
 										},
 									},
-									"footer": schema.SingleNestedAttribute{
-										Computed: true,
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"description": schema.StringAttribute{
-												Computed: true,
-												Optional: true,
-												Validators: []validator.String{
-													stringvalidator.UTF8LengthAtMost(512),
-												},
-											},
-											"value": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.UTF8LengthAtMost(255),
-												},
-											},
-										},
-										Description: `Not Null`,
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
+									`footer`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`description`: types.StringType,
+											`value`:       types.StringType,
 										},
 									},
-									"header": schema.SingleNestedAttribute{
-										Computed: true,
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"description": schema.StringAttribute{
-												Computed: true,
-												Optional: true,
-												Validators: []validator.String{
-													stringvalidator.UTF8LengthAtMost(512),
-												},
-											},
-											"value": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.UTF8LengthAtMost(255),
-												},
-											},
-										},
-										Description: `Not Null`,
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
+									`header`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`description`: types.StringType,
+											`value`:       types.StringType,
 										},
 									},
-									"headings": schema.SingleNestedAttribute{
-										Computed: true,
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"description": schema.StringAttribute{
-												Computed: true,
-												Optional: true,
-												Validators: []validator.String{
-													stringvalidator.UTF8LengthAtMost(512),
-												},
-											},
-											"value": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.UTF8LengthAtMost(255),
-												},
-											},
-										},
-										Description: `Not Null`,
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
+									`headings`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`description`: types.StringType,
+											`value`:       types.StringType,
 										},
 									},
-									"hero": schema.SingleNestedAttribute{
-										Computed: true,
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"description": schema.StringAttribute{
-												Computed: true,
-												Optional: true,
-												Validators: []validator.String{
-													stringvalidator.UTF8LengthAtMost(512),
-												},
-											},
-											"value": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.UTF8LengthAtMost(255),
-												},
-											},
-										},
-										Description: `Not Null`,
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
+									`hero`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`description`: types.StringType,
+											`value`:       types.StringType,
 										},
 									},
-									"link": schema.SingleNestedAttribute{
-										Computed: true,
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"description": schema.StringAttribute{
-												Computed: true,
-												Optional: true,
-												Validators: []validator.String{
-													stringvalidator.UTF8LengthAtMost(512),
-												},
-											},
-											"value": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.UTF8LengthAtMost(255),
-												},
-											},
-										},
-										Description: `Not Null`,
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
+									`link`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`description`: types.StringType,
+											`value`:       types.StringType,
 										},
 									},
-									"primary": schema.SingleNestedAttribute{
-										Computed: true,
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"description": schema.StringAttribute{
-												Computed: true,
-												Optional: true,
-												Validators: []validator.String{
-													stringvalidator.UTF8LengthAtMost(512),
-												},
-											},
-											"value": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.UTF8LengthAtMost(255),
-												},
-											},
-										},
-										Description: `Not Null`,
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
+									`primary`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`description`: types.StringType,
+											`value`:       types.StringType,
 										},
 									},
-									"secondary": schema.SingleNestedAttribute{
-										Computed: true,
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"description": schema.StringAttribute{
-												Computed: true,
-												Optional: true,
-												Validators: []validator.String{
-													stringvalidator.UTF8LengthAtMost(512),
-												},
-											},
-											"value": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `Not Null`,
-												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.UTF8LengthAtMost(255),
-												},
-											},
-										},
-										Description: `Not Null`,
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
+									`secondary`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`description`: types.StringType,
+											`value`:       types.StringType,
 										},
 									},
-								},
-								Description: `Not Null`,
-								Validators: []validator.Object{
-									speakeasy_objectvalidators.NotNull(),
 								},
 							},
 						},
-						Description: `Not Null`,
-						Validators: []validator.Object{
-							speakeasy_objectvalidators.NotNull(),
+					},
+				})),
+				Attributes: map[string]schema.Attribute{
+					"colors": schema.SingleNestedAttribute{
+						Required: true,
+						Attributes: map[string]schema.Attribute{
+							"button": schema.SingleNestedAttribute{
+								Required: true,
+								Attributes: map[string]schema.Attribute{
+									"primary_fill": schema.SingleNestedAttribute{
+										Required: true,
+										Attributes: map[string]schema.Attribute{
+											"description": schema.StringAttribute{
+												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
+											},
+											"value": schema.StringAttribute{
+												Required: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(255),
+												},
+											},
+										},
+									},
+									"primary_text": schema.SingleNestedAttribute{
+										Required: true,
+										Attributes: map[string]schema.Attribute{
+											"description": schema.StringAttribute{
+												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
+											},
+											"value": schema.StringAttribute{
+												Required: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(255),
+												},
+											},
+										},
+									},
+								},
+							},
+							"section": schema.SingleNestedAttribute{
+								Required: true,
+								Attributes: map[string]schema.Attribute{
+									"accent": schema.SingleNestedAttribute{
+										Required: true,
+										Attributes: map[string]schema.Attribute{
+											"description": schema.StringAttribute{
+												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
+											},
+											"value": schema.StringAttribute{
+												Required: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(255),
+												},
+											},
+										},
+									},
+									"body": schema.SingleNestedAttribute{
+										Required: true,
+										Attributes: map[string]schema.Attribute{
+											"description": schema.StringAttribute{
+												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
+											},
+											"value": schema.StringAttribute{
+												Required: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(255),
+												},
+											},
+										},
+									},
+									"footer": schema.SingleNestedAttribute{
+										Required: true,
+										Attributes: map[string]schema.Attribute{
+											"description": schema.StringAttribute{
+												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
+											},
+											"value": schema.StringAttribute{
+												Required: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(255),
+												},
+											},
+										},
+									},
+									"header": schema.SingleNestedAttribute{
+										Required: true,
+										Attributes: map[string]schema.Attribute{
+											"description": schema.StringAttribute{
+												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
+											},
+											"value": schema.StringAttribute{
+												Required: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(255),
+												},
+											},
+										},
+									},
+									"hero": schema.SingleNestedAttribute{
+										Required: true,
+										Attributes: map[string]schema.Attribute{
+											"description": schema.StringAttribute{
+												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
+											},
+											"value": schema.StringAttribute{
+												Required: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(255),
+												},
+											},
+										},
+									},
+									"stroke": schema.SingleNestedAttribute{
+										Required: true,
+										Attributes: map[string]schema.Attribute{
+											"description": schema.StringAttribute{
+												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
+											},
+											"value": schema.StringAttribute{
+												Required: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(255),
+												},
+											},
+										},
+									},
+									"tertiary": schema.SingleNestedAttribute{
+										Required: true,
+										Attributes: map[string]schema.Attribute{
+											"description": schema.StringAttribute{
+												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
+											},
+											"value": schema.StringAttribute{
+												Required: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(255),
+												},
+											},
+										},
+									},
+								},
+							},
+							"text": schema.SingleNestedAttribute{
+								Required: true,
+								Attributes: map[string]schema.Attribute{
+									"accent": schema.SingleNestedAttribute{
+										Required: true,
+										Attributes: map[string]schema.Attribute{
+											"description": schema.StringAttribute{
+												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
+											},
+											"value": schema.StringAttribute{
+												Required: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(255),
+												},
+											},
+										},
+									},
+									"footer": schema.SingleNestedAttribute{
+										Required: true,
+										Attributes: map[string]schema.Attribute{
+											"description": schema.StringAttribute{
+												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
+											},
+											"value": schema.StringAttribute{
+												Required: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(255),
+												},
+											},
+										},
+									},
+									"header": schema.SingleNestedAttribute{
+										Required: true,
+										Attributes: map[string]schema.Attribute{
+											"description": schema.StringAttribute{
+												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
+											},
+											"value": schema.StringAttribute{
+												Required: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(255),
+												},
+											},
+										},
+									},
+									"headings": schema.SingleNestedAttribute{
+										Required: true,
+										Attributes: map[string]schema.Attribute{
+											"description": schema.StringAttribute{
+												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
+											},
+											"value": schema.StringAttribute{
+												Required: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(255),
+												},
+											},
+										},
+									},
+									"hero": schema.SingleNestedAttribute{
+										Required: true,
+										Attributes: map[string]schema.Attribute{
+											"description": schema.StringAttribute{
+												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
+											},
+											"value": schema.StringAttribute{
+												Required: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(255),
+												},
+											},
+										},
+									},
+									"link": schema.SingleNestedAttribute{
+										Required: true,
+										Attributes: map[string]schema.Attribute{
+											"description": schema.StringAttribute{
+												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
+											},
+											"value": schema.StringAttribute{
+												Required: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(255),
+												},
+											},
+										},
+									},
+									"primary": schema.SingleNestedAttribute{
+										Required: true,
+										Attributes: map[string]schema.Attribute{
+											"description": schema.StringAttribute{
+												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
+											},
+											"value": schema.StringAttribute{
+												Required: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(255),
+												},
+											},
+										},
+									},
+									"secondary": schema.SingleNestedAttribute{
+										Required: true,
+										Attributes: map[string]schema.Attribute{
+											"description": schema.StringAttribute{
+												Optional: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(512),
+												},
+											},
+											"value": schema.StringAttribute{
+												Required: true,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtMost(255),
+												},
+											},
+										},
+									},
+								},
+							},
 						},
 					},
 				},
@@ -637,7 +584,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"catalog_cover": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"data": schema.StringAttribute{
@@ -650,7 +596,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 								},
 							},
 							"filename": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								Validators: []validator.String{
 									stringvalidator.UTF8LengthAtMost(512),
@@ -660,7 +605,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 						Description: `The image data to upload, along with an optional filename. Images must be a data URL with binary image data in base 64 format. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.`,
 					},
 					"favicon": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"data": schema.StringAttribute{
@@ -673,7 +617,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 								},
 							},
 							"filename": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								Validators: []validator.String{
 									stringvalidator.UTF8LengthAtMost(512),
@@ -685,6 +628,10 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 					"logo": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"data":     types.StringType,
+							"filename": types.StringType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"data": schema.StringAttribute{
 								Computed:    true,
@@ -696,7 +643,6 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 								},
 							},
 							"filename": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								Validators: []validator.String{
 									stringvalidator.UTF8LengthAtMost(512),
@@ -710,38 +656,35 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 			},
 			"portal_id": schema.StringAttribute{
 				Required:    true,
-				Description: `ID of the portal.`,
+				Description: `The Portal identifier`,
 			},
 			"text": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"catalog": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`primary_header`:  types.StringType,
+							`welcome_message`: types.StringType,
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"catalog": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
+						Required: true,
 						Attributes: map[string]schema.Attribute{
 							"primary_header": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `Not Null`,
+								Required: true,
 								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.UTF8LengthAtMost(512),
 								},
 							},
 							"welcome_message": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `Not Null`,
+								Required: true,
 								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.UTF8LengthAtMost(512),
 								},
 							},
-						},
-						Description: `Not Null`,
-						Validators: []validator.Object{
-							speakeasy_objectvalidators.NotNull(),
 						},
 					},
 				},

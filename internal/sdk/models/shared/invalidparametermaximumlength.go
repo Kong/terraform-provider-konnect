@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 // InvalidParameterMaximumLengthRule - invalid parameters rules
@@ -42,8 +43,19 @@ type InvalidParameterMaximumLength struct {
 	// invalid parameters rules
 	Rule    InvalidParameterMaximumLengthRule `json:"rule"`
 	Maximum int64                             `json:"maximum"`
-	Source  *string                           `json:"source,omitempty"`
+	Source  *string                           `default:"null" json:"source"`
 	Reason  string                            `json:"reason"`
+}
+
+func (i InvalidParameterMaximumLength) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *InvalidParameterMaximumLength) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, true); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *InvalidParameterMaximumLength) GetField() string {

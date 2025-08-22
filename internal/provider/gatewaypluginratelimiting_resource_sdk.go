@@ -6,9 +6,9 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *GatewayPluginRateLimitingResourceModel) RefreshFromSharedRateLimitingPlugin(ctx context.Context, resp *shared.RateLimitingPlugin) diag.Diagnostics {
@@ -42,7 +42,7 @@ func (r *GatewayPluginRateLimitingResourceModel) RefreshFromSharedRateLimitingPl
 			if resp.Config.Redis == nil {
 				r.Config.Redis = nil
 			} else {
-				r.Config.Redis = &tfTypes.PartialRedisCeConfig{}
+				r.Config.Redis = &tfTypes.RateLimitingPluginRedis{}
 				r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
 				r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
 				r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)

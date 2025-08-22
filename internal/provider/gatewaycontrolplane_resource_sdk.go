@@ -6,9 +6,9 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *GatewayControlPlaneResourceModel) RefreshFromSharedControlPlane(ctx context.Context, resp *shared.ControlPlane) diag.Diagnostics {
@@ -36,7 +36,7 @@ func (r *GatewayControlPlaneResourceModel) RefreshFromSharedControlPlane(ctx con
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringValue(value)
+				r.Labels[key] = types.StringPointerValue(value)
 			}
 		}
 		r.Name = types.StringValue(resp.Name)
@@ -139,11 +139,14 @@ func (r *GatewayControlPlaneResourceModel) ToSharedCreateControlPlaneRequest(ctx
 			Protocol: protocol,
 		})
 	}
-	labels := make(map[string]string)
+	labels := make(map[string]*string)
 	for labelsKey, labelsValue := range r.Labels {
-		var labelsInst string
-		labelsInst = labelsValue.ValueString()
-
+		labelsInst := new(string)
+		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
+			*labelsInst = labelsValue.ValueString()
+		} else {
+			labelsInst = nil
+		}
 		labels[labelsKey] = labelsInst
 	}
 	out := shared.CreateControlPlaneRequest{
@@ -197,11 +200,14 @@ func (r *GatewayControlPlaneResourceModel) ToSharedUpdateControlPlaneRequest(ctx
 			Protocol: protocol,
 		})
 	}
-	labels := make(map[string]string)
+	labels := make(map[string]*string)
 	for labelsKey, labelsValue := range r.Labels {
-		var labelsInst string
-		labelsInst = labelsValue.ValueString()
-
+		labelsInst := new(string)
+		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
+			*labelsInst = labelsValue.ValueString()
+		} else {
+			labelsInst = nil
+		}
 		labels[labelsKey] = labelsInst
 	}
 	out := shared.UpdateControlPlaneRequest{

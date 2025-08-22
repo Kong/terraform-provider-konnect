@@ -17,7 +17,8 @@ func TestGatewayPartial(t *testing.T) {
 					Config:          providerConfigUs,
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_gateway_partial.my_gatewaypartial", "name", "my_tf_redis_ce_partial"),
+						resource.TestCheckResourceAttr("konnect_gateway_partial.my_gatewaypartial_ce", "name", "my_tf_redis_ce_partial"),
+						resource.TestCheckResourceAttr("konnect_gateway_partial.my_gatewaypartial_ee", "name", "my_tf_redis_ee_partial"),
 					),
 				},
 				{

@@ -17,13 +17,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/boolplanmodifier"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
-	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/objectplanmodifier"
-	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
+	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/boolplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/listplanmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/objectplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	"regexp"
 )
 
@@ -46,7 +46,7 @@ type IntegrationInstanceAuthCredentialResourceModel struct {
 	CreatedAt              types.String                    `tfsdk:"created_at"`
 	ExpiresAt              types.String                    `tfsdk:"expires_at"`
 	ID                     types.String                    `tfsdk:"id"`
-	IntegrationInstance    tfTypes.IntegrationInstanceRef  `tfsdk:"integration_instance"`
+	IntegrationInstance    tfTypes.Portals                 `tfsdk:"integration_instance"`
 	IntegrationInstanceID  types.String                    `tfsdk:"integration_instance_id"`
 	MissingPermissions     []tfTypes.MissingPermission     `tfsdk:"missing_permissions"`
 	MultiKeyAuth           *tfTypes.MultiKeyAuth           `queryParam:"inline" tfsdk:"multi_key_auth" tfPlanOnly:"true"`
@@ -74,9 +74,6 @@ func (r *IntegrationInstanceAuthCredentialResource) Schema(ctx context.Context, 
 			},
 			"expires_at": schema.StringAttribute{
 				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
 				MarkdownDescription: `Timestamp denoting when the when the credential will expire in RFC-3339 format with a "T" character separating date from time within the field value.` + "\n" +
 					`When expired, the credential must be replaced with a new valid credential to re-enable full functionality for the given integration instance.` + "\n" +
 					`` + "\n" +
@@ -231,9 +228,6 @@ func (r *IntegrationInstanceAuthCredentialResource) Schema(ctx context.Context, 
 					},
 					"expires_at": schema.StringAttribute{
 						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
 						MarkdownDescription: `Timestamp denoting when the when the credential will expire in RFC-3339 format with a "T" character separating date from time within the field value.` + "\n" +
 							`When expired, the credential must be replaced with a new valid credential to re-enable full functionality for the given integration instance.` + "\n" +
 							`` + "\n" +

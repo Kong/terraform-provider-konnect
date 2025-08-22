@@ -8,18 +8,20 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
-	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -74,28 +76,26 @@ func (r *APIProductVersionResource) Schema(ctx context.Context, req resource.Sch
 			"deprecated": schema.BoolAttribute{
 				Computed:           true,
 				Optional:           true,
+				Default:            booldefault.StaticBool(false),
 				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
-				Description:        `Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead.`,
+				Description:        `Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead. Default: false`,
 			},
 			"gateway_service": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"control_plane_id": types.StringType,
+					"id":               types.StringType,
+					"runtime_group_id": types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"control_plane_id": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The identifier of the control plane that the gateway service resides in. Not Null`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-						},
+						Required:    true,
+						Description: `The identifier of the control plane that the gateway service resides in`,
 					},
 					"id": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The identifier of a gateway service associated with the version of the API product. Not Null`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-						},
+						Required:    true,
+						Description: `The identifier of a gateway service associated with the version of the API product.`,
 					},
 					"runtime_group_id": schema.StringAttribute{
 						Computed:           true,

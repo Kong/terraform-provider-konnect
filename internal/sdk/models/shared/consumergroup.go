@@ -10,7 +10,7 @@ type ConsumerGroup struct {
 	// The name of the consumer group.
 	Name string `json:"name"`
 	// A set of strings representing tags.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }

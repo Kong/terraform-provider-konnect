@@ -2,12 +2,16 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // UpdateTeam - The request schema for the update team request.
 type UpdateTeam struct {
 	// The name of the team.
-	Name *string `json:"name,omitempty"`
+	Name *string `default:"null" json:"name"`
 	// The description of the team.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"null" json:"description"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Labels are intended to store **INTERNAL** metadata.
@@ -15,6 +19,17 @@ type UpdateTeam struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
+}
+
+func (u UpdateTeam) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateTeam) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpdateTeam) GetName() *string {

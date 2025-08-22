@@ -2,12 +2,27 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // UpdateAPIProductVersionSpecDTO - The request schema for updating a specification for a version of an API product.
 type UpdateAPIProductVersionSpecDTO struct {
 	// The name of the API product version specification
 	Name *string `json:"name,omitempty"`
 	// The base64 encoded contents of the API product version specification
-	Content *string `json:"content,omitempty"`
+	Content *string `default:"null" json:"content"`
+}
+
+func (u UpdateAPIProductVersionSpecDTO) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAPIProductVersionSpecDTO) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpdateAPIProductVersionSpecDTO) GetName() *string {

@@ -14,15 +14,15 @@ Portal Resource
 
 ```terraform
 resource "konnect_portal" "my_portal" {
+  authentication_enabled               = false
   auto_approve_applications            = false
   auto_approve_developers              = false
-  custom_client_domain                 = "key-self-confidence.name"
-  custom_domain                        = "measly-conservation.info"
-  default_application_auth_strategy_id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
+  default_api_visibility               = "public"
+  default_application_auth_strategy_id = "e7d77a5f-c5f5-49db-9b2f-cabb4401add8"
+  default_page_visibility              = "private"
   description                          = "...my_description..."
   display_name                         = "...my_display_name..."
-  force                                = "true"
-  is_public                            = false
+  force_destroy                        = "false"
   labels = {
     key = "value"
   }
@@ -40,28 +40,31 @@ resource "konnect_portal" "my_portal" {
 
 ### Optional
 
-- `auto_approve_applications` (Boolean) Whether the requests from applications to register for products will be automatically approved, or if they will be set to pending until approved by an admin.
-- `auto_approve_developers` (Boolean) Whether the developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.
-- `custom_client_domain` (String) The custom domain to access a self-hosted customized developer portal client. If this is set, the Konnect-hosted portal will no longer be available.  `custom_domain` must be also set for this value to be set. See https://github.com/Kong/konnect-portal for information on how to get started deploying and customizing your own Konnect portal.
-- `custom_domain` (String) The custom domain to access the developer portal. A CNAME for the portal's default domain must be able to be set for the custom domain for it to be valid. After setting a valid CNAME, an SSL/TLS certificate will be automatically manged for the custom domain, and traffic will be able to use the custom domain to route to the portal's web client and API.
-- `default_application_auth_strategy_id` (String) Default strategy ID applied on applications for the portal
-- `description` (String) The description of the portal.
+- `authentication_enabled` (Boolean) Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications. Default: true
+- `auto_approve_applications` (Boolean) Whether requests from applications to register for APIs will be automatically approved, or if they will be set to pending until approved by an admin. Default: false
+- `auto_approve_developers` (Boolean) Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin. Default: false
+- `default_api_visibility` (String) The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers. must be one of ["public", "private"]
+- `default_application_auth_strategy_id` (String) The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.
+- `default_page_visibility` (String) The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers. must be one of ["public", "private"]
+- `description` (String) A description of the portal.
 - `display_name` (String) The display name of the portal. This value will be the portal's `name` in Portal API.
-- `force` (String) If true, delete specified portal and all related entities, even if there are developers registered to portal or if there are portal product versions with application registration enabled. If false, do not allow deletion if there are developers registered to portal or if there are portal product versions with application registration enabled. Default: "false"; must be one of ["true", "false"]
-- `is_public` (Boolean) Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.
+- `force_destroy` (String) If set to "true", the portal and all child entities will be deleted when running `terraform destroy`.
+If set to "false", the portal will not be deleted until all child entities are manually removed.
+This will IRREVERSIBLY DELETE ALL REGISTERED DEVELOPERS AND THEIR CREDENTIALS. Only set to "true" if you want this behavior.
+Default: "false"; must be one of ["true", "false"]
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
+Labels are intended to store **INTERNAL** metadata.
+
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-- `rbac_enabled` (Boolean) Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for products until unless assigned to teams with access to view and consume specific products.
+- `rbac_enabled` (Boolean) Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC. Default: false
 
 ### Read-Only
 
-- `application_count` (Number) Number of applications created in the portal.
+- `canonical_domain` (String) The canonical domain of the developer portal
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `default_domain` (String) The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
-- `developer_count` (Number) Number of developers using the portal.
 - `id` (String) Contains a unique identifier used for this resource.
-- `published_product_count` (Number) Number of api products published to the portal
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 ## Import

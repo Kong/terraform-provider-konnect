@@ -6,9 +6,9 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *GatewayPluginStatsdResourceModel) RefreshFromSharedStatsdPlugin(ctx context.Context, resp *shared.StatsdPlugin) diag.Diagnostics {
@@ -19,9 +19,11 @@ func (r *GatewayPluginStatsdResourceModel) RefreshFromSharedStatsdPlugin(ctx con
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.StatsdPluginConfig{}
-			r.Config.AllowStatusCodes = make([]types.String, 0, len(resp.Config.AllowStatusCodes))
-			for _, v := range resp.Config.AllowStatusCodes {
-				r.Config.AllowStatusCodes = append(r.Config.AllowStatusCodes, types.StringValue(v))
+			if resp.Config.AllowStatusCodes != nil {
+				r.Config.AllowStatusCodes = make([]types.String, 0, len(resp.Config.AllowStatusCodes))
+				for _, v := range resp.Config.AllowStatusCodes {
+					r.Config.AllowStatusCodes = append(r.Config.AllowStatusCodes, types.StringValue(v))
+				}
 			}
 			if resp.Config.ConsumerIdentifierDefault != nil {
 				r.Config.ConsumerIdentifierDefault = types.StringValue(string(*resp.Config.ConsumerIdentifierDefault))
@@ -31,31 +33,33 @@ func (r *GatewayPluginStatsdResourceModel) RefreshFromSharedStatsdPlugin(ctx con
 			r.Config.FlushTimeout = types.Float64PointerValue(resp.Config.FlushTimeout)
 			r.Config.Host = types.StringPointerValue(resp.Config.Host)
 			r.Config.HostnameInPrefix = types.BoolPointerValue(resp.Config.HostnameInPrefix)
-			r.Config.Metrics = []tfTypes.StatsdPluginMetrics{}
+			if resp.Config.Metrics != nil {
+				r.Config.Metrics = []tfTypes.StatsdPluginMetrics{}
 
-			for _, metricsItem := range resp.Config.Metrics {
-				var metrics tfTypes.StatsdPluginMetrics
+				for _, metricsItem := range resp.Config.Metrics {
+					var metrics tfTypes.StatsdPluginMetrics
 
-				if metricsItem.ConsumerIdentifier != nil {
-					metrics.ConsumerIdentifier = types.StringValue(string(*metricsItem.ConsumerIdentifier))
-				} else {
-					metrics.ConsumerIdentifier = types.StringNull()
-				}
-				metrics.Name = types.StringValue(string(metricsItem.Name))
-				metrics.SampleRate = types.Float64PointerValue(metricsItem.SampleRate)
-				if metricsItem.ServiceIdentifier != nil {
-					metrics.ServiceIdentifier = types.StringValue(string(*metricsItem.ServiceIdentifier))
-				} else {
-					metrics.ServiceIdentifier = types.StringNull()
-				}
-				metrics.StatType = types.StringValue(string(metricsItem.StatType))
-				if metricsItem.WorkspaceIdentifier != nil {
-					metrics.WorkspaceIdentifier = types.StringValue(string(*metricsItem.WorkspaceIdentifier))
-				} else {
-					metrics.WorkspaceIdentifier = types.StringNull()
-				}
+					if metricsItem.ConsumerIdentifier != nil {
+						metrics.ConsumerIdentifier = types.StringValue(string(*metricsItem.ConsumerIdentifier))
+					} else {
+						metrics.ConsumerIdentifier = types.StringNull()
+					}
+					metrics.Name = types.StringValue(string(metricsItem.Name))
+					metrics.SampleRate = types.Float64PointerValue(metricsItem.SampleRate)
+					if metricsItem.ServiceIdentifier != nil {
+						metrics.ServiceIdentifier = types.StringValue(string(*metricsItem.ServiceIdentifier))
+					} else {
+						metrics.ServiceIdentifier = types.StringNull()
+					}
+					metrics.StatType = types.StringValue(string(metricsItem.StatType))
+					if metricsItem.WorkspaceIdentifier != nil {
+						metrics.WorkspaceIdentifier = types.StringValue(string(*metricsItem.WorkspaceIdentifier))
+					} else {
+						metrics.WorkspaceIdentifier = types.StringNull()
+					}
 
-				r.Config.Metrics = append(r.Config.Metrics, metrics)
+					r.Config.Metrics = append(r.Config.Metrics, metrics)
+				}
 			}
 			r.Config.Port = types.Int64PointerValue(resp.Config.Port)
 			r.Config.Prefix = types.StringPointerValue(resp.Config.Prefix)
@@ -348,9 +352,12 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedStatsdPlugin(ctx context.Cont
 	}
 	var config *shared.StatsdPluginConfig
 	if r.Config != nil {
-		allowStatusCodes := make([]string, 0, len(r.Config.AllowStatusCodes))
-		for _, allowStatusCodesItem := range r.Config.AllowStatusCodes {
-			allowStatusCodes = append(allowStatusCodes, allowStatusCodesItem.ValueString())
+		var allowStatusCodes []string
+		if r.Config.AllowStatusCodes != nil {
+			allowStatusCodes = make([]string, 0, len(r.Config.AllowStatusCodes))
+			for _, allowStatusCodesItem := range r.Config.AllowStatusCodes {
+				allowStatusCodes = append(allowStatusCodes, allowStatusCodesItem.ValueString())
+			}
 		}
 		consumerIdentifierDefault := new(shared.ConsumerIdentifierDefault)
 		if !r.Config.ConsumerIdentifierDefault.IsUnknown() && !r.Config.ConsumerIdentifierDefault.IsNull() {
@@ -376,42 +383,45 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedStatsdPlugin(ctx context.Cont
 		} else {
 			hostnameInPrefix = nil
 		}
-		metrics := make([]shared.StatsdPluginMetrics, 0, len(r.Config.Metrics))
-		for _, metricsItem := range r.Config.Metrics {
-			consumerIdentifier := new(shared.StatsdPluginConsumerIdentifier)
-			if !metricsItem.ConsumerIdentifier.IsUnknown() && !metricsItem.ConsumerIdentifier.IsNull() {
-				*consumerIdentifier = shared.StatsdPluginConsumerIdentifier(metricsItem.ConsumerIdentifier.ValueString())
-			} else {
-				consumerIdentifier = nil
+		var metrics []shared.StatsdPluginMetrics
+		if r.Config.Metrics != nil {
+			metrics = make([]shared.StatsdPluginMetrics, 0, len(r.Config.Metrics))
+			for _, metricsItem := range r.Config.Metrics {
+				consumerIdentifier := new(shared.StatsdPluginConsumerIdentifier)
+				if !metricsItem.ConsumerIdentifier.IsUnknown() && !metricsItem.ConsumerIdentifier.IsNull() {
+					*consumerIdentifier = shared.StatsdPluginConsumerIdentifier(metricsItem.ConsumerIdentifier.ValueString())
+				} else {
+					consumerIdentifier = nil
+				}
+				name1 := shared.StatsdPluginName(metricsItem.Name.ValueString())
+				sampleRate := new(float64)
+				if !metricsItem.SampleRate.IsUnknown() && !metricsItem.SampleRate.IsNull() {
+					*sampleRate = metricsItem.SampleRate.ValueFloat64()
+				} else {
+					sampleRate = nil
+				}
+				serviceIdentifier := new(shared.ServiceIdentifier)
+				if !metricsItem.ServiceIdentifier.IsUnknown() && !metricsItem.ServiceIdentifier.IsNull() {
+					*serviceIdentifier = shared.ServiceIdentifier(metricsItem.ServiceIdentifier.ValueString())
+				} else {
+					serviceIdentifier = nil
+				}
+				statType := shared.StatsdPluginStatType(metricsItem.StatType.ValueString())
+				workspaceIdentifier := new(shared.WorkspaceIdentifier)
+				if !metricsItem.WorkspaceIdentifier.IsUnknown() && !metricsItem.WorkspaceIdentifier.IsNull() {
+					*workspaceIdentifier = shared.WorkspaceIdentifier(metricsItem.WorkspaceIdentifier.ValueString())
+				} else {
+					workspaceIdentifier = nil
+				}
+				metrics = append(metrics, shared.StatsdPluginMetrics{
+					ConsumerIdentifier:  consumerIdentifier,
+					Name:                name1,
+					SampleRate:          sampleRate,
+					ServiceIdentifier:   serviceIdentifier,
+					StatType:            statType,
+					WorkspaceIdentifier: workspaceIdentifier,
+				})
 			}
-			name1 := shared.StatsdPluginName(metricsItem.Name.ValueString())
-			sampleRate := new(float64)
-			if !metricsItem.SampleRate.IsUnknown() && !metricsItem.SampleRate.IsNull() {
-				*sampleRate = metricsItem.SampleRate.ValueFloat64()
-			} else {
-				sampleRate = nil
-			}
-			serviceIdentifier := new(shared.ServiceIdentifier)
-			if !metricsItem.ServiceIdentifier.IsUnknown() && !metricsItem.ServiceIdentifier.IsNull() {
-				*serviceIdentifier = shared.ServiceIdentifier(metricsItem.ServiceIdentifier.ValueString())
-			} else {
-				serviceIdentifier = nil
-			}
-			statType := shared.StatsdPluginStatType(metricsItem.StatType.ValueString())
-			workspaceIdentifier := new(shared.WorkspaceIdentifier)
-			if !metricsItem.WorkspaceIdentifier.IsUnknown() && !metricsItem.WorkspaceIdentifier.IsNull() {
-				*workspaceIdentifier = shared.WorkspaceIdentifier(metricsItem.WorkspaceIdentifier.ValueString())
-			} else {
-				workspaceIdentifier = nil
-			}
-			metrics = append(metrics, shared.StatsdPluginMetrics{
-				ConsumerIdentifier:  consumerIdentifier,
-				Name:                name1,
-				SampleRate:          sampleRate,
-				ServiceIdentifier:   serviceIdentifier,
-				StatType:            statType,
-				WorkspaceIdentifier: workspaceIdentifier,
-			})
 		}
 		port := new(int64)
 		if !r.Config.Port.IsUnknown() && !r.Config.Port.IsNull() {

@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type XMLThreatProtectionPluginAfter struct {
@@ -53,8 +53,19 @@ type XMLThreatProtectionPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (x XMLThreatProtectionPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(x, "", false)
+}
+
+func (x *XMLThreatProtectionPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &x, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *XMLThreatProtectionPluginPartials) GetID() *string {
@@ -80,51 +91,62 @@ func (o *XMLThreatProtectionPluginPartials) GetPath() *string {
 
 type XMLThreatProtectionPluginConfig struct {
 	// Indicates whether an XML Document Type Definition (DTD) section is allowed.
-	AllowDtd *bool `json:"allow_dtd,omitempty"`
+	AllowDtd *bool `default:"false" json:"allow_dtd"`
 	// A list of Content-Type values with payloads that are allowed, but aren't validated.
 	AllowedContentTypes []string `json:"allowed_content_types,omitempty"`
 	// Maximum size of the attribute value.
-	Attribute *int64 `json:"attribute,omitempty"`
+	Attribute *int64 `default:"1048576" json:"attribute"`
 	// Sets the maximum allowed amplification. This protects against the Billion Laughs Attack.
-	BlaMaxAmplification *float64 `json:"bla_max_amplification,omitempty"`
+	BlaMaxAmplification *float64 `default:"100" json:"bla_max_amplification"`
 	// Sets the threshold after which the protection starts. This protects against the Billion Laughs Attack.
-	BlaThreshold *int64 `json:"bla_threshold,omitempty"`
+	BlaThreshold *int64 `default:"8388608" json:"bla_threshold"`
 	// Maximum size of the unparsed buffer (see below).
-	Buffer *int64 `json:"buffer,omitempty"`
+	Buffer *int64 `default:"1048576" json:"buffer"`
 	// A list of Content-Type values with payloads that must be validated.
 	CheckedContentTypes []string `json:"checked_content_types,omitempty"`
 	// Maximum size of comments.
-	Comment *int64 `json:"comment,omitempty"`
+	Comment *int64 `default:"1024" json:"comment"`
 	// Maximum size of the entire document.
-	Document *int64 `json:"document,omitempty"`
+	Document *int64 `default:"10485760" json:"document"`
 	// Maximum size of entity values in EntityDecl.
-	Entity *int64 `json:"entity,omitempty"`
+	Entity *int64 `default:"1024" json:"entity"`
 	// Maximum size of entity names in EntityDecl.
-	Entityname *int64 `json:"entityname,omitempty"`
+	Entityname *int64 `default:"1024" json:"entityname"`
 	// Maximum size of systemId, publicId, or notationName in EntityDecl.
-	Entityproperty *int64 `json:"entityproperty,omitempty"`
+	Entityproperty *int64 `default:"1024" json:"entityproperty"`
 	// Maximum size of the localname. This applies to tags and attributes.
-	Localname *int64 `json:"localname,omitempty"`
+	Localname *int64 `default:"1024" json:"localname"`
 	// Maximum number of attributes allowed on a tag, including default ones. Note: If namespace-aware parsing is disabled, then the namespaces definitions are counted as attributes.
-	MaxAttributes *int64 `json:"max_attributes,omitempty"`
+	MaxAttributes *int64 `default:"100" json:"max_attributes"`
 	// Maximum number of children allowed (Element, Text, Comment, ProcessingInstruction, CDATASection). Note: Adjacent text and CDATA sections are counted as one. For example, text-cdata-text-cdata is one child.
-	MaxChildren *int64 `json:"max_children,omitempty"`
+	MaxChildren *int64 `default:"100" json:"max_children"`
 	// Maximum depth of tags. Child elements such as Text or Comments are not counted as another level.
-	MaxDepth *int64 `json:"max_depth,omitempty"`
+	MaxDepth *int64 `default:"50" json:"max_depth"`
 	// Maximum number of namespaces defined on a tag. This value is required if parsing is namespace-aware.
-	MaxNamespaces *int64 `json:"max_namespaces,omitempty"`
+	MaxNamespaces *int64 `default:"20" json:"max_namespaces"`
 	// If not parsing namespace aware, all prefixes and namespace attributes will be counted as regular attributes and element names, and validated as such.
-	NamespaceAware *bool `json:"namespace_aware,omitempty"`
+	NamespaceAware *bool `default:"true" json:"namespace_aware"`
 	// Maximum size of the namespace URI. This value is required if parsing is namespace-aware.
-	Namespaceuri *int64 `json:"namespaceuri,omitempty"`
+	Namespaceuri *int64 `default:"1024" json:"namespaceuri"`
 	// Maximum size of processing instruction data.
-	Pidata *int64 `json:"pidata,omitempty"`
+	Pidata *int64 `default:"1024" json:"pidata"`
 	// Maximum size of processing instruction targets.
-	Pitarget *int64 `json:"pitarget,omitempty"`
+	Pitarget *int64 `default:"1024" json:"pitarget"`
 	// Maximum size of the prefix. This applies to tags and attributes. This value is required if parsing is namespace-aware.
-	Prefix *int64 `json:"prefix,omitempty"`
+	Prefix *int64 `default:"1024" json:"prefix"`
 	// Maximum text inside tags (counted over all adjacent text/CDATA elements combined).
-	Text *int64 `json:"text,omitempty"`
+	Text *int64 `default:"1048576" json:"text"`
+}
+
+func (x XMLThreatProtectionPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(x, "", false)
+}
+
+func (x *XMLThreatProtectionPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &x, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *XMLThreatProtectionPluginConfig) GetAllowDtd() *bool {
@@ -361,24 +383,24 @@ type XMLThreatProtectionPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                            `json:"instance_name,omitempty"`
+	InstanceName *string                            `default:"null" json:"instance_name"`
 	name         string                             `const:"xml-threat-protection" json:"name"`
-	Ordering     *XMLThreatProtectionPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *XMLThreatProtectionPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []XMLThreatProtectionPluginPartials `json:"partials,omitempty"`
+	Partials []XMLThreatProtectionPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                           `json:"updated_at,omitempty"`
-	Config    *XMLThreatProtectionPluginConfig `json:"config,omitempty"`
+	Config    *XMLThreatProtectionPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *XMLThreatProtectionPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
-	Protocols []XMLThreatProtectionPluginProtocols `json:"protocols,omitempty"`
+	Protocols []XMLThreatProtectionPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *XMLThreatProtectionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

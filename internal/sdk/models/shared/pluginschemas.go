@@ -2,15 +2,30 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type Item struct {
 	// The custom plugin schema; `jq -Rs '.' schema.lua`.
-	LuaSchema *string `json:"lua_schema,omitempty"`
+	LuaSchema *string `default:"null" json:"lua_schema"`
 	// The custom plugin name determined by the custom plugin schema.
-	Name *string `json:"name,omitempty"`
+	Name *string `default:"null" json:"name"`
 	// An ISO-8604 timestamp representation of custom plugin schema creation date.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// An ISO-8604 timestamp representation of custom plugin schema update date.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
+}
+
+func (i Item) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *Item) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Item) GetLuaSchema() *string {
@@ -43,7 +58,7 @@ func (o *Item) GetUpdatedAt() *int64 {
 
 // PluginSchemas - A response for a single custom plugin schema.
 type PluginSchemas struct {
-	Item *Item `json:"item,omitempty"`
+	Item *Item `json:"item"`
 }
 
 func (o *PluginSchemas) GetItem() *Item {

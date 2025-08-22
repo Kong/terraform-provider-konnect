@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type KeyAuthPluginAfter struct {
@@ -53,8 +53,19 @@ type KeyAuthPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (k KeyAuthPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KeyAuthPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KeyAuthPluginPartials) GetID() *string {
@@ -107,8 +118,19 @@ func (e *Scope) UnmarshalJSON(data []byte) error {
 type IdentityRealms struct {
 	// A string representing a UUID (universally unique identifier).
 	ID     *string `json:"id,omitempty"`
-	Region *string `json:"region,omitempty"`
+	Region *string `default:"null" json:"region"`
 	Scope  *Scope  `json:"scope,omitempty"`
+}
+
+func (i IdentityRealms) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *IdentityRealms) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *IdentityRealms) GetID() *string {
@@ -134,23 +156,34 @@ func (o *IdentityRealms) GetScope() *Scope {
 
 type KeyAuthPluginConfig struct {
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`.
-	Anonymous *string `json:"anonymous,omitempty"`
+	Anonymous *string `default:"null" json:"anonymous"`
 	// An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin strips the credential from the request.
-	HideCredentials *bool `json:"hide_credentials,omitempty"`
+	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// A configuration of Konnect Identity Realms that indicate where to source a consumer from.
 	IdentityRealms []IdentityRealms `json:"identity_realms,omitempty"`
 	// If enabled, the plugin reads the request body. Supported MIME types: `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`.
-	KeyInBody *bool `json:"key_in_body,omitempty"`
+	KeyInBody *bool `default:"false" json:"key_in_body"`
 	// If enabled (default), the plugin reads the request header and tries to find the key in it.
-	KeyInHeader *bool `json:"key_in_header,omitempty"`
+	KeyInHeader *bool `default:"true" json:"key_in_header"`
 	// If enabled (default), the plugin reads the query parameter in the request and tries to find the key in it.
-	KeyInQuery *bool `json:"key_in_query,omitempty"`
+	KeyInQuery *bool `default:"true" json:"key_in_query"`
 	// Describes an array of parameter names where the plugin will look for a key. The key names may only contain [a-z], [A-Z], [0-9], [_] underscore, and [-] hyphen.
 	KeyNames []string `json:"key_names,omitempty"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
-	Realm *string `json:"realm,omitempty"`
+	Realm *string `default:"null" json:"realm"`
 	// A boolean value that indicates whether the plugin should run (and try to authenticate) on `OPTIONS` preflight requests. If set to `false`, then `OPTIONS` requests are always allowed.
-	RunOnPreflight *bool `json:"run_on_preflight,omitempty"`
+	RunOnPreflight *bool `default:"true" json:"run_on_preflight"`
+}
+
+func (k KeyAuthPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KeyAuthPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KeyAuthPluginConfig) GetAnonymous() *string {
@@ -283,22 +316,22 @@ type KeyAuthPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                `json:"instance_name,omitempty"`
+	InstanceName *string                `default:"null" json:"instance_name"`
 	name         string                 `const:"key-auth" json:"name"`
-	Ordering     *KeyAuthPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *KeyAuthPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []KeyAuthPluginPartials `json:"partials,omitempty"`
+	Partials []KeyAuthPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64               `json:"updated_at,omitempty"`
-	Config    *KeyAuthPluginConfig `json:"config,omitempty"`
+	Config    *KeyAuthPluginConfig `json:"config"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
-	Protocols []KeyAuthPluginProtocols `json:"protocols,omitempty"`
+	Protocols []KeyAuthPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *KeyAuthPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

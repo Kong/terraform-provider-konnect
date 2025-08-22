@@ -6,9 +6,9 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *GatewayPluginAiSemanticCacheResourceModel) RefreshFromSharedAiSemanticCachePlugin(ctx context.Context, resp *shared.AiSemanticCachePlugin) diag.Diagnostics {
@@ -114,17 +114,19 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) RefreshFromSharedAiSemanticC
 		if resp.Config.Vectordb.Redis == nil {
 			r.Config.Vectordb.Redis = nil
 		} else {
-			r.Config.Vectordb.Redis = &tfTypes.PartialRedisEeConfig{}
+			r.Config.Vectordb.Redis = &tfTypes.AiProxyAdvancedPluginRedis{}
 			r.Config.Vectordb.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Vectordb.Redis.ClusterMaxRedirections)
-			r.Config.Vectordb.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+			if resp.Config.Vectordb.Redis.ClusterNodes != nil {
+				r.Config.Vectordb.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
 
-			for _, clusterNodesItem := range resp.Config.Vectordb.Redis.ClusterNodes {
-				var clusterNodes tfTypes.PartialRedisEeClusterNodes
+				for _, clusterNodesItem := range resp.Config.Vectordb.Redis.ClusterNodes {
+					var clusterNodes tfTypes.PartialRedisEeClusterNodes
 
-				clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
-				clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
+					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
+					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
 
-				r.Config.Vectordb.Redis.ClusterNodes = append(r.Config.Vectordb.Redis.ClusterNodes, clusterNodes)
+					r.Config.Vectordb.Redis.ClusterNodes = append(r.Config.Vectordb.Redis.ClusterNodes, clusterNodes)
+				}
 			}
 			r.Config.Vectordb.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.ConnectTimeout)
 			r.Config.Vectordb.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Vectordb.Redis.ConnectionIsProxied)
@@ -137,15 +139,17 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) RefreshFromSharedAiSemanticC
 			r.Config.Vectordb.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.ReadTimeout)
 			r.Config.Vectordb.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.SendTimeout)
 			r.Config.Vectordb.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Vectordb.Redis.SentinelMaster)
-			r.Config.Vectordb.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+			if resp.Config.Vectordb.Redis.SentinelNodes != nil {
+				r.Config.Vectordb.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
 
-			for _, sentinelNodesItem := range resp.Config.Vectordb.Redis.SentinelNodes {
-				var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+				for _, sentinelNodesItem := range resp.Config.Vectordb.Redis.SentinelNodes {
+					var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
 
-				sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
-				sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
+					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 
-				r.Config.Vectordb.Redis.SentinelNodes = append(r.Config.Vectordb.Redis.SentinelNodes, sentinelNodes)
+					r.Config.Vectordb.Redis.SentinelNodes = append(r.Config.Vectordb.Redis.SentinelNodes, sentinelNodes)
+				}
 			}
 			r.Config.Vectordb.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Vectordb.Redis.SentinelPassword)
 			if resp.Config.Vectordb.Redis.SentinelRole != nil {
@@ -819,24 +823,27 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToSharedAiSemanticCachePlugi
 		} else {
 			clusterMaxRedirections = nil
 		}
-		clusterNodes := make([]shared.AiSemanticCachePluginClusterNodes, 0, len(r.Config.Vectordb.Redis.ClusterNodes))
-		for _, clusterNodesItem := range r.Config.Vectordb.Redis.ClusterNodes {
-			ip := new(string)
-			if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
-				*ip = clusterNodesItem.IP.ValueString()
-			} else {
-				ip = nil
+		var clusterNodes []shared.AiSemanticCachePluginClusterNodes
+		if r.Config.Vectordb.Redis.ClusterNodes != nil {
+			clusterNodes = make([]shared.AiSemanticCachePluginClusterNodes, 0, len(r.Config.Vectordb.Redis.ClusterNodes))
+			for _, clusterNodesItem := range r.Config.Vectordb.Redis.ClusterNodes {
+				ip := new(string)
+				if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
+					*ip = clusterNodesItem.IP.ValueString()
+				} else {
+					ip = nil
+				}
+				port1 := new(int64)
+				if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
+					*port1 = clusterNodesItem.Port.ValueInt64()
+				} else {
+					port1 = nil
+				}
+				clusterNodes = append(clusterNodes, shared.AiSemanticCachePluginClusterNodes{
+					IP:   ip,
+					Port: port1,
+				})
 			}
-			port1 := new(int64)
-			if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
-				*port1 = clusterNodesItem.Port.ValueInt64()
-			} else {
-				port1 = nil
-			}
-			clusterNodes = append(clusterNodes, shared.AiSemanticCachePluginClusterNodes{
-				IP:   ip,
-				Port: port1,
-			})
 		}
 		connectTimeout := new(int64)
 		if !r.Config.Vectordb.Redis.ConnectTimeout.IsUnknown() && !r.Config.Vectordb.Redis.ConnectTimeout.IsNull() {
@@ -904,24 +911,27 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToSharedAiSemanticCachePlugi
 		} else {
 			sentinelMaster = nil
 		}
-		sentinelNodes := make([]shared.AiSemanticCachePluginSentinelNodes, 0, len(r.Config.Vectordb.Redis.SentinelNodes))
-		for _, sentinelNodesItem := range r.Config.Vectordb.Redis.SentinelNodes {
-			host2 := new(string)
-			if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
-				*host2 = sentinelNodesItem.Host.ValueString()
-			} else {
-				host2 = nil
+		var sentinelNodes []shared.AiSemanticCachePluginSentinelNodes
+		if r.Config.Vectordb.Redis.SentinelNodes != nil {
+			sentinelNodes = make([]shared.AiSemanticCachePluginSentinelNodes, 0, len(r.Config.Vectordb.Redis.SentinelNodes))
+			for _, sentinelNodesItem := range r.Config.Vectordb.Redis.SentinelNodes {
+				host2 := new(string)
+				if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
+					*host2 = sentinelNodesItem.Host.ValueString()
+				} else {
+					host2 = nil
+				}
+				port3 := new(int64)
+				if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
+					*port3 = sentinelNodesItem.Port.ValueInt64()
+				} else {
+					port3 = nil
+				}
+				sentinelNodes = append(sentinelNodes, shared.AiSemanticCachePluginSentinelNodes{
+					Host: host2,
+					Port: port3,
+				})
 			}
-			port3 := new(int64)
-			if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
-				*port3 = sentinelNodesItem.Port.ValueInt64()
-			} else {
-				port3 = nil
-			}
-			sentinelNodes = append(sentinelNodes, shared.AiSemanticCachePluginSentinelNodes{
-				Host: host2,
-				Port: port3,
-			})
 		}
 		sentinelPassword := new(string)
 		if !r.Config.Vectordb.Redis.SentinelPassword.IsUnknown() && !r.Config.Vectordb.Redis.SentinelPassword.IsNull() {

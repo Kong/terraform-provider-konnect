@@ -6,9 +6,9 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *GatewayPluginAiAzureContentSafetyResourceModel) RefreshFromSharedAiAzureContentSafetyPlugin(ctx context.Context, resp *shared.AiAzureContentSafetyPlugin) diag.Diagnostics {
@@ -20,19 +20,23 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) RefreshFromSharedAiAzur
 		r.Config.AzureClientSecret = types.StringPointerValue(resp.Config.AzureClientSecret)
 		r.Config.AzureTenantID = types.StringPointerValue(resp.Config.AzureTenantID)
 		r.Config.AzureUseManagedIdentity = types.BoolPointerValue(resp.Config.AzureUseManagedIdentity)
-		r.Config.BlocklistNames = make([]types.String, 0, len(resp.Config.BlocklistNames))
-		for _, v := range resp.Config.BlocklistNames {
-			r.Config.BlocklistNames = append(r.Config.BlocklistNames, types.StringValue(v))
+		if resp.Config.BlocklistNames != nil {
+			r.Config.BlocklistNames = make([]types.String, 0, len(resp.Config.BlocklistNames))
+			for _, v := range resp.Config.BlocklistNames {
+				r.Config.BlocklistNames = append(r.Config.BlocklistNames, types.StringValue(v))
+			}
 		}
-		r.Config.Categories = []tfTypes.Categories{}
+		if resp.Config.Categories != nil {
+			r.Config.Categories = []tfTypes.Categories{}
 
-		for _, categoriesItem := range resp.Config.Categories {
-			var categories tfTypes.Categories
+			for _, categoriesItem := range resp.Config.Categories {
+				var categories tfTypes.Categories
 
-			categories.Name = types.StringValue(categoriesItem.Name)
-			categories.RejectionLevel = types.Int64Value(categoriesItem.RejectionLevel)
+				categories.Name = types.StringValue(categoriesItem.Name)
+				categories.RejectionLevel = types.Int64Value(categoriesItem.RejectionLevel)
 
-			r.Config.Categories = append(r.Config.Categories, categories)
+				r.Config.Categories = append(r.Config.Categories, categories)
+			}
 		}
 		r.Config.ContentSafetyKey = types.StringPointerValue(resp.Config.ContentSafetyKey)
 		r.Config.ContentSafetyURL = types.StringValue(resp.Config.ContentSafetyURL)
@@ -322,22 +326,28 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentS
 	} else {
 		azureUseManagedIdentity = nil
 	}
-	blocklistNames := make([]string, 0, len(r.Config.BlocklistNames))
-	for _, blocklistNamesItem := range r.Config.BlocklistNames {
-		blocklistNames = append(blocklistNames, blocklistNamesItem.ValueString())
+	var blocklistNames []string
+	if r.Config.BlocklistNames != nil {
+		blocklistNames = make([]string, 0, len(r.Config.BlocklistNames))
+		for _, blocklistNamesItem := range r.Config.BlocklistNames {
+			blocklistNames = append(blocklistNames, blocklistNamesItem.ValueString())
+		}
 	}
-	categories := make([]shared.Categories, 0, len(r.Config.Categories))
-	for _, categoriesItem := range r.Config.Categories {
-		var name1 string
-		name1 = categoriesItem.Name.ValueString()
+	var categories []shared.Categories
+	if r.Config.Categories != nil {
+		categories = make([]shared.Categories, 0, len(r.Config.Categories))
+		for _, categoriesItem := range r.Config.Categories {
+			var name1 string
+			name1 = categoriesItem.Name.ValueString()
 
-		var rejectionLevel int64
-		rejectionLevel = categoriesItem.RejectionLevel.ValueInt64()
+			var rejectionLevel int64
+			rejectionLevel = categoriesItem.RejectionLevel.ValueInt64()
 
-		categories = append(categories, shared.Categories{
-			Name:           name1,
-			RejectionLevel: rejectionLevel,
-		})
+			categories = append(categories, shared.Categories{
+				Name:           name1,
+				RejectionLevel: rejectionLevel,
+			})
+		}
 	}
 	contentSafetyKey := new(string)
 	if !r.Config.ContentSafetyKey.IsUnknown() && !r.Config.ContentSafetyKey.IsNull() {

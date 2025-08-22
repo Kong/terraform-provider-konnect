@@ -154,7 +154,7 @@ resource "konnect_gateway_plugin_response_transformer_advanced" "my_gatewayplugi
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -173,7 +173,7 @@ Optional:
 - `add` (Attributes) (see [below for nested schema](#nestedatt--config--add))
 - `allow` (Attributes) (see [below for nested schema](#nestedatt--config--allow))
 - `append` (Attributes) (see [below for nested schema](#nestedatt--config--append))
-- `dots_in_keys` (Boolean) Whether dots (for example, `customers.info.phone`) should be treated as part of a property name or used to descend into nested JSON objects..
+- `dots_in_keys` (Boolean) Whether dots (for example, `customers.info.phone`) should be treated as part of a property name or used to descend into nested JSON objects.. Default: true
 - `remove` (Attributes) (see [below for nested schema](#nestedatt--config--remove))
 - `rename` (Attributes) (see [below for nested schema](#nestedatt--config--rename))
 - `replace` (Attributes) (see [below for nested schema](#nestedatt--config--replace))

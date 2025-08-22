@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type CredentialType string
@@ -34,9 +35,20 @@ func (e *CredentialType) UnmarshalJSON(data []byte) error {
 type AuthStrategyKeyAuth struct {
 	// The Application Auth Strategy ID.
 	ID             string         `json:"id"`
-	Name           string         `json:"name"`
+	Name           *string        `default:"name" json:"name"`
 	CredentialType CredentialType `json:"credential_type"`
 	KeyNames       []string       `json:"key_names"`
+}
+
+func (a AuthStrategyKeyAuth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AuthStrategyKeyAuth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AuthStrategyKeyAuth) GetID() string {
@@ -46,9 +58,9 @@ func (o *AuthStrategyKeyAuth) GetID() string {
 	return o.ID
 }
 
-func (o *AuthStrategyKeyAuth) GetName() string {
+func (o *AuthStrategyKeyAuth) GetName() *string {
 	if o == nil {
-		return ""
+		return nil
 	}
 	return o.Name
 }

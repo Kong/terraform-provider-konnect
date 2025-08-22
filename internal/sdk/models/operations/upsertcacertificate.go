@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
 
@@ -13,7 +13,7 @@ type UpsertCaCertificateRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Description of the CA Certificate
-	CACertificate shared.CACertificate `request:"mediaType=application/json"`
+	CACertificate shared.CACertificateInput `request:"mediaType=application/json"`
 }
 
 func (o *UpsertCaCertificateRequest) GetCACertificateID() string {
@@ -30,9 +30,9 @@ func (o *UpsertCaCertificateRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpsertCaCertificateRequest) GetCACertificate() shared.CACertificate {
+func (o *UpsertCaCertificateRequest) GetCACertificate() shared.CACertificateInput {
 	if o == nil {
-		return shared.CACertificate{}
+		return shared.CACertificateInput{}
 	}
 	return o.CACertificate
 }

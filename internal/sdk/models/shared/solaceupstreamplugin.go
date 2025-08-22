@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type SolaceUpstreamPluginAfter struct {
@@ -53,8 +53,19 @@ type SolaceUpstreamPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (s SolaceUpstreamPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SolaceUpstreamPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *SolaceUpstreamPluginPartials) GetID() *string {
@@ -136,7 +147,18 @@ type SolaceUpstreamPluginDestinations struct {
 	// The name of the destination. You can use `$(uri_captures['topic_name']` in this field.
 	Name string `json:"name"`
 	// The type of the destination.
-	Type *SolaceUpstreamPluginType `json:"type,omitempty"`
+	Type *SolaceUpstreamPluginType `default:"QUEUE" json:"type"`
+}
+
+func (s SolaceUpstreamPluginDestinations) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SolaceUpstreamPluginDestinations) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *SolaceUpstreamPluginDestinations) GetName() string {
@@ -156,35 +178,46 @@ func (o *SolaceUpstreamPluginDestinations) GetType() *SolaceUpstreamPluginType {
 // Message - The message related configuration.
 type Message struct {
 	// When using a non-DIRECT guaranteed delivery mode, this property sets the message acknowledgement timeout (waiting time).
-	AckTimeout *int64 `json:"ack_timeout,omitempty"`
+	AckTimeout *int64 `default:"2000" json:"ack_timeout"`
 	// When not using `forward_method`, `forward_uri`, `forward_headers` or `forward_body`, this sets the message content.
-	DefaultContent *string `json:"default_content,omitempty"`
+	DefaultContent *string `default:"null" json:"default_content"`
 	// Sets the message delivery mode.
-	DeliveryMode *DeliveryMode `json:"delivery_mode,omitempty"`
+	DeliveryMode *DeliveryMode `default:"DIRECT" json:"delivery_mode"`
 	// The message destinations.
 	Destinations []SolaceUpstreamPluginDestinations `json:"destinations"`
 	// Sets the dead message queue (DMQ) eligible property on the message.
-	DmqEligible *bool `json:"dmq_eligible,omitempty"`
+	DmqEligible *bool `default:"false" json:"dmq_eligible"`
 	// Include the request body and the body arguments in the message.
-	ForwardBody *bool `json:"forward_body,omitempty"`
+	ForwardBody *bool `default:"false" json:"forward_body"`
 	// Include the request headers in the message.
-	ForwardHeaders *bool `json:"forward_headers,omitempty"`
+	ForwardHeaders *bool `default:"false" json:"forward_headers"`
 	// Include the request method in the message.
-	ForwardMethod *bool `json:"forward_method,omitempty"`
+	ForwardMethod *bool `default:"false" json:"forward_method"`
 	// Include the request URI and the URI arguments (as in, query arguments) in the message.
-	ForwardURI *bool `json:"forward_uri,omitempty"`
+	ForwardURI *bool `default:"false" json:"forward_uri"`
 	// The Lua functions that manipulates (or generates) the message being sent to Solace. The `message` variable can be used to access the current message content, and the function can return a new content.
-	Functions []string `json:"functions,omitempty"`
+	Functions []string `json:"functions"`
 	// Sets the message priority.
-	Priority *int64 `json:"priority,omitempty"`
+	Priority *int64 `default:"4" json:"priority"`
 	// Allows the application to set the content of the sender identifier.
-	SenderID *string `json:"sender_id,omitempty"`
+	SenderID *string `default:"kong" json:"sender_id"`
 	// Enable or disable the tracing. This is primarily used for distributed tracing and message correlation, especially in debugging or tracking message flows across multiple systems.
-	Tracing *bool `json:"tracing,omitempty"`
+	Tracing *bool `default:"false" json:"tracing"`
 	// Indicates whether the message should be included in distributed tracing (i.e., if it should be "sampled" for the tracing)
-	TracingSampled *bool `json:"tracing_sampled,omitempty"`
+	TracingSampled *bool `default:"false" json:"tracing_sampled"`
 	// Sets the time to live (TTL) in milliseconds for the message. Setting the time to live to zero disables the TTL for the message.
-	TTL *int64 `json:"ttl,omitempty"`
+	TTL *int64 `default:"0" json:"ttl"`
+}
+
+func (m Message) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *Message) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Message) GetAckTimeout() *int64 {
@@ -325,17 +358,28 @@ func (e *Scheme) UnmarshalJSON(data []byte) error {
 // SolaceUpstreamPluginAuthentication - Session authentication related configuration.
 type SolaceUpstreamPluginAuthentication struct {
 	// The OAuth2 access token used with `OAUTH2` authentication scheme when connecting to an event broker.
-	AccessToken       *string `json:"access_token,omitempty"`
-	AccessTokenHeader *string `json:"access_token_header,omitempty"`
+	AccessToken       *string `default:"null" json:"access_token"`
+	AccessTokenHeader *string `default:"null" json:"access_token_header"`
 	// The OpenID Connect ID token used with `OAUTH2` authentication scheme when connecting to an event broker.
-	IDToken       *string `json:"id_token,omitempty"`
-	IDTokenHeader *string `json:"id_token_header,omitempty"`
+	IDToken       *string `default:"null" json:"id_token"`
+	IDTokenHeader *string `default:"null" json:"id_token_header"`
 	// The password used with `BASIC` authentication scheme when connecting to an event broker.
-	Password *string `json:"password,omitempty"`
+	Password *string `default:"null" json:"password"`
 	// The client authentication scheme used when connection to an event broker.
-	Scheme *Scheme `json:"scheme,omitempty"`
+	Scheme *Scheme `default:"BASIC" json:"scheme"`
 	// The username used with `BASIC` authentication scheme when connecting to an event broker .
-	Username *string `json:"username,omitempty"`
+	Username *string `default:"null" json:"username"`
+}
+
+func (s SolaceUpstreamPluginAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SolaceUpstreamPluginAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *SolaceUpstreamPluginAuthentication) GetAccessToken() *string {
@@ -390,17 +434,28 @@ func (o *SolaceUpstreamPluginAuthentication) GetUsername() *string {
 // Session related configuration.
 type Session struct {
 	// Session authentication related configuration.
-	Authentication *SolaceUpstreamPluginAuthentication `json:"authentication,omitempty"`
+	Authentication *SolaceUpstreamPluginAuthentication `json:"authentication"`
 	// The timeout period (in milliseconds) for a connect operation to a given host (per host).
-	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
+	ConnectTimeout *int64 `default:"3000" json:"connect_timeout"`
 	// The IPv4 or IPv6 address or host name to connect to (see: https://docs.solace.com/API-Developer-Online-Ref-Documentation/c/index.html#host-entry).
 	Host string `json:"host"`
 	// Additional Solace session properties (each setting needs to have `SESSION_` prefix).
 	Properties map[string]any `json:"properties,omitempty"`
 	// Indicates whether the API should validate server certificates with the trusted certificates.
-	SslValidateCertificate *bool `json:"ssl_validate_certificate,omitempty"`
+	SslValidateCertificate *bool `default:"false" json:"ssl_validate_certificate"`
 	// The name of the Message VPN to attempt to join when connecting to an event broker.
-	VpnName *string `json:"vpn_name,omitempty"`
+	VpnName *string `default:"null" json:"vpn_name"`
+}
+
+func (s Session) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *Session) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Session) GetAuthentication() *SolaceUpstreamPluginAuthentication {
@@ -527,22 +582,22 @@ type SolaceUpstreamPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                       `json:"instance_name,omitempty"`
+	InstanceName *string                       `default:"null" json:"instance_name"`
 	name         string                        `const:"solace-upstream" json:"name"`
-	Ordering     *SolaceUpstreamPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *SolaceUpstreamPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []SolaceUpstreamPluginPartials `json:"partials,omitempty"`
+	Partials []SolaceUpstreamPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                     `json:"updated_at,omitempty"`
 	Config    SolaceUpstreamPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
-	Protocols []SolaceUpstreamPluginProtocols `json:"protocols,omitempty"`
+	Protocols []SolaceUpstreamPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *SolaceUpstreamPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

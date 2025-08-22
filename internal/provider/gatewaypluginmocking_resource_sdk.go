@@ -6,9 +6,9 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *GatewayPluginMockingResourceModel) RefreshFromSharedMockingPlugin(ctx context.Context, resp *shared.MockingPlugin) diag.Diagnostics {
@@ -23,9 +23,11 @@ func (r *GatewayPluginMockingResourceModel) RefreshFromSharedMockingPlugin(ctx c
 			r.Config.APISpecificationFilename = types.StringPointerValue(resp.Config.APISpecificationFilename)
 			r.Config.CustomBasePath = types.StringPointerValue(resp.Config.CustomBasePath)
 			r.Config.IncludeBasePath = types.BoolPointerValue(resp.Config.IncludeBasePath)
-			r.Config.IncludedStatusCodes = make([]types.Int64, 0, len(resp.Config.IncludedStatusCodes))
-			for _, v := range resp.Config.IncludedStatusCodes {
-				r.Config.IncludedStatusCodes = append(r.Config.IncludedStatusCodes, types.Int64Value(v))
+			if resp.Config.IncludedStatusCodes != nil {
+				r.Config.IncludedStatusCodes = make([]types.Int64, 0, len(resp.Config.IncludedStatusCodes))
+				for _, v := range resp.Config.IncludedStatusCodes {
+					r.Config.IncludedStatusCodes = append(r.Config.IncludedStatusCodes, types.Int64Value(v))
+				}
 			}
 			r.Config.MaxDelayTime = types.Float64PointerValue(resp.Config.MaxDelayTime)
 			r.Config.MinDelayTime = types.Float64PointerValue(resp.Config.MinDelayTime)
@@ -309,9 +311,12 @@ func (r *GatewayPluginMockingResourceModel) ToSharedMockingPlugin(ctx context.Co
 		} else {
 			includeBasePath = nil
 		}
-		includedStatusCodes := make([]int64, 0, len(r.Config.IncludedStatusCodes))
-		for _, includedStatusCodesItem := range r.Config.IncludedStatusCodes {
-			includedStatusCodes = append(includedStatusCodes, includedStatusCodesItem.ValueInt64())
+		var includedStatusCodes []int64
+		if r.Config.IncludedStatusCodes != nil {
+			includedStatusCodes = make([]int64, 0, len(r.Config.IncludedStatusCodes))
+			for _, includedStatusCodesItem := range r.Config.IncludedStatusCodes {
+				includedStatusCodes = append(includedStatusCodes, includedStatusCodesItem.ValueInt64())
+			}
 		}
 		maxDelayTime := new(float64)
 		if !r.Config.MaxDelayTime.IsUnknown() && !r.Config.MaxDelayTime.IsNull() {

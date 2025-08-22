@@ -8,10 +8,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -30,19 +31,19 @@ type PortalAuthResource struct {
 
 // PortalAuthResourceModel describes the resource data model.
 type PortalAuthResourceModel struct {
-	BasicAuthEnabled       types.Bool                     `tfsdk:"basic_auth_enabled"`
-	IdpMappingEnabled      types.Bool                     `tfsdk:"idp_mapping_enabled"`
-	KonnectMappingEnabled  types.Bool                     `tfsdk:"konnect_mapping_enabled"`
-	OidcAuthEnabled        types.Bool                     `tfsdk:"oidc_auth_enabled"`
-	OidcClaimMappings      *tfTypes.V2PortalClaimMappings `tfsdk:"oidc_claim_mappings"`
-	OidcClientID           types.String                   `tfsdk:"oidc_client_id"`
-	OidcClientSecret       types.String                   `tfsdk:"oidc_client_secret"`
-	OidcConfig             *tfTypes.V2PortalOIDCConfig    `tfsdk:"oidc_config"`
-	OidcIssuer             types.String                   `tfsdk:"oidc_issuer"`
-	OidcScopes             []types.String                 `tfsdk:"oidc_scopes"`
-	OidcTeamMappingEnabled types.Bool                     `tfsdk:"oidc_team_mapping_enabled"`
-	PortalID               types.String                   `tfsdk:"portal_id"`
-	SamlAuthEnabled        types.Bool                     `tfsdk:"saml_auth_enabled"`
+	BasicAuthEnabled       types.Bool                   `tfsdk:"basic_auth_enabled"`
+	IdpMappingEnabled      types.Bool                   `tfsdk:"idp_mapping_enabled"`
+	KonnectMappingEnabled  types.Bool                   `tfsdk:"konnect_mapping_enabled"`
+	OidcAuthEnabled        types.Bool                   `tfsdk:"oidc_auth_enabled"`
+	OidcClaimMappings      *tfTypes.PortalClaimMappings `tfsdk:"oidc_claim_mappings"`
+	OidcClientID           types.String                 `tfsdk:"oidc_client_id"`
+	OidcClientSecret       types.String                 `tfsdk:"oidc_client_secret"`
+	OidcConfig             *tfTypes.PortalOIDCConfig    `tfsdk:"oidc_config"`
+	OidcIssuer             types.String                 `tfsdk:"oidc_issuer"`
+	OidcScopes             []types.String               `tfsdk:"oidc_scopes"`
+	OidcTeamMappingEnabled types.Bool                   `tfsdk:"oidc_team_mapping_enabled"`
+	PortalID               types.String                 `tfsdk:"portal_id"`
+	SamlAuthEnabled        types.Bool                   `tfsdk:"saml_auth_enabled"`
 }
 
 func (r *PortalAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -77,13 +78,22 @@ func (r *PortalAuthResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"email": schema.StringAttribute{
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     stringdefault.StaticString(`email`),
+						Description: `Default: "email"`,
 					},
 					"groups": schema.StringAttribute{
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     stringdefault.StaticString(`groups`),
+						Description: `Default: "groups"`,
 					},
 					"name": schema.StringAttribute{
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     stringdefault.StaticString(`name`),
+						Description: `Default: "name"`,
 					},
 				},
 				Description: `Mappings from a portal developer atribute to an Identity Provider claim.`,
@@ -101,13 +111,19 @@ func (r *PortalAuthResource) Schema(ctx context.Context, req resource.SchemaRequ
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"email": schema.StringAttribute{
-								Computed: true,
+								Computed:    true,
+								Default:     stringdefault.StaticString(`email`),
+								Description: `Default: "email"`,
 							},
 							"groups": schema.StringAttribute{
-								Computed: true,
+								Computed:    true,
+								Default:     stringdefault.StaticString(`groups`),
+								Description: `Default: "groups"`,
 							},
 							"name": schema.StringAttribute{
-								Computed: true,
+								Computed:    true,
+								Default:     stringdefault.StaticString(`name`),
+								Description: `Default: "name"`,
 							},
 						},
 						Description: `Mappings from a portal developer atribute to an Identity Provider claim.`,
@@ -139,7 +155,7 @@ func (r *PortalAuthResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"portal_id": schema.StringAttribute{
 				Required:    true,
-				Description: `ID of the portal.`,
+				Description: `The Portal identifier`,
 			},
 			"saml_auth_enabled": schema.BoolAttribute{
 				Computed:    true,
@@ -210,11 +226,11 @@ func (r *PortalAuthResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.V2PortalAuthenticationSettingsResponse != nil) {
+	if !(res.PortalAuthenticationSettingsResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedV2PortalAuthenticationSettingsResponse(ctx, res.V2PortalAuthenticationSettingsResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalAuthenticationSettingsResponse(ctx, res.PortalAuthenticationSettingsResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -247,11 +263,11 @@ func (r *PortalAuthResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.V2PortalAuthenticationSettingsResponse != nil) {
+	if !(res1.PortalAuthenticationSettingsResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedV2PortalAuthenticationSettingsResponse(ctx, res1.V2PortalAuthenticationSettingsResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalAuthenticationSettingsResponse(ctx, res1.PortalAuthenticationSettingsResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -311,11 +327,11 @@ func (r *PortalAuthResource) Read(ctx context.Context, req resource.ReadRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.V2PortalAuthenticationSettingsResponse != nil) {
+	if !(res.PortalAuthenticationSettingsResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedV2PortalAuthenticationSettingsResponse(ctx, res.V2PortalAuthenticationSettingsResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalAuthenticationSettingsResponse(ctx, res.PortalAuthenticationSettingsResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -361,11 +377,11 @@ func (r *PortalAuthResource) Update(ctx context.Context, req resource.UpdateRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.V2PortalAuthenticationSettingsResponse != nil) {
+	if !(res.PortalAuthenticationSettingsResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedV2PortalAuthenticationSettingsResponse(ctx, res.V2PortalAuthenticationSettingsResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalAuthenticationSettingsResponse(ctx, res.PortalAuthenticationSettingsResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -398,11 +414,11 @@ func (r *PortalAuthResource) Update(ctx context.Context, req resource.UpdateRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.V2PortalAuthenticationSettingsResponse != nil) {
+	if !(res1.PortalAuthenticationSettingsResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedV2PortalAuthenticationSettingsResponse(ctx, res1.V2PortalAuthenticationSettingsResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalAuthenticationSettingsResponse(ctx, res1.PortalAuthenticationSettingsResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

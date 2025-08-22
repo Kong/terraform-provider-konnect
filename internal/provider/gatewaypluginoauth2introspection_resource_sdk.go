@@ -8,9 +8,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *GatewayPluginOauth2IntrospectionResourceModel) RefreshFromSharedOauth2IntrospectionPlugin(ctx context.Context, resp *shared.Oauth2IntrospectionPlugin) diag.Diagnostics {
@@ -28,7 +28,7 @@ func (r *GatewayPluginOauth2IntrospectionResourceModel) RefreshFromSharedOauth2I
 		for _, v := range resp.Config.CustomClaimsForward {
 			r.Config.CustomClaimsForward = append(r.Config.CustomClaimsForward, types.StringValue(v))
 		}
-		if len(resp.Config.CustomIntrospectionHeaders) > 0 {
+		if resp.Config.CustomIntrospectionHeaders != nil {
 			r.Config.CustomIntrospectionHeaders = make(map[string]jsontypes.Normalized, len(resp.Config.CustomIntrospectionHeaders))
 			for key, value := range resp.Config.CustomIntrospectionHeaders {
 				result, _ := json.Marshal(value)

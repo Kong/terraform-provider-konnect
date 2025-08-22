@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // CreateTeam - The request schema for the create team request.
 //
 // If you pass the same `name` and `description` of an existing team in the request, a team with the same `name` and `description` will be created. The two teams will have different `team_id` values to differentiate them.
@@ -9,12 +13,23 @@ type CreateTeam struct {
 	// A name for the team being created.
 	Name string `json:"name"`
 	// The description of the new team.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"null" json:"description"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]string `json:"labels,omitempty"`
+	Labels map[string]*string `json:"labels,omitempty"`
+}
+
+func (c CreateTeam) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateTeam) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CreateTeam) GetName() string {
@@ -31,7 +46,7 @@ func (o *CreateTeam) GetDescription() *string {
 	return o.Description
 }
 
-func (o *CreateTeam) GetLabels() map[string]string {
+func (o *CreateTeam) GetLabels() map[string]*string {
 	if o == nil {
 		return nil
 	}

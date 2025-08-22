@@ -7,11 +7,11 @@ package sdk
 import (
 	"context"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/config"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/hooks"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/retry"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/config"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/hooks"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/retry"
 	"net/http"
 	"time"
 )
@@ -223,12 +223,8 @@ type Konnect struct {
 	// DP Certificates
 	DPCertificates     *DPCertificates
 	ControlPlaneGroups *ControlPlaneGroups
-	// APIs related to Configuration of Konnect Developer Portals.
-	Portals *Portals
 	// APIs related to Konnect Developer Portal Appearance Settings.
 	PortalAppearance *PortalAppearance
-	// APIs related to Konnect Developer Portal Authentication Settings.
-	PortalAuthSettings *PortalAuthSettings
 	// Portal Product Versions hold metadata that describes how a Product Version is configured for a specific portal.
 	//
 	//   They contain:
@@ -237,7 +233,27 @@ type Konnect struct {
 	//   - The authentication strategy that is enabled for Application Registration
 	//
 	PortalProductVersions *PortalProductVersions
-	// APIs related to Konnect Developer Portal Developer Teams.
+	// APIs related to configuration of Konnect Developer Portals.
+	Portals           *Portals
+	API               *API
+	APIDocumentation  *APIDocumentation
+	APIImplementation *APIImplementation
+	APIPublication    *APIPublication
+	APISpecification  *APISpecification
+	APIVersion        *APIVersion
+	// APIs for managing static assets for Konnect Developer Portals.
+	Assets *Assets
+	// APIs related to configuration of Konnect Developer Portal auth settings.
+	PortalAuthSettings *PortalAuthSettings
+	// APIs related to configuration of Konnect Developer Portals custom domains.
+	PortalCustomDomains *PortalCustomDomains
+	// APIs related to customization of Konnect Developer Portals.
+	PortalCustomization *PortalCustomization
+	// APIs related to Konnect Developer Portal Custom Pages.
+	Pages *Pages
+	// APIs related to Konnect Developer Portal Custom Snippets.
+	Snippets *Snippets
+	// APIs related to configuration of Konnect Developer Portal developer teams.
 	PortalTeams                  *PortalTeams
 	SystemAccounts               *SystemAccounts
 	SystemAccountsAccessTokens   *SystemAccountsAccessTokens
@@ -321,9 +337,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *Konnect {
 	sdk := &Konnect{
-		SDKVersion: "2.14.0",
+		SDKVersion: "3.0.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 2.14.0 2.681.1 2.0.0 github.com/kong/terraform-provider-konnect/v2/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 3.0.0 2.681.1 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),
@@ -387,10 +403,21 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.Vaults = newVaults(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.DPCertificates = newDPCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ControlPlaneGroups = newControlPlaneGroups(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.Portals = newPortals(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalAppearance = newPortalAppearance(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.PortalAuthSettings = newPortalAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalProductVersions = newPortalProductVersions(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Portals = newPortals(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.API = newAPI(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APIDocumentation = newAPIDocumentation(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APIImplementation = newAPIImplementation(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APIPublication = newAPIPublication(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APISpecification = newAPISpecification(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APIVersion = newAPIVersion(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Assets = newAssets(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalAuthSettings = newPortalAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalCustomDomains = newPortalCustomDomains(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalCustomization = newPortalCustomization(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Pages = newPages(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Snippets = newSnippets(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalTeams = newPortalTeams(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SystemAccounts = newSystemAccounts(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SystemAccountsAccessTokens = newSystemAccountsAccessTokens(sdk, sdk.sdkConfiguration, sdk.hooks)

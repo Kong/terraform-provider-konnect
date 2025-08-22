@@ -12,15 +12,18 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -68,7 +71,6 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Schema(ctx context.Context, req r
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"aws_access_key_id": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The AWS access key ID to use for authentication`,
 					},
@@ -77,14 +79,14 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Schema(ctx context.Context, req r
 						Description: `The AWS region to use for the Bedrock API`,
 					},
 					"aws_secret_access_key": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The AWS secret access key to use for authentication`,
 					},
 					"guarding_mode": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The guardrail mode to use for the request. must be one of ["BOTH", "INPUT", "OUTPUT"]`,
+						Default:     stringdefault.StaticString(`INPUT`),
+						Description: `The guardrail mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"BOTH",
@@ -104,17 +106,20 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Schema(ctx context.Context, req r
 					"response_buffer_size": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The amount of token receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard.`,
+						Default:     float64default.StaticFloat64(100),
+						Description: `The amount of token receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard. Default: 100`,
 					},
 					"stop_on_error": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Stop processing if an error occurs`,
+						Default:     booldefault.StaticBool(true),
+						Description: `Stop processing if an error occurs. Default: true`,
 					},
 					"text_source": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Select where to pick the 'text' for the Content Guard Services request. must be one of ["concatenate_all_content", "concatenate_user_content"]`,
+						Default:     stringdefault.StaticString(`concatenate_all_content`),
+						Description: `Select where to pick the 'text' for the Content Guard Services request. Default: "concatenate_all_content"; must be one of ["concatenate_all_content", "concatenate_user_content"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"concatenate_all_content",
@@ -125,7 +130,8 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Schema(ctx context.Context, req r
 					"timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Connection timeout with the bedrock service`,
+						Default:     float64default.StaticFloat64(10000),
+						Description: `Connection timeout with the bedrock service. Default: 10000`,
 					},
 				},
 			},
@@ -172,7 +178,8 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Schema(ctx context.Context, req r
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -180,13 +187,28 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Schema(ctx context.Context, req r
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
@@ -213,7 +235,6 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Schema(ctx context.Context, req r
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -226,12 +247,10 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Schema(ctx context.Context, req r
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},
@@ -273,7 +292,6 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Schema(ctx context.Context, req r
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

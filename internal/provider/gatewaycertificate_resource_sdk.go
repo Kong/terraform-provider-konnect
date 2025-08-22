@@ -6,8 +6,8 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *GatewayCertificateResourceModel) RefreshFromSharedCertificate(ctx context.Context, resp *shared.Certificate) diag.Diagnostics {
@@ -44,7 +44,7 @@ func (r *GatewayCertificateResourceModel) ToOperationsCreateCertificateRequest(c
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	certificate, certificateDiags := r.ToSharedCertificate(ctx)
+	certificate, certificateDiags := r.ToSharedCertificateInput(ctx)
 	diags.Append(certificateDiags...)
 
 	if diags.HasError() {
@@ -102,7 +102,7 @@ func (r *GatewayCertificateResourceModel) ToOperationsUpsertCertificateRequest(c
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	certificate, certificateDiags := r.ToSharedCertificate(ctx)
+	certificate, certificateDiags := r.ToSharedCertificateInput(ctx)
 	diags.Append(certificateDiags...)
 
 	if diags.HasError() {
@@ -118,7 +118,7 @@ func (r *GatewayCertificateResourceModel) ToOperationsUpsertCertificateRequest(c
 	return &out, diags
 }
 
-func (r *GatewayCertificateResourceModel) ToSharedCertificate(ctx context.Context) (*shared.Certificate, diag.Diagnostics) {
+func (r *GatewayCertificateResourceModel) ToSharedCertificateInput(ctx context.Context) (*shared.CertificateInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cert string
@@ -151,13 +151,6 @@ func (r *GatewayCertificateResourceModel) ToSharedCertificate(ctx context.Contex
 	} else {
 		keyAlt = nil
 	}
-	var snis []string
-	if r.Snis != nil {
-		snis = make([]string, 0, len(r.Snis))
-		for _, snisItem := range r.Snis {
-			snis = append(snis, snisItem.ValueString())
-		}
-	}
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
@@ -171,14 +164,13 @@ func (r *GatewayCertificateResourceModel) ToSharedCertificate(ctx context.Contex
 	} else {
 		updatedAt = nil
 	}
-	out := shared.Certificate{
+	out := shared.CertificateInput{
 		Cert:      cert,
 		CertAlt:   certAlt,
 		CreatedAt: createdAt,
 		ID:        id,
 		Key:       key,
 		KeyAlt:    keyAlt,
-		Snis:      snis,
 		Tags:      tags,
 		UpdatedAt: updatedAt,
 	}

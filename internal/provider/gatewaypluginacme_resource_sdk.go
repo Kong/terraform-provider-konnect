@@ -8,9 +8,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *GatewayPluginAcmeResourceModel) RefreshFromSharedAcmePlugin(ctx context.Context, resp *shared.AcmePlugin) diag.Diagnostics {
@@ -32,9 +32,11 @@ func (r *GatewayPluginAcmeResourceModel) RefreshFromSharedAcmePlugin(ctx context
 		} else {
 			r.Config.CertType = types.StringNull()
 		}
-		r.Config.Domains = make([]types.String, 0, len(resp.Config.Domains))
-		for _, v := range resp.Config.Domains {
-			r.Config.Domains = append(r.Config.Domains, types.StringValue(v))
+		if resp.Config.Domains != nil {
+			r.Config.Domains = make([]types.String, 0, len(resp.Config.Domains))
+			for _, v := range resp.Config.Domains {
+				r.Config.Domains = append(r.Config.Domains, types.StringValue(v))
+			}
 		}
 		r.Config.EabHmacKey = types.StringPointerValue(resp.Config.EabHmacKey)
 		r.Config.EabKid = types.StringPointerValue(resp.Config.EabKid)
@@ -67,7 +69,7 @@ func (r *GatewayPluginAcmeResourceModel) RefreshFromSharedAcmePlugin(ctx context
 				r.Config.StorageConfig.Consul.Timeout = types.Float64PointerValue(resp.Config.StorageConfig.Consul.Timeout)
 				r.Config.StorageConfig.Consul.Token = types.StringPointerValue(resp.Config.StorageConfig.Consul.Token)
 			}
-			if len(resp.Config.StorageConfig.Kong) > 0 {
+			if resp.Config.StorageConfig.Kong != nil {
 				r.Config.StorageConfig.Kong = make(map[string]jsontypes.Normalized, len(resp.Config.StorageConfig.Kong))
 				for key, value := range resp.Config.StorageConfig.Kong {
 					result, _ := json.Marshal(value)
@@ -393,9 +395,12 @@ func (r *GatewayPluginAcmeResourceModel) ToSharedAcmePlugin(ctx context.Context)
 	} else {
 		certType = nil
 	}
-	domains := make([]string, 0, len(r.Config.Domains))
-	for _, domainsItem := range r.Config.Domains {
-		domains = append(domains, domainsItem.ValueString())
+	var domains []string
+	if r.Config.Domains != nil {
+		domains = make([]string, 0, len(r.Config.Domains))
+		for _, domainsItem := range r.Config.Domains {
+			domains = append(domains, domainsItem.ValueString())
+		}
 	}
 	eabHmacKey := new(string)
 	if !r.Config.EabHmacKey.IsUnknown() && !r.Config.EabHmacKey.IsNull() {

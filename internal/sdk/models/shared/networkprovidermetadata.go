@@ -2,10 +2,25 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // NetworkProviderMetadata - Metadata describing attributes returned by cloud-provider for the network.
 type NetworkProviderMetadata struct {
-	VpcID     *string  `json:"vpc_id,omitempty"`
-	SubnetIds []string `json:"subnet_ids,omitempty"`
+	VpcID     *string  `default:"null" json:"vpc_id"`
+	SubnetIds []string `json:"subnet_ids"`
+}
+
+func (n NetworkProviderMetadata) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(n, "", false)
+}
+
+func (n *NetworkProviderMetadata) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &n, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *NetworkProviderMetadata) GetVpcID() *string {

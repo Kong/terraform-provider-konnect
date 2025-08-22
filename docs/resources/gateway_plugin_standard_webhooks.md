@@ -73,7 +73,7 @@ resource "konnect_gateway_plugin_standard_webhooks" "my_gatewaypluginstandardweb
 
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -93,7 +93,7 @@ Required:
 
 Optional:
 
-- `tolerance_second` (Number) Tolerance of the webhook timestamp in seconds. If the webhook timestamp is older than this number of seconds, it will be rejected with a '400' response.
+- `tolerance_second` (Number) Tolerance of the webhook timestamp in seconds. If the webhook timestamp is older than this number of seconds, it will be rejected with a '400' response. Default: 300
 
 
 <a id="nestedatt--consumer_group"></a>

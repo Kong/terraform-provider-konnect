@@ -30,7 +30,7 @@ resource "konnect_portal_auth" "my_portalauth" {
     "..."
   ]
   oidc_team_mapping_enabled = true
-  portal_id                 = "7767e05c-f054-40cb-8b51-1f99bda85654"
+  portal_id                 = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
   saml_auth_enabled         = false
 }
 ```
@@ -40,7 +40,7 @@ resource "konnect_portal_auth" "my_portalauth" {
 
 ### Required
 
-- `portal_id` (String) ID of the portal.
+- `portal_id` (String) The Portal identifier
 
 ### Optional
 
@@ -65,9 +65,9 @@ resource "konnect_portal_auth" "my_portalauth" {
 
 Optional:
 
-- `email` (String)
-- `groups` (String)
-- `name` (String)
+- `email` (String) Default: "email"
+- `groups` (String) Default: "groups"
+- `name` (String) Default: "name"
 
 
 <a id="nestedatt--oidc_config"></a>
@@ -85,14 +85,14 @@ Read-Only:
 
 Read-Only:
 
-- `email` (String)
-- `groups` (String)
-- `name` (String)
+- `email` (String) Default: "email"
+- `groups` (String) Default: "groups"
+- `name` (String) Default: "name"
 
 ## Import
 
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_portal_auth.my_konnect_portal_auth ""
+terraform import konnect_portal_auth.my_konnect_portal_auth "f32d905a-ed33-46a3-a093-d8f536af9a8a"
 ```

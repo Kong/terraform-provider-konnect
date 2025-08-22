@@ -2,12 +2,16 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // UpdateAPIProductDTO - The request schema for updating an API product.
 type UpdateAPIProductDTO struct {
 	// The name for the API product.
-	Name *string `json:"name,omitempty"`
+	Name *string `default:"null" json:"name"`
 	// The description of the API product.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"null" json:"description"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Labels are intended to store **INTERNAL** metadata.
@@ -24,6 +28,17 @@ type UpdateAPIProductDTO struct {
 	PublicLabels map[string]*string `json:"public_labels,omitempty"`
 	// The list of portal identifiers which this API product should be published to
 	PortalIds []string `json:"portal_ids"`
+}
+
+func (u UpdateAPIProductDTO) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAPIProductDTO) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpdateAPIProductDTO) GetName() *string {

@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 // ServiceUnavailableStatus - The HTTP status code.
@@ -40,7 +41,18 @@ type ServiceUnavailable struct {
 	// The Konnect traceback code
 	Instance string `json:"instance"`
 	// Details about the error.
-	Detail *string `json:"detail,omitempty"`
+	Detail *string `default:"null" json:"detail"`
+}
+
+func (s ServiceUnavailable) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *ServiceUnavailable) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ServiceUnavailable) GetStatus() ServiceUnavailableStatus {

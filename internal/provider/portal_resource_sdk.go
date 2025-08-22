@@ -6,37 +6,35 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
-func (r *PortalResourceModel) RefreshFromSharedV2CreatePortalResponse(ctx context.Context, resp *shared.V2CreatePortalResponse) diag.Diagnostics {
+func (r *PortalResourceModel) RefreshFromSharedPortalResponse(ctx context.Context, resp *shared.PortalResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		r.ApplicationCount = types.Float64Value(resp.ApplicationCount)
-		r.AutoApproveApplications = types.BoolValue(resp.AutoApproveApplications)
-		r.AutoApproveDevelopers = types.BoolValue(resp.AutoApproveDevelopers)
+		r.AuthenticationEnabled = types.BoolPointerValue(resp.AuthenticationEnabled)
+		r.AutoApproveApplications = types.BoolPointerValue(resp.AutoApproveApplications)
+		r.AutoApproveDevelopers = types.BoolPointerValue(resp.AutoApproveDevelopers)
+		r.CanonicalDomain = types.StringValue(resp.CanonicalDomain)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.CustomClientDomain = types.StringPointerValue(resp.CustomClientDomain)
-		r.CustomDomain = types.StringPointerValue(resp.CustomDomain)
+		r.DefaultAPIVisibility = types.StringValue(string(resp.DefaultAPIVisibility))
 		r.DefaultApplicationAuthStrategyID = types.StringPointerValue(resp.DefaultApplicationAuthStrategyID)
 		r.DefaultDomain = types.StringValue(resp.DefaultDomain)
+		r.DefaultPageVisibility = types.StringValue(string(resp.DefaultPageVisibility))
 		r.Description = types.StringPointerValue(resp.Description)
-		r.DeveloperCount = types.Float64Value(resp.DeveloperCount)
 		r.DisplayName = types.StringValue(resp.DisplayName)
 		r.ID = types.StringValue(resp.ID)
-		r.IsPublic = types.BoolValue(resp.IsPublic)
-		if len(resp.Labels) > 0 {
+		if resp.Labels != nil {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringValue(value)
+				r.Labels[key] = types.StringPointerValue(value)
 			}
 		}
 		r.Name = types.StringValue(resp.Name)
-		r.PublishedProductCount = types.Float64Value(resp.PublishedProductCount)
-		r.RbacEnabled = types.BoolValue(resp.RbacEnabled)
+		r.RbacEnabled = types.BoolPointerValue(resp.RbacEnabled)
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
 
@@ -49,15 +47,15 @@ func (r *PortalResourceModel) ToOperationsDeletePortalRequest(ctx context.Contex
 	var portalID string
 	portalID = r.ID.ValueString()
 
-	force := new(operations.QueryParamForce)
-	if !r.Force.IsUnknown() && !r.Force.IsNull() {
-		*force = operations.QueryParamForce(r.Force.ValueString())
+	forceDestroy := new(operations.DeletePortalQueryParamForce)
+	if !r.ForceDestroy.IsUnknown() && !r.ForceDestroy.IsNull() {
+		*forceDestroy = operations.DeletePortalQueryParamForce(r.ForceDestroy.ValueString())
 	} else {
-		force = nil
+		forceDestroy = nil
 	}
 	out := operations.DeletePortalRequest{
-		PortalID: portalID,
-		Force:    force,
+		PortalID:     portalID,
+		ForceDestroy: forceDestroy,
 	}
 
 	return &out, diags
@@ -82,22 +80,22 @@ func (r *PortalResourceModel) ToOperationsUpdatePortalRequest(ctx context.Contex
 	var portalID string
 	portalID = r.ID.ValueString()
 
-	v2UpdatePortalRequest, v2UpdatePortalRequestDiags := r.ToSharedV2UpdatePortalRequest(ctx)
-	diags.Append(v2UpdatePortalRequestDiags...)
+	updatePortal, updatePortalDiags := r.ToSharedUpdatePortal(ctx)
+	diags.Append(updatePortalDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := operations.UpdatePortalRequest{
-		PortalID:              portalID,
-		V2UpdatePortalRequest: *v2UpdatePortalRequest,
+		PortalID:     portalID,
+		UpdatePortal: *updatePortal,
 	}
 
 	return &out, diags
 }
 
-func (r *PortalResourceModel) ToSharedV2CreatePortalRequest(ctx context.Context) (*shared.V2CreatePortalRequest, diag.Diagnostics) {
+func (r *PortalResourceModel) ToSharedCreatePortal(ctx context.Context) (*shared.CreatePortal, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var name string
@@ -115,11 +113,11 @@ func (r *PortalResourceModel) ToSharedV2CreatePortalRequest(ctx context.Context)
 	} else {
 		description = nil
 	}
-	isPublic := new(bool)
-	if !r.IsPublic.IsUnknown() && !r.IsPublic.IsNull() {
-		*isPublic = r.IsPublic.ValueBool()
+	authenticationEnabled := new(bool)
+	if !r.AuthenticationEnabled.IsUnknown() && !r.AuthenticationEnabled.IsNull() {
+		*authenticationEnabled = r.AuthenticationEnabled.ValueBool()
 	} else {
-		isPublic = nil
+		authenticationEnabled = nil
 	}
 	rbacEnabled := new(bool)
 	if !r.RbacEnabled.IsUnknown() && !r.RbacEnabled.IsNull() {
@@ -127,29 +125,17 @@ func (r *PortalResourceModel) ToSharedV2CreatePortalRequest(ctx context.Context)
 	} else {
 		rbacEnabled = nil
 	}
-	autoApproveApplications := new(bool)
-	if !r.AutoApproveApplications.IsUnknown() && !r.AutoApproveApplications.IsNull() {
-		*autoApproveApplications = r.AutoApproveApplications.ValueBool()
+	defaultAPIVisibility := new(shared.DefaultAPIVisibility)
+	if !r.DefaultAPIVisibility.IsUnknown() && !r.DefaultAPIVisibility.IsNull() {
+		*defaultAPIVisibility = shared.DefaultAPIVisibility(r.DefaultAPIVisibility.ValueString())
 	} else {
-		autoApproveApplications = nil
+		defaultAPIVisibility = nil
 	}
-	autoApproveDevelopers := new(bool)
-	if !r.AutoApproveDevelopers.IsUnknown() && !r.AutoApproveDevelopers.IsNull() {
-		*autoApproveDevelopers = r.AutoApproveDevelopers.ValueBool()
+	defaultPageVisibility := new(shared.DefaultPageVisibility)
+	if !r.DefaultPageVisibility.IsUnknown() && !r.DefaultPageVisibility.IsNull() {
+		*defaultPageVisibility = shared.DefaultPageVisibility(r.DefaultPageVisibility.ValueString())
 	} else {
-		autoApproveDevelopers = nil
-	}
-	customDomain := new(string)
-	if !r.CustomDomain.IsUnknown() && !r.CustomDomain.IsNull() {
-		*customDomain = r.CustomDomain.ValueString()
-	} else {
-		customDomain = nil
-	}
-	customClientDomain := new(string)
-	if !r.CustomClientDomain.IsUnknown() && !r.CustomClientDomain.IsNull() {
-		*customClientDomain = r.CustomClientDomain.ValueString()
-	} else {
-		customClientDomain = nil
+		defaultPageVisibility = nil
 	}
 	defaultApplicationAuthStrategyID := new(string)
 	if !r.DefaultApplicationAuthStrategyID.IsUnknown() && !r.DefaultApplicationAuthStrategyID.IsNull() {
@@ -157,31 +143,46 @@ func (r *PortalResourceModel) ToSharedV2CreatePortalRequest(ctx context.Context)
 	} else {
 		defaultApplicationAuthStrategyID = nil
 	}
-	labels := make(map[string]string)
+	autoApproveDevelopers := new(bool)
+	if !r.AutoApproveDevelopers.IsUnknown() && !r.AutoApproveDevelopers.IsNull() {
+		*autoApproveDevelopers = r.AutoApproveDevelopers.ValueBool()
+	} else {
+		autoApproveDevelopers = nil
+	}
+	autoApproveApplications := new(bool)
+	if !r.AutoApproveApplications.IsUnknown() && !r.AutoApproveApplications.IsNull() {
+		*autoApproveApplications = r.AutoApproveApplications.ValueBool()
+	} else {
+		autoApproveApplications = nil
+	}
+	labels := make(map[string]*string)
 	for labelsKey, labelsValue := range r.Labels {
-		var labelsInst string
-		labelsInst = labelsValue.ValueString()
-
+		labelsInst := new(string)
+		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
+			*labelsInst = labelsValue.ValueString()
+		} else {
+			labelsInst = nil
+		}
 		labels[labelsKey] = labelsInst
 	}
-	out := shared.V2CreatePortalRequest{
+	out := shared.CreatePortal{
 		Name:                             name,
 		DisplayName:                      displayName,
 		Description:                      description,
-		IsPublic:                         isPublic,
+		AuthenticationEnabled:            authenticationEnabled,
 		RbacEnabled:                      rbacEnabled,
-		AutoApproveApplications:          autoApproveApplications,
-		AutoApproveDevelopers:            autoApproveDevelopers,
-		CustomDomain:                     customDomain,
-		CustomClientDomain:               customClientDomain,
+		DefaultAPIVisibility:             defaultAPIVisibility,
+		DefaultPageVisibility:            defaultPageVisibility,
 		DefaultApplicationAuthStrategyID: defaultApplicationAuthStrategyID,
+		AutoApproveDevelopers:            autoApproveDevelopers,
+		AutoApproveApplications:          autoApproveApplications,
 		Labels:                           labels,
 	}
 
 	return &out, diags
 }
 
-func (r *PortalResourceModel) ToSharedV2UpdatePortalRequest(ctx context.Context) (*shared.V2UpdatePortalRequest, diag.Diagnostics) {
+func (r *PortalResourceModel) ToSharedUpdatePortal(ctx context.Context) (*shared.UpdatePortal, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	name := new(string)
@@ -202,11 +203,11 @@ func (r *PortalResourceModel) ToSharedV2UpdatePortalRequest(ctx context.Context)
 	} else {
 		description = nil
 	}
-	isPublic := new(bool)
-	if !r.IsPublic.IsUnknown() && !r.IsPublic.IsNull() {
-		*isPublic = r.IsPublic.ValueBool()
+	authenticationEnabled := new(bool)
+	if !r.AuthenticationEnabled.IsUnknown() && !r.AuthenticationEnabled.IsNull() {
+		*authenticationEnabled = r.AuthenticationEnabled.ValueBool()
 	} else {
-		isPublic = nil
+		authenticationEnabled = nil
 	}
 	rbacEnabled := new(bool)
 	if !r.RbacEnabled.IsUnknown() && !r.RbacEnabled.IsNull() {
@@ -214,11 +215,23 @@ func (r *PortalResourceModel) ToSharedV2UpdatePortalRequest(ctx context.Context)
 	} else {
 		rbacEnabled = nil
 	}
-	autoApproveApplications := new(bool)
-	if !r.AutoApproveApplications.IsUnknown() && !r.AutoApproveApplications.IsNull() {
-		*autoApproveApplications = r.AutoApproveApplications.ValueBool()
+	defaultAPIVisibility := new(shared.UpdatePortalDefaultAPIVisibility)
+	if !r.DefaultAPIVisibility.IsUnknown() && !r.DefaultAPIVisibility.IsNull() {
+		*defaultAPIVisibility = shared.UpdatePortalDefaultAPIVisibility(r.DefaultAPIVisibility.ValueString())
 	} else {
-		autoApproveApplications = nil
+		defaultAPIVisibility = nil
+	}
+	defaultPageVisibility := new(shared.UpdatePortalDefaultPageVisibility)
+	if !r.DefaultPageVisibility.IsUnknown() && !r.DefaultPageVisibility.IsNull() {
+		*defaultPageVisibility = shared.UpdatePortalDefaultPageVisibility(r.DefaultPageVisibility.ValueString())
+	} else {
+		defaultPageVisibility = nil
+	}
+	defaultApplicationAuthStrategyID := new(string)
+	if !r.DefaultApplicationAuthStrategyID.IsUnknown() && !r.DefaultApplicationAuthStrategyID.IsNull() {
+		*defaultApplicationAuthStrategyID = r.DefaultApplicationAuthStrategyID.ValueString()
+	} else {
+		defaultApplicationAuthStrategyID = nil
 	}
 	autoApproveDevelopers := new(bool)
 	if !r.AutoApproveDevelopers.IsUnknown() && !r.AutoApproveDevelopers.IsNull() {
@@ -226,23 +239,11 @@ func (r *PortalResourceModel) ToSharedV2UpdatePortalRequest(ctx context.Context)
 	} else {
 		autoApproveDevelopers = nil
 	}
-	customDomain := new(string)
-	if !r.CustomDomain.IsUnknown() && !r.CustomDomain.IsNull() {
-		*customDomain = r.CustomDomain.ValueString()
+	autoApproveApplications := new(bool)
+	if !r.AutoApproveApplications.IsUnknown() && !r.AutoApproveApplications.IsNull() {
+		*autoApproveApplications = r.AutoApproveApplications.ValueBool()
 	} else {
-		customDomain = nil
-	}
-	customClientDomain := new(string)
-	if !r.CustomClientDomain.IsUnknown() && !r.CustomClientDomain.IsNull() {
-		*customClientDomain = r.CustomClientDomain.ValueString()
-	} else {
-		customClientDomain = nil
-	}
-	defaultApplicationAuthStrategyID := new(string)
-	if !r.DefaultApplicationAuthStrategyID.IsUnknown() && !r.DefaultApplicationAuthStrategyID.IsNull() {
-		*defaultApplicationAuthStrategyID = r.DefaultApplicationAuthStrategyID.ValueString()
-	} else {
-		defaultApplicationAuthStrategyID = nil
+		autoApproveApplications = nil
 	}
 	labels := make(map[string]*string)
 	for labelsKey, labelsValue := range r.Labels {
@@ -254,17 +255,17 @@ func (r *PortalResourceModel) ToSharedV2UpdatePortalRequest(ctx context.Context)
 		}
 		labels[labelsKey] = labelsInst
 	}
-	out := shared.V2UpdatePortalRequest{
+	out := shared.UpdatePortal{
 		Name:                             name,
 		DisplayName:                      displayName,
 		Description:                      description,
-		IsPublic:                         isPublic,
+		AuthenticationEnabled:            authenticationEnabled,
 		RbacEnabled:                      rbacEnabled,
-		AutoApproveApplications:          autoApproveApplications,
-		AutoApproveDevelopers:            autoApproveDevelopers,
-		CustomDomain:                     customDomain,
-		CustomClientDomain:               customClientDomain,
+		DefaultAPIVisibility:             defaultAPIVisibility,
+		DefaultPageVisibility:            defaultPageVisibility,
 		DefaultApplicationAuthStrategyID: defaultApplicationAuthStrategyID,
+		AutoApproveDevelopers:            autoApproveDevelopers,
+		AutoApproveApplications:          autoApproveApplications,
 		Labels:                           labels,
 	}
 

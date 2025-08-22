@@ -5,7 +5,7 @@ package shared
 import (
 	"errors"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type TransitGatewayResponseType string
@@ -14,6 +14,7 @@ const (
 	TransitGatewayResponseTypeAwsTransitGatewayResponse    TransitGatewayResponseType = "AwsTransitGatewayResponse"
 	TransitGatewayResponseTypeAwsVpcPeeringGatewayResponse TransitGatewayResponseType = "AwsVpcPeeringGatewayResponse"
 	TransitGatewayResponseTypeAzureTransitGatewayResponse  TransitGatewayResponseType = "AzureTransitGatewayResponse"
+	TransitGatewayResponseTypeGCPVPCPeeringGatewayResponse TransitGatewayResponseType = "GCPVPCPeeringGatewayResponse"
 )
 
 // TransitGatewayResponse - Response format for creating a transit gateway.
@@ -21,6 +22,7 @@ type TransitGatewayResponse struct {
 	AwsTransitGatewayResponse    *AwsTransitGatewayResponse    `queryParam:"inline"`
 	AwsVpcPeeringGatewayResponse *AwsVpcPeeringGatewayResponse `queryParam:"inline"`
 	AzureTransitGatewayResponse  *AzureTransitGatewayResponse  `queryParam:"inline"`
+	GCPVPCPeeringGatewayResponse *GCPVPCPeeringGatewayResponse `queryParam:"inline"`
 
 	Type TransitGatewayResponseType
 }
@@ -52,12 +54,28 @@ func CreateTransitGatewayResponseAzureTransitGatewayResponse(azureTransitGateway
 	}
 }
 
+func CreateTransitGatewayResponseGCPVPCPeeringGatewayResponse(gcpvpcPeeringGatewayResponse GCPVPCPeeringGatewayResponse) TransitGatewayResponse {
+	typ := TransitGatewayResponseTypeGCPVPCPeeringGatewayResponse
+
+	return TransitGatewayResponse{
+		GCPVPCPeeringGatewayResponse: &gcpvpcPeeringGatewayResponse,
+		Type:                         typ,
+	}
+}
+
 func (u *TransitGatewayResponse) UnmarshalJSON(data []byte) error {
 
 	var azureTransitGatewayResponse AzureTransitGatewayResponse = AzureTransitGatewayResponse{}
 	if err := utils.UnmarshalJSON(data, &azureTransitGatewayResponse, "", true, true); err == nil {
 		u.AzureTransitGatewayResponse = &azureTransitGatewayResponse
 		u.Type = TransitGatewayResponseTypeAzureTransitGatewayResponse
+		return nil
+	}
+
+	var gcpvpcPeeringGatewayResponse GCPVPCPeeringGatewayResponse = GCPVPCPeeringGatewayResponse{}
+	if err := utils.UnmarshalJSON(data, &gcpvpcPeeringGatewayResponse, "", true, true); err == nil {
+		u.GCPVPCPeeringGatewayResponse = &gcpvpcPeeringGatewayResponse
+		u.Type = TransitGatewayResponseTypeGCPVPCPeeringGatewayResponse
 		return nil
 	}
 
@@ -89,6 +107,10 @@ func (u TransitGatewayResponse) MarshalJSON() ([]byte, error) {
 
 	if u.AzureTransitGatewayResponse != nil {
 		return utils.MarshalJSON(u.AzureTransitGatewayResponse, "", true)
+	}
+
+	if u.GCPVPCPeeringGatewayResponse != nil {
+		return utils.MarshalJSON(u.GCPVPCPeeringGatewayResponse, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type TransitGatewayResponse: all fields are null")

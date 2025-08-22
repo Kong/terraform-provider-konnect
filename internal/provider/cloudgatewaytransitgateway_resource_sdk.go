@@ -6,10 +6,10 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewayResponse(ctx context.Context, resp *shared.TransitGatewayResponse) diag.Diagnostics {
@@ -140,6 +140,44 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 			r.AzureTransitGatewayResponse.TransitGatewayAttachmentConfig.TenantID = types.StringValue(resp.AzureTransitGatewayResponse.TransitGatewayAttachmentConfig.TenantID)
 			r.AzureTransitGatewayResponse.TransitGatewayAttachmentConfig.VnetName = types.StringValue(resp.AzureTransitGatewayResponse.TransitGatewayAttachmentConfig.VnetName)
 			r.AzureTransitGatewayResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AzureTransitGatewayResponse.UpdatedAt))
+		}
+		if resp.GCPVPCPeeringGatewayResponse != nil {
+			r.GCPVPCPeeringGatewayResponse = &tfTypes.GCPVPCPeeringGatewayResponse{}
+			r.GCPVPCPeeringGatewayResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.GCPVPCPeeringGatewayResponse.CreatedAt))
+			r.GCPVPCPeeringGatewayResponse.DNSConfig = []tfTypes.TransitGatewayDNSConfig{}
+
+			for _, dnsConfigItem3 := range resp.GCPVPCPeeringGatewayResponse.DNSConfig {
+				var dnsConfig3 tfTypes.TransitGatewayDNSConfig
+
+				dnsConfig3.DomainProxyList = make([]types.String, 0, len(dnsConfigItem3.DomainProxyList))
+				for _, v := range dnsConfigItem3.DomainProxyList {
+					dnsConfig3.DomainProxyList = append(dnsConfig3.DomainProxyList, types.StringValue(v))
+				}
+				dnsConfig3.RemoteDNSServerIPAddresses = make([]types.String, 0, len(dnsConfigItem3.RemoteDNSServerIPAddresses))
+				for _, v := range dnsConfigItem3.RemoteDNSServerIPAddresses {
+					dnsConfig3.RemoteDNSServerIPAddresses = append(dnsConfig3.RemoteDNSServerIPAddresses, types.StringValue(v))
+				}
+
+				r.GCPVPCPeeringGatewayResponse.DNSConfig = append(r.GCPVPCPeeringGatewayResponse.DNSConfig, dnsConfig3)
+			}
+			r.GCPVPCPeeringGatewayResponse.EntityVersion = types.Int64Value(resp.GCPVPCPeeringGatewayResponse.EntityVersion)
+			r.EntityVersion = r.GCPVPCPeeringGatewayResponse.EntityVersion
+			r.GCPVPCPeeringGatewayResponse.ID = types.StringValue(resp.GCPVPCPeeringGatewayResponse.ID)
+			r.ID = r.GCPVPCPeeringGatewayResponse.ID
+			r.GCPVPCPeeringGatewayResponse.Name = types.StringValue(resp.GCPVPCPeeringGatewayResponse.Name)
+			r.Name = r.GCPVPCPeeringGatewayResponse.Name
+			r.GCPVPCPeeringGatewayResponse.State = types.StringValue(string(resp.GCPVPCPeeringGatewayResponse.State))
+			if resp.GCPVPCPeeringGatewayResponse.StateMetadata == nil {
+				r.GCPVPCPeeringGatewayResponse.StateMetadata = nil
+			} else {
+				r.GCPVPCPeeringGatewayResponse.StateMetadata = &tfTypes.CustomDomainStateMetadata{}
+				r.GCPVPCPeeringGatewayResponse.StateMetadata.Reason = types.StringPointerValue(resp.GCPVPCPeeringGatewayResponse.StateMetadata.Reason)
+				r.GCPVPCPeeringGatewayResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.GCPVPCPeeringGatewayResponse.StateMetadata.ReportedStatus)
+			}
+			r.GCPVPCPeeringGatewayResponse.TransitGatewayAttachmentConfig.Kind = types.StringValue(string(resp.GCPVPCPeeringGatewayResponse.TransitGatewayAttachmentConfig.Kind))
+			r.GCPVPCPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeerProjectID = types.StringValue(resp.GCPVPCPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeerProjectID)
+			r.GCPVPCPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeerVpcName = types.StringValue(resp.GCPVPCPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeerVpcName)
+			r.GCPVPCPeeringGatewayResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.GCPVPCPeeringGatewayResponse.UpdatedAt))
 		}
 	}
 
@@ -354,6 +392,49 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 	if azureTransitGateway != nil {
 		out = shared.CreateTransitGatewayRequest{
 			AzureTransitGateway: azureTransitGateway,
+		}
+	}
+	var gcpVpcPeeringTransitGateway *shared.GcpVpcPeeringTransitGateway
+	if r.GcpVpcPeeringTransitGateway != nil {
+		var name3 string
+		name3 = r.GcpVpcPeeringTransitGateway.Name.ValueString()
+
+		dnsConfig3 := make([]shared.TransitGatewayDNSConfig, 0, len(r.GcpVpcPeeringTransitGateway.DNSConfig))
+		for _, dnsConfigItem3 := range r.GcpVpcPeeringTransitGateway.DNSConfig {
+			remoteDNSServerIPAddresses3 := make([]string, 0, len(dnsConfigItem3.RemoteDNSServerIPAddresses))
+			for _, remoteDNSServerIPAddressesItem3 := range dnsConfigItem3.RemoteDNSServerIPAddresses {
+				remoteDNSServerIPAddresses3 = append(remoteDNSServerIPAddresses3, remoteDNSServerIPAddressesItem3.ValueString())
+			}
+			domainProxyList3 := make([]string, 0, len(dnsConfigItem3.DomainProxyList))
+			for _, domainProxyListItem3 := range dnsConfigItem3.DomainProxyList {
+				domainProxyList3 = append(domainProxyList3, domainProxyListItem3.ValueString())
+			}
+			dnsConfig3 = append(dnsConfig3, shared.TransitGatewayDNSConfig{
+				RemoteDNSServerIPAddresses: remoteDNSServerIPAddresses3,
+				DomainProxyList:            domainProxyList3,
+			})
+		}
+		kind3 := shared.GCPVPCPeeringAttachmentType(r.GcpVpcPeeringTransitGateway.TransitGatewayAttachmentConfig.Kind.ValueString())
+		var peerProjectID string
+		peerProjectID = r.GcpVpcPeeringTransitGateway.TransitGatewayAttachmentConfig.PeerProjectID.ValueString()
+
+		var peerVpcName string
+		peerVpcName = r.GcpVpcPeeringTransitGateway.TransitGatewayAttachmentConfig.PeerVpcName.ValueString()
+
+		transitGatewayAttachmentConfig3 := shared.GCPVPCPeeringAttachmentConfig{
+			Kind:          kind3,
+			PeerProjectID: peerProjectID,
+			PeerVpcName:   peerVpcName,
+		}
+		gcpVpcPeeringTransitGateway = &shared.GcpVpcPeeringTransitGateway{
+			Name:                           name3,
+			DNSConfig:                      dnsConfig3,
+			TransitGatewayAttachmentConfig: transitGatewayAttachmentConfig3,
+		}
+	}
+	if gcpVpcPeeringTransitGateway != nil {
+		out = shared.CreateTransitGatewayRequest{
+			GcpVpcPeeringTransitGateway: gcpVpcPeeringTransitGateway,
 		}
 	}
 

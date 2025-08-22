@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type ForwardProxyPluginAfter struct {
@@ -53,8 +53,19 @@ type ForwardProxyPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (f ForwardProxyPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *ForwardProxyPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ForwardProxyPluginPartials) GetID() *string {
@@ -135,24 +146,35 @@ func (e *XHeaders) UnmarshalJSON(data []byte) error {
 type ForwardProxyPluginConfig struct {
 	// The password to authenticate with, if the forward proxy is protected
 	// by basic authentication.
-	AuthPassword *string `json:"auth_password,omitempty"`
+	AuthPassword *string `default:"null" json:"auth_password"`
 	// The username to authenticate with, if the forward proxy is protected
 	// by basic authentication.
-	AuthUsername *string `json:"auth_username,omitempty"`
+	AuthUsername *string `default:"null" json:"auth_username"`
 	// A string representing a host name, such as example.com.
-	HTTPProxyHost *string `json:"http_proxy_host,omitempty"`
+	HTTPProxyHost *string `default:"null" json:"http_proxy_host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	HTTPProxyPort *int64 `json:"http_proxy_port,omitempty"`
+	HTTPProxyPort *int64 `default:"null" json:"http_proxy_port"`
 	// A string representing a host name, such as example.com.
-	HTTPSProxyHost *string `json:"https_proxy_host,omitempty"`
+	HTTPSProxyHost *string `default:"null" json:"https_proxy_host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	HTTPSProxyPort *int64 `json:"https_proxy_port,omitempty"`
+	HTTPSProxyPort *int64 `default:"null" json:"https_proxy_port"`
 	// Whether the server certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate.
-	HTTPSVerify *bool `json:"https_verify,omitempty"`
+	HTTPSVerify *bool `default:"false" json:"https_verify"`
 	// The proxy scheme to use when connecting. Only `http` is supported.
-	ProxyScheme *ProxyScheme `json:"proxy_scheme,omitempty"`
+	ProxyScheme *ProxyScheme `default:"http" json:"proxy_scheme"`
 	// Determines how to handle headers when forwarding the request.
-	XHeaders *XHeaders `json:"x_headers,omitempty"`
+	XHeaders *XHeaders `default:"append" json:"x_headers"`
+}
+
+func (f ForwardProxyPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *ForwardProxyPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ForwardProxyPluginConfig) GetAuthPassword() *string {
@@ -291,24 +313,24 @@ type ForwardProxyPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                     `json:"instance_name,omitempty"`
+	InstanceName *string                     `default:"null" json:"instance_name"`
 	name         string                      `const:"forward-proxy" json:"name"`
-	Ordering     *ForwardProxyPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *ForwardProxyPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []ForwardProxyPluginPartials `json:"partials,omitempty"`
+	Partials []ForwardProxyPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                    `json:"updated_at,omitempty"`
-	Config    *ForwardProxyPluginConfig `json:"config,omitempty"`
+	Config    *ForwardProxyPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *ForwardProxyPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
-	Protocols []ForwardProxyPluginProtocols `json:"protocols,omitempty"`
+	Protocols []ForwardProxyPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *ForwardProxyPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

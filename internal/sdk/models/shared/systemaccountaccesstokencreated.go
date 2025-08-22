@@ -3,7 +3,7 @@
 package shared
 
 import (
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
 
@@ -12,7 +12,7 @@ type SystemAccountAccessTokenCreated struct {
 	// ID of the system account access token.
 	ID *string `json:"id,omitempty"`
 	// Name of the system account access token.
-	Name *string `json:"name,omitempty"`
+	Name *string `default:"null" json:"name"`
 	// Timestamp of when the system account access token was created.
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	// Timestamp of when the system account access token was last updated.

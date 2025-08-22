@@ -6,22 +6,26 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLimitingAdvancedPlugin(ctx context.Context, resp *shared.RateLimitingAdvancedPlugin) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		r.Config.CompoundIdentifier = make([]types.String, 0, len(resp.Config.CompoundIdentifier))
-		for _, v := range resp.Config.CompoundIdentifier {
-			r.Config.CompoundIdentifier = append(r.Config.CompoundIdentifier, types.StringValue(string(v)))
+		if resp.Config.CompoundIdentifier != nil {
+			r.Config.CompoundIdentifier = make([]types.String, 0, len(resp.Config.CompoundIdentifier))
+			for _, v := range resp.Config.CompoundIdentifier {
+				r.Config.CompoundIdentifier = append(r.Config.CompoundIdentifier, types.StringValue(string(v)))
+			}
 		}
-		r.Config.ConsumerGroups = make([]types.String, 0, len(resp.Config.ConsumerGroups))
-		for _, v := range resp.Config.ConsumerGroups {
-			r.Config.ConsumerGroups = append(r.Config.ConsumerGroups, types.StringValue(v))
+		if resp.Config.ConsumerGroups != nil {
+			r.Config.ConsumerGroups = make([]types.String, 0, len(resp.Config.ConsumerGroups))
+			for _, v := range resp.Config.ConsumerGroups {
+				r.Config.ConsumerGroups = append(r.Config.ConsumerGroups, types.StringValue(v))
+			}
 		}
 		r.Config.DictionaryName = types.StringPointerValue(resp.Config.DictionaryName)
 		r.Config.DisablePenalty = types.BoolPointerValue(resp.Config.DisablePenalty)
@@ -47,15 +51,17 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 		} else {
 			r.Config.Redis = &tfTypes.RateLimitingAdvancedPluginRedis{}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
-			r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+			if resp.Config.Redis.ClusterNodes != nil {
+				r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
 
-			for _, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
-				var clusterNodes tfTypes.PartialRedisEeClusterNodes
+				for _, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
+					var clusterNodes tfTypes.PartialRedisEeClusterNodes
 
-				clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
-				clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
+					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
+					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
 
-				r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes)
+					r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes)
+				}
 			}
 			r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
 			r.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Redis.ConnectionIsProxied)
@@ -73,15 +79,17 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 			}
 			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
-			r.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+			if resp.Config.Redis.SentinelNodes != nil {
+				r.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
 
-			for _, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
-				var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+				for _, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
+					var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
 
-				sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
-				sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
+					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 
-				r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes)
+					r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes)
+				}
 			}
 			r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
 			if resp.Config.Redis.SentinelRole != nil {
@@ -367,13 +375,19 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 	} else {
 		updatedAt = nil
 	}
-	compoundIdentifier := make([]shared.CompoundIdentifier, 0, len(r.Config.CompoundIdentifier))
-	for _, compoundIdentifierItem := range r.Config.CompoundIdentifier {
-		compoundIdentifier = append(compoundIdentifier, shared.CompoundIdentifier(compoundIdentifierItem.ValueString()))
+	var compoundIdentifier []shared.CompoundIdentifier
+	if r.Config.CompoundIdentifier != nil {
+		compoundIdentifier = make([]shared.CompoundIdentifier, 0, len(r.Config.CompoundIdentifier))
+		for _, compoundIdentifierItem := range r.Config.CompoundIdentifier {
+			compoundIdentifier = append(compoundIdentifier, shared.CompoundIdentifier(compoundIdentifierItem.ValueString()))
+		}
 	}
-	consumerGroups := make([]string, 0, len(r.Config.ConsumerGroups))
-	for _, consumerGroupsItem := range r.Config.ConsumerGroups {
-		consumerGroups = append(consumerGroups, consumerGroupsItem.ValueString())
+	var consumerGroups []string
+	if r.Config.ConsumerGroups != nil {
+		consumerGroups = make([]string, 0, len(r.Config.ConsumerGroups))
+		for _, consumerGroupsItem := range r.Config.ConsumerGroups {
+			consumerGroups = append(consumerGroups, consumerGroupsItem.ValueString())
+		}
 	}
 	dictionaryName := new(string)
 	if !r.Config.DictionaryName.IsUnknown() && !r.Config.DictionaryName.IsNull() {
@@ -453,24 +467,27 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 		} else {
 			clusterMaxRedirections = nil
 		}
-		clusterNodes := make([]shared.RateLimitingAdvancedPluginClusterNodes, 0, len(r.Config.Redis.ClusterNodes))
-		for _, clusterNodesItem := range r.Config.Redis.ClusterNodes {
-			ip := new(string)
-			if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
-				*ip = clusterNodesItem.IP.ValueString()
-			} else {
-				ip = nil
+		var clusterNodes []shared.RateLimitingAdvancedPluginClusterNodes
+		if r.Config.Redis.ClusterNodes != nil {
+			clusterNodes = make([]shared.RateLimitingAdvancedPluginClusterNodes, 0, len(r.Config.Redis.ClusterNodes))
+			for _, clusterNodesItem := range r.Config.Redis.ClusterNodes {
+				ip := new(string)
+				if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
+					*ip = clusterNodesItem.IP.ValueString()
+				} else {
+					ip = nil
+				}
+				port := new(int64)
+				if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
+					*port = clusterNodesItem.Port.ValueInt64()
+				} else {
+					port = nil
+				}
+				clusterNodes = append(clusterNodes, shared.RateLimitingAdvancedPluginClusterNodes{
+					IP:   ip,
+					Port: port,
+				})
 			}
-			port := new(int64)
-			if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
-				*port = clusterNodesItem.Port.ValueInt64()
-			} else {
-				port = nil
-			}
-			clusterNodes = append(clusterNodes, shared.RateLimitingAdvancedPluginClusterNodes{
-				IP:   ip,
-				Port: port,
-			})
 		}
 		connectTimeout := new(int64)
 		if !r.Config.Redis.ConnectTimeout.IsUnknown() && !r.Config.Redis.ConnectTimeout.IsNull() {
@@ -544,24 +561,27 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 		} else {
 			sentinelMaster = nil
 		}
-		sentinelNodes := make([]shared.RateLimitingAdvancedPluginSentinelNodes, 0, len(r.Config.Redis.SentinelNodes))
-		for _, sentinelNodesItem := range r.Config.Redis.SentinelNodes {
-			host1 := new(string)
-			if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
-				*host1 = sentinelNodesItem.Host.ValueString()
-			} else {
-				host1 = nil
+		var sentinelNodes []shared.RateLimitingAdvancedPluginSentinelNodes
+		if r.Config.Redis.SentinelNodes != nil {
+			sentinelNodes = make([]shared.RateLimitingAdvancedPluginSentinelNodes, 0, len(r.Config.Redis.SentinelNodes))
+			for _, sentinelNodesItem := range r.Config.Redis.SentinelNodes {
+				host1 := new(string)
+				if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
+					*host1 = sentinelNodesItem.Host.ValueString()
+				} else {
+					host1 = nil
+				}
+				port2 := new(int64)
+				if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
+					*port2 = sentinelNodesItem.Port.ValueInt64()
+				} else {
+					port2 = nil
+				}
+				sentinelNodes = append(sentinelNodes, shared.RateLimitingAdvancedPluginSentinelNodes{
+					Host: host1,
+					Port: port2,
+				})
 			}
-			port2 := new(int64)
-			if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
-				*port2 = sentinelNodesItem.Port.ValueInt64()
-			} else {
-				port2 = nil
-			}
-			sentinelNodes = append(sentinelNodes, shared.RateLimitingAdvancedPluginSentinelNodes{
-				Host: host1,
-				Port: port2,
-			})
 		}
 		sentinelPassword := new(string)
 		if !r.Config.Redis.SentinelPassword.IsUnknown() && !r.Config.Redis.SentinelPassword.IsNull() {

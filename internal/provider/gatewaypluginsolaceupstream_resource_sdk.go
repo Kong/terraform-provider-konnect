@@ -8,9 +8,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *GatewayPluginSolaceUpstreamResourceModel) RefreshFromSharedSolaceUpstreamPlugin(ctx context.Context, resp *shared.SolaceUpstreamPlugin) diag.Diagnostics {
@@ -43,9 +43,11 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) RefreshFromSharedSolaceUpstre
 		r.Config.Message.ForwardHeaders = types.BoolPointerValue(resp.Config.Message.ForwardHeaders)
 		r.Config.Message.ForwardMethod = types.BoolPointerValue(resp.Config.Message.ForwardMethod)
 		r.Config.Message.ForwardURI = types.BoolPointerValue(resp.Config.Message.ForwardURI)
-		r.Config.Message.Functions = make([]types.String, 0, len(resp.Config.Message.Functions))
-		for _, v := range resp.Config.Message.Functions {
-			r.Config.Message.Functions = append(r.Config.Message.Functions, types.StringValue(v))
+		if resp.Config.Message.Functions != nil {
+			r.Config.Message.Functions = make([]types.String, 0, len(resp.Config.Message.Functions))
+			for _, v := range resp.Config.Message.Functions {
+				r.Config.Message.Functions = append(r.Config.Message.Functions, types.StringValue(v))
+			}
 		}
 		r.Config.Message.Priority = types.Int64PointerValue(resp.Config.Message.Priority)
 		r.Config.Message.SenderID = types.StringPointerValue(resp.Config.Message.SenderID)
@@ -70,7 +72,7 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) RefreshFromSharedSolaceUpstre
 		}
 		r.Config.Session.ConnectTimeout = types.Int64PointerValue(resp.Config.Session.ConnectTimeout)
 		r.Config.Session.Host = types.StringValue(resp.Config.Session.Host)
-		if len(resp.Config.Session.Properties) > 0 {
+		if resp.Config.Session.Properties != nil {
 			r.Config.Session.Properties = make(map[string]jsontypes.Normalized, len(resp.Config.Session.Properties))
 			for key, value := range resp.Config.Session.Properties {
 				result, _ := json.Marshal(value)
@@ -387,9 +389,12 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToSharedSolaceUpstreamPlugin(
 	} else {
 		forwardURI = nil
 	}
-	functions := make([]string, 0, len(r.Config.Message.Functions))
-	for _, functionsItem := range r.Config.Message.Functions {
-		functions = append(functions, functionsItem.ValueString())
+	var functions []string
+	if r.Config.Message.Functions != nil {
+		functions = make([]string, 0, len(r.Config.Message.Functions))
+		for _, functionsItem := range r.Config.Message.Functions {
+			functions = append(functions, functionsItem.ValueString())
+		}
 	}
 	priority := new(int64)
 	if !r.Config.Message.Priority.IsUnknown() && !r.Config.Message.Priority.IsNull() {

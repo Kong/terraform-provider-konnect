@@ -14,7 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -81,7 +81,6 @@ func (r *GatewayCustomPluginStreamingResource) Schema(ctx context.Context, req r
 				Description: `The schema for the given custom plugin.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `A set of strings representing tags.`,

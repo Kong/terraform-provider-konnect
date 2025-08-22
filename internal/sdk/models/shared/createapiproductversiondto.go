@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 // CreateAPIProductVersionDTOPublishStatus - The publish status of the API product version. Applies publish status to all related portal product versions. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead.
@@ -44,17 +45,28 @@ type CreateAPIProductVersionDTO struct {
 	// The publish status of the API product version. Applies publish status to all related portal product versions. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead.
 	//
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
-	PublishStatus *CreateAPIProductVersionDTOPublishStatus `json:"publish_status,omitempty"`
+	PublishStatus *CreateAPIProductVersionDTOPublishStatus `default:"unpublished" json:"publish_status"`
 	// Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead.
 	//
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
-	Deprecated *bool `json:"deprecated,omitempty"`
+	Deprecated *bool `default:"false" json:"deprecated"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels         map[string]string      `json:"labels,omitempty"`
-	GatewayService *GatewayServicePayload `json:"gateway_service,omitempty"`
+	Labels         map[string]*string     `json:"labels,omitempty"`
+	GatewayService *GatewayServicePayload `json:"gateway_service"`
+}
+
+func (c CreateAPIProductVersionDTO) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAPIProductVersionDTO) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CreateAPIProductVersionDTO) GetName() string {
@@ -78,7 +90,7 @@ func (o *CreateAPIProductVersionDTO) GetDeprecated() *bool {
 	return o.Deprecated
 }
 
-func (o *CreateAPIProductVersionDTO) GetLabels() map[string]string {
+func (o *CreateAPIProductVersionDTO) GetLabels() map[string]*string {
 	if o == nil {
 		return nil
 	}

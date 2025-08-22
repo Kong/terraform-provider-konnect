@@ -2,12 +2,27 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type InvalidParameterStandard struct {
 	Field string `json:"field"`
 	// invalid parameters rules
 	Rule   *InvalidRules `json:"rule,omitempty"`
-	Source *string       `json:"source,omitempty"`
+	Source *string       `default:"null" json:"source"`
 	Reason string        `json:"reason"`
+}
+
+func (i InvalidParameterStandard) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *InvalidParameterStandard) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, true); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *InvalidParameterStandard) GetField() string {

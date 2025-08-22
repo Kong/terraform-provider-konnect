@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // CreateSystemAccount - The request schema to create a system account.
 type CreateSystemAccount struct {
 	// Name of the system account.
@@ -9,7 +13,18 @@ type CreateSystemAccount struct {
 	// Description of the system account. Useful when the system account name is not sufficient to differentiate one system account from another.
 	Description string `json:"description"`
 	// The system account is managed by Konnect (true/false).
-	KonnectManaged *bool `json:"konnect_managed,omitempty"`
+	KonnectManaged *bool `default:"null" json:"konnect_managed"`
+}
+
+func (c CreateSystemAccount) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateSystemAccount) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CreateSystemAccount) GetName() string {

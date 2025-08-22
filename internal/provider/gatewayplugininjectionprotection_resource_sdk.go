@@ -6,9 +6,9 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *GatewayPluginInjectionProtectionResourceModel) RefreshFromSharedInjectionProtectionPlugin(ctx context.Context, resp *shared.InjectionProtectionPlugin) diag.Diagnostics {
@@ -19,15 +19,17 @@ func (r *GatewayPluginInjectionProtectionResourceModel) RefreshFromSharedInjecti
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.InjectionProtectionPluginConfig{}
-			r.Config.CustomInjections = []tfTypes.CustomInjections{}
+			if resp.Config.CustomInjections != nil {
+				r.Config.CustomInjections = []tfTypes.CustomInjections{}
 
-			for _, customInjectionsItem := range resp.Config.CustomInjections {
-				var customInjections tfTypes.CustomInjections
+				for _, customInjectionsItem := range resp.Config.CustomInjections {
+					var customInjections tfTypes.CustomInjections
 
-				customInjections.Name = types.StringValue(customInjectionsItem.Name)
-				customInjections.Regex = types.StringValue(customInjectionsItem.Regex)
+					customInjections.Name = types.StringValue(customInjectionsItem.Name)
+					customInjections.Regex = types.StringValue(customInjectionsItem.Regex)
 
-				r.Config.CustomInjections = append(r.Config.CustomInjections, customInjections)
+					r.Config.CustomInjections = append(r.Config.CustomInjections, customInjections)
+				}
 			}
 			if resp.Config.EnforcementMode != nil {
 				r.Config.EnforcementMode = types.StringValue(string(*resp.Config.EnforcementMode))
@@ -291,18 +293,21 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToSharedInjectionProtect
 	}
 	var config *shared.InjectionProtectionPluginConfig
 	if r.Config != nil {
-		customInjections := make([]shared.CustomInjections, 0, len(r.Config.CustomInjections))
-		for _, customInjectionsItem := range r.Config.CustomInjections {
-			var name1 string
-			name1 = customInjectionsItem.Name.ValueString()
+		var customInjections []shared.CustomInjections
+		if r.Config.CustomInjections != nil {
+			customInjections = make([]shared.CustomInjections, 0, len(r.Config.CustomInjections))
+			for _, customInjectionsItem := range r.Config.CustomInjections {
+				var name1 string
+				name1 = customInjectionsItem.Name.ValueString()
 
-			var regex string
-			regex = customInjectionsItem.Regex.ValueString()
+				var regex string
+				regex = customInjectionsItem.Regex.ValueString()
 
-			customInjections = append(customInjections, shared.CustomInjections{
-				Name:  name1,
-				Regex: regex,
-			})
+				customInjections = append(customInjections, shared.CustomInjections{
+					Name:  name1,
+					Regex: regex,
+				})
+			}
 		}
 		enforcementMode := new(shared.EnforcementMode)
 		if !r.Config.EnforcementMode.IsUnknown() && !r.Config.EnforcementMode.IsNull() {

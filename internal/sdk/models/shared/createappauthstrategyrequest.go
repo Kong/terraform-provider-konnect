@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type AppAuthStrategyOpenIDConnectRequestStrategyType string
@@ -60,12 +60,23 @@ type AppAuthStrategyOpenIDConnectRequest struct {
 	StrategyType AppAuthStrategyOpenIDConnectRequestStrategyType `json:"strategy_type"`
 	// JSON-B object containing the configuration for the OIDC strategy
 	Configs       AppAuthStrategyOpenIDConnectRequestConfigs `json:"configs"`
-	DcrProviderID *string                                    `json:"dcr_provider_id,omitempty"`
+	DcrProviderID *string                                    `default:"null" json:"dcr_provider_id"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]string `json:"labels,omitempty"`
+	Labels map[string]*string `json:"labels,omitempty"`
+}
+
+func (a AppAuthStrategyOpenIDConnectRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AppAuthStrategyOpenIDConnectRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AppAuthStrategyOpenIDConnectRequest) GetName() string {
@@ -103,7 +114,7 @@ func (o *AppAuthStrategyOpenIDConnectRequest) GetDcrProviderID() *string {
 	return o.DcrProviderID
 }
 
-func (o *AppAuthStrategyOpenIDConnectRequest) GetLabels() map[string]string {
+func (o *AppAuthStrategyOpenIDConnectRequest) GetLabels() map[string]*string {
 	if o == nil {
 		return nil
 	}
@@ -164,7 +175,7 @@ type AppAuthStrategyKeyAuthRequest struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]string `json:"labels,omitempty"`
+	Labels map[string]*string `json:"labels,omitempty"`
 }
 
 func (o *AppAuthStrategyKeyAuthRequest) GetName() string {
@@ -195,7 +206,7 @@ func (o *AppAuthStrategyKeyAuthRequest) GetConfigs() AppAuthStrategyKeyAuthReque
 	return o.Configs
 }
 
-func (o *AppAuthStrategyKeyAuthRequest) GetLabels() map[string]string {
+func (o *AppAuthStrategyKeyAuthRequest) GetLabels() map[string]*string {
 	if o == nil {
 		return nil
 	}

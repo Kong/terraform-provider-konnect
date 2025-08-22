@@ -3,17 +3,28 @@
 package shared
 
 import (
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
 
 // TransitGatewayStateMetadata - Metadata describing the backing state of the transit gateway and why it may be in an erroneous state.
 type TransitGatewayStateMetadata struct {
 	// Reported status of the transit gateway from backing infrastructure.
-	ReportedStatus *string `json:"reported_status,omitempty"`
+	ReportedStatus *string `default:"null" json:"reported_status"`
 	// Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
 	//
-	Reason *string `json:"reason,omitempty"`
+	Reason *string `default:"null" json:"reason"`
+}
+
+func (t TransitGatewayStateMetadata) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TransitGatewayStateMetadata) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *TransitGatewayStateMetadata) GetReportedStatus() *string {
@@ -47,6 +58,7 @@ type AwsTransitGatewayResponse struct {
 	// - `created` - The attachment has been created but is not attached to transit gateway.
 	// - `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
 	// - `pending-acceptance` The attachment request is awaiting acceptance in customer VPC.
+	// - `pending-user-action` The attachment request is awaiting user action in customer VPC.
 	// - `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
 	// - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
 	// - `terminated` - The attachment has been fully deleted and is no longer available.

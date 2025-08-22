@@ -3,14 +3,14 @@
 package shared
 
 import (
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
 
 // CreateSystemAccountAccessToken - The request body to create a system account access token.
 type CreateSystemAccountAccessToken struct {
-	Name      *string    `json:"name,omitempty"`
-	ExpiresAt *time.Time `json:"expires_at,omitempty"`
+	Name      *string    `default:"null" json:"name"`
+	ExpiresAt *time.Time `default:"null" json:"expires_at"`
 }
 
 func (c CreateSystemAccountAccessToken) MarshalJSON() ([]byte, error) {

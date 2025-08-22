@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
 
 type DeletePortalTeamRequest struct {
 	// ID of the team.
 	TeamID string `pathParam:"style=simple,explode=false,name=teamId"`
-	// ID of the portal.
+	// The Portal identifier
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 }
 

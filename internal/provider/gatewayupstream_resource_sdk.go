@@ -6,9 +6,9 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *GatewayUpstreamResourceModel) RefreshFromSharedUpstream(ctx context.Context, resp *shared.Upstream) diag.Diagnostics {
@@ -54,7 +54,7 @@ func (r *GatewayUpstreamResourceModel) RefreshFromSharedUpstream(ctx context.Con
 			} else {
 				r.Healthchecks.Active = &tfTypes.Active{}
 				r.Healthchecks.Active.Concurrency = types.Int64PointerValue(resp.Healthchecks.Active.Concurrency)
-				if len(resp.Healthchecks.Active.Headers) > 0 {
+				if resp.Healthchecks.Active.Headers != nil {
 					r.Healthchecks.Active.Headers = make(map[string][]types.String, len(resp.Healthchecks.Active.Headers))
 					for headersKey, headersValue := range resp.Healthchecks.Active.Headers {
 						var headersResult []types.String

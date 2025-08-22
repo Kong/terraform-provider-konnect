@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // TargetWithoutParentsUpstream - The unique identifier or the name of the upstream for which to update the target.
 type TargetWithoutParentsUpstream struct {
 	ID *string `json:"id,omitempty"`
@@ -21,15 +25,26 @@ type TargetWithoutParents struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// An optional set of strings associated with the Target for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record.
-	Target *string `json:"target,omitempty"`
+	Target *string `default:"null" json:"target"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *float64 `json:"updated_at,omitempty"`
 	// The unique identifier or the name of the upstream for which to update the target.
 	Upstream *TargetWithoutParentsUpstream `json:"upstream"`
 	// The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record.
-	Weight *int64 `json:"weight,omitempty"`
+	Weight *int64 `default:"100" json:"weight"`
+}
+
+func (t TargetWithoutParents) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TargetWithoutParents) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *TargetWithoutParents) GetCreatedAt() *float64 {

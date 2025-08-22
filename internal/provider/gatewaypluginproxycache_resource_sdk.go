@@ -6,9 +6,9 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *GatewayPluginProxyCacheResourceModel) RefreshFromSharedProxyCachePlugin(ctx context.Context, resp *shared.ProxyCachePlugin) diag.Diagnostics {
@@ -46,13 +46,17 @@ func (r *GatewayPluginProxyCacheResourceModel) RefreshFromSharedProxyCachePlugin
 		}
 		r.Config.StorageTTL = types.Int64PointerValue(resp.Config.StorageTTL)
 		r.Config.Strategy = types.StringValue(string(resp.Config.Strategy))
-		r.Config.VaryHeaders = make([]types.String, 0, len(resp.Config.VaryHeaders))
-		for _, v := range resp.Config.VaryHeaders {
-			r.Config.VaryHeaders = append(r.Config.VaryHeaders, types.StringValue(v))
+		if resp.Config.VaryHeaders != nil {
+			r.Config.VaryHeaders = make([]types.String, 0, len(resp.Config.VaryHeaders))
+			for _, v := range resp.Config.VaryHeaders {
+				r.Config.VaryHeaders = append(r.Config.VaryHeaders, types.StringValue(v))
+			}
 		}
-		r.Config.VaryQueryParams = make([]types.String, 0, len(resp.Config.VaryQueryParams))
-		for _, v := range resp.Config.VaryQueryParams {
-			r.Config.VaryQueryParams = append(r.Config.VaryQueryParams, types.StringValue(v))
+		if resp.Config.VaryQueryParams != nil {
+			r.Config.VaryQueryParams = make([]types.String, 0, len(resp.Config.VaryQueryParams))
+			for _, v := range resp.Config.VaryQueryParams {
+				r.Config.VaryQueryParams = append(r.Config.VaryQueryParams, types.StringValue(v))
+			}
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -385,13 +389,19 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedProxyCachePlugin(ctx cont
 		storageTTL = nil
 	}
 	strategy := shared.ProxyCachePluginStrategy(r.Config.Strategy.ValueString())
-	varyHeaders := make([]string, 0, len(r.Config.VaryHeaders))
-	for _, varyHeadersItem := range r.Config.VaryHeaders {
-		varyHeaders = append(varyHeaders, varyHeadersItem.ValueString())
+	var varyHeaders []string
+	if r.Config.VaryHeaders != nil {
+		varyHeaders = make([]string, 0, len(r.Config.VaryHeaders))
+		for _, varyHeadersItem := range r.Config.VaryHeaders {
+			varyHeaders = append(varyHeaders, varyHeadersItem.ValueString())
+		}
 	}
-	varyQueryParams := make([]string, 0, len(r.Config.VaryQueryParams))
-	for _, varyQueryParamsItem := range r.Config.VaryQueryParams {
-		varyQueryParams = append(varyQueryParams, varyQueryParamsItem.ValueString())
+	var varyQueryParams []string
+	if r.Config.VaryQueryParams != nil {
+		varyQueryParams = make([]string, 0, len(r.Config.VaryQueryParams))
+		for _, varyQueryParamsItem := range r.Config.VaryQueryParams {
+			varyQueryParams = append(varyQueryParams, varyQueryParamsItem.ValueString())
+		}
 	}
 	config := shared.ProxyCachePluginConfig{
 		CacheControl:    cacheControl,

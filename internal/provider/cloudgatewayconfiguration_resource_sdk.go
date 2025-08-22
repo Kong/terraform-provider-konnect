@@ -6,10 +6,10 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *CloudGatewayConfigurationResourceModel) RefreshFromSharedConfigurationManifest(ctx context.Context, resp *shared.ConfigurationManifest) diag.Diagnostics {
@@ -43,9 +43,11 @@ func (r *CloudGatewayConfigurationResourceModel) RefreshFromSharedConfigurationM
 			}
 			dataplaneGroups.CloudGatewayNetworkID = types.StringValue(dataplaneGroupsItem.CloudGatewayNetworkID)
 			dataplaneGroups.CreatedAt = types.StringValue(typeconvert.TimeToString(dataplaneGroupsItem.CreatedAt))
-			dataplaneGroups.EgressIPAddresses = make([]types.String, 0, len(dataplaneGroupsItem.EgressIPAddresses))
-			for _, v := range dataplaneGroupsItem.EgressIPAddresses {
-				dataplaneGroups.EgressIPAddresses = append(dataplaneGroups.EgressIPAddresses, types.StringValue(v))
+			if dataplaneGroupsItem.EgressIPAddresses != nil {
+				dataplaneGroups.EgressIPAddresses = make([]types.String, 0, len(dataplaneGroupsItem.EgressIPAddresses))
+				for _, v := range dataplaneGroupsItem.EgressIPAddresses {
+					dataplaneGroups.EgressIPAddresses = append(dataplaneGroups.EgressIPAddresses, types.StringValue(v))
+				}
 			}
 			dataplaneGroups.Environment = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
 
@@ -58,9 +60,11 @@ func (r *CloudGatewayConfigurationResourceModel) RefreshFromSharedConfigurationM
 				dataplaneGroups.Environment = append(dataplaneGroups.Environment, environment)
 			}
 			dataplaneGroups.ID = types.StringValue(dataplaneGroupsItem.ID)
-			dataplaneGroups.PrivateIPAddresses = make([]types.String, 0, len(dataplaneGroupsItem.PrivateIPAddresses))
-			for _, v := range dataplaneGroupsItem.PrivateIPAddresses {
-				dataplaneGroups.PrivateIPAddresses = append(dataplaneGroups.PrivateIPAddresses, types.StringValue(v))
+			if dataplaneGroupsItem.PrivateIPAddresses != nil {
+				dataplaneGroups.PrivateIPAddresses = make([]types.String, 0, len(dataplaneGroupsItem.PrivateIPAddresses))
+				for _, v := range dataplaneGroupsItem.PrivateIPAddresses {
+					dataplaneGroups.PrivateIPAddresses = append(dataplaneGroups.PrivateIPAddresses, types.StringValue(v))
+				}
 			}
 			dataplaneGroups.Provider = types.StringValue(string(dataplaneGroupsItem.Provider))
 			dataplaneGroups.Region = types.StringValue(dataplaneGroupsItem.Region)

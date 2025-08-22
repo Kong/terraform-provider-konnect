@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type JqPluginAfter struct {
@@ -53,8 +53,19 @@ type JqPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (j JqPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JqPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *JqPluginPartials) GetID() *string {
@@ -79,11 +90,22 @@ func (o *JqPluginPartials) GetPath() *string {
 }
 
 type RequestJqProgramOptions struct {
-	ASCIIOutput   *bool `json:"ascii_output,omitempty"`
-	CompactOutput *bool `json:"compact_output,omitempty"`
-	JoinOutput    *bool `json:"join_output,omitempty"`
-	RawOutput     *bool `json:"raw_output,omitempty"`
-	SortKeys      *bool `json:"sort_keys,omitempty"`
+	ASCIIOutput   *bool `default:"false" json:"ascii_output"`
+	CompactOutput *bool `default:"true" json:"compact_output"`
+	JoinOutput    *bool `default:"false" json:"join_output"`
+	RawOutput     *bool `default:"false" json:"raw_output"`
+	SortKeys      *bool `default:"false" json:"sort_keys"`
+}
+
+func (r RequestJqProgramOptions) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestJqProgramOptions) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestJqProgramOptions) GetASCIIOutput() *bool {
@@ -122,11 +144,22 @@ func (o *RequestJqProgramOptions) GetSortKeys() *bool {
 }
 
 type ResponseJqProgramOptions struct {
-	ASCIIOutput   *bool `json:"ascii_output,omitempty"`
-	CompactOutput *bool `json:"compact_output,omitempty"`
-	JoinOutput    *bool `json:"join_output,omitempty"`
-	RawOutput     *bool `json:"raw_output,omitempty"`
-	SortKeys      *bool `json:"sort_keys,omitempty"`
+	ASCIIOutput   *bool `default:"false" json:"ascii_output"`
+	CompactOutput *bool `default:"true" json:"compact_output"`
+	JoinOutput    *bool `default:"false" json:"join_output"`
+	RawOutput     *bool `default:"false" json:"raw_output"`
+	SortKeys      *bool `default:"false" json:"sort_keys"`
+}
+
+func (r ResponseJqProgramOptions) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseJqProgramOptions) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *ResponseJqProgramOptions) GetASCIIOutput() *bool {
@@ -166,12 +199,23 @@ func (o *ResponseJqProgramOptions) GetSortKeys() *bool {
 
 type JqPluginConfig struct {
 	RequestIfMediaType       []string                  `json:"request_if_media_type,omitempty"`
-	RequestJqProgram         *string                   `json:"request_jq_program,omitempty"`
-	RequestJqProgramOptions  *RequestJqProgramOptions  `json:"request_jq_program_options,omitempty"`
+	RequestJqProgram         *string                   `default:"null" json:"request_jq_program"`
+	RequestJqProgramOptions  *RequestJqProgramOptions  `json:"request_jq_program_options"`
 	ResponseIfMediaType      []string                  `json:"response_if_media_type,omitempty"`
 	ResponseIfStatusCode     []int64                   `json:"response_if_status_code,omitempty"`
-	ResponseJqProgram        *string                   `json:"response_jq_program,omitempty"`
-	ResponseJqProgramOptions *ResponseJqProgramOptions `json:"response_jq_program_options,omitempty"`
+	ResponseJqProgram        *string                   `default:"null" json:"response_jq_program"`
+	ResponseJqProgramOptions *ResponseJqProgramOptions `json:"response_jq_program_options"`
+}
+
+func (j JqPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JqPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *JqPluginConfig) GetRequestIfMediaType() []string {
@@ -296,24 +340,24 @@ type JqPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string           `json:"instance_name,omitempty"`
+	InstanceName *string           `default:"null" json:"instance_name"`
 	name         string            `const:"jq" json:"name"`
-	Ordering     *JqPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *JqPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []JqPluginPartials `json:"partials,omitempty"`
+	Partials []JqPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64          `json:"updated_at,omitempty"`
-	Config    *JqPluginConfig `json:"config,omitempty"`
+	Config    *JqPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *JqPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
-	Protocols []JqPluginProtocols `json:"protocols,omitempty"`
+	Protocols []JqPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *JqPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

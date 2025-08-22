@@ -6,10 +6,10 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *PortalClassicListDataSourceModel) RefreshFromSharedV2ListPortalsResponse(ctx context.Context, resp *shared.V2ListPortalsResponse) diag.Diagnostics {
@@ -37,7 +37,7 @@ func (r *PortalClassicListDataSourceModel) RefreshFromSharedV2ListPortalsRespons
 			if len(dataItem.Labels) > 0 {
 				data.Labels = make(map[string]types.String, len(dataItem.Labels))
 				for key, value := range dataItem.Labels {
-					data.Labels[key] = types.StringValue(value)
+					data.Labels[key] = types.StringPointerValue(value)
 				}
 			}
 			data.Name = types.StringValue(dataItem.Name)

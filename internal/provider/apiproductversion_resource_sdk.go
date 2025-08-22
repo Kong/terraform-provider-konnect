@@ -6,10 +6,10 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *APIProductVersionResourceModel) RefreshFromSharedAPIProductVersion(ctx context.Context, resp *shared.APIProductVersion) diag.Diagnostics {
@@ -30,7 +30,7 @@ func (r *APIProductVersionResourceModel) RefreshFromSharedAPIProductVersion(ctx 
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringValue(value)
+				r.Labels[key] = types.StringPointerValue(value)
 			}
 		}
 		r.Name = types.StringValue(resp.Name)
@@ -157,11 +157,14 @@ func (r *APIProductVersionResourceModel) ToSharedCreateAPIProductVersionDTO(ctx 
 	} else {
 		deprecated = nil
 	}
-	labels := make(map[string]string)
+	labels := make(map[string]*string)
 	for labelsKey, labelsValue := range r.Labels {
-		var labelsInst string
-		labelsInst = labelsValue.ValueString()
-
+		labelsInst := new(string)
+		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
+			*labelsInst = labelsValue.ValueString()
+		} else {
+			labelsInst = nil
+		}
 		labels[labelsKey] = labelsInst
 	}
 	var gatewayService *shared.GatewayServicePayload

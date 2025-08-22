@@ -3,12 +3,12 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
 
 type GetPortalAppearanceRequest struct {
-	// ID of the portal.
+	// The Portal identifier
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 }
 

@@ -6,9 +6,9 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *GatewayPluginCorsResourceModel) RefreshFromSharedCorsPlugin(ctx context.Context, resp *shared.CorsPlugin) diag.Diagnostics {
@@ -21,22 +21,28 @@ func (r *GatewayPluginCorsResourceModel) RefreshFromSharedCorsPlugin(ctx context
 			r.Config = &tfTypes.CorsPluginConfig{}
 			r.Config.AllowOriginAbsent = types.BoolPointerValue(resp.Config.AllowOriginAbsent)
 			r.Config.Credentials = types.BoolPointerValue(resp.Config.Credentials)
-			r.Config.ExposedHeaders = make([]types.String, 0, len(resp.Config.ExposedHeaders))
-			for _, v := range resp.Config.ExposedHeaders {
-				r.Config.ExposedHeaders = append(r.Config.ExposedHeaders, types.StringValue(v))
+			if resp.Config.ExposedHeaders != nil {
+				r.Config.ExposedHeaders = make([]types.String, 0, len(resp.Config.ExposedHeaders))
+				for _, v := range resp.Config.ExposedHeaders {
+					r.Config.ExposedHeaders = append(r.Config.ExposedHeaders, types.StringValue(v))
+				}
 			}
-			r.Config.Headers = make([]types.String, 0, len(resp.Config.Headers))
-			for _, v := range resp.Config.Headers {
-				r.Config.Headers = append(r.Config.Headers, types.StringValue(v))
+			if resp.Config.Headers != nil {
+				r.Config.Headers = make([]types.String, 0, len(resp.Config.Headers))
+				for _, v := range resp.Config.Headers {
+					r.Config.Headers = append(r.Config.Headers, types.StringValue(v))
+				}
 			}
 			r.Config.MaxAge = types.Float64PointerValue(resp.Config.MaxAge)
 			r.Config.Methods = make([]types.String, 0, len(resp.Config.Methods))
 			for _, v := range resp.Config.Methods {
 				r.Config.Methods = append(r.Config.Methods, types.StringValue(string(v)))
 			}
-			r.Config.Origins = make([]types.String, 0, len(resp.Config.Origins))
-			for _, v := range resp.Config.Origins {
-				r.Config.Origins = append(r.Config.Origins, types.StringValue(v))
+			if resp.Config.Origins != nil {
+				r.Config.Origins = make([]types.String, 0, len(resp.Config.Origins))
+				for _, v := range resp.Config.Origins {
+					r.Config.Origins = append(r.Config.Origins, types.StringValue(v))
+				}
 			}
 			r.Config.PreflightContinue = types.BoolPointerValue(resp.Config.PreflightContinue)
 			r.Config.PrivateNetwork = types.BoolPointerValue(resp.Config.PrivateNetwork)
@@ -299,13 +305,19 @@ func (r *GatewayPluginCorsResourceModel) ToSharedCorsPlugin(ctx context.Context)
 		} else {
 			credentials = nil
 		}
-		exposedHeaders := make([]string, 0, len(r.Config.ExposedHeaders))
-		for _, exposedHeadersItem := range r.Config.ExposedHeaders {
-			exposedHeaders = append(exposedHeaders, exposedHeadersItem.ValueString())
+		var exposedHeaders []string
+		if r.Config.ExposedHeaders != nil {
+			exposedHeaders = make([]string, 0, len(r.Config.ExposedHeaders))
+			for _, exposedHeadersItem := range r.Config.ExposedHeaders {
+				exposedHeaders = append(exposedHeaders, exposedHeadersItem.ValueString())
+			}
 		}
-		headers := make([]string, 0, len(r.Config.Headers))
-		for _, headersItem := range r.Config.Headers {
-			headers = append(headers, headersItem.ValueString())
+		var headers []string
+		if r.Config.Headers != nil {
+			headers = make([]string, 0, len(r.Config.Headers))
+			for _, headersItem := range r.Config.Headers {
+				headers = append(headers, headersItem.ValueString())
+			}
 		}
 		maxAge := new(float64)
 		if !r.Config.MaxAge.IsUnknown() && !r.Config.MaxAge.IsNull() {
@@ -317,9 +329,12 @@ func (r *GatewayPluginCorsResourceModel) ToSharedCorsPlugin(ctx context.Context)
 		for _, methodsItem := range r.Config.Methods {
 			methods = append(methods, shared.Methods(methodsItem.ValueString()))
 		}
-		origins := make([]string, 0, len(r.Config.Origins))
-		for _, originsItem := range r.Config.Origins {
-			origins = append(origins, originsItem.ValueString())
+		var origins []string
+		if r.Config.Origins != nil {
+			origins = make([]string, 0, len(r.Config.Origins))
+			for _, originsItem := range r.Config.Origins {
+				origins = append(origins, originsItem.ValueString())
+			}
 		}
 		preflightContinue := new(bool)
 		if !r.Config.PreflightContinue.IsUnknown() && !r.Config.PreflightContinue.IsNull() {

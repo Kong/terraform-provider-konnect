@@ -14,8 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -53,7 +52,6 @@ func (r *GatewayDataPlaneClientCertificateResource) Schema(ctx context.Context, 
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `JSON escaped string of the certificate. Requires replacement if changed.`,
 			},

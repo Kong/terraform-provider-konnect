@@ -1,0 +1,23 @@
+resource "konnect_portal_classic" "my_portal" {
+  name                      = "My New Portal for appearance nullify"
+  auto_approve_applications = false
+  auto_approve_developers   = false
+  custom_domain             = "portal.example-nullify-appearance.com"
+  is_public                 = false
+  rbac_enabled              = false
+}
+
+resource "konnect_portal_appearance" "nullify_appearance_test" {
+  portal_id = konnect_portal_classic.my_portal.id
+  images = {
+    catalog_cover = {
+      "data"     = "data:image/png;base64,AAAAHGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZgAAAOptZXRhAAAAAAAAACFoZGxyAAAAAAAAAABwaWN0AAAAAAAAAAAAAAAAAAAAAA5waXRtAAAAAAABAAAAImlsb2MAAAAAREAAAQABAAAAAAEOAAEAAAAAAAABFwAAACNpaW5mAAAAAAABAAAAFWluZmUCAAAAAAEAAGF2MDEAAAAAamlwcnAAAABLaXBjbwAAABNjb2xybmNseAABAA0ABoAAAAAMYXYxQ4EADAAAAAAUaXNwZQAAAAAAAAFoAAABZQAAABBwaXhpAAAAAAMICAgAAAAXaXBtYQAAAAAAAAABAAEEAYIDBAAAAR9tZGF0EgAKChgiLPZGCAhoNCAyhgIRQAEEEEFAtF684hmwEq9iyzdtLrTlKmftfA5/uTHWKKbr0z+BdfqHh9CQCmHfZj7xS9+algZ9VfLEhMN7ZVwRwe86yAUxs1YWrxw1MwXsTrg0zdS/QMG9qT/TPTe2JE4KHJ0ZgT/yzo2gMnZBJVlGsRRF3B7GfVABBu9DjuGf8bZ6yCrPOfT17wwm2RFpbu7u1uxcBQuxAh+bK4Izw6IdHkeI+DL+e0AE3HwZlRyb8g5Ok6pE40FRtVtepURmt+BqkHsOihpUul05pPsdoLktPasYDkDf5MaSrP0256mvI4OGn3Goq34YakB1TpmZzDxmZOGJW6OxblU1m152Ox56uWUPIDYK"
+      filename = "red-square-banner.png"
+    }
+
+    favicon = {
+      data     = "data:image/png;base64,AAAAHGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZgAAAOptZXRhAAAAAAAAACFoZGxyAAAAAAAAAABwaWN0AAAAAAAAAAAAAAAAAAAAAA5waXRtAAAAAAABAAAAImlsb2MAAAAAREAAAQABAAAAAAEOAAEAAAAAAAABFwAAACNpaW5mAAAAAAABAAAAFWluZmUCAAAAAAEAAGF2MDEAAAAAamlwcnAAAABLaXBjbwAAABNjb2xybmNseAABAA0ABoAAAAAMYXYxQ4EADAAAAAAUaXNwZQAAAAAAAAFoAAABZQAAABBwaXhpAAAAAAMICAgAAAAXaXBtYQAAAAAAAAABAAEEAYIDBAAAAR9tZGF0EgAKChgiLPZGCAhoNCAyhgIRQAEEEEFAtF684hmwEq9iyzdtLrTlKmftfA5/uTHWKKbr0z+BdfqHh9CQCmHfZj7xS9+algZ9VfLEhMN7ZVwRwe86yAUxs1YWrxw1MwXsTrg0zdS/QMG9qT/TPTe2JE4KHJ0ZgT/yzo2gMnZBJVlGsRRF3B7GfVABBu9DjuGf8bZ6yCrPOfT17wwm2RFpbu7u1uxcBQuxAh+bK4Izw6IdHkeI+DL+e0AE3HwZlRyb8g5Ok6pE40FRtVtepURmt+BqkHsOihpUul05pPsdoLktPasYDkDf5MaSrP0256mvI4OGn3Goq34YakB1TpmZzDxmZOGJW6OxblU1m152Ox56uWUPIDYK"
+      filename = "red-square.png"
+    }
+  }
+}

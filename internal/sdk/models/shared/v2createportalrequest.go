@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // V2CreatePortalRequest - Create a portal.
 type V2CreatePortalRequest struct {
 	// The name of the portal, used to distinguish it from other portals. Name must be unique.
@@ -9,26 +13,37 @@ type V2CreatePortalRequest struct {
 	// The display name of the portal. This value will be the portal's `name` in Portal API.
 	DisplayName *string `json:"display_name,omitempty"`
 	// The description of the portal.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"null" json:"description"`
 	// Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.
-	IsPublic *bool `json:"is_public,omitempty"`
+	IsPublic *bool `default:"null" json:"is_public"`
 	// Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for products until unless assigned to teams with access to view and consume specific products.
-	RbacEnabled *bool `json:"rbac_enabled,omitempty"`
+	RbacEnabled *bool `default:"null" json:"rbac_enabled"`
 	// Whether the requests from applications to register for products will be automatically approved, or if they will be set to pending until approved by an admin.
-	AutoApproveApplications *bool `json:"auto_approve_applications,omitempty"`
+	AutoApproveApplications *bool `default:"null" json:"auto_approve_applications"`
 	// Whether the developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.
-	AutoApproveDevelopers *bool `json:"auto_approve_developers,omitempty"`
+	AutoApproveDevelopers *bool `default:"null" json:"auto_approve_developers"`
 	// The custom domain to access the developer portal. A CNAME for the portal's default domain must be able to be set for the custom domain for it to be valid. After setting a valid CNAME, an SSL/TLS certificate will be automatically manged for the custom domain, and traffic will be able to use the custom domain to route to the portal's web client and API.
-	CustomDomain *string `json:"custom_domain,omitempty"`
+	CustomDomain *string `default:"null" json:"custom_domain"`
 	// The custom domain to access a self-hosted customized developer portal client. If this is set, the Konnect-hosted portal will no longer be available.  `custom_domain` must be also set for this value to be set. See https://github.com/Kong/konnect-portal for information on how to get started deploying and customizing your own Konnect portal.
-	CustomClientDomain *string `json:"custom_client_domain,omitempty"`
+	CustomClientDomain *string `default:"null" json:"custom_client_domain"`
 	// Default strategy ID applied on applications for the portal
 	DefaultApplicationAuthStrategyID *string `json:"default_application_auth_strategy_id,omitempty"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]string `json:"labels,omitempty"`
+	Labels map[string]*string `json:"labels,omitempty"`
+}
+
+func (v V2CreatePortalRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *V2CreatePortalRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *V2CreatePortalRequest) GetName() string {
@@ -101,7 +116,7 @@ func (o *V2CreatePortalRequest) GetDefaultApplicationAuthStrategyID() *string {
 	return o.DefaultApplicationAuthStrategyID
 }
 
-func (o *V2CreatePortalRequest) GetLabels() map[string]string {
+func (o *V2CreatePortalRequest) GetLabels() map[string]*string {
 	if o == nil {
 		return nil
 	}

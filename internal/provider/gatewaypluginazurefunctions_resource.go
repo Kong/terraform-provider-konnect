@@ -11,15 +11,18 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -66,7 +69,6 @@ func (r *GatewayPluginAzureFunctionsResource) Schema(ctx context.Context, req re
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"apikey": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The apikey to access the Azure resources. If provided, it is injected as the ` + "`" + `x-functions-key` + "`" + ` header.`,
 					},
@@ -75,7 +77,6 @@ func (r *GatewayPluginAzureFunctionsResource) Schema(ctx context.Context, req re
 						Description: `The Azure app name.`,
 					},
 					"clientid": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The ` + "`" + `clientid` + "`" + ` to access the Azure resources. If provided, it is injected as the ` + "`" + `x-functions-clientid` + "`" + ` header.`,
 					},
@@ -86,32 +87,38 @@ func (r *GatewayPluginAzureFunctionsResource) Schema(ctx context.Context, req re
 					"hostdomain": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The domain where the function resides.`,
+						Default:     stringdefault.StaticString(`azurewebsites.net`),
+						Description: `The domain where the function resides. Default: "azurewebsites.net"`,
 					},
 					"https": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Use of HTTPS to connect with the Azure Functions server.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `Use of HTTPS to connect with the Azure Functions server. Default: true`,
 					},
 					"https_verify": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Set to ` + "`" + `true` + "`" + ` to authenticate the Azure Functions server.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Set to ` + "`" + `true` + "`" + ` to authenticate the Azure Functions server. Default: false`,
 					},
 					"keepalive": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Time in milliseconds during which an idle connection to the Azure Functions server lives before being closed.`,
+						Default:     float64default.StaticFloat64(60000),
+						Description: `Time in milliseconds during which an idle connection to the Azure Functions server lives before being closed. Default: 60000`,
 					},
 					"routeprefix": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Route prefix to use.`,
+						Default:     stringdefault.StaticString(`api`),
+						Description: `Route prefix to use. Default: "api"`,
 					},
 					"timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Timeout in milliseconds before closing a connection to the Azure Functions server.`,
+						Default:     float64default.StaticFloat64(600000),
+						Description: `Timeout in milliseconds before closing a connection to the Azure Functions server. Default: 600000`,
 					},
 				},
 			},
@@ -144,7 +151,8 @@ func (r *GatewayPluginAzureFunctionsResource) Schema(ctx context.Context, req re
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -152,13 +160,28 @@ func (r *GatewayPluginAzureFunctionsResource) Schema(ctx context.Context, req re
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
@@ -185,7 +208,6 @@ func (r *GatewayPluginAzureFunctionsResource) Schema(ctx context.Context, req re
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -198,12 +220,10 @@ func (r *GatewayPluginAzureFunctionsResource) Schema(ctx context.Context, req re
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},
@@ -245,7 +265,6 @@ func (r *GatewayPluginAzureFunctionsResource) Schema(ctx context.Context, req re
 				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

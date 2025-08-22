@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
 
@@ -11,7 +11,7 @@ type CreateCertificateRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Description of the new Certificate for creation
-	Certificate shared.Certificate `request:"mediaType=application/json"`
+	Certificate shared.CertificateInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateCertificateRequest) GetControlPlaneID() string {
@@ -21,9 +21,9 @@ func (o *CreateCertificateRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateCertificateRequest) GetCertificate() shared.Certificate {
+func (o *CreateCertificateRequest) GetCertificate() shared.CertificateInput {
 	if o == nil {
-		return shared.Certificate{}
+		return shared.CertificateInput{}
 	}
 	return o.Certificate
 }

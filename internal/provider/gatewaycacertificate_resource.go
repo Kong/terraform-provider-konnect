@@ -14,7 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -56,7 +56,6 @@ func (r *GatewayCACertificateResource) Schema(ctx context.Context, req resource.
 			},
 			"cert_digest": schema.StringAttribute{
 				Computed:    true,
-				Optional:    true,
 				Description: `SHA256 hex digest of the public certificate. This field is read-only and it cannot be set by the caller, the value is automatically computed.`,
 			},
 			"control_plane_id": schema.StringAttribute{
@@ -77,7 +76,6 @@ func (r *GatewayCACertificateResource) Schema(ctx context.Context, req resource.
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Certificate for grouping and filtering.`,

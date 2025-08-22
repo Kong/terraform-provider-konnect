@@ -15,7 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -55,7 +55,6 @@ func (r *GatewayVaultResource) Schema(ctx context.Context, req resource.SchemaRe
 		Attributes: map[string]schema.Attribute{
 			"config": schema.StringAttribute{
 				CustomType:  jsontypes.NormalizedType{},
-				Computed:    true,
 				Optional:    true,
 				Description: `The configuration properties for the Vault which can be found on the vaults' documentation page. Parsed as JSON.`,
 			},
@@ -72,7 +71,6 @@ func (r *GatewayVaultResource) Schema(ctx context.Context, req resource.SchemaRe
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"description": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The description of the Vault entity.`,
 			},
@@ -90,7 +88,6 @@ func (r *GatewayVaultResource) Schema(ctx context.Context, req resource.SchemaRe
 				Description: `The unique prefix (or identifier) for this Vault configuration. The prefix is used to load the right Vault configuration and implementation when referencing secrets with the other entities.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Vault for grouping and filtering.`,

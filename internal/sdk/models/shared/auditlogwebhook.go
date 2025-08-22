@@ -3,20 +3,20 @@
 package shared
 
 import (
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
 
 // AuditLogWebhook - Get response for audit log webhook
 type AuditLogWebhook struct {
 	// The endpoint that will receive audit log messages.
-	Endpoint *string `json:"endpoint,omitempty"`
+	Endpoint *string `default:"null" json:"endpoint"`
 	// Indicates whether audit data should be sent to the webhook.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"null" json:"enabled"`
 	// The output format of each log messages.
 	LogFormat *LogFormat `default:"cef" json:"log_format"`
 	// Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
-	SkipSslVerification *bool `json:"skip_ssl_verification,omitempty"`
+	SkipSslVerification *bool `default:"false" json:"skip_ssl_verification"`
 	// Timestamp when this webhook was last updated. Initial value is 0001-01-01T00:00:0Z.
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }

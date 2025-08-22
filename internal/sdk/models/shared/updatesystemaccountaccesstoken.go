@@ -2,9 +2,24 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type UpdateSystemAccountAccessToken struct {
 	// Name of the system account access token.
-	Name *string `json:"name,omitempty"`
+	Name *string `default:"null" json:"name"`
+}
+
+func (u UpdateSystemAccountAccessToken) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateSystemAccountAccessToken) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpdateSystemAccountAccessToken) GetName() *string {

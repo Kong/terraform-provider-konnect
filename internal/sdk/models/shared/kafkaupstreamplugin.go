@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type KafkaUpstreamPluginAfter struct {
@@ -53,8 +53,19 @@ type KafkaUpstreamPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (k KafkaUpstreamPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaUpstreamPluginPartials) GetID() *string {
@@ -136,13 +147,24 @@ type KafkaUpstreamPluginAuthentication struct {
 	// The SASL authentication mechanism.  Supported options: `PLAIN`, `SCRAM-SHA-256`, or `SCRAM-SHA-512`.
 	Mechanism *KafkaUpstreamPluginMechanism `json:"mechanism,omitempty"`
 	// Password for SASL authentication.
-	Password *string `json:"password,omitempty"`
+	Password *string `default:"null" json:"password"`
 	// The authentication strategy for the plugin, the only option for the value is `sasl`.
 	Strategy *KafkaUpstreamPluginStrategy `json:"strategy,omitempty"`
 	// Enable this to indicate `DelegationToken` authentication.
-	Tokenauth *bool `json:"tokenauth,omitempty"`
+	Tokenauth *bool `default:"null" json:"tokenauth"`
 	// Username for SASL authentication.
-	User *string `json:"user,omitempty"`
+	User *string `default:"null" json:"user"`
+}
+
+func (k KafkaUpstreamPluginAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaUpstreamPluginAuthentication) GetMechanism() *KafkaUpstreamPluginMechanism {
@@ -278,9 +300,20 @@ func (e *KafkaUpstreamPluginMode) UnmarshalJSON(data []byte) error {
 }
 
 type KafkaUpstreamPluginConfigAuthentication struct {
-	Basic *KafkaUpstreamPluginBasic `json:"basic,omitempty"`
+	Basic *KafkaUpstreamPluginBasic `json:"basic"`
 	// Authentication mode to use with the schema registry.
-	Mode *KafkaUpstreamPluginMode `json:"mode,omitempty"`
+	Mode *KafkaUpstreamPluginMode `default:"none" json:"mode"`
+}
+
+func (k KafkaUpstreamPluginConfigAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginConfigAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaUpstreamPluginConfigAuthentication) GetBasic() *KafkaUpstreamPluginBasic {
@@ -299,9 +332,20 @@ func (o *KafkaUpstreamPluginConfigAuthentication) GetMode() *KafkaUpstreamPlugin
 
 type KafkaUpstreamPluginKeySchema struct {
 	// The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
-	SchemaVersion *string `json:"schema_version,omitempty"`
+	SchemaVersion *string `default:"null" json:"schema_version"`
 	// The name of the subject
-	SubjectName *string `json:"subject_name,omitempty"`
+	SubjectName *string `default:"null" json:"subject_name"`
+}
+
+func (k KafkaUpstreamPluginKeySchema) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginKeySchema) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaUpstreamPluginKeySchema) GetSchemaVersion() *string {
@@ -320,9 +364,20 @@ func (o *KafkaUpstreamPluginKeySchema) GetSubjectName() *string {
 
 type KafkaUpstreamPluginValueSchema struct {
 	// The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
-	SchemaVersion *string `json:"schema_version,omitempty"`
+	SchemaVersion *string `default:"null" json:"schema_version"`
 	// The name of the subject
-	SubjectName *string `json:"subject_name,omitempty"`
+	SubjectName *string `default:"null" json:"subject_name"`
+}
+
+func (k KafkaUpstreamPluginValueSchema) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginValueSchema) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaUpstreamPluginValueSchema) GetSchemaVersion() *string {
@@ -341,14 +396,25 @@ func (o *KafkaUpstreamPluginValueSchema) GetSubjectName() *string {
 
 type KafkaUpstreamPluginConfluent struct {
 	Authentication KafkaUpstreamPluginConfigAuthentication `json:"authentication"`
-	KeySchema      *KafkaUpstreamPluginKeySchema           `json:"key_schema,omitempty"`
+	KeySchema      *KafkaUpstreamPluginKeySchema           `json:"key_schema"`
 	// Set to false to disable SSL certificate verification when connecting to the schema registry.
-	SslVerify *bool `json:"ssl_verify,omitempty"`
+	SslVerify *bool `default:"true" json:"ssl_verify"`
 	// The TTL in seconds for the schema registry cache.
-	TTL *float64 `json:"ttl,omitempty"`
+	TTL *float64 `default:"null" json:"ttl"`
 	// The URL of the schema registry.
-	URL         *string                         `json:"url,omitempty"`
-	ValueSchema *KafkaUpstreamPluginValueSchema `json:"value_schema,omitempty"`
+	URL         *string                         `default:"null" json:"url"`
+	ValueSchema *KafkaUpstreamPluginValueSchema `json:"value_schema"`
+}
+
+func (k KafkaUpstreamPluginConfluent) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginConfluent) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaUpstreamPluginConfluent) GetAuthentication() KafkaUpstreamPluginConfigAuthentication {
@@ -395,7 +461,7 @@ func (o *KafkaUpstreamPluginConfluent) GetValueSchema() *KafkaUpstreamPluginValu
 
 // KafkaUpstreamPluginSchemaRegistry - The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
 type KafkaUpstreamPluginSchemaRegistry struct {
-	Confluent *KafkaUpstreamPluginConfluent `json:"confluent,omitempty"`
+	Confluent *KafkaUpstreamPluginConfluent `json:"confluent"`
 }
 
 func (o *KafkaUpstreamPluginSchemaRegistry) GetConfluent() *KafkaUpstreamPluginConfluent {
@@ -407,9 +473,20 @@ func (o *KafkaUpstreamPluginSchemaRegistry) GetConfluent() *KafkaUpstreamPluginC
 
 type KafkaUpstreamPluginSecurity struct {
 	// UUID of certificate entity for mTLS authentication.
-	CertificateID *string `json:"certificate_id,omitempty"`
+	CertificateID *string `default:"null" json:"certificate_id"`
 	// Enables TLS.
-	Ssl *bool `json:"ssl,omitempty"`
+	Ssl *bool `default:"null" json:"ssl"`
+}
+
+func (k KafkaUpstreamPluginSecurity) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginSecurity) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaUpstreamPluginSecurity) GetCertificateID() *string {
@@ -428,54 +505,65 @@ func (o *KafkaUpstreamPluginSecurity) GetSsl() *bool {
 
 type KafkaUpstreamPluginConfig struct {
 	// The list of allowed topic names to which messages can be sent. The default topic configured in the `topic` field is always allowed, regardless of its inclusion in `allowed_topics`.
-	AllowedTopics  []string                           `json:"allowed_topics,omitempty"`
-	Authentication *KafkaUpstreamPluginAuthentication `json:"authentication,omitempty"`
+	AllowedTopics  []string                           `json:"allowed_topics"`
+	Authentication *KafkaUpstreamPluginAuthentication `json:"authentication"`
 	// Set of bootstrap brokers in a `{host: host, port: port}` list format.
-	BootstrapServers []KafkaUpstreamPluginBootstrapServers `json:"bootstrap_servers,omitempty"`
+	BootstrapServers []KafkaUpstreamPluginBootstrapServers `json:"bootstrap_servers"`
 	// An identifier for the Kafka cluster. By default, this field generates a random string. You can also set your own custom cluster identifier.  If more than one Kafka plugin is configured without a `cluster_name` (that is, if the default autogenerated value is removed), these plugins will use the same producer, and by extension, the same cluster. Logs will be sent to the leader of the cluster.
-	ClusterName *string `json:"cluster_name,omitempty"`
+	ClusterName *string `default:"null" json:"cluster_name"`
 	// Include the request body in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.
-	ForwardBody *bool `json:"forward_body,omitempty"`
+	ForwardBody *bool `default:"true" json:"forward_body"`
 	// Include the request headers in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.
-	ForwardHeaders *bool `json:"forward_headers,omitempty"`
+	ForwardHeaders *bool `default:"false" json:"forward_headers"`
 	// Include the request method in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.
-	ForwardMethod *bool `json:"forward_method,omitempty"`
+	ForwardMethod *bool `default:"false" json:"forward_method"`
 	// Include the request URI and URI arguments (as in, query arguments) in the message. At least one of these must be true: `forward_method`, `forward_uri`, `forward_headers`, `forward_body`.
-	ForwardURI *bool `json:"forward_uri,omitempty"`
+	ForwardURI *bool `default:"false" json:"forward_uri"`
 	// Keepalive timeout in milliseconds.
-	Keepalive        *int64 `json:"keepalive,omitempty"`
-	KeepaliveEnabled *bool  `json:"keepalive_enabled,omitempty"`
+	Keepalive        *int64 `default:"60000" json:"keepalive"`
+	KeepaliveEnabled *bool  `default:"false" json:"keepalive_enabled"`
 	// The request query parameter name that contains the Kafka message key. If specified, messages with the same key will be sent to the same Kafka partition, ensuring consistent ordering.
-	KeyQueryArg *string `json:"key_query_arg,omitempty"`
+	KeyQueryArg *string `default:"null" json:"key_query_arg"`
 	// The Lua functions that manipulates the message being sent to the Kafka topic.
-	MessageByLuaFunctions []string `json:"message_by_lua_functions,omitempty"`
+	MessageByLuaFunctions []string `json:"message_by_lua_functions"`
 	// Flag to enable asynchronous mode.
-	ProducerAsync *bool `json:"producer_async,omitempty"`
+	ProducerAsync *bool `default:"true" json:"producer_async"`
 	// Maximum number of messages that can be buffered in memory in asynchronous mode.
-	ProducerAsyncBufferingLimitsMessagesInMemory *int64 `json:"producer_async_buffering_limits_messages_in_memory,omitempty"`
+	ProducerAsyncBufferingLimitsMessagesInMemory *int64 `default:"50000" json:"producer_async_buffering_limits_messages_in_memory"`
 	// Maximum time interval in milliseconds between buffer flushes in asynchronous mode.
-	ProducerAsyncFlushTimeout *int64 `json:"producer_async_flush_timeout,omitempty"`
+	ProducerAsyncFlushTimeout *int64 `default:"1000" json:"producer_async_flush_timeout"`
 	// The number of acknowledgments the producer requires the leader to have received before considering a request complete. Allowed values: 0 for no acknowledgments; 1 for only the leader; and -1 for the full ISR (In-Sync Replica set).
-	ProducerRequestAcks *KafkaUpstreamPluginProducerRequestAcks `json:"producer_request_acks,omitempty"`
+	ProducerRequestAcks *KafkaUpstreamPluginProducerRequestAcks `default:"1" json:"producer_request_acks"`
 	// Maximum size of a Produce request in bytes.
-	ProducerRequestLimitsBytesPerRequest *int64 `json:"producer_request_limits_bytes_per_request,omitempty"`
+	ProducerRequestLimitsBytesPerRequest *int64 `default:"1048576" json:"producer_request_limits_bytes_per_request"`
 	// Maximum number of messages to include into a single producer request.
-	ProducerRequestLimitsMessagesPerRequest *int64 `json:"producer_request_limits_messages_per_request,omitempty"`
+	ProducerRequestLimitsMessagesPerRequest *int64 `default:"200" json:"producer_request_limits_messages_per_request"`
 	// Backoff interval between retry attempts in milliseconds.
-	ProducerRequestRetriesBackoffTimeout *int64 `json:"producer_request_retries_backoff_timeout,omitempty"`
+	ProducerRequestRetriesBackoffTimeout *int64 `default:"100" json:"producer_request_retries_backoff_timeout"`
 	// Maximum number of retry attempts per single Produce request.
-	ProducerRequestRetriesMaxAttempts *int64 `json:"producer_request_retries_max_attempts,omitempty"`
+	ProducerRequestRetriesMaxAttempts *int64 `default:"10" json:"producer_request_retries_max_attempts"`
 	// Time to wait for a Produce response in milliseconds.
-	ProducerRequestTimeout *int64 `json:"producer_request_timeout,omitempty"`
+	ProducerRequestTimeout *int64 `default:"2000" json:"producer_request_timeout"`
 	// The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
-	SchemaRegistry *KafkaUpstreamPluginSchemaRegistry `json:"schema_registry,omitempty"`
-	Security       *KafkaUpstreamPluginSecurity       `json:"security,omitempty"`
+	SchemaRegistry *KafkaUpstreamPluginSchemaRegistry `json:"schema_registry"`
+	Security       *KafkaUpstreamPluginSecurity       `json:"security"`
 	// Socket timeout in milliseconds.
-	Timeout *int64 `json:"timeout,omitempty"`
+	Timeout *int64 `default:"10000" json:"timeout"`
 	// The default Kafka topic to publish to if the query parameter defined in the `topics_query_arg` does not exist in the request
 	Topic string `json:"topic"`
 	// The request query parameter name that contains the topics to publish to
-	TopicsQueryArg *string `json:"topics_query_arg,omitempty"`
+	TopicsQueryArg *string `default:"null" json:"topics_query_arg"`
+}
+
+func (k KafkaUpstreamPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaUpstreamPluginConfig) GetAllowedTopics() []string {
@@ -733,24 +821,24 @@ type KafkaUpstreamPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                      `json:"instance_name,omitempty"`
+	InstanceName *string                      `default:"null" json:"instance_name"`
 	name         string                       `const:"kafka-upstream" json:"name"`
-	Ordering     *KafkaUpstreamPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *KafkaUpstreamPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []KafkaUpstreamPluginPartials `json:"partials,omitempty"`
+	Partials []KafkaUpstreamPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                    `json:"updated_at,omitempty"`
 	Config    KafkaUpstreamPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *KafkaUpstreamPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
-	Protocols []KafkaUpstreamPluginProtocols `json:"protocols,omitempty"`
+	Protocols []KafkaUpstreamPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *KafkaUpstreamPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

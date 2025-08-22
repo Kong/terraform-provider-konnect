@@ -8,9 +8,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *GatewayPluginResponseRatelimitingResourceModel) RefreshFromSharedResponseRatelimitingPlugin(ctx context.Context, resp *shared.ResponseRatelimitingPlugin) diag.Diagnostics {
@@ -30,7 +30,7 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) RefreshFromSharedRespon
 			} else {
 				r.Config.LimitBy = types.StringNull()
 			}
-			if len(resp.Config.Limits) > 0 {
+			if resp.Config.Limits != nil {
 				r.Config.Limits = make(map[string]jsontypes.Normalized, len(resp.Config.Limits))
 				for key, value := range resp.Config.Limits {
 					result, _ := json.Marshal(value)
@@ -45,7 +45,7 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) RefreshFromSharedRespon
 			if resp.Config.Redis == nil {
 				r.Config.Redis = nil
 			} else {
-				r.Config.Redis = &tfTypes.PartialRedisCeConfig{}
+				r.Config.Redis = &tfTypes.RateLimitingPluginRedis{}
 				r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
 				r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
 				r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)

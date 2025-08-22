@@ -6,9 +6,9 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *GatewayPluginDatadogResourceModel) RefreshFromSharedDatadogPlugin(ctx context.Context, resp *shared.DatadogPlugin) diag.Diagnostics {
@@ -35,9 +35,11 @@ func (r *GatewayPluginDatadogResourceModel) RefreshFromSharedDatadogPlugin(ctx c
 				metrics.Name = types.StringValue(string(metricsItem.Name))
 				metrics.SampleRate = types.Float64PointerValue(metricsItem.SampleRate)
 				metrics.StatType = types.StringValue(string(metricsItem.StatType))
-				metrics.Tags = make([]types.String, 0, len(metricsItem.Tags))
-				for _, v := range metricsItem.Tags {
-					metrics.Tags = append(metrics.Tags, types.StringValue(v))
+				if metricsItem.Tags != nil {
+					metrics.Tags = make([]types.String, 0, len(metricsItem.Tags))
+					for _, v := range metricsItem.Tags {
+						metrics.Tags = append(metrics.Tags, types.StringValue(v))
+					}
 				}
 
 				r.Config.Metrics = append(r.Config.Metrics, metrics)
@@ -352,9 +354,12 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin(ctx context.Co
 				sampleRate = nil
 			}
 			statType := shared.StatType(metricsItem.StatType.ValueString())
-			tags1 := make([]string, 0, len(metricsItem.Tags))
-			for _, tagsItem1 := range metricsItem.Tags {
-				tags1 = append(tags1, tagsItem1.ValueString())
+			var tags1 []string
+			if metricsItem.Tags != nil {
+				tags1 = make([]string, 0, len(metricsItem.Tags))
+				for _, tagsItem1 := range metricsItem.Tags {
+					tags1 = append(tags1, tagsItem1.ValueString())
+				}
 			}
 			metrics = append(metrics, shared.Metrics{
 				ConsumerIdentifier: consumerIdentifier,

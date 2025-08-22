@@ -3,15 +3,15 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreatePortalTeamRequest struct {
-	// ID of the portal.
+	// The Portal identifier
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// Create a team in a portal.
-	V2PortalCreateTeamRequest *shared.V2PortalCreateTeamRequest `request:"mediaType=application/json"`
+	PortalCreateTeamRequest *shared.PortalCreateTeamRequest `request:"mediaType=application/json"`
 }
 
 func (o *CreatePortalTeamRequest) GetPortalID() string {
@@ -21,11 +21,11 @@ func (o *CreatePortalTeamRequest) GetPortalID() string {
 	return o.PortalID
 }
 
-func (o *CreatePortalTeamRequest) GetV2PortalCreateTeamRequest() *shared.V2PortalCreateTeamRequest {
+func (o *CreatePortalTeamRequest) GetPortalCreateTeamRequest() *shared.PortalCreateTeamRequest {
 	if o == nil {
 		return nil
 	}
-	return o.V2PortalCreateTeamRequest
+	return o.PortalCreateTeamRequest
 }
 
 type CreatePortalTeamResponse struct {
@@ -36,7 +36,7 @@ type CreatePortalTeamResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Details about a team of developers in a portal.
-	V2PortalTeamResponse *shared.V2PortalTeamResponse
+	PortalTeamResponse *shared.PortalTeamResponse
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -68,11 +68,11 @@ func (o *CreatePortalTeamResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *CreatePortalTeamResponse) GetV2PortalTeamResponse() *shared.V2PortalTeamResponse {
+func (o *CreatePortalTeamResponse) GetPortalTeamResponse() *shared.PortalTeamResponse {
 	if o == nil {
 		return nil
 	}
-	return o.V2PortalTeamResponse
+	return o.PortalTeamResponse
 }
 
 func (o *CreatePortalTeamResponse) GetBadRequestError() *shared.BadRequestError {

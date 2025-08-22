@@ -6,9 +6,9 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(ctx context.Context, resp *shared.SessionPlugin) diag.Diagnostics {
@@ -44,13 +44,17 @@ func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(ctx c
 			r.Config.RememberAbsoluteTimeout = types.Float64PointerValue(resp.Config.RememberAbsoluteTimeout)
 			r.Config.RememberCookieName = types.StringPointerValue(resp.Config.RememberCookieName)
 			r.Config.RememberRollingTimeout = types.Float64PointerValue(resp.Config.RememberRollingTimeout)
-			r.Config.RequestHeaders = make([]types.String, 0, len(resp.Config.RequestHeaders))
-			for _, v := range resp.Config.RequestHeaders {
-				r.Config.RequestHeaders = append(r.Config.RequestHeaders, types.StringValue(string(v)))
+			if resp.Config.RequestHeaders != nil {
+				r.Config.RequestHeaders = make([]types.String, 0, len(resp.Config.RequestHeaders))
+				for _, v := range resp.Config.RequestHeaders {
+					r.Config.RequestHeaders = append(r.Config.RequestHeaders, types.StringValue(string(v)))
+				}
 			}
-			r.Config.ResponseHeaders = make([]types.String, 0, len(resp.Config.ResponseHeaders))
-			for _, v := range resp.Config.ResponseHeaders {
-				r.Config.ResponseHeaders = append(r.Config.ResponseHeaders, types.StringValue(string(v)))
+			if resp.Config.ResponseHeaders != nil {
+				r.Config.ResponseHeaders = make([]types.String, 0, len(resp.Config.ResponseHeaders))
+				for _, v := range resp.Config.ResponseHeaders {
+					r.Config.ResponseHeaders = append(r.Config.ResponseHeaders, types.StringValue(string(v)))
+				}
 			}
 			r.Config.RollingTimeout = types.Float64PointerValue(resp.Config.RollingTimeout)
 			r.Config.Secret = types.StringPointerValue(resp.Config.Secret)
@@ -414,13 +418,19 @@ func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin(ctx context.Co
 		} else {
 			rememberRollingTimeout = nil
 		}
-		requestHeaders := make([]shared.RequestHeaders, 0, len(r.Config.RequestHeaders))
-		for _, requestHeadersItem := range r.Config.RequestHeaders {
-			requestHeaders = append(requestHeaders, shared.RequestHeaders(requestHeadersItem.ValueString()))
+		var requestHeaders []shared.RequestHeaders
+		if r.Config.RequestHeaders != nil {
+			requestHeaders = make([]shared.RequestHeaders, 0, len(r.Config.RequestHeaders))
+			for _, requestHeadersItem := range r.Config.RequestHeaders {
+				requestHeaders = append(requestHeaders, shared.RequestHeaders(requestHeadersItem.ValueString()))
+			}
 		}
-		responseHeaders := make([]shared.SessionPluginResponseHeaders, 0, len(r.Config.ResponseHeaders))
-		for _, responseHeadersItem := range r.Config.ResponseHeaders {
-			responseHeaders = append(responseHeaders, shared.SessionPluginResponseHeaders(responseHeadersItem.ValueString()))
+		var responseHeaders []shared.SessionPluginResponseHeaders
+		if r.Config.ResponseHeaders != nil {
+			responseHeaders = make([]shared.SessionPluginResponseHeaders, 0, len(r.Config.ResponseHeaders))
+			for _, responseHeadersItem := range r.Config.ResponseHeaders {
+				responseHeaders = append(responseHeaders, shared.SessionPluginResponseHeaders(responseHeadersItem.ValueString()))
+			}
 		}
 		rollingTimeout := new(float64)
 		if !r.Config.RollingTimeout.IsUnknown() && !r.Config.RollingTimeout.IsNull() {

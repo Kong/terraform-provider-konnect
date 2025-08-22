@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
 
 type GetPortalTeamRequest struct {
 	// ID of the team.
 	TeamID string `pathParam:"style=simple,explode=false,name=teamId"`
-	// ID of the portal.
+	// The Portal identifier
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 }
 
@@ -36,7 +36,7 @@ type GetPortalTeamResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Details about a team of developers in a portal.
-	V2PortalTeamResponse *shared.V2PortalTeamResponse
+	PortalTeamResponse *shared.PortalTeamResponse
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
@@ -66,11 +66,11 @@ func (o *GetPortalTeamResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *GetPortalTeamResponse) GetV2PortalTeamResponse() *shared.V2PortalTeamResponse {
+func (o *GetPortalTeamResponse) GetPortalTeamResponse() *shared.PortalTeamResponse {
 	if o == nil {
 		return nil
 	}
-	return o.V2PortalTeamResponse
+	return o.PortalTeamResponse
 }
 
 func (o *GetPortalTeamResponse) GetUnauthorizedError() *shared.UnauthorizedError {

@@ -3,7 +3,7 @@
 package shared
 
 import (
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
 
@@ -17,7 +17,7 @@ type IntegrationInstance struct {
 	// The display name of the integration instance.
 	DisplayName string `json:"display_name"`
 	// The description of the integration instance.
-	Description *string `json:"description"`
+	Description *string `default:"null" json:"description"`
 	// Short-hand descriptor of an integration that omits instance metadata.
 	Integration IntegrationRefWithoutInstance `json:"integration"`
 	// Denotes whether the integration instance has been authorized within the catalog.

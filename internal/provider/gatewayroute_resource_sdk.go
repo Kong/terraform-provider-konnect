@@ -6,9 +6,9 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *GatewayRouteResourceModel) RefreshFromSharedRouteJSON(ctx context.Context, resp *shared.RouteJSON) diag.Diagnostics {
@@ -17,10 +17,10 @@ func (r *GatewayRouteResourceModel) RefreshFromSharedRouteJSON(ctx context.Conte
 	if resp != nil {
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		if resp.Destinations != nil {
-			r.Destinations = []tfTypes.PartialRedisEeClusterNodes{}
+			r.Destinations = []tfTypes.Destinations{}
 
 			for _, destinationsItem := range resp.Destinations {
-				var destinations tfTypes.PartialRedisEeClusterNodes
+				var destinations tfTypes.Destinations
 
 				destinations.IP = types.StringPointerValue(destinationsItem.IP)
 				destinations.Port = types.Int64PointerValue(destinationsItem.Port)
@@ -93,10 +93,10 @@ func (r *GatewayRouteResourceModel) RefreshFromSharedRouteJSON(ctx context.Conte
 			}
 		}
 		if resp.Sources != nil {
-			r.Sources = []tfTypes.PartialRedisEeClusterNodes{}
+			r.Sources = []tfTypes.Destinations{}
 
 			for _, sourcesItem := range resp.Sources {
-				var sources tfTypes.PartialRedisEeClusterNodes
+				var sources tfTypes.Destinations
 
 				sources.IP = types.StringPointerValue(sourcesItem.IP)
 				sources.Port = types.Int64PointerValue(sourcesItem.Port)

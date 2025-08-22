@@ -145,7 +145,7 @@ resource "konnect_gateway_plugin_ai_request_transformer" "my_gatewaypluginairequ
 
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -168,11 +168,11 @@ Optional:
 
 - `http_proxy_host` (String) A string representing a host name, such as example.com.
 - `http_proxy_port` (Number) An integer representing a port number between 0 and 65535, inclusive.
-- `http_timeout` (Number) Timeout in milliseconds for the AI upstream service.
+- `http_timeout` (Number) Timeout in milliseconds for the AI upstream service. Default: 60000
 - `https_proxy_host` (String) A string representing a host name, such as example.com.
 - `https_proxy_port` (Number) An integer representing a port number between 0 and 65535, inclusive.
-- `https_verify` (Boolean) Verify the TLS certificate of the AI upstream service.
-- `max_request_body_size` (Number) max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
+- `https_verify` (Boolean) Verify the TLS certificate of the AI upstream service. Default: true
+- `max_request_body_size` (Number) max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 8192
 - `transformation_extract_pattern` (String) Defines the regular expression that must match to indicate a successful AI transformation at the request phase. The first match will be set as the outgoing body. If the AI service's response doesn't match this pattern, it is marked as a failure.
 
 <a id="nestedatt--config--llm"></a>
@@ -206,7 +206,7 @@ Optional:
 Optional:
 
 - `anthropic_version` (String) Defines the schema/API version, if using Anthropic provider.
-- `azure_api_version` (String) 'api-version' for Azure OpenAI instances.
+- `azure_api_version` (String) 'api-version' for Azure OpenAI instances. Default: "2023-05-15"
 - `azure_deployment_id` (String) Deployment ID for Azure OpenAI instances.
 - `azure_instance` (String) Instance name for Azure OpenAI hosted models.
 - `bedrock` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--bedrock))
@@ -234,7 +234,7 @@ Optional:
 - `aws_region` (String) If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
 - `aws_role_session_name` (String) If using AWS providers (Bedrock), set the identifier of the assumed role session.
 - `aws_sts_endpoint_url` (String) If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
-- `embeddings_normalize` (Boolean) If using AWS providers (Bedrock), set to true to normalize the embeddings.
+- `embeddings_normalize` (Boolean) If using AWS providers (Bedrock), set to true to normalize the embeddings. Default: false
 - `performance_config_latency` (String) Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
 
 
@@ -243,7 +243,7 @@ Optional:
 
 Optional:
 
-- `embedding_input_type` (String) The purpose of the input text to calculate embedding vectors. must be one of ["classification", "clustering", "image", "search_document", "search_query"]
+- `embedding_input_type` (String) The purpose of the input text to calculate embedding vectors. Default: "classification"; must be one of ["classification", "clustering", "image", "search_document", "search_query"]
 - `wait_for_model` (Boolean) Wait for the model if it is not ready
 
 
@@ -273,15 +273,15 @@ Optional:
 
 Optional:
 
-- `allow_override` (Boolean) If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
+- `allow_override` (Boolean) If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin. Default: false
 - `aws_access_key_id` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
 - `aws_secret_access_key` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
 - `azure_client_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
 - `azure_client_secret` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
 - `azure_tenant_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
-- `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
+- `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models. Default: false
 - `gcp_service_account_json` (String) Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
-- `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models.
+- `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models. Default: false
 - `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
 - `header_value` (String) Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
 - `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["body", "query"]
@@ -294,8 +294,8 @@ Optional:
 
 Optional:
 
-- `log_payloads` (Boolean) If enabled, will log the request and response body into the Kong log plugin(s) output.
-- `log_statistics` (Boolean) If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.
+- `log_payloads` (Boolean) If enabled, will log the request and response body into the Kong log plugin(s) output. Default: false
+- `log_statistics` (Boolean) If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output. Default: false
 
 
 

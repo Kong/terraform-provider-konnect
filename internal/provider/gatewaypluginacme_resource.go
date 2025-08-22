@@ -11,19 +11,24 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
-	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
-	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	"regexp"
 )
 
@@ -77,17 +82,16 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 					"account_key": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"key_id":  types.StringType,
+							"key_set": types.StringType,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"key_id": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `The Key ID. Not Null`,
-								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
-								},
+								Required:    true,
+								Description: `The Key ID.`,
 							},
 							"key_set": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `The ID of the key set to associate the Key ID with.`,
 							},
@@ -97,17 +101,20 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 					"allow_any_domain": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If set to ` + "`" + `true` + "`" + `, the plugin allows all domains and ignores any values in the ` + "`" + `domains` + "`" + ` list.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If set to ` + "`" + `true` + "`" + `, the plugin allows all domains and ignores any values in the ` + "`" + `domains` + "`" + ` list. Default: false`,
 					},
 					"api_uri": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
+						Default:     stringdefault.StaticString(`https://acme-v02.api.letsencrypt.org/directory`),
+						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search. Default: "https://acme-v02.api.letsencrypt.org/directory"`,
 					},
 					"cert_type": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The certificate type to create. The possible values are ` + "`" + `rsa` + "`" + ` for RSA certificate or ` + "`" + `ecc` + "`" + ` for EC certificate. must be one of ["ecc", "rsa"]`,
+						Default:     stringdefault.StaticString(`rsa`),
+						Description: `The certificate type to create. The possible values are ` + "`" + `rsa` + "`" + ` for RSA certificate or ` + "`" + `ecc` + "`" + ` for EC certificate. Default: "rsa"; must be one of ["ecc", "rsa"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"ecc",
@@ -116,46 +123,47 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 						},
 					},
 					"domains": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `An array of strings representing hosts. A valid host is a string containing one or more labels separated by periods, with at most one wildcard label ('*')`,
 					},
 					"eab_hmac_key": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `External account binding (EAB) base64-encoded URL string of the HMAC key. You usually don't need to set this unless it is explicitly required by the CA.`,
 					},
 					"eab_kid": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `External account binding (EAB) key id. You usually don't need to set this unless it is explicitly required by the CA.`,
 					},
 					"enable_ipv4_common_name": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A boolean value that controls whether to include the IPv4 address in the common name field of generated certificates.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `A boolean value that controls whether to include the IPv4 address in the common name field of generated certificates. Default: true`,
 					},
 					"fail_backoff_minutes": schema.Float64Attribute{
 						Computed: true,
 						Optional: true,
+						Default:  float64default.StaticFloat64(5),
 						MarkdownDescription: `Minutes to wait for each domain that fails to create a certificate. This applies to both a` + "\n" +
-							`new certificate and a renewal certificate.`,
+							`new certificate and a renewal certificate.` + "\n" +
+							`Default: 5`,
 					},
 					"preferred_chain": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `A string value that specifies the preferred certificate chain to use when generating certificates.`,
 					},
 					"renew_threshold_days": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Days remaining to renew the certificate before it expires.`,
+						Default:     float64default.StaticFloat64(14),
+						Description: `Days remaining to renew the certificate before it expires. Default: 14`,
 					},
 					"rsa_key_size": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `RSA private key size for the certificate. The possible values are 2048, 3072, or 4096. must be one of ["2048", "3072", "4096"]`,
+						Default:     int64default.StaticInt64(4096),
+						Description: `RSA private key size for the certificate. The possible values are 2048, 3072, or 4096. Default: 4096; must be one of ["2048", "3072", "4096"]`,
 						Validators: []validator.Int64{
 							int64validator.OneOf(
 								2048,
@@ -167,7 +175,8 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 					"storage": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The backend storage type to use. In DB-less mode and Konnect, ` + "`" + `kong` + "`" + ` storage is unavailable. In hybrid mode and Konnect, ` + "`" + `shm` + "`" + ` storage is unavailable. ` + "`" + `shm` + "`" + ` storage does not persist during Kong restarts and does not work for Kong running on different machines, so consider using one of ` + "`" + `kong` + "`" + `, ` + "`" + `redis` + "`" + `, ` + "`" + `consul` + "`" + `, or ` + "`" + `vault` + "`" + ` in production. must be one of ["consul", "kong", "redis", "shm", "vault"]`,
+						Default:     stringdefault.StaticString(`shm`),
+						Description: `The backend storage type to use. In DB-less mode and Konnect, ` + "`" + `kong` + "`" + ` storage is unavailable. In hybrid mode and Konnect, ` + "`" + `shm` + "`" + ` storage is unavailable. ` + "`" + `shm` + "`" + ` storage does not persist during Kong restarts and does not work for Kong running on different machines, so consider using one of ` + "`" + `kong` + "`" + `, ` + "`" + `redis` + "`" + `, ` + "`" + `consul` + "`" + `, or ` + "`" + `vault` + "`" + ` in production. Default: "shm"; must be one of ["consul", "kong", "redis", "shm", "vault"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"consul",
@@ -181,28 +190,89 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 					"storage_config": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"consul": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`host`:    types.StringType,
+									`https`:   types.BoolType,
+									`kv_path`: types.StringType,
+									`port`:    types.Int64Type,
+									`timeout`: types.Float64Type,
+									`token`:   types.StringType,
+								},
+							},
+							"kong": types.MapType{
+								ElemType: jsontypes.NormalizedType{},
+							},
+							"redis": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`database`: types.Int64Type,
+									`extra_options`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`namespace`:  types.StringType,
+											`scan_count`: types.Float64Type,
+										},
+									},
+									`host`:        types.StringType,
+									`password`:    types.StringType,
+									`port`:        types.Int64Type,
+									`server_name`: types.StringType,
+									`ssl`:         types.BoolType,
+									`ssl_verify`:  types.BoolType,
+									`timeout`:     types.Int64Type,
+									`username`:    types.StringType,
+								},
+							},
+							"shm": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`shm_name`: types.StringType,
+								},
+							},
+							"vault": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`auth_method`:     types.StringType,
+									`auth_path`:       types.StringType,
+									`auth_role`:       types.StringType,
+									`host`:            types.StringType,
+									`https`:           types.BoolType,
+									`jwt_path`:        types.StringType,
+									`kv_path`:         types.StringType,
+									`port`:            types.Int64Type,
+									`timeout`:         types.Float64Type,
+									`tls_server_name`: types.StringType,
+									`tls_verify`:      types.BoolType,
+									`token`:           types.StringType,
+								},
+							},
+						})),
 						Attributes: map[string]schema.Attribute{
 							"consul": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"host":    types.StringType,
+									"https":   types.BoolType,
+									"kv_path": types.StringType,
+									"port":    types.Int64Type,
+									"timeout": types.Float64Type,
+									"token":   types.StringType,
+								})),
 								Attributes: map[string]schema.Attribute{
 									"host": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `A string representing a host name, such as example.com.`,
 									},
 									"https": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Boolean representation of https.`,
+										Default:     booldefault.StaticBool(false),
+										Description: `Boolean representation of https. Default: false`,
 									},
 									"kv_path": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `KV prefix path.`,
 									},
 									"port": schema.Int64Attribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 										Validators: []validator.Int64{
@@ -210,19 +280,16 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 										},
 									},
 									"timeout": schema.Float64Attribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Timeout in milliseconds.`,
 									},
 									"token": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Consul ACL token.`,
 									},
 								},
 							},
 							"kong": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: jsontypes.NormalizedType{},
 								Validators: []validator.Map{
@@ -232,72 +299,96 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 							"redis": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"database": types.Int64Type,
+									"extra_options": types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`namespace`:  types.StringType,
+											`scan_count`: types.Float64Type,
+										},
+									},
+									"host":        types.StringType,
+									"password":    types.StringType,
+									"port":        types.Int64Type,
+									"server_name": types.StringType,
+									"ssl":         types.BoolType,
+									"ssl_verify":  types.BoolType,
+									"timeout":     types.Int64Type,
+									"username":    types.StringType,
+								})),
 								Attributes: map[string]schema.Attribute{
 									"database": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy`,
+										Default:     int64default.StaticInt64(0),
+										Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
 									},
 									"extra_options": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
+										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+											"namespace":  types.StringType,
+											"scan_count": types.Float64Type,
+										})),
 										Attributes: map[string]schema.Attribute{
 											"namespace": schema.StringAttribute{
 												Computed:    true,
 												Optional:    true,
-												Description: `A namespace to prepend to all keys stored in Redis.`,
+												Default:     stringdefault.StaticString(``),
+												Description: `A namespace to prepend to all keys stored in Redis. Default: ""`,
 											},
 											"scan_count": schema.Float64Attribute{
 												Computed:    true,
 												Optional:    true,
-												Description: `The number of keys to return in Redis SCAN calls.`,
+												Default:     float64default.StaticFloat64(10),
+												Description: `The number of keys to return in Redis SCAN calls. Default: 10`,
 											},
 										},
 										Description: `Custom ACME Redis options`,
 									},
 									"host": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `A string representing a host name, such as example.com.`,
 									},
 									"password": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 									},
 									"port": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+										Default:     int64default.StaticInt64(6379),
+										Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 										Validators: []validator.Int64{
 											int64validator.AtMost(65535),
 										},
 									},
 									"server_name": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `A string representing an SNI (server name indication) value for TLS.`,
 									},
 									"ssl": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `If set to true, uses SSL to connect to Redis.`,
+										Default:     booldefault.StaticBool(false),
+										Description: `If set to true, uses SSL to connect to Redis. Default: false`,
 									},
 									"ssl_verify": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
+										Default:     booldefault.StaticBool(false),
+										Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: false`,
 									},
 									"timeout": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+										Default:     int64default.StaticInt64(2000),
+										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 										Validators: []validator.Int64{
 											int64validator.AtMost(2147483646),
 										},
 									},
 									"username": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
 									},
@@ -306,22 +397,41 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 							"shm": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"shm_name": types.StringType,
+								})),
 								Attributes: map[string]schema.Attribute{
 									"shm_name": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Name of shared memory zone used for Kong API gateway storage`,
+										Default:     stringdefault.StaticString(`kong`),
+										Description: `Name of shared memory zone used for Kong API gateway storage. Default: "kong"`,
 									},
 								},
 							},
 							"vault": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"auth_method":     types.StringType,
+									"auth_path":       types.StringType,
+									"auth_role":       types.StringType,
+									"host":            types.StringType,
+									"https":           types.BoolType,
+									"jwt_path":        types.StringType,
+									"kv_path":         types.StringType,
+									"port":            types.Int64Type,
+									"timeout":         types.Float64Type,
+									"tls_server_name": types.StringType,
+									"tls_verify":      types.BoolType,
+									"token":           types.StringType,
+								})),
 								Attributes: map[string]schema.Attribute{
 									"auth_method": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Auth Method, default to token, can be 'token' or 'kubernetes'. must be one of ["kubernetes", "token"]`,
+										Default:     stringdefault.StaticString(`token`),
+										Description: `Auth Method, default to token, can be 'token' or 'kubernetes'. Default: "token"; must be one of ["kubernetes", "token"]`,
 										Validators: []validator.String{
 											stringvalidator.OneOf(
 												"kubernetes",
@@ -330,37 +440,32 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 										},
 									},
 									"auth_path": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Vault's authentication path to use.`,
 									},
 									"auth_role": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `The role to try and assign.`,
 									},
 									"host": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `A string representing a host name, such as example.com.`,
 									},
 									"https": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Boolean representation of https.`,
+										Default:     booldefault.StaticBool(false),
+										Description: `Boolean representation of https. Default: false`,
 									},
 									"jwt_path": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `The path to the JWT.`,
 									},
 									"kv_path": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `KV prefix path.`,
 									},
 									"port": schema.Int64Attribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 										Validators: []validator.Int64{
@@ -368,22 +473,20 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 										},
 									},
 									"timeout": schema.Float64Attribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Timeout in milliseconds.`,
 									},
 									"tls_server_name": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `SNI used in request, default to host if omitted.`,
 									},
 									"tls_verify": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Turn on TLS verification.`,
+										Default:     booldefault.StaticBool(true),
+										Description: `Turn on TLS verification. Default: true`,
 									},
 									"token": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Consul ACL token.`,
 									},
@@ -394,7 +497,8 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 					"tos_accepted": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `If you are using Let's Encrypt, you must set this to ` + "`" + `true` + "`" + ` to agree the terms of service.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If you are using Let's Encrypt, you must set this to ` + "`" + `true` + "`" + ` to agree the terms of service. Default: false`,
 					},
 				},
 			},
@@ -413,7 +517,8 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the plugin is applied.`,
+				Default:     booldefault.StaticBool(true),
+				Description: `Whether the plugin is applied. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -421,13 +526,28 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"instance_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"ordering": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"after": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+					"before": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`access`: types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"after": schema.SingleNestedAttribute{
 						Computed: true,
@@ -454,7 +574,6 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 				},
 			},
 			"partials": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -467,12 +586,10 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
 							Optional: true,
 						},
 					},
@@ -486,7 +603,6 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 				Description: `A set of strings representing HTTP protocols.`,
 			},
 			"tags": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An optional set of strings associated with the Plugin for grouping and filtering.`,

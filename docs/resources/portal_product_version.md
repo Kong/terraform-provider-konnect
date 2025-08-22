@@ -20,7 +20,7 @@ resource "konnect_portal_product_version" "my_portalproductversion" {
   auto_approve_registration = true
   deprecated                = false
   notify_developers         = false
-  portal_id                 = "47a7b8c6-b8ad-4388-ba4c-746cd81f772c"
+  portal_id                 = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
   product_version_id        = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
   publish_status            = "published"
 }
@@ -35,7 +35,7 @@ resource "konnect_portal_product_version" "my_portalproductversion" {
 - `auth_strategy_ids` (List of String) A list of authentication strategy IDs
 - `auto_approve_registration` (Boolean) Whether the application registration auto approval on this portal for the api product version is enabled
 - `deprecated` (Boolean) Whether the api product version on the portal is deprecated
-- `portal_id` (String) ID of the portal.
+- `portal_id` (String) The Portal identifier
 - `product_version_id` (String) API product version identifier
 - `publish_status` (String) Publication status of the API product version on the portal. must be one of ["published", "unpublished"]
 
@@ -67,7 +67,7 @@ Read-Only:
 - `available_scopes` (List of String) Possible developer selectable scopes for an application. Only present when using DCR Provider that supports it.
 - `credential_type` (String) must be one of ["client_credentials", "self_managed_client_credentials"]
 - `id` (String) The Application Auth Strategy ID.
-- `name` (String)
+- `name` (String) Default: "name"
 
 
 <a id="nestedatt--auth_strategies--key_auth"></a>
@@ -78,12 +78,12 @@ Read-Only:
 - `credential_type` (String) must be "key_auth"
 - `id` (String) The Application Auth Strategy ID.
 - `key_names` (List of String)
-- `name` (String)
+- `name` (String) Default: "name"
 
 ## Import
 
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_portal_product_version.my_konnect_portal_product_version '{"portal_id": "", "product_version_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"}'
+terraform import konnect_portal_product_version.my_konnect_portal_product_version '{"portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a", "product_version_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"}'
 ```

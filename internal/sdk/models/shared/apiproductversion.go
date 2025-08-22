@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
 
@@ -15,9 +15,20 @@ type GatewayService struct {
 	// This field is deprecated, please use `control_plane_id` instead. The identifier of the control plane that the gateway service resides in
 	//
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
-	RuntimeGroupID *string `json:"runtime_group_id,omitempty"`
+	RuntimeGroupID *string `default:"null" json:"runtime_group_id"`
 	// The identifier of the control plane that the gateway service resides in
 	ControlPlaneID string `json:"control_plane_id"`
+}
+
+func (g GatewayService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GatewayService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *GatewayService) GetID() *string {
@@ -89,7 +100,7 @@ type APIProductVersion struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]string `json:"labels"`
+	Labels map[string]*string `json:"labels"`
 	// The set of errors encountered when trying to sync the auth strategies on the version
 	AuthStrategySyncErrors []AuthStrategySyncError `json:"auth_strategy_sync_errors,omitempty"`
 	// The list of portals which this API product version is configured for
@@ -146,9 +157,9 @@ func (o *APIProductVersion) GetDeprecated() bool {
 	return o.Deprecated
 }
 
-func (o *APIProductVersion) GetLabels() map[string]string {
+func (o *APIProductVersion) GetLabels() map[string]*string {
 	if o == nil {
-		return map[string]string{}
+		return map[string]*string{}
 	}
 	return o.Labels
 }

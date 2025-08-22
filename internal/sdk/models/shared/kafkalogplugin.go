@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type KafkaLogPluginAfter struct {
@@ -53,8 +53,19 @@ type KafkaLogPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (k KafkaLogPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaLogPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaLogPluginPartials) GetID() *string {
@@ -136,13 +147,24 @@ type KafkaLogPluginAuthentication struct {
 	// The SASL authentication mechanism.  Supported options: `PLAIN`, `SCRAM-SHA-256` or `SCRAM-SHA-512`.
 	Mechanism *KafkaLogPluginMechanism `json:"mechanism,omitempty"`
 	// Password for SASL authentication.
-	Password *string `json:"password,omitempty"`
+	Password *string `default:"null" json:"password"`
 	// The authentication strategy for the plugin, the only option for the value is `sasl`.
 	Strategy *KafkaLogPluginStrategy `json:"strategy,omitempty"`
 	// Enable this to indicate `DelegationToken` authentication
-	Tokenauth *bool `json:"tokenauth,omitempty"`
+	Tokenauth *bool `default:"null" json:"tokenauth"`
 	// Username for SASL authentication.
-	User *string `json:"user,omitempty"`
+	User *string `default:"null" json:"user"`
+}
+
+func (k KafkaLogPluginAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaLogPluginAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaLogPluginAuthentication) GetMechanism() *KafkaLogPluginMechanism {
@@ -278,9 +300,20 @@ func (e *KafkaLogPluginMode) UnmarshalJSON(data []byte) error {
 }
 
 type KafkaLogPluginConfigAuthentication struct {
-	Basic *KafkaLogPluginBasic `json:"basic,omitempty"`
+	Basic *KafkaLogPluginBasic `json:"basic"`
 	// Authentication mode to use with the schema registry.
-	Mode *KafkaLogPluginMode `json:"mode,omitempty"`
+	Mode *KafkaLogPluginMode `default:"none" json:"mode"`
+}
+
+func (k KafkaLogPluginConfigAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaLogPluginConfigAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaLogPluginConfigAuthentication) GetBasic() *KafkaLogPluginBasic {
@@ -299,9 +332,20 @@ func (o *KafkaLogPluginConfigAuthentication) GetMode() *KafkaLogPluginMode {
 
 type KafkaLogPluginKeySchema struct {
 	// The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
-	SchemaVersion *string `json:"schema_version,omitempty"`
+	SchemaVersion *string `default:"null" json:"schema_version"`
 	// The name of the subject
-	SubjectName *string `json:"subject_name,omitempty"`
+	SubjectName *string `default:"null" json:"subject_name"`
+}
+
+func (k KafkaLogPluginKeySchema) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaLogPluginKeySchema) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaLogPluginKeySchema) GetSchemaVersion() *string {
@@ -320,9 +364,20 @@ func (o *KafkaLogPluginKeySchema) GetSubjectName() *string {
 
 type KafkaLogPluginValueSchema struct {
 	// The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
-	SchemaVersion *string `json:"schema_version,omitempty"`
+	SchemaVersion *string `default:"null" json:"schema_version"`
 	// The name of the subject
-	SubjectName *string `json:"subject_name,omitempty"`
+	SubjectName *string `default:"null" json:"subject_name"`
+}
+
+func (k KafkaLogPluginValueSchema) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaLogPluginValueSchema) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaLogPluginValueSchema) GetSchemaVersion() *string {
@@ -341,14 +396,25 @@ func (o *KafkaLogPluginValueSchema) GetSubjectName() *string {
 
 type KafkaLogPluginConfluent struct {
 	Authentication KafkaLogPluginConfigAuthentication `json:"authentication"`
-	KeySchema      *KafkaLogPluginKeySchema           `json:"key_schema,omitempty"`
+	KeySchema      *KafkaLogPluginKeySchema           `json:"key_schema"`
 	// Set to false to disable SSL certificate verification when connecting to the schema registry.
-	SslVerify *bool `json:"ssl_verify,omitempty"`
+	SslVerify *bool `default:"true" json:"ssl_verify"`
 	// The TTL in seconds for the schema registry cache.
-	TTL *float64 `json:"ttl,omitempty"`
+	TTL *float64 `default:"null" json:"ttl"`
 	// The URL of the schema registry.
-	URL         *string                    `json:"url,omitempty"`
-	ValueSchema *KafkaLogPluginValueSchema `json:"value_schema,omitempty"`
+	URL         *string                    `default:"null" json:"url"`
+	ValueSchema *KafkaLogPluginValueSchema `json:"value_schema"`
+}
+
+func (k KafkaLogPluginConfluent) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaLogPluginConfluent) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaLogPluginConfluent) GetAuthentication() KafkaLogPluginConfigAuthentication {
@@ -395,7 +461,7 @@ func (o *KafkaLogPluginConfluent) GetValueSchema() *KafkaLogPluginValueSchema {
 
 // KafkaLogPluginSchemaRegistry - The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
 type KafkaLogPluginSchemaRegistry struct {
-	Confluent *KafkaLogPluginConfluent `json:"confluent,omitempty"`
+	Confluent *KafkaLogPluginConfluent `json:"confluent"`
 }
 
 func (o *KafkaLogPluginSchemaRegistry) GetConfluent() *KafkaLogPluginConfluent {
@@ -407,9 +473,20 @@ func (o *KafkaLogPluginSchemaRegistry) GetConfluent() *KafkaLogPluginConfluent {
 
 type KafkaLogPluginSecurity struct {
 	// UUID of certificate entity for mTLS authentication.
-	CertificateID *string `json:"certificate_id,omitempty"`
+	CertificateID *string `default:"null" json:"certificate_id"`
 	// Enables TLS.
-	Ssl *bool `json:"ssl,omitempty"`
+	Ssl *bool `default:"null" json:"ssl"`
+}
+
+func (k KafkaLogPluginSecurity) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaLogPluginSecurity) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaLogPluginSecurity) GetCertificateID() *string {
@@ -427,42 +504,53 @@ func (o *KafkaLogPluginSecurity) GetSsl() *bool {
 }
 
 type KafkaLogPluginConfig struct {
-	Authentication *KafkaLogPluginAuthentication `json:"authentication,omitempty"`
+	Authentication *KafkaLogPluginAuthentication `json:"authentication"`
 	// Set of bootstrap brokers in a `{host: host, port: port}` list format.
-	BootstrapServers []KafkaLogPluginBootstrapServers `json:"bootstrap_servers,omitempty"`
+	BootstrapServers []KafkaLogPluginBootstrapServers `json:"bootstrap_servers"`
 	// An identifier for the Kafka cluster. By default, this field generates a random string. You can also set your own custom cluster identifier.  If more than one Kafka plugin is configured without a `cluster_name` (that is, if the default autogenerated value is removed), these plugins will use the same producer, and by extension, the same cluster. Logs will be sent to the leader of the cluster.
-	ClusterName *string `json:"cluster_name,omitempty"`
+	ClusterName *string `default:"null" json:"cluster_name"`
 	// Lua code as a key-value map
 	CustomFieldsByLua map[string]any `json:"custom_fields_by_lua,omitempty"`
-	Keepalive         *int64         `json:"keepalive,omitempty"`
-	KeepaliveEnabled  *bool          `json:"keepalive_enabled,omitempty"`
+	Keepalive         *int64         `default:"60000" json:"keepalive"`
+	KeepaliveEnabled  *bool          `default:"false" json:"keepalive_enabled"`
 	// The request query parameter name that contains the Kafka message key. If specified, messages with the same key will be sent to the same Kafka partition, ensuring consistent ordering.
-	KeyQueryArg *string `json:"key_query_arg,omitempty"`
+	KeyQueryArg *string `default:"null" json:"key_query_arg"`
 	// Flag to enable asynchronous mode.
-	ProducerAsync *bool `json:"producer_async,omitempty"`
+	ProducerAsync *bool `default:"true" json:"producer_async"`
 	// Maximum number of messages that can be buffered in memory in asynchronous mode.
-	ProducerAsyncBufferingLimitsMessagesInMemory *int64 `json:"producer_async_buffering_limits_messages_in_memory,omitempty"`
+	ProducerAsyncBufferingLimitsMessagesInMemory *int64 `default:"50000" json:"producer_async_buffering_limits_messages_in_memory"`
 	// Maximum time interval in milliseconds between buffer flushes in asynchronous mode.
-	ProducerAsyncFlushTimeout *int64 `json:"producer_async_flush_timeout,omitempty"`
+	ProducerAsyncFlushTimeout *int64 `default:"1000" json:"producer_async_flush_timeout"`
 	// The number of acknowledgments the producer requires the leader to have received before considering a request complete. Allowed values: 0 for no acknowledgments; 1 for only the leader; and -1 for the full ISR (In-Sync Replica set).
-	ProducerRequestAcks *KafkaLogPluginProducerRequestAcks `json:"producer_request_acks,omitempty"`
+	ProducerRequestAcks *KafkaLogPluginProducerRequestAcks `default:"1" json:"producer_request_acks"`
 	// Maximum size of a Produce request in bytes.
-	ProducerRequestLimitsBytesPerRequest *int64 `json:"producer_request_limits_bytes_per_request,omitempty"`
+	ProducerRequestLimitsBytesPerRequest *int64 `default:"1048576" json:"producer_request_limits_bytes_per_request"`
 	// Maximum number of messages to include into a single Produce request.
-	ProducerRequestLimitsMessagesPerRequest *int64 `json:"producer_request_limits_messages_per_request,omitempty"`
+	ProducerRequestLimitsMessagesPerRequest *int64 `default:"200" json:"producer_request_limits_messages_per_request"`
 	// Backoff interval between retry attempts in milliseconds.
-	ProducerRequestRetriesBackoffTimeout *int64 `json:"producer_request_retries_backoff_timeout,omitempty"`
+	ProducerRequestRetriesBackoffTimeout *int64 `default:"100" json:"producer_request_retries_backoff_timeout"`
 	// Maximum number of retry attempts per single Produce request.
-	ProducerRequestRetriesMaxAttempts *int64 `json:"producer_request_retries_max_attempts,omitempty"`
+	ProducerRequestRetriesMaxAttempts *int64 `default:"10" json:"producer_request_retries_max_attempts"`
 	// Time to wait for a Produce response in milliseconds
-	ProducerRequestTimeout *int64 `json:"producer_request_timeout,omitempty"`
+	ProducerRequestTimeout *int64 `default:"2000" json:"producer_request_timeout"`
 	// The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
-	SchemaRegistry *KafkaLogPluginSchemaRegistry `json:"schema_registry,omitempty"`
-	Security       *KafkaLogPluginSecurity       `json:"security,omitempty"`
+	SchemaRegistry *KafkaLogPluginSchemaRegistry `json:"schema_registry"`
+	Security       *KafkaLogPluginSecurity       `json:"security"`
 	// Socket timeout in milliseconds.
-	Timeout *int64 `json:"timeout,omitempty"`
+	Timeout *int64 `default:"10000" json:"timeout"`
 	// The Kafka topic to publish to.
 	Topic string `json:"topic"`
+}
+
+func (k KafkaLogPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaLogPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *KafkaLogPluginConfig) GetAuthentication() *KafkaLogPluginAuthentication {
@@ -684,24 +772,24 @@ type KafkaLogPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                 `json:"instance_name,omitempty"`
+	InstanceName *string                 `default:"null" json:"instance_name"`
 	name         string                  `const:"kafka-log" json:"name"`
-	Ordering     *KafkaLogPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *KafkaLogPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []KafkaLogPluginPartials `json:"partials,omitempty"`
+	Partials []KafkaLogPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64               `json:"updated_at,omitempty"`
 	Config    KafkaLogPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *KafkaLogPluginConsumer `json:"consumer"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
-	Protocols []KafkaLogPluginProtocols `json:"protocols,omitempty"`
+	Protocols []KafkaLogPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *KafkaLogPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

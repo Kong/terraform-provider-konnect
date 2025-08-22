@@ -13,8 +13,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -57,11 +57,9 @@ func (r *SystemAccountRoleResource) Schema(ctx context.Context, req resource.Sch
 				Description: `ID of the system account. Requires replacement if changed.`,
 			},
 			"entity_id": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `The ID of the entity. Requires replacement if changed.`,
 			},
@@ -85,11 +83,9 @@ func (r *SystemAccountRoleResource) Schema(ctx context.Context, req resource.Sch
 				},
 			},
 			"entity_type_name": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `The type of entity. must be one of ["APIs", "API Products", "Application Auth Strategies", "Audit Logs", "Control Planes", "Dashboards", "DCR Providers", "Identity", "Mesh Control Planes", "Networks", "Portals", "Service Hub"]; Requires replacement if changed.`,
 				Validators: []validator.String{
@@ -114,11 +110,9 @@ func (r *SystemAccountRoleResource) Schema(ctx context.Context, req resource.Sch
 				Description: `The ID of the role assignment.`,
 			},
 			"role_name": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `The desired role. must be one of ["Admin", "Appearance Maintainer", "Application Registration", "Certificate Admin", "Cloud Gateway Cluster Admin", "Cloud Gateway Cluster Viewer", "Consumer Admin", "Connector", "Creator", "Deployer", "Discovery Admin", "Discovery Viewer", "Gateway Service Admin", "Integration Admin", "Integration Viewer", "Key Admin", "Maintainer", "Network Admin", "Network Creator", "Network Viewer", "Plugin Admin", "Plugins Admin", "Product Publisher", "Publisher", "Route Admin", "SNI Admin", "Scorecard Admin", "Scorecard Viewer", "Service Admin", "Service Creator", "Service Viewer", "Upstream Admin", "Vault Admin", "Viewer"]; Requires replacement if changed.`,
 				Validators: []validator.String{

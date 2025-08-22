@@ -10,9 +10,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	custom "github.com/kong/terraform-provider-konnect/v2/src"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
+	custom "github.com/kong/terraform-provider-konnect/v3/src"
 	"net/http"
 	"os"
 )
@@ -136,10 +136,16 @@ func (p *KonnectProvider) Configure(ctx context.Context, req provider.ConfigureR
 
 func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
+		NewAPIResource,
+		NewAPIDocumentResource,
+		NewAPIImplementationResource,
 		NewAPIProductResource,
 		NewAPIProductDocumentResource,
 		NewAPIProductSpecificationResource,
 		NewAPIProductVersionResource,
+		NewAPIPublicationResource,
+		NewAPISpecificationResource,
+		NewAPIVersionResource,
 		NewApplicationAuthStrategyResource,
 		NewAuditLogResource,
 		NewAuditLogDestinationResource,
@@ -287,7 +293,13 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewPortalAppearanceResource,
 		NewPortalAuthResource,
 		NewPortalClassicResource,
+		NewPortalCustomDomainResource,
+		NewPortalCustomizationResource,
+		NewPortalFaviconResource,
+		NewPortalLogoResource,
+		NewPortalPageResource,
 		NewPortalProductVersionResource,
+		NewPortalSnippetResource,
 		NewPortalTeamResource,
 		NewRealmResource,
 		NewServerlessCloudGatewayResource,
@@ -305,10 +317,10 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewCloudGatewayProviderAccountListDataSource,
-		NewGatewayControlPlaneListDataSource,
+		NewGatewayControlPlaneDataSource,
 		NewMeshControlPlanesDataSource,
+		NewPortalDataSource,
 		NewPortalClassicListDataSource,
-		NewPortalListDataSource,
 	}
 }
 

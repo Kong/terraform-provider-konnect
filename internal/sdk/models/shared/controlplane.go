@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
 
@@ -142,7 +142,7 @@ type ControlPlane struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]string `json:"labels,omitempty"`
+	Labels map[string]*string `json:"labels,omitempty"`
 	// CP configuration object for related access endpoints.
 	Config Config `json:"config"`
 	// An ISO-8604 timestamp representation of control plane creation date.
@@ -183,7 +183,7 @@ func (o *ControlPlane) GetDescription() *string {
 	return o.Description
 }
 
-func (o *ControlPlane) GetLabels() map[string]string {
+func (o *ControlPlane) GetLabels() map[string]*string {
 	if o == nil {
 		return nil
 	}

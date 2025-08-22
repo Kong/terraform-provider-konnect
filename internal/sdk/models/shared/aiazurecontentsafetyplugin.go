@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type AiAzureContentSafetyPluginAfter struct {
@@ -53,8 +53,19 @@ type AiAzureContentSafetyPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Name *string `default:"null" json:"name"`
+	Path *string `default:"null" json:"path"`
+}
+
+func (a AiAzureContentSafetyPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiAzureContentSafetyPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiAzureContentSafetyPluginPartials) GetID() *string {
@@ -153,31 +164,42 @@ func (e *AiAzureContentSafetyPluginTextSource) UnmarshalJSON(data []byte) error 
 
 type AiAzureContentSafetyPluginConfig struct {
 	// Sets the ?api-version URL parameter, used for defining the Azure Content Services interchange format.
-	AzureAPIVersion *string `json:"azure_api_version,omitempty"`
+	AzureAPIVersion *string `default:"2023-10-01" json:"azure_api_version"`
 	// If `azure_use_managed_identity` is true, set the client ID if required.
-	AzureClientID *string `json:"azure_client_id,omitempty"`
+	AzureClientID *string `default:"null" json:"azure_client_id"`
 	// If `azure_use_managed_identity` is true, set the client secret if required.
-	AzureClientSecret *string `json:"azure_client_secret,omitempty"`
+	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
 	// If `azure_use_managed_identity` is true, set the tenant ID if required.
-	AzureTenantID *string `json:"azure_tenant_id,omitempty"`
+	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// If checked, uses (if set) `azure_client_id`, `azure_client_secret`, and/or `azure_tenant_id` for Azure authentication, via Managed or User-assigned identity
-	AzureUseManagedIdentity *bool `json:"azure_use_managed_identity,omitempty"`
+	AzureUseManagedIdentity *bool `default:"false" json:"azure_use_managed_identity"`
 	// Use these configured blocklists (in Azure Content Services) when inspecting content.
-	BlocklistNames []string `json:"blocklist_names,omitempty"`
+	BlocklistNames []string `json:"blocklist_names"`
 	// Array of categories, and their thresholds, to measure on.
-	Categories []Categories `json:"categories,omitempty"`
+	Categories []Categories `json:"categories"`
 	// If `azure_use_managed_identity` is true, set the API key to call Content Safety.
-	ContentSafetyKey *string `json:"content_safety_key,omitempty"`
+	ContentSafetyKey *string `default:"null" json:"content_safety_key"`
 	// Full URL, inc protocol, of the Azure Content Safety instance.
 	ContentSafetyURL string `json:"content_safety_url"`
 	// Tells Azure to reject the request if any blocklist filter is hit.
-	HaltOnBlocklistHit *bool `json:"halt_on_blocklist_hit,omitempty"`
+	HaltOnBlocklistHit *bool `default:"true" json:"halt_on_blocklist_hit"`
 	// See https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/content-filter#content-filtering-categories
-	OutputType *OutputType `json:"output_type,omitempty"`
+	OutputType *OutputType `default:"FourSeverityLevels" json:"output_type"`
 	// Set true to tell the caller why their request was rejected, if so.
-	RevealFailureReason *bool `json:"reveal_failure_reason,omitempty"`
+	RevealFailureReason *bool `default:"true" json:"reveal_failure_reason"`
 	// Select where to pick the 'text' for the Azure Content Services request.
-	TextSource *AiAzureContentSafetyPluginTextSource `json:"text_source,omitempty"`
+	TextSource *AiAzureContentSafetyPluginTextSource `default:"concatenate_all_content" json:"text_source"`
+}
+
+func (a AiAzureContentSafetyPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiAzureContentSafetyPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AiAzureContentSafetyPluginConfig) GetAzureAPIVersion() *string {
@@ -332,22 +354,22 @@ type AiAzureContentSafetyPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                             `json:"instance_name,omitempty"`
+	InstanceName *string                             `default:"null" json:"instance_name"`
 	name         string                              `const:"ai-azure-content-safety" json:"name"`
-	Ordering     *AiAzureContentSafetyPluginOrdering `json:"ordering,omitempty"`
+	Ordering     *AiAzureContentSafetyPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []AiAzureContentSafetyPluginPartials `json:"partials,omitempty"`
+	Partials []AiAzureContentSafetyPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                           `json:"updated_at,omitempty"`
 	Config    AiAzureContentSafetyPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
-	Protocols []AiAzureContentSafetyPluginProtocols `json:"protocols,omitempty"`
+	Protocols []AiAzureContentSafetyPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *AiAzureContentSafetyPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.

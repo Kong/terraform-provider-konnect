@@ -3,11 +3,11 @@
 package shared
 
 import (
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type ConsumerRealmUpdateRequest struct {
-	Name *string `json:"name,omitempty"`
+	Name *string `default:"null" json:"name"`
 	// List of control plane ids that are allowed to use the realm. This is used when `allow_all_control_planes` value
 	// is set to false.
 	//

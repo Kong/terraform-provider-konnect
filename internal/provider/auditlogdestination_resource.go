@@ -9,12 +9,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -90,9 +91,11 @@ func (r *AuditLogDestinationResource) Schema(ctx context.Context, req resource.S
 			"skip_ssl_verification": schema.BoolAttribute{
 				Computed: true,
 				Optional: true,
+				Default:  booldefault.StaticBool(false),
 				MarkdownDescription: `Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.` + "\n" +
 					`We strongly recommend not setting this to 'true' as you are subject to man-in-the-middle and other attacks.` + "\n" +
-					`This option should be considered only for self-signed SSL certificates used in a non-production environment.`,
+					`This option should be considered only for self-signed SSL certificates used in a non-production environment.` + "\n" +
+					`Default: false`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed:    true,

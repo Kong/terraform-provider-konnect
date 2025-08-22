@@ -79,7 +79,7 @@ resource "konnect_gateway_plugin_datadog_tracing" "my_gatewayplugindatadogtracin
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `enabled` (Boolean) Whether the plugin is applied.
+- `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -95,14 +95,14 @@ resource "konnect_gateway_plugin_datadog_tracing" "my_gatewayplugindatadogtracin
 
 Optional:
 
-- `batch_flush_delay` (Number)
-- `batch_span_count` (Number)
-- `connect_timeout` (Number)
+- `batch_flush_delay` (Number) Default: 3
+- `batch_span_count` (Number) Default: 200
+- `connect_timeout` (Number) Default: 1000
 - `endpoint` (String)
-- `environment` (String)
-- `read_timeout` (Number)
-- `send_timeout` (Number)
-- `service_name` (String)
+- `environment` (String) Default: "none"
+- `read_timeout` (Number) Default: 5000
+- `send_timeout` (Number) Default: 5000
+- `service_name` (String) Default: "kong"
 
 
 <a id="nestedatt--consumer_group"></a>

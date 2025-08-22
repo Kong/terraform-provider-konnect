@@ -8,10 +8,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStrategyResponse(ctx context.Context, resp *shared.CreateAppAuthStrategyResponse) diag.Diagnostics {
@@ -22,9 +22,11 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			r.KeyAuth = &tfTypes.AppAuthStrategyKeyAuthRequest{}
 			r.KeyAuth.Active = types.BoolValue(resp.AppAuthStrategyKeyAuthResponse.Active)
 			r.Active = r.KeyAuth.Active
-			r.KeyAuth.Configs.KeyAuth.KeyNames = make([]types.String, 0, len(resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames))
-			for _, v := range resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames {
-				r.KeyAuth.Configs.KeyAuth.KeyNames = append(r.KeyAuth.Configs.KeyAuth.KeyNames, types.StringValue(v))
+			if resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames != nil {
+				r.KeyAuth.Configs.KeyAuth.KeyNames = make([]types.String, 0, len(resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames))
+				for _, v := range resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames {
+					r.KeyAuth.Configs.KeyAuth.KeyNames = append(r.KeyAuth.Configs.KeyAuth.KeyNames, types.StringValue(v))
+				}
 			}
 			r.KeyAuth.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AppAuthStrategyKeyAuthResponse.CreatedAt))
 			if resp.AppAuthStrategyKeyAuthResponse.DcrProvider == nil {
@@ -43,7 +45,7 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			if len(resp.AppAuthStrategyKeyAuthResponse.Labels) > 0 {
 				r.KeyAuth.Labels = make(map[string]types.String, len(resp.AppAuthStrategyKeyAuthResponse.Labels))
 				for key, value := range resp.AppAuthStrategyKeyAuthResponse.Labels {
-					r.KeyAuth.Labels[key] = types.StringValue(value)
+					r.KeyAuth.Labels[key] = types.StringPointerValue(value)
 				}
 			}
 			r.KeyAuth.Name = types.StringValue(resp.AppAuthStrategyKeyAuthResponse.Name)
@@ -91,7 +93,7 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			if len(resp.AppAuthStrategyOpenIDConnectResponse.Labels) > 0 {
 				r.OpenidConnect.Labels = make(map[string]types.String, len(resp.AppAuthStrategyOpenIDConnectResponse.Labels))
 				for key1, value1 := range resp.AppAuthStrategyOpenIDConnectResponse.Labels {
-					r.OpenidConnect.Labels[key1] = types.StringValue(value1)
+					r.OpenidConnect.Labels[key1] = types.StringPointerValue(value1)
 				}
 			}
 			r.OpenidConnect.Name = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponse.Name)
@@ -164,9 +166,12 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 		displayName = r.KeyAuth.DisplayName.ValueString()
 
 		strategyType := shared.StrategyType(r.KeyAuth.StrategyType.ValueString())
-		keyNames := make([]string, 0, len(r.KeyAuth.Configs.KeyAuth.KeyNames))
-		for _, keyNamesItem := range r.KeyAuth.Configs.KeyAuth.KeyNames {
-			keyNames = append(keyNames, keyNamesItem.ValueString())
+		var keyNames []string
+		if r.KeyAuth.Configs.KeyAuth.KeyNames != nil {
+			keyNames = make([]string, 0, len(r.KeyAuth.Configs.KeyAuth.KeyNames))
+			for _, keyNamesItem := range r.KeyAuth.Configs.KeyAuth.KeyNames {
+				keyNames = append(keyNames, keyNamesItem.ValueString())
+			}
 		}
 		keyAuth := shared.AppAuthStrategyConfigKeyAuth{
 			KeyNames: keyNames,
@@ -174,11 +179,14 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 		configs := shared.AppAuthStrategyKeyAuthRequestConfigs{
 			KeyAuth: keyAuth,
 		}
-		labels := make(map[string]string)
+		labels := make(map[string]*string)
 		for labelsKey, labelsValue := range r.KeyAuth.Labels {
-			var labelsInst string
-			labelsInst = labelsValue.ValueString()
-
+			labelsInst := new(string)
+			if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
+				*labelsInst = labelsValue.ValueString()
+			} else {
+				labelsInst = nil
+			}
 			labels[labelsKey] = labelsInst
 		}
 		appAuthStrategyKeyAuthRequest = &shared.AppAuthStrategyKeyAuthRequest{
@@ -238,11 +246,14 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 		} else {
 			dcrProviderID = nil
 		}
-		labels1 := make(map[string]string)
+		labels1 := make(map[string]*string)
 		for labelsKey1, labelsValue1 := range r.OpenidConnect.Labels {
-			var labelsInst1 string
-			labelsInst1 = labelsValue1.ValueString()
-
+			labelsInst1 := new(string)
+			if !labelsValue1.IsUnknown() && !labelsValue1.IsNull() {
+				*labelsInst1 = labelsValue1.ValueString()
+			} else {
+				labelsInst1 = nil
+			}
 			labels1[labelsKey1] = labelsInst1
 		}
 		appAuthStrategyOpenIDConnectRequest = &shared.AppAuthStrategyOpenIDConnectRequest{

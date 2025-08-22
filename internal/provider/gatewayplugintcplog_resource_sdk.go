@@ -8,16 +8,16 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
 func (r *GatewayPluginTCPLogResourceModel) RefreshFromSharedTCPLogPlugin(ctx context.Context, resp *shared.TCPLogPlugin) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if len(resp.Config.CustomFieldsByLua) > 0 {
+		if resp.Config.CustomFieldsByLua != nil {
 			r.Config.CustomFieldsByLua = make(map[string]jsontypes.Normalized, len(resp.Config.CustomFieldsByLua))
 			for key, value := range resp.Config.CustomFieldsByLua {
 				result, _ := json.Marshal(value)
