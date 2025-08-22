@@ -3,7 +3,7 @@ package tests
 import (
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
-	"github.com/kong/terraform-provider-konnect/v2/internal/provider"
+	"github.com/kong/terraform-provider-konnect/v3/internal/provider"
 )
 
 var (
