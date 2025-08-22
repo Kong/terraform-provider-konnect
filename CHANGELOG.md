@@ -5,6 +5,7 @@
 
 ### BREAKING CHANGES
 * `konnect_portal` resource on v2.x of terraform-provider-konnect no longer works with v3.x. Kindly import into `konnect_portal_classic`
+* `konnect_control_plane_list` data source has been removed. The `konnect_control_plane` data source is now available
 
 ### Features
 * New resources `konnect_portal`, `konnect_portal_logo`, `konnect_portal_favicon`, `konnect_portal_custom_domain`, `konnect_portal_snippet`, `konnect_portal_page`, `konnect_portal_customization` are now supported
