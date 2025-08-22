@@ -111,7 +111,7 @@ resource "konnect_portal_appearance" "my_portalappearance" {
       filename = "...my_filename..."
     }
   }
-  portal_id = "3d7b380a-055a-48ae-88ff-cc687bbb2679"
+  portal_id = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
   text = {
     catalog = {
       primary_header  = "...my_primary_header..."
@@ -128,7 +128,7 @@ resource "konnect_portal_appearance" "my_portalappearance" {
 
 ### Required
 
-- `portal_id` (String) ID of the portal.
+- `portal_id` (String) The Portal identifier
 
 ### Optional
 
@@ -466,5 +466,5 @@ Required:
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_portal_appearance.my_konnect_portal_appearance ""
+terraform import konnect_portal_appearance.my_konnect_portal_appearance "f32d905a-ed33-46a3-a093-d8f536af9a8a"
 ```

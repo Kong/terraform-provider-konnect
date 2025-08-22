@@ -234,7 +234,13 @@ type Konnect struct {
 	//
 	PortalProductVersions *PortalProductVersions
 	// APIs related to configuration of Konnect Developer Portals.
-	Portals *Portals
+	Portals           *Portals
+	API               *API
+	APIDocumentation  *APIDocumentation
+	APIImplementation *APIImplementation
+	APIPublication    *APIPublication
+	APISpecification  *APISpecification
+	APIVersion        *APIVersion
 	// APIs for managing static assets for Konnect Developer Portals.
 	Assets *Assets
 	// APIs related to configuration of Konnect Developer Portal auth settings.
@@ -400,6 +406,12 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.PortalAppearance = newPortalAppearance(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalProductVersions = newPortalProductVersions(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Portals = newPortals(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.API = newAPI(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APIDocumentation = newAPIDocumentation(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APIImplementation = newAPIImplementation(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APIPublication = newAPIPublication(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APISpecification = newAPISpecification(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APIVersion = newAPIVersion(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Assets = newAssets(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalAuthSettings = newPortalAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalCustomDomains = newPortalCustomDomains(sdk, sdk.sdkConfiguration, sdk.hooks)

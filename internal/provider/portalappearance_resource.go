@@ -656,7 +656,7 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 			},
 			"portal_id": schema.StringAttribute{
 				Required:    true,
-				Description: `ID of the portal.`,
+				Description: `The Portal identifier`,
 			},
 			"text": schema.SingleNestedAttribute{
 				Computed: true,

@@ -46,7 +46,7 @@ type IntegrationInstanceAuthCredentialResourceModel struct {
 	CreatedAt              types.String                    `tfsdk:"created_at"`
 	ExpiresAt              types.String                    `tfsdk:"expires_at"`
 	ID                     types.String                    `tfsdk:"id"`
-	IntegrationInstance    tfTypes.IntegrationInstanceRef  `tfsdk:"integration_instance"`
+	IntegrationInstance    tfTypes.Portals                 `tfsdk:"integration_instance"`
 	IntegrationInstanceID  types.String                    `tfsdk:"integration_instance_id"`
 	MissingPermissions     []tfTypes.MissingPermission     `tfsdk:"missing_permissions"`
 	MultiKeyAuth           *tfTypes.MultiKeyAuth           `queryParam:"inline" tfsdk:"multi_key_auth" tfPlanOnly:"true"`

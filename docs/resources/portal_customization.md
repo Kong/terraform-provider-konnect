@@ -47,7 +47,7 @@ resource "konnect_portal_customization" "my_portalcustomization" {
       }
     ]
   }
-  portal_id = "0d4645ad-b2c2-40d7-9acc-d62f7f5923d2"
+  portal_id = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
   robots    = "...my_robots..."
   spec_renderer = {
     hide_deprecated = true
@@ -72,7 +72,7 @@ resource "konnect_portal_customization" "my_portalcustomization" {
 
 ### Required
 
-- `portal_id` (String) ID of the portal.
+- `portal_id` (String) The Portal identifier
 
 ### Optional
 
@@ -169,5 +169,5 @@ Optional:
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_portal_customization.my_konnect_portal_customization ""
+terraform import konnect_portal_customization.my_konnect_portal_customization "f32d905a-ed33-46a3-a093-d8f536af9a8a"
 ```

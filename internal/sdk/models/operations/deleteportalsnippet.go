@@ -8,7 +8,7 @@ import (
 )
 
 type DeletePortalSnippetRequest struct {
-	// ID of the portal.
+	// The Portal identifier
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// ID of the snippet.
 	SnippetID string `pathParam:"style=simple,explode=false,name=snippetId"`

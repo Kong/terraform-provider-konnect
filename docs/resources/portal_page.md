@@ -17,7 +17,7 @@ resource "konnect_portal_page" "my_portalpage" {
   content        = "# Welcome to My Page"
   description    = "A custom page about developer portals"
   parent_page_id = "824a28d9-7024-426a-aed4-03b504521824"
-  portal_id      = "097d33cc-f9da-4def-a261-33dfd5495a02"
+  portal_id      = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
   slug           = "/my-page"
   status         = "published"
   title          = "My Page"
@@ -31,7 +31,7 @@ resource "konnect_portal_page" "my_portalpage" {
 ### Required
 
 - `content` (String) The renderable markdown content of a page in a portal.
-- `portal_id` (String) ID of the portal.
+- `portal_id` (String) The Portal identifier
 - `slug` (String) The slug of a page in a portal, used to compute its full URL path within the portal hierarchy. 
 When a page has a `parent_page_id`, its full path is built by joining the parent’s slug with its own. 
 For example, if a parent page has the slug `slug1` and this page’s slug is `slug2`, the resulting path will be `/slug1/slug2`. 
@@ -60,5 +60,5 @@ must be one of ["public", "private"]
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_portal_page.my_konnect_portal_page '{"id": "ebbac5b0-ac89-45c3-9d2e-c4542c657e79", "portal_id": ""}'
+terraform import konnect_portal_page.my_konnect_portal_page '{"id": "ebbac5b0-ac89-45c3-9d2e-c4542c657e79", "portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a"}'
 ```

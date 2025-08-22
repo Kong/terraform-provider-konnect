@@ -8,7 +8,7 @@ import (
 )
 
 type DeletePortalCustomDomainRequest struct {
-	// ID of the portal.
+	// The Portal identifier
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 }
 

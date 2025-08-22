@@ -16,7 +16,7 @@ PortalCustomDomain Resource
 resource "konnect_portal_custom_domain" "my_portalcustomdomain" {
   enabled   = false
   hostname  = "...my_hostname..."
-  portal_id = "eb3a2385-45cb-4bcb-8ab5-fe54bd842bf1"
+  portal_id = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
   ssl = {
     custom_certificate         = "...my_custom_certificate..."
     custom_private_key         = "...my_custom_private_key..."
@@ -32,7 +32,7 @@ resource "konnect_portal_custom_domain" "my_portalcustomdomain" {
 
 - `enabled` (Boolean)
 - `hostname` (String) Requires replacement if changed.
-- `portal_id` (String) ID of the portal.
+- `portal_id` (String) The Portal identifier
 - `ssl` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--ssl))
 
 ### Read-Only
@@ -60,5 +60,5 @@ Read-Only:
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_portal_custom_domain.my_konnect_portal_custom_domain ""
+terraform import konnect_portal_custom_domain.my_konnect_portal_custom_domain "f32d905a-ed33-46a3-a093-d8f536af9a8a"
 ```

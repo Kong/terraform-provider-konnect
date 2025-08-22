@@ -16,7 +16,7 @@ PortalTeam Resource
 resource "konnect_portal_team" "my_portalteam" {
   description = "The Identity Management (IDM) team."
   name        = "IDM - Developers"
-  portal_id   = "09878798-1a69-48bc-9bac-1c891294cc51"
+  portal_id   = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
 }
 ```
 
@@ -26,7 +26,7 @@ resource "konnect_portal_team" "my_portalteam" {
 ### Required
 
 - `name` (String)
-- `portal_id` (String) ID of the portal.
+- `portal_id` (String) The Portal identifier
 
 ### Optional
 
@@ -43,5 +43,5 @@ resource "konnect_portal_team" "my_portalteam" {
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_portal_team.my_konnect_portal_team '{"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "portal_id": ""}'
+terraform import konnect_portal_team.my_konnect_portal_team '{"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a"}'
 ```

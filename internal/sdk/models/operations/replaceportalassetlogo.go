@@ -8,7 +8,7 @@ import (
 )
 
 type ReplacePortalAssetLogoRequest struct {
-	// ID of the portal.
+	// The Portal identifier
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// Update an image asset for the portal.
 	ReplacePortalImageAsset *shared.ReplacePortalImageAsset `request:"mediaType=application/json"`
