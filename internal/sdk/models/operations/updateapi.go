@@ -44,6 +44,8 @@ type UpdateAPIResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+	// Conflict - May occur when constraints are violated
+	ConflictError *shared.ConflictError
 	// Unsupported Media Type
 	UnsupportedMediaTypeError *shared.UnsupportedMediaTypeError
 }
@@ -102,6 +104,13 @@ func (o *UpdateAPIResponse) GetNotFoundError() *shared.NotFoundError {
 		return nil
 	}
 	return o.NotFoundError
+}
+
+func (o *UpdateAPIResponse) GetConflictError() *shared.ConflictError {
+	if o == nil {
+		return nil
+	}
+	return o.ConflictError
 }
 
 func (o *UpdateAPIResponse) GetUnsupportedMediaTypeError() *shared.UnsupportedMediaTypeError {

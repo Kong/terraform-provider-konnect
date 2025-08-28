@@ -47,13 +47,13 @@ type APIResponseSchema struct {
 	// A description of your API. Will be visible on your live Portal.
 	Description *string `default:"null" json:"description"`
 	// An optional version for your API. Leave this empty if your API is unversioned.
-	Version               *string            `default:"null" json:"version"`
+	Version               *string            `json:"version"`
 	CurrentVersionSummary *APIVersionSummary `json:"current_version_summary"`
 	// The `slug` is used in generated URLs to provide human readable paths.
 	//
 	// Defaults to `slugify(name + version)`
 	//
-	Slug *string `default:"null" json:"slug"`
+	Slug *string `json:"slug"`
 	// The list of API specification ids for the API.
 	//
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
