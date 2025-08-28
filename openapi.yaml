@@ -13790,6 +13790,7 @@ paths:
       operationId: update-api
       summary: Update API
       description: Updates an API.
+      parameters: []
       requestBody:
         $ref: '#/components/requestBodies/UpdateApiRequest'
       responses:
@@ -13807,6 +13808,8 @@ paths:
           $ref: '#/components/responses/ApiForbidden'
         '404':
           $ref: '#/components/responses/ApiNotFound'
+        '409':
+          $ref: '#/components/responses/ApiVersionPatchConflict'
         '415':
           $ref: '#/components/responses/UnsupportedMediaType'
       tags:
@@ -14251,6 +14254,7 @@ paths:
       operationId: update-api-version
       summary: Update API Version
       description: Updates the version (OpenAPI or AsyncAPI) of an API.
+      parameters: []
       requestBody:
         $ref: '#/components/requestBodies/UpdateApiVersionRequest'
       responses:
@@ -14269,7 +14273,7 @@ paths:
         '404':
           $ref: '#/components/responses/ApiNotFound'
         '409':
-          $ref: '#/components/responses/ApiSpecHiddenConflict'
+          $ref: '#/components/responses/ApiVersionPatchConflict'
         '415':
           $ref: '#/components/responses/UnsupportedMediaType'
       tags:
@@ -22014,23 +22018,33 @@ components:
           nullable: false
           properties:
             try_it_ui:
+              description: Enable in-browser testing for your APIs. All linked gateways must have the CORS plugin configured.
               type: boolean
               default: true
             try_it_insomnia:
+              description: Enables users to open the API spec in Insomnia to explore and send requests with the native client.
               type: boolean
               default: true
             infinite_scroll:
+              description: 'Display the full spec on a single, scrollable page. If disabled, documentation, endpoints, and schemas appear on separate pages.'
               type: boolean
               default: true
             show_schemas:
+              description: 'Control whether schemas are visible in your API specs. When enabled, schemas appear in the side navigation below the endpoints.'
               type: boolean
               default: true
             hide_internal:
+              description: Manage visibility of internal endpoints and models.
               type: boolean
               default: false
             hide_deprecated:
+              description: Manage visibility of deprecated endpoints and models.
               type: boolean
               default: false
+            allow_custom_server_urls:
+              description: Let users define a custom server URL for endpoints. This will be used to generate code snippets and to test the API. The URL is client-side only and is not saved.
+              type: boolean
+              default: true
         robots:
           type: string
           default: null
@@ -22732,11 +22746,10 @@ components:
         version:
           description: An optional version for your API. Leave this empty if your API is unversioned.
           type: string
-          default: null
           maxLength: 255
           minLength: 1
           nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         current_version_summary:
           $ref: '#/components/schemas/ApiVersionSummary'
         slug:
@@ -22746,10 +22759,9 @@ components:
             Defaults to `slugify(name + version)`
           type: string
           example: my-api-v1
-          default: null
           nullable: true
           pattern: '^[\w-]+$'
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         api_spec_ids:
           description: The list of API specification ids for the API.
           type: array
@@ -23000,12 +23012,11 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
-      default: null
       additionalProperties: false
       nullable: true
       readOnly: true
       title: API Version Summary
-      x-speakeasy-param-computed: false
+      x-speakeasy-terraform-ignore: true
     ApiSpec:
       type: object
       properties:
@@ -49375,11 +49386,10 @@ components:
               version:
                 description: An optional version for your API. Leave this empty if your API is unversioned.
                 type: string
-                default: null
                 maxLength: 255
                 minLength: 1
                 nullable: true
-                x-speakeasy-param-computed: false
+                x-speakeasy-param-computed: true
               current_version_summary:
                 $ref: '#/components/schemas/ApiVersionSummary'
               slug:
@@ -49389,10 +49399,9 @@ components:
                   Defaults to `slugify(name + version)`
                 type: string
                 example: my-api-v1
-                default: null
                 nullable: true
                 pattern: '^[\w-]+$'
-                x-speakeasy-param-computed: false
+                x-speakeasy-param-computed: true
               api_spec_ids:
                 description: The list of API specification ids for the API.
                 type: array
@@ -49617,11 +49626,10 @@ components:
               version:
                 description: An optional version for your API. Leave this empty if your API is unversioned.
                 type: string
-                default: null
                 maxLength: 255
                 minLength: 1
                 nullable: true
-                x-speakeasy-param-computed: false
+                x-speakeasy-param-computed: true
               current_version_summary:
                 $ref: '#/components/schemas/ApiVersionSummary'
               slug:
@@ -49631,10 +49639,9 @@ components:
                   Defaults to `slugify(name + version)`
                 type: string
                 example: my-api-v1
-                default: null
                 nullable: true
                 pattern: '^[\w-]+$'
-                x-speakeasy-param-computed: false
+                x-speakeasy-param-computed: true
               api_spec_ids:
                 description: The list of API specification ids for the API.
                 type: array
@@ -50768,6 +50775,12 @@ components:
             $ref: '#/components/schemas/ConflictError'
     ApiSpecHiddenConflict:
       description: Conflict - name attribute must be unique across specifications
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+    ApiVersionPatchConflict:
+      description: Conflict - May occur when constraints are violated
       content:
         application/problem+json:
           schema:
