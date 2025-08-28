@@ -2193,7 +2193,6 @@ paths:
           $ref: '#/components/responses/ServiceUnavailable'
       tags:
         - Control Planes
-    parameters: []
     post:
       x-speakeasy-entity-operation:
         terraform-resource: GatewayControlPlane#create
@@ -2331,6 +2330,107 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Config Stores
+  '/v2/control-planes/{controlPlaneId}/config-stores/{configStoreId}/secrets':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+      - $ref: '#/components/parameters/configStoreIdForSecret'
+    post:
+      x-speakeasy-entity-operation: GatewayConfigStoreSecret#create
+      operationId: create-config-store-secret
+      summary: Create Config Store Secret
+      description: Creates a secret for a Config Store.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateConfigStoreSecretRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/ConfigStoreSecretResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ConfigStoreSecretUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ConfigStoreSecretNotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - Config Store Secrets
+  '/v2/control-planes/{controlPlaneId}/config-stores/{configStoreId}/secrets/{key}':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+      - $ref: '#/components/parameters/configStoreIdForSecret'
+      - name: key
+        in: path
+        description: Config Store Secret key
+        required: true
+        schema:
+          type: string
+          example: ConfigStoreSecretKey
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: GatewayConfigStoreSecret#read
+        terraform-datasource: null
+      operationId: get-config-store-secret
+      summary: Fetch Config Store Secret
+      description: Returns a secret for the Config Store.
+      responses:
+        '200':
+          $ref: '#/components/responses/ConfigStoreSecretResponse'
+        '401':
+          $ref: '#/components/responses/ConfigStoreSecretUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ConfigStoreSecretNotFound'
+      tags:
+        - Config Store Secrets
+    put:
+      x-speakeasy-entity-operation: GatewayConfigStoreSecret#update
+      operationId: update-config-store-secret
+      summary: Update Config Store Secret
+      description: Updates a secret for a Config Store.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateConfigStoreSecretRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/ConfigStoreSecretResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ConfigStoreSecretUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ConfigStoreSecretNotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - Config Store Secrets
+    delete:
+      x-speakeasy-entity-operation: GatewayConfigStoreSecret#delete
+      operationId: delete-config-store-secret
+      summary: Delete Config Store Secret
+      description: Removes a secret from a Config Store.
+      responses:
+        '204':
+          description: Secret for the Config Store was deleted successfully.
+        '401':
+          $ref: '#/components/responses/ConfigStoreSecretUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ConfigStoreSecretNotFound'
+      tags:
+        - Config Store Secrets
   '/v2/control-planes/{controlPlaneId}/core-entities/ca_certificates':
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
@@ -13790,7 +13890,6 @@ paths:
       operationId: update-api
       summary: Update API
       description: Updates an API.
-      parameters: []
       requestBody:
         $ref: '#/components/requestBodies/UpdateApiRequest'
       responses:
@@ -14254,7 +14353,6 @@ paths:
       operationId: update-api-version
       summary: Update API Version
       description: Updates the version (OpenAPI or AsyncAPI) of an API.
-      parameters: []
       requestBody:
         $ref: '#/components/requestBodies/UpdateApiVersionRequest'
       responses:
@@ -15137,7 +15235,6 @@ paths:
       operationId: get-system-accounts-id-access-tokens-id
       summary: Fetch System Account Access Token
       description: Returns the system account (SA) access token for the SA Access Token ID specified as a path parameter.
-      parameters: []
       responses:
         '200':
           $ref: '#/components/responses/SystemAccountAccessTokenSingle'
@@ -15277,7 +15374,6 @@ paths:
       tags:
         - System Accounts - Roles
   /v3/teams:
-    parameters: []
     post:
       x-speakeasy-entity-operation:
         terraform-resource: Team#create
@@ -16096,6 +16192,15 @@ components:
       required: true
       description: Config Store identifier
       x-speakeasy-match: id
+    configStoreIdForSecret:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: configStoreId
+      in: path
+      required: true
+      description: Config Store identifier
     consumerId:
       x-speakeasy-match: id
       name: consumerId
@@ -23253,6 +23358,52 @@ components:
           x-speakeasy-param-computed: false
       additionalProperties: false
       title: Update Config Store Request
+    ConfigStoreSecret:
+      type: object
+      properties:
+        key:
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        value:
+          type: string
+          default: null
+          nullable: true
+          writeOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-sensitive: true
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+    CreateConfigStoreSecret:
+      type: object
+      properties:
+        key:
+          type: string
+          maxLength: 512
+          minLength: 1
+        value:
+          type: string
+          maxLength: 5120
+          minLength: 1
+          writeOnly: true
+          x-speakeasy-param-sensitive: true
+      required:
+        - key
+        - value
+    UpdateConfigStoreSecret:
+      type: object
+      properties:
+        value:
+          type: string
+          maxLength: 5120
+          minLength: 1
+          writeOnly: true
+          x-speakeasy-param-sensitive: true
+      required:
+        - value
     ACL:
       x-speakeasy-entity: GatewayACL
       type: object
@@ -49751,12 +49902,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreateConfigStore'
+    CreateConfigStoreSecretRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateConfigStoreSecret'
     UpdateConfigStoreRequest:
       required: true
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdateConfigStore'
+    UpdateConfigStoreSecretRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateConfigStoreSecret'
   responses:
     RetrieveControlPlaneResponse:
       description: A response to retrieving a single control plane.
@@ -51064,13 +51227,31 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ConfigStore'
+    ConfigStoreSecretResponse:
+      description: Config Store Secret
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConfigStoreSecret'
     ConfigStoreUnauthorized:
       description: Unauthorized
       content:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/UnauthorizedError'
+    ConfigStoreSecretUnauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
     ConfigStoreNotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotFoundError'
+    ConfigStoreSecretNotFound:
       description: Not Found
       content:
         application/problem+json:
@@ -51270,6 +51451,8 @@ tags:
     name: Custom Plugin Schemas
   - description: Config Stores
     name: Config Stores
+  - description: Config Store Secrets
+    name: Config Store Secrets
   - name: ACLs
   - name: API-keys
   - name: Basic-auth credentials
