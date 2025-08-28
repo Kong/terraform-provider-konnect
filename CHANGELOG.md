@@ -1,7 +1,13 @@
 # Changelog
 
-## 3.0.0
+## 3.0.1
 > Released on 2025/08/??
+
+### Bug Fixes
+* Fixed false diff on the output of `terraform plan` for `konnect_api` resource
+
+## 3.0.0
+> Released on 2025/08/23
 
 ### BREAKING CHANGES
 * `konnect_portal` resource on v2.x of terraform-provider-konnect no longer works with v3.x. Kindly import into `konnect_portal_classic`
