@@ -50,30 +50,9 @@ Defaults to `slugify(name + version)`
 
 - `api_spec_ids` (List of String, Deprecated) The list of API specification ids for the API.
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `current_version_summary` (Attributes) (see [below for nested schema](#nestedatt--current_version_summary))
 - `id` (String) The API identifier.
 - `portals` (Attributes List) The list of portals which this API is published to. (see [below for nested schema](#nestedatt--portals))
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
-
-<a id="nestedatt--current_version_summary"></a>
-### Nested Schema for `current_version_summary`
-
-Read-Only:
-
-- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `id` (String) The API version identifier.
-- `spec` (Attributes) (see [below for nested schema](#nestedatt--current_version_summary--spec))
-- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
-- `version` (String) The version of this api spec.
-
-<a id="nestedatt--current_version_summary--spec"></a>
-### Nested Schema for `current_version_summary.spec`
-
-Read-Only:
-
-- `type` (String) The type of specification being stored. This allows us to render the specification correctly. must be one of ["oas2", "oas3", "asyncapi"]
-
-
 
 <a id="nestedatt--portals"></a>
 ### Nested Schema for `portals`

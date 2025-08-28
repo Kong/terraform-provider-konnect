@@ -53,7 +53,7 @@ type UpdateAPIVersionResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
-	// Conflict - name attribute must be unique across specifications
+	// Conflict - May occur when constraints are violated
 	ConflictError *shared.ConflictError
 	// Unsupported Media Type
 	UnsupportedMediaTypeError *shared.UnsupportedMediaTypeError

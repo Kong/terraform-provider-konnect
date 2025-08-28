@@ -78,6 +78,7 @@ func (r *PortalCustomizationResourceModel) RefreshFromSharedPortalCustomization(
 			r.SpecRenderer = nil
 		} else {
 			r.SpecRenderer = &tfTypes.SpecRenderer{}
+			r.SpecRenderer.AllowCustomServerUrls = types.BoolPointerValue(resp.SpecRenderer.AllowCustomServerUrls)
 			r.SpecRenderer.HideDeprecated = types.BoolPointerValue(resp.SpecRenderer.HideDeprecated)
 			r.SpecRenderer.HideInternal = types.BoolPointerValue(resp.SpecRenderer.HideInternal)
 			r.SpecRenderer.InfiniteScroll = types.BoolPointerValue(resp.SpecRenderer.InfiniteScroll)
@@ -310,13 +311,20 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 		} else {
 			hideDeprecated = nil
 		}
+		allowCustomServerUrls := new(bool)
+		if !r.SpecRenderer.AllowCustomServerUrls.IsUnknown() && !r.SpecRenderer.AllowCustomServerUrls.IsNull() {
+			*allowCustomServerUrls = r.SpecRenderer.AllowCustomServerUrls.ValueBool()
+		} else {
+			allowCustomServerUrls = nil
+		}
 		specRenderer = &shared.SpecRenderer{
-			TryItUI:        tryItUI,
-			TryItInsomnia:  tryItInsomnia,
-			InfiniteScroll: infiniteScroll,
-			ShowSchemas:    showSchemas,
-			HideInternal:   hideInternal,
-			HideDeprecated: hideDeprecated,
+			TryItUI:               tryItUI,
+			TryItInsomnia:         tryItInsomnia,
+			InfiniteScroll:        infiniteScroll,
+			ShowSchemas:           showSchemas,
+			HideInternal:          hideInternal,
+			HideDeprecated:        hideDeprecated,
+			AllowCustomServerUrls: allowCustomServerUrls,
 		}
 	}
 	robots := new(string)

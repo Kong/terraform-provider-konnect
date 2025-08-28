@@ -13,12 +13,12 @@ type UpdateAPIRequest struct {
 	// A description of your API. Will be visible on your live Portal.
 	Description *string `default:"null" json:"description"`
 	// An optional version for your API. Leave this empty if your API is unversioned.
-	Version *string `default:"null" json:"version"`
+	Version *string `json:"version,omitempty"`
 	// The `slug` is used in generated URLs to provide human readable paths.
 	//
 	// Defaults to `slugify(name + version)`
 	//
-	Slug *string `default:"null" json:"slug"`
+	Slug *string `json:"slug,omitempty"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Labels are intended to store **INTERNAL** metadata.

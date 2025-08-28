@@ -8,11 +8,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -41,19 +39,18 @@ type APIResource struct {
 
 // APIResourceModel describes the resource data model.
 type APIResourceModel struct {
-	APISpecIds            []types.String             `tfsdk:"api_spec_ids"`
-	Attributes            jsontypes.Normalized       `tfsdk:"attributes"`
-	CreatedAt             types.String               `tfsdk:"created_at"`
-	CurrentVersionSummary *tfTypes.APIVersionSummary `tfsdk:"current_version_summary"`
-	Description           types.String               `tfsdk:"description"`
-	ID                    types.String               `tfsdk:"id"`
-	Labels                map[string]types.String    `tfsdk:"labels"`
-	Name                  types.String               `tfsdk:"name"`
-	Portals               []tfTypes.Portals          `tfsdk:"portals"`
-	Slug                  types.String               `tfsdk:"slug"`
-	SpecContent           types.String               `tfsdk:"spec_content"`
-	UpdatedAt             types.String               `tfsdk:"updated_at"`
-	Version               types.String               `tfsdk:"version"`
+	APISpecIds  []types.String          `tfsdk:"api_spec_ids"`
+	Attributes  jsontypes.Normalized    `tfsdk:"attributes"`
+	CreatedAt   types.String            `tfsdk:"created_at"`
+	Description types.String            `tfsdk:"description"`
+	ID          types.String            `tfsdk:"id"`
+	Labels      map[string]types.String `tfsdk:"labels"`
+	Name        types.String            `tfsdk:"name"`
+	Portals     []tfTypes.Portals       `tfsdk:"portals"`
+	Slug        types.String            `tfsdk:"slug"`
+	SpecContent types.String            `tfsdk:"spec_content"`
+	UpdatedAt   types.String            `tfsdk:"updated_at"`
+	Version     types.String            `tfsdk:"version"`
 }
 
 func (r *APIResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -84,69 +81,6 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
-				},
-			},
-			"current_version_summary": schema.SingleNestedAttribute{
-				Computed: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"created_at": types.StringType,
-					"id":         types.StringType,
-					"spec": types.ObjectType{
-						AttrTypes: map[string]attr.Type{
-							`type`: types.StringType,
-						},
-					},
-					"updated_at": types.StringType,
-					"version":    types.StringType,
-				})),
-				Attributes: map[string]schema.Attribute{
-					"created_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
-					},
-					"id": schema.StringAttribute{
-						Computed:    true,
-						Description: `The API version identifier.`,
-					},
-					"spec": schema.SingleNestedAttribute{
-						Computed: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"type": types.StringType,
-						})),
-						Attributes: map[string]schema.Attribute{
-							"type": schema.StringAttribute{
-								Computed:    true,
-								Description: `The type of specification being stored. This allows us to render the specification correctly. must be one of ["oas2", "oas3", "asyncapi"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"oas2",
-										"oas3",
-										"asyncapi",
-									),
-								},
-							},
-						},
-					},
-					"updated_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity update date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
-					},
-					"version": schema.StringAttribute{
-						Computed:    true,
-						Description: `The version of this api spec.`,
-					},
 				},
 			},
 			"description": schema.StringAttribute{
@@ -196,6 +130,7 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				},
 			},
 			"slug": schema.StringAttribute{
+				Computed: true,
 				Optional: true,
 				MarkdownDescription: `The ` + "`" + `slug` + "`" + ` is used in generated URLs to provide human readable paths.` + "\n" +
 					`` + "\n" +
@@ -222,6 +157,7 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				},
 			},
 			"version": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
 				Description: `An optional version for your API. Leave this empty if your API is unversioned.`,
 				Validators: []validator.String{
