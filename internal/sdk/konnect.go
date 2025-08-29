@@ -125,6 +125,8 @@ type Konnect struct {
 	ControlPlanes     *ControlPlanes
 	// Config Stores
 	ConfigStores *ConfigStores
+	// Config Store Secrets
+	ConfigStoreSecrets *ConfigStoreSecrets
 	// A CA certificate object represents a trusted certificate authority.
 	// These objects are used by Kong Gateway to verify the validity of a client or server certificate.
 	CACertificates *CACertificates
@@ -379,6 +381,7 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.CloudGateways = newCloudGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ControlPlanes = newControlPlanes(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ConfigStores = newConfigStores(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.ConfigStoreSecrets = newConfigStoreSecrets(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.CACertificates = newCACertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Certificates = newCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ConsumerGroups = newConsumerGroups(sdk, sdk.sdkConfiguration, sdk.hooks)
