@@ -3,6 +3,9 @@
 ## 3.0.1
 > Released on 2025/08/??
 
+### Features
+* Add support for the `konnect_gateway_config_store_secret` resource
+
 ### Bug Fixes
 * Fixed false diff on the output of `terraform plan` for `konnect_api` resource
 
