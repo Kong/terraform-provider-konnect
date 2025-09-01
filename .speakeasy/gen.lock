@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 4f961e02befcbd839ac4262c0f7dbbe3
+  docChecksum: 6cca8a3b8ac739ec4126f8cddfd86cbd
   docVersion: 2.0.0
   speakeasyVersion: 1.602.0
   generationVersion: 2.681.1
@@ -90,6 +90,8 @@ generatedFiles:
   - examples/resources/konnect_gateway_certificate/resource.tf
   - examples/resources/konnect_gateway_config_store/import.sh
   - examples/resources/konnect_gateway_config_store/resource.tf
+  - examples/resources/konnect_gateway_config_store_secret/import.sh
+  - examples/resources/konnect_gateway_config_store_secret/resource.tf
   - examples/resources/konnect_gateway_consumer/import.sh
   - examples/resources/konnect_gateway_consumer/resource.tf
   - examples/resources/konnect_gateway_consumer_group/import.sh
@@ -448,6 +450,8 @@ generatedFiles:
   - internal/provider/gatewaycertificate_resource_sdk.go
   - internal/provider/gatewayconfigstore_resource.go
   - internal/provider/gatewayconfigstore_resource_sdk.go
+  - internal/provider/gatewayconfigstoresecret_resource.go
+  - internal/provider/gatewayconfigstoresecret_resource_sdk.go
   - internal/provider/gatewayconsumer_resource.go
   - internal/provider/gatewayconsumer_resource_sdk.go
   - internal/provider/gatewayconsumergroup_resource.go
@@ -1105,6 +1109,7 @@ generatedFiles:
   - internal/sdk/cloudgateways.go
   - internal/sdk/cmek.go
   - internal/sdk/configstores.go
+  - internal/sdk/configstoresecrets.go
   - internal/sdk/consumergroups.go
   - internal/sdk/consumers.go
   - internal/sdk/controlplanegroups.go
@@ -1177,6 +1182,7 @@ generatedFiles:
   - internal/sdk/models/operations/createcatalogservice.go
   - internal/sdk/models/operations/createcertificate.go
   - internal/sdk/models/operations/createconfigstore.go
+  - internal/sdk/models/operations/createconfigstoresecret.go
   - internal/sdk/models/operations/createconfiguration.go
   - internal/sdk/models/operations/createconfluentconsumeplugin.go
   - internal/sdk/models/operations/createconfluentplugin.go
@@ -1336,6 +1342,7 @@ generatedFiles:
   - internal/sdk/models/operations/deletecertificate.go
   - internal/sdk/models/operations/deletecmek.go
   - internal/sdk/models/operations/deleteconfigstore.go
+  - internal/sdk/models/operations/deleteconfigstoresecret.go
   - internal/sdk/models/operations/deleteconfluentconsumeplugin.go
   - internal/sdk/models/operations/deleteconfluentplugin.go
   - internal/sdk/models/operations/deleteconsumer.go
@@ -1504,6 +1511,7 @@ generatedFiles:
   - internal/sdk/models/operations/getcertificate.go
   - internal/sdk/models/operations/getcmek.go
   - internal/sdk/models/operations/getconfigstore.go
+  - internal/sdk/models/operations/getconfigstoresecret.go
   - internal/sdk/models/operations/getconfiguration.go
   - internal/sdk/models/operations/getconfluentconsumeplugin.go
   - internal/sdk/models/operations/getconfluentplugin.go
@@ -1689,6 +1697,7 @@ generatedFiles:
   - internal/sdk/models/operations/updatecanaryplugin.go
   - internal/sdk/models/operations/updatecatalogservice.go
   - internal/sdk/models/operations/updateconfigstore.go
+  - internal/sdk/models/operations/updateconfigstoresecret.go
   - internal/sdk/models/operations/updateconfluentconsumeplugin.go
   - internal/sdk/models/operations/updateconfluentplugin.go
   - internal/sdk/models/operations/updateconsumerinrealm.go
@@ -1889,6 +1898,7 @@ generatedFiles:
   - internal/sdk/models/shared/cmek.go
   - internal/sdk/models/shared/cmekid.go
   - internal/sdk/models/shared/configstore.go
+  - internal/sdk/models/shared/configstoresecret.go
   - internal/sdk/models/shared/configurationdataplanegroup.go
   - internal/sdk/models/shared/configurationdataplanegroupautoscale.go
   - internal/sdk/models/shared/configurationdataplanegroupautoscaleautopilot.go
@@ -1928,6 +1938,7 @@ generatedFiles:
   - internal/sdk/models/shared/createauditlogdestination.go
   - internal/sdk/models/shared/createcatalogservice.go
   - internal/sdk/models/shared/createconfigstore.go
+  - internal/sdk/models/shared/createconfigstoresecret.go
   - internal/sdk/models/shared/createconfigurationdataplanegroup.go
   - internal/sdk/models/shared/createconfigurationrequest.go
   - internal/sdk/models/shared/createcontrolplanerequest.go
@@ -2155,6 +2166,7 @@ generatedFiles:
   - internal/sdk/models/shared/updateauditlogwebhook.go
   - internal/sdk/models/shared/updatecatalogservice.go
   - internal/sdk/models/shared/updateconfigstore.go
+  - internal/sdk/models/shared/updateconfigstoresecret.go
   - internal/sdk/models/shared/updateconsumerpayload.go
   - internal/sdk/models/shared/updatecontrolplanerequest.go
   - internal/sdk/models/shared/updateintegrationinstance.go
@@ -14097,6 +14109,79 @@ examples:
         path:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
           versionId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-config-store-secret:
+    speakeasy-default-create-config-store-secret:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          configStoreId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      requestBody:
+        application/json: {"key": "<key>", "value": "<value>"}
+      responses:
+        "201":
+          application/json: {"key": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 189970, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "415":
+          application/problem+json: {"status": 415, "title": "UnsupportedMediaType", "type": "https://httpstatuses.com/415", "instance": "kong:trace:1234567890", "detail": "UnsupportedMediaType"}
+  get-config-store-secret:
+    speakeasy-default-get-config-store-secret:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          configStoreId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+          key: "ConfigStoreSecretKey"
+      responses:
+        "200":
+          application/json: {"key": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-config-store-secret:
+    speakeasy-default-update-config-store-secret:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          configStoreId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+          key: "ConfigStoreSecretKey"
+      requestBody:
+        application/json: {"value": "<value>"}
+      responses:
+        "200":
+          application/json: {"key": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 681242, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": null, "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "415":
+          application/problem+json: {"status": 415, "title": "UnsupportedMediaType", "type": "https://httpstatuses.com/415", "instance": "kong:trace:1234567890", "detail": "UnsupportedMediaType"}
+  delete-config-store-secret:
+    speakeasy-default-delete-config-store-secret:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          configStoreId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+          key: "ConfigStoreSecretKey"
       responses:
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
