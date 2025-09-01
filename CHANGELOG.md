@@ -8,6 +8,7 @@
 
 ### Bug Fixes
 * Fixed false diff on the output of `terraform plan` for `konnect_api` resource
+* Made `instance_name` optional on `konnect_gateway_custom_plugin`
 
 ## 3.0.0
 > Released on 2025/08/23

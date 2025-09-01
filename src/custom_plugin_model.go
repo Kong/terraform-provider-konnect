@@ -51,7 +51,7 @@ func (r *CustomPluginResourceModel) ToSharedPluginInput() (shared.Plugin, error)
 		pluginInput.Enabled = sdk.Bool(r.Enabled.ValueBool())
 	}
 
-	if r.InstanceName.ValueStringPointer() != nil {
+	if r.InstanceName.ValueStringPointer() != nil && r.InstanceName.ValueString() != "" {
 		pluginInput.InstanceName = sdk.String(r.InstanceName.ValueString())
 	}
 
