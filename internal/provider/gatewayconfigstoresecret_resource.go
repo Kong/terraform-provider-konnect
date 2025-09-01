@@ -75,8 +75,11 @@ func (r *GatewayConfigStoreSecretResource) Schema(ctx context.Context, req resou
 				},
 			},
 			"key": schema.StringAttribute{
-				Required:    true,
-				Description: `Config Store Secret key`,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `Config Store Secret key. Requires replacement if changed.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 512),
 				},

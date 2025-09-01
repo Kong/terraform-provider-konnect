@@ -28,7 +28,7 @@ resource "konnect_gateway_config_store_secret" "my_gatewayconfigstoresecret" {
 
 - `config_store_id` (String) Config Store identifier
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
-- `key` (String) Config Store Secret key
+- `key` (String) Config Store Secret key. Requires replacement if changed.
 - `value` (String, Sensitive)
 
 ### Read-Only
