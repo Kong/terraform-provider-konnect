@@ -1,7 +1,7 @@
 # Changelog
 
 ## 3.1.0
-> Released on 2025/08/??
+> Released on 2025/09/02
 
 ### Features
 * Add support for the `konnect_gateway_config_store_secret` resource
