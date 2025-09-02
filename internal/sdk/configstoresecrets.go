@@ -13,26 +13,26 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
-	"net/url"
 )
 
-type API struct {
+// ConfigStoreSecrets - Config Store Secrets
+type ConfigStoreSecrets struct {
 	rootSDK          *Konnect
 	sdkConfiguration config.SDKConfiguration
 	hooks            *hooks.Hooks
 }
 
-func newAPI(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hooks.Hooks) *API {
-	return &API{
+func newConfigStoreSecrets(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hooks.Hooks) *ConfigStoreSecrets {
+	return &ConfigStoreSecrets{
 		rootSDK:          rootSDK,
 		sdkConfiguration: sdkConfig,
 		hooks:            hooks,
 	}
 }
 
-// CreateAPI - Create API
-// Creates an API.
-func (s *API) CreateAPI(ctx context.Context, request shared.CreateAPIRequest, opts ...operations.Option) (*operations.CreateAPIResponse, error) {
+// CreateConfigStoreSecret - Create Config Store Secret
+// Creates a secret for a Config Store.
+func (s *ConfigStoreSecrets) CreateConfigStoreSecret(ctx context.Context, request operations.CreateConfigStoreSecretRequest, opts ...operations.Option) (*operations.CreateConfigStoreSecretResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -51,7 +51,7 @@ func (s *API) CreateAPI(ctx context.Context, request shared.CreateAPIRequest, op
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := url.JoinPath(baseURL, "/v3/apis")
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/config-stores/{configStoreId}/secrets", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -61,11 +61,11 @@ func (s *API) CreateAPI(ctx context.Context, request shared.CreateAPIRequest, op
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-api",
+		OperationID:      "create-config-store-secret",
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateConfigStoreSecret", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -133,7 +133,7 @@ func (s *API) CreateAPI(ctx context.Context, request shared.CreateAPIRequest, op
 		}
 	}
 
-	res := &operations.CreateAPIResponse{
+	res := &operations.CreateConfigStoreSecretResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -148,12 +148,12 @@ func (s *API) CreateAPI(ctx context.Context, request shared.CreateAPIRequest, op
 				return nil, err
 			}
 
-			var out shared.APIResponseSchema
+			var out shared.ConfigStoreSecret
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.APIResponseSchema = &out
+			res.ConfigStoreSecret = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -278,9 +278,9 @@ func (s *API) CreateAPI(ctx context.Context, request shared.CreateAPIRequest, op
 
 }
 
-// FetchAPI - Fetch API
-// Fetches an API.
-func (s *API) FetchAPI(ctx context.Context, request operations.FetchAPIRequest, opts ...operations.Option) (*operations.FetchAPIResponse, error) {
+// GetConfigStoreSecret - Fetch Config Store Secret
+// Returns a secret for the Config Store.
+func (s *ConfigStoreSecrets) GetConfigStoreSecret(ctx context.Context, request operations.GetConfigStoreSecretRequest, opts ...operations.Option) (*operations.GetConfigStoreSecretResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -299,7 +299,7 @@ func (s *API) FetchAPI(ctx context.Context, request operations.FetchAPIRequest, 
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/apis/{apiId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/config-stores/{configStoreId}/secrets/{key}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -309,7 +309,7 @@ func (s *API) FetchAPI(ctx context.Context, request operations.FetchAPIRequest, 
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "fetch-api",
+		OperationID:      "get-config-store-secret",
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -374,7 +374,7 @@ func (s *API) FetchAPI(ctx context.Context, request operations.FetchAPIRequest, 
 		}
 	}
 
-	res := &operations.FetchAPIResponse{
+	res := &operations.GetConfigStoreSecretResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -389,12 +389,12 @@ func (s *API) FetchAPI(ctx context.Context, request operations.FetchAPIRequest, 
 				return nil, err
 			}
 
-			var out shared.APIResponseSchema
+			var out shared.ConfigStoreSecret
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.APIResponseSchema = &out
+			res.ConfigStoreSecret = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -477,9 +477,9 @@ func (s *API) FetchAPI(ctx context.Context, request operations.FetchAPIRequest, 
 
 }
 
-// UpdateAPI - Update API
-// Updates an API.
-func (s *API) UpdateAPI(ctx context.Context, request operations.UpdateAPIRequest, opts ...operations.Option) (*operations.UpdateAPIResponse, error) {
+// UpdateConfigStoreSecret - Update Config Store Secret
+// Updates a secret for a Config Store.
+func (s *ConfigStoreSecrets) UpdateConfigStoreSecret(ctx context.Context, request operations.UpdateConfigStoreSecretRequest, opts ...operations.Option) (*operations.UpdateConfigStoreSecretResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -498,7 +498,7 @@ func (s *API) UpdateAPI(ctx context.Context, request operations.UpdateAPIRequest
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/apis/{apiId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/config-stores/{configStoreId}/secrets/{key}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -508,11 +508,11 @@ func (s *API) UpdateAPI(ctx context.Context, request operations.UpdateAPIRequest
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-api",
+		OperationID:      "update-config-store-secret",
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateAPIRequest", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateConfigStoreSecret", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -528,7 +528,7 @@ func (s *API) UpdateAPI(ctx context.Context, request operations.UpdateAPIRequest
 		defer cancel()
 	}
 
-	req, err := http.NewRequestWithContext(ctx, "PATCH", opURL, bodyReader)
+	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
@@ -580,7 +580,7 @@ func (s *API) UpdateAPI(ctx context.Context, request operations.UpdateAPIRequest
 		}
 	}
 
-	res := &operations.UpdateAPIResponse{
+	res := &operations.UpdateConfigStoreSecretResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -595,12 +595,12 @@ func (s *API) UpdateAPI(ctx context.Context, request operations.UpdateAPIRequest
 				return nil, err
 			}
 
-			var out shared.APIResponseSchema
+			var out shared.ConfigStoreSecret
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.APIResponseSchema = &out
+			res.ConfigStoreSecret = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -692,27 +692,6 @@ func (s *API) UpdateAPI(ctx context.Context, request operations.UpdateAPIRequest
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
-	case httpRes.StatusCode == 409:
-		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-
-			var out shared.ConflictError
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
-			}
-
-			res.ConflictError = &out
-		default:
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
-		}
 	case httpRes.StatusCode == 415:
 		switch {
 		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
@@ -746,9 +725,9 @@ func (s *API) UpdateAPI(ctx context.Context, request operations.UpdateAPIRequest
 
 }
 
-// DeleteAPI - Delete API
-// Deletes an API.
-func (s *API) DeleteAPI(ctx context.Context, request operations.DeleteAPIRequest, opts ...operations.Option) (*operations.DeleteAPIResponse, error) {
+// DeleteConfigStoreSecret - Delete Config Store Secret
+// Removes a secret from a Config Store.
+func (s *ConfigStoreSecrets) DeleteConfigStoreSecret(ctx context.Context, request operations.DeleteConfigStoreSecretRequest, opts ...operations.Option) (*operations.DeleteConfigStoreSecretResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -766,7 +745,7 @@ func (s *API) DeleteAPI(ctx context.Context, request operations.DeleteAPIRequest
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/apis/{apiId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/config-stores/{configStoreId}/secrets/{key}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -776,7 +755,7 @@ func (s *API) DeleteAPI(ctx context.Context, request operations.DeleteAPIRequest
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-api",
+		OperationID:      "delete-config-store-secret",
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -836,7 +815,7 @@ func (s *API) DeleteAPI(ctx context.Context, request operations.DeleteAPIRequest
 		}
 	}
 
-	res := &operations.DeleteAPIResponse{
+	res := &operations.DeleteConfigStoreSecretResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

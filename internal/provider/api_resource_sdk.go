@@ -29,25 +29,6 @@ func (r *APIResourceModel) RefreshFromSharedAPIResponseSchema(ctx context.Contex
 			r.Attributes = jsontypes.NewNormalizedValue(string(attributesResult))
 		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		if resp.CurrentVersionSummary == nil {
-			r.CurrentVersionSummary = nil
-		} else {
-			r.CurrentVersionSummary = &tfTypes.APIVersionSummary{}
-			r.CurrentVersionSummary.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CurrentVersionSummary.CreatedAt))
-			r.CurrentVersionSummary.ID = types.StringPointerValue(resp.CurrentVersionSummary.ID)
-			if resp.CurrentVersionSummary.Spec == nil {
-				r.CurrentVersionSummary.Spec = nil
-			} else {
-				r.CurrentVersionSummary.Spec = &tfTypes.Spec{}
-				if resp.CurrentVersionSummary.Spec.Type != nil {
-					r.CurrentVersionSummary.Spec.Type = types.StringValue(string(*resp.CurrentVersionSummary.Spec.Type))
-				} else {
-					r.CurrentVersionSummary.Spec.Type = types.StringNull()
-				}
-			}
-			r.CurrentVersionSummary.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CurrentVersionSummary.UpdatedAt))
-			r.CurrentVersionSummary.Version = types.StringPointerValue(resp.CurrentVersionSummary.Version)
-		}
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringValue(resp.ID)
 		if len(resp.Labels) > 0 {

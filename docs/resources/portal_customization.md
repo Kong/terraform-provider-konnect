@@ -50,12 +50,13 @@ resource "konnect_portal_customization" "my_portalcustomization" {
   portal_id = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
   robots    = "...my_robots..."
   spec_renderer = {
-    hide_deprecated = true
-    hide_internal   = false
-    infinite_scroll = false
-    show_schemas    = false
-    try_it_insomnia = false
-    try_it_ui       = false
+    allow_custom_server_urls = true
+    hide_deprecated          = true
+    hide_internal            = false
+    infinite_scroll          = false
+    show_schemas             = false
+    try_it_insomnia          = false
+    try_it_ui                = false
   }
   theme = {
     colors = {
@@ -140,12 +141,13 @@ Optional:
 
 Optional:
 
-- `hide_deprecated` (Boolean) Default: false
-- `hide_internal` (Boolean) Default: false
-- `infinite_scroll` (Boolean) Default: true
-- `show_schemas` (Boolean) Default: true
-- `try_it_insomnia` (Boolean) Default: true
-- `try_it_ui` (Boolean) Default: true
+- `allow_custom_server_urls` (Boolean) Let users define a custom server URL for endpoints. This will be used to generate code snippets and to test the API. The URL is client-side only and is not saved. Default: true
+- `hide_deprecated` (Boolean) Manage visibility of deprecated endpoints and models. Default: false
+- `hide_internal` (Boolean) Manage visibility of internal endpoints and models. Default: false
+- `infinite_scroll` (Boolean) Display the full spec on a single, scrollable page. If disabled, documentation, endpoints, and schemas appear on separate pages. Default: true
+- `show_schemas` (Boolean) Control whether schemas are visible in your API specs. When enabled, schemas appear in the side navigation below the endpoints. Default: true
+- `try_it_insomnia` (Boolean) Enables users to open the API spec in Insomnia to explore and send requests with the native client. Default: true
+- `try_it_ui` (Boolean) Enable in-browser testing for your APIs. All linked gateways must have the CORS plugin configured. Default: true
 
 
 <a id="nestedatt--theme"></a>

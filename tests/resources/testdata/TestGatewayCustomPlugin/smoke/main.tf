@@ -29,3 +29,9 @@ resource "konnect_gateway_custom_plugin" "custom_basic_auth_nested" {
     id = konnect_gateway_service.httpbin.id
   }
 }
+
+resource "konnect_gateway_custom_plugin" "custom_no_instance_name" {
+  name             = "key-auth"
+  config           = {}
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+}

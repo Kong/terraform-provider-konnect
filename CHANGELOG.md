@@ -1,7 +1,17 @@
 # Changelog
 
+## 3.1.0
+> Released on 2025/09/02
+
+### Features
+* Add support for the `konnect_gateway_config_store_secret` resource
+
+### Bug Fixes
+* Fixed false diff on the output of `terraform plan` for `konnect_api` resource
+* Made `instance_name` optional on `konnect_gateway_custom_plugin`
+
 ## 3.0.0
-> Released on 2025/08/??
+> Released on 2025/08/23
 
 ### BREAKING CHANGES
 * `konnect_portal` resource on v2.x of terraform-provider-konnect no longer works with v3.x. Kindly import into `konnect_portal_classic`

@@ -3,10 +3,10 @@
 package provider
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
-	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -17,61 +17,52 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
-	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
-	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &APIResource{}
-var _ resource.ResourceWithImportState = &APIResource{}
+var _ resource.Resource = &GatewayConfigStoreSecretResource{}
+var _ resource.ResourceWithImportState = &GatewayConfigStoreSecretResource{}
 
-func NewAPIResource() resource.Resource {
-	return &APIResource{}
+func NewGatewayConfigStoreSecretResource() resource.Resource {
+	return &GatewayConfigStoreSecretResource{}
 }
 
-// APIResource defines the resource implementation.
-type APIResource struct {
+// GatewayConfigStoreSecretResource defines the resource implementation.
+type GatewayConfigStoreSecretResource struct {
 	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
-// APIResourceModel describes the resource data model.
-type APIResourceModel struct {
-	APISpecIds  []types.String          `tfsdk:"api_spec_ids"`
-	Attributes  jsontypes.Normalized    `tfsdk:"attributes"`
-	CreatedAt   types.String            `tfsdk:"created_at"`
-	Description types.String            `tfsdk:"description"`
-	ID          types.String            `tfsdk:"id"`
-	Labels      map[string]types.String `tfsdk:"labels"`
-	Name        types.String            `tfsdk:"name"`
-	Portals     []tfTypes.Portals       `tfsdk:"portals"`
-	Slug        types.String            `tfsdk:"slug"`
-	SpecContent types.String            `tfsdk:"spec_content"`
-	UpdatedAt   types.String            `tfsdk:"updated_at"`
-	Version     types.String            `tfsdk:"version"`
+// GatewayConfigStoreSecretResourceModel describes the resource data model.
+type GatewayConfigStoreSecretResourceModel struct {
+	ConfigStoreID  types.String `tfsdk:"config_store_id"`
+	ControlPlaneID types.String `tfsdk:"control_plane_id"`
+	CreatedAt      types.String `tfsdk:"created_at"`
+	Key            types.String `tfsdk:"key"`
+	UpdatedAt      types.String `tfsdk:"updated_at"`
+	Value          types.String `tfsdk:"value"`
 }
 
-func (r *APIResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_api"
+func (r *GatewayConfigStoreSecretResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_gateway_config_store_secret"
 }
 
-func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *GatewayConfigStoreSecretResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "API Resource",
+		MarkdownDescription: "GatewayConfigStoreSecret Resource",
 		Attributes: map[string]schema.Attribute{
-			"api_spec_ids": schema.ListAttribute{
-				Computed:           true,
-				ElementType:        types.StringType,
-				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
-				Description:        `The list of API specification ids for the API.`,
+			"config_store_id": schema.StringAttribute{
+				Required:    true,
+				Description: `Config Store identifier`,
 			},
-			"attributes": schema.StringAttribute{
-				CustomType:  jsontypes.NormalizedType{},
-				Computed:    true,
-				Optional:    true,
-				Description: `A set of attributes that describe the API. Parsed as JSON.`,
+			"control_plane_id": schema.StringAttribute{
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -83,68 +74,15 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					validators.IsRFC3339(),
 				},
 			},
-			"description": schema.StringAttribute{
-				Optional:    true,
-				Description: `A description of your API. Will be visible on your live Portal.`,
-			},
-			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `The API identifier.`,
-			},
-			"labels": schema.MapAttribute{
-				Computed:    true,
-				Optional:    true,
-				ElementType: types.StringType,
-				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
-					`` + "\n" +
-					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
-			},
-			"name": schema.StringAttribute{
-				Required:    true,
-				Description: `The name of your API. The ` + "`" + `name + version` + "`" + ` combination must be unique for each API you publish.`,
-				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 255),
-				},
-			},
-			"portals": schema.ListNestedAttribute{
-				Computed: true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"display_name": schema.StringAttribute{
-							Computed:    true,
-							Description: `The display name of the portal. This value will be the portal's ` + "`" + `name` + "`" + ` in Portal API.`,
-						},
-						"id": schema.StringAttribute{
-							Computed:    true,
-							Description: `The portal identifier.`,
-						},
-						"name": schema.StringAttribute{
-							Computed:    true,
-							Description: `The name of the portal, used to distinguish it from other portals.`,
-						},
-					},
-				},
-				Description: `The list of portals which this API is published to.`,
-				Validators: []validator.List{
-					listvalidator.UniqueValues(),
-				},
-			},
-			"slug": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
-				MarkdownDescription: `The ` + "`" + `slug` + "`" + ` is used in generated URLs to provide human readable paths.` + "\n" +
-					`` + "\n" +
-					`Defaults to ` + "`" + `slugify(name + version)` + "`" + ``,
-				Validators: []validator.String{
-					stringvalidator.RegexMatches(regexp.MustCompile(`^[\w-]+$`), "must match pattern "+regexp.MustCompile(`^[\w-]+$`).String()),
-				},
-			},
-			"spec_content": schema.StringAttribute{
-				Optional: true,
+			"key": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Description: `The content of the API specification. This is the raw content of the API specification, in json or yaml. By including this field, you can add a API specification without having to make a separate call to update the API specification. Requires replacement if changed.`,
+				Description: `Config Store Secret key. Requires replacement if changed.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthBetween(1, 512),
+				},
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -156,19 +94,18 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					validators.IsRFC3339(),
 				},
 			},
-			"version": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `An optional version for your API. Leave this empty if your API is unversioned.`,
+			"value": schema.StringAttribute{
+				Required:  true,
+				Sensitive: true,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 255),
+					stringvalidator.UTF8LengthBetween(1, 5120),
 				},
 			},
 		},
 	}
 }
 
-func (r *APIResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *GatewayConfigStoreSecretResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -188,8 +125,8 @@ func (r *APIResource) Configure(ctx context.Context, req resource.ConfigureReque
 	r.client = client
 }
 
-func (r *APIResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *APIResourceModel
+func (r *GatewayConfigStoreSecretResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *GatewayConfigStoreSecretResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -206,13 +143,13 @@ func (r *APIResource) Create(ctx context.Context, req resource.CreateRequest, re
 		return
 	}
 
-	request, requestDiags := data.ToSharedCreateAPIRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateConfigStoreSecretRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.API.CreateAPI(ctx, *request)
+	res, err := r.client.ConfigStoreSecrets.CreateConfigStoreSecret(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -228,11 +165,11 @@ func (r *APIResource) Create(ctx context.Context, req resource.CreateRequest, re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.APIResponseSchema != nil) {
+	if !(res.ConfigStoreSecret != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAPIResponseSchema(ctx, res.APIResponseSchema)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedConfigStoreSecret(ctx, res.ConfigStoreSecret)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -243,13 +180,13 @@ func (r *APIResource) Create(ctx context.Context, req resource.CreateRequest, re
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsFetchAPIRequest(ctx)
+	request1, request1Diags := data.ToOperationsGetConfigStoreSecretRequest(ctx)
 	resp.Diagnostics.Append(request1Diags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res1, err := r.client.API.FetchAPI(ctx, *request1)
+	res1, err := r.client.ConfigStoreSecrets.GetConfigStoreSecret(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -265,11 +202,11 @@ func (r *APIResource) Create(ctx context.Context, req resource.CreateRequest, re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.APIResponseSchema != nil) {
+	if !(res1.ConfigStoreSecret != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAPIResponseSchema(ctx, res1.APIResponseSchema)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedConfigStoreSecret(ctx, res1.ConfigStoreSecret)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -285,8 +222,8 @@ func (r *APIResource) Create(ctx context.Context, req resource.CreateRequest, re
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *APIResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *APIResourceModel
+func (r *GatewayConfigStoreSecretResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *GatewayConfigStoreSecretResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -303,13 +240,13 @@ func (r *APIResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 		return
 	}
 
-	request, requestDiags := data.ToOperationsFetchAPIRequest(ctx)
+	request, requestDiags := data.ToOperationsGetConfigStoreSecretRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.API.FetchAPI(ctx, *request)
+	res, err := r.client.ConfigStoreSecrets.GetConfigStoreSecret(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -329,11 +266,11 @@ func (r *APIResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.APIResponseSchema != nil) {
+	if !(res.ConfigStoreSecret != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAPIResponseSchema(ctx, res.APIResponseSchema)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedConfigStoreSecret(ctx, res.ConfigStoreSecret)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -343,8 +280,8 @@ func (r *APIResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *APIResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *APIResourceModel
+func (r *GatewayConfigStoreSecretResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *GatewayConfigStoreSecretResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -357,13 +294,13 @@ func (r *APIResource) Update(ctx context.Context, req resource.UpdateRequest, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAPIRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateConfigStoreSecretRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.API.UpdateAPI(ctx, *request)
+	res, err := r.client.ConfigStoreSecrets.UpdateConfigStoreSecret(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -379,11 +316,48 @@ func (r *APIResource) Update(ctx context.Context, req resource.UpdateRequest, re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.APIResponseSchema != nil) {
+	if !(res.ConfigStoreSecret != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAPIResponseSchema(ctx, res.APIResponseSchema)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedConfigStoreSecret(ctx, res.ConfigStoreSecret)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetConfigStoreSecretRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.ConfigStoreSecrets.GetConfigStoreSecret(ctx, *request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if !(res1.ConfigStoreSecret != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedConfigStoreSecret(ctx, res1.ConfigStoreSecret)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -399,8 +373,8 @@ func (r *APIResource) Update(ctx context.Context, req resource.UpdateRequest, re
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *APIResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *APIResourceModel
+func (r *GatewayConfigStoreSecretResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *GatewayConfigStoreSecretResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -417,13 +391,13 @@ func (r *APIResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAPIRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteConfigStoreSecretRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.API.DeleteAPI(ctx, *request)
+	res, err := r.client.ConfigStoreSecrets.DeleteConfigStoreSecret(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -442,6 +416,33 @@ func (r *APIResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 
 }
 
-func (r *APIResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), req.ID)...)
+func (r *GatewayConfigStoreSecretResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
+	dec.DisallowUnknownFields()
+	var data struct {
+		ConfigStoreID  string `json:"config_store_id"`
+		ControlPlaneID string `json:"control_plane_id"`
+		Key            string `json:"key"`
+	}
+
+	if err := dec.Decode(&data); err != nil {
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"config_store_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "key": "ConfigStoreSecretKey"}': `+err.Error())
+		return
+	}
+
+	if len(data.ConfigStoreID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field config_store_id is required but was not found in the json encoded ID. It's expected to be a value alike '"d32d905a-ed33-46a3-a093-d8f536af9a8a"`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("config_store_id"), data.ConfigStoreID)...)
+	if len(data.ControlPlaneID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if len(data.Key) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field key is required but was not found in the json encoded ID. It's expected to be a value alike '"ConfigStoreSecretKey"`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("key"), data.Key)...)
 }
