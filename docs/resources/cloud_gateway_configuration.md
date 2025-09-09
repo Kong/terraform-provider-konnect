@@ -14,7 +14,7 @@ CloudGatewayConfiguration Resource
 
 ```terraform
 resource "konnect_cloud_gateway_configuration" "my_cloudgatewayconfiguration" {
-  api_access        = "public"
+  api_access        = "private+public"
   control_plane_geo = "us"
   control_plane_id  = "0949471e-b759-45ba-87ab-ee63fb781388"
   dataplane_groups = [

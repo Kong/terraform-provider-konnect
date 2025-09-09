@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 6cca8a3b8ac739ec4126f8cddfd86cbd
+  docChecksum: f85c82f65a6e038467c1844846a43a6d
   docVersion: 2.0.0
   speakeasyVersion: 1.602.0
   generationVersion: 2.681.1
@@ -823,6 +823,12 @@ generatedFiles:
   - internal/provider/types/aws_private_dns_resolver_response.go
   - internal/provider/types/aws_private_hosted_zone_attachment_config.go
   - internal/provider/types/aws_private_hosted_zone_response.go
+  - internal/provider/types/aws_resource_endpoint_attachment_config.go
+  - internal/provider/types/aws_resource_endpoint_attachment_config_response.go
+  - internal/provider/types/aws_resource_endpoint_config.go
+  - internal/provider/types/aws_resource_endpoint_config_response.go
+  - internal/provider/types/aws_resource_endpoint_gateway.go
+  - internal/provider/types/aws_resource_endpoint_gateway_response.go
   - internal/provider/types/aws_transit_gateway.go
   - internal/provider/types/aws_transit_gateway_attachment_config.go
   - internal/provider/types/aws_transit_gateway_response.go
@@ -889,6 +895,8 @@ generatedFiles:
   - internal/provider/types/file_log_plugin_config.go
   - internal/provider/types/forward_proxy_plugin_config.go
   - internal/provider/types/gateway_service_payload.go
+  - internal/provider/types/gcp_private_hosted_zone_attachment_config.go
+  - internal/provider/types/gcp_private_hosted_zone_response.go
   - internal/provider/types/gcp_vpc_peering_transit_gateway.go
   - internal/provider/types/gcpvpc_peering_attachment_config.go
   - internal/provider/types/gcpvpc_peering_gateway_response.go
@@ -1785,6 +1793,7 @@ generatedFiles:
   - internal/sdk/models/operations/updateteam.go
   - internal/sdk/models/operations/updatetlshandshakemodifierplugin.go
   - internal/sdk/models/operations/updatetlsmetadataheadersplugin.go
+  - internal/sdk/models/operations/updatetransitgateway.go
   - internal/sdk/models/operations/updateudplogplugin.go
   - internal/sdk/models/operations/updateupstreamoauthplugin.go
   - internal/sdk/models/operations/updateupstreamtimeoutplugin.go
@@ -1872,6 +1881,13 @@ generatedFiles:
   - internal/sdk/models/shared/awsprivatednsresolverresponse.go
   - internal/sdk/models/shared/awsprivatehostedzoneattachmentconfig.go
   - internal/sdk/models/shared/awsprivatehostedzoneresponse.go
+  - internal/sdk/models/shared/awsresourceendpointattachmentconfig.go
+  - internal/sdk/models/shared/awsresourceendpointattachmentconfigresponse.go
+  - internal/sdk/models/shared/awsresourceendpointconfig.go
+  - internal/sdk/models/shared/awsresourceendpointconfigresponse.go
+  - internal/sdk/models/shared/awsresourceendpointconfigstate.go
+  - internal/sdk/models/shared/awsresourceendpointgateway.go
+  - internal/sdk/models/shared/awsresourceendpointgatewayresponse.go
   - internal/sdk/models/shared/awstransitgateway.go
   - internal/sdk/models/shared/awstransitgatewayattachmentconfig.go
   - internal/sdk/models/shared/awstransitgatewayresponse.go
@@ -1976,6 +1992,8 @@ generatedFiles:
   - internal/sdk/models/shared/forwardproxyplugin.go
   - internal/sdk/models/shared/gatewayservicepayload.go
   - internal/sdk/models/shared/gatewayunauthorizederror.go
+  - internal/sdk/models/shared/gcpprivatehostedzoneattachmentconfig.go
+  - internal/sdk/models/shared/gcpprivatehostedzoneresponse.go
   - internal/sdk/models/shared/gcpvpcpeeringattachmentconfig.go
   - internal/sdk/models/shared/gcpvpcpeeringgatewayresponse.go
   - internal/sdk/models/shared/gcpvpcpeeringtransitgateway.go
@@ -2067,6 +2085,8 @@ generatedFiles:
   - internal/sdk/models/shared/partialappauthstrategyconfigopenidconnect.go
   - internal/sdk/models/shared/patchnetworkrequest.go
   - internal/sdk/models/shared/patchprivatednsrequest.go
+  - internal/sdk/models/shared/patchtransitgatewayrequest.go
+  - internal/sdk/models/shared/patchtransitgatewayresponse.go
   - internal/sdk/models/shared/plugin.go
   - internal/sdk/models/shared/pluginschemas.go
   - internal/sdk/models/shared/portalassetresponse.go
@@ -14189,5 +14209,26 @@ examples:
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-transit-gateway:
+    speakeasy-default-update-transit-gateway:
+      parameters:
+        path:
+          networkId: "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
+          transitGatewayId: "0850820b-d153-4a2a-b9be-7d2204779139"
+      requestBody:
+        application/json: {"transit_gateway_attachment_config": {"kind": "aws-resource-endpoint-attachment", "resource_config": [{"resource_config_id": "<id>", "domain_name": "delectable-molasses.com"}]}}
+      responses:
+        "200":
+          application/json: {"name": "us-east-2 transit gateway", "dns_config": [{"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}], "transit_gateway_attachment_config": {"kind": "aws-resource-endpoint-attachment", "ram_share_arn": "<value>", "resource_config": []}, "id": "0850820b-d153-4a2a-b9be-7d2204779139", "state": "pending-acceptance", "state_metadata": {"reported_status": "ERROR", "reason": "Transit Gateway Attachment configuration could not find a resource with the provided ram share arn.\n"}, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 818089, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
 examplesVersion: 1.0.2
 generatedTests: {}

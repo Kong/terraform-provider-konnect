@@ -59,6 +59,24 @@ func (r *CloudGatewayPrivateDNSResourceModel) RefreshFromSharedPrivateDNSRespons
 			r.AwsPrivateHostedZoneResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AwsPrivateHostedZoneResponse.StateMetadata.ReportedStatus)
 			r.AwsPrivateHostedZoneResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsPrivateHostedZoneResponse.UpdatedAt))
 		}
+		if resp.GcpPrivateHostedZoneResponse != nil {
+			r.GcpPrivateHostedZoneResponse = &tfTypes.GcpPrivateHostedZoneResponse{}
+			r.GcpPrivateHostedZoneResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.GcpPrivateHostedZoneResponse.CreatedAt))
+			r.GcpPrivateHostedZoneResponse.EntityVersion = types.Int64Value(resp.GcpPrivateHostedZoneResponse.EntityVersion)
+			r.EntityVersion = r.GcpPrivateHostedZoneResponse.EntityVersion
+			r.GcpPrivateHostedZoneResponse.ID = types.StringValue(resp.GcpPrivateHostedZoneResponse.ID)
+			r.ID = r.GcpPrivateHostedZoneResponse.ID
+			r.GcpPrivateHostedZoneResponse.Name = types.StringValue(resp.GcpPrivateHostedZoneResponse.Name)
+			r.Name = r.GcpPrivateHostedZoneResponse.Name
+			r.GcpPrivateHostedZoneResponse.PrivateDNSAttachmentConfig.DomainName = types.StringValue(resp.GcpPrivateHostedZoneResponse.PrivateDNSAttachmentConfig.DomainName)
+			r.GcpPrivateHostedZoneResponse.PrivateDNSAttachmentConfig.Kind = types.StringValue(string(resp.GcpPrivateHostedZoneResponse.PrivateDNSAttachmentConfig.Kind))
+			r.GcpPrivateHostedZoneResponse.PrivateDNSAttachmentConfig.PeerProjectID = types.StringValue(resp.GcpPrivateHostedZoneResponse.PrivateDNSAttachmentConfig.PeerProjectID)
+			r.GcpPrivateHostedZoneResponse.PrivateDNSAttachmentConfig.PeerVpcName = types.StringValue(resp.GcpPrivateHostedZoneResponse.PrivateDNSAttachmentConfig.PeerVpcName)
+			r.GcpPrivateHostedZoneResponse.State = types.StringValue(string(resp.GcpPrivateHostedZoneResponse.State))
+			r.GcpPrivateHostedZoneResponse.StateMetadata.Reason = types.StringPointerValue(resp.GcpPrivateHostedZoneResponse.StateMetadata.Reason)
+			r.GcpPrivateHostedZoneResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.GcpPrivateHostedZoneResponse.StateMetadata.ReportedStatus)
+			r.GcpPrivateHostedZoneResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.GcpPrivateHostedZoneResponse.UpdatedAt))
+		}
 	}
 
 	return diags
@@ -193,6 +211,30 @@ func (r *CloudGatewayPrivateDNSResourceModel) ToSharedCreatePrivateDNSRequest(ct
 		if awsPrivateDNSResolverAttachmentConfig != nil {
 			privateDNSAttachmentConfig = &shared.PrivateDNSAttachmentConfig{
 				AwsPrivateDNSResolverAttachmentConfig: awsPrivateDNSResolverAttachmentConfig,
+			}
+		}
+		var gcpPrivateHostedZoneAttachmentConfig *shared.GcpPrivateHostedZoneAttachmentConfig
+		if r.PrivateDNSAttachmentConfig.GcpPrivateHostedZoneAttachmentConfig != nil {
+			kind2 := shared.GCPPrivateHostedZoneType(r.PrivateDNSAttachmentConfig.GcpPrivateHostedZoneAttachmentConfig.Kind.ValueString())
+			var domainName string
+			domainName = r.PrivateDNSAttachmentConfig.GcpPrivateHostedZoneAttachmentConfig.DomainName.ValueString()
+
+			var peerProjectID string
+			peerProjectID = r.PrivateDNSAttachmentConfig.GcpPrivateHostedZoneAttachmentConfig.PeerProjectID.ValueString()
+
+			var peerVpcName string
+			peerVpcName = r.PrivateDNSAttachmentConfig.GcpPrivateHostedZoneAttachmentConfig.PeerVpcName.ValueString()
+
+			gcpPrivateHostedZoneAttachmentConfig = &shared.GcpPrivateHostedZoneAttachmentConfig{
+				Kind:          kind2,
+				DomainName:    domainName,
+				PeerProjectID: peerProjectID,
+				PeerVpcName:   peerVpcName,
+			}
+		}
+		if gcpPrivateHostedZoneAttachmentConfig != nil {
+			privateDNSAttachmentConfig = &shared.PrivateDNSAttachmentConfig{
+				GcpPrivateHostedZoneAttachmentConfig: gcpPrivateHostedZoneAttachmentConfig,
 			}
 		}
 	}
