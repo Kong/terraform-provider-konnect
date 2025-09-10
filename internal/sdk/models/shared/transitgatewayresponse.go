@@ -11,18 +11,20 @@ import (
 type TransitGatewayResponseType string
 
 const (
-	TransitGatewayResponseTypeAwsTransitGatewayResponse    TransitGatewayResponseType = "AwsTransitGatewayResponse"
-	TransitGatewayResponseTypeAwsVpcPeeringGatewayResponse TransitGatewayResponseType = "AwsVpcPeeringGatewayResponse"
-	TransitGatewayResponseTypeAzureTransitGatewayResponse  TransitGatewayResponseType = "AzureTransitGatewayResponse"
-	TransitGatewayResponseTypeGCPVPCPeeringGatewayResponse TransitGatewayResponseType = "GCPVPCPeeringGatewayResponse"
+	TransitGatewayResponseTypeAwsTransitGatewayResponse          TransitGatewayResponseType = "AwsTransitGatewayResponse"
+	TransitGatewayResponseTypeAwsVpcPeeringGatewayResponse       TransitGatewayResponseType = "AwsVpcPeeringGatewayResponse"
+	TransitGatewayResponseTypeAzureTransitGatewayResponse        TransitGatewayResponseType = "AzureTransitGatewayResponse"
+	TransitGatewayResponseTypeGCPVPCPeeringGatewayResponse       TransitGatewayResponseType = "GCPVPCPeeringGatewayResponse"
+	TransitGatewayResponseTypeAwsResourceEndpointGatewayResponse TransitGatewayResponseType = "AwsResourceEndpointGatewayResponse"
 )
 
 // TransitGatewayResponse - Response format for creating a transit gateway.
 type TransitGatewayResponse struct {
-	AwsTransitGatewayResponse    *AwsTransitGatewayResponse    `queryParam:"inline"`
-	AwsVpcPeeringGatewayResponse *AwsVpcPeeringGatewayResponse `queryParam:"inline"`
-	AzureTransitGatewayResponse  *AzureTransitGatewayResponse  `queryParam:"inline"`
-	GCPVPCPeeringGatewayResponse *GCPVPCPeeringGatewayResponse `queryParam:"inline"`
+	AwsTransitGatewayResponse          *AwsTransitGatewayResponse          `queryParam:"inline"`
+	AwsVpcPeeringGatewayResponse       *AwsVpcPeeringGatewayResponse       `queryParam:"inline"`
+	AzureTransitGatewayResponse        *AzureTransitGatewayResponse        `queryParam:"inline"`
+	GCPVPCPeeringGatewayResponse       *GCPVPCPeeringGatewayResponse       `queryParam:"inline"`
+	AwsResourceEndpointGatewayResponse *AwsResourceEndpointGatewayResponse `queryParam:"inline"`
 
 	Type TransitGatewayResponseType
 }
@@ -63,6 +65,15 @@ func CreateTransitGatewayResponseGCPVPCPeeringGatewayResponse(gcpvpcPeeringGatew
 	}
 }
 
+func CreateTransitGatewayResponseAwsResourceEndpointGatewayResponse(awsResourceEndpointGatewayResponse AwsResourceEndpointGatewayResponse) TransitGatewayResponse {
+	typ := TransitGatewayResponseTypeAwsResourceEndpointGatewayResponse
+
+	return TransitGatewayResponse{
+		AwsResourceEndpointGatewayResponse: &awsResourceEndpointGatewayResponse,
+		Type:                               typ,
+	}
+}
+
 func (u *TransitGatewayResponse) UnmarshalJSON(data []byte) error {
 
 	var azureTransitGatewayResponse AzureTransitGatewayResponse = AzureTransitGatewayResponse{}
@@ -76,6 +87,13 @@ func (u *TransitGatewayResponse) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &gcpvpcPeeringGatewayResponse, "", true, true); err == nil {
 		u.GCPVPCPeeringGatewayResponse = &gcpvpcPeeringGatewayResponse
 		u.Type = TransitGatewayResponseTypeGCPVPCPeeringGatewayResponse
+		return nil
+	}
+
+	var awsResourceEndpointGatewayResponse AwsResourceEndpointGatewayResponse = AwsResourceEndpointGatewayResponse{}
+	if err := utils.UnmarshalJSON(data, &awsResourceEndpointGatewayResponse, "", true, true); err == nil {
+		u.AwsResourceEndpointGatewayResponse = &awsResourceEndpointGatewayResponse
+		u.Type = TransitGatewayResponseTypeAwsResourceEndpointGatewayResponse
 		return nil
 	}
 
@@ -111,6 +129,10 @@ func (u TransitGatewayResponse) MarshalJSON() ([]byte, error) {
 
 	if u.GCPVPCPeeringGatewayResponse != nil {
 		return utils.MarshalJSON(u.GCPVPCPeeringGatewayResponse, "", true)
+	}
+
+	if u.AwsResourceEndpointGatewayResponse != nil {
+		return utils.MarshalJSON(u.AwsResourceEndpointGatewayResponse, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type TransitGatewayResponse: all fields are null")

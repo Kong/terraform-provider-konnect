@@ -14,6 +14,29 @@ CloudGatewayTransitGateway Resource
 
 ```terraform
 resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway" {
+  aws_resource_endpoint_gateway = {
+    dns_config = [
+      {
+        domain_proxy_list = [
+          "..."
+        ]
+        remote_dns_server_ip_addresses = [
+          "..."
+        ]
+      }
+    ]
+    name = "us-east-2 transit gateway"
+    transit_gateway_attachment_config = {
+      kind          = "aws-resource-endpoint-attachment"
+      ram_share_arn = "...my_ram_share_arn..."
+      resource_config = [
+        {
+          domain_name        = "...my_domain_name..."
+          resource_config_id = "...my_resource_config_id..."
+        }
+      ]
+    }
+  }
   aws_transit_gateway = {
     cidr_blocks = [
       "..."
@@ -104,10 +127,11 @@ resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway"
 
 ### Required
 
-- `network_id` (String) The network to operate on. Requires replacement if changed.
+- `network_id` (String) The network to operate on.
 
 ### Optional
 
+- `aws_resource_endpoint_gateway` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_resource_endpoint_gateway))
 - `aws_transit_gateway` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_transit_gateway))
 - `aws_vpc_peering_gateway` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_vpc_peering_gateway))
 - `azure_transit_gateway` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--azure_transit_gateway))
@@ -115,6 +139,7 @@ resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway"
 
 ### Read-Only
 
+- `aws_resource_endpoint_gateway_response` (Attributes) (see [below for nested schema](#nestedatt--aws_resource_endpoint_gateway_response))
 - `aws_transit_gateway_response` (Attributes) (see [below for nested schema](#nestedatt--aws_transit_gateway_response))
 - `aws_vpc_peering_gateway_response` (Attributes) (see [below for nested schema](#nestedatt--aws_vpc_peering_gateway_response))
 - `azure_transit_gateway_response` (Attributes) (see [below for nested schema](#nestedatt--azure_transit_gateway_response))
@@ -123,6 +148,54 @@ transit gateway.
 - `gcpvpc_peering_gateway_response` (Attributes) (see [below for nested schema](#nestedatt--gcpvpc_peering_gateway_response))
 - `id` (String) The ID of this resource.
 - `name` (String) Human-readable name of the transit gateway.
+
+<a id="nestedatt--aws_resource_endpoint_gateway"></a>
+### Nested Schema for `aws_resource_endpoint_gateway`
+
+Required:
+
+- `name` (String) Human-readable name of the transit gateway. Requires replacement if changed.
+- `transit_gateway_attachment_config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_resource_endpoint_gateway--transit_gateway_attachment_config))
+
+Optional:
+
+- `dns_config` (Attributes List) List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway
+attachment.
+Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_resource_endpoint_gateway--dns_config))
+
+<a id="nestedatt--aws_resource_endpoint_gateway--transit_gateway_attachment_config"></a>
+### Nested Schema for `aws_resource_endpoint_gateway.transit_gateway_attachment_config`
+
+Required:
+
+- `kind` (String) must be "aws-resource-endpoint-attachment"; Requires replacement if changed.
+- `ram_share_arn` (String) Resource Share ARN to verify request to create transit gateway attachment. Requires replacement if changed.
+
+Optional:
+
+- `resource_config` (Attributes List) List of unique resource config mapping for aws resource endpoint. Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_resource_endpoint_gateway--transit_gateway_attachment_config--resource_config))
+
+<a id="nestedatt--aws_resource_endpoint_gateway--transit_gateway_attachment_config--resource_config"></a>
+### Nested Schema for `aws_resource_endpoint_gateway.transit_gateway_attachment_config.resource_config`
+
+Required:
+
+- `domain_name` (String) Domain Name to uniquely identify a resource configuration. Requires replacement if changed.
+- `resource_config_id` (String) Resource Config ID to uniquely identify a resource configuration. Requires replacement if changed.
+
+
+
+<a id="nestedatt--aws_resource_endpoint_gateway--dns_config"></a>
+### Nested Schema for `aws_resource_endpoint_gateway.dns_config`
+
+Required:
+
+- `domain_proxy_list` (List of String) Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,
+for a transit gateway.
+Requires replacement if changed.
+- `remote_dns_server_ip_addresses` (List of String) Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway. Requires replacement if changed.
+
+
 
 <a id="nestedatt--aws_transit_gateway"></a>
 ### Nested Schema for `aws_transit_gateway`
@@ -274,6 +347,77 @@ Required:
 for a transit gateway.
 Requires replacement if changed.
 - `remote_dns_server_ip_addresses` (List of String) Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway. Requires replacement if changed.
+
+
+
+<a id="nestedatt--aws_resource_endpoint_gateway_response"></a>
+### Nested Schema for `aws_resource_endpoint_gateway_response`
+
+Read-Only:
+
+- `created_at` (String) An RFC-3339 timestamp representation of transit gateway creation date.
+- `dns_config` (Attributes List) List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway
+attachment. (see [below for nested schema](#nestedatt--aws_resource_endpoint_gateway_response--dns_config))
+- `entity_version` (Number) Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
+transit gateway.
+- `id` (String)
+- `name` (String) Human-readable name of the transit gateway.
+- `state` (String) The current state of the Transit Gateway. Possible values:
+- `created` - The attachment has been created but is not attached to transit gateway.
+- `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
+- `pending-acceptance` The attachment request is awaiting acceptance in customer VPC.
+- `pending-user-action` The attachment request is awaiting user action in customer VPC.
+- `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
+- `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
+- `terminated` - The attachment has been fully deleted and is no longer available.
+must be one of ["created", "initializing", "pending-acceptance", "pending-user-action", "ready", "terminating", "terminated"]
+- `state_metadata` (Attributes) Metadata describing the backing state of the transit gateway and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--aws_resource_endpoint_gateway_response--state_metadata))
+- `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--aws_resource_endpoint_gateway_response--transit_gateway_attachment_config))
+- `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
+
+<a id="nestedatt--aws_resource_endpoint_gateway_response--dns_config"></a>
+### Nested Schema for `aws_resource_endpoint_gateway_response.dns_config`
+
+Read-Only:
+
+- `domain_proxy_list` (List of String) Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,
+for a transit gateway.
+- `remote_dns_server_ip_addresses` (List of String) Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway.
+
+
+<a id="nestedatt--aws_resource_endpoint_gateway_response--state_metadata"></a>
+### Nested Schema for `aws_resource_endpoint_gateway_response.state_metadata`
+
+Read-Only:
+
+- `reason` (String) Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
+- `reported_status` (String) Reported status of the transit gateway from backing infrastructure.
+
+
+<a id="nestedatt--aws_resource_endpoint_gateway_response--transit_gateway_attachment_config"></a>
+### Nested Schema for `aws_resource_endpoint_gateway_response.transit_gateway_attachment_config`
+
+Read-Only:
+
+- `kind` (String) must be "aws-resource-endpoint-attachment"
+- `ram_share_arn` (String) Resource Share ARN to verify request to create transit gateway attachment.
+- `resource_config` (Attributes List) List of unique resource config mapping for aws resource endpoint. (see [below for nested schema](#nestedatt--aws_resource_endpoint_gateway_response--transit_gateway_attachment_config--resource_config))
+
+<a id="nestedatt--aws_resource_endpoint_gateway_response--transit_gateway_attachment_config--resource_config"></a>
+### Nested Schema for `aws_resource_endpoint_gateway_response.transit_gateway_attachment_config.resource_config`
+
+Read-Only:
+
+- `domain_name` (String) Domain Name to uniquely identify a resource configuration.
+- `resource_config_id` (String) Resource Config ID to uniquely identify a resource configuration.
+- `state` (String) The current state of the resource config in AWS Resource Endpoint. Possible values:
+- `initializing` - The config is in the process of being initialized and is setting up necessary resources.
+- `missing` - The config is missing and is no longer accepting new traffic.
+- `ready` - The config is fully operational and can route traffic as configured.
+- `error` - The config is in an error state, and is not operational.
+- `terminating` - The config is in the process of being deleted and is no longer accepting new traffic.
+must be one of ["initializing", "missing", "ready", "error", "terminating"]
+
 
 
 

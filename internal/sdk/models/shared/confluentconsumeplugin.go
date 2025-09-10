@@ -53,19 +53,8 @@ type ConfluentConsumePluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `default:"null" json:"name"`
-	Path *string `default:"null" json:"path"`
-}
-
-func (c ConfluentConsumePluginPartials) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *ConfluentConsumePluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
 }
 
 func (o *ConfluentConsumePluginPartials) GetID() *string {

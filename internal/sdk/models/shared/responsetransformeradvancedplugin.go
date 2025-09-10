@@ -53,19 +53,8 @@ type ResponseTransformerAdvancedPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `default:"null" json:"name"`
-	Path *string `default:"null" json:"path"`
-}
-
-func (r ResponseTransformerAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(r, "", false)
-}
-
-func (r *ResponseTransformerAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
 }
 
 func (o *ResponseTransformerAdvancedPluginPartials) GetID() *string {
@@ -386,15 +375,15 @@ func (o *Transform) GetJSON() []string {
 }
 
 type ResponseTransformerAdvancedPluginConfig struct {
-	Add    *ResponseTransformerAdvancedPluginAdd    `json:"add"`
-	Allow  *ResponseTransformerAdvancedPluginAllow  `json:"allow"`
-	Append *ResponseTransformerAdvancedPluginAppend `json:"append"`
+	Add    *ResponseTransformerAdvancedPluginAdd    `json:"add,omitempty"`
+	Allow  *ResponseTransformerAdvancedPluginAllow  `json:"allow,omitempty"`
+	Append *ResponseTransformerAdvancedPluginAppend `json:"append,omitempty"`
 	// Whether dots (for example, `customers.info.phone`) should be treated as part of a property name or used to descend into nested JSON objects..
 	DotsInKeys *bool                                     `default:"true" json:"dots_in_keys"`
-	Remove     *ResponseTransformerAdvancedPluginRemove  `json:"remove"`
-	Rename     *ResponseTransformerAdvancedPluginRename  `json:"rename"`
-	Replace    *ResponseTransformerAdvancedPluginReplace `json:"replace"`
-	Transform  *Transform                                `json:"transform"`
+	Remove     *ResponseTransformerAdvancedPluginRemove  `json:"remove,omitempty"`
+	Rename     *ResponseTransformerAdvancedPluginRename  `json:"rename,omitempty"`
+	Replace    *ResponseTransformerAdvancedPluginReplace `json:"replace,omitempty"`
+	Transform  *Transform                                `json:"transform,omitempty"`
 }
 
 func (r ResponseTransformerAdvancedPluginConfig) MarshalJSON() ([]byte, error) {

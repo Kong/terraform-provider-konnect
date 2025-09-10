@@ -368,10 +368,12 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 							Description: `A string representing a UUID (universally unique identifier).`,
 						},
 						"name": schema.StringAttribute{
+							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
+							Computed: true,
 							Optional: true,
 						},
 					},
