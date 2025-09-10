@@ -1,5 +1,17 @@
 # Changelog
 
+## 3.2.0
+> Released on 2025/09/??
+
+### Features
+* Add support for `aws_resource_endpoint_gateway` in `konnect_cloud_gateway_transit_gateway` resource
+* Add support for GCP Private Hosted Zone in `konnect_cloud_gateway_private_dns` resource
+
+### Bug Fixes
+* Fixed false diff on the output of `terraform plan` for `konnect_cloud_gateway_configuration` resource
+* Fixed false diff on the output of `terraform plan` for `konnect_gateway_plugin_response_transformer_advanced` resource
+* Fixed false diff on the output of `terraform plan` when a plugin uses partial without defining `name` and `path` in config
+
 ## 3.1.0
 > Released on 2025/09/02
 
