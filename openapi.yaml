@@ -2099,6 +2099,45 @@ paths:
       tags:
         - Transit Gateways
       x-speakeasy-group: CloudGateways
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: CloudGatewayTransitGateway#update
+        terraform-datasource: null
+      operationId: update-transit-gateway
+      summary: Update Transit Gateway
+      description: Updates a transit gateway by ID for a given network.
+      parameters:
+        - name: networkId
+          in: path
+          description: The network to operate on.
+          required: true
+          schema:
+            $ref: '#/components/schemas/NetworkId'
+        - $ref: '#/components/parameters/TransitGatewayId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchTransitGatewayRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/PatchTransitGatewayResponse'
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Transit Gateways
+      x-speakeasy-group: CloudGateways
     delete:
       x-speakeasy-entity-operation:
         terraform-resource: CloudGatewayTransitGateway#delete
@@ -16515,7 +16554,6 @@ components:
     BooleanFieldFilter:
       description: Filter by a boolean value (true/false).
       type: boolean
-      example: true
       title: BooleanFieldFilter
     SortQuery:
       description: |
@@ -16953,6 +16991,7 @@ components:
     ApiAccess:
       description: Type of API access data-plane groups will support for a configuration.
       type: string
+      example: private+public
       default: private+public
       enum:
         - private
@@ -17012,10 +17051,8 @@ components:
           description: 'Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps. This field is deprecated and shouldn''t be used in new configurations as it will be removed in a future version. max_rps is now calculated as 10x base_rps.'
           type: integer
           example: 1000
-          default: null
           deprecated: true
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
       additionalProperties: false
       required:
         - kind
@@ -17497,6 +17534,23 @@ components:
         - terminated
       readOnly: true
       title: Transit Gateway State
+    AwsResourceEndpointConfigState:
+      description: |
+        The current state of the resource config in AWS Resource Endpoint. Possible values:
+        - `initializing` - The config is in the process of being initialized and is setting up necessary resources.
+        - `missing` - The config is missing and is no longer accepting new traffic.
+        - `ready` - The config is fully operational and can route traffic as configured.
+        - `error` - The config is in an error state, and is not operational.
+        - `terminating` - The config is in the process of being deleted and is no longer accepting new traffic.
+      type: string
+      enum:
+        - initializing
+        - missing
+        - ready
+        - error
+        - terminating
+      readOnly: true
+      title: AWS Resource Endpoint Config State
     AwsTransitGatewayAttachmentConfig:
       type: object
       properties:
@@ -17538,6 +17592,86 @@ components:
         - peer_vpc_id
         - peer_vpc_region
       title: AWS VPC Peering Attachment Config
+    AwsResourceEndpointAttachmentConfig:
+      type: object
+      properties:
+        kind:
+          enum:
+            - aws-resource-endpoint-attachment
+          title: AWS Resource Endpoint Attachment Type
+        ram_share_arn:
+          description: Resource Share ARN to verify request to create transit gateway attachment.
+          type: string
+          title: RAM Share ARN
+        resource_config:
+          $ref: '#/components/schemas/AwsResourceEndpointConfig'
+      additionalProperties: false
+      required:
+        - kind
+        - ram_share_arn
+      title: AWS Resource Endpoint Attachment Config
+    AwsResourceEndpointAttachmentConfigResponse:
+      type: object
+      properties:
+        kind:
+          enum:
+            - aws-resource-endpoint-attachment
+          title: AWS Resource Endpoint Attachment Type
+        ram_share_arn:
+          description: Resource Share ARN to verify request to create transit gateway attachment.
+          type: string
+          title: RAM Share ARN
+        resource_config:
+          $ref: '#/components/schemas/AwsResourceEndpointConfigResponse'
+      additionalProperties: false
+      required:
+        - kind
+        - ram_share_arn
+        - resource_config
+      title: AWS Resource Endpoint Attachment Config Response
+    AwsResourceEndpointConfig:
+      description: |
+        List of unique resource config mapping for aws resource endpoint.
+      type: array
+      items:
+        type: object
+        additionalProperties: false
+        properties:
+          resource_config_id:
+            description: Resource Config ID to uniquely identify a resource configuration.
+            type: string
+            title: Resource Config ID
+          domain_name:
+            description: Domain Name to uniquely identify a resource configuration.
+            type: string
+            title: Domain Name
+        required:
+          - resource_config_id
+          - domain_name
+      title: AWS Resource Endpoint Config
+    AwsResourceEndpointConfigResponse:
+      description: |
+        List of unique resource config mapping for aws resource endpoint.
+      type: array
+      items:
+        type: object
+        additionalProperties: false
+        properties:
+          resource_config_id:
+            description: Resource Config ID to uniquely identify a resource configuration.
+            type: string
+            title: Resource Config ID
+          domain_name:
+            description: Domain Name to uniquely identify a resource configuration.
+            type: string
+            title: Domain Name
+          state:
+            $ref: '#/components/schemas/AwsResourceEndpointConfigState'
+        required:
+          - resource_config_id
+          - domain_name
+          - state
+      title: AWS Resource Endpoint Config Response
     AzureVNETPeeringAttachmentConfig:
       type: object
       properties:
@@ -17642,6 +17776,7 @@ components:
       oneOf:
         - $ref: '#/components/schemas/AwsPrivateHostedZoneResponse'
         - $ref: '#/components/schemas/AwsPrivateDnsResolverResponse'
+        - $ref: '#/components/schemas/GcpPrivateHostedZoneResponse'
     AwsPrivateHostedZoneResponse:
       type: object
       properties:
@@ -17720,6 +17855,94 @@ components:
         - kind
         - hosted_zone_id
       title: AWS Private Hosted Zone Attachment Config
+    GcpPrivateHostedZoneAttachmentConfig:
+      type: object
+      properties:
+        kind:
+          enum:
+            - gcp-private-hosted-zone-attachment
+          title: GCP Private Hosted Zone Type
+        domain_name:
+          description: Domain name to create attachment to.
+          type: string
+          title: Domain Name
+        peer_project_id:
+          description: Customer's GCP Project ID.
+          type: string
+          title: Peer Project Id
+        peer_vpc_name:
+          description: Customer's GCP VPC ID.
+          type: string
+          title: Peer VPC Name
+      additionalProperties: false
+      required:
+        - kind
+        - domain_name
+        - peer_project_id
+        - peer_vpc_name
+      title: GCP Private Hosted Zone Attachment Config
+    GcpPrivateHostedZoneResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/PrivateDnsId'
+        state:
+          $ref: '#/components/schemas/PrivateDnsState'
+        state_metadata:
+          description: |
+            Metadata describing the backing state of the Private Dns and why it may be in an erroneous state.
+          type: object
+          additionalProperties: false
+          properties:
+            reported_status:
+              description: Reported status of the Private Dns from backing infrastructure.
+              type: string
+              example: ERROR
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            reason:
+              description: |
+                Reason why the Private Dns may be in an erroneous state, reported from backing infrastructure.
+              type: string
+              example: |
+                Failed to create Private Dns due to invalid Cloud Provider configuration.
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+          title: PrivateDnsStateMetadata
+        entity_version:
+          description: |
+            Monotonically-increasing version count of the Private DNS, to indicate the order of updates to the
+            Private DNS.
+          type: integer
+          example: 1
+          readOnly: true
+        created_at:
+          description: An RFC-3339 timestamp representation of Private DNS creation date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        updated_at:
+          description: An RFC-3339 timestamp representation of Private DNS update date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        name:
+          $ref: '#/components/schemas/PrivateDnsName'
+        private_dns_attachment_config:
+          $ref: '#/components/schemas/GcpPrivateHostedZoneAttachmentConfig'
+      required:
+        - id
+        - state
+        - state_metadata
+        - entity_version
+        - created_at
+        - updated_at
+        - name
+        - private_dns_attachment_config
     AwsPrivateDnsResolverResponse:
       type: object
       properties:
@@ -17862,6 +18085,7 @@ components:
           oneOf:
             - $ref: '#/components/schemas/AwsPrivateHostedZoneAttachmentConfig'
             - $ref: '#/components/schemas/AwsPrivateDnsResolverAttachmentConfig'
+            - $ref: '#/components/schemas/GcpPrivateHostedZoneAttachmentConfig'
       title: CreatePrivateDnsRequest
     PatchPrivateDnsRequest:
       description: Request schema for updating a Private DNS.
@@ -18007,6 +18231,72 @@ components:
         - created_at
         - updated_at
       title: AWS Vpc Peering Gateway
+    AwsResourceEndpointGatewayResponse:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+        transit_gateway_attachment_config:
+          $ref: '#/components/schemas/AwsResourceEndpointAttachmentConfigResponse'
+        id:
+          $ref: '#/components/schemas/TransitGatewayId'
+        state:
+          $ref: '#/components/schemas/TransitGatewayState'
+        state_metadata:
+          description: |
+            Metadata describing the backing state of the transit gateway and why it may be in an erroneous state.
+          type: object
+          additionalProperties: false
+          properties:
+            reported_status:
+              description: Reported status of the transit gateway from backing infrastructure.
+              type: string
+              example: ERROR
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            reason:
+              description: |
+                Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
+              type: string
+              example: |
+                Transit Gateway Attachment configuration could not find a resource with the provided ram share arn.
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+          readOnly: true
+          title: TransitGatewayStateMetadata
+        entity_version:
+          description: |
+            Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
+            transit gateway.
+          type: integer
+          example: 1
+          readOnly: true
+        created_at:
+          description: An RFC-3339 timestamp representation of transit gateway creation date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        updated_at:
+          description: An RFC-3339 timestamp representation of transit gateway update date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+      required:
+        - name
+        - transit_gateway_attachment_config
+        - id
+        - dns_config
+        - state
+        - entity_version
+        - created_at
+        - updated_at
+      title: AWS Resource Endpoint Gateway
     AzureTransitGatewayResponse:
       type: object
       properties:
@@ -18145,6 +18435,7 @@ components:
         - $ref: '#/components/schemas/AwsVpcPeeringGatewayResponse'
         - $ref: '#/components/schemas/AzureTransitGatewayResponse'
         - $ref: '#/components/schemas/GCPVPCPeeringGatewayResponse'
+        - $ref: '#/components/schemas/AwsResourceEndpointGatewayResponse'
     CreateAwsTransitGateway:
       type: object
       properties:
@@ -18179,6 +18470,20 @@ components:
         - transit_gateway_attachment_config
       title: AWS Vpc Peering Gateway
       x-speakeasy-name-override: AWSVpcPeeringGateway
+    CreateAwsResourceEndpointGateway:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+        transit_gateway_attachment_config:
+          $ref: '#/components/schemas/AwsResourceEndpointAttachmentConfig'
+      required:
+        - name
+        - transit_gateway_attachment_config
+      title: AWS Resource Endpoint Gateway
+      x-speakeasy-name-override: AWSResourceEndpointGateway
     CreateAzureTransitGateway:
       type: object
       properties:
@@ -18213,9 +18518,34 @@ components:
       oneOf:
         - $ref: '#/components/schemas/CreateAwsTransitGateway'
         - $ref: '#/components/schemas/CreateAwsVpcPeeringGateway'
+        - $ref: '#/components/schemas/CreateAwsResourceEndpointGateway'
         - $ref: '#/components/schemas/CreateAzureTransitGateway'
         - $ref: '#/components/schemas/CreateGCPVPCPeeringTransitGateway'
       title: CreateTransitGatewayRequest
+    PatchAwsResourceEndpointGateway:
+      description: Request schema for updating AWS Resource Endpoint.
+      properties:
+        transit_gateway_attachment_config:
+          type: object
+          additionalProperties: false
+          properties:
+            kind:
+              enum:
+                - aws-resource-endpoint-attachment
+              title: AWS Resource Endpoint Attachment Type
+            resource_config:
+              $ref: '#/components/schemas/AwsResourceEndpointConfig'
+          required:
+            - kind
+            - resource_config
+      required:
+        - transit_gateway_attachment_config
+    PatchTransitGatewayRequest:
+      description: Request schema for updating a transit gateway.
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/PatchAwsResourceEndpointGateway'
+      title: PatchTransitGatewayRequest
     CustomDomainState:
       description: State of the custom domain.
       type: string
@@ -40301,14 +40631,10 @@ components:
               name:
                 description: A unique string representing a UTF-8 encoded name.
                 type: string
-                default: null
-                nullable: true
-                x-speakeasy-param-computed: false
+                x-speakeasy-param-computed: true
               path:
                 type: string
-                default: null
-                nullable: true
-                x-speakeasy-param-computed: false
+                x-speakeasy-param-computed: true
             type: object
           default: null
           nullable: true
@@ -43356,8 +43682,6 @@ components:
           properties:
             add:
               type: object
-              default: null
-              nullable: true
               properties:
                 headers:
                   type: array
@@ -43383,11 +43707,9 @@ components:
                       - string
                     type: string
                   default: []
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             allow:
               type: object
-              default: null
-              nullable: true
               properties:
                 json:
                   type: array
@@ -43396,11 +43718,9 @@ components:
                   default: null
                   nullable: true
                   x-speakeasy-param-computed: false
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             append:
               type: object
-              default: null
-              nullable: true
               properties:
                 headers:
                   type: array
@@ -43426,15 +43746,13 @@ components:
                       - string
                     type: string
                   default: []
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             dots_in_keys:
               description: 'Whether dots (for example, `customers.info.phone`) should be treated as part of a property name or used to descend into nested JSON objects..'
               type: boolean
               default: true
             remove:
               type: object
-              default: null
-              nullable: true
               properties:
                 headers:
                   type: array
@@ -43451,11 +43769,9 @@ components:
                   items:
                     type: string
                   default: []
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             rename:
               type: object
-              default: null
-              nullable: true
               properties:
                 headers:
                   type: array
@@ -43468,11 +43784,9 @@ components:
                   items:
                     type: string
                   default: []
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             replace:
               type: object
-              default: null
-              nullable: true
               properties:
                 body:
                   description: String with which to replace the entire response body.
@@ -43504,11 +43818,9 @@ components:
                       - string
                     type: string
                   default: []
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             transform:
               type: object
-              default: null
-              nullable: true
               properties:
                 functions:
                   type: array
@@ -43525,7 +43837,7 @@ components:
                   items:
                     type: string
                   default: []
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
           x-speakeasy-param-computed: false
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
@@ -50174,6 +50486,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/TransitGatewayResponse'
+    PatchTransitGatewayResponse:
+      description: Response format for updating a transit gateway.
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: '#/components/schemas/AwsResourceEndpointGatewayResponse'
     RetrieveTransitGatewayResponse:
       description: Response format for retrieving a transit gateway.
       content:
