@@ -2084,6 +2084,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/NetworkId'
+          x-speakeasy-param-force-new: true
         - $ref: '#/components/parameters/TransitGatewayId'
       responses:
         '200':
@@ -2113,6 +2114,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/NetworkId'
+          x-speakeasy-param-force-new: true
         - $ref: '#/components/parameters/TransitGatewayId'
       requestBody:
         required: true
@@ -2152,6 +2154,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/NetworkId'
+          x-speakeasy-param-force-new: true
         - $ref: '#/components/parameters/TransitGatewayId'
       responses:
         '204':
