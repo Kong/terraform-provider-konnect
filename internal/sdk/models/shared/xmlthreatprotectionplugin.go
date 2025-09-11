@@ -53,19 +53,8 @@ type XMLThreatProtectionPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `default:"null" json:"name"`
-	Path *string `default:"null" json:"path"`
-}
-
-func (x XMLThreatProtectionPluginPartials) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(x, "", false)
-}
-
-func (x *XMLThreatProtectionPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &x, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
 }
 
 func (o *XMLThreatProtectionPluginPartials) GetID() *string {

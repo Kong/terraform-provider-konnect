@@ -13,12 +13,14 @@ type PrivateDNSResponseType string
 const (
 	PrivateDNSResponseTypeAwsPrivateHostedZoneResponse  PrivateDNSResponseType = "AwsPrivateHostedZoneResponse"
 	PrivateDNSResponseTypeAwsPrivateDNSResolverResponse PrivateDNSResponseType = "AwsPrivateDnsResolverResponse"
+	PrivateDNSResponseTypeGcpPrivateHostedZoneResponse  PrivateDNSResponseType = "GcpPrivateHostedZoneResponse"
 )
 
 // PrivateDNSResponse - Response format for creating a Private DNS.
 type PrivateDNSResponse struct {
 	AwsPrivateHostedZoneResponse  *AwsPrivateHostedZoneResponse  `queryParam:"inline"`
 	AwsPrivateDNSResolverResponse *AwsPrivateDNSResolverResponse `queryParam:"inline"`
+	GcpPrivateHostedZoneResponse  *GcpPrivateHostedZoneResponse  `queryParam:"inline"`
 
 	Type PrivateDNSResponseType
 }
@@ -41,6 +43,15 @@ func CreatePrivateDNSResponseAwsPrivateDNSResolverResponse(awsPrivateDNSResolver
 	}
 }
 
+func CreatePrivateDNSResponseGcpPrivateHostedZoneResponse(gcpPrivateHostedZoneResponse GcpPrivateHostedZoneResponse) PrivateDNSResponse {
+	typ := PrivateDNSResponseTypeGcpPrivateHostedZoneResponse
+
+	return PrivateDNSResponse{
+		GcpPrivateHostedZoneResponse: &gcpPrivateHostedZoneResponse,
+		Type:                         typ,
+	}
+}
+
 func (u *PrivateDNSResponse) UnmarshalJSON(data []byte) error {
 
 	var awsPrivateHostedZoneResponse AwsPrivateHostedZoneResponse = AwsPrivateHostedZoneResponse{}
@@ -57,6 +68,13 @@ func (u *PrivateDNSResponse) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
+	var gcpPrivateHostedZoneResponse GcpPrivateHostedZoneResponse = GcpPrivateHostedZoneResponse{}
+	if err := utils.UnmarshalJSON(data, &gcpPrivateHostedZoneResponse, "", true, true); err == nil {
+		u.GcpPrivateHostedZoneResponse = &gcpPrivateHostedZoneResponse
+		u.Type = PrivateDNSResponseTypeGcpPrivateHostedZoneResponse
+		return nil
+	}
+
 	return fmt.Errorf("could not unmarshal `%s` into any supported union types for PrivateDNSResponse", string(data))
 }
 
@@ -67,6 +85,10 @@ func (u PrivateDNSResponse) MarshalJSON() ([]byte, error) {
 
 	if u.AwsPrivateDNSResolverResponse != nil {
 		return utils.MarshalJSON(u.AwsPrivateDNSResolverResponse, "", true)
+	}
+
+	if u.GcpPrivateHostedZoneResponse != nil {
+		return utils.MarshalJSON(u.GcpPrivateHostedZoneResponse, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type PrivateDNSResponse: all fields are null")

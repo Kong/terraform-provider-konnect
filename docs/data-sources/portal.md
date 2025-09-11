@@ -15,7 +15,7 @@ Portal DataSource
 ```terraform
 data "konnect_portal" "my_portal" {
   filter = {
-    authentication_enabled    = true
+    authentication_enabled    = false
     auto_approve_applications = true
     auto_approve_developers   = true
     canonical_domain = {

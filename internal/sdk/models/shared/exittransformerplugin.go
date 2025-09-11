@@ -53,19 +53,8 @@ type ExitTransformerPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `default:"null" json:"name"`
-	Path *string `default:"null" json:"path"`
-}
-
-func (e ExitTransformerPluginPartials) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(e, "", false)
-}
-
-func (e *ExitTransformerPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
 }
 
 func (o *ExitTransformerPluginPartials) GetID() *string {
