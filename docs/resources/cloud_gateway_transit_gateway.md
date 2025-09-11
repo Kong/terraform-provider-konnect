@@ -127,7 +127,7 @@ resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway"
 
 ### Required
 
-- `network_id` (String) The network to operate on.
+- `network_id` (String) The network to operate on. Requires replacement if changed.
 
 ### Optional
 

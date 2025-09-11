@@ -1296,8 +1296,11 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Description: `Human-readable name of the transit gateway.`,
 			},
 			"network_id": schema.StringAttribute{
-				Required:    true,
-				Description: `The network to operate on.`,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The network to operate on. Requires replacement if changed.`,
 			},
 		},
 	}
