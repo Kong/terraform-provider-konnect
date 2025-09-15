@@ -26,7 +26,7 @@ resource "konnect_gateway_target" "my_gatewaytarget" {
     id = "...my_id..."
   }
   upstream_id = "5a078780-5d4c-4aae-984a-bdc6f52113d8"
-  weight      = 5
+  weight      = 32684
 }
 ```
 
@@ -36,6 +36,7 @@ resource "konnect_gateway_target" "my_gatewaytarget" {
 ### Required
 
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
+- `target` (String) The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record. Requires replacement if changed.
 - `upstream_id` (String) ID or target of the Target to lookup. Requires replacement if changed.
 
 ### Optional
@@ -43,7 +44,6 @@ resource "konnect_gateway_target" "my_gatewaytarget" {
 - `created_at` (Number) Unix epoch when the resource was created. Requires replacement if changed.
 - `id` (String) A string representing a UUID (universally unique identifier). Requires replacement if changed.
 - `tags` (List of String) An optional set of strings associated with the Target for grouping and filtering. Requires replacement if changed.
-- `target` (String) The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record. Requires replacement if changed.
 - `updated_at` (Number) Unix epoch when the resource was last updated. Requires replacement if changed.
 - `upstream` (Attributes) The unique identifier or the name of the upstream for which to update the target. Requires replacement if changed. (see [below for nested schema](#nestedatt--upstream))
 - `weight` (Number) The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record. Default: 100; Requires replacement if changed.

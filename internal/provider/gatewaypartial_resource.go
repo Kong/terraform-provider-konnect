@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -105,6 +106,9 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 								Optional:    true,
 								Default:     int64default.StaticInt64(6379),
 								Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(65535),
+								},
 							},
 							"server_name": schema.StringAttribute{
 								Computed:    true,
@@ -128,6 +132,9 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 								Optional:    true,
 								Default:     int64default.StaticInt64(2000),
 								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(2147483646),
+								},
 							},
 							"username": schema.StringAttribute{
 								Computed:    true,
@@ -204,6 +211,9 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 											Optional:    true,
 											Default:     int64default.StaticInt64(6379),
 											Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+											Validators: []validator.Int64{
+												int64validator.AtMost(65535),
+											},
 										},
 									},
 								},
@@ -214,6 +224,9 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 								Optional:    true,
 								Default:     int64default.StaticInt64(2000),
 								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(2147483646),
+								},
 							},
 							"connection_is_proxied": schema.BoolAttribute{
 								Computed:    true,
@@ -236,12 +249,18 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 							"keepalive_backlog": schema.Int64Attribute{
 								Optional:    true,
 								Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `keepalive_pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `keepalive_pool_size` + "`" + `.`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(2147483646),
+								},
 							},
 							"keepalive_pool_size": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     int64default.StaticInt64(256),
 								Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `keepalive_pool_size` + "`" + ` nor ` + "`" + `keepalive_backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `keepalive_pool_size` + "`" + ` isn't specified but ` + "`" + `keepalive_backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+								Validators: []validator.Int64{
+									int64validator.Between(1, 2147483646),
+								},
 							},
 							"password": schema.StringAttribute{
 								Computed:    true,
@@ -253,18 +272,27 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 								Optional:    true,
 								Default:     int64default.StaticInt64(6379),
 								Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(65535),
+								},
 							},
 							"read_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     int64default.StaticInt64(2000),
 								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(2147483646),
+								},
 							},
 							"send_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     int64default.StaticInt64(2000),
 								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+								Validators: []validator.Int64{
+									int64validator.AtMost(2147483646),
+								},
 							},
 							"sentinel_master": schema.StringAttribute{
 								Computed:    true,
@@ -290,6 +318,9 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 											Optional:    true,
 											Default:     int64default.StaticInt64(6379),
 											Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+											Validators: []validator.Int64{
+												int64validator.AtMost(65535),
+											},
 										},
 									},
 								},
@@ -303,12 +334,12 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 							"sentinel_role": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["master", "slave", "any"]`,
+								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
+										"any",
 										"master",
 										"slave",
-										"any",
 									),
 								},
 							},

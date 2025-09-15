@@ -23,7 +23,7 @@ func (r *GatewayTargetResourceModel) RefreshFromSharedTarget(ctx context.Context
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
 		}
-		r.Target = types.StringPointerValue(resp.Target)
+		r.Target = types.StringValue(resp.Target)
 		r.UpdatedAt = types.Float64PointerValue(resp.UpdatedAt)
 		if resp.Upstream == nil {
 			r.Upstream = nil
@@ -126,12 +126,9 @@ func (r *GatewayTargetResourceModel) ToSharedTargetWithoutParents(ctx context.Co
 			tags = append(tags, tagsItem.ValueString())
 		}
 	}
-	target := new(string)
-	if !r.Target.IsUnknown() && !r.Target.IsNull() {
-		*target = r.Target.ValueString()
-	} else {
-		target = nil
-	}
+	var target string
+	target = r.Target.ValueString()
+
 	updatedAt := new(float64)
 	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
 		*updatedAt = r.UpdatedAt.ValueFloat64()

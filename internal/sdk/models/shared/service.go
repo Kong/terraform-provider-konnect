@@ -71,6 +71,7 @@ func (e *Protocol) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// TLSSans - Additional Subject Alternative Names that can be matched on Upstream server's TLS certificate (in addition to `host`).
 type TLSSans struct {
 	// A dnsName for TLS verification.
 	Dnsnames []string `json:"dnsnames"`
@@ -121,7 +122,8 @@ type Service struct {
 	// The number of retries to execute upon failure to proxy.
 	Retries *int64 `default:"5" json:"retries"`
 	// An optional set of strings associated with the Service for grouping and filtering.
-	Tags    []string `json:"tags"`
+	Tags []string `json:"tags"`
+	// Additional Subject Alternative Names that can be matched on Upstream server's TLS certificate (in addition to `host`).
 	TLSSans *TLSSans `json:"tls_sans"`
 	// Whether to enable verification of upstream server TLS certificate. If set to `null`, then the Nginx default is respected.
 	TLSVerify *bool `default:"null" json:"tls_verify"`

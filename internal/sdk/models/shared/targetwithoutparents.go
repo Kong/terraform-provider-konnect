@@ -27,7 +27,7 @@ type TargetWithoutParents struct {
 	// An optional set of strings associated with the Target for grouping and filtering.
 	Tags []string `json:"tags"`
 	// The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record.
-	Target *string `default:"null" json:"target"`
+	Target string `json:"target"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *float64 `json:"updated_at,omitempty"`
 	// The unique identifier or the name of the upstream for which to update the target.
@@ -68,9 +68,9 @@ func (o *TargetWithoutParents) GetTags() []string {
 	return o.Tags
 }
 
-func (o *TargetWithoutParents) GetTarget() *string {
+func (o *TargetWithoutParents) GetTarget() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Target
 }

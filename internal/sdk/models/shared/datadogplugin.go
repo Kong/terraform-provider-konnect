@@ -369,7 +369,7 @@ type DatadogPluginConfig struct {
 	// A string representing a host name, such as example.com.
 	Host *string `default:"localhost" json:"host"`
 	// List of metrics to be logged.
-	Metrics []Metrics `json:"metrics,omitempty"`
+	Metrics []Metrics `json:"metrics"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `default:"8125" json:"port"`
 	// String to be attached as a prefix to a metric's name.

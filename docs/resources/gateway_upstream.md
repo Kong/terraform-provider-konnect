@@ -24,7 +24,7 @@ resource "konnect_gateway_upstream" "my_gatewayupstream" {
   hash_fallback_header      = "...my_hash_fallback_header..."
   hash_fallback_query_arg   = "...my_hash_fallback_query_arg..."
   hash_fallback_uri_capture = "...my_hash_fallback_uri_capture..."
-  hash_on                   = "header"
+  hash_on                   = "ip"
   hash_on_cookie            = "...my_hash_on_cookie..."
   hash_on_cookie_path       = "...my_hash_on_cookie_path..."
   hash_on_header            = "...my_hash_on_header..."
@@ -32,7 +32,7 @@ resource "konnect_gateway_upstream" "my_gatewayupstream" {
   hash_on_uri_capture       = "...my_hash_on_uri_capture..."
   healthchecks = {
     active = {
-      concurrency = 6
+      concurrency = 1225225904
       headers = {
         key = [
           # ...
@@ -40,49 +40,49 @@ resource "konnect_gateway_upstream" "my_gatewayupstream" {
       }
       healthy = {
         http_statuses = [
-          0
+          179
         ]
-        interval  = 8.45
-        successes = 8
+        interval  = 55332.9
+        successes = 196
       }
       http_path                = "...my_http_path..."
       https_sni                = "...my_https_sni..."
       https_verify_certificate = true
-      timeout                  = 9.02
-      type                     = "https"
+      timeout                  = 59064.97
+      type                     = "http"
       unhealthy = {
-        http_failures = 8
+        http_failures = 207
         http_statuses = [
-          3
+          396
         ]
-        interval     = 4.15
-        tcp_failures = 3
-        timeouts     = 7
+        interval     = 27179.84
+        tcp_failures = 92
+        timeouts     = 183
       }
     }
     passive = {
       healthy = {
         http_statuses = [
-          0
+          135
         ]
-        successes = 8
+        successes = 189
       }
-      type = "grpcs"
+      type = "tcp"
       unhealthy = {
-        http_failures = 10
+        http_failures = 249
         http_statuses = [
-          9
+          865
         ]
-        tcp_failures = 10
-        timeouts     = 0
+        tcp_failures = 234
+        timeouts     = 21
       }
     }
-    threshold = 3.63
+    threshold = 36.29
   }
   host_header                 = "...my_host_header..."
   id                          = "...my_id..."
   name                        = "...my_name..."
-  slots                       = 0
+  slots                       = 4503
   sticky_sessions_cookie      = "...my_sticky_sessions_cookie..."
   sticky_sessions_cookie_path = "...my_sticky_sessions_cookie_path..."
   tags = [
@@ -103,20 +103,20 @@ resource "konnect_gateway_upstream" "my_gatewayupstream" {
 
 ### Optional
 
-- `algorithm` (String) Which load balancing algorithm to use. Default: "round-robin"; must be one of ["consistent-hashing", "least-connections", "round-robin", "latency", "sticky-sessions"]
+- `algorithm` (String) Which load balancing algorithm to use. Default: "round-robin"; must be one of ["consistent-hashing", "latency", "least-connections", "round-robin", "sticky-sessions"]
 - `client_certificate` (Attributes) If set, the certificate to be used as client certificate while TLS handshaking to the upstream server. (see [below for nested schema](#nestedatt--client_certificate))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `hash_fallback` (String) What to use as hashing input if the primary `hash_on` does not return a hash (eg. header is missing, or no Consumer identified). Not available if `hash_on` is set to `cookie`. Default: "none"; must be one of ["none", "consumer", "ip", "header", "cookie", "path", "query_arg", "uri_capture"]
+- `hash_fallback` (String) What to use as hashing input if the primary `hash_on` does not return a hash (eg. header is missing, or no Consumer identified). Not available if `hash_on` is set to `cookie`. Default: "none"; must be one of ["consumer", "cookie", "header", "ip", "none", "path", "query_arg", "uri_capture"]
 - `hash_fallback_header` (String) The header name to take the value from as hash input. Only required when `hash_fallback` is set to `header`.
 - `hash_fallback_query_arg` (String) The name of the query string argument to take the value from as hash input. Only required when `hash_fallback` is set to `query_arg`.
 - `hash_fallback_uri_capture` (String) The name of the route URI capture to take the value from as hash input. Only required when `hash_fallback` is set to `uri_capture`.
-- `hash_on` (String) What to use as hashing input. Using `none` results in a weighted-round-robin scheme with no hashing. Default: "none"; must be one of ["none", "consumer", "ip", "header", "cookie", "path", "query_arg", "uri_capture"]
+- `hash_on` (String) What to use as hashing input. Using `none` results in a weighted-round-robin scheme with no hashing. Default: "none"; must be one of ["consumer", "cookie", "header", "ip", "none", "path", "query_arg", "uri_capture"]
 - `hash_on_cookie` (String) The cookie name to take the value from as hash input. Only required when `hash_on` or `hash_fallback` is set to `cookie`. If the specified cookie is not in the request, Kong will generate a value and set the cookie in the response.
 - `hash_on_cookie_path` (String) The cookie path to set in the response headers. Only required when `hash_on` or `hash_fallback` is set to `cookie`. Default: "/"
 - `hash_on_header` (String) The header name to take the value from as hash input. Only required when `hash_on` is set to `header`.
 - `hash_on_query_arg` (String) The name of the query string argument to take the value from as hash input. Only required when `hash_on` is set to `query_arg`.
 - `hash_on_uri_capture` (String) The name of the route URI capture to take the value from as hash input. Only required when `hash_on` is set to `uri_capture`.
-- `healthchecks` (Attributes) (see [below for nested schema](#nestedatt--healthchecks))
+- `healthchecks` (Attributes) The array of healthchecks. (see [below for nested schema](#nestedatt--healthchecks))
 - `host_header` (String) The hostname to be used as `Host` header when proxying requests through Kong.
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `slots` (Number) The number of slots in the load balancer algorithm. If `algorithm` is set to `round-robin`, this setting determines the maximum number of slots. If `algorithm` is set to `consistent-hashing`, this setting determines the actual number of slots in the algorithm. Accepts an integer in the range `10`-`65536`. Default: 10000
@@ -155,7 +155,7 @@ Optional:
 - `https_sni` (String) A string representing an SNI (server name indication) value for TLS.
 - `https_verify_certificate` (Boolean) Default: true
 - `timeout` (Number) Default: 1
-- `type` (String) Default: "http"; must be one of ["tcp", "http", "https", "grpc", "grpcs"]
+- `type` (String) Default: "http"; must be one of ["grpc", "grpcs", "http", "https", "tcp"]
 - `unhealthy` (Attributes) (see [below for nested schema](#nestedatt--healthchecks--active--unhealthy))
 
 <a id="nestedatt--healthchecks--active--healthy"></a>
@@ -187,7 +187,7 @@ Optional:
 Optional:
 
 - `healthy` (Attributes) (see [below for nested schema](#nestedatt--healthchecks--passive--healthy))
-- `type` (String) Default: "http"; must be one of ["tcp", "http", "https", "grpc", "grpcs"]
+- `type` (String) Default: "http"; must be one of ["grpc", "grpcs", "http", "https", "tcp"]
 - `unhealthy` (Attributes) (see [below for nested schema](#nestedatt--healthchecks--passive--unhealthy))
 
 <a id="nestedatt--healthchecks--passive--healthy"></a>

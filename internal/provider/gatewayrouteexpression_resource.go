@@ -88,14 +88,14 @@ func (r *GatewayRouteExpressionResource) Schema(ctx context.Context, req resourc
 				Computed:    true,
 				Optional:    true,
 				Default:     int64default.StaticInt64(426),
-				Description: `The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. Default: 426; must be one of ["426", "301", "302", "307", "308"]`,
+				Description: `The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. Default: 426; must be one of ["301", "302", "307", "308", "426"]`,
 				Validators: []validator.Int64{
 					int64validator.OneOf(
-						426,
 						301,
 						302,
 						307,
 						308,
+						426,
 					),
 				},
 			},
@@ -128,6 +128,9 @@ func (r *GatewayRouteExpressionResource) Schema(ctx context.Context, req resourc
 				Optional:    true,
 				Default:     int64default.StaticInt64(0),
 				Description: `A number used to specify the matching order for expression routes. The higher the ` + "`" + `priority` + "`" + `, the sooner an route will be evaluated. This field is ignored unless ` + "`" + `expression` + "`" + ` field is set. Default: 0`,
+				Validators: []validator.Int64{
+					int64validator.AtMost(70368744177663),
+				},
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
