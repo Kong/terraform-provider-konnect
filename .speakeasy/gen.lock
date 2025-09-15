@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 9772667b4cf88212262bdddfb7ca6eae
+  docChecksum: efdbe3a578b2145e802fda48c2f95dec
   docVersion: 2.0.0
   speakeasyVersion: 1.602.0
   generationVersion: 2.681.1
@@ -34,6 +34,7 @@ generatedFiles:
   - examples/data-sources/konnect_cloud_gateway_provider_account_list/data-source.tf
   - examples/data-sources/konnect_gateway_control_plane/data-source.tf
   - examples/data-sources/konnect_mesh_control_planes/data-source.tf
+  - examples/data-sources/konnect_platform_ip_addresses/data-source.tf
   - examples/data-sources/konnect_portal/data-source.tf
   - examples/data-sources/konnect_portal_classic_list/data-source.tf
   - examples/provider/provider.tf
@@ -708,6 +709,8 @@ generatedFiles:
   - internal/provider/meshcontrolplane_resource_sdk.go
   - internal/provider/meshcontrolplanes_data_source.go
   - internal/provider/meshcontrolplanes_data_source_sdk.go
+  - internal/provider/platformipaddresses_data_source.go
+  - internal/provider/platformipaddresses_data_source_sdk.go
   - internal/provider/portal_data_source.go
   - internal/provider/portal_data_source_sdk.go
   - internal/provider/portal_resource.go
@@ -1647,6 +1650,7 @@ generatedFiles:
   - internal/sdk/models/operations/getxmlthreatprotectionplugin.go
   - internal/sdk/models/operations/getzipkinplugin.go
   - internal/sdk/models/operations/listcontrolplanes.go
+  - internal/sdk/models/operations/listipaddresses.go
   - internal/sdk/models/operations/listmeshcontrolplanes.go
   - internal/sdk/models/operations/listportals.go
   - internal/sdk/models/operations/listportalsclassic.go
@@ -2023,6 +2027,7 @@ generatedFiles:
   - internal/sdk/models/shared/invalidparameters.go
   - internal/sdk/models/shared/invalidparameterstandard.go
   - internal/sdk/models/shared/invalidrules.go
+  - internal/sdk/models/shared/ipaddressesresponse.go
   - internal/sdk/models/shared/iprestrictionplugin.go
   - internal/sdk/models/shared/jqplugin.go
   - internal/sdk/models/shared/jsonthreatprotectionplugin.go
@@ -2232,6 +2237,7 @@ generatedFiles:
   - internal/sdk/mtlsauthcredentials.go
   - internal/sdk/pages.go
   - internal/sdk/partials.go
+  - internal/sdk/platformips.go
   - internal/sdk/plugins.go
   - internal/sdk/portalappearance.go
   - internal/sdk/portalauthsettings.go
@@ -14230,5 +14236,10 @@ examples:
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
         "409":
           application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  list-ip-addresses:
+    speakeasy-default-list-ip-addresses:
+      responses:
+        "200":
+          application/json: {"updateDate": "2025-08-26-16-03-33", "regions": {"key": {}}, "ingressIPs": {"key": []}, "egressIPs": {"key": ["<value 1>", "<value 2>"]}}
 examplesVersion: 1.0.2
 generatedTests: {}
