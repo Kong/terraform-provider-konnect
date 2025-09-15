@@ -17,12 +17,12 @@ resource "konnect_gateway_route_expression" "my_gatewayrouteexpression" {
   control_plane_id           = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at                 = 4
   expression                 = "...my_expression..."
-  https_redirect_status_code = 307
+  https_redirect_status_code = 308
   id                         = "...my_id..."
   name                       = "...my_name..."
   path_handling              = "v0"
   preserve_host              = true
-  priority                   = 6
+  priority                   = 41079493899723
   protocols = [
     "http"
   ]
@@ -50,7 +50,7 @@ resource "konnect_gateway_route_expression" "my_gatewayrouteexpression" {
 
 - `created_at` (Number) Unix epoch when the resource was created.
 - `expression` (String) Use Router Expression to perform route match. This option is only available when `router_flavor` is set to `expressions`.
-- `https_redirect_status_code` (Number) The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the `https` protocol. Default: 426; must be one of ["426", "301", "302", "307", "308"]
+- `https_redirect_status_code` (Number) The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the `https` protocol. Default: 426; must be one of ["301", "302", "307", "308", "426"]
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `name` (String) The name of the Route. Route names must be unique, and they are case sensitive. For example, there can be two different Routes named "test" and "Test".
 - `path_handling` (String) Controls how the Service path, Route path and requested path are combined when sending a request to the upstream. See above for a detailed description of each behavior. Default: "v0"; must be one of ["v0", "v1"]

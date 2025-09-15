@@ -14,7 +14,7 @@ GatewayJWT Resource
 
 ```terraform
 resource "konnect_gateway_jwt" "my_gatewayjwt" {
-  algorithm        = "ESB512"
+  algorithm        = "PS384"
   consumer_id      = "f28acbfa-c866-4587-b688-0208ac24df21"
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 8
@@ -38,7 +38,7 @@ resource "konnect_gateway_jwt" "my_gatewayjwt" {
 
 ### Optional
 
-- `algorithm` (String) Default: "HS256"; must be one of ["HS256", "HS384", "HS512", "RS256", "RS384", "RS512", "PS256", "PS384", "PS512", "ES256", "ES384", "ES512", "ESP256", "ESP384", "ESP512", "ESB256", "ESB320", "ESB384", "ESB512", "ES256K", "EdDSA", "Ed25519", "Ed448"]; Requires replacement if changed.
+- `algorithm` (String) Default: "HS256"; must be one of ["ES256", "ES256K", "ES384", "ES512", "ESB256", "ESB320", "ESB384", "ESB512", "ESP256", "ESP384", "ESP512", "Ed25519", "Ed448", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512"]; Requires replacement if changed.
 - `created_at` (Number) Unix epoch when the resource was created. Requires replacement if changed.
 - `id` (String) A string representing a UUID (universally unique identifier). Requires replacement if changed.
 - `key` (String) Requires replacement if changed.

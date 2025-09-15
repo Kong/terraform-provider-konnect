@@ -77,9 +77,9 @@ func (o *PartialRedisEeSentinelNodes) GetPort() *int64 {
 type PartialRedisEeSentinelRole string
 
 const (
+	PartialRedisEeSentinelRoleAny    PartialRedisEeSentinelRole = "any"
 	PartialRedisEeSentinelRoleMaster PartialRedisEeSentinelRole = "master"
 	PartialRedisEeSentinelRoleSlave  PartialRedisEeSentinelRole = "slave"
-	PartialRedisEeSentinelRoleAny    PartialRedisEeSentinelRole = "any"
 )
 
 func (e PartialRedisEeSentinelRole) ToPointer() *PartialRedisEeSentinelRole {
@@ -91,11 +91,11 @@ func (e *PartialRedisEeSentinelRole) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "any":
+		fallthrough
 	case "master":
 		fallthrough
 	case "slave":
-		fallthrough
-	case "any":
 		*e = PartialRedisEeSentinelRole(v)
 		return nil
 	default:

@@ -20,7 +20,7 @@ resource "konnect_gateway_service" "my_gatewayservice" {
   client_certificate = {
     id = "...my_id..."
   }
-  connect_timeout  = 9
+  connect_timeout  = 1826621898
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 10
   enabled          = true
@@ -28,10 +28,10 @@ resource "konnect_gateway_service" "my_gatewayservice" {
   id               = "...my_id..."
   name             = "...my_name..."
   path             = "...my_path..."
-  port             = 2
+  port             = 12962
   protocol         = "tls"
-  read_timeout     = 5
-  retries          = 3
+  read_timeout     = 985216672
+  retries          = 9489
   tags = [
     "..."
   ]
@@ -44,9 +44,9 @@ resource "konnect_gateway_service" "my_gatewayservice" {
     ]
   }
   tls_verify       = true
-  tls_verify_depth = 8
+  tls_verify_depth = 49
   updated_at       = 8
-  write_timeout    = 9
+  write_timeout    = 1780867234
 }
 ```
 
@@ -73,7 +73,7 @@ resource "konnect_gateway_service" "my_gatewayservice" {
 - `read_timeout` (Number) The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server. Default: 60000
 - `retries` (Number) The number of retries to execute upon failure to proxy. Default: 5
 - `tags` (List of String) An optional set of strings associated with the Service for grouping and filtering.
-- `tls_sans` (Attributes) (see [below for nested schema](#nestedatt--tls_sans))
+- `tls_sans` (Attributes) Additional Subject Alternative Names that can be matched on Upstream server's TLS certificate (in addition to `host`). (see [below for nested schema](#nestedatt--tls_sans))
 - `tls_verify` (Boolean) Whether to enable verification of upstream server TLS certificate. If set to `null`, then the Nginx default is respected.
 - `tls_verify_depth` (Number) Maximum depth of chain while verifying Upstream server's TLS certificate. If set to `null`, then the Nginx default is respected.
 - `updated_at` (Number) Unix epoch when the resource was last updated.

@@ -101,6 +101,9 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 						"port": schema.Int64Attribute{
 							Optional:    true,
 							Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+							Validators: []validator.Int64{
+								int64validator.AtMost(65535),
+							},
 						},
 					},
 				},
@@ -122,14 +125,14 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				Computed:    true,
 				Optional:    true,
 				Default:     int64default.StaticInt64(426),
-				Description: `The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. Default: 426; must be one of ["426", "301", "302", "307", "308"]`,
+				Description: `The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. Default: 426; must be one of ["301", "302", "307", "308", "426"]`,
 				Validators: []validator.Int64{
 					int64validator.OneOf(
-						426,
 						301,
 						302,
 						307,
 						308,
+						426,
 					),
 				},
 			},
@@ -224,6 +227,9 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 						"port": schema.Int64Attribute{
 							Optional:    true,
 							Description: `An integer representing a port number between 0 and 65535, inclusive.`,
+							Validators: []validator.Int64{
+								int64validator.AtMost(65535),
+							},
 						},
 					},
 				},

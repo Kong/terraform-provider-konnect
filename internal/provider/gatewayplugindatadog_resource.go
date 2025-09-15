@@ -127,7 +127,6 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 						Description: `A string representing a host name, such as example.com. Default: "localhost"`,
 					},
 					"metrics": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -348,6 +347,9 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 				Computed:    true,
 				Optional:    true,
 				Description: `A string representing a UUID (universally unique identifier).`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtLeast(1),
+				},
 			},
 			"instance_name": schema.StringAttribute{
 				Optional:    true,
@@ -408,6 +410,9 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 							Computed:    true,
 							Optional:    true,
 							Description: `A string representing a UUID (universally unique identifier).`,
+							Validators: []validator.String{
+								stringvalidator.UTF8LengthAtLeast(1),
+							},
 						},
 						"name": schema.StringAttribute{
 							Computed:    true,

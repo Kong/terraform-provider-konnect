@@ -185,6 +185,9 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Schema(ctx context.Context, req r
 				Computed:    true,
 				Optional:    true,
 				Description: `A string representing a UUID (universally unique identifier).`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtLeast(1),
+				},
 			},
 			"instance_name": schema.StringAttribute{
 				Optional:    true,
@@ -245,6 +248,9 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Schema(ctx context.Context, req r
 							Computed:    true,
 							Optional:    true,
 							Description: `A string representing a UUID (universally unique identifier).`,
+							Validators: []validator.String{
+								stringvalidator.UTF8LengthAtLeast(1),
+							},
 						},
 						"name": schema.StringAttribute{
 							Computed:    true,

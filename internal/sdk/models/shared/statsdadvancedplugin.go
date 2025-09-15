@@ -543,7 +543,7 @@ type StatsdAdvancedPluginConfig struct {
 	// Include the `hostname` in the `prefix` for each metric name.
 	HostnameInPrefix *bool `default:"false" json:"hostname_in_prefix"`
 	// List of Metrics to be logged.
-	Metrics []StatsdAdvancedPluginMetrics `json:"metrics,omitempty"`
+	Metrics []StatsdAdvancedPluginMetrics `json:"metrics"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `default:"8125" json:"port"`
 	// String to prefix to each metric's name.

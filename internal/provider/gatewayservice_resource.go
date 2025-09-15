@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -95,6 +96,9 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 				Optional:    true,
 				Default:     int64default.StaticInt64(60000),
 				Description: `The timeout in milliseconds for establishing a connection to the upstream server. Default: 60000`,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 2147483646),
+				},
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required: true,
@@ -122,6 +126,9 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 				Computed:    true,
 				Optional:    true,
 				Description: `A string representing a UUID (universally unique identifier).`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtLeast(1),
+				},
 			},
 			"name": schema.StringAttribute{
 				Optional:    true,
@@ -136,6 +143,9 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 				Optional:    true,
 				Default:     int64default.StaticInt64(80),
 				Description: `The upstream server port. Default: 80`,
+				Validators: []validator.Int64{
+					int64validator.AtMost(65535),
+				},
 			},
 			"protocol": schema.StringAttribute{
 				Computed:    true,
@@ -162,12 +172,18 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 				Optional:    true,
 				Default:     int64default.StaticInt64(60000),
 				Description: `The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server. Default: 60000`,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 2147483646),
+				},
 			},
 			"retries": schema.Int64Attribute{
 				Computed:    true,
 				Optional:    true,
 				Default:     int64default.StaticInt64(5),
 				Description: `The number of retries to execute upon failure to proxy. Default: 5`,
+				Validators: []validator.Int64{
+					int64validator.AtMost(32767),
+				},
 			},
 			"tags": schema.ListAttribute{
 				Optional:    true,
@@ -197,6 +213,7 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 						Description: `An URI for TLS verification.`,
 					},
 				},
+				Description: `Additional Subject Alternative Names that can be matched on Upstream server's TLS certificate (in addition to ` + "`" + `host` + "`" + `).`,
 			},
 			"tls_verify": schema.BoolAttribute{
 				Optional:    true,
@@ -205,6 +222,9 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 			"tls_verify_depth": schema.Int64Attribute{
 				Optional:    true,
 				Description: `Maximum depth of chain while verifying Upstream server's TLS certificate. If set to ` + "`" + `null` + "`" + `, then the Nginx default is respected.`,
+				Validators: []validator.Int64{
+					int64validator.AtMost(64),
+				},
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
@@ -216,6 +236,9 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 				Optional:    true,
 				Default:     int64default.StaticInt64(60000),
 				Description: `The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server. Default: 60000`,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 2147483646),
+				},
 			},
 		},
 	}

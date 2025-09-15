@@ -20,11 +20,11 @@ resource "konnect_gateway_partial" "my_gatewaypartial" {
       database    = 5
       host        = "...my_host..."
       password    = "...my_password..."
-      port        = 1
+      port        = 8055
       server_name = "...my_server_name..."
       ssl         = true
       ssl_verify  = true
-      timeout     = 10
+      timeout     = 2089324356
       username    = "...my_username..."
     }
     created_at = 10
@@ -41,28 +41,28 @@ resource "konnect_gateway_partial" "my_gatewaypartial" {
       cluster_nodes = [
         {
           ip   = "...my_ip..."
-          port = 2
+          port = 13662
         }
       ]
-      connect_timeout       = 6
+      connect_timeout       = 1346533360
       connection_is_proxied = false
       database              = 1
       host                  = "...my_host..."
-      keepalive_backlog     = 1
-      keepalive_pool_size   = 7
+      keepalive_backlog     = 259647341
+      keepalive_pool_size   = 1491672736
       password              = "...my_password..."
-      port                  = 2
-      read_timeout          = 7
-      send_timeout          = 6
+      port                  = 17730
+      read_timeout          = 1431389868
+      send_timeout          = 1316344582
       sentinel_master       = "...my_sentinel_master..."
       sentinel_nodes = [
         {
           host = "...my_host..."
-          port = 5
+          port = 32792
         }
       ]
       sentinel_password = "...my_sentinel_password..."
-      sentinel_role     = "any"
+      sentinel_role     = "slave"
       sentinel_username = "...my_sentinel_username..."
       server_name       = "...my_server_name..."
       ssl               = false
@@ -160,7 +160,7 @@ Optional:
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--redis_ee--config--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["master", "slave", "any"]
+- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false

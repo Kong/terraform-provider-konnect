@@ -7,6 +7,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/float64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -80,13 +82,13 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 				Computed:    true,
 				Optional:    true,
 				Default:     stringdefault.StaticString(`round-robin`),
-				Description: `Which load balancing algorithm to use. Default: "round-robin"; must be one of ["consistent-hashing", "least-connections", "round-robin", "latency", "sticky-sessions"]`,
+				Description: `Which load balancing algorithm to use. Default: "round-robin"; must be one of ["consistent-hashing", "latency", "least-connections", "round-robin", "sticky-sessions"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"consistent-hashing",
+						"latency",
 						"least-connections",
 						"round-robin",
-						"latency",
 						"sticky-sessions",
 					),
 				},
@@ -121,14 +123,14 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 				Computed:    true,
 				Optional:    true,
 				Default:     stringdefault.StaticString(`none`),
-				Description: `What to use as hashing input if the primary ` + "`" + `hash_on` + "`" + ` does not return a hash (eg. header is missing, or no Consumer identified). Not available if ` + "`" + `hash_on` + "`" + ` is set to ` + "`" + `cookie` + "`" + `. Default: "none"; must be one of ["none", "consumer", "ip", "header", "cookie", "path", "query_arg", "uri_capture"]`,
+				Description: `What to use as hashing input if the primary ` + "`" + `hash_on` + "`" + ` does not return a hash (eg. header is missing, or no Consumer identified). Not available if ` + "`" + `hash_on` + "`" + ` is set to ` + "`" + `cookie` + "`" + `. Default: "none"; must be one of ["consumer", "cookie", "header", "ip", "none", "path", "query_arg", "uri_capture"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
-						"none",
 						"consumer",
-						"ip",
-						"header",
 						"cookie",
+						"header",
+						"ip",
+						"none",
 						"path",
 						"query_arg",
 						"uri_capture",
@@ -142,23 +144,29 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 			"hash_fallback_query_arg": schema.StringAttribute{
 				Optional:    true,
 				Description: `The name of the query string argument to take the value from as hash input. Only required when ` + "`" + `hash_fallback` + "`" + ` is set to ` + "`" + `query_arg` + "`" + `.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtLeast(1),
+				},
 			},
 			"hash_fallback_uri_capture": schema.StringAttribute{
 				Optional:    true,
 				Description: `The name of the route URI capture to take the value from as hash input. Only required when ` + "`" + `hash_fallback` + "`" + ` is set to ` + "`" + `uri_capture` + "`" + `.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtLeast(1),
+				},
 			},
 			"hash_on": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
 				Default:     stringdefault.StaticString(`none`),
-				Description: `What to use as hashing input. Using ` + "`" + `none` + "`" + ` results in a weighted-round-robin scheme with no hashing. Default: "none"; must be one of ["none", "consumer", "ip", "header", "cookie", "path", "query_arg", "uri_capture"]`,
+				Description: `What to use as hashing input. Using ` + "`" + `none` + "`" + ` results in a weighted-round-robin scheme with no hashing. Default: "none"; must be one of ["consumer", "cookie", "header", "ip", "none", "path", "query_arg", "uri_capture"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
-						"none",
 						"consumer",
-						"ip",
-						"header",
 						"cookie",
+						"header",
+						"ip",
+						"none",
 						"path",
 						"query_arg",
 						"uri_capture",
@@ -182,10 +190,16 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 			"hash_on_query_arg": schema.StringAttribute{
 				Optional:    true,
 				Description: `The name of the query string argument to take the value from as hash input. Only required when ` + "`" + `hash_on` + "`" + ` is set to ` + "`" + `query_arg` + "`" + `.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtLeast(1),
+				},
 			},
 			"hash_on_uri_capture": schema.StringAttribute{
 				Optional:    true,
 				Description: `The name of the route URI capture to take the value from as hash input. Only required when ` + "`" + `hash_on` + "`" + ` is set to ` + "`" + `uri_capture` + "`" + `.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtLeast(1),
+				},
 			},
 			"healthchecks": schema.SingleNestedAttribute{
 				Computed: true,
@@ -200,6 +214,9 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 								Optional:    true,
 								Default:     int64default.StaticInt64(10),
 								Description: `Default: 10`,
+								Validators: []validator.Int64{
+									int64validator.Between(1, 2147483648),
+								},
 							},
 							"headers": schema.MapAttribute{
 								Optional: true,
@@ -222,12 +239,18 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 										Optional:    true,
 										Default:     float64default.StaticFloat64(0),
 										Description: `Default: 0`,
+										Validators: []validator.Float64{
+											float64validator.AtMost(65535),
+										},
 									},
 									"successes": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
 										Default:     int64default.StaticInt64(0),
 										Description: `Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.AtMost(255),
+										},
 									},
 								},
 							},
@@ -253,19 +276,22 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 								Optional:    true,
 								Default:     float64default.StaticFloat64(1),
 								Description: `Default: 1`,
+								Validators: []validator.Float64{
+									float64validator.AtMost(65535),
+								},
 							},
 							"type": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`http`),
-								Description: `Default: "http"; must be one of ["tcp", "http", "https", "grpc", "grpcs"]`,
+								Description: `Default: "http"; must be one of ["grpc", "grpcs", "http", "https", "tcp"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
-										"tcp",
-										"http",
-										"https",
 										"grpc",
 										"grpcs",
+										"http",
+										"https",
+										"tcp",
 									),
 								},
 							},
@@ -278,6 +304,9 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 										Optional:    true,
 										Default:     int64default.StaticInt64(0),
 										Description: `Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.AtMost(255),
+										},
 									},
 									"http_statuses": schema.ListAttribute{
 										Computed:    true,
@@ -289,18 +318,27 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 										Optional:    true,
 										Default:     float64default.StaticFloat64(0),
 										Description: `Default: 0`,
+										Validators: []validator.Float64{
+											float64validator.AtMost(65535),
+										},
 									},
 									"tcp_failures": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
 										Default:     int64default.StaticInt64(0),
 										Description: `Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.AtMost(255),
+										},
 									},
 									"timeouts": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
 										Default:     int64default.StaticInt64(0),
 										Description: `Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.AtMost(255),
+										},
 									},
 								},
 							},
@@ -324,6 +362,9 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 										Optional:    true,
 										Default:     int64default.StaticInt64(0),
 										Description: `Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.AtMost(255),
+										},
 									},
 								},
 							},
@@ -331,14 +372,14 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`http`),
-								Description: `Default: "http"; must be one of ["tcp", "http", "https", "grpc", "grpcs"]`,
+								Description: `Default: "http"; must be one of ["grpc", "grpcs", "http", "https", "tcp"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
-										"tcp",
-										"http",
-										"https",
 										"grpc",
 										"grpcs",
+										"http",
+										"https",
+										"tcp",
 									),
 								},
 							},
@@ -351,6 +392,9 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 										Optional:    true,
 										Default:     int64default.StaticInt64(0),
 										Description: `Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.AtMost(255),
+										},
 									},
 									"http_statuses": schema.ListAttribute{
 										Computed:    true,
@@ -362,12 +406,18 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 										Optional:    true,
 										Default:     int64default.StaticInt64(0),
 										Description: `Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.AtMost(255),
+										},
 									},
 									"timeouts": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
 										Default:     int64default.StaticInt64(0),
 										Description: `Default: 0`,
+										Validators: []validator.Int64{
+											int64validator.AtMost(255),
+										},
 									},
 								},
 							},
@@ -378,8 +428,12 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 						Optional:    true,
 						Default:     float64default.StaticFloat64(0),
 						Description: `Default: 0`,
+						Validators: []validator.Float64{
+							float64validator.AtMost(100),
+						},
 					},
 				},
+				Description: `The array of healthchecks.`,
 			},
 			"host_header": schema.StringAttribute{
 				Optional:    true,
@@ -399,6 +453,9 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 				Optional:    true,
 				Default:     int64default.StaticInt64(10000),
 				Description: `The number of slots in the load balancer algorithm. If ` + "`" + `algorithm` + "`" + ` is set to ` + "`" + `round-robin` + "`" + `, this setting determines the maximum number of slots. If ` + "`" + `algorithm` + "`" + ` is set to ` + "`" + `consistent-hashing` + "`" + `, this setting determines the actual number of slots in the algorithm. Accepts an integer in the range ` + "`" + `10` + "`" + `-` + "`" + `65536` + "`" + `. Default: 10000`,
+				Validators: []validator.Int64{
+					int64validator.Between(10, 65536),
+				},
 			},
 			"sticky_sessions_cookie": schema.StringAttribute{
 				Optional:    true,
