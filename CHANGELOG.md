@@ -1,7 +1,7 @@
 # Changelog
 
 ## 3.2.0
-> Released on 2025/09/11
+> Released on 2025/09/15
 
 ### Features
 * Add support for `aws_resource_endpoint_gateway` in `konnect_cloud_gateway_transit_gateway` resource
