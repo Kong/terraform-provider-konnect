@@ -18,6 +18,29 @@ servers:
   - url: 'https://me.api.konghq.com'
   - url: 'https://in.api.konghq.com'
 paths:
+  /ip-addresses.json:
+    servers:
+      - url: 'https://ip-addresses.origin.konghq.com'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: null
+        terraform-datasource: PlatformIpAddresses#read
+      operationId: list-ip-addresses
+      summary: Platform IP Addresses
+      description: 'Get Konnect IP addresses by region/hostname, ingress, and egress'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IpAddressesResponse'
+        4XX:
+          description: Client error
+        5XX:
+          description: Server error
+      tags:
+        - Platform IPs
   /v0/serverless-cloud-gateways:
     post:
       x-speakeasy-entity-operation:
@@ -23626,6 +23649,56 @@ components:
         - oas3
         - asyncapi
       title: API Spec Type
+    IpAddressesResponse:
+      type: object
+      properties:
+        updateDate:
+          description: |
+            Timestamp of the last update in "YYYY-MM-DD-HH-mm-ss" format.
+          type: string
+          example: 2025-08-26-16-03-33
+          pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$'
+        regions:
+          description: Mapping of region code to hostname/IP lists.
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/RegionEntry'
+        ingressIPs:
+          description: |
+            Mapping of region code to ingress IP addresses. Each region maps to a list of IP
+            addresses representing inbound entry points for the Konnect service.
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+              description: IPv4 or IPv6 address.
+          x-speakeasy-name-override: ingressIps
+        egressIPs:
+          description: |
+            Mapping of region code to egress IP addresses. Each region maps to a list of IP
+            addresses representing outbound IPs used by Konnect.
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+              description: IPv4 or IPv6 address.
+          x-speakeasy-name-override: egressIps
+      required:
+        - updateDate
+        - regions
+        - ingressIPs
+        - egressIPs
+    RegionEntry:
+      description: Hostname-to-addresses map for a single region.
+      type: object
+      additionalProperties:
+        type: array
+        description: List of IP addresses (IPv4 and/or IPv6).
+        items:
+          type: string
+          description: IPv4 or IPv6 address.
     DataPlaneClientCertificate:
       x-speakeasy-entity: GatewayDataPlaneClientCertificate
       type: object
@@ -51243,6 +51316,8 @@ tags:
   - name: API Specification
   - name: API Publication
   - name: API Implementation
+  - name: Platform IPs
+    description: Konnect IP inventory
   - description: DP Certificates
     name: DP Certificates
   - description: Custom Plugin Schemas
