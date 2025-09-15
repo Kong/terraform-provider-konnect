@@ -56,7 +56,9 @@ func Pointer[T any](v T) *T { return &v }
 //
 // https://developer.konghq.com - Documentation for Kong Gateway and its APIs
 type Konnect struct {
-	SDKVersion              string
+	SDKVersion string
+	// Konnect IP inventory
+	PlatformIPs             *PlatformIPs
 	ServerlessCloudGateways *ServerlessCloudGateways
 	// Create and maintain a centralized catalog of all services running in your organization.
 	// Add custom fields and map resources from across your organization to provide a 360-degree overview of your services.
@@ -362,6 +364,7 @@ func New(opts ...SDKOption) *Konnect {
 		sdk.sdkConfiguration.ServerURL = serverURL
 	}
 
+	sdk.PlatformIPs = newPlatformIPs(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ServerlessCloudGateways = newServerlessCloudGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.CatalogServices = newCatalogServices(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Cmek = newCmek(sdk, sdk.sdkConfiguration, sdk.hooks)
