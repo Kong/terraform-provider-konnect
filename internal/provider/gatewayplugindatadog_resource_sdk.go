@@ -22,29 +22,25 @@ func (r *GatewayPluginDatadogResourceModel) RefreshFromSharedDatadogPlugin(ctx c
 			r.Config.ConsumerTag = types.StringPointerValue(resp.Config.ConsumerTag)
 			r.Config.FlushTimeout = types.Float64PointerValue(resp.Config.FlushTimeout)
 			r.Config.Host = types.StringPointerValue(resp.Config.Host)
-			if resp.Config.Metrics != nil {
-				r.Config.Metrics = []tfTypes.Metrics{}
+			r.Config.Metrics = []tfTypes.Metrics{}
 
-				for _, metricsItem := range resp.Config.Metrics {
-					var metrics tfTypes.Metrics
+			for _, metricsItem := range resp.Config.Metrics {
+				var metrics tfTypes.Metrics
 
-					if metricsItem.ConsumerIdentifier != nil {
-						metrics.ConsumerIdentifier = types.StringValue(string(*metricsItem.ConsumerIdentifier))
-					} else {
-						metrics.ConsumerIdentifier = types.StringNull()
-					}
-					metrics.Name = types.StringValue(string(metricsItem.Name))
-					metrics.SampleRate = types.Float64PointerValue(metricsItem.SampleRate)
-					metrics.StatType = types.StringValue(string(metricsItem.StatType))
-					if metricsItem.Tags != nil {
-						metrics.Tags = make([]types.String, 0, len(metricsItem.Tags))
-						for _, v := range metricsItem.Tags {
-							metrics.Tags = append(metrics.Tags, types.StringValue(v))
-						}
-					}
-
-					r.Config.Metrics = append(r.Config.Metrics, metrics)
+				if metricsItem.ConsumerIdentifier != nil {
+					metrics.ConsumerIdentifier = types.StringValue(string(*metricsItem.ConsumerIdentifier))
+				} else {
+					metrics.ConsumerIdentifier = types.StringNull()
 				}
+				metrics.Name = types.StringValue(string(metricsItem.Name))
+				metrics.SampleRate = types.Float64PointerValue(metricsItem.SampleRate)
+				metrics.StatType = types.StringValue(string(metricsItem.StatType))
+				metrics.Tags = make([]types.String, 0, len(metricsItem.Tags))
+				for _, v := range metricsItem.Tags {
+					metrics.Tags = append(metrics.Tags, types.StringValue(v))
+				}
+
+				r.Config.Metrics = append(r.Config.Metrics, metrics)
 			}
 			r.Config.Port = types.Int64PointerValue(resp.Config.Port)
 			r.Config.Prefix = types.StringPointerValue(resp.Config.Prefix)
@@ -340,39 +336,33 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin(ctx context.Co
 		} else {
 			host = nil
 		}
-		var metrics []shared.Metrics
-		if r.Config.Metrics != nil {
-			metrics = make([]shared.Metrics, 0, len(r.Config.Metrics))
-			for _, metricsItem := range r.Config.Metrics {
-				consumerIdentifier := new(shared.ConsumerIdentifier)
-				if !metricsItem.ConsumerIdentifier.IsUnknown() && !metricsItem.ConsumerIdentifier.IsNull() {
-					*consumerIdentifier = shared.ConsumerIdentifier(metricsItem.ConsumerIdentifier.ValueString())
-				} else {
-					consumerIdentifier = nil
-				}
-				name1 := shared.DatadogPluginName(metricsItem.Name.ValueString())
-				sampleRate := new(float64)
-				if !metricsItem.SampleRate.IsUnknown() && !metricsItem.SampleRate.IsNull() {
-					*sampleRate = metricsItem.SampleRate.ValueFloat64()
-				} else {
-					sampleRate = nil
-				}
-				statType := shared.StatType(metricsItem.StatType.ValueString())
-				var tags1 []string
-				if metricsItem.Tags != nil {
-					tags1 = make([]string, 0, len(metricsItem.Tags))
-					for _, tagsItem1 := range metricsItem.Tags {
-						tags1 = append(tags1, tagsItem1.ValueString())
-					}
-				}
-				metrics = append(metrics, shared.Metrics{
-					ConsumerIdentifier: consumerIdentifier,
-					Name:               name1,
-					SampleRate:         sampleRate,
-					StatType:           statType,
-					Tags:               tags1,
-				})
+		metrics := make([]shared.Metrics, 0, len(r.Config.Metrics))
+		for _, metricsItem := range r.Config.Metrics {
+			consumerIdentifier := new(shared.ConsumerIdentifier)
+			if !metricsItem.ConsumerIdentifier.IsUnknown() && !metricsItem.ConsumerIdentifier.IsNull() {
+				*consumerIdentifier = shared.ConsumerIdentifier(metricsItem.ConsumerIdentifier.ValueString())
+			} else {
+				consumerIdentifier = nil
 			}
+			name1 := shared.DatadogPluginName(metricsItem.Name.ValueString())
+			sampleRate := new(float64)
+			if !metricsItem.SampleRate.IsUnknown() && !metricsItem.SampleRate.IsNull() {
+				*sampleRate = metricsItem.SampleRate.ValueFloat64()
+			} else {
+				sampleRate = nil
+			}
+			statType := shared.StatType(metricsItem.StatType.ValueString())
+			tags1 := make([]string, 0, len(metricsItem.Tags))
+			for _, tagsItem1 := range metricsItem.Tags {
+				tags1 = append(tags1, tagsItem1.ValueString())
+			}
+			metrics = append(metrics, shared.Metrics{
+				ConsumerIdentifier: consumerIdentifier,
+				Name:               name1,
+				SampleRate:         sampleRate,
+				StatType:           statType,
+				Tags:               tags1,
+			})
 		}
 		port := new(int64)
 		if !r.Config.Port.IsUnknown() && !r.Config.Port.IsNull() {

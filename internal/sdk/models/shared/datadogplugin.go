@@ -195,22 +195,11 @@ type Metrics struct {
 	// Datadog metric’s name
 	Name DatadogPluginName `json:"name"`
 	// Sampling rate
-	SampleRate *float64 `default:"null" json:"sample_rate"`
+	SampleRate *float64 `json:"sample_rate,omitempty"`
 	// Determines what sort of event the metric represents
 	StatType StatType `json:"stat_type"`
 	// List of tags
-	Tags []string `json:"tags"`
-}
-
-func (m Metrics) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(m, "", false)
-}
-
-func (m *Metrics) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	Tags []string `json:"tags,omitempty"`
 }
 
 func (o *Metrics) GetConsumerIdentifier() *ConsumerIdentifier {
@@ -279,7 +268,7 @@ type Queue struct {
 	// The number of of queue delivery timers. -1 indicates unlimited.
 	ConcurrencyLimit *ConcurrencyLimit `default:"1" json:"concurrency_limit"`
 	// Time in seconds before the initial retry is made for a failing batch.
-	InitialRetryDelay *float64 `default:"0.01" json:"initial_retry_delay"`
+	InitialRetryDelay *float64 `json:"initial_retry_delay,omitempty"`
 	// Maximum number of entries that can be processed at a time.
 	MaxBatchSize *int64 `default:"1" json:"max_batch_size"`
 	// Maximum number of bytes that can be waiting on a queue, requires string content.
@@ -369,12 +358,12 @@ type DatadogPluginConfig struct {
 	// A string representing a host name, such as example.com.
 	Host *string `default:"localhost" json:"host"`
 	// List of metrics to be logged.
-	Metrics []Metrics `json:"metrics"`
+	Metrics []Metrics `json:"metrics,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `default:"8125" json:"port"`
 	// String to be attached as a prefix to a metric's name.
 	Prefix *string `default:"kong" json:"prefix"`
-	Queue  *Queue  `json:"queue"`
+	Queue  *Queue  `json:"queue,omitempty"`
 	// Maximum number of log entries to be sent on each message to the upstream server.
 	QueueSize *int64 `default:"null" json:"queue_size"`
 	// Number of times to retry when sending data to the upstream server.

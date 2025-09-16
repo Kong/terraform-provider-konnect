@@ -196,12 +196,9 @@ Optional:
 <a id="nestedatt--config--schema_registry--confluent"></a>
 ### Nested Schema for `config.schema_registry.confluent`
 
-Required:
-
-- `authentication` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication))
-
 Optional:
 
+- `authentication` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication))
 - `key_schema` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--key_schema))
 - `ssl_verify` (Boolean) Set to false to disable SSL certificate verification when connecting to the schema registry. Default: true
 - `ttl` (Number) The TTL in seconds for the schema registry cache.
@@ -219,10 +216,10 @@ Optional:
 <a id="nestedatt--config--schema_registry--confluent--authentication--basic"></a>
 ### Nested Schema for `config.schema_registry.confluent.authentication.basic`
 
-Required:
+Optional:
 
-- `password` (String)
-- `username` (String)
+- `password` (String) Not Null
+- `username` (String) Not Null
 
 
 
