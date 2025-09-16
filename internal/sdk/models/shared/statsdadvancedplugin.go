@@ -53,19 +53,8 @@ type StatsdAdvancedPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `default:"null" json:"name"`
-	Path *string `default:"null" json:"path"`
-}
-
-func (s StatsdAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(s, "", false)
-}
-
-func (s *StatsdAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
 }
 
 func (o *StatsdAdvancedPluginPartials) GetID() *string {
@@ -554,7 +543,7 @@ type StatsdAdvancedPluginConfig struct {
 	// Include the `hostname` in the `prefix` for each metric name.
 	HostnameInPrefix *bool `default:"false" json:"hostname_in_prefix"`
 	// List of Metrics to be logged.
-	Metrics []StatsdAdvancedPluginMetrics `json:"metrics,omitempty"`
+	Metrics []StatsdAdvancedPluginMetrics `json:"metrics"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `default:"8125" json:"port"`
 	// String to prefix to each metric's name.

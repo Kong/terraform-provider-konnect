@@ -35,11 +35,9 @@ func (r *GatewayPluginDatadogResourceModel) RefreshFromSharedDatadogPlugin(ctx c
 				metrics.Name = types.StringValue(string(metricsItem.Name))
 				metrics.SampleRate = types.Float64PointerValue(metricsItem.SampleRate)
 				metrics.StatType = types.StringValue(string(metricsItem.StatType))
-				if metricsItem.Tags != nil {
-					metrics.Tags = make([]types.String, 0, len(metricsItem.Tags))
-					for _, v := range metricsItem.Tags {
-						metrics.Tags = append(metrics.Tags, types.StringValue(v))
-					}
+				metrics.Tags = make([]types.String, 0, len(metricsItem.Tags))
+				for _, v := range metricsItem.Tags {
+					metrics.Tags = append(metrics.Tags, types.StringValue(v))
 				}
 
 				r.Config.Metrics = append(r.Config.Metrics, metrics)
@@ -354,12 +352,9 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin(ctx context.Co
 				sampleRate = nil
 			}
 			statType := shared.StatType(metricsItem.StatType.ValueString())
-			var tags1 []string
-			if metricsItem.Tags != nil {
-				tags1 = make([]string, 0, len(metricsItem.Tags))
-				for _, tagsItem1 := range metricsItem.Tags {
-					tags1 = append(tags1, tagsItem1.ValueString())
-				}
+			tags1 := make([]string, 0, len(metricsItem.Tags))
+			for _, tagsItem1 := range metricsItem.Tags {
+				tags1 = append(tags1, tagsItem1.ValueString())
 			}
 			metrics = append(metrics, shared.Metrics{
 				ConsumerIdentifier: consumerIdentifier,

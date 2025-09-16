@@ -11,29 +11,29 @@ import (
 type Algorithm string
 
 const (
-	AlgorithmHs256   Algorithm = "HS256"
-	AlgorithmHs384   Algorithm = "HS384"
-	AlgorithmHs512   Algorithm = "HS512"
-	AlgorithmRs256   Algorithm = "RS256"
-	AlgorithmRs384   Algorithm = "RS384"
-	AlgorithmRs512   Algorithm = "RS512"
-	AlgorithmPs256   Algorithm = "PS256"
-	AlgorithmPs384   Algorithm = "PS384"
-	AlgorithmPs512   Algorithm = "PS512"
 	AlgorithmEs256   Algorithm = "ES256"
+	AlgorithmEs256K  Algorithm = "ES256K"
 	AlgorithmEs384   Algorithm = "ES384"
 	AlgorithmEs512   Algorithm = "ES512"
-	AlgorithmEsp256  Algorithm = "ESP256"
-	AlgorithmEsp384  Algorithm = "ESP384"
-	AlgorithmEsp512  Algorithm = "ESP512"
 	AlgorithmEsb256  Algorithm = "ESB256"
 	AlgorithmEsb320  Algorithm = "ESB320"
 	AlgorithmEsb384  Algorithm = "ESB384"
 	AlgorithmEsb512  Algorithm = "ESB512"
-	AlgorithmEs256K  Algorithm = "ES256K"
-	AlgorithmEdDsa   Algorithm = "EdDSA"
+	AlgorithmEsp256  Algorithm = "ESP256"
+	AlgorithmEsp384  Algorithm = "ESP384"
+	AlgorithmEsp512  Algorithm = "ESP512"
 	AlgorithmEd25519 Algorithm = "Ed25519"
 	AlgorithmEd448   Algorithm = "Ed448"
+	AlgorithmEdDsa   Algorithm = "EdDSA"
+	AlgorithmHs256   Algorithm = "HS256"
+	AlgorithmHs384   Algorithm = "HS384"
+	AlgorithmHs512   Algorithm = "HS512"
+	AlgorithmPs256   Algorithm = "PS256"
+	AlgorithmPs384   Algorithm = "PS384"
+	AlgorithmPs512   Algorithm = "PS512"
+	AlgorithmRs256   Algorithm = "RS256"
+	AlgorithmRs384   Algorithm = "RS384"
+	AlgorithmRs512   Algorithm = "RS512"
 )
 
 func (e Algorithm) ToPointer() *Algorithm {
@@ -45,35 +45,13 @@ func (e *Algorithm) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "HS256":
-		fallthrough
-	case "HS384":
-		fallthrough
-	case "HS512":
-		fallthrough
-	case "RS256":
-		fallthrough
-	case "RS384":
-		fallthrough
-	case "RS512":
-		fallthrough
-	case "PS256":
-		fallthrough
-	case "PS384":
-		fallthrough
-	case "PS512":
-		fallthrough
 	case "ES256":
+		fallthrough
+	case "ES256K":
 		fallthrough
 	case "ES384":
 		fallthrough
 	case "ES512":
-		fallthrough
-	case "ESP256":
-		fallthrough
-	case "ESP384":
-		fallthrough
-	case "ESP512":
 		fallthrough
 	case "ESB256":
 		fallthrough
@@ -83,13 +61,35 @@ func (e *Algorithm) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "ESB512":
 		fallthrough
-	case "ES256K":
+	case "ESP256":
 		fallthrough
-	case "EdDSA":
+	case "ESP384":
+		fallthrough
+	case "ESP512":
 		fallthrough
 	case "Ed25519":
 		fallthrough
 	case "Ed448":
+		fallthrough
+	case "EdDSA":
+		fallthrough
+	case "HS256":
+		fallthrough
+	case "HS384":
+		fallthrough
+	case "HS512":
+		fallthrough
+	case "PS256":
+		fallthrough
+	case "PS384":
+		fallthrough
+	case "PS512":
+		fallthrough
+	case "RS256":
+		fallthrough
+	case "RS384":
+		fallthrough
+	case "RS512":
 		*e = Algorithm(v)
 		return nil
 	default:

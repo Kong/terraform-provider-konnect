@@ -13,9 +13,9 @@ type UpstreamAlgorithm string
 
 const (
 	UpstreamAlgorithmConsistentHashing UpstreamAlgorithm = "consistent-hashing"
+	UpstreamAlgorithmLatency           UpstreamAlgorithm = "latency"
 	UpstreamAlgorithmLeastConnections  UpstreamAlgorithm = "least-connections"
 	UpstreamAlgorithmRoundRobin        UpstreamAlgorithm = "round-robin"
-	UpstreamAlgorithmLatency           UpstreamAlgorithm = "latency"
 	UpstreamAlgorithmStickySessions    UpstreamAlgorithm = "sticky-sessions"
 )
 
@@ -30,11 +30,11 @@ func (e *UpstreamAlgorithm) UnmarshalJSON(data []byte) error {
 	switch v {
 	case "consistent-hashing":
 		fallthrough
+	case "latency":
+		fallthrough
 	case "least-connections":
 		fallthrough
 	case "round-robin":
-		fallthrough
-	case "latency":
 		fallthrough
 	case "sticky-sessions":
 		*e = UpstreamAlgorithm(v)
@@ -60,11 +60,11 @@ func (o *UpstreamClientCertificate) GetID() *string {
 type HashFallback string
 
 const (
-	HashFallbackNone       HashFallback = "none"
 	HashFallbackConsumer   HashFallback = "consumer"
-	HashFallbackIP         HashFallback = "ip"
-	HashFallbackHeader     HashFallback = "header"
 	HashFallbackCookie     HashFallback = "cookie"
+	HashFallbackHeader     HashFallback = "header"
+	HashFallbackIP         HashFallback = "ip"
+	HashFallbackNone       HashFallback = "none"
 	HashFallbackPath       HashFallback = "path"
 	HashFallbackQueryArg   HashFallback = "query_arg"
 	HashFallbackURICapture HashFallback = "uri_capture"
@@ -79,15 +79,15 @@ func (e *HashFallback) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "none":
-		fallthrough
 	case "consumer":
 		fallthrough
-	case "ip":
+	case "cookie":
 		fallthrough
 	case "header":
 		fallthrough
-	case "cookie":
+	case "ip":
+		fallthrough
+	case "none":
 		fallthrough
 	case "path":
 		fallthrough
@@ -105,11 +105,11 @@ func (e *HashFallback) UnmarshalJSON(data []byte) error {
 type HashOn string
 
 const (
-	HashOnNone       HashOn = "none"
 	HashOnConsumer   HashOn = "consumer"
-	HashOnIP         HashOn = "ip"
-	HashOnHeader     HashOn = "header"
 	HashOnCookie     HashOn = "cookie"
+	HashOnHeader     HashOn = "header"
+	HashOnIP         HashOn = "ip"
+	HashOnNone       HashOn = "none"
 	HashOnPath       HashOn = "path"
 	HashOnQueryArg   HashOn = "query_arg"
 	HashOnURICapture HashOn = "uri_capture"
@@ -124,15 +124,15 @@ func (e *HashOn) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "none":
-		fallthrough
 	case "consumer":
 		fallthrough
-	case "ip":
+	case "cookie":
 		fallthrough
 	case "header":
 		fallthrough
-	case "cookie":
+	case "ip":
+		fallthrough
+	case "none":
 		fallthrough
 	case "path":
 		fallthrough
@@ -187,11 +187,11 @@ func (o *Healthy) GetSuccesses() *int64 {
 type UpstreamType string
 
 const (
-	UpstreamTypeTCP   UpstreamType = "tcp"
-	UpstreamTypeHTTP  UpstreamType = "http"
-	UpstreamTypeHTTPS UpstreamType = "https"
 	UpstreamTypeGrpc  UpstreamType = "grpc"
 	UpstreamTypeGrpcs UpstreamType = "grpcs"
+	UpstreamTypeHTTP  UpstreamType = "http"
+	UpstreamTypeHTTPS UpstreamType = "https"
+	UpstreamTypeTCP   UpstreamType = "tcp"
 )
 
 func (e UpstreamType) ToPointer() *UpstreamType {
@@ -203,15 +203,15 @@ func (e *UpstreamType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "tcp":
+	case "grpc":
+		fallthrough
+	case "grpcs":
 		fallthrough
 	case "http":
 		fallthrough
 	case "https":
 		fallthrough
-	case "grpc":
-		fallthrough
-	case "grpcs":
+	case "tcp":
 		*e = UpstreamType(v)
 		return nil
 	default:
@@ -395,11 +395,11 @@ func (o *UpstreamHealthy) GetSuccesses() *int64 {
 type UpstreamHealthchecksType string
 
 const (
-	UpstreamHealthchecksTypeTCP   UpstreamHealthchecksType = "tcp"
-	UpstreamHealthchecksTypeHTTP  UpstreamHealthchecksType = "http"
-	UpstreamHealthchecksTypeHTTPS UpstreamHealthchecksType = "https"
 	UpstreamHealthchecksTypeGrpc  UpstreamHealthchecksType = "grpc"
 	UpstreamHealthchecksTypeGrpcs UpstreamHealthchecksType = "grpcs"
+	UpstreamHealthchecksTypeHTTP  UpstreamHealthchecksType = "http"
+	UpstreamHealthchecksTypeHTTPS UpstreamHealthchecksType = "https"
+	UpstreamHealthchecksTypeTCP   UpstreamHealthchecksType = "tcp"
 )
 
 func (e UpstreamHealthchecksType) ToPointer() *UpstreamHealthchecksType {
@@ -411,15 +411,15 @@ func (e *UpstreamHealthchecksType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "tcp":
+	case "grpc":
+		fallthrough
+	case "grpcs":
 		fallthrough
 	case "http":
 		fallthrough
 	case "https":
 		fallthrough
-	case "grpc":
-		fallthrough
-	case "grpcs":
+	case "tcp":
 		*e = UpstreamHealthchecksType(v)
 		return nil
 	default:
@@ -511,6 +511,7 @@ func (o *Passive) GetUnhealthy() *UpstreamUnhealthy {
 	return o.Unhealthy
 }
 
+// Healthchecks - The array of healthchecks.
 type Healthchecks struct {
 	Active    *Active  `json:"active,omitempty"`
 	Passive   *Passive `json:"passive,omitempty"`
@@ -576,8 +577,9 @@ type Upstream struct {
 	// The name of the query string argument to take the value from as hash input. Only required when `hash_on` is set to `query_arg`.
 	HashOnQueryArg *string `default:"null" json:"hash_on_query_arg"`
 	// The name of the route URI capture to take the value from as hash input. Only required when `hash_on` is set to `uri_capture`.
-	HashOnURICapture *string       `default:"null" json:"hash_on_uri_capture"`
-	Healthchecks     *Healthchecks `json:"healthchecks,omitempty"`
+	HashOnURICapture *string `default:"null" json:"hash_on_uri_capture"`
+	// The array of healthchecks.
+	Healthchecks *Healthchecks `json:"healthchecks,omitempty"`
 	// The hostname to be used as `Host` header when proxying requests through Kong.
 	HostHeader *string `default:"null" json:"host_header"`
 	// A string representing a UUID (universally unique identifier).

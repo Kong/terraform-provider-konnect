@@ -13,11 +13,13 @@ type PrivateDNSAttachmentConfigType string
 const (
 	PrivateDNSAttachmentConfigTypeAwsPrivateHostedZoneAttachmentConfig  PrivateDNSAttachmentConfigType = "AwsPrivateHostedZoneAttachmentConfig"
 	PrivateDNSAttachmentConfigTypeAwsPrivateDNSResolverAttachmentConfig PrivateDNSAttachmentConfigType = "AwsPrivateDnsResolverAttachmentConfig"
+	PrivateDNSAttachmentConfigTypeGcpPrivateHostedZoneAttachmentConfig  PrivateDNSAttachmentConfigType = "GcpPrivateHostedZoneAttachmentConfig"
 )
 
 type PrivateDNSAttachmentConfig struct {
 	AwsPrivateHostedZoneAttachmentConfig  *AwsPrivateHostedZoneAttachmentConfig  `queryParam:"inline"`
 	AwsPrivateDNSResolverAttachmentConfig *AwsPrivateDNSResolverAttachmentConfig `queryParam:"inline"`
+	GcpPrivateHostedZoneAttachmentConfig  *GcpPrivateHostedZoneAttachmentConfig  `queryParam:"inline"`
 
 	Type PrivateDNSAttachmentConfigType
 }
@@ -40,6 +42,15 @@ func CreatePrivateDNSAttachmentConfigAwsPrivateDNSResolverAttachmentConfig(awsPr
 	}
 }
 
+func CreatePrivateDNSAttachmentConfigGcpPrivateHostedZoneAttachmentConfig(gcpPrivateHostedZoneAttachmentConfig GcpPrivateHostedZoneAttachmentConfig) PrivateDNSAttachmentConfig {
+	typ := PrivateDNSAttachmentConfigTypeGcpPrivateHostedZoneAttachmentConfig
+
+	return PrivateDNSAttachmentConfig{
+		GcpPrivateHostedZoneAttachmentConfig: &gcpPrivateHostedZoneAttachmentConfig,
+		Type:                                 typ,
+	}
+}
+
 func (u *PrivateDNSAttachmentConfig) UnmarshalJSON(data []byte) error {
 
 	var awsPrivateHostedZoneAttachmentConfig AwsPrivateHostedZoneAttachmentConfig = AwsPrivateHostedZoneAttachmentConfig{}
@@ -56,6 +67,13 @@ func (u *PrivateDNSAttachmentConfig) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
+	var gcpPrivateHostedZoneAttachmentConfig GcpPrivateHostedZoneAttachmentConfig = GcpPrivateHostedZoneAttachmentConfig{}
+	if err := utils.UnmarshalJSON(data, &gcpPrivateHostedZoneAttachmentConfig, "", true, true); err == nil {
+		u.GcpPrivateHostedZoneAttachmentConfig = &gcpPrivateHostedZoneAttachmentConfig
+		u.Type = PrivateDNSAttachmentConfigTypeGcpPrivateHostedZoneAttachmentConfig
+		return nil
+	}
+
 	return fmt.Errorf("could not unmarshal `%s` into any supported union types for PrivateDNSAttachmentConfig", string(data))
 }
 
@@ -66,6 +84,10 @@ func (u PrivateDNSAttachmentConfig) MarshalJSON() ([]byte, error) {
 
 	if u.AwsPrivateDNSResolverAttachmentConfig != nil {
 		return utils.MarshalJSON(u.AwsPrivateDNSResolverAttachmentConfig, "", true)
+	}
+
+	if u.GcpPrivateHostedZoneAttachmentConfig != nil {
+		return utils.MarshalJSON(u.GcpPrivateHostedZoneAttachmentConfig, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type PrivateDNSAttachmentConfig: all fields are null")

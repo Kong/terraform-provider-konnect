@@ -12,11 +12,11 @@ import (
 type RouteExpressionHTTPSRedirectStatusCode int64
 
 const (
-	RouteExpressionHTTPSRedirectStatusCodeFourHundredAndTwentySix RouteExpressionHTTPSRedirectStatusCode = 426
 	RouteExpressionHTTPSRedirectStatusCodeThreeHundredAndOne      RouteExpressionHTTPSRedirectStatusCode = 301
 	RouteExpressionHTTPSRedirectStatusCodeThreeHundredAndTwo      RouteExpressionHTTPSRedirectStatusCode = 302
 	RouteExpressionHTTPSRedirectStatusCodeThreeHundredAndSeven    RouteExpressionHTTPSRedirectStatusCode = 307
 	RouteExpressionHTTPSRedirectStatusCodeThreeHundredAndEight    RouteExpressionHTTPSRedirectStatusCode = 308
+	RouteExpressionHTTPSRedirectStatusCodeFourHundredAndTwentySix RouteExpressionHTTPSRedirectStatusCode = 426
 )
 
 func (e RouteExpressionHTTPSRedirectStatusCode) ToPointer() *RouteExpressionHTTPSRedirectStatusCode {
@@ -28,8 +28,6 @@ func (e *RouteExpressionHTTPSRedirectStatusCode) UnmarshalJSON(data []byte) erro
 		return err
 	}
 	switch v {
-	case 426:
-		fallthrough
 	case 301:
 		fallthrough
 	case 302:
@@ -37,6 +35,8 @@ func (e *RouteExpressionHTTPSRedirectStatusCode) UnmarshalJSON(data []byte) erro
 	case 307:
 		fallthrough
 	case 308:
+		fallthrough
+	case 426:
 		*e = RouteExpressionHTTPSRedirectStatusCode(v)
 		return nil
 	default:

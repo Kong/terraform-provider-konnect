@@ -53,19 +53,8 @@ type LdapAuthAdvancedPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	Name *string `default:"null" json:"name"`
-	Path *string `default:"null" json:"path"`
-}
-
-func (l LdapAuthAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(l, "", false)
-}
-
-func (l *LdapAuthAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
 }
 
 func (o *LdapAuthAdvancedPluginPartials) GetID() *string {

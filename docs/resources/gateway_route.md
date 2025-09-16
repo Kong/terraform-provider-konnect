@@ -19,7 +19,7 @@ resource "konnect_gateway_route" "my_gatewayroute" {
   destinations = [
     {
       ip   = "...my_ip..."
-      port = 8
+      port = 47938
     }
   ]
   headers = {
@@ -30,7 +30,7 @@ resource "konnect_gateway_route" "my_gatewayroute" {
   hosts = [
     "..."
   ]
-  https_redirect_status_code = 307
+  https_redirect_status_code = 308
   id                         = "...my_id..."
   methods = [
     "..."
@@ -56,7 +56,7 @@ resource "konnect_gateway_route" "my_gatewayroute" {
   sources = [
     {
       ip   = "...my_ip..."
-      port = 0
+      port = 633
     }
   ]
   strip_path = true
@@ -80,7 +80,7 @@ resource "konnect_gateway_route" "my_gatewayroute" {
 - `destinations` (Attributes List) A list of IP destinations of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port". (see [below for nested schema](#nestedatt--destinations))
 - `headers` (Map of List of String) One or more lists of values indexed by header name that will cause this Route to match if present in the request. The `Host` header cannot be used with this attribute: hosts should be specified using the `hosts` attribute. When `headers` contains only one value and that value starts with the special prefix `~*`, the value is interpreted as a regular expression.
 - `hosts` (List of String) A list of domain names that match this Route. Note that the hosts value is case sensitive.
-- `https_redirect_status_code` (Number) The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the `https` protocol. Default: 426; must be one of ["426", "301", "302", "307", "308"]
+- `https_redirect_status_code` (Number) The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the `https` protocol. Default: 426; must be one of ["301", "302", "307", "308", "426"]
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `methods` (List of String) A list of HTTP methods that match this Route.
 - `name` (String) The name of the Route. Route names must be unique, and they are case sensitive. For example, there can be two different Routes named "test" and "Test".

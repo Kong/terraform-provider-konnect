@@ -56,7 +56,9 @@ func Pointer[T any](v T) *T { return &v }
 //
 // https://developer.konghq.com - Documentation for Kong Gateway and its APIs
 type Konnect struct {
-	SDKVersion              string
+	SDKVersion string
+	// Konnect IP inventory
+	PlatformIPs             *PlatformIPs
 	ServerlessCloudGateways *ServerlessCloudGateways
 	// Create and maintain a centralized catalog of all services running in your organization.
 	// Add custom fields and map resources from across your organization to provide a 360-degree overview of your services.
@@ -229,6 +231,7 @@ type Konnect struct {
 	PortalAppearance *PortalAppearance
 	// Portal Product Versions hold metadata that describes how a Product Version is configured for a specific portal.
 	//
+	//
 	//   They contain:
 	//   - Lifecyle and deprecation statuses
 	//   - Application registration settings like auto approve or whether application registration is enabled
@@ -339,9 +342,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *Konnect {
 	sdk := &Konnect{
-		SDKVersion: "3.1.0",
+		SDKVersion: "3.2.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 3.1.0 2.681.1 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 3.2.0 2.681.1 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),
@@ -362,6 +365,7 @@ func New(opts ...SDKOption) *Konnect {
 		sdk.sdkConfiguration.ServerURL = serverURL
 	}
 
+	sdk.PlatformIPs = newPlatformIPs(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ServerlessCloudGateways = newServerlessCloudGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.CatalogServices = newCatalogServices(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Cmek = newCmek(sdk, sdk.sdkConfiguration, sdk.hooks)

@@ -163,6 +163,7 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"sample_rate": schema.Float64Attribute{
+									Computed:    true,
 									Optional:    true,
 									Description: `Sampling rate`,
 									Validators: []validator.Float64{
@@ -187,6 +188,7 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"tags": schema.ListAttribute{
+									Computed:    true,
 									Optional:    true,
 									ElementType: types.StringType,
 									Description: `List of tags`,
@@ -213,16 +215,6 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 					"queue": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"concurrency_limit":    types.Int64Type,
-							"initial_retry_delay":  types.Float64Type,
-							"max_batch_size":       types.Int64Type,
-							"max_bytes":            types.Int64Type,
-							"max_coalescing_delay": types.Float64Type,
-							"max_entries":          types.Int64Type,
-							"max_retry_delay":      types.Float64Type,
-							"max_retry_time":       types.Float64Type,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"concurrency_limit": schema.Int64Attribute{
 								Computed:    true,
@@ -236,8 +228,7 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 							"initial_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     float64default.StaticFloat64(0.01),
-								Description: `Time in seconds before the initial retry is made for a failing batch. Default: 0.01`,
+								Description: `Time in seconds before the initial retry is made for a failing batch.`,
 								Validators: []validator.Float64{
 									float64validator.AtMost(1000000),
 								},
@@ -348,6 +339,9 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 				Computed:    true,
 				Optional:    true,
 				Description: `A string representing a UUID (universally unique identifier).`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtLeast(1),
+				},
 			},
 			"instance_name": schema.StringAttribute{
 				Optional:    true,
@@ -408,12 +402,17 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 							Computed:    true,
 							Optional:    true,
 							Description: `A string representing a UUID (universally unique identifier).`,
+							Validators: []validator.String{
+								stringvalidator.UTF8LengthAtLeast(1),
+							},
 						},
 						"name": schema.StringAttribute{
+							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
+							Computed: true,
 							Optional: true,
 						},
 					},

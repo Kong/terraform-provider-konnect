@@ -588,6 +588,8 @@ func (s *ConfigStoreSecrets) UpdateConfigStoreSecret(ctx context.Context, reques
 
 	switch {
 	case httpRes.StatusCode == 200:
+		fallthrough
+	case httpRes.StatusCode == 201:
 		switch {
 		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
 			rawBody, err := utils.ConsumeRawBody(httpRes)

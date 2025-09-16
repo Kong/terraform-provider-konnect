@@ -143,7 +143,6 @@ func (r *GatewayPluginStatsdAdvancedResource) Schema(ctx context.Context, req re
 						Description: `Include the ` + "`" + `hostname` + "`" + ` in the ` + "`" + `prefix` + "`" + ` for each metric name. Default: false`,
 					},
 					"metrics": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -408,6 +407,9 @@ func (r *GatewayPluginStatsdAdvancedResource) Schema(ctx context.Context, req re
 				Computed:    true,
 				Optional:    true,
 				Description: `A string representing a UUID (universally unique identifier).`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtLeast(1),
+				},
 			},
 			"instance_name": schema.StringAttribute{
 				Optional:    true,
@@ -468,12 +470,17 @@ func (r *GatewayPluginStatsdAdvancedResource) Schema(ctx context.Context, req re
 							Computed:    true,
 							Optional:    true,
 							Description: `A string representing a UUID (universally unique identifier).`,
+							Validators: []validator.String{
+								stringvalidator.UTF8LengthAtLeast(1),
+							},
 						},
 						"name": schema.StringAttribute{
+							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
+							Computed: true,
 							Optional: true,
 						},
 					},

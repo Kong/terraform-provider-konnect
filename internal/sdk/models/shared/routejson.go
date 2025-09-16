@@ -44,11 +44,11 @@ func (o *Destinations) GetPort() *int64 {
 type HTTPSRedirectStatusCode int64
 
 const (
-	HTTPSRedirectStatusCodeFourHundredAndTwentySix HTTPSRedirectStatusCode = 426
 	HTTPSRedirectStatusCodeThreeHundredAndOne      HTTPSRedirectStatusCode = 301
 	HTTPSRedirectStatusCodeThreeHundredAndTwo      HTTPSRedirectStatusCode = 302
 	HTTPSRedirectStatusCodeThreeHundredAndSeven    HTTPSRedirectStatusCode = 307
 	HTTPSRedirectStatusCodeThreeHundredAndEight    HTTPSRedirectStatusCode = 308
+	HTTPSRedirectStatusCodeFourHundredAndTwentySix HTTPSRedirectStatusCode = 426
 )
 
 func (e HTTPSRedirectStatusCode) ToPointer() *HTTPSRedirectStatusCode {
@@ -60,8 +60,6 @@ func (e *HTTPSRedirectStatusCode) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case 426:
-		fallthrough
 	case 301:
 		fallthrough
 	case 302:
@@ -69,6 +67,8 @@ func (e *HTTPSRedirectStatusCode) UnmarshalJSON(data []byte) error {
 	case 307:
 		fallthrough
 	case 308:
+		fallthrough
+	case 426:
 		*e = HTTPSRedirectStatusCode(v)
 		return nil
 	default:

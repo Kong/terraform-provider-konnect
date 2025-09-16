@@ -18,6 +18,29 @@ servers:
   - url: 'https://me.api.konghq.com'
   - url: 'https://in.api.konghq.com'
 paths:
+  /ip-addresses.json:
+    servers:
+      - url: 'https://ip-addresses.origin.konghq.com'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: null
+        terraform-datasource: PlatformIpAddresses#read
+      operationId: list-ip-addresses
+      summary: Platform IP Addresses
+      description: 'Get Konnect IP addresses by region/hostname, ingress, and egress'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IpAddressesResponse'
+        4XX:
+          description: Client error
+        5XX:
+          description: Server error
+      tags:
+        - Platform IPs
   /v0/serverless-cloud-gateways:
     post:
       x-speakeasy-entity-operation:
@@ -2084,6 +2107,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/NetworkId'
+          x-speakeasy-param-force-new: true
         - $ref: '#/components/parameters/TransitGatewayId'
       responses:
         '200':
@@ -2094,6 +2118,46 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Transit Gateways
+      x-speakeasy-group: CloudGateways
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: CloudGatewayTransitGateway#update
+        terraform-datasource: null
+      operationId: update-transit-gateway
+      summary: Update Transit Gateway
+      description: Updates a transit gateway by ID for a given network.
+      parameters:
+        - name: networkId
+          in: path
+          description: The network to operate on.
+          required: true
+          schema:
+            $ref: '#/components/schemas/NetworkId'
+          x-speakeasy-param-force-new: true
+        - $ref: '#/components/parameters/TransitGatewayId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchTransitGatewayRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/PatchTransitGatewayResponse'
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
       servers:
         - url: 'https://global.api.konghq.com/'
       tags:
@@ -2113,6 +2177,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/NetworkId'
+          x-speakeasy-param-force-new: true
         - $ref: '#/components/parameters/TransitGatewayId'
       responses:
         '204':
@@ -2398,6 +2463,8 @@ paths:
         $ref: '#/components/requestBodies/UpdateConfigStoreSecretRequest'
       responses:
         '200':
+          $ref: '#/components/responses/ConfigStoreSecretResponse'
+        '201':
           $ref: '#/components/responses/ConfigStoreSecretResponse'
         '400':
           description: Bad Request
@@ -16365,7 +16432,7 @@ components:
               description: Control Plane Endpoint.
               type: string
               format: url
-              example: 'https://acfe5f253f.cp0.konghq.com'
+              example: 'https://acfe5f253f.cp.konghq.com'
               readOnly: true
             telemetry_endpoint:
               description: Telemetry Endpoint.
@@ -16515,7 +16582,6 @@ components:
     BooleanFieldFilter:
       description: Filter by a boolean value (true/false).
       type: boolean
-      example: true
       title: BooleanFieldFilter
     SortQuery:
       description: |
@@ -16937,6 +17003,7 @@ components:
         - au
         - me
         - in
+        - sg
       title: Control-Plane Geo
     GatewayVersion:
       description: Supported gateway version.
@@ -16953,6 +17020,7 @@ components:
     ApiAccess:
       description: Type of API access data-plane groups will support for a configuration.
       type: string
+      example: private+public
       default: private+public
       enum:
         - private
@@ -17012,10 +17080,8 @@ components:
           description: 'Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps. This field is deprecated and shouldn''t be used in new configurations as it will be removed in a future version. max_rps is now calculated as 10x base_rps.'
           type: integer
           example: 1000
-          default: null
           deprecated: true
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
       additionalProperties: false
       required:
         - kind
@@ -17497,6 +17563,23 @@ components:
         - terminated
       readOnly: true
       title: Transit Gateway State
+    AwsResourceEndpointConfigState:
+      description: |
+        The current state of the resource config in AWS Resource Endpoint. Possible values:
+        - `initializing` - The config is in the process of being initialized and is setting up necessary resources.
+        - `missing` - The config is missing and is no longer accepting new traffic.
+        - `ready` - The config is fully operational and can route traffic as configured.
+        - `error` - The config is in an error state, and is not operational.
+        - `terminating` - The config is in the process of being deleted and is no longer accepting new traffic.
+      type: string
+      enum:
+        - initializing
+        - missing
+        - ready
+        - error
+        - terminating
+      readOnly: true
+      title: AWS Resource Endpoint Config State
     AwsTransitGatewayAttachmentConfig:
       type: object
       properties:
@@ -17538,6 +17621,86 @@ components:
         - peer_vpc_id
         - peer_vpc_region
       title: AWS VPC Peering Attachment Config
+    AwsResourceEndpointAttachmentConfig:
+      type: object
+      properties:
+        kind:
+          enum:
+            - aws-resource-endpoint-attachment
+          title: AWS Resource Endpoint Attachment Type
+        ram_share_arn:
+          description: Resource Share ARN to verify request to create transit gateway attachment.
+          type: string
+          title: RAM Share ARN
+        resource_config:
+          $ref: '#/components/schemas/AwsResourceEndpointConfig'
+      additionalProperties: false
+      required:
+        - kind
+        - ram_share_arn
+      title: AWS Resource Endpoint Attachment Config
+    AwsResourceEndpointAttachmentConfigResponse:
+      type: object
+      properties:
+        kind:
+          enum:
+            - aws-resource-endpoint-attachment
+          title: AWS Resource Endpoint Attachment Type
+        ram_share_arn:
+          description: Resource Share ARN to verify request to create transit gateway attachment.
+          type: string
+          title: RAM Share ARN
+        resource_config:
+          $ref: '#/components/schemas/AwsResourceEndpointConfigResponse'
+      additionalProperties: false
+      required:
+        - kind
+        - ram_share_arn
+        - resource_config
+      title: AWS Resource Endpoint Attachment Config Response
+    AwsResourceEndpointConfig:
+      description: |
+        List of unique resource config mapping for aws resource endpoint.
+      type: array
+      items:
+        type: object
+        additionalProperties: false
+        properties:
+          resource_config_id:
+            description: Resource Config ID to uniquely identify a resource configuration.
+            type: string
+            title: Resource Config ID
+          domain_name:
+            description: Domain Name to uniquely identify a resource configuration.
+            type: string
+            title: Domain Name
+        required:
+          - resource_config_id
+          - domain_name
+      title: AWS Resource Endpoint Config
+    AwsResourceEndpointConfigResponse:
+      description: |
+        List of unique resource config mapping for aws resource endpoint.
+      type: array
+      items:
+        type: object
+        additionalProperties: false
+        properties:
+          resource_config_id:
+            description: Resource Config ID to uniquely identify a resource configuration.
+            type: string
+            title: Resource Config ID
+          domain_name:
+            description: Domain Name to uniquely identify a resource configuration.
+            type: string
+            title: Domain Name
+          state:
+            $ref: '#/components/schemas/AwsResourceEndpointConfigState'
+        required:
+          - resource_config_id
+          - domain_name
+          - state
+      title: AWS Resource Endpoint Config Response
     AzureVNETPeeringAttachmentConfig:
       type: object
       properties:
@@ -17642,6 +17805,7 @@ components:
       oneOf:
         - $ref: '#/components/schemas/AwsPrivateHostedZoneResponse'
         - $ref: '#/components/schemas/AwsPrivateDnsResolverResponse'
+        - $ref: '#/components/schemas/GcpPrivateHostedZoneResponse'
     AwsPrivateHostedZoneResponse:
       type: object
       properties:
@@ -17720,6 +17884,94 @@ components:
         - kind
         - hosted_zone_id
       title: AWS Private Hosted Zone Attachment Config
+    GcpPrivateHostedZoneAttachmentConfig:
+      type: object
+      properties:
+        kind:
+          enum:
+            - gcp-private-hosted-zone-attachment
+          title: GCP Private Hosted Zone Type
+        domain_name:
+          description: Domain name to create attachment to.
+          type: string
+          title: Domain Name
+        peer_project_id:
+          description: Customer's GCP Project ID.
+          type: string
+          title: Peer Project Id
+        peer_vpc_name:
+          description: Customer's GCP VPC ID.
+          type: string
+          title: Peer VPC Name
+      additionalProperties: false
+      required:
+        - kind
+        - domain_name
+        - peer_project_id
+        - peer_vpc_name
+      title: GCP Private Hosted Zone Attachment Config
+    GcpPrivateHostedZoneResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/PrivateDnsId'
+        state:
+          $ref: '#/components/schemas/PrivateDnsState'
+        state_metadata:
+          description: |
+            Metadata describing the backing state of the Private Dns and why it may be in an erroneous state.
+          type: object
+          additionalProperties: false
+          properties:
+            reported_status:
+              description: Reported status of the Private Dns from backing infrastructure.
+              type: string
+              example: ERROR
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            reason:
+              description: |
+                Reason why the Private Dns may be in an erroneous state, reported from backing infrastructure.
+              type: string
+              example: |
+                Failed to create Private Dns due to invalid Cloud Provider configuration.
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+          title: PrivateDnsStateMetadata
+        entity_version:
+          description: |
+            Monotonically-increasing version count of the Private DNS, to indicate the order of updates to the
+            Private DNS.
+          type: integer
+          example: 1
+          readOnly: true
+        created_at:
+          description: An RFC-3339 timestamp representation of Private DNS creation date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        updated_at:
+          description: An RFC-3339 timestamp representation of Private DNS update date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        name:
+          $ref: '#/components/schemas/PrivateDnsName'
+        private_dns_attachment_config:
+          $ref: '#/components/schemas/GcpPrivateHostedZoneAttachmentConfig'
+      required:
+        - id
+        - state
+        - state_metadata
+        - entity_version
+        - created_at
+        - updated_at
+        - name
+        - private_dns_attachment_config
     AwsPrivateDnsResolverResponse:
       type: object
       properties:
@@ -17862,6 +18114,7 @@ components:
           oneOf:
             - $ref: '#/components/schemas/AwsPrivateHostedZoneAttachmentConfig'
             - $ref: '#/components/schemas/AwsPrivateDnsResolverAttachmentConfig'
+            - $ref: '#/components/schemas/GcpPrivateHostedZoneAttachmentConfig'
       title: CreatePrivateDnsRequest
     PatchPrivateDnsRequest:
       description: Request schema for updating a Private DNS.
@@ -18007,6 +18260,72 @@ components:
         - created_at
         - updated_at
       title: AWS Vpc Peering Gateway
+    AwsResourceEndpointGatewayResponse:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+        transit_gateway_attachment_config:
+          $ref: '#/components/schemas/AwsResourceEndpointAttachmentConfigResponse'
+        id:
+          $ref: '#/components/schemas/TransitGatewayId'
+        state:
+          $ref: '#/components/schemas/TransitGatewayState'
+        state_metadata:
+          description: |
+            Metadata describing the backing state of the transit gateway and why it may be in an erroneous state.
+          type: object
+          additionalProperties: false
+          properties:
+            reported_status:
+              description: Reported status of the transit gateway from backing infrastructure.
+              type: string
+              example: ERROR
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            reason:
+              description: |
+                Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
+              type: string
+              example: |
+                Transit Gateway Attachment configuration could not find a resource with the provided ram share arn.
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+          readOnly: true
+          title: TransitGatewayStateMetadata
+        entity_version:
+          description: |
+            Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
+            transit gateway.
+          type: integer
+          example: 1
+          readOnly: true
+        created_at:
+          description: An RFC-3339 timestamp representation of transit gateway creation date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        updated_at:
+          description: An RFC-3339 timestamp representation of transit gateway update date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+      required:
+        - name
+        - transit_gateway_attachment_config
+        - id
+        - dns_config
+        - state
+        - entity_version
+        - created_at
+        - updated_at
+      title: AWS Resource Endpoint Gateway
     AzureTransitGatewayResponse:
       type: object
       properties:
@@ -18145,6 +18464,7 @@ components:
         - $ref: '#/components/schemas/AwsVpcPeeringGatewayResponse'
         - $ref: '#/components/schemas/AzureTransitGatewayResponse'
         - $ref: '#/components/schemas/GCPVPCPeeringGatewayResponse'
+        - $ref: '#/components/schemas/AwsResourceEndpointGatewayResponse'
     CreateAwsTransitGateway:
       type: object
       properties:
@@ -18179,6 +18499,20 @@ components:
         - transit_gateway_attachment_config
       title: AWS Vpc Peering Gateway
       x-speakeasy-name-override: AWSVpcPeeringGateway
+    CreateAwsResourceEndpointGateway:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+        transit_gateway_attachment_config:
+          $ref: '#/components/schemas/AwsResourceEndpointAttachmentConfig'
+      required:
+        - name
+        - transit_gateway_attachment_config
+      title: AWS Resource Endpoint Gateway
+      x-speakeasy-name-override: AWSResourceEndpointGateway
     CreateAzureTransitGateway:
       type: object
       properties:
@@ -18213,9 +18547,34 @@ components:
       oneOf:
         - $ref: '#/components/schemas/CreateAwsTransitGateway'
         - $ref: '#/components/schemas/CreateAwsVpcPeeringGateway'
+        - $ref: '#/components/schemas/CreateAwsResourceEndpointGateway'
         - $ref: '#/components/schemas/CreateAzureTransitGateway'
         - $ref: '#/components/schemas/CreateGCPVPCPeeringTransitGateway'
       title: CreateTransitGatewayRequest
+    PatchAwsResourceEndpointGateway:
+      description: Request schema for updating AWS Resource Endpoint.
+      properties:
+        transit_gateway_attachment_config:
+          type: object
+          additionalProperties: false
+          properties:
+            kind:
+              enum:
+                - aws-resource-endpoint-attachment
+              title: AWS Resource Endpoint Attachment Type
+            resource_config:
+              $ref: '#/components/schemas/AwsResourceEndpointConfig'
+          required:
+            - kind
+            - resource_config
+      required:
+        - transit_gateway_attachment_config
+    PatchTransitGatewayRequest:
+      description: Request schema for updating a transit gateway.
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/PatchAwsResourceEndpointGateway'
+      title: PatchTransitGatewayRequest
     CustomDomainState:
       description: State of the custom domain.
       type: string
@@ -19830,6 +20189,7 @@ components:
             - au
             - me
             - in
+            - sg
             - '*'
       example:
         id: 54cc6168-ebb1-4300-8168-d62a0dd08fc8
@@ -23291,6 +23651,56 @@ components:
         - oas3
         - asyncapi
       title: API Spec Type
+    IpAddressesResponse:
+      type: object
+      properties:
+        updateDate:
+          description: |
+            Timestamp of the last update in "YYYY-MM-DD-HH-mm-ss" format.
+          type: string
+          example: 2025-08-26-16-03-33
+          pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}$'
+        regions:
+          description: Mapping of region code to hostname/IP lists.
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/RegionEntry'
+        ingressIPs:
+          description: |
+            Mapping of region code to ingress IP addresses. Each region maps to a list of IP
+            addresses representing inbound entry points for the Konnect service.
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+              description: IPv4 or IPv6 address.
+          x-speakeasy-name-override: ingressIps
+        egressIPs:
+          description: |
+            Mapping of region code to egress IP addresses. Each region maps to a list of IP
+            addresses representing outbound IPs used by Konnect.
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+              description: IPv4 or IPv6 address.
+          x-speakeasy-name-override: egressIps
+      required:
+        - updateDate
+        - regions
+        - ingressIPs
+        - egressIPs
+    RegionEntry:
+      description: Hostname-to-addresses map for a single region.
+      type: object
+      additionalProperties:
+        type: array
+        description: List of IP addresses (IPv4 and/or IPv6).
+        items:
+          type: string
+          description: IPv4 or IPv6 address.
     DataPlaneClientCertificate:
       x-speakeasy-entity: GatewayDataPlaneClientCertificate
       type: object
@@ -23613,13 +24023,6 @@ components:
               description: 'An array of strings representing hosts. A valid host is a string containing one or more labels separated by periods, with at most one wildcard label (''*'')'
               type: array
               items:
-                match_all:
-                  pattern: '^[^*]*%*?[^*]*$'
-                match_any:
-                  patterns:
-                    - '%.%*$'
-                    - ^%*%.
-                    - '^[^*]*$'
                 type: string
               default: null
               nullable: true
@@ -23795,17 +24198,6 @@ components:
                       default: null
                       nullable: true
                       x-speakeasy-param-computed: false
-                  shorthand_fields:
-                    auth:
-                      minLength: 0
-                      type: string
-                    namespace:
-                      minLength: 0
-                      type: string
-                    scan_count:
-                      type: integer
-                    ssl_server_name:
-                      type: string
                   x-speakeasy-param-computed: false
                 shm:
                   type: object
@@ -24332,7 +24724,6 @@ components:
               description: 'max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx''s client_max_body_size.'
               type: integer
               default: 8192
-              minimum: 0
             prompts:
               type: object
               default: null
@@ -24512,7 +24903,6 @@ components:
               description: 'max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx''s client_max_body_size.'
               type: integer
               default: 8192
-              minimum: 0
           x-speakeasy-param-computed: false
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
@@ -24595,7 +24985,6 @@ components:
               description: 'max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx''s client_max_body_size.'
               type: integer
               default: 8192
-              minimum: 0
             templates:
               description: Array of templates available to the request context.
               type: array
@@ -25020,7 +25409,6 @@ components:
               description: 'max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx''s client_max_body_size.'
               type: integer
               default: 8192
-              minimum: 0
             model_name_header:
               description: Display the model name selected in the X-Kong-LLM-Model response header
               type: boolean
@@ -25241,7 +25629,6 @@ components:
                             description: 'If using embeddings models, set the number of dimensions to generate.'
                             type: integer
                             default: null
-                            minimum: 0
                             nullable: true
                             x-speakeasy-param-computed: false
                           gemini:
@@ -25290,7 +25677,6 @@ components:
                             description: Defines the cost per 1M tokens in your prompt.
                             type: number
                             default: null
-                            minimum: 0
                             nullable: true
                             x-speakeasy-param-computed: false
                           llama2_format:
@@ -25316,7 +25702,6 @@ components:
                             description: Defines the cost per 1M tokens in the output of the AI.
                             type: number
                             default: null
-                            minimum: 0
                             nullable: true
                             x-speakeasy-param-computed: false
                           temperature:
@@ -25623,19 +26008,6 @@ components:
                       default: null
                       nullable: true
                       x-speakeasy-param-computed: false
-                  shorthand_fields:
-                    cluster_addresses:
-                      items:
-                        type: string
-                      minLength: 1
-                      type: array
-                    sentinel_addresses:
-                      items:
-                        type: string
-                      minLength: 1
-                      type: array
-                    timeout:
-                      type: integer
                 strategy:
                   description: which vector database driver to use
                   type: string
@@ -25852,7 +26224,6 @@ components:
               description: 'max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx''s client_max_body_size.'
               type: integer
               default: 8192
-              minimum: 0
             model:
               type: object
               properties:
@@ -25956,7 +26327,6 @@ components:
                       description: 'If using embeddings models, set the number of dimensions to generate.'
                       type: integer
                       default: null
-                      minimum: 0
                       nullable: true
                       x-speakeasy-param-computed: false
                     gemini:
@@ -26005,7 +26375,6 @@ components:
                       description: Defines the cost per 1M tokens in your prompt.
                       type: number
                       default: null
-                      minimum: 0
                       nullable: true
                       x-speakeasy-param-computed: false
                     llama2_format:
@@ -26031,7 +26400,6 @@ components:
                       description: Defines the cost per 1M tokens in the output of the AI.
                       type: number
                       default: null
-                      minimum: 0
                       nullable: true
                       x-speakeasy-param-computed: false
                     temperature:
@@ -26664,19 +27032,6 @@ components:
                       default: null
                       nullable: true
                       x-speakeasy-param-computed: false
-                  shorthand_fields:
-                    cluster_addresses:
-                      items:
-                        type: string
-                      minLength: 1
-                      type: array
-                    sentinel_addresses:
-                      items:
-                        type: string
-                      minLength: 1
-                      type: array
-                    timeout:
-                      type: integer
                   x-speakeasy-param-computed: false
                 strategy:
                   description: which vector database driver to use
@@ -26778,7 +27133,6 @@ components:
               description: Set a custom error code to return when the rate limit is exceeded.
               type: number
               default: 429
-              minimum: 0
             error_hide_providers:
               description: Optionally hide informative response that would otherwise provide information about the provider in the error message.
               type: boolean
@@ -27015,19 +27369,6 @@ components:
                   default: null
                   nullable: true
                   x-speakeasy-param-computed: false
-              shorthand_fields:
-                cluster_addresses:
-                  items:
-                    type: string
-                  minLength: 1
-                  type: array
-                sentinel_addresses:
-                  items:
-                    type: string
-                  minLength: 1
-                  type: array
-                timeout:
-                  type: integer
               x-speakeasy-param-computed: false
             request_prompt_count_function:
               description: 'If defined, it use custom function to count requests for the request prompt provider'
@@ -27382,7 +27723,6 @@ components:
                           description: 'If using embeddings models, set the number of dimensions to generate.'
                           type: integer
                           default: null
-                          minimum: 0
                           nullable: true
                           x-speakeasy-param-computed: false
                         gemini:
@@ -27431,7 +27771,6 @@ components:
                           description: Defines the cost per 1M tokens in your prompt.
                           type: number
                           default: null
-                          minimum: 0
                           nullable: true
                           x-speakeasy-param-computed: false
                         llama2_format:
@@ -27457,7 +27796,6 @@ components:
                           description: Defines the cost per 1M tokens in the output of the AI.
                           type: number
                           default: null
-                          minimum: 0
                           nullable: true
                           x-speakeasy-param-computed: false
                         temperature:
@@ -27537,7 +27875,6 @@ components:
               description: 'max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx''s client_max_body_size.'
               type: integer
               default: 8192
-              minimum: 0
             prompt:
               description: 'Use this prompt to tune the LLM system/assistant message for the incoming proxy request (from the client), and what you are expecting in return.'
               type: string
@@ -27851,7 +28188,6 @@ components:
                           description: 'If using embeddings models, set the number of dimensions to generate.'
                           type: integer
                           default: null
-                          minimum: 0
                           nullable: true
                           x-speakeasy-param-computed: false
                         gemini:
@@ -27900,7 +28236,6 @@ components:
                           description: Defines the cost per 1M tokens in your prompt.
                           type: number
                           default: null
-                          minimum: 0
                           nullable: true
                           x-speakeasy-param-computed: false
                         llama2_format:
@@ -27926,7 +28261,6 @@ components:
                           description: Defines the cost per 1M tokens in the output of the AI.
                           type: number
                           default: null
-                          minimum: 0
                           nullable: true
                           x-speakeasy-param-computed: false
                         temperature:
@@ -28006,7 +28340,6 @@ components:
               description: 'max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx''s client_max_body_size.'
               type: integer
               default: 8192
-              minimum: 0
             parse_llm_response_json_instructions:
               description: 'Set true to read specific response format from the LLM, and accordingly set the status code / body / headers that proxy back to the client. You need to engineer your LLM prompt to return the correct format, see plugin docs ''Overview'' page for usage instructions.'
               type: boolean
@@ -28259,7 +28592,6 @@ components:
               description: TTL in seconds of cache entities. Must be a value greater than 0.
               type: integer
               default: 300
-              minimum: 0
             embeddings:
               type: object
               properties:
@@ -28746,19 +29078,6 @@ components:
                       default: null
                       nullable: true
                       x-speakeasy-param-computed: false
-                  shorthand_fields:
-                    cluster_addresses:
-                      items:
-                        type: string
-                      minLength: 1
-                      type: array
-                    sentinel_addresses:
-                      items:
-                        type: string
-                      minLength: 1
-                      type: array
-                    timeout:
-                      type: integer
                   x-speakeasy-param-computed: false
                 strategy:
                   description: which vector database driver to use
@@ -29132,7 +29451,6 @@ components:
                   description: 'max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx''s client_max_body_size.'
                   type: integer
                   default: 8192
-                  minimum: 0
               x-speakeasy-param-computed: false
             search:
               type: object
@@ -29370,19 +29688,6 @@ components:
                       default: null
                       nullable: true
                       x-speakeasy-param-computed: false
-                  shorthand_fields:
-                    cluster_addresses:
-                      items:
-                        type: string
-                      minLength: 1
-                      type: array
-                    sentinel_addresses:
-                      items:
-                        type: string
-                      minLength: 1
-                      type: array
-                    timeout:
-                      type: integer
                   x-speakeasy-param-computed: false
                 strategy:
                   description: which vector database driver to use
@@ -29824,8 +30129,8 @@ components:
         username: darius
       additionalProperties: false
       required:
-        - username
         - password
+        - username
     BasicAuthPlugin:
       x-speakeasy-entity: GatewayPluginBasicAuth
       allOf:
@@ -29937,8 +30242,8 @@ components:
         username: darius
       additionalProperties: false
       required:
-        - username
         - password
+        - username
     BotDetectionPlugin:
       x-speakeasy-entity: GatewayPluginBotDetection
       allOf:
@@ -29955,14 +30260,12 @@ components:
               description: An array of regular expressions that should be allowed. The regular expressions will be checked against the `User-Agent` header.
               type: array
               items:
-                is_regex: true
                 type: string
               default: []
             deny:
               description: An array of regular expressions that should be denied. The regular expressions will be checked against the `User-Agent` header.
               type: array
               items:
-                is_regex: true
                 type: string
               default: []
           x-speakeasy-param-computed: false
@@ -30077,7 +30380,6 @@ components:
               description: The duration of the canary release in seconds.
               type: number
               default: 3600
-              minimum: 0
             groups:
               description: The groups allowed to access the canary release.
               type: array
@@ -30155,10 +30457,6 @@ components:
               minLength: 1
               nullable: true
               x-speakeasy-param-computed: false
-          shorthand_fields:
-            hash:
-              description: Hash algorithm to be used for canary release. `whitelist` is deprecated. Use `allow` instead `blacklist` is deprecated. Use `deny` instead.
-              type: string
           x-speakeasy-param-computed: false
         name:
           type: string
@@ -30582,9 +30880,7 @@ components:
             cluster_name:
               description: 'An identifier for the Kafka cluster. By default, this field generates a random string. You can also set your own custom cluster identifier.  If more than one Kafka plugin is configured without a `cluster_name` (that is, if the default autogenerated value is removed), these plugins will use the same producer, and by extension, the same cluster. Logs will be sent to the leader of the cluster.'
               type: string
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             confluent_cloud_api_key:
               description: 'Apikey for authentication with Confluent Cloud. This allows for management tasks such as creating topics, ACLs, etc.'
               type: string
@@ -30677,8 +30973,6 @@ components:
             schema_registry:
               description: The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
               type: object
-              default: null
-              nullable: true
               properties:
                 confluent:
                   type: object
@@ -30717,10 +31011,6 @@ components:
                           description: The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
                           type: string
                           default: null
-                          match_any:
-                            patterns:
-                              - '^[0-9]+$'
-                              - ^latest$
                           nullable: true
                           x-speakeasy-param-computed: false
                         subject_name:
@@ -30757,10 +31047,6 @@ components:
                           description: The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
                           type: string
                           default: null
-                          match_any:
-                            patterns:
-                              - '^[0-9]+$'
-                              - ^latest$
                           nullable: true
                           x-speakeasy-param-computed: false
                         subject_name:
@@ -30773,7 +31059,7 @@ components:
                   required:
                     - authentication
                   x-speakeasy-param-computed: false
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             timeout:
               description: Socket timeout in milliseconds.
               type: integer
@@ -31166,9 +31452,9 @@ components:
         schema: 'return { name = ''set-header'', fields = { { protocols = require(''kong.db.schema.typedefs'').protocols_http }, { config = { type = ''record'', fields = { { name = { description = ''The name of the header to set.'', type = ''string'', required = true } }, { value = { description = ''The value for the header.'', type = ''string'', required = true } } } } } } }'
       additionalProperties: false
       required:
+        - handler
         - name
         - schema
-        - handler
     DatadogPlugin:
       x-speakeasy-entity: GatewayPluginDatadog
       allOf:
@@ -31220,11 +31506,9 @@ components:
                   sample_rate:
                     description: Sampling rate
                     type: number
-                    default: null
                     maximum: 1
                     minimum: 0
-                    nullable: true
-                    x-speakeasy-param-computed: false
+                    x-speakeasy-param-computed: true
                   stat_type:
                     description: Determines what sort of event the metric represents
                     type: string
@@ -31242,20 +31526,12 @@ components:
                     items:
                       pattern: '^.*[^:]$'
                       type: string
-                    default: null
-                    nullable: true
-                    x-speakeasy-param-computed: false
+                    x-speakeasy-param-computed: true
                 required:
                   - name
                   - stat_type
                 type: object
-              default:
-                - consumer_identifier: custom_id
-                  name: kong_latency
-                  sample_rate: 1
-                  stat_type: timer
-                  tags:
-                    - 'app:kong'
+              x-speakeasy-param-computed: true
             port:
               description: 'An integer representing a port number between 0 and 65535, inclusive.'
               type: integer
@@ -31268,8 +31544,6 @@ components:
               default: kong
             queue:
               type: object
-              default: null
-              nullable: true
               properties:
                 concurrency_limit:
                   description: The number of of queue delivery timers. -1 indicates unlimited.
@@ -31281,9 +31555,9 @@ components:
                 initial_retry_delay:
                   description: Time in seconds before the initial retry is made for a failing batch.
                   type: number
-                  default: 0.01
                   maximum: 1000000
                   minimum: 0.001
+                  x-speakeasy-param-computed: true
                 max_batch_size:
                   description: Maximum number of entries that can be processed at a time.
                   type: integer
@@ -31318,7 +31592,7 @@ components:
                   description: Time in seconds before the queue gives up calling a failed handler for a batch.
                   type: number
                   default: 60
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             queue_size:
               description: Maximum number of log entries to be sent on each message to the upstream server.
               type: integer
@@ -31511,15 +31785,8 @@ components:
                   name:
                     description: A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
                     type: string
-                    match_all:
-                      pattern: '^[A-Za-z_][A-Za-z0-9_-]*$'
                     maxLength: 255
                     minLength: 1
-                    not_one_of:
-                      - request
-                      - response
-                      - service_request
-                      - service_response
                   type:
                     type: string
                     enum:
@@ -31539,10 +31806,6 @@ components:
                         description: call node input
                         type: string
                         default: null
-                        match_any:
-                          patterns:
-                            - '^[A-Za-z_][A-Za-z0-9_-]*$'
-                            - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
                         maxLength: 255
                         minLength: 1
                         nullable: true
@@ -31558,10 +31821,6 @@ components:
                             description: HTTP request body
                             type: string
                             default: null
-                            match_any:
-                              patterns:
-                                - '^[A-Za-z_][A-Za-z0-9_-]*$'
-                                - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
                             maxLength: 255
                             minLength: 1
                             nullable: true
@@ -31571,10 +31830,6 @@ components:
                             description: HTTP request headers
                             type: string
                             default: null
-                            match_any:
-                              patterns:
-                                - '^[A-Za-z_][A-Za-z0-9_-]*$'
-                                - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
                             maxLength: 255
                             minLength: 1
                             nullable: true
@@ -31584,10 +31839,6 @@ components:
                             description: HTTP request query
                             type: string
                             default: null
-                            match_any:
-                              patterns:
-                                - '^[A-Za-z_][A-Za-z0-9_-]*$'
-                                - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
                             maxLength: 255
                             minLength: 1
                             nullable: true
@@ -31606,10 +31857,6 @@ components:
                         description: call node output
                         type: string
                         default: null
-                        match_any:
-                          patterns:
-                            - '^[A-Za-z_][A-Za-z0-9_-]*$'
-                            - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
                         maxLength: 255
                         minLength: 1
                         nullable: true
@@ -31625,10 +31872,6 @@ components:
                             description: HTTP response body
                             type: string
                             default: null
-                            match_any:
-                              patterns:
-                                - '^[A-Za-z_][A-Za-z0-9_-]*$'
-                                - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
                             maxLength: 255
                             minLength: 1
                             nullable: true
@@ -31638,10 +31881,6 @@ components:
                             description: HTTP response headers
                             type: string
                             default: null
-                            match_any:
-                              patterns:
-                                - '^[A-Za-z_][A-Za-z0-9_-]*$'
-                                - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
                             maxLength: 255
                             minLength: 1
                             nullable: true
@@ -31651,10 +31890,6 @@ components:
                             description: HTTP response status code
                             type: string
                             default: null
-                            match_any:
-                              patterns:
-                                - '^[A-Za-z_][A-Za-z0-9_-]*$'
-                                - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
                             maxLength: 255
                             minLength: 1
                             nullable: true
@@ -31688,10 +31923,6 @@ components:
                         description: exit node input
                         type: string
                         default: null
-                        match_any:
-                          patterns:
-                            - '^[A-Za-z_][A-Za-z0-9_-]*$'
-                            - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
                         maxLength: 255
                         minLength: 1
                         nullable: true
@@ -31707,10 +31938,6 @@ components:
                             description: HTTP response body
                             type: string
                             default: null
-                            match_any:
-                              patterns:
-                                - '^[A-Za-z_][A-Za-z0-9_-]*$'
-                                - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
                             maxLength: 255
                             minLength: 1
                             nullable: true
@@ -31720,10 +31947,6 @@ components:
                             description: HTTP response headers
                             type: string
                             default: null
-                            match_any:
-                              patterns:
-                                - '^[A-Za-z_][A-Za-z0-9_-]*$'
-                                - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
                             maxLength: 255
                             minLength: 1
                             nullable: true
@@ -31751,10 +31974,6 @@ components:
                         description: filter input(s)
                         type: string
                         default: null
-                        match_any:
-                          patterns:
-                            - '^[A-Za-z_][A-Za-z0-9_-]*$'
-                            - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
                         maxLength: 255
                         minLength: 1
                         nullable: true
@@ -31778,10 +31997,6 @@ components:
                         description: filter output(s)
                         type: string
                         default: null
-                        match_any:
-                          patterns:
-                            - '^[A-Za-z_][A-Za-z0-9_-]*$'
-                            - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
                         maxLength: 255
                         minLength: 1
                         nullable: true
@@ -31803,10 +32018,6 @@ components:
                         description: 'Property input source. When connected, this node operates in SET mode and writes input data to the property. Otherwise, the node operates in GET mode and reads the property.'
                         type: string
                         default: null
-                        match_any:
-                          patterns:
-                            - '^[A-Za-z_][A-Za-z0-9_-]*$'
-                            - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
                         maxLength: 255
                         minLength: 1
                         nullable: true
@@ -31816,10 +32027,6 @@ components:
                         description: Property output. This can be connected regardless of whether the node is operating in GET mode or SET mode.
                         type: string
                         default: null
-                        match_any:
-                          patterns:
-                            - '^[A-Za-z_][A-Za-z0-9_-]*$'
-                            - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
                         maxLength: 255
                         minLength: 1
                         nullable: true
@@ -31840,10 +32047,6 @@ components:
                         description: The entire `.values` map
                         type: string
                         default: null
-                        match_any:
-                          patterns:
-                            - '^[A-Za-z_][A-Za-z0-9_-]*$'
-                            - '^[A-Za-z_][A-Za-z0-9_-]*%..+$'
                         maxLength: 255
                         minLength: 1
                         nullable: true
@@ -32214,11 +32417,6 @@ components:
                 - append
                 - delete
                 - transparent
-          shorthand_fields:
-            proxy_host:
-              type: string
-            proxy_port:
-              type: integer
           x-speakeasy-param-computed: false
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
@@ -32299,7 +32497,6 @@ components:
               description: TTL in seconds of cache entities. Must be a value greater than 0.
               type: integer
               default: 300
-              minimum: 0
             memory:
               type: object
               default: null
@@ -32460,19 +32657,6 @@ components:
                   default: null
                   nullable: true
                   x-speakeasy-param-computed: false
-              shorthand_fields:
-                cluster_addresses:
-                  items:
-                    type: string
-                  minLength: 1
-                  type: array
-                sentinel_addresses:
-                  items:
-                    type: string
-                  minLength: 1
-                  type: array
-                timeout:
-                  type: integer
               x-speakeasy-param-computed: false
             strategy:
               description: The backing data store in which to hold cached entities. Accepted value is `memory`.
@@ -32741,25 +32925,11 @@ components:
                   default: null
                   nullable: true
                   x-speakeasy-param-computed: false
-              shorthand_fields:
-                cluster_addresses:
-                  items:
-                    type: string
-                  minLength: 1
-                  type: array
-                sentinel_addresses:
-                  items:
-                    type: string
-                  minLength: 1
-                  type: array
-                timeout:
-                  type: integer
               x-speakeasy-param-computed: false
             score_factor:
               description: A scoring factor to multiply (or divide) the cost. The `score_factor` must always be greater than 0.
               type: number
               default: 1
-              minimum: 0
             strategy:
               description: The rate-limiting strategy to use for retrieving and incrementing the limits.
               type: string
@@ -33115,7 +33285,6 @@ components:
               type: array
               items:
                 type: string
-                uuid: true
             cache_ttl:
               description: Cache expiry time in seconds.
               type: number
@@ -33280,7 +33449,6 @@ components:
               description: Clock skew in seconds to prevent replay attacks.
               type: number
               default: 300
-              minimum: 0
             enforce_headers:
               description: A list of headers that the client should at least use for HTTP signature creation.
               type: array
@@ -33549,7 +33717,6 @@ components:
                   regex:
                     description: The regex to match against.
                     type: string
-                    is_regex: true
                 required:
                   - name
                   - regex
@@ -33758,29 +33925,29 @@ components:
           type: string
           default: HS256
           enum:
-            - HS256
-            - HS384
-            - HS512
-            - RS256
-            - RS384
-            - RS512
-            - PS256
-            - PS384
-            - PS512
             - ES256
+            - ES256K
             - ES384
             - ES512
-            - ESP256
-            - ESP384
-            - ESP512
             - ESB256
             - ESB320
             - ESB384
             - ESB512
-            - ES256K
-            - EdDSA
+            - ESP256
+            - ESP384
+            - ESP512
             - Ed25519
             - Ed448
+            - EdDSA
+            - HS256
+            - HS384
+            - HS512
+            - PS256
+            - PS384
+            - PS512
+            - RS256
+            - RS384
+            - RS512
           nullable: true
         consumer:
           type: object
@@ -33836,29 +34003,29 @@ components:
           type: string
           default: HS256
           enum:
-            - HS256
-            - HS384
-            - HS512
-            - RS256
-            - RS384
-            - RS512
-            - PS256
-            - PS384
-            - PS512
             - ES256
+            - ES256K
             - ES384
             - ES512
-            - ESP256
-            - ESP384
-            - ESP512
             - ESB256
             - ESB320
             - ESB384
             - ESB512
-            - ES256K
-            - EdDSA
+            - ESP256
+            - ESP384
+            - ESP512
             - Ed25519
             - Ed448
+            - EdDSA
+            - HS256
+            - HS384
+            - HS512
+            - PS256
+            - PS384
+            - PS512
+            - RS256
+            - RS384
+            - RS512
           nullable: true
         consumer:
           type: object
@@ -34599,16 +34766,12 @@ components:
             channel_token_introspection_authorization:
               description: 'When using `opaque` channel tokens, and you want to turn on channel token introspection, you need to specify the OAuth 2.0 introspection endpoint URI with this configuration parameter. Otherwise the plugin will not try introspection, and instead returns `401 Unauthorized` when using opaque channel tokens.'
               type: string
-              items:
-                type: string
               default: null
               nullable: true
               x-speakeasy-param-computed: false
             channel_token_introspection_body_args:
               description: 'If you need to pass additional body arguments to introspection endpoint when the plugin introspects the opaque channel token, you can use this config parameter to specify them. You should URL encode the value. For example: `resource=` or `a=1&b=&c`.'
               type: string
-              items:
-                type: string
               default: null
               nullable: true
               x-speakeasy-param-computed: false
@@ -34641,8 +34804,6 @@ components:
             channel_token_introspection_hint:
               description: 'If you need to give `hint` parameter when introspecting a channel token, you can use this parameter to specify the value of such parameter. By default, a `hint` isn''t sent with channel token introspection.'
               type: string
-              items:
-                type: string
               default: null
               nullable: true
               x-speakeasy-param-computed: false
@@ -35111,7 +35272,6 @@ components:
                   type: string
                   default: null
                   nullable: true
-                  uuid: true
                   x-speakeasy-param-computed: false
                 ssl:
                   description: Enables TLS.
@@ -35417,10 +35577,6 @@ components:
                           description: The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
                           type: string
                           default: null
-                          match_any:
-                            patterns:
-                              - '^[0-9]+$'
-                              - ^latest$
                           nullable: true
                           x-speakeasy-param-computed: false
                         subject_name:
@@ -35457,10 +35613,6 @@ components:
                           description: The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
                           type: string
                           default: null
-                          match_any:
-                            patterns:
-                              - '^[0-9]+$'
-                              - ^latest$
                           nullable: true
                           x-speakeasy-param-computed: false
                         subject_name:
@@ -35484,7 +35636,6 @@ components:
                   type: string
                   default: null
                   nullable: true
-                  uuid: true
                   x-speakeasy-param-computed: false
                 ssl:
                   description: Enables TLS.
@@ -35757,10 +35908,6 @@ components:
                           description: The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
                           type: string
                           default: null
-                          match_any:
-                            patterns:
-                              - '^[0-9]+$'
-                              - ^latest$
                           nullable: true
                           x-speakeasy-param-computed: false
                         subject_name:
@@ -35797,10 +35944,6 @@ components:
                           description: The schema version to use for serialization/deserialization. Use 'latest' to always fetch the most recent version.
                           type: string
                           default: null
-                          match_any:
-                            patterns:
-                              - '^[0-9]+$'
-                              - ^latest$
                           nullable: true
                           x-speakeasy-param-computed: false
                         subject_name:
@@ -35824,7 +35967,6 @@ components:
                   type: string
                   default: null
                   nullable: true
-                  uuid: true
                   x-speakeasy-param-computed: false
                 ssl:
                   description: Enables TLS.
@@ -36156,7 +36298,6 @@ components:
                   id:
                     description: A string representing a UUID (universally unique identifier).
                     type: string
-                    uuid: true
                   region:
                     type: string
                     default: null
@@ -36993,7 +37134,6 @@ components:
               type: array
               items:
                 type: string
-                uuid: true
             cache_ttl:
               description: Cache expiry time in seconds.
               type: number
@@ -38024,19 +38164,6 @@ components:
                   default: null
                   nullable: true
                   x-speakeasy-param-computed: false
-              shorthand_fields:
-                cluster_addresses:
-                  items:
-                    type: string
-                  minLength: 1
-                  type: array
-                sentinel_addresses:
-                  items:
-                    type: string
-                  minLength: 1
-                  type: array
-                timeout:
-                  type: integer
               x-speakeasy-param-computed: true
             cluster_cache_strategy:
               description: 'The strategy to use for the cluster cache. If set, the plugin will share cache with nodes configured with the same strategy backend. Currentlly only introspection cache is shared.'
@@ -38813,19 +38940,6 @@ components:
                   default: null
                   nullable: true
                   x-speakeasy-param-computed: false
-              shorthand_fields:
-                cluster_addresses:
-                  items:
-                    type: string
-                  minLength: 1
-                  type: array
-                sentinel_addresses:
-                  items:
-                    type: string
-                  minLength: 1
-                  type: array
-                timeout:
-                  type: integer
               x-speakeasy-param-computed: true
             rediscovery_lifetime:
               description: Specifies how long (in seconds) the plugin waits between discovery attempts. Discovery is still triggered on an as-needed basis.
@@ -39128,7 +39242,6 @@ components:
               type: string
               default: null
               nullable: true
-              uuid: true
               x-speakeasy-param-computed: false
             tls_client_auth_ssl_verify:
               description: Verify identity provider server certificate during mTLS client authentication.
@@ -39419,78 +39532,6 @@ components:
               default: true
           required:
             - issuer
-          shorthand_fields:
-            authorization_cookie_httponly:
-              type: boolean
-            authorization_cookie_lifetime:
-              type: number
-            authorization_cookie_samesite:
-              type: string
-            session_compressor:
-              type: string
-            session_cookie_httponly:
-              type: boolean
-            session_cookie_idletime:
-              type: number
-            session_cookie_lifetime:
-              type: number
-            session_cookie_maxsize:
-              type: integer
-            session_cookie_renew:
-              type: number
-            session_cookie_samesite:
-              type: string
-            session_memcache_host:
-              type: string
-            session_memcache_port:
-              type: integer
-            session_memcache_prefix:
-              type: string
-            session_memcache_socket:
-              type: string
-            session_redis_cluster_max_redirections:
-              type: integer
-            session_redis_cluster_nodes:
-              items:
-                properties:
-                  ip:
-                    description: 'A string representing a host name, such as example.com.'
-                    type: string
-                    default: 127.0.0.1
-                  port:
-                    description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                    type: integer
-                    default: 6379
-                    maximum: 65535
-                    minimum: 0
-                type: object
-              type: array
-            session_redis_connect_timeout:
-              type: integer
-            session_redis_host:
-              type: string
-            session_redis_password:
-              type: string
-            session_redis_port:
-              type: integer
-            session_redis_prefix:
-              type: string
-            session_redis_read_timeout:
-              type: integer
-            session_redis_send_timeout:
-              type: integer
-            session_redis_server_name:
-              type: string
-            session_redis_socket:
-              type: string
-            session_redis_ssl:
-              type: boolean
-            session_redis_ssl_verify:
-              type: boolean
-            session_redis_username:
-              type: string
-            session_strategy:
-              type: string
         name:
           type: string
           const: openid-connect
@@ -39745,10 +39786,6 @@ components:
               default: null
               nullable: true
               x-speakeasy-param-computed: false
-          shorthand_fields:
-            endpoint:
-              description: 'A string representing a URL, such as https://example.com/path/to/resource?q=search.'
-              type: string
           x-speakeasy-param-computed: true
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
@@ -39834,6 +39871,8 @@ components:
               description: 'An integer representing a port number between 0 and 65535, inclusive.'
               type: integer
               default: 6379
+              maximum: 65535
+              minimum: 0
             server_name:
               description: A string representing an SNI (server name indication) value for TLS.
               type: string
@@ -39850,6 +39889,8 @@ components:
               description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
               type: integer
               default: 2000
+              maximum: 2147483646
+              minimum: 0
             username:
               description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
               type: string
@@ -39923,13 +39964,18 @@ components:
                     description: 'An integer representing a port number between 0 and 65535, inclusive.'
                     type: integer
                     default: 6379
+                    maximum: 65535
+                    minimum: 0
                 type: object
+              minLength: 1
               nullable: true
               x-speakeasy-param-computed: true
             connect_timeout:
               description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
               type: integer
               default: 2000
+              maximum: 2147483646
+              minimum: 0
             connection_is_proxied:
               description: 'If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.'
               type: boolean
@@ -39946,12 +39992,16 @@ components:
               description: 'Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.'
               type: integer
               default: null
+              maximum: 2147483646
+              minimum: 0
               nullable: true
               x-speakeasy-param-computed: false
             keepalive_pool_size:
               description: 'The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn''t specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.'
               type: integer
               default: 256
+              maximum: 2147483646
+              minimum: 1
             password:
               description: 'Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.'
               type: string
@@ -39960,14 +40010,20 @@ components:
               description: 'An integer representing a port number between 0 and 65535, inclusive.'
               type: integer
               default: 6379
+              maximum: 65535
+              minimum: 0
             read_timeout:
               description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
               type: integer
               default: 2000
+              maximum: 2147483646
+              minimum: 0
             send_timeout:
               description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
               type: integer
               default: 2000
+              maximum: 2147483646
+              minimum: 0
             sentinel_master:
               description: Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
               type: string
@@ -39985,7 +40041,10 @@ components:
                     description: 'An integer representing a port number between 0 and 65535, inclusive.'
                     type: integer
                     default: 6379
+                    maximum: 65535
+                    minimum: 0
                 type: object
+              minLength: 1
               nullable: true
               x-speakeasy-param-computed: true
             sentinel_password:
@@ -39996,9 +40055,9 @@ components:
               description: Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
               type: string
               enum:
+                - any
                 - master
                 - slave
-                - any
             sentinel_username:
               description: 'Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won''t be performed. This requires Redis v6.2.0+.'
               type: string
@@ -40121,6 +40180,7 @@ components:
         id:
           description: A string representing a UUID (universally unique identifier).
           type: string
+          minLength: 1
           nullable: true
         instance_name:
           description: A unique string representing a UTF-8 encoded name.
@@ -40131,6 +40191,7 @@ components:
         name:
           description: 'The name of the Plugin that''s going to be added. Currently, the Plugin must be installed in every Kong instance separately.'
           type: string
+          minLength: 1
         ordering:
           type: object
           default: null
@@ -40256,6 +40317,7 @@ components:
         id:
           description: A string representing a UUID (universally unique identifier).
           type: string
+          minLength: 1
           nullable: true
         instance_name:
           description: A unique string representing a UTF-8 encoded name.
@@ -40266,6 +40328,7 @@ components:
         name:
           description: 'The name of the Plugin that''s going to be added. Currently, the Plugin must be installed in every Kong instance separately.'
           type: string
+          minLength: 1
         ordering:
           type: object
           default: null
@@ -40298,17 +40361,14 @@ components:
               id:
                 description: A string representing a UUID (universally unique identifier).
                 type: string
+                minLength: 1
               name:
                 description: A unique string representing a UTF-8 encoded name.
                 type: string
-                default: null
-                nullable: true
-                x-speakeasy-param-computed: false
+                x-speakeasy-param-computed: true
               path:
                 type: string
-                default: null
-                nullable: true
-                x-speakeasy-param-computed: false
+                x-speakeasy-param-computed: true
             type: object
           default: null
           nullable: true
@@ -40666,7 +40726,6 @@ components:
               description: TTL in seconds of cache entities.
               type: integer
               default: 300
-              minimum: 0
             content_type:
               description: 'Upstream response content types considered cacheable. The plugin performs an **exact match** against each specified value; for example, if the upstream is expected to respond with a `application/json; charset=utf-8` content-type, the plugin configuration must contain said value or a `Bypass` cache status is returned.'
               type: array
@@ -40839,19 +40898,6 @@ components:
                   default: null
                   nullable: true
                   x-speakeasy-param-computed: false
-              shorthand_fields:
-                cluster_addresses:
-                  items:
-                    type: string
-                  minLength: 1
-                  type: array
-                sentinel_addresses:
-                  items:
-                    type: string
-                  minLength: 1
-                  type: array
-                timeout:
-                  type: integer
               x-speakeasy-param-computed: false
             request_method:
               description: 'Downstream request methods considered cacheable. Available options: `HEAD`, `GET`, `POST`, `PATCH`, `PUT`.'
@@ -41004,7 +41050,6 @@ components:
               description: 'TTL, in seconds, of cache entities.'
               type: integer
               default: 300
-              minimum: 0
             content_type:
               description: Upstream response content types considered cacheable. The plugin performs an **exact match** against each specified value.
               type: array
@@ -41211,7 +41256,6 @@ components:
               description: Set a custom error code to return when the rate limit is exceeded.
               type: number
               default: 429
-              minimum: 0
             error_message:
               description: Set a custom error message to return when the rate limit is exceeded.
               type: string
@@ -41412,19 +41456,6 @@ components:
                   default: null
                   nullable: true
                   x-speakeasy-param-computed: false
-              shorthand_fields:
-                cluster_addresses:
-                  items:
-                    type: string
-                  minLength: 1
-                  type: array
-                sentinel_addresses:
-                  items:
-                    type: string
-                  minLength: 1
-                  type: array
-                timeout:
-                  type: integer
               x-speakeasy-param-computed: true
             retry_after_jitter_max:
               description: 'The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header.'
@@ -41536,14 +41567,12 @@ components:
               description: The number of HTTP requests that can be made per day.
               type: number
               default: null
-              minimum: 0
               nullable: true
               x-speakeasy-param-computed: false
             error_code:
               description: Set a custom error code to return when the rate limit is exceeded.
               type: number
               default: 429
-              minimum: 0
             error_message:
               description: Set a custom error message to return when the rate limit is exceeded.
               type: string
@@ -41566,7 +41595,6 @@ components:
               description: The number of HTTP requests that can be made per hour.
               type: number
               default: null
-              minimum: 0
               nullable: true
               x-speakeasy-param-computed: false
             limit_by:
@@ -41585,14 +41613,12 @@ components:
               description: The number of HTTP requests that can be made per minute.
               type: number
               default: null
-              minimum: 0
               nullable: true
               x-speakeasy-param-computed: false
             month:
               description: The number of HTTP requests that can be made per month.
               type: number
               default: null
-              minimum: 0
               nullable: true
               x-speakeasy-param-computed: false
             path:
@@ -41666,7 +41692,6 @@ components:
               description: The number of HTTP requests that can be made per second.
               type: number
               default: null
-              minimum: 0
               nullable: true
               x-speakeasy-param-computed: false
             sync_rate:
@@ -41677,29 +41702,8 @@ components:
               description: The number of HTTP requests that can be made per year.
               type: number
               default: null
-              minimum: 0
               nullable: true
               x-speakeasy-param-computed: false
-          shorthand_fields:
-            redis_database:
-              type: integer
-            redis_host:
-              type: string
-            redis_password:
-              minLength: 0
-              type: string
-            redis_port:
-              type: integer
-            redis_server_name:
-              type: string
-            redis_ssl:
-              type: boolean
-            redis_ssl_verify:
-              type: boolean
-            redis_timeout:
-              type: integer
-            redis_username:
-              type: string
           x-speakeasy-param-computed: false
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
@@ -41866,7 +41870,6 @@ components:
                   description: TTL in seconds of cache entities.
                   type: integer
                   default: 300
-                  minimum: 0
                 memory:
                   type: object
                   default: null
@@ -42027,19 +42030,6 @@ components:
                       default: null
                       nullable: true
                       x-speakeasy-param-computed: false
-                  shorthand_fields:
-                    cluster_addresses:
-                      items:
-                        type: string
-                      minLength: 1
-                      type: array
-                    sentinel_addresses:
-                      items:
-                        type: string
-                      minLength: 1
-                      type: array
-                    timeout:
-                      type: integer
                   x-speakeasy-param-computed: false
                 strategy:
                   description: 'The backing data store in which to hold cache entities. Accepted values are: `off`, `memory`, and `redis`.'
@@ -43272,26 +43262,6 @@ components:
                   nullable: true
                   x-speakeasy-param-computed: false
               x-speakeasy-param-computed: false
-          shorthand_fields:
-            redis_database:
-              type: integer
-            redis_host:
-              type: string
-            redis_password:
-              minLength: 0
-              type: string
-            redis_port:
-              type: integer
-            redis_server_name:
-              type: string
-            redis_ssl:
-              type: boolean
-            redis_ssl_verify:
-              type: boolean
-            redis_timeout:
-              type: integer
-            redis_username:
-              type: string
           x-speakeasy-param-computed: false
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
@@ -43356,8 +43326,6 @@ components:
           properties:
             add:
               type: object
-              default: null
-              nullable: true
               properties:
                 headers:
                   type: array
@@ -43383,11 +43351,9 @@ components:
                       - string
                     type: string
                   default: []
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             allow:
               type: object
-              default: null
-              nullable: true
               properties:
                 json:
                   type: array
@@ -43396,11 +43362,9 @@ components:
                   default: null
                   nullable: true
                   x-speakeasy-param-computed: false
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             append:
               type: object
-              default: null
-              nullable: true
               properties:
                 headers:
                   type: array
@@ -43426,15 +43390,13 @@ components:
                       - string
                     type: string
                   default: []
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             dots_in_keys:
               description: 'Whether dots (for example, `customers.info.phone`) should be treated as part of a property name or used to descend into nested JSON objects..'
               type: boolean
               default: true
             remove:
               type: object
-              default: null
-              nullable: true
               properties:
                 headers:
                   type: array
@@ -43451,11 +43413,9 @@ components:
                   items:
                     type: string
                   default: []
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             rename:
               type: object
-              default: null
-              nullable: true
               properties:
                 headers:
                   type: array
@@ -43468,11 +43428,9 @@ components:
                   items:
                     type: string
                   default: []
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             replace:
               type: object
-              default: null
-              nullable: true
               properties:
                 body:
                   description: String with which to replace the entire response body.
@@ -43504,11 +43462,9 @@ components:
                       - string
                     type: string
                   default: []
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             transform:
               type: object
-              default: null
-              nullable: true
               properties:
                 functions:
                   type: array
@@ -43525,7 +43481,7 @@ components:
                   items:
                     type: string
                   default: []
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
           x-speakeasy-param-computed: false
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
@@ -43880,11 +43836,11 @@ components:
           type: integer
           default: 426
           enum:
-            - 426
             - 301
             - 302
             - 307
             - 308
+            - 426
           nullable: true
         id:
           description: A string representing a UUID (universally unique identifier).
@@ -43913,6 +43869,8 @@ components:
           description: 'A number used to specify the matching order for expression routes. The higher the `priority`, the sooner an route will be evaluated. This field is ignored unless `expression` field is set.'
           type: integer
           default: 0
+          maximum: 70368744177663
+          minimum: 0
           nullable: true
         protocols:
           description: 'An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only `"https"`, HTTP requests are answered with an upgrade error. When set to only `"http"`, HTTPS requests are answered with an error.'
@@ -43934,6 +43892,7 @@ components:
           default:
             - http
             - https
+          minLength: 1
           nullable: true
         request_buffering:
           description: 'Whether to enable request body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that receive data with chunked transfer encoding.'
@@ -43998,6 +43957,8 @@ components:
                 description: 'An integer representing a port number between 0 and 65535, inclusive.'
                 type: integer
                 default: null
+                maximum: 65535
+                minimum: 0
                 nullable: true
                 x-speakeasy-param-computed: false
             type: object
@@ -44027,11 +43988,11 @@ components:
           type: integer
           default: 426
           enum:
-            - 426
             - 301
             - 302
             - 307
             - 308
+            - 426
           nullable: true
         id:
           description: A string representing a UUID (universally unique identifier).
@@ -44094,6 +44055,7 @@ components:
           default:
             - http
             - https
+          minLength: 1
           nullable: true
         regex_priority:
           description: 'A number used to choose which route resolves a given request when several routes match it using regexes simultaneously. When two routes match the path and have the same `regex_priority`, the older one (lowest `created_at`) is used. Note that the priority for non-regex routes is different (longer non-regex routes are matched before shorter ones).'
@@ -44144,6 +44106,8 @@ components:
                 description: 'An integer representing a port number between 0 and 65535, inclusive.'
                 type: integer
                 default: null
+                maximum: 65535
+                minimum: 0
                 nullable: true
                 x-speakeasy-param-computed: false
             type: object
@@ -44507,19 +44471,6 @@ components:
                   default: null
                   nullable: true
                   x-speakeasy-param-computed: false
-              shorthand_fields:
-                cluster_addresses:
-                  items:
-                    type: string
-                  minLength: 1
-                  type: array
-                sentinel_addresses:
-                  items:
-                    type: string
-                  minLength: 1
-                  type: array
-                timeout:
-                  type: integer
               x-speakeasy-param-computed: false
             request_digest_algorithm:
               description: 'The digest algorithm for Authn requests: - `SHA256` - `SHA1`'
@@ -44726,76 +44677,6 @@ components:
             - idp_sso_url
             - issuer
             - session_secret
-          shorthand_fields:
-            session_auth_ttl:
-              type: number
-            session_compressor:
-              type: string
-            session_cookie_httponly:
-              type: boolean
-            session_cookie_idletime:
-              type: number
-            session_cookie_lifetime:
-              type: number
-            session_cookie_maxsize:
-              type: integer
-            session_cookie_renew:
-              type: number
-            session_cookie_samesite:
-              type: string
-            session_memcache_host:
-              type: string
-            session_memcache_port:
-              type: integer
-            session_memcache_prefix:
-              type: string
-            session_memcache_socket:
-              type: string
-            session_redis_cluster_max_redirections:
-              type: integer
-            session_redis_cluster_maxredirections:
-              type: integer
-            session_redis_cluster_nodes:
-              items:
-                properties:
-                  ip:
-                    description: 'A string representing a host name, such as example.com.'
-                    type: string
-                    default: 127.0.0.1
-                  port:
-                    description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                    type: integer
-                    default: 6379
-                    maximum: 65535
-                    minimum: 0
-                type: object
-              type: array
-            session_redis_connect_timeout:
-              type: integer
-            session_redis_host:
-              type: string
-            session_redis_password:
-              type: string
-            session_redis_port:
-              type: integer
-            session_redis_prefix:
-              type: string
-            session_redis_read_timeout:
-              type: integer
-            session_redis_send_timeout:
-              type: integer
-            session_redis_server_name:
-              type: string
-            session_redis_socket:
-              type: string
-            session_redis_ssl:
-              type: boolean
-            session_redis_ssl_verify:
-              type: boolean
-            session_redis_username:
-              type: string
-            session_strategy:
-              type: string
         name:
           type: string
           const: saml
@@ -44864,6 +44745,8 @@ components:
           description: The timeout in milliseconds for establishing a connection to the upstream server.
           type: integer
           default: 60000
+          maximum: 2147483646
+          minimum: 1
           nullable: true
         created_at:
           description: Unix epoch when the resource was created.
@@ -44880,6 +44763,7 @@ components:
         id:
           description: A string representing a UUID (universally unique identifier).
           type: string
+          minLength: 1
           nullable: true
         name:
           description: The Service name.
@@ -44897,6 +44781,8 @@ components:
           description: The upstream server port.
           type: integer
           default: 80
+          maximum: 65535
+          minimum: 0
           nullable: true
         protocol:
           description: The protocol used to communicate with the upstream.
@@ -44918,11 +44804,15 @@ components:
           description: The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server.
           type: integer
           default: 60000
+          maximum: 2147483646
+          minimum: 1
           nullable: true
         retries:
           description: The number of retries to execute upon failure to proxy.
           type: integer
           default: 5
+          maximum: 32767
+          minimum: 0
           nullable: true
         tags:
           description: An optional set of strings associated with the Service for grouping and filtering.
@@ -44934,6 +44824,7 @@ components:
           nullable: true
           x-speakeasy-param-computed: false
         tls_sans:
+          description: Additional Subject Alternative Names that can be matched on Upstream server's TLS certificate (in addition to `host`).
           type: object
           default: null
           nullable: true
@@ -44967,6 +44858,8 @@ components:
           description: 'Maximum depth of chain while verifying Upstream server''s TLS certificate. If set to `null`, then the Nginx default is respected.'
           type: integer
           default: null
+          maximum: 64
+          minimum: 0
           nullable: true
           x-speakeasy-param-computed: false
         updated_at:
@@ -44985,6 +44878,8 @@ components:
           description: The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server.
           type: integer
           default: 60000
+          maximum: 2147483646
+          minimum: 1
           nullable: true
       example:
         host: example.internal
@@ -45018,7 +44913,6 @@ components:
               description: Set a custom error code to return when the rate limit is exceeded.
               type: number
               default: 429
-              minimum: 0
             error_message:
               description: Set a custom error message to return when the rate limit is exceeded.
               type: string
@@ -45192,19 +45086,6 @@ components:
                   default: null
                   nullable: true
                   x-speakeasy-param-computed: false
-              shorthand_fields:
-                cluster_addresses:
-                  items:
-                    type: string
-                  minLength: 1
-                  type: array
-                sentinel_addresses:
-                  items:
-                    type: string
-                  minLength: 1
-                  type: array
-                timeout:
-                  type: integer
               x-speakeasy-param-computed: false
             retry_after_jitter_max:
               description: 'The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header.'
@@ -45423,21 +45304,6 @@ components:
               description: 'Whether to also store metadata of sessions, such as collecting data of sessions for a specific audience belonging to a specific subject.'
               type: boolean
               default: false
-          shorthand_fields:
-            cookie_discard:
-              type: number
-            cookie_httponly:
-              type: boolean
-            cookie_idletime:
-              type: number
-            cookie_lifetime:
-              type: number
-            cookie_persistent:
-              type: boolean
-            cookie_renew:
-              type: number
-            cookie_samesite:
-              type: string
           x-speakeasy-param-computed: false
         name:
           type: string
@@ -45587,7 +45453,6 @@ components:
                   description: Sets the time to live (TTL) in milliseconds for the message. Setting the time to live to zero disables the TTL for the message.
                   type: integer
                   default: 0
-                  minimum: -1
               required:
                 - destinations
             session:
@@ -45732,7 +45597,6 @@ components:
               description: 'Tolerance of the webhook timestamp in seconds. If the webhook timestamp is older than this number of seconds, it will be rejected with a ''400'' response.'
               type: integer
               default: 300
-              minimum: -1
           required:
             - secret_v1
         consumer_group:
@@ -45855,7 +45719,6 @@ components:
                   sample_rate:
                     type: number
                     default: null
-                    minimum: 0
                     nullable: true
                     x-speakeasy-param-computed: false
                   service_identifier:
@@ -45883,10 +45746,9 @@ components:
                   - name
                   - stat_type
                 type: object
-              default:
-                - name: cache_datastore_misses_total
-                  sample_rate: 1
-                  stat_type: counter
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
             port:
               description: 'An integer representing a port number between 0 and 65535, inclusive.'
               type: integer
@@ -46108,7 +45970,6 @@ components:
                     description: Sampling rate
                     type: number
                     default: null
-                    minimum: 0
                     nullable: true
                     x-speakeasy-param-computed: false
                   service_identifier:
@@ -46475,9 +46336,6 @@ components:
         target:
           description: 'The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record.'
           type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: number
@@ -46495,6 +46353,8 @@ components:
           description: 'The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record.'
           type: integer
           default: 100
+          maximum: 65535
+          minimum: 0
           nullable: true
       example:
         id: 089292a7-ba3d-4d88-acf0-97b4b2e2621a
@@ -46503,6 +46363,8 @@ components:
           id: 5f1d7e76-2fed-4806-a6af-869984f025cb
         weight: 100
       additionalProperties: false
+      required:
+        - target
     TargetWithoutParents:
       x-speakeasy-entity: GatewayTarget
       description: 'A target is an ip address/hostname with a port that identifies an instance of a backend service. Every upstream can have many targets, and the targets can be dynamically added, modified, or deleted. Changes take effect on the fly. To disable a target, post a new one with `weight=0`; alternatively, use the `DELETE` convenience method to accomplish the same. The current target object definition is the one with the latest `created_at`.'
@@ -46528,9 +46390,6 @@ components:
         target:
           description: 'The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record.'
           type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: number
@@ -46549,12 +46408,16 @@ components:
           description: 'The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record.'
           type: integer
           default: 100
+          maximum: 65535
+          minimum: 0
           nullable: true
       example:
         id: 089292a7-ba3d-4d88-acf0-97b4b2e2621a
         target: 203.0.113.42
         weight: 100
       additionalProperties: false
+      required:
+        - target
     TcpLogPlugin:
       x-speakeasy-entity: GatewayPluginTcpLog
       allOf:
@@ -46888,9 +46751,9 @@ components:
           default: round-robin
           enum:
             - consistent-hashing
+            - latency
             - least-connections
             - round-robin
-            - latency
             - sticky-sessions
           nullable: true
         client_certificate:
@@ -46912,11 +46775,11 @@ components:
           type: string
           default: none
           enum:
-            - none
             - consumer
-            - ip
-            - header
             - cookie
+            - header
+            - ip
+            - none
             - path
             - query_arg
             - uri_capture
@@ -46931,12 +46794,14 @@ components:
           description: The name of the query string argument to take the value from as hash input. Only required when `hash_fallback` is set to `query_arg`.
           type: string
           default: null
+          minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
         hash_fallback_uri_capture:
           description: The name of the route URI capture to take the value from as hash input. Only required when `hash_fallback` is set to `uri_capture`.
           type: string
           default: null
+          minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
         hash_on:
@@ -46944,11 +46809,11 @@ components:
           type: string
           default: none
           enum:
-            - none
             - consumer
-            - ip
-            - header
             - cookie
+            - header
+            - ip
+            - none
             - path
             - query_arg
             - uri_capture
@@ -46974,15 +46839,18 @@ components:
           description: The name of the query string argument to take the value from as hash input. Only required when `hash_on` is set to `query_arg`.
           type: string
           default: null
+          minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
         hash_on_uri_capture:
           description: The name of the route URI capture to take the value from as hash input. Only required when `hash_on` is set to `uri_capture`.
           type: string
           default: null
+          minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
         healthchecks:
+          description: The array of healthchecks.
           type: object
           nullable: true
           properties:
@@ -46992,6 +46860,8 @@ components:
                 concurrency:
                   type: integer
                   default: 10
+                  maximum: 2147483648
+                  minimum: 1
                 headers:
                   description: A map of header names to arrays of header values.
                   type: object
@@ -47008,6 +46878,8 @@ components:
                     http_statuses:
                       type: array
                       items:
+                        maximum: 999
+                        minimum: 100
                         type: integer
                       default:
                         - 200
@@ -47015,9 +46887,13 @@ components:
                     interval:
                       type: number
                       default: 0
+                      maximum: 65535
+                      minimum: 0
                     successes:
                       type: integer
                       default: 0
+                      maximum: 255
+                      minimum: 0
                   x-speakeasy-param-computed: true
                 http_path:
                   description: 'A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).'
@@ -47033,24 +46909,30 @@ components:
                 timeout:
                   type: number
                   default: 1
+                  maximum: 65535
+                  minimum: 0
                 type:
                   type: string
                   default: http
                   enum:
-                    - tcp
-                    - http
-                    - https
                     - grpc
                     - grpcs
+                    - http
+                    - https
+                    - tcp
                 unhealthy:
                   type: object
                   properties:
                     http_failures:
                       type: integer
                       default: 0
+                      maximum: 255
+                      minimum: 0
                     http_statuses:
                       type: array
                       items:
+                        maximum: 999
+                        minimum: 100
                         type: integer
                       default:
                         - 429
@@ -47064,12 +46946,18 @@ components:
                     interval:
                       type: number
                       default: 0
+                      maximum: 65535
+                      minimum: 0
                     tcp_failures:
                       type: integer
                       default: 0
+                      maximum: 255
+                      minimum: 0
                     timeouts:
                       type: integer
                       default: 0
+                      maximum: 255
+                      minimum: 0
                   x-speakeasy-param-computed: true
               x-speakeasy-param-computed: true
             passive:
@@ -47081,6 +46969,8 @@ components:
                     http_statuses:
                       type: array
                       items:
+                        maximum: 999
+                        minimum: 100
                         type: integer
                       default:
                         - 200
@@ -47105,25 +46995,31 @@ components:
                     successes:
                       type: integer
                       default: 0
+                      maximum: 255
+                      minimum: 0
                   x-speakeasy-param-computed: true
                 type:
                   type: string
                   default: http
                   enum:
-                    - tcp
-                    - http
-                    - https
                     - grpc
                     - grpcs
+                    - http
+                    - https
+                    - tcp
                 unhealthy:
                   type: object
                   properties:
                     http_failures:
                       type: integer
                       default: 0
+                      maximum: 255
+                      minimum: 0
                     http_statuses:
                       type: array
                       items:
+                        maximum: 999
+                        minimum: 100
                         type: integer
                       default:
                         - 429
@@ -47132,14 +47028,20 @@ components:
                     tcp_failures:
                       type: integer
                       default: 0
+                      maximum: 255
+                      minimum: 0
                     timeouts:
                       type: integer
                       default: 0
+                      maximum: 255
+                      minimum: 0
                   x-speakeasy-param-computed: true
               x-speakeasy-param-computed: true
             threshold:
               type: number
               default: 0
+              maximum: 100
+              minimum: 0
           x-speakeasy-param-computed: true
         host_header:
           description: The hostname to be used as `Host` header when proxying requests through Kong.
@@ -47158,6 +47060,8 @@ components:
           description: 'The number of slots in the load balancer algorithm. If `algorithm` is set to `round-robin`, this setting determines the maximum number of slots. If `algorithm` is set to `consistent-hashing`, this setting determines the actual number of slots in the algorithm. Accepts an integer in the range `10`-`65536`.'
           type: integer
           default: 10000
+          maximum: 65536
+          minimum: 10
           nullable: true
         sticky_sessions_cookie:
           description: The cookie name to keep sticky sessions.
@@ -47313,12 +47217,10 @@ components:
                   description: The lifetime of a token without an explicit `expires_in` value.
                   type: number
                   default: 3600
-                  minimum: 0
                 eagerly_expire:
                   description: 'The number of seconds to eagerly expire a cached token. By default, a cached token expires 5 seconds before its lifetime as defined in `expires_in`.'
                   type: integer
                   default: 5
-                  minimum: -1
                 memory:
                   type: object
                   properties:
@@ -47475,19 +47377,6 @@ components:
                       default: null
                       nullable: true
                       x-speakeasy-param-computed: false
-                  shorthand_fields:
-                    cluster_addresses:
-                      items:
-                        type: string
-                      minLength: 1
-                      type: array
-                    sentinel_addresses:
-                      items:
-                        type: string
-                      minLength: 1
-                      type: array
-                    timeout:
-                      type: integer
                   x-speakeasy-param-computed: true
                 strategy:
                   description: The method Kong should use to cache tokens issued by the IdP.
@@ -47850,9 +47739,6 @@ components:
             access_token_name:
               description: 'Describes an array of comma-separated parameter names where the plugin looks for an access token. The client must send the access token in one of those key names, and the plugin will try to read the credential from a header or the querystring parameter with the same name. The key names can only contain [a-z], [A-Z], [0-9], [_], and [-].'
               type: string
-              items:
-                description: A string representing an HTTP header name.
-                type: string
               default: access_token
             anonymous:
               description: 'An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request fails with an authentication failure `4xx`. Note that this value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.'
@@ -47871,9 +47757,6 @@ components:
             secret_token_name:
               description: 'Describes an array of comma-separated parameter names where the plugin looks for a secret token. The client must send the secret in one of those key names, and the plugin will try to read the credential from a header or the querystring parameter with the same name. The key names can only contain [a-z], [A-Z], [0-9], [_], and [-].'
               type: string
-              items:
-                description: A string representing an HTTP header name.
-                type: string
               default: secret_token
             tokens_in_body:
               description: 'If enabled, the plugin will read the request body (if said request has one and its MIME type is supported) and try to find the key in it. Supported MIME types are `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`.'
@@ -48162,7 +48045,6 @@ components:
               description: Maximum size of the attribute value.
               type: integer
               default: 1048576
-              minimum: 0
             bla_max_amplification:
               description: Sets the maximum allowed amplification. This protects against the Billion Laughs Attack.
               type: number
@@ -48177,7 +48059,6 @@ components:
               description: Maximum size of the unparsed buffer (see below).
               type: integer
               default: 1048576
-              minimum: 0
             checked_content_types:
               description: A list of Content-Type values with payloads that must be validated.
               type: array
@@ -48190,52 +48071,42 @@ components:
               description: Maximum size of comments.
               type: integer
               default: 1024
-              minimum: 0
             document:
               description: Maximum size of the entire document.
               type: integer
               default: 10485760
-              minimum: 0
             entity:
               description: Maximum size of entity values in EntityDecl.
               type: integer
               default: 1024
-              minimum: 0
             entityname:
               description: Maximum size of entity names in EntityDecl.
               type: integer
               default: 1024
-              minimum: 0
             entityproperty:
               description: 'Maximum size of systemId, publicId, or notationName in EntityDecl.'
               type: integer
               default: 1024
-              minimum: 0
             localname:
               description: Maximum size of the localname. This applies to tags and attributes.
               type: integer
               default: 1024
-              minimum: 0
             max_attributes:
               description: 'Maximum number of attributes allowed on a tag, including default ones. Note: If namespace-aware parsing is disabled, then the namespaces definitions are counted as attributes.'
               type: integer
               default: 100
-              minimum: 0
             max_children:
               description: 'Maximum number of children allowed (Element, Text, Comment, ProcessingInstruction, CDATASection). Note: Adjacent text and CDATA sections are counted as one. For example, text-cdata-text-cdata is one child.'
               type: integer
               default: 100
-              minimum: 0
             max_depth:
               description: Maximum depth of tags. Child elements such as Text or Comments are not counted as another level.
               type: integer
               default: 50
-              minimum: 0
             max_namespaces:
               description: Maximum number of namespaces defined on a tag. This value is required if parsing is namespace-aware.
               type: integer
               default: 20
-              minimum: 0
             namespace_aware:
               description: 'If not parsing namespace aware, all prefixes and namespace attributes will be counted as regular attributes and element names, and validated as such.'
               type: boolean
@@ -48244,27 +48115,22 @@ components:
               description: Maximum size of the namespace URI. This value is required if parsing is namespace-aware.
               type: integer
               default: 1024
-              minimum: 0
             pidata:
               description: Maximum size of processing instruction data.
               type: integer
               default: 1024
-              minimum: 0
             pitarget:
               description: Maximum size of processing instruction targets.
               type: integer
               default: 1024
-              minimum: 0
             prefix:
               description: Maximum size of the prefix. This applies to tags and attributes. This value is required if parsing is namespace-aware.
               type: integer
               default: 1024
-              minimum: 0
             text:
               description: Maximum text inside tags (counted over all adjacent text/CDATA elements combined).
               type: integer
               default: 1048576
-              minimum: 0
           x-speakeasy-param-computed: false
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
@@ -48543,20 +48409,6 @@ components:
                 properties:
                   name:
                     type: string
-                    not_one_of:
-                      - error
-                      - http.method
-                      - http.path
-                      - http.status_code
-                      - kong.balancer.state
-                      - kong.balancer.try
-                      - kong.consumer
-                      - kong.credential
-                      - kong.node.id
-                      - kong.route
-                      - kong.service
-                      - lc
-                      - peer.hostname
                   value:
                     type: string
                 required:
@@ -48953,6 +48805,7 @@ components:
                   - au
                   - me
                   - in
+                  - sg
                   - '*'
       description: The request schema for assigning a role.
     CreateSystemAccount:
@@ -50174,6 +50027,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/TransitGatewayResponse'
+    PatchTransitGatewayResponse:
+      description: Response format for updating a transit gateway.
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: '#/components/schemas/AwsResourceEndpointGatewayResponse'
     RetrieveTransitGatewayResponse:
       description: Response format for retrieving a transit gateway.
       content:
@@ -51421,7 +51281,8 @@ tags:
   - name: Portal Product Versions
     description: |
       Portal Product Versions hold metadata that describes how a Product Version is configured for a specific portal.
-        
+
+
         They contain:
         - Lifecyle and deprecation statuses
         - Application registration settings like auto approve or whether application registration is enabled
@@ -51447,6 +51308,8 @@ tags:
   - name: API Specification
   - name: API Publication
   - name: API Implementation
+  - name: Platform IPs
+    description: Konnect IP inventory
   - description: DP Certificates
     name: DP Certificates
   - description: Custom Plugin Schemas

@@ -196,6 +196,9 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 				Computed:    true,
 				Optional:    true,
 				Description: `A string representing a UUID (universally unique identifier).`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtLeast(1),
+				},
 			},
 			"instance_name": schema.StringAttribute{
 				Optional:    true,
@@ -256,12 +259,17 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 							Computed:    true,
 							Optional:    true,
 							Description: `A string representing a UUID (universally unique identifier).`,
+							Validators: []validator.String{
+								stringvalidator.UTF8LengthAtLeast(1),
+							},
 						},
 						"name": schema.StringAttribute{
+							Computed:    true,
 							Optional:    true,
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
+							Computed: true,
 							Optional: true,
 						},
 					},

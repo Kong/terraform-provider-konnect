@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 6cca8a3b8ac739ec4126f8cddfd86cbd
+  docChecksum: 2ce1207fcb83e9a9281a0dba2221c9ef
   docVersion: 2.0.0
   speakeasyVersion: 1.602.0
   generationVersion: 2.681.1
-  releaseVersion: 3.1.0
-  configChecksum: 5f2a56226778b15b8af97524b81b8490
+  releaseVersion: 3.2.0
+  configChecksum: 3cfb66abe3120203174b08e2f71cc83b
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -34,6 +34,7 @@ generatedFiles:
   - examples/data-sources/konnect_cloud_gateway_provider_account_list/data-source.tf
   - examples/data-sources/konnect_gateway_control_plane/data-source.tf
   - examples/data-sources/konnect_mesh_control_planes/data-source.tf
+  - examples/data-sources/konnect_platform_ip_addresses/data-source.tf
   - examples/data-sources/konnect_portal/data-source.tf
   - examples/data-sources/konnect_portal_classic_list/data-source.tf
   - examples/provider/provider.tf
@@ -708,6 +709,8 @@ generatedFiles:
   - internal/provider/meshcontrolplane_resource_sdk.go
   - internal/provider/meshcontrolplanes_data_source.go
   - internal/provider/meshcontrolplanes_data_source_sdk.go
+  - internal/provider/platformipaddresses_data_source.go
+  - internal/provider/platformipaddresses_data_source_sdk.go
   - internal/provider/portal_data_source.go
   - internal/provider/portal_data_source_sdk.go
   - internal/provider/portal_resource.go
@@ -823,6 +826,12 @@ generatedFiles:
   - internal/provider/types/aws_private_dns_resolver_response.go
   - internal/provider/types/aws_private_hosted_zone_attachment_config.go
   - internal/provider/types/aws_private_hosted_zone_response.go
+  - internal/provider/types/aws_resource_endpoint_attachment_config.go
+  - internal/provider/types/aws_resource_endpoint_attachment_config_response.go
+  - internal/provider/types/aws_resource_endpoint_config.go
+  - internal/provider/types/aws_resource_endpoint_config_response.go
+  - internal/provider/types/aws_resource_endpoint_gateway.go
+  - internal/provider/types/aws_resource_endpoint_gateway_response.go
   - internal/provider/types/aws_transit_gateway.go
   - internal/provider/types/aws_transit_gateway_attachment_config.go
   - internal/provider/types/aws_transit_gateway_response.go
@@ -889,6 +898,8 @@ generatedFiles:
   - internal/provider/types/file_log_plugin_config.go
   - internal/provider/types/forward_proxy_plugin_config.go
   - internal/provider/types/gateway_service_payload.go
+  - internal/provider/types/gcp_private_hosted_zone_attachment_config.go
+  - internal/provider/types/gcp_private_hosted_zone_response.go
   - internal/provider/types/gcp_vpc_peering_transit_gateway.go
   - internal/provider/types/gcpvpc_peering_attachment_config.go
   - internal/provider/types/gcpvpc_peering_gateway_response.go
@@ -1639,6 +1650,7 @@ generatedFiles:
   - internal/sdk/models/operations/getxmlthreatprotectionplugin.go
   - internal/sdk/models/operations/getzipkinplugin.go
   - internal/sdk/models/operations/listcontrolplanes.go
+  - internal/sdk/models/operations/listipaddresses.go
   - internal/sdk/models/operations/listmeshcontrolplanes.go
   - internal/sdk/models/operations/listportals.go
   - internal/sdk/models/operations/listportalsclassic.go
@@ -1785,6 +1797,7 @@ generatedFiles:
   - internal/sdk/models/operations/updateteam.go
   - internal/sdk/models/operations/updatetlshandshakemodifierplugin.go
   - internal/sdk/models/operations/updatetlsmetadataheadersplugin.go
+  - internal/sdk/models/operations/updatetransitgateway.go
   - internal/sdk/models/operations/updateudplogplugin.go
   - internal/sdk/models/operations/updateupstreamoauthplugin.go
   - internal/sdk/models/operations/updateupstreamtimeoutplugin.go
@@ -1872,6 +1885,13 @@ generatedFiles:
   - internal/sdk/models/shared/awsprivatednsresolverresponse.go
   - internal/sdk/models/shared/awsprivatehostedzoneattachmentconfig.go
   - internal/sdk/models/shared/awsprivatehostedzoneresponse.go
+  - internal/sdk/models/shared/awsresourceendpointattachmentconfig.go
+  - internal/sdk/models/shared/awsresourceendpointattachmentconfigresponse.go
+  - internal/sdk/models/shared/awsresourceendpointconfig.go
+  - internal/sdk/models/shared/awsresourceendpointconfigresponse.go
+  - internal/sdk/models/shared/awsresourceendpointconfigstate.go
+  - internal/sdk/models/shared/awsresourceendpointgateway.go
+  - internal/sdk/models/shared/awsresourceendpointgatewayresponse.go
   - internal/sdk/models/shared/awstransitgateway.go
   - internal/sdk/models/shared/awstransitgatewayattachmentconfig.go
   - internal/sdk/models/shared/awstransitgatewayresponse.go
@@ -1976,6 +1996,8 @@ generatedFiles:
   - internal/sdk/models/shared/forwardproxyplugin.go
   - internal/sdk/models/shared/gatewayservicepayload.go
   - internal/sdk/models/shared/gatewayunauthorizederror.go
+  - internal/sdk/models/shared/gcpprivatehostedzoneattachmentconfig.go
+  - internal/sdk/models/shared/gcpprivatehostedzoneresponse.go
   - internal/sdk/models/shared/gcpvpcpeeringattachmentconfig.go
   - internal/sdk/models/shared/gcpvpcpeeringgatewayresponse.go
   - internal/sdk/models/shared/gcpvpcpeeringtransitgateway.go
@@ -2005,6 +2027,7 @@ generatedFiles:
   - internal/sdk/models/shared/invalidparameters.go
   - internal/sdk/models/shared/invalidparameterstandard.go
   - internal/sdk/models/shared/invalidrules.go
+  - internal/sdk/models/shared/ipaddressesresponse.go
   - internal/sdk/models/shared/iprestrictionplugin.go
   - internal/sdk/models/shared/jqplugin.go
   - internal/sdk/models/shared/jsonthreatprotectionplugin.go
@@ -2067,6 +2090,8 @@ generatedFiles:
   - internal/sdk/models/shared/partialappauthstrategyconfigopenidconnect.go
   - internal/sdk/models/shared/patchnetworkrequest.go
   - internal/sdk/models/shared/patchprivatednsrequest.go
+  - internal/sdk/models/shared/patchtransitgatewayrequest.go
+  - internal/sdk/models/shared/patchtransitgatewayresponse.go
   - internal/sdk/models/shared/plugin.go
   - internal/sdk/models/shared/pluginschemas.go
   - internal/sdk/models/shared/portalassetresponse.go
@@ -2212,6 +2237,7 @@ generatedFiles:
   - internal/sdk/mtlsauthcredentials.go
   - internal/sdk/pages.go
   - internal/sdk/partials.go
+  - internal/sdk/platformips.go
   - internal/sdk/plugins.go
   - internal/sdk/portalappearance.go
   - internal/sdk/portalauthsettings.go
@@ -3093,7 +3119,7 @@ examples:
         application/json: {"name": "Test Control Plane", "description": "A test control plane for exploration.", "cluster_type": "CLUSTER_TYPE_CONTROL_PLANE", "auth_type": "pinned_client_certs", "cloud_gateway": false, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}], "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "Test Control Plane", "description": "A test control plane for exploration.", "labels": {"env": "test"}, "config": {"control_plane_endpoint": "https://acfe5f253f.cp0.konghq.com", "telemetry_endpoint": "https://acfe5f253f.tp0.konghq.com", "cluster_type": "CLUSTER_TYPE_CONTROL_PLANE", "auth_type": "pinned_client_certs", "cloud_gateway": true, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "Test Control Plane", "description": "A test control plane for exploration.", "labels": {"env": "test"}, "config": {"control_plane_endpoint": "https://acfe5f253f.cp.konghq.com", "telemetry_endpoint": "https://acfe5f253f.tp0.konghq.com", "cluster_type": "CLUSTER_TYPE_CONTROL_PLANE", "auth_type": "pinned_client_certs", "cloud_gateway": true, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 704087, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -3113,7 +3139,7 @@ examples:
           id: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "Test Control Plane", "description": "A test control plane for exploration.", "labels": {"env": "test"}, "config": {"control_plane_endpoint": "https://acfe5f253f.cp0.konghq.com", "telemetry_endpoint": "https://acfe5f253f.tp0.konghq.com", "cluster_type": "CLUSTER_TYPE_CONTROL_PLANE", "auth_type": "pinned_client_certs", "cloud_gateway": false, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "Test Control Plane", "description": "A test control plane for exploration.", "labels": {"env": "test"}, "config": {"control_plane_endpoint": "https://acfe5f253f.cp.konghq.com", "telemetry_endpoint": "https://acfe5f253f.tp0.konghq.com", "cluster_type": "CLUSTER_TYPE_CONTROL_PLANE", "auth_type": "pinned_client_certs", "cloud_gateway": false, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 210677, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -3135,7 +3161,7 @@ examples:
         application/json: {"name": "Test Control Plane", "description": "A test control plane for exploration.", "auth_type": "pinned_client_certs", "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}], "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "Test Control Plane", "description": "A test control plane for exploration.", "labels": {"env": "test"}, "config": {"control_plane_endpoint": "https://acfe5f253f.cp0.konghq.com", "telemetry_endpoint": "https://acfe5f253f.tp0.konghq.com", "cluster_type": "CLUSTER_TYPE_CONTROL_PLANE", "auth_type": "pinned_client_certs", "cloud_gateway": true, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "Test Control Plane", "description": "A test control plane for exploration.", "labels": {"env": "test"}, "config": {"control_plane_endpoint": "https://acfe5f253f.cp.konghq.com", "telemetry_endpoint": "https://acfe5f253f.tp0.konghq.com", "cluster_type": "CLUSTER_TYPE_CONTROL_PLANE", "auth_type": "pinned_client_certs", "cloud_gateway": true, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 817049, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -5614,7 +5640,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "confluent", "ordering": null, "partials": null, "tags": null, "config": {"allowed_topics": null, "bootstrap_servers": null, "cluster_api_key": "<value>", "cluster_api_secret": "<value>", "cluster_name": null, "confluent_cloud_api_key": null, "confluent_cloud_api_secret": null, "forward_body": true, "forward_headers": false, "forward_method": false, "forward_uri": false, "keepalive": 60000, "keepalive_enabled": false, "key_query_arg": null, "message_by_lua_functions": null, "producer_async": true, "producer_async_buffering_limits_messages_in_memory": 50000, "producer_async_flush_timeout": 1000, "producer_request_acks": 1, "producer_request_limits_bytes_per_request": 1048576, "producer_request_limits_messages_per_request": 200, "producer_request_retries_backoff_timeout": 100, "producer_request_retries_max_attempts": 10, "producer_request_timeout": 2000, "schema_registry": null, "timeout": 10000, "topic": "<value>", "topics_query_arg": null}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "confluent", "ordering": null, "partials": null, "tags": null, "config": {"allowed_topics": null, "bootstrap_servers": null, "cluster_api_key": "<value>", "cluster_api_secret": "<value>", "confluent_cloud_api_key": null, "confluent_cloud_api_secret": null, "forward_body": true, "forward_headers": false, "forward_method": false, "forward_uri": false, "keepalive": 60000, "keepalive_enabled": false, "key_query_arg": null, "message_by_lua_functions": null, "producer_async": true, "producer_async_buffering_limits_messages_in_memory": 50000, "producer_async_flush_timeout": 1000, "producer_request_acks": 1, "producer_request_limits_bytes_per_request": 1048576, "producer_request_limits_messages_per_request": 200, "producer_request_retries_backoff_timeout": 100, "producer_request_retries_max_attempts": 10, "producer_request_timeout": 2000, "timeout": 10000, "topic": "<value>", "topics_query_arg": null}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 933615}
   update-confluent-plugin:
@@ -5636,10 +5662,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "confluent", "ordering": null, "partials": null, "tags": null, "config": {"allowed_topics": null, "bootstrap_servers": null, "cluster_api_key": "<value>", "cluster_api_secret": "<value>", "cluster_name": null, "confluent_cloud_api_key": null, "confluent_cloud_api_secret": null, "forward_body": true, "forward_headers": false, "forward_method": false, "forward_uri": false, "keepalive": 60000, "keepalive_enabled": false, "key_query_arg": null, "message_by_lua_functions": null, "producer_async": true, "producer_async_buffering_limits_messages_in_memory": 50000, "producer_async_flush_timeout": 1000, "producer_request_acks": 1, "producer_request_limits_bytes_per_request": 1048576, "producer_request_limits_messages_per_request": 200, "producer_request_retries_backoff_timeout": 100, "producer_request_retries_max_attempts": 10, "producer_request_timeout": 2000, "schema_registry": null, "timeout": 10000, "topic": "<value>", "topics_query_arg": null}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "confluent", "ordering": null, "partials": null, "tags": null, "config": {"allowed_topics": null, "bootstrap_servers": null, "cluster_api_key": "<value>", "cluster_api_secret": "<value>", "confluent_cloud_api_key": null, "confluent_cloud_api_secret": null, "forward_body": true, "forward_headers": false, "forward_method": false, "forward_uri": false, "keepalive": 60000, "keepalive_enabled": false, "key_query_arg": null, "message_by_lua_functions": null, "producer_async": true, "producer_async_buffering_limits_messages_in_memory": 50000, "producer_async_flush_timeout": 1000, "producer_request_acks": 1, "producer_request_limits_bytes_per_request": 1048576, "producer_request_limits_messages_per_request": 200, "producer_request_retries_backoff_timeout": 100, "producer_request_retries_max_attempts": 10, "producer_request_timeout": 2000, "timeout": 10000, "topic": "<value>", "topics_query_arg": null}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "confluent", "ordering": null, "partials": null, "tags": null, "config": {"allowed_topics": null, "bootstrap_servers": null, "cluster_api_key": "<value>", "cluster_api_secret": "<value>", "cluster_name": null, "confluent_cloud_api_key": null, "confluent_cloud_api_secret": null, "forward_body": true, "forward_headers": false, "forward_method": false, "forward_uri": false, "keepalive": 60000, "keepalive_enabled": false, "key_query_arg": null, "message_by_lua_functions": null, "producer_async": true, "producer_async_buffering_limits_messages_in_memory": 50000, "producer_async_flush_timeout": 1000, "producer_request_acks": 1, "producer_request_limits_bytes_per_request": 1048576, "producer_request_limits_messages_per_request": 200, "producer_request_retries_backoff_timeout": 100, "producer_request_retries_max_attempts": 10, "producer_request_timeout": 2000, "schema_registry": null, "timeout": 10000, "topic": "<value>", "topics_query_arg": null}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "confluent", "ordering": null, "partials": null, "tags": null, "config": {"allowed_topics": null, "bootstrap_servers": null, "cluster_api_key": "<value>", "cluster_api_secret": "<value>", "confluent_cloud_api_key": null, "confluent_cloud_api_secret": null, "forward_body": true, "forward_headers": false, "forward_method": false, "forward_uri": false, "keepalive": 60000, "keepalive_enabled": false, "key_query_arg": null, "message_by_lua_functions": null, "producer_async": true, "producer_async_buffering_limits_messages_in_memory": 50000, "producer_async_flush_timeout": 1000, "producer_request_acks": 1, "producer_request_limits_bytes_per_request": 1048576, "producer_request_limits_messages_per_request": 200, "producer_request_retries_backoff_timeout": 100, "producer_request_retries_max_attempts": 10, "producer_request_timeout": 2000, "timeout": 10000, "topic": "<value>", "topics_query_arg": null}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 822965}
   delete-confluentconsume-plugin:
@@ -10676,10 +10702,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "confluent", "ordering": null, "partials": null, "tags": null, "config": {"allowed_topics": null, "bootstrap_servers": null, "cluster_api_key": "<value>", "cluster_api_secret": "<value>", "cluster_name": null, "confluent_cloud_api_key": null, "confluent_cloud_api_secret": null, "forward_body": true, "forward_headers": false, "forward_method": false, "forward_uri": false, "keepalive": 60000, "keepalive_enabled": false, "key_query_arg": null, "message_by_lua_functions": null, "producer_async": true, "producer_async_buffering_limits_messages_in_memory": 50000, "producer_async_flush_timeout": 1000, "producer_request_acks": 1, "producer_request_limits_bytes_per_request": 1048576, "producer_request_limits_messages_per_request": 200, "producer_request_retries_backoff_timeout": 100, "producer_request_retries_max_attempts": 10, "producer_request_timeout": 2000, "schema_registry": null, "timeout": 10000, "topic": "<value>", "topics_query_arg": null}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "confluent", "ordering": null, "partials": null, "tags": null, "config": {"allowed_topics": null, "bootstrap_servers": null, "cluster_api_key": "<value>", "cluster_api_secret": "<value>", "confluent_cloud_api_key": null, "confluent_cloud_api_secret": null, "forward_body": true, "forward_headers": false, "forward_method": false, "forward_uri": false, "keepalive": 60000, "keepalive_enabled": false, "key_query_arg": null, "message_by_lua_functions": null, "producer_async": true, "producer_async_buffering_limits_messages_in_memory": 50000, "producer_async_flush_timeout": 1000, "producer_request_acks": 1, "producer_request_limits_bytes_per_request": 1048576, "producer_request_limits_messages_per_request": 200, "producer_request_retries_backoff_timeout": 100, "producer_request_retries_max_attempts": 10, "producer_request_timeout": 2000, "timeout": 10000, "topic": "<value>", "topics_query_arg": null}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"enabled": true, "instance_name": null, "name": "confluent", "ordering": null, "partials": null, "tags": null, "config": {"allowed_topics": null, "bootstrap_servers": null, "cluster_api_key": "<value>", "cluster_api_secret": "<value>", "cluster_name": null, "confluent_cloud_api_key": null, "confluent_cloud_api_secret": null, "forward_body": true, "forward_headers": false, "forward_method": false, "forward_uri": false, "keepalive": 60000, "keepalive_enabled": false, "key_query_arg": null, "message_by_lua_functions": null, "producer_async": true, "producer_async_buffering_limits_messages_in_memory": 50000, "producer_async_flush_timeout": 1000, "producer_request_acks": 1, "producer_request_limits_bytes_per_request": 1048576, "producer_request_limits_messages_per_request": 200, "producer_request_retries_backoff_timeout": 100, "producer_request_retries_max_attempts": 10, "producer_request_timeout": 2000, "schema_registry": null, "timeout": 10000, "topic": "<value>", "topics_query_arg": null}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "confluent", "ordering": null, "partials": null, "tags": null, "config": {"allowed_topics": null, "bootstrap_servers": null, "cluster_api_key": "<value>", "cluster_api_secret": "<value>", "confluent_cloud_api_key": null, "confluent_cloud_api_secret": null, "forward_body": true, "forward_headers": false, "forward_method": false, "forward_uri": false, "keepalive": 60000, "keepalive_enabled": false, "key_query_arg": null, "message_by_lua_functions": null, "producer_async": true, "producer_async_buffering_limits_messages_in_memory": 50000, "producer_async_flush_timeout": 1000, "producer_request_acks": 1, "producer_request_limits_bytes_per_request": 1048576, "producer_request_limits_messages_per_request": 200, "producer_request_retries_backoff_timeout": 100, "producer_request_retries_max_attempts": 10, "producer_request_timeout": 2000, "timeout": 10000, "topic": "<value>", "topics_query_arg": null}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 37707}
   create-confluentconsume-plugin:
@@ -14189,5 +14215,31 @@ examples:
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-transit-gateway:
+    speakeasy-default-update-transit-gateway:
+      parameters:
+        path:
+          networkId: "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
+          transitGatewayId: "0850820b-d153-4a2a-b9be-7d2204779139"
+      requestBody:
+        application/json: {"transit_gateway_attachment_config": {"kind": "aws-resource-endpoint-attachment", "resource_config": [{"resource_config_id": "<id>", "domain_name": "delectable-molasses.com"}]}}
+      responses:
+        "200":
+          application/json: {"name": "us-east-2 transit gateway", "dns_config": [{"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}], "transit_gateway_attachment_config": {"kind": "aws-resource-endpoint-attachment", "ram_share_arn": "<value>", "resource_config": []}, "id": "0850820b-d153-4a2a-b9be-7d2204779139", "state": "pending-acceptance", "state_metadata": {"reported_status": "ERROR", "reason": "Transit Gateway Attachment configuration could not find a resource with the provided ram share arn.\n"}, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 818089, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  list-ip-addresses:
+    speakeasy-default-list-ip-addresses:
+      responses:
+        "200":
+          application/json: {"updateDate": "2025-08-26-16-03-33", "regions": {"key": {}}, "ingressIPs": {"key": []}, "egressIPs": {"key": ["<value 1>", "<value 2>"]}}
 examplesVersion: 1.0.2
 generatedTests: {}
