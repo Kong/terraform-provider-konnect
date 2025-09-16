@@ -17003,6 +17003,7 @@ components:
         - au
         - me
         - in
+        - sg
       title: Control-Plane Geo
     GatewayVersion:
       description: Supported gateway version.
@@ -20188,6 +20189,7 @@ components:
             - au
             - me
             - in
+            - sg
             - '*'
       example:
         id: 54cc6168-ebb1-4300-8168-d62a0dd08fc8
@@ -48803,6 +48805,7 @@ components:
                   - au
                   - me
                   - in
+                  - sg
                   - '*'
       description: The request schema for assigning a role.
     CreateSystemAccount:
@@ -51278,7 +51281,8 @@ tags:
   - name: Portal Product Versions
     description: |
       Portal Product Versions hold metadata that describes how a Product Version is configured for a specific portal.
-        
+
+
         They contain:
         - Lifecyle and deprecation statuses
         - Application registration settings like auto approve or whether application registration is enabled

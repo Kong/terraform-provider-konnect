@@ -63,7 +63,7 @@ func (r *TeamRoleResource) Schema(ctx context.Context, req resource.SchemaReques
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `Region of the team. must be one of ["us", "eu", "au", "me", "in", "*"]; Requires replacement if changed.`,
+				Description: `Region of the team. must be one of ["us", "eu", "au", "me", "in", "sg", "*"]; Requires replacement if changed.`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"us",
@@ -71,6 +71,7 @@ func (r *TeamRoleResource) Schema(ctx context.Context, req resource.SchemaReques
 						"au",
 						"me",
 						"in",
+						"sg",
 						"*",
 					),
 				},
