@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.3.0
+> Released on 2025/??/??
+
+### Features
+* ...
+
+### Bug Fixes
+* ...
+
 ## 3.2.0
 > Released on 2025/09/16
 
