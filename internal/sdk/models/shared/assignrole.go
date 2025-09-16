@@ -197,6 +197,7 @@ const (
 	EntityRegionAu       EntityRegion = "au"
 	EntityRegionMe       EntityRegion = "me"
 	EntityRegionIn       EntityRegion = "in"
+	EntityRegionSg       EntityRegion = "sg"
 	EntityRegionWildcard EntityRegion = "*"
 )
 
@@ -218,6 +219,8 @@ func (e *EntityRegion) UnmarshalJSON(data []byte) error {
 	case "me":
 		fallthrough
 	case "in":
+		fallthrough
+	case "sg":
 		fallthrough
 	case "*":
 		*e = EntityRegion(v)

@@ -68,7 +68,7 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `Set of control-plane geos supported for deploying cloud-gateways configurations. must be one of ["us", "eu", "au", "me", "in"]; Requires replacement if changed.`,
+				Description: `Set of control-plane geos supported for deploying cloud-gateways configurations. must be one of ["us", "eu", "au", "me", "in", "sg"]; Requires replacement if changed.`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"us",
@@ -76,6 +76,7 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 						"au",
 						"me",
 						"in",
+						"sg",
 					),
 				},
 			},

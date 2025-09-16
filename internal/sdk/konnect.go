@@ -231,6 +231,7 @@ type Konnect struct {
 	PortalAppearance *PortalAppearance
 	// Portal Product Versions hold metadata that describes how a Product Version is configured for a specific portal.
 	//
+	//
 	//   They contain:
 	//   - Lifecyle and deprecation statuses
 	//   - Application registration settings like auto approve or whether application registration is enabled
