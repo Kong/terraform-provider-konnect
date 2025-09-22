@@ -51,7 +51,7 @@ func (o *Colors) GetPrimary() *string {
 type Theme struct {
 	Name   *string                  `json:"name,omitempty"`
 	Mode   *PortalCustomizationMode `json:"mode,omitempty"`
-	Colors *Colors                  `json:"colors"`
+	Colors *Colors                  `json:"colors,omitempty"`
 }
 
 func (o *Theme) GetName() *string {
@@ -181,7 +181,7 @@ func (o *SpecRenderer) GetAllowCustomServerUrls() *bool {
 
 // PortalCustomization - The custom settings of this portal
 type PortalCustomization struct {
-	Theme        *Theme        `json:"theme"`
+	Theme        *Theme        `json:"theme,omitempty"`
 	Layout       *string       `json:"layout,omitempty"`
 	CSS          *string       `default:"null" json:"css"`
 	Menu         *Menu         `json:"menu,omitempty"`

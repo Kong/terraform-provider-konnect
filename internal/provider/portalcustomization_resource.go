@@ -6,12 +6,10 @@ import (
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -61,11 +59,9 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 				Optional: true,
 			},
 			"layout": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 			},
 			"menu": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"footer_bottom": schema.ListNestedAttribute{
@@ -243,7 +239,6 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 				Optional: true,
 			},
 			"spec_renderer": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"allow_custom_server_urls": schema.BoolAttribute{
@@ -291,24 +286,10 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"theme": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"colors": types.ObjectType{
-						AttrTypes: map[string]attr.Type{
-							`primary`: types.StringType,
-						},
-					},
-					"mode": types.StringType,
-					"name": types.StringType,
-				})),
 				Attributes: map[string]schema.Attribute{
 					"colors": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"primary": types.StringType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"primary": schema.StringAttribute{
 								Computed: true,
