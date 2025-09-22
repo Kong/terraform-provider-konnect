@@ -22416,9 +22416,8 @@ components:
       properties:
         theme:
           type: object
-          default: null
           additionalProperties: false
-          nullable: true
+          nullable: false
           properties:
             name:
               type: string
@@ -22431,9 +22430,8 @@ components:
                 - system
             colors:
               type: object
-              default: null
               additionalProperties: false
-              nullable: true
+              nullable: false
               properties:
                 primary:
                   type: string
@@ -22446,6 +22444,7 @@ components:
         layout:
           type: string
           nullable: false
+          x-speakeasy-param-computed: false
         css:
           type: string
           default: null
@@ -22477,6 +22476,7 @@ components:
               default: null
               nullable: true
               x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: false
         spec_renderer:
           type: object
           additionalProperties: false
@@ -22510,6 +22510,7 @@ components:
               description: Let users define a custom server URL for endpoints. This will be used to generate code snippets and to test the API. The URL is client-side only and is not saved.
               type: boolean
               default: true
+          x-speakeasy-param-computed: false
         robots:
           type: string
           default: null
