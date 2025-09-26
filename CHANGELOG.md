@@ -7,7 +7,7 @@
 * ...
 
 ### Bug Fixes
-* ...
+* Properties such as `theme`, `menu` can now be unset in `konnect_portal_customization` resource
 
 ## 3.2.0
 > Released on 2025/09/16
