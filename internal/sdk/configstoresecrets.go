@@ -279,7 +279,7 @@ func (s *ConfigStoreSecrets) CreateConfigStoreSecret(ctx context.Context, reques
 }
 
 // GetConfigStoreSecret - Fetch Config Store Secret
-// Returns a secret for the Config Store.
+// Returns the secret entity for the Config Store. Secret values once stored cannot be retrieved.
 func (s *ConfigStoreSecrets) GetConfigStoreSecret(ctx context.Context, request operations.GetConfigStoreSecretRequest, opts ...operations.Option) (*operations.GetConfigStoreSecretResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
