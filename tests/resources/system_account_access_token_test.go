@@ -9,7 +9,7 @@ import (
 )
 
 func TestSystemAccountAccessToken(t *testing.T) {
-	t.Run("crud", func(t *testing.T) {
+	t.Run("CRUD", func(t *testing.T) {
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
