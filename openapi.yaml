@@ -2442,7 +2442,7 @@ paths:
         terraform-datasource: null
       operationId: get-config-store-secret
       summary: Fetch Config Store Secret
-      description: Returns a secret for the Config Store.
+      description: Returns the secret entity for the Config Store. Secret values once stored cannot be retrieved.
       responses:
         '200':
           $ref: '#/components/responses/ConfigStoreSecretResponse'
@@ -20277,6 +20277,11 @@ components:
           default: null
           nullable: true
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/timetypes
+            schemaType: 'timetypes.RFC3339PreciseToSecondType{}'
+            valueType: timetypes.RFC3339PreciseToSecond
         last_used_at:
           description: Timestamp of when the system account access token was last used.
           type: string
@@ -20338,6 +20343,7 @@ components:
           type: string
           example: |
             -----BEGIN PRIVATE KEY----- MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAPBWiWZj7LYQU9V5 E8qlCYrkFeKeCmi6TTIqDULSHXhihV3pZmZVX1tG3yxgYBZpMKNfSiMxbTpSE1I2 9EKpbm9g50yD6A7O61wPGsOrpibu92euuO1N/mpcTQqcE7mDmNgiUPh1hCLjrsAH bUJJ3RKfa+2VgNsS2rUCgWBLxJspAgMBAAECgYEAvA7qqozL/1ZdUu/P1cQ36E86 9L03ZeVJXFRdVgj2eGqW8vob3z00RUb6gE3VQhQDNALvDwSw9G6eoblQfgz31Hju sb+j6bGOm2BqzYrx6rpcgme7k9ScV0tEbtiBNX0E/ToHvNywHtdOBvDocN2wh42Z 6bS9um51H+SXR036mgUCQQD4T7WrJHL97Hj8TtHnTw895xWKaGn94H7ZQa2lo1nk 7CQ4Oi8rFX5tDdyV7UU6fekBWuhpmIhSGJhyHD7UThBjAkEA98ef9ey2Qx+j+R8S tgpgJAF3LVNJJicEHCS/Vltgc84X/vidVAMa2+TYPxPrrUjxBr0STCeB5wZhvvsB D8cOAwJBAJ5JqaQPUx1dDe7Ai/vooO20Dj4xu0c0QYha3sfU7qwIgDo7lO/g/ruj 93a3TscvlkXf3oHZ0ySKOzual86ciMMCQQDGOLgaWHVy+4QFTzt70I8bHuUFqKRT VlEuZqN/ZXijDFQcES5jwFwjYE8zHy+ioEDaIDXcIJsGhA98Zndx9M+bAkA4IFdx 4YIDhuk1MJAYPqVQs5szEF/0BGymLNVYlIox48bZg+TH3uXwTVRVySxvpRa8dd3O 0gHs3EIV6GFUl7ev -----END PRIVATE KEY-----
+          x-sensitive: true
           x-speakeasy-param-sensitive: true
         labels:
           $ref: '#/components/schemas/SCGWLabels'
@@ -20447,6 +20453,7 @@ components:
           $ref: '#/components/schemas/KeyTypeEnum'
         secret:
           type: string
+          x-sensitive: true
           x-speakeasy-param-sensitive: true
         created_at:
           $ref: '#/components/schemas/CreatedAt'
@@ -23783,6 +23790,7 @@ components:
           default: null
           nullable: true
           writeOnly: true
+          x-sensitive: true
           x-speakeasy-param-computed: false
           x-speakeasy-param-sensitive: true
         created_at:
@@ -23802,6 +23810,7 @@ components:
           maxLength: 5120
           minLength: 1
           writeOnly: true
+          x-sensitive: true
           x-speakeasy-param-sensitive: true
       required:
         - key
@@ -23814,6 +23823,7 @@ components:
           maxLength: 5120
           minLength: 1
           writeOnly: true
+          x-sensitive: true
           x-speakeasy-param-sensitive: true
       required:
         - value
@@ -48862,9 +48872,8 @@ components:
               name:
                 description: Name of the system account access token.
                 type: string
-                default: null
-                nullable: true
-                x-speakeasy-param-computed: false
+            required:
+              - name
     CreateSystemAccountAccessToken:
       content:
         application/json:
@@ -48874,15 +48883,17 @@ components:
             properties:
               name:
                 type: string
-                default: null
-                nullable: true
-                x-speakeasy-param-computed: false
               expires_at:
                 type: string
                 format: date-time
-                default: null
-                nullable: true
-                x-speakeasy-param-computed: false
+                x-speakeasy-terraform-custom-type:
+                  imports:
+                    - github.com/Kong/shared-speakeasy/customtypes/timetypes
+                  schemaType: 'timetypes.RFC3339PreciseToSecondType{}'
+                  valueType: timetypes.RFC3339PreciseToSecond
+            required:
+              - name
+              - expires_at
       description: The request body to create a system account access token.
     AddSystemAccountToTeam:
       content:
@@ -50351,6 +50362,11 @@ components:
                 type: string
                 format: date-time
                 readOnly: true
+                x-speakeasy-terraform-custom-type:
+                  imports:
+                    - github.com/Kong/shared-speakeasy/customtypes/timetypes
+                  schemaType: 'timetypes.RFC3339PreciseToSecondType{}'
+                  valueType: timetypes.RFC3339PreciseToSecond
               last_used_at:
                 description: Timestamp of when the system account access token was last used.
                 type: string
@@ -50360,6 +50376,7 @@ components:
                 description: The token of the system account access token.
                 type: string
                 readOnly: true
+                x-sensitive: true
                 x-speakeasy-param-sensitive: true
             example:
               id: 497f6eca-6276-4993-bfeb-53cbbbba6f08

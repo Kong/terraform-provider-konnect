@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/Kong/shared-speakeasy/customtypes/timetypes"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -15,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 )
@@ -35,14 +37,14 @@ type SystemAccountAccessTokenResource struct {
 
 // SystemAccountAccessTokenResourceModel describes the resource data model.
 type SystemAccountAccessTokenResourceModel struct {
-	AccountID  types.String `tfsdk:"account_id"`
-	CreatedAt  types.String `tfsdk:"created_at"`
-	ExpiresAt  types.String `tfsdk:"expires_at"`
-	ID         types.String `tfsdk:"id"`
-	LastUsedAt types.String `tfsdk:"last_used_at"`
-	Name       types.String `tfsdk:"name"`
-	Token      types.String `tfsdk:"token"`
-	UpdatedAt  types.String `tfsdk:"updated_at"`
+	AccountID  types.String                     `tfsdk:"account_id"`
+	CreatedAt  types.String                     `tfsdk:"created_at"`
+	ExpiresAt  timetypes.RFC3339PreciseToSecond `tfsdk:"expires_at"`
+	ID         types.String                     `tfsdk:"id"`
+	LastUsedAt types.String                     `tfsdk:"last_used_at"`
+	Name       types.String                     `tfsdk:"name"`
+	Token      types.String                     `tfsdk:"token"`
+	UpdatedAt  types.String                     `tfsdk:"updated_at"`
 }
 
 func (r *SystemAccountAccessTokenResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,9 +67,11 @@ func (r *SystemAccountAccessTokenResource) Schema(ctx context.Context, req resou
 				},
 			},
 			"expires_at": schema.StringAttribute{
-				Optional: true,
+				CustomType: timetypes.RFC3339PreciseToSecondType{},
+				Required:   true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `Requires replacement if changed.`,
 				Validators: []validator.String{
@@ -86,7 +90,7 @@ func (r *SystemAccountAccessTokenResource) Schema(ctx context.Context, req resou
 				},
 			},
 			"name": schema.StringAttribute{
-				Optional: true,
+				Required: true,
 			},
 			"token": schema.StringAttribute{
 				Computed:    true,
