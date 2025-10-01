@@ -12,22 +12,22 @@ type PrometheusPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *PrometheusPluginAfter) GetAccess() []string {
-	if o == nil {
+func (p *PrometheusPluginAfter) GetAccess() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Access
+	return p.Access
 }
 
 type PrometheusPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *PrometheusPluginBefore) GetAccess() []string {
-	if o == nil {
+func (p *PrometheusPluginBefore) GetAccess() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Access
+	return p.Access
 }
 
 type PrometheusPluginOrdering struct {
@@ -35,18 +35,18 @@ type PrometheusPluginOrdering struct {
 	Before *PrometheusPluginBefore `json:"before,omitempty"`
 }
 
-func (o *PrometheusPluginOrdering) GetAfter() *PrometheusPluginAfter {
-	if o == nil {
+func (p *PrometheusPluginOrdering) GetAfter() *PrometheusPluginAfter {
+	if p == nil {
 		return nil
 	}
-	return o.After
+	return p.After
 }
 
-func (o *PrometheusPluginOrdering) GetBefore() *PrometheusPluginBefore {
-	if o == nil {
+func (p *PrometheusPluginOrdering) GetBefore() *PrometheusPluginBefore {
+	if p == nil {
 		return nil
 	}
-	return o.Before
+	return p.Before
 }
 
 type PrometheusPluginPartials struct {
@@ -57,25 +57,25 @@ type PrometheusPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *PrometheusPluginPartials) GetID() *string {
-	if o == nil {
+func (p *PrometheusPluginPartials) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
-func (o *PrometheusPluginPartials) GetName() *string {
-	if o == nil {
+func (p *PrometheusPluginPartials) GetName() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Name
+	return p.Name
 }
 
-func (o *PrometheusPluginPartials) GetPath() *string {
-	if o == nil {
+func (p *PrometheusPluginPartials) GetPath() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Path
+	return p.Path
 }
 
 type PrometheusPluginConfig struct {
@@ -100,59 +100,59 @@ func (p PrometheusPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PrometheusPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *PrometheusPluginConfig) GetAiMetrics() *bool {
-	if o == nil {
+func (p *PrometheusPluginConfig) GetAiMetrics() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.AiMetrics
+	return p.AiMetrics
 }
 
-func (o *PrometheusPluginConfig) GetBandwidthMetrics() *bool {
-	if o == nil {
+func (p *PrometheusPluginConfig) GetBandwidthMetrics() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.BandwidthMetrics
+	return p.BandwidthMetrics
 }
 
-func (o *PrometheusPluginConfig) GetLatencyMetrics() *bool {
-	if o == nil {
+func (p *PrometheusPluginConfig) GetLatencyMetrics() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.LatencyMetrics
+	return p.LatencyMetrics
 }
 
-func (o *PrometheusPluginConfig) GetPerConsumer() *bool {
-	if o == nil {
+func (p *PrometheusPluginConfig) GetPerConsumer() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.PerConsumer
+	return p.PerConsumer
 }
 
-func (o *PrometheusPluginConfig) GetStatusCodeMetrics() *bool {
-	if o == nil {
+func (p *PrometheusPluginConfig) GetStatusCodeMetrics() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.StatusCodeMetrics
+	return p.StatusCodeMetrics
 }
 
-func (o *PrometheusPluginConfig) GetUpstreamHealthMetrics() *bool {
-	if o == nil {
+func (p *PrometheusPluginConfig) GetUpstreamHealthMetrics() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.UpstreamHealthMetrics
+	return p.UpstreamHealthMetrics
 }
 
-func (o *PrometheusPluginConfig) GetWasmMetrics() *bool {
-	if o == nil {
+func (p *PrometheusPluginConfig) GetWasmMetrics() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.WasmMetrics
+	return p.WasmMetrics
 }
 
 // PrometheusPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -160,11 +160,11 @@ type PrometheusPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *PrometheusPluginConsumer) GetID() *string {
-	if o == nil {
+func (p *PrometheusPluginConsumer) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
 // PrometheusPluginProtocols - A string representing a protocol, such as HTTP or HTTPS.
@@ -223,11 +223,11 @@ type PrometheusPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *PrometheusPluginRoute) GetID() *string {
-	if o == nil {
+func (p *PrometheusPluginRoute) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
 // PrometheusPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -235,11 +235,11 @@ type PrometheusPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *PrometheusPluginService) GetID() *string {
-	if o == nil {
+func (p *PrometheusPluginService) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
 // PrometheusPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -276,103 +276,103 @@ func (p PrometheusPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PrometheusPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"name", "ordering", "partials", "tags", "config", "consumer", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *PrometheusPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (p *PrometheusPlugin) GetCreatedAt() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return p.CreatedAt
 }
 
-func (o *PrometheusPlugin) GetEnabled() *bool {
-	if o == nil {
+func (p *PrometheusPlugin) GetEnabled() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.Enabled
+	return p.Enabled
 }
 
-func (o *PrometheusPlugin) GetID() *string {
-	if o == nil {
+func (p *PrometheusPlugin) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
-func (o *PrometheusPlugin) GetInstanceName() *string {
-	if o == nil {
+func (p *PrometheusPlugin) GetInstanceName() *string {
+	if p == nil {
 		return nil
 	}
-	return o.InstanceName
+	return p.InstanceName
 }
 
-func (o *PrometheusPlugin) GetName() string {
+func (p *PrometheusPlugin) GetName() string {
 	return "prometheus"
 }
 
-func (o *PrometheusPlugin) GetOrdering() *PrometheusPluginOrdering {
-	if o == nil {
+func (p *PrometheusPlugin) GetOrdering() *PrometheusPluginOrdering {
+	if p == nil {
 		return nil
 	}
-	return o.Ordering
+	return p.Ordering
 }
 
-func (o *PrometheusPlugin) GetPartials() []PrometheusPluginPartials {
-	if o == nil {
+func (p *PrometheusPlugin) GetPartials() []PrometheusPluginPartials {
+	if p == nil {
 		return nil
 	}
-	return o.Partials
+	return p.Partials
 }
 
-func (o *PrometheusPlugin) GetTags() []string {
-	if o == nil {
+func (p *PrometheusPlugin) GetTags() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Tags
+	return p.Tags
 }
 
-func (o *PrometheusPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (p *PrometheusPlugin) GetUpdatedAt() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return p.UpdatedAt
 }
 
-func (o *PrometheusPlugin) GetConfig() *PrometheusPluginConfig {
-	if o == nil {
+func (p *PrometheusPlugin) GetConfig() *PrometheusPluginConfig {
+	if p == nil {
 		return nil
 	}
-	return o.Config
+	return p.Config
 }
 
-func (o *PrometheusPlugin) GetConsumer() *PrometheusPluginConsumer {
-	if o == nil {
+func (p *PrometheusPlugin) GetConsumer() *PrometheusPluginConsumer {
+	if p == nil {
 		return nil
 	}
-	return o.Consumer
+	return p.Consumer
 }
 
-func (o *PrometheusPlugin) GetProtocols() []PrometheusPluginProtocols {
-	if o == nil {
+func (p *PrometheusPlugin) GetProtocols() []PrometheusPluginProtocols {
+	if p == nil {
 		return nil
 	}
-	return o.Protocols
+	return p.Protocols
 }
 
-func (o *PrometheusPlugin) GetRoute() *PrometheusPluginRoute {
-	if o == nil {
+func (p *PrometheusPlugin) GetRoute() *PrometheusPluginRoute {
+	if p == nil {
 		return nil
 	}
-	return o.Route
+	return p.Route
 }
 
-func (o *PrometheusPlugin) GetService() *PrometheusPluginService {
-	if o == nil {
+func (p *PrometheusPlugin) GetService() *PrometheusPluginService {
+	if p == nil {
 		return nil
 	}
-	return o.Service
+	return p.Service
 }

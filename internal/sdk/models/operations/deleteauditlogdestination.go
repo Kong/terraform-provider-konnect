@@ -12,11 +12,11 @@ type DeleteAuditLogDestinationRequest struct {
 	AuditLogDestinationID string `pathParam:"style=simple,explode=false,name=auditLogDestinationId"`
 }
 
-func (o *DeleteAuditLogDestinationRequest) GetAuditLogDestinationID() string {
-	if o == nil {
+func (d *DeleteAuditLogDestinationRequest) GetAuditLogDestinationID() string {
+	if d == nil {
 		return ""
 	}
-	return o.AuditLogDestinationID
+	return d.AuditLogDestinationID
 }
 
 type DeleteAuditLogDestinationResponse struct {
@@ -36,51 +36,51 @@ type DeleteAuditLogDestinationResponse struct {
 	ConflictError *shared.ConflictError
 }
 
-func (o *DeleteAuditLogDestinationResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteAuditLogDestinationResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteAuditLogDestinationResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteAuditLogDestinationResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteAuditLogDestinationResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteAuditLogDestinationResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteAuditLogDestinationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (d *DeleteAuditLogDestinationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return d.UnauthorizedError
 }
 
-func (o *DeleteAuditLogDestinationResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (d *DeleteAuditLogDestinationResponse) GetForbiddenError() *shared.ForbiddenError {
+	if d == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return d.ForbiddenError
 }
 
-func (o *DeleteAuditLogDestinationResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (d *DeleteAuditLogDestinationResponse) GetNotFoundError() *shared.NotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return d.NotFoundError
 }
 
-func (o *DeleteAuditLogDestinationResponse) GetConflictError() *shared.ConflictError {
-	if o == nil {
+func (d *DeleteAuditLogDestinationResponse) GetConflictError() *shared.ConflictError {
+	if d == nil {
 		return nil
 	}
-	return o.ConflictError
+	return d.ConflictError
 }

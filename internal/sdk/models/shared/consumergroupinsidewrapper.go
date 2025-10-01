@@ -6,9 +6,9 @@ type ConsumerGroupInsideWrapper struct {
 	ConsumerGroup *ConsumerGroup `json:"consumer_group,omitempty"`
 }
 
-func (o *ConsumerGroupInsideWrapper) GetConsumerGroup() *ConsumerGroup {
-	if o == nil {
+func (c *ConsumerGroupInsideWrapper) GetConsumerGroup() *ConsumerGroup {
+	if c == nil {
 		return nil
 	}
-	return o.ConsumerGroup
+	return c.ConsumerGroup
 }

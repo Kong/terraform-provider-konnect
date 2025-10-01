@@ -16,22 +16,22 @@ func (v V2AppearanceColorVariable) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V2AppearanceColorVariable) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"value"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *V2AppearanceColorVariable) GetValue() string {
-	if o == nil {
+func (v *V2AppearanceColorVariable) GetValue() string {
+	if v == nil {
 		return ""
 	}
-	return o.Value
+	return v.Value
 }
 
-func (o *V2AppearanceColorVariable) GetDescription() *string {
-	if o == nil {
+func (v *V2AppearanceColorVariable) GetDescription() *string {
+	if v == nil {
 		return nil
 	}
-	return o.Description
+	return v.Description
 }

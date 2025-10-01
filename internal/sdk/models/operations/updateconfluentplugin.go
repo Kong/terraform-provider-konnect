@@ -15,25 +15,25 @@ type UpdateConfluentPluginRequest struct {
 	ConfluentPlugin shared.ConfluentPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateConfluentPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateConfluentPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateConfluentPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateConfluentPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateConfluentPluginRequest) GetConfluentPlugin() shared.ConfluentPlugin {
-	if o == nil {
+func (u *UpdateConfluentPluginRequest) GetConfluentPlugin() shared.ConfluentPlugin {
+	if u == nil {
 		return shared.ConfluentPlugin{}
 	}
-	return o.ConfluentPlugin
+	return u.ConfluentPlugin
 }
 
 type UpdateConfluentPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateConfluentPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateConfluentPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateConfluentPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateConfluentPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateConfluentPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateConfluentPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateConfluentPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateConfluentPluginResponse) GetConfluentPlugin() *shared.ConfluentPlugin {
-	if o == nil {
+func (u *UpdateConfluentPluginResponse) GetConfluentPlugin() *shared.ConfluentPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.ConfluentPlugin
+	return u.ConfluentPlugin
 }
 
-func (o *UpdateConfluentPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateConfluentPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

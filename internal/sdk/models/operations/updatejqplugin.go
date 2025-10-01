@@ -15,25 +15,25 @@ type UpdateJqPluginRequest struct {
 	JqPlugin       shared.JqPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateJqPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateJqPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateJqPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateJqPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateJqPluginRequest) GetJqPlugin() shared.JqPlugin {
-	if o == nil {
+func (u *UpdateJqPluginRequest) GetJqPlugin() shared.JqPlugin {
+	if u == nil {
 		return shared.JqPlugin{}
 	}
-	return o.JqPlugin
+	return u.JqPlugin
 }
 
 type UpdateJqPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateJqPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateJqPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateJqPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateJqPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateJqPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateJqPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateJqPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateJqPluginResponse) GetJqPlugin() *shared.JqPlugin {
-	if o == nil {
+func (u *UpdateJqPluginResponse) GetJqPlugin() *shared.JqPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.JqPlugin
+	return u.JqPlugin
 }
 
-func (o *UpdateJqPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateJqPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

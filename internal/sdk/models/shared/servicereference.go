@@ -2,15 +2,30 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // ServiceReference - A gateway service that implements an API
 type ServiceReference struct {
 	// A Gateway service that implements an API
 	Service *APIImplementationService `json:"service,omitempty"`
 }
 
-func (o *ServiceReference) GetService() *APIImplementationService {
-	if o == nil {
+func (s ServiceReference) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *ServiceReference) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *ServiceReference) GetService() *APIImplementationService {
+	if s == nil {
 		return nil
 	}
-	return o.Service
+	return s.Service
 }

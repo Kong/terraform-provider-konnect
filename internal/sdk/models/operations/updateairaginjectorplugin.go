@@ -15,25 +15,25 @@ type UpdateAiraginjectorPluginRequest struct {
 	AiRagInjectorPlugin shared.AiRagInjectorPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateAiraginjectorPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateAiraginjectorPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateAiraginjectorPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateAiraginjectorPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateAiraginjectorPluginRequest) GetAiRagInjectorPlugin() shared.AiRagInjectorPlugin {
-	if o == nil {
+func (u *UpdateAiraginjectorPluginRequest) GetAiRagInjectorPlugin() shared.AiRagInjectorPlugin {
+	if u == nil {
 		return shared.AiRagInjectorPlugin{}
 	}
-	return o.AiRagInjectorPlugin
+	return u.AiRagInjectorPlugin
 }
 
 type UpdateAiraginjectorPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateAiraginjectorPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateAiraginjectorPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateAiraginjectorPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateAiraginjectorPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateAiraginjectorPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateAiraginjectorPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateAiraginjectorPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateAiraginjectorPluginResponse) GetAiRagInjectorPlugin() *shared.AiRagInjectorPlugin {
-	if o == nil {
+func (u *UpdateAiraginjectorPluginResponse) GetAiRagInjectorPlugin() *shared.AiRagInjectorPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.AiRagInjectorPlugin
+	return u.AiRagInjectorPlugin
 }
 
-func (o *UpdateAiraginjectorPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateAiraginjectorPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

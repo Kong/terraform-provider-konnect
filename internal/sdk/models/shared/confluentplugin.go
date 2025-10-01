@@ -12,22 +12,22 @@ type ConfluentPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *ConfluentPluginAfter) GetAccess() []string {
-	if o == nil {
+func (c *ConfluentPluginAfter) GetAccess() []string {
+	if c == nil {
 		return nil
 	}
-	return o.Access
+	return c.Access
 }
 
 type ConfluentPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *ConfluentPluginBefore) GetAccess() []string {
-	if o == nil {
+func (c *ConfluentPluginBefore) GetAccess() []string {
+	if c == nil {
 		return nil
 	}
-	return o.Access
+	return c.Access
 }
 
 type ConfluentPluginOrdering struct {
@@ -35,18 +35,18 @@ type ConfluentPluginOrdering struct {
 	Before *ConfluentPluginBefore `json:"before,omitempty"`
 }
 
-func (o *ConfluentPluginOrdering) GetAfter() *ConfluentPluginAfter {
-	if o == nil {
+func (c *ConfluentPluginOrdering) GetAfter() *ConfluentPluginAfter {
+	if c == nil {
 		return nil
 	}
-	return o.After
+	return c.After
 }
 
-func (o *ConfluentPluginOrdering) GetBefore() *ConfluentPluginBefore {
-	if o == nil {
+func (c *ConfluentPluginOrdering) GetBefore() *ConfluentPluginBefore {
+	if c == nil {
 		return nil
 	}
-	return o.Before
+	return c.Before
 }
 
 type ConfluentPluginPartials struct {
@@ -57,25 +57,25 @@ type ConfluentPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *ConfluentPluginPartials) GetID() *string {
-	if o == nil {
+func (c *ConfluentPluginPartials) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *ConfluentPluginPartials) GetName() *string {
-	if o == nil {
+func (c *ConfluentPluginPartials) GetName() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *ConfluentPluginPartials) GetPath() *string {
-	if o == nil {
+func (c *ConfluentPluginPartials) GetPath() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Path
+	return c.Path
 }
 
 type BootstrapServers struct {
@@ -85,18 +85,18 @@ type BootstrapServers struct {
 	Port int64 `json:"port"`
 }
 
-func (o *BootstrapServers) GetHost() string {
-	if o == nil {
+func (b *BootstrapServers) GetHost() string {
+	if b == nil {
 		return ""
 	}
-	return o.Host
+	return b.Host
 }
 
-func (o *BootstrapServers) GetPort() int64 {
-	if o == nil {
+func (b *BootstrapServers) GetPort() int64 {
+	if b == nil {
 		return 0
 	}
-	return o.Port
+	return b.Port
 }
 
 // ProducerRequestAcks - The number of acknowledgments the producer requires the leader to have received before considering a request complete. Allowed values: 0 for no acknowledgments; 1 for only the leader; and -1 for the full ISR (In-Sync Replica set).
@@ -134,18 +134,18 @@ type Basic struct {
 	Username string `json:"username"`
 }
 
-func (o *Basic) GetPassword() string {
-	if o == nil {
+func (b *Basic) GetPassword() string {
+	if b == nil {
 		return ""
 	}
-	return o.Password
+	return b.Password
 }
 
-func (o *Basic) GetUsername() string {
-	if o == nil {
+func (b *Basic) GetUsername() string {
+	if b == nil {
 		return ""
 	}
-	return o.Username
+	return b.Username
 }
 
 // ConfluentPluginMode - Authentication mode to use with the schema registry.
@@ -186,24 +186,24 @@ func (c ConfluentPluginAuthentication) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfluentPluginAuthentication) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"basic"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ConfluentPluginAuthentication) GetBasic() *Basic {
-	if o == nil {
+func (c *ConfluentPluginAuthentication) GetBasic() *Basic {
+	if c == nil {
 		return nil
 	}
-	return o.Basic
+	return c.Basic
 }
 
-func (o *ConfluentPluginAuthentication) GetMode() *ConfluentPluginMode {
-	if o == nil {
+func (c *ConfluentPluginAuthentication) GetMode() *ConfluentPluginMode {
+	if c == nil {
 		return nil
 	}
-	return o.Mode
+	return c.Mode
 }
 
 type KeySchema struct {
@@ -218,24 +218,24 @@ func (k KeySchema) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KeySchema) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KeySchema) GetSchemaVersion() *string {
-	if o == nil {
+func (k *KeySchema) GetSchemaVersion() *string {
+	if k == nil {
 		return nil
 	}
-	return o.SchemaVersion
+	return k.SchemaVersion
 }
 
-func (o *KeySchema) GetSubjectName() *string {
-	if o == nil {
+func (k *KeySchema) GetSubjectName() *string {
+	if k == nil {
 		return nil
 	}
-	return o.SubjectName
+	return k.SubjectName
 }
 
 type ValueSchema struct {
@@ -250,24 +250,24 @@ func (v ValueSchema) MarshalJSON() ([]byte, error) {
 }
 
 func (v *ValueSchema) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ValueSchema) GetSchemaVersion() *string {
-	if o == nil {
+func (v *ValueSchema) GetSchemaVersion() *string {
+	if v == nil {
 		return nil
 	}
-	return o.SchemaVersion
+	return v.SchemaVersion
 }
 
-func (o *ValueSchema) GetSubjectName() *string {
-	if o == nil {
+func (v *ValueSchema) GetSubjectName() *string {
+	if v == nil {
 		return nil
 	}
-	return o.SubjectName
+	return v.SubjectName
 }
 
 type Confluent struct {
@@ -287,52 +287,52 @@ func (c Confluent) MarshalJSON() ([]byte, error) {
 }
 
 func (c *Confluent) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"authentication", "key_schema", "value_schema"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Confluent) GetAuthentication() ConfluentPluginAuthentication {
-	if o == nil {
+func (c *Confluent) GetAuthentication() ConfluentPluginAuthentication {
+	if c == nil {
 		return ConfluentPluginAuthentication{}
 	}
-	return o.Authentication
+	return c.Authentication
 }
 
-func (o *Confluent) GetKeySchema() *KeySchema {
-	if o == nil {
+func (c *Confluent) GetKeySchema() *KeySchema {
+	if c == nil {
 		return nil
 	}
-	return o.KeySchema
+	return c.KeySchema
 }
 
-func (o *Confluent) GetSslVerify() *bool {
-	if o == nil {
+func (c *Confluent) GetSslVerify() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.SslVerify
+	return c.SslVerify
 }
 
-func (o *Confluent) GetTTL() *float64 {
-	if o == nil {
+func (c *Confluent) GetTTL() *float64 {
+	if c == nil {
 		return nil
 	}
-	return o.TTL
+	return c.TTL
 }
 
-func (o *Confluent) GetURL() *string {
-	if o == nil {
+func (c *Confluent) GetURL() *string {
+	if c == nil {
 		return nil
 	}
-	return o.URL
+	return c.URL
 }
 
-func (o *Confluent) GetValueSchema() *ValueSchema {
-	if o == nil {
+func (c *Confluent) GetValueSchema() *ValueSchema {
+	if c == nil {
 		return nil
 	}
-	return o.ValueSchema
+	return c.ValueSchema
 }
 
 // SchemaRegistry - The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
@@ -340,11 +340,11 @@ type SchemaRegistry struct {
 	Confluent *Confluent `json:"confluent"`
 }
 
-func (o *SchemaRegistry) GetConfluent() *Confluent {
-	if o == nil {
+func (s *SchemaRegistry) GetConfluent() *Confluent {
+	if s == nil {
 		return nil
 	}
-	return o.Confluent
+	return s.Confluent
 }
 
 type ConfluentPluginConfig struct {
@@ -410,206 +410,206 @@ func (c ConfluentPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfluentPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"allowed_topics", "bootstrap_servers", "cluster_api_key", "cluster_api_secret", "message_by_lua_functions", "topic"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ConfluentPluginConfig) GetAllowedTopics() []string {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetAllowedTopics() []string {
+	if c == nil {
 		return nil
 	}
-	return o.AllowedTopics
+	return c.AllowedTopics
 }
 
-func (o *ConfluentPluginConfig) GetBootstrapServers() []BootstrapServers {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetBootstrapServers() []BootstrapServers {
+	if c == nil {
 		return nil
 	}
-	return o.BootstrapServers
+	return c.BootstrapServers
 }
 
-func (o *ConfluentPluginConfig) GetClusterAPIKey() string {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetClusterAPIKey() string {
+	if c == nil {
 		return ""
 	}
-	return o.ClusterAPIKey
+	return c.ClusterAPIKey
 }
 
-func (o *ConfluentPluginConfig) GetClusterAPISecret() string {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetClusterAPISecret() string {
+	if c == nil {
 		return ""
 	}
-	return o.ClusterAPISecret
+	return c.ClusterAPISecret
 }
 
-func (o *ConfluentPluginConfig) GetClusterName() *string {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetClusterName() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ClusterName
+	return c.ClusterName
 }
 
-func (o *ConfluentPluginConfig) GetConfluentCloudAPIKey() *string {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetConfluentCloudAPIKey() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ConfluentCloudAPIKey
+	return c.ConfluentCloudAPIKey
 }
 
-func (o *ConfluentPluginConfig) GetConfluentCloudAPISecret() *string {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetConfluentCloudAPISecret() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ConfluentCloudAPISecret
+	return c.ConfluentCloudAPISecret
 }
 
-func (o *ConfluentPluginConfig) GetForwardBody() *bool {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetForwardBody() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.ForwardBody
+	return c.ForwardBody
 }
 
-func (o *ConfluentPluginConfig) GetForwardHeaders() *bool {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetForwardHeaders() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.ForwardHeaders
+	return c.ForwardHeaders
 }
 
-func (o *ConfluentPluginConfig) GetForwardMethod() *bool {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetForwardMethod() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.ForwardMethod
+	return c.ForwardMethod
 }
 
-func (o *ConfluentPluginConfig) GetForwardURI() *bool {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetForwardURI() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.ForwardURI
+	return c.ForwardURI
 }
 
-func (o *ConfluentPluginConfig) GetKeepalive() *int64 {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetKeepalive() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.Keepalive
+	return c.Keepalive
 }
 
-func (o *ConfluentPluginConfig) GetKeepaliveEnabled() *bool {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetKeepaliveEnabled() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.KeepaliveEnabled
+	return c.KeepaliveEnabled
 }
 
-func (o *ConfluentPluginConfig) GetKeyQueryArg() *string {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetKeyQueryArg() *string {
+	if c == nil {
 		return nil
 	}
-	return o.KeyQueryArg
+	return c.KeyQueryArg
 }
 
-func (o *ConfluentPluginConfig) GetMessageByLuaFunctions() []string {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetMessageByLuaFunctions() []string {
+	if c == nil {
 		return nil
 	}
-	return o.MessageByLuaFunctions
+	return c.MessageByLuaFunctions
 }
 
-func (o *ConfluentPluginConfig) GetProducerAsync() *bool {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetProducerAsync() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.ProducerAsync
+	return c.ProducerAsync
 }
 
-func (o *ConfluentPluginConfig) GetProducerAsyncBufferingLimitsMessagesInMemory() *int64 {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetProducerAsyncBufferingLimitsMessagesInMemory() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.ProducerAsyncBufferingLimitsMessagesInMemory
+	return c.ProducerAsyncBufferingLimitsMessagesInMemory
 }
 
-func (o *ConfluentPluginConfig) GetProducerAsyncFlushTimeout() *int64 {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetProducerAsyncFlushTimeout() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.ProducerAsyncFlushTimeout
+	return c.ProducerAsyncFlushTimeout
 }
 
-func (o *ConfluentPluginConfig) GetProducerRequestAcks() *ProducerRequestAcks {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetProducerRequestAcks() *ProducerRequestAcks {
+	if c == nil {
 		return nil
 	}
-	return o.ProducerRequestAcks
+	return c.ProducerRequestAcks
 }
 
-func (o *ConfluentPluginConfig) GetProducerRequestLimitsBytesPerRequest() *int64 {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetProducerRequestLimitsBytesPerRequest() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.ProducerRequestLimitsBytesPerRequest
+	return c.ProducerRequestLimitsBytesPerRequest
 }
 
-func (o *ConfluentPluginConfig) GetProducerRequestLimitsMessagesPerRequest() *int64 {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetProducerRequestLimitsMessagesPerRequest() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.ProducerRequestLimitsMessagesPerRequest
+	return c.ProducerRequestLimitsMessagesPerRequest
 }
 
-func (o *ConfluentPluginConfig) GetProducerRequestRetriesBackoffTimeout() *int64 {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetProducerRequestRetriesBackoffTimeout() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.ProducerRequestRetriesBackoffTimeout
+	return c.ProducerRequestRetriesBackoffTimeout
 }
 
-func (o *ConfluentPluginConfig) GetProducerRequestRetriesMaxAttempts() *int64 {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetProducerRequestRetriesMaxAttempts() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.ProducerRequestRetriesMaxAttempts
+	return c.ProducerRequestRetriesMaxAttempts
 }
 
-func (o *ConfluentPluginConfig) GetProducerRequestTimeout() *int64 {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetProducerRequestTimeout() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.ProducerRequestTimeout
+	return c.ProducerRequestTimeout
 }
 
-func (o *ConfluentPluginConfig) GetSchemaRegistry() *SchemaRegistry {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetSchemaRegistry() *SchemaRegistry {
+	if c == nil {
 		return nil
 	}
-	return o.SchemaRegistry
+	return c.SchemaRegistry
 }
 
-func (o *ConfluentPluginConfig) GetTimeout() *int64 {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetTimeout() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.Timeout
+	return c.Timeout
 }
 
-func (o *ConfluentPluginConfig) GetTopic() string {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetTopic() string {
+	if c == nil {
 		return ""
 	}
-	return o.Topic
+	return c.Topic
 }
 
-func (o *ConfluentPluginConfig) GetTopicsQueryArg() *string {
-	if o == nil {
+func (c *ConfluentPluginConfig) GetTopicsQueryArg() *string {
+	if c == nil {
 		return nil
 	}
-	return o.TopicsQueryArg
+	return c.TopicsQueryArg
 }
 
 // ConfluentPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -617,11 +617,11 @@ type ConfluentPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *ConfluentPluginConsumer) GetID() *string {
-	if o == nil {
+func (c *ConfluentPluginConsumer) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
 type ConfluentPluginProtocols string
@@ -661,11 +661,11 @@ type ConfluentPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *ConfluentPluginRoute) GetID() *string {
-	if o == nil {
+func (c *ConfluentPluginRoute) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
 // ConfluentPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -673,11 +673,11 @@ type ConfluentPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *ConfluentPluginService) GetID() *string {
-	if o == nil {
+func (c *ConfluentPluginService) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
 // ConfluentPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -714,103 +714,103 @@ func (c ConfluentPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfluentPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "ordering", "partials", "tags", "config", "consumer", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ConfluentPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (c *ConfluentPlugin) GetCreatedAt() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return c.CreatedAt
 }
 
-func (o *ConfluentPlugin) GetEnabled() *bool {
-	if o == nil {
+func (c *ConfluentPlugin) GetEnabled() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.Enabled
+	return c.Enabled
 }
 
-func (o *ConfluentPlugin) GetID() *string {
-	if o == nil {
+func (c *ConfluentPlugin) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *ConfluentPlugin) GetInstanceName() *string {
-	if o == nil {
+func (c *ConfluentPlugin) GetInstanceName() *string {
+	if c == nil {
 		return nil
 	}
-	return o.InstanceName
+	return c.InstanceName
 }
 
-func (o *ConfluentPlugin) GetName() string {
+func (c *ConfluentPlugin) GetName() string {
 	return "confluent"
 }
 
-func (o *ConfluentPlugin) GetOrdering() *ConfluentPluginOrdering {
-	if o == nil {
+func (c *ConfluentPlugin) GetOrdering() *ConfluentPluginOrdering {
+	if c == nil {
 		return nil
 	}
-	return o.Ordering
+	return c.Ordering
 }
 
-func (o *ConfluentPlugin) GetPartials() []ConfluentPluginPartials {
-	if o == nil {
+func (c *ConfluentPlugin) GetPartials() []ConfluentPluginPartials {
+	if c == nil {
 		return nil
 	}
-	return o.Partials
+	return c.Partials
 }
 
-func (o *ConfluentPlugin) GetTags() []string {
-	if o == nil {
+func (c *ConfluentPlugin) GetTags() []string {
+	if c == nil {
 		return nil
 	}
-	return o.Tags
+	return c.Tags
 }
 
-func (o *ConfluentPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (c *ConfluentPlugin) GetUpdatedAt() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return c.UpdatedAt
 }
 
-func (o *ConfluentPlugin) GetConfig() ConfluentPluginConfig {
-	if o == nil {
+func (c *ConfluentPlugin) GetConfig() ConfluentPluginConfig {
+	if c == nil {
 		return ConfluentPluginConfig{}
 	}
-	return o.Config
+	return c.Config
 }
 
-func (o *ConfluentPlugin) GetConsumer() *ConfluentPluginConsumer {
-	if o == nil {
+func (c *ConfluentPlugin) GetConsumer() *ConfluentPluginConsumer {
+	if c == nil {
 		return nil
 	}
-	return o.Consumer
+	return c.Consumer
 }
 
-func (o *ConfluentPlugin) GetProtocols() []ConfluentPluginProtocols {
-	if o == nil {
+func (c *ConfluentPlugin) GetProtocols() []ConfluentPluginProtocols {
+	if c == nil {
 		return nil
 	}
-	return o.Protocols
+	return c.Protocols
 }
 
-func (o *ConfluentPlugin) GetRoute() *ConfluentPluginRoute {
-	if o == nil {
+func (c *ConfluentPlugin) GetRoute() *ConfluentPluginRoute {
+	if c == nil {
 		return nil
 	}
-	return o.Route
+	return c.Route
 }
 
-func (o *ConfluentPlugin) GetService() *ConfluentPluginService {
-	if o == nil {
+func (c *ConfluentPlugin) GetService() *ConfluentPluginService {
+	if c == nil {
 		return nil
 	}
-	return o.Service
+	return c.Service
 }

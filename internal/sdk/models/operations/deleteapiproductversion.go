@@ -14,18 +14,18 @@ type DeleteAPIProductVersionRequest struct {
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (o *DeleteAPIProductVersionRequest) GetAPIProductID() string {
-	if o == nil {
+func (d *DeleteAPIProductVersionRequest) GetAPIProductID() string {
+	if d == nil {
 		return ""
 	}
-	return o.APIProductID
+	return d.APIProductID
 }
 
-func (o *DeleteAPIProductVersionRequest) GetID() string {
-	if o == nil {
+func (d *DeleteAPIProductVersionRequest) GetID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ID
+	return d.ID
 }
 
 type DeleteAPIProductVersionResponse struct {
@@ -43,44 +43,44 @@ type DeleteAPIProductVersionResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *DeleteAPIProductVersionResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteAPIProductVersionResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteAPIProductVersionResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteAPIProductVersionResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteAPIProductVersionResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteAPIProductVersionResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteAPIProductVersionResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (d *DeleteAPIProductVersionResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return d.UnauthorizedError
 }
 
-func (o *DeleteAPIProductVersionResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (d *DeleteAPIProductVersionResponse) GetForbiddenError() *shared.ForbiddenError {
+	if d == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return d.ForbiddenError
 }
 
-func (o *DeleteAPIProductVersionResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (d *DeleteAPIProductVersionResponse) GetNotFoundError() *shared.NotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return d.NotFoundError
 }

@@ -13,18 +13,18 @@ type CreateOpaPluginRequest struct {
 	OpaPlugin      shared.OpaPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateOpaPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateOpaPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateOpaPluginRequest) GetOpaPlugin() shared.OpaPlugin {
-	if o == nil {
+func (c *CreateOpaPluginRequest) GetOpaPlugin() shared.OpaPlugin {
+	if c == nil {
 		return shared.OpaPlugin{}
 	}
-	return o.OpaPlugin
+	return c.OpaPlugin
 }
 
 type CreateOpaPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateOpaPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateOpaPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateOpaPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateOpaPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateOpaPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateOpaPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateOpaPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateOpaPluginResponse) GetOpaPlugin() *shared.OpaPlugin {
-	if o == nil {
+func (c *CreateOpaPluginResponse) GetOpaPlugin() *shared.OpaPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.OpaPlugin
+	return c.OpaPlugin
 }
 
-func (o *CreateOpaPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateOpaPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

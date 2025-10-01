@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // IntegrationInstanceRef - Short-hand descriptor of an integration instance.
 type IntegrationInstanceRef struct {
 	// The integration instance ID.
@@ -13,23 +17,34 @@ type IntegrationInstanceRef struct {
 	DisplayName string `json:"display_name"`
 }
 
-func (o *IntegrationInstanceRef) GetID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ID
+func (i IntegrationInstanceRef) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
 }
 
-func (o *IntegrationInstanceRef) GetName() string {
-	if o == nil {
-		return ""
+func (i *IntegrationInstanceRef) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"id", "name", "display_name"}); err != nil {
+		return err
 	}
-	return o.Name
+	return nil
 }
 
-func (o *IntegrationInstanceRef) GetDisplayName() string {
-	if o == nil {
+func (i *IntegrationInstanceRef) GetID() string {
+	if i == nil {
 		return ""
 	}
-	return o.DisplayName
+	return i.ID
+}
+
+func (i *IntegrationInstanceRef) GetName() string {
+	if i == nil {
+		return ""
+	}
+	return i.Name
+}
+
+func (i *IntegrationInstanceRef) GetDisplayName() string {
+	if i == nil {
+		return ""
+	}
+	return i.DisplayName
 }

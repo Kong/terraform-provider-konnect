@@ -12,22 +12,22 @@ type AiSemanticPromptGuardPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AiSemanticPromptGuardPluginAfter) GetAccess() []string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginAfter) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AiSemanticPromptGuardPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AiSemanticPromptGuardPluginBefore) GetAccess() []string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginBefore) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AiSemanticPromptGuardPluginOrdering struct {
@@ -35,18 +35,18 @@ type AiSemanticPromptGuardPluginOrdering struct {
 	Before *AiSemanticPromptGuardPluginBefore `json:"before,omitempty"`
 }
 
-func (o *AiSemanticPromptGuardPluginOrdering) GetAfter() *AiSemanticPromptGuardPluginAfter {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginOrdering) GetAfter() *AiSemanticPromptGuardPluginAfter {
+	if a == nil {
 		return nil
 	}
-	return o.After
+	return a.After
 }
 
-func (o *AiSemanticPromptGuardPluginOrdering) GetBefore() *AiSemanticPromptGuardPluginBefore {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginOrdering) GetBefore() *AiSemanticPromptGuardPluginBefore {
+	if a == nil {
 		return nil
 	}
-	return o.Before
+	return a.Before
 }
 
 type AiSemanticPromptGuardPluginPartials struct {
@@ -57,25 +57,25 @@ type AiSemanticPromptGuardPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *AiSemanticPromptGuardPluginPartials) GetID() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginPartials) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AiSemanticPromptGuardPluginPartials) GetName() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginPartials) GetName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AiSemanticPromptGuardPluginPartials) GetPath() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginPartials) GetPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Path
+	return a.Path
 }
 
 // AiSemanticPromptGuardPluginParamLocation - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
@@ -141,108 +141,108 @@ func (a AiSemanticPromptGuardPluginAuth) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticPromptGuardPluginAuth) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticPromptGuardPluginAuth) GetAllowOverride() *bool {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginAuth) GetAllowOverride() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.AllowOverride
+	return a.AllowOverride
 }
 
-func (o *AiSemanticPromptGuardPluginAuth) GetAwsAccessKeyID() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginAuth) GetAwsAccessKeyID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsAccessKeyID
+	return a.AwsAccessKeyID
 }
 
-func (o *AiSemanticPromptGuardPluginAuth) GetAwsSecretAccessKey() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginAuth) GetAwsSecretAccessKey() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsSecretAccessKey
+	return a.AwsSecretAccessKey
 }
 
-func (o *AiSemanticPromptGuardPluginAuth) GetAzureClientID() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginAuth) GetAzureClientID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureClientID
+	return a.AzureClientID
 }
 
-func (o *AiSemanticPromptGuardPluginAuth) GetAzureClientSecret() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginAuth) GetAzureClientSecret() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureClientSecret
+	return a.AzureClientSecret
 }
 
-func (o *AiSemanticPromptGuardPluginAuth) GetAzureTenantID() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginAuth) GetAzureTenantID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureTenantID
+	return a.AzureTenantID
 }
 
-func (o *AiSemanticPromptGuardPluginAuth) GetAzureUseManagedIdentity() *bool {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginAuth) GetAzureUseManagedIdentity() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.AzureUseManagedIdentity
+	return a.AzureUseManagedIdentity
 }
 
-func (o *AiSemanticPromptGuardPluginAuth) GetGcpServiceAccountJSON() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginAuth) GetGcpServiceAccountJSON() *string {
+	if a == nil {
 		return nil
 	}
-	return o.GcpServiceAccountJSON
+	return a.GcpServiceAccountJSON
 }
 
-func (o *AiSemanticPromptGuardPluginAuth) GetGcpUseServiceAccount() *bool {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginAuth) GetGcpUseServiceAccount() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.GcpUseServiceAccount
+	return a.GcpUseServiceAccount
 }
 
-func (o *AiSemanticPromptGuardPluginAuth) GetHeaderName() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginAuth) GetHeaderName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.HeaderName
+	return a.HeaderName
 }
 
-func (o *AiSemanticPromptGuardPluginAuth) GetHeaderValue() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginAuth) GetHeaderValue() *string {
+	if a == nil {
 		return nil
 	}
-	return o.HeaderValue
+	return a.HeaderValue
 }
 
-func (o *AiSemanticPromptGuardPluginAuth) GetParamLocation() *AiSemanticPromptGuardPluginParamLocation {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginAuth) GetParamLocation() *AiSemanticPromptGuardPluginParamLocation {
+	if a == nil {
 		return nil
 	}
-	return o.ParamLocation
+	return a.ParamLocation
 }
 
-func (o *AiSemanticPromptGuardPluginAuth) GetParamName() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginAuth) GetParamName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ParamName
+	return a.ParamName
 }
 
-func (o *AiSemanticPromptGuardPluginAuth) GetParamValue() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginAuth) GetParamValue() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ParamValue
+	return a.ParamValue
 }
 
 type AiSemanticPromptGuardPluginAzure struct {
@@ -259,31 +259,31 @@ func (a AiSemanticPromptGuardPluginAzure) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticPromptGuardPluginAzure) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticPromptGuardPluginAzure) GetAPIVersion() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginAzure) GetAPIVersion() *string {
+	if a == nil {
 		return nil
 	}
-	return o.APIVersion
+	return a.APIVersion
 }
 
-func (o *AiSemanticPromptGuardPluginAzure) GetDeploymentID() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginAzure) GetDeploymentID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DeploymentID
+	return a.DeploymentID
 }
 
-func (o *AiSemanticPromptGuardPluginAzure) GetInstance() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginAzure) GetInstance() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Instance
+	return a.Instance
 }
 
 type AiSemanticPromptGuardPluginBedrock struct {
@@ -306,52 +306,52 @@ func (a AiSemanticPromptGuardPluginBedrock) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticPromptGuardPluginBedrock) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticPromptGuardPluginBedrock) GetAwsAssumeRoleArn() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginBedrock) GetAwsAssumeRoleArn() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsAssumeRoleArn
+	return a.AwsAssumeRoleArn
 }
 
-func (o *AiSemanticPromptGuardPluginBedrock) GetAwsRegion() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginBedrock) GetAwsRegion() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsRegion
+	return a.AwsRegion
 }
 
-func (o *AiSemanticPromptGuardPluginBedrock) GetAwsRoleSessionName() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginBedrock) GetAwsRoleSessionName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsRoleSessionName
+	return a.AwsRoleSessionName
 }
 
-func (o *AiSemanticPromptGuardPluginBedrock) GetAwsStsEndpointURL() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginBedrock) GetAwsStsEndpointURL() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsStsEndpointURL
+	return a.AwsStsEndpointURL
 }
 
-func (o *AiSemanticPromptGuardPluginBedrock) GetEmbeddingsNormalize() *bool {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginBedrock) GetEmbeddingsNormalize() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.EmbeddingsNormalize
+	return a.EmbeddingsNormalize
 }
 
-func (o *AiSemanticPromptGuardPluginBedrock) GetPerformanceConfigLatency() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginBedrock) GetPerformanceConfigLatency() *string {
+	if a == nil {
 		return nil
 	}
-	return o.PerformanceConfigLatency
+	return a.PerformanceConfigLatency
 }
 
 type AiSemanticPromptGuardPluginGemini struct {
@@ -368,31 +368,31 @@ func (a AiSemanticPromptGuardPluginGemini) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticPromptGuardPluginGemini) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticPromptGuardPluginGemini) GetAPIEndpoint() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginGemini) GetAPIEndpoint() *string {
+	if a == nil {
 		return nil
 	}
-	return o.APIEndpoint
+	return a.APIEndpoint
 }
 
-func (o *AiSemanticPromptGuardPluginGemini) GetLocationID() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginGemini) GetLocationID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.LocationID
+	return a.LocationID
 }
 
-func (o *AiSemanticPromptGuardPluginGemini) GetProjectID() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginGemini) GetProjectID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ProjectID
+	return a.ProjectID
 }
 
 type AiSemanticPromptGuardPluginHuggingface struct {
@@ -407,24 +407,24 @@ func (a AiSemanticPromptGuardPluginHuggingface) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticPromptGuardPluginHuggingface) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticPromptGuardPluginHuggingface) GetUseCache() *bool {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginHuggingface) GetUseCache() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.UseCache
+	return a.UseCache
 }
 
-func (o *AiSemanticPromptGuardPluginHuggingface) GetWaitForModel() *bool {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginHuggingface) GetWaitForModel() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.WaitForModel
+	return a.WaitForModel
 }
 
 // AiSemanticPromptGuardPluginOptions - Key/value settings for the model
@@ -442,45 +442,45 @@ func (a AiSemanticPromptGuardPluginOptions) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticPromptGuardPluginOptions) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"azure", "bedrock", "gemini", "huggingface"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticPromptGuardPluginOptions) GetAzure() AiSemanticPromptGuardPluginAzure {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginOptions) GetAzure() AiSemanticPromptGuardPluginAzure {
+	if a == nil {
 		return AiSemanticPromptGuardPluginAzure{}
 	}
-	return o.Azure
+	return a.Azure
 }
 
-func (o *AiSemanticPromptGuardPluginOptions) GetBedrock() *AiSemanticPromptGuardPluginBedrock {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginOptions) GetBedrock() *AiSemanticPromptGuardPluginBedrock {
+	if a == nil {
 		return nil
 	}
-	return o.Bedrock
+	return a.Bedrock
 }
 
-func (o *AiSemanticPromptGuardPluginOptions) GetGemini() *AiSemanticPromptGuardPluginGemini {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginOptions) GetGemini() *AiSemanticPromptGuardPluginGemini {
+	if a == nil {
 		return nil
 	}
-	return o.Gemini
+	return a.Gemini
 }
 
-func (o *AiSemanticPromptGuardPluginOptions) GetHuggingface() *AiSemanticPromptGuardPluginHuggingface {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginOptions) GetHuggingface() *AiSemanticPromptGuardPluginHuggingface {
+	if a == nil {
 		return nil
 	}
-	return o.Huggingface
+	return a.Huggingface
 }
 
-func (o *AiSemanticPromptGuardPluginOptions) GetUpstreamURL() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginOptions) GetUpstreamURL() *string {
+	if a == nil {
 		return nil
 	}
-	return o.UpstreamURL
+	return a.UpstreamURL
 }
 
 // AiSemanticPromptGuardPluginProvider - AI provider format to use for embeddings API
@@ -531,25 +531,25 @@ type AiSemanticPromptGuardPluginModel struct {
 	Provider AiSemanticPromptGuardPluginProvider `json:"provider"`
 }
 
-func (o *AiSemanticPromptGuardPluginModel) GetName() string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginModel) GetName() string {
+	if a == nil {
 		return ""
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AiSemanticPromptGuardPluginModel) GetOptions() *AiSemanticPromptGuardPluginOptions {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginModel) GetOptions() *AiSemanticPromptGuardPluginOptions {
+	if a == nil {
 		return nil
 	}
-	return o.Options
+	return a.Options
 }
 
-func (o *AiSemanticPromptGuardPluginModel) GetProvider() AiSemanticPromptGuardPluginProvider {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginModel) GetProvider() AiSemanticPromptGuardPluginProvider {
+	if a == nil {
 		return AiSemanticPromptGuardPluginProvider("")
 	}
-	return o.Provider
+	return a.Provider
 }
 
 type AiSemanticPromptGuardPluginEmbeddings struct {
@@ -557,18 +557,18 @@ type AiSemanticPromptGuardPluginEmbeddings struct {
 	Model AiSemanticPromptGuardPluginModel `json:"model"`
 }
 
-func (o *AiSemanticPromptGuardPluginEmbeddings) GetAuth() *AiSemanticPromptGuardPluginAuth {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginEmbeddings) GetAuth() *AiSemanticPromptGuardPluginAuth {
+	if a == nil {
 		return nil
 	}
-	return o.Auth
+	return a.Auth
 }
 
-func (o *AiSemanticPromptGuardPluginEmbeddings) GetModel() AiSemanticPromptGuardPluginModel {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginEmbeddings) GetModel() AiSemanticPromptGuardPluginModel {
+	if a == nil {
 		return AiSemanticPromptGuardPluginModel{}
 	}
-	return o.Model
+	return a.Model
 }
 
 // AiSemanticPromptGuardPluginGenaiCategory - Generative AI category of the request
@@ -664,45 +664,45 @@ func (r Rules) MarshalJSON() ([]byte, error) {
 }
 
 func (r *Rules) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"allow_prompts", "deny_prompts"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Rules) GetAllowPrompts() []string {
-	if o == nil {
+func (r *Rules) GetAllowPrompts() []string {
+	if r == nil {
 		return nil
 	}
-	return o.AllowPrompts
+	return r.AllowPrompts
 }
 
-func (o *Rules) GetDenyPrompts() []string {
-	if o == nil {
+func (r *Rules) GetDenyPrompts() []string {
+	if r == nil {
 		return nil
 	}
-	return o.DenyPrompts
+	return r.DenyPrompts
 }
 
-func (o *Rules) GetMatchAllConversationHistory() *bool {
-	if o == nil {
+func (r *Rules) GetMatchAllConversationHistory() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.MatchAllConversationHistory
+	return r.MatchAllConversationHistory
 }
 
-func (o *Rules) GetMatchAllRoles() *bool {
-	if o == nil {
+func (r *Rules) GetMatchAllRoles() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.MatchAllRoles
+	return r.MatchAllRoles
 }
 
-func (o *Rules) GetMaxRequestBodySize() *int64 {
-	if o == nil {
+func (r *Rules) GetMaxRequestBodySize() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.MaxRequestBodySize
+	return r.MaxRequestBodySize
 }
 
 type Search struct {
@@ -715,17 +715,17 @@ func (s Search) MarshalJSON() ([]byte, error) {
 }
 
 func (s *Search) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Search) GetThreshold() *float64 {
-	if o == nil {
+func (s *Search) GetThreshold() *float64 {
+	if s == nil {
 		return nil
 	}
-	return o.Threshold
+	return s.Threshold
 }
 
 // AiSemanticPromptGuardPluginDistanceMetric - the distance metric to use for vector searches
@@ -817,94 +817,94 @@ func (a AiSemanticPromptGuardPluginPgvector) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticPromptGuardPluginPgvector) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticPromptGuardPluginPgvector) GetDatabase() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginPgvector) GetDatabase() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Database
+	return a.Database
 }
 
-func (o *AiSemanticPromptGuardPluginPgvector) GetHost() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginPgvector) GetHost() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Host
+	return a.Host
 }
 
-func (o *AiSemanticPromptGuardPluginPgvector) GetPassword() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginPgvector) GetPassword() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Password
+	return a.Password
 }
 
-func (o *AiSemanticPromptGuardPluginPgvector) GetPort() *int64 {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginPgvector) GetPort() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Port
+	return a.Port
 }
 
-func (o *AiSemanticPromptGuardPluginPgvector) GetSsl() *bool {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginPgvector) GetSsl() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Ssl
+	return a.Ssl
 }
 
-func (o *AiSemanticPromptGuardPluginPgvector) GetSslCert() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginPgvector) GetSslCert() *string {
+	if a == nil {
 		return nil
 	}
-	return o.SslCert
+	return a.SslCert
 }
 
-func (o *AiSemanticPromptGuardPluginPgvector) GetSslCertKey() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginPgvector) GetSslCertKey() *string {
+	if a == nil {
 		return nil
 	}
-	return o.SslCertKey
+	return a.SslCertKey
 }
 
-func (o *AiSemanticPromptGuardPluginPgvector) GetSslRequired() *bool {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginPgvector) GetSslRequired() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.SslRequired
+	return a.SslRequired
 }
 
-func (o *AiSemanticPromptGuardPluginPgvector) GetSslVerify() *bool {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginPgvector) GetSslVerify() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.SslVerify
+	return a.SslVerify
 }
 
-func (o *AiSemanticPromptGuardPluginPgvector) GetSslVersion() *AiSemanticPromptGuardPluginSslVersion {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginPgvector) GetSslVersion() *AiSemanticPromptGuardPluginSslVersion {
+	if a == nil {
 		return nil
 	}
-	return o.SslVersion
+	return a.SslVersion
 }
 
-func (o *AiSemanticPromptGuardPluginPgvector) GetTimeout() *float64 {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginPgvector) GetTimeout() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.Timeout
+	return a.Timeout
 }
 
-func (o *AiSemanticPromptGuardPluginPgvector) GetUser() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginPgvector) GetUser() *string {
+	if a == nil {
 		return nil
 	}
-	return o.User
+	return a.User
 }
 
 type AiSemanticPromptGuardPluginClusterNodes struct {
@@ -919,24 +919,24 @@ func (a AiSemanticPromptGuardPluginClusterNodes) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticPromptGuardPluginClusterNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticPromptGuardPluginClusterNodes) GetIP() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginClusterNodes) GetIP() *string {
+	if a == nil {
 		return nil
 	}
-	return o.IP
+	return a.IP
 }
 
-func (o *AiSemanticPromptGuardPluginClusterNodes) GetPort() *int64 {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginClusterNodes) GetPort() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Port
+	return a.Port
 }
 
 type AiSemanticPromptGuardPluginSentinelNodes struct {
@@ -951,24 +951,24 @@ func (a AiSemanticPromptGuardPluginSentinelNodes) MarshalJSON() ([]byte, error) 
 }
 
 func (a *AiSemanticPromptGuardPluginSentinelNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticPromptGuardPluginSentinelNodes) GetHost() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginSentinelNodes) GetHost() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Host
+	return a.Host
 }
 
-func (o *AiSemanticPromptGuardPluginSentinelNodes) GetPort() *int64 {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginSentinelNodes) GetPort() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Port
+	return a.Port
 }
 
 // AiSemanticPromptGuardPluginSentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -1051,157 +1051,157 @@ func (a AiSemanticPromptGuardPluginRedis) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticPromptGuardPluginRedis) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"cluster_nodes", "sentinel_nodes"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticPromptGuardPluginRedis) GetClusterMaxRedirections() *int64 {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginRedis) GetClusterMaxRedirections() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.ClusterMaxRedirections
+	return a.ClusterMaxRedirections
 }
 
-func (o *AiSemanticPromptGuardPluginRedis) GetClusterNodes() []AiSemanticPromptGuardPluginClusterNodes {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginRedis) GetClusterNodes() []AiSemanticPromptGuardPluginClusterNodes {
+	if a == nil {
 		return nil
 	}
-	return o.ClusterNodes
+	return a.ClusterNodes
 }
 
-func (o *AiSemanticPromptGuardPluginRedis) GetConnectTimeout() *int64 {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginRedis) GetConnectTimeout() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.ConnectTimeout
+	return a.ConnectTimeout
 }
 
-func (o *AiSemanticPromptGuardPluginRedis) GetConnectionIsProxied() *bool {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginRedis) GetConnectionIsProxied() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.ConnectionIsProxied
+	return a.ConnectionIsProxied
 }
 
-func (o *AiSemanticPromptGuardPluginRedis) GetDatabase() *int64 {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginRedis) GetDatabase() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Database
+	return a.Database
 }
 
-func (o *AiSemanticPromptGuardPluginRedis) GetHost() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginRedis) GetHost() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Host
+	return a.Host
 }
 
-func (o *AiSemanticPromptGuardPluginRedis) GetKeepaliveBacklog() *int64 {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginRedis) GetKeepaliveBacklog() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.KeepaliveBacklog
+	return a.KeepaliveBacklog
 }
 
-func (o *AiSemanticPromptGuardPluginRedis) GetKeepalivePoolSize() *int64 {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginRedis) GetKeepalivePoolSize() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.KeepalivePoolSize
+	return a.KeepalivePoolSize
 }
 
-func (o *AiSemanticPromptGuardPluginRedis) GetPassword() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginRedis) GetPassword() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Password
+	return a.Password
 }
 
-func (o *AiSemanticPromptGuardPluginRedis) GetPort() *int64 {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginRedis) GetPort() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Port
+	return a.Port
 }
 
-func (o *AiSemanticPromptGuardPluginRedis) GetReadTimeout() *int64 {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginRedis) GetReadTimeout() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.ReadTimeout
+	return a.ReadTimeout
 }
 
-func (o *AiSemanticPromptGuardPluginRedis) GetSendTimeout() *int64 {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginRedis) GetSendTimeout() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.SendTimeout
+	return a.SendTimeout
 }
 
-func (o *AiSemanticPromptGuardPluginRedis) GetSentinelMaster() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginRedis) GetSentinelMaster() *string {
+	if a == nil {
 		return nil
 	}
-	return o.SentinelMaster
+	return a.SentinelMaster
 }
 
-func (o *AiSemanticPromptGuardPluginRedis) GetSentinelNodes() []AiSemanticPromptGuardPluginSentinelNodes {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginRedis) GetSentinelNodes() []AiSemanticPromptGuardPluginSentinelNodes {
+	if a == nil {
 		return nil
 	}
-	return o.SentinelNodes
+	return a.SentinelNodes
 }
 
-func (o *AiSemanticPromptGuardPluginRedis) GetSentinelPassword() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginRedis) GetSentinelPassword() *string {
+	if a == nil {
 		return nil
 	}
-	return o.SentinelPassword
+	return a.SentinelPassword
 }
 
-func (o *AiSemanticPromptGuardPluginRedis) GetSentinelRole() *AiSemanticPromptGuardPluginSentinelRole {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginRedis) GetSentinelRole() *AiSemanticPromptGuardPluginSentinelRole {
+	if a == nil {
 		return nil
 	}
-	return o.SentinelRole
+	return a.SentinelRole
 }
 
-func (o *AiSemanticPromptGuardPluginRedis) GetSentinelUsername() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginRedis) GetSentinelUsername() *string {
+	if a == nil {
 		return nil
 	}
-	return o.SentinelUsername
+	return a.SentinelUsername
 }
 
-func (o *AiSemanticPromptGuardPluginRedis) GetServerName() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginRedis) GetServerName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ServerName
+	return a.ServerName
 }
 
-func (o *AiSemanticPromptGuardPluginRedis) GetSsl() *bool {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginRedis) GetSsl() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Ssl
+	return a.Ssl
 }
 
-func (o *AiSemanticPromptGuardPluginRedis) GetSslVerify() *bool {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginRedis) GetSslVerify() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.SslVerify
+	return a.SslVerify
 }
 
-func (o *AiSemanticPromptGuardPluginRedis) GetUsername() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginRedis) GetUsername() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Username
+	return a.Username
 }
 
 // AiSemanticPromptGuardPluginStrategy - which vector database driver to use
@@ -1244,46 +1244,46 @@ type AiSemanticPromptGuardPluginVectordb struct {
 	Threshold float64 `json:"threshold"`
 }
 
-func (o *AiSemanticPromptGuardPluginVectordb) GetDimensions() int64 {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginVectordb) GetDimensions() int64 {
+	if a == nil {
 		return 0
 	}
-	return o.Dimensions
+	return a.Dimensions
 }
 
-func (o *AiSemanticPromptGuardPluginVectordb) GetDistanceMetric() AiSemanticPromptGuardPluginDistanceMetric {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginVectordb) GetDistanceMetric() AiSemanticPromptGuardPluginDistanceMetric {
+	if a == nil {
 		return AiSemanticPromptGuardPluginDistanceMetric("")
 	}
-	return o.DistanceMetric
+	return a.DistanceMetric
 }
 
-func (o *AiSemanticPromptGuardPluginVectordb) GetPgvector() *AiSemanticPromptGuardPluginPgvector {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginVectordb) GetPgvector() *AiSemanticPromptGuardPluginPgvector {
+	if a == nil {
 		return nil
 	}
-	return o.Pgvector
+	return a.Pgvector
 }
 
-func (o *AiSemanticPromptGuardPluginVectordb) GetRedis() *AiSemanticPromptGuardPluginRedis {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginVectordb) GetRedis() *AiSemanticPromptGuardPluginRedis {
+	if a == nil {
 		return nil
 	}
-	return o.Redis
+	return a.Redis
 }
 
-func (o *AiSemanticPromptGuardPluginVectordb) GetStrategy() AiSemanticPromptGuardPluginStrategy {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginVectordb) GetStrategy() AiSemanticPromptGuardPluginStrategy {
+	if a == nil {
 		return AiSemanticPromptGuardPluginStrategy("")
 	}
-	return o.Strategy
+	return a.Strategy
 }
 
-func (o *AiSemanticPromptGuardPluginVectordb) GetThreshold() float64 {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginVectordb) GetThreshold() float64 {
+	if a == nil {
 		return 0.0
 	}
-	return o.Threshold
+	return a.Threshold
 }
 
 type AiSemanticPromptGuardPluginConfig struct {
@@ -1302,52 +1302,52 @@ func (a AiSemanticPromptGuardPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticPromptGuardPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"embeddings", "rules", "search", "vectordb"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticPromptGuardPluginConfig) GetEmbeddings() AiSemanticPromptGuardPluginEmbeddings {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginConfig) GetEmbeddings() AiSemanticPromptGuardPluginEmbeddings {
+	if a == nil {
 		return AiSemanticPromptGuardPluginEmbeddings{}
 	}
-	return o.Embeddings
+	return a.Embeddings
 }
 
-func (o *AiSemanticPromptGuardPluginConfig) GetGenaiCategory() *AiSemanticPromptGuardPluginGenaiCategory {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginConfig) GetGenaiCategory() *AiSemanticPromptGuardPluginGenaiCategory {
+	if a == nil {
 		return nil
 	}
-	return o.GenaiCategory
+	return a.GenaiCategory
 }
 
-func (o *AiSemanticPromptGuardPluginConfig) GetLlmFormat() *AiSemanticPromptGuardPluginLlmFormat {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginConfig) GetLlmFormat() *AiSemanticPromptGuardPluginLlmFormat {
+	if a == nil {
 		return nil
 	}
-	return o.LlmFormat
+	return a.LlmFormat
 }
 
-func (o *AiSemanticPromptGuardPluginConfig) GetRules() *Rules {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginConfig) GetRules() *Rules {
+	if a == nil {
 		return nil
 	}
-	return o.Rules
+	return a.Rules
 }
 
-func (o *AiSemanticPromptGuardPluginConfig) GetSearch() *Search {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginConfig) GetSearch() *Search {
+	if a == nil {
 		return nil
 	}
-	return o.Search
+	return a.Search
 }
 
-func (o *AiSemanticPromptGuardPluginConfig) GetVectordb() AiSemanticPromptGuardPluginVectordb {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginConfig) GetVectordb() AiSemanticPromptGuardPluginVectordb {
+	if a == nil {
 		return AiSemanticPromptGuardPluginVectordb{}
 	}
-	return o.Vectordb
+	return a.Vectordb
 }
 
 // AiSemanticPromptGuardPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -1355,11 +1355,11 @@ type AiSemanticPromptGuardPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiSemanticPromptGuardPluginConsumer) GetID() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginConsumer) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiSemanticPromptGuardPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -1367,11 +1367,11 @@ type AiSemanticPromptGuardPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiSemanticPromptGuardPluginConsumerGroup) GetID() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginConsumerGroup) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 type AiSemanticPromptGuardPluginProtocols string
@@ -1411,11 +1411,11 @@ type AiSemanticPromptGuardPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiSemanticPromptGuardPluginRoute) GetID() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginRoute) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiSemanticPromptGuardPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -1423,11 +1423,11 @@ type AiSemanticPromptGuardPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiSemanticPromptGuardPluginService) GetID() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPluginService) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiSemanticPromptGuardPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -1466,110 +1466,110 @@ func (a AiSemanticPromptGuardPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticPromptGuardPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "ordering", "partials", "tags", "config", "consumer", "consumer_group", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticPromptGuardPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (a *AiSemanticPromptGuardPlugin) GetCreatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AiSemanticPromptGuardPlugin) GetEnabled() *bool {
-	if o == nil {
+func (a *AiSemanticPromptGuardPlugin) GetEnabled() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Enabled
+	return a.Enabled
 }
 
-func (o *AiSemanticPromptGuardPlugin) GetID() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPlugin) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AiSemanticPromptGuardPlugin) GetInstanceName() *string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPlugin) GetInstanceName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.InstanceName
+	return a.InstanceName
 }
 
-func (o *AiSemanticPromptGuardPlugin) GetName() string {
+func (a *AiSemanticPromptGuardPlugin) GetName() string {
 	return "ai-semantic-prompt-guard"
 }
 
-func (o *AiSemanticPromptGuardPlugin) GetOrdering() *AiSemanticPromptGuardPluginOrdering {
-	if o == nil {
+func (a *AiSemanticPromptGuardPlugin) GetOrdering() *AiSemanticPromptGuardPluginOrdering {
+	if a == nil {
 		return nil
 	}
-	return o.Ordering
+	return a.Ordering
 }
 
-func (o *AiSemanticPromptGuardPlugin) GetPartials() []AiSemanticPromptGuardPluginPartials {
-	if o == nil {
+func (a *AiSemanticPromptGuardPlugin) GetPartials() []AiSemanticPromptGuardPluginPartials {
+	if a == nil {
 		return nil
 	}
-	return o.Partials
+	return a.Partials
 }
 
-func (o *AiSemanticPromptGuardPlugin) GetTags() []string {
-	if o == nil {
+func (a *AiSemanticPromptGuardPlugin) GetTags() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Tags
+	return a.Tags
 }
 
-func (o *AiSemanticPromptGuardPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (a *AiSemanticPromptGuardPlugin) GetUpdatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }
 
-func (o *AiSemanticPromptGuardPlugin) GetConfig() AiSemanticPromptGuardPluginConfig {
-	if o == nil {
+func (a *AiSemanticPromptGuardPlugin) GetConfig() AiSemanticPromptGuardPluginConfig {
+	if a == nil {
 		return AiSemanticPromptGuardPluginConfig{}
 	}
-	return o.Config
+	return a.Config
 }
 
-func (o *AiSemanticPromptGuardPlugin) GetConsumer() *AiSemanticPromptGuardPluginConsumer {
-	if o == nil {
+func (a *AiSemanticPromptGuardPlugin) GetConsumer() *AiSemanticPromptGuardPluginConsumer {
+	if a == nil {
 		return nil
 	}
-	return o.Consumer
+	return a.Consumer
 }
 
-func (o *AiSemanticPromptGuardPlugin) GetConsumerGroup() *AiSemanticPromptGuardPluginConsumerGroup {
-	if o == nil {
+func (a *AiSemanticPromptGuardPlugin) GetConsumerGroup() *AiSemanticPromptGuardPluginConsumerGroup {
+	if a == nil {
 		return nil
 	}
-	return o.ConsumerGroup
+	return a.ConsumerGroup
 }
 
-func (o *AiSemanticPromptGuardPlugin) GetProtocols() []AiSemanticPromptGuardPluginProtocols {
-	if o == nil {
+func (a *AiSemanticPromptGuardPlugin) GetProtocols() []AiSemanticPromptGuardPluginProtocols {
+	if a == nil {
 		return nil
 	}
-	return o.Protocols
+	return a.Protocols
 }
 
-func (o *AiSemanticPromptGuardPlugin) GetRoute() *AiSemanticPromptGuardPluginRoute {
-	if o == nil {
+func (a *AiSemanticPromptGuardPlugin) GetRoute() *AiSemanticPromptGuardPluginRoute {
+	if a == nil {
 		return nil
 	}
-	return o.Route
+	return a.Route
 }
 
-func (o *AiSemanticPromptGuardPlugin) GetService() *AiSemanticPromptGuardPluginService {
-	if o == nil {
+func (a *AiSemanticPromptGuardPlugin) GetService() *AiSemanticPromptGuardPluginService {
+	if a == nil {
 		return nil
 	}
-	return o.Service
+	return a.Service
 }

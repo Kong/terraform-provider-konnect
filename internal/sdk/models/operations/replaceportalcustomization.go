@@ -13,18 +13,18 @@ type ReplacePortalCustomizationRequest struct {
 	PortalCustomization *shared.PortalCustomization `request:"mediaType=application/json"`
 }
 
-func (o *ReplacePortalCustomizationRequest) GetPortalID() string {
-	if o == nil {
+func (r *ReplacePortalCustomizationRequest) GetPortalID() string {
+	if r == nil {
 		return ""
 	}
-	return o.PortalID
+	return r.PortalID
 }
 
-func (o *ReplacePortalCustomizationRequest) GetPortalCustomization() *shared.PortalCustomization {
-	if o == nil {
+func (r *ReplacePortalCustomizationRequest) GetPortalCustomization() *shared.PortalCustomization {
+	if r == nil {
 		return nil
 	}
-	return o.PortalCustomization
+	return r.PortalCustomization
 }
 
 type ReplacePortalCustomizationResponse struct {
@@ -46,58 +46,58 @@ type ReplacePortalCustomizationResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *ReplacePortalCustomizationResponse) GetContentType() string {
-	if o == nil {
+func (r *ReplacePortalCustomizationResponse) GetContentType() string {
+	if r == nil {
 		return ""
 	}
-	return o.ContentType
+	return r.ContentType
 }
 
-func (o *ReplacePortalCustomizationResponse) GetStatusCode() int {
-	if o == nil {
+func (r *ReplacePortalCustomizationResponse) GetStatusCode() int {
+	if r == nil {
 		return 0
 	}
-	return o.StatusCode
+	return r.StatusCode
 }
 
-func (o *ReplacePortalCustomizationResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (r *ReplacePortalCustomizationResponse) GetRawResponse() *http.Response {
+	if r == nil {
 		return nil
 	}
-	return o.RawResponse
+	return r.RawResponse
 }
 
-func (o *ReplacePortalCustomizationResponse) GetPortalCustomization() *shared.PortalCustomization {
-	if o == nil {
+func (r *ReplacePortalCustomizationResponse) GetPortalCustomization() *shared.PortalCustomization {
+	if r == nil {
 		return nil
 	}
-	return o.PortalCustomization
+	return r.PortalCustomization
 }
 
-func (o *ReplacePortalCustomizationResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (r *ReplacePortalCustomizationResponse) GetBadRequestError() *shared.BadRequestError {
+	if r == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return r.BadRequestError
 }
 
-func (o *ReplacePortalCustomizationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (r *ReplacePortalCustomizationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if r == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return r.UnauthorizedError
 }
 
-func (o *ReplacePortalCustomizationResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (r *ReplacePortalCustomizationResponse) GetForbiddenError() *shared.ForbiddenError {
+	if r == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return r.ForbiddenError
 }
 
-func (o *ReplacePortalCustomizationResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (r *ReplacePortalCustomizationResponse) GetNotFoundError() *shared.NotFoundError {
+	if r == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return r.NotFoundError
 }

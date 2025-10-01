@@ -13,18 +13,18 @@ type CreateGraphqlproxycacheadvancedPluginRequest struct {
 	GraphqlProxyCacheAdvancedPlugin shared.GraphqlProxyCacheAdvancedPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateGraphqlproxycacheadvancedPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateGraphqlproxycacheadvancedPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateGraphqlproxycacheadvancedPluginRequest) GetGraphqlProxyCacheAdvancedPlugin() shared.GraphqlProxyCacheAdvancedPlugin {
-	if o == nil {
+func (c *CreateGraphqlproxycacheadvancedPluginRequest) GetGraphqlProxyCacheAdvancedPlugin() shared.GraphqlProxyCacheAdvancedPlugin {
+	if c == nil {
 		return shared.GraphqlProxyCacheAdvancedPlugin{}
 	}
-	return o.GraphqlProxyCacheAdvancedPlugin
+	return c.GraphqlProxyCacheAdvancedPlugin
 }
 
 type CreateGraphqlproxycacheadvancedPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateGraphqlproxycacheadvancedPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateGraphqlproxycacheadvancedPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateGraphqlproxycacheadvancedPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateGraphqlproxycacheadvancedPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateGraphqlproxycacheadvancedPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateGraphqlproxycacheadvancedPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateGraphqlproxycacheadvancedPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateGraphqlproxycacheadvancedPluginResponse) GetGraphqlProxyCacheAdvancedPlugin() *shared.GraphqlProxyCacheAdvancedPlugin {
-	if o == nil {
+func (c *CreateGraphqlproxycacheadvancedPluginResponse) GetGraphqlProxyCacheAdvancedPlugin() *shared.GraphqlProxyCacheAdvancedPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.GraphqlProxyCacheAdvancedPlugin
+	return c.GraphqlProxyCacheAdvancedPlugin
 }
 
-func (o *CreateGraphqlproxycacheadvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateGraphqlproxycacheadvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

@@ -13,18 +13,18 @@ type UpdateRealmRequest struct {
 	ConsumerRealmUpdateRequest shared.ConsumerRealmUpdateRequest `request:"mediaType=application/json"`
 }
 
-func (o *UpdateRealmRequest) GetRealmID() string {
-	if o == nil {
+func (u *UpdateRealmRequest) GetRealmID() string {
+	if u == nil {
 		return ""
 	}
-	return o.RealmID
+	return u.RealmID
 }
 
-func (o *UpdateRealmRequest) GetConsumerRealmUpdateRequest() shared.ConsumerRealmUpdateRequest {
-	if o == nil {
+func (u *UpdateRealmRequest) GetConsumerRealmUpdateRequest() shared.ConsumerRealmUpdateRequest {
+	if u == nil {
 		return shared.ConsumerRealmUpdateRequest{}
 	}
-	return o.ConsumerRealmUpdateRequest
+	return u.ConsumerRealmUpdateRequest
 }
 
 type UpdateRealmResponse struct {
@@ -40,37 +40,37 @@ type UpdateRealmResponse struct {
 	BadRequestError *shared.BadRequestError
 }
 
-func (o *UpdateRealmResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateRealmResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateRealmResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateRealmResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateRealmResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateRealmResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateRealmResponse) GetConsumerRealm() *shared.ConsumerRealm {
-	if o == nil {
+func (u *UpdateRealmResponse) GetConsumerRealm() *shared.ConsumerRealm {
+	if u == nil {
 		return nil
 	}
-	return o.ConsumerRealm
+	return u.ConsumerRealm
 }
 
-func (o *UpdateRealmResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (u *UpdateRealmResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return u.BadRequestError
 }

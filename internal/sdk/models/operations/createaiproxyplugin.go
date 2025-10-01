@@ -13,18 +13,18 @@ type CreateAiproxyPluginRequest struct {
 	AiProxyPlugin  shared.AiProxyPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateAiproxyPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateAiproxyPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateAiproxyPluginRequest) GetAiProxyPlugin() shared.AiProxyPlugin {
-	if o == nil {
+func (c *CreateAiproxyPluginRequest) GetAiProxyPlugin() shared.AiProxyPlugin {
+	if c == nil {
 		return shared.AiProxyPlugin{}
 	}
-	return o.AiProxyPlugin
+	return c.AiProxyPlugin
 }
 
 type CreateAiproxyPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateAiproxyPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateAiproxyPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateAiproxyPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateAiproxyPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateAiproxyPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateAiproxyPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateAiproxyPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateAiproxyPluginResponse) GetAiProxyPlugin() *shared.AiProxyPlugin {
-	if o == nil {
+func (c *CreateAiproxyPluginResponse) GetAiProxyPlugin() *shared.AiProxyPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.AiProxyPlugin
+	return c.AiProxyPlugin
 }
 
-func (o *CreateAiproxyPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateAiproxyPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

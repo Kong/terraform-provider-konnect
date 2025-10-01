@@ -26,43 +26,43 @@ func (c ConsumerCreateRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConsumerCreateRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"username"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ConsumerCreateRequest) GetUsername() string {
-	if o == nil {
+func (c *ConsumerCreateRequest) GetUsername() string {
+	if c == nil {
 		return ""
 	}
-	return o.Username
+	return c.Username
 }
 
-func (o *ConsumerCreateRequest) GetCustomID() *string {
-	if o == nil {
+func (c *ConsumerCreateRequest) GetCustomID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.CustomID
+	return c.CustomID
 }
 
-func (o *ConsumerCreateRequest) GetConsumerGroups() []string {
-	if o == nil {
+func (c *ConsumerCreateRequest) GetConsumerGroups() []string {
+	if c == nil {
 		return nil
 	}
-	return o.ConsumerGroups
+	return c.ConsumerGroups
 }
 
-func (o *ConsumerCreateRequest) GetType() *ConsumerType {
-	if o == nil {
+func (c *ConsumerCreateRequest) GetType() *ConsumerType {
+	if c == nil {
 		return nil
 	}
-	return o.Type
+	return c.Type
 }
 
-func (o *ConsumerCreateRequest) GetTags() []string {
-	if o == nil {
+func (c *ConsumerCreateRequest) GetTags() []string {
+	if c == nil {
 		return nil
 	}
-	return o.Tags
+	return c.Tags
 }

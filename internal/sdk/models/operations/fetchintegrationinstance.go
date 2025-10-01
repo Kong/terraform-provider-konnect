@@ -12,11 +12,11 @@ type FetchIntegrationInstanceRequest struct {
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (o *FetchIntegrationInstanceRequest) GetID() string {
-	if o == nil {
+func (f *FetchIntegrationInstanceRequest) GetID() string {
+	if f == nil {
 		return ""
 	}
-	return o.ID
+	return f.ID
 }
 
 type FetchIntegrationInstanceResponse struct {
@@ -36,51 +36,51 @@ type FetchIntegrationInstanceResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *FetchIntegrationInstanceResponse) GetContentType() string {
-	if o == nil {
+func (f *FetchIntegrationInstanceResponse) GetContentType() string {
+	if f == nil {
 		return ""
 	}
-	return o.ContentType
+	return f.ContentType
 }
 
-func (o *FetchIntegrationInstanceResponse) GetStatusCode() int {
-	if o == nil {
+func (f *FetchIntegrationInstanceResponse) GetStatusCode() int {
+	if f == nil {
 		return 0
 	}
-	return o.StatusCode
+	return f.StatusCode
 }
 
-func (o *FetchIntegrationInstanceResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (f *FetchIntegrationInstanceResponse) GetRawResponse() *http.Response {
+	if f == nil {
 		return nil
 	}
-	return o.RawResponse
+	return f.RawResponse
 }
 
-func (o *FetchIntegrationInstanceResponse) GetIntegrationInstance() *shared.IntegrationInstance {
-	if o == nil {
+func (f *FetchIntegrationInstanceResponse) GetIntegrationInstance() *shared.IntegrationInstance {
+	if f == nil {
 		return nil
 	}
-	return o.IntegrationInstance
+	return f.IntegrationInstance
 }
 
-func (o *FetchIntegrationInstanceResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (f *FetchIntegrationInstanceResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if f == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return f.UnauthorizedError
 }
 
-func (o *FetchIntegrationInstanceResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (f *FetchIntegrationInstanceResponse) GetForbiddenError() *shared.ForbiddenError {
+	if f == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return f.ForbiddenError
 }
 
-func (o *FetchIntegrationInstanceResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (f *FetchIntegrationInstanceResponse) GetNotFoundError() *shared.NotFoundError {
+	if f == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return f.NotFoundError
 }

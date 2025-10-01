@@ -18,44 +18,44 @@ type V2PortalAppearance struct {
 	Images *V2AppearanceImages `json:"images,omitempty"`
 }
 
-func (o *V2PortalAppearance) GetThemeName() *V2PortalTheme {
-	if o == nil {
+func (v *V2PortalAppearance) GetThemeName() *V2PortalTheme {
+	if v == nil {
 		return nil
 	}
-	return o.ThemeName
+	return v.ThemeName
 }
 
-func (o *V2PortalAppearance) GetCustomTheme() *V2NullableAppearanceThemeVariables {
-	if o == nil {
+func (v *V2PortalAppearance) GetCustomTheme() *V2NullableAppearanceThemeVariables {
+	if v == nil {
 		return nil
 	}
-	return o.CustomTheme
+	return v.CustomTheme
 }
 
-func (o *V2PortalAppearance) GetCustomFonts() *V2NullableAppearanceFonts {
-	if o == nil {
+func (v *V2PortalAppearance) GetCustomFonts() *V2NullableAppearanceFonts {
+	if v == nil {
 		return nil
 	}
-	return o.CustomFonts
+	return v.CustomFonts
 }
 
-func (o *V2PortalAppearance) GetUseCustomFonts() *bool {
-	if o == nil {
+func (v *V2PortalAppearance) GetUseCustomFonts() *bool {
+	if v == nil {
 		return nil
 	}
-	return o.UseCustomFonts
+	return v.UseCustomFonts
 }
 
-func (o *V2PortalAppearance) GetText() *V2NullableAppearanceTextVariables {
-	if o == nil {
+func (v *V2PortalAppearance) GetText() *V2NullableAppearanceTextVariables {
+	if v == nil {
 		return nil
 	}
-	return o.Text
+	return v.Text
 }
 
-func (o *V2PortalAppearance) GetImages() *V2AppearanceImages {
-	if o == nil {
+func (v *V2PortalAppearance) GetImages() *V2AppearanceImages {
+	if v == nil {
 		return nil
 	}
-	return o.Images
+	return v.Images
 }

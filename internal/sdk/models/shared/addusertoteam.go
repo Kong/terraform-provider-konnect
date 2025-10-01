@@ -8,9 +8,9 @@ type AddUserToTeam struct {
 	UserID string `json:"id"`
 }
 
-func (o *AddUserToTeam) GetUserID() string {
-	if o == nil {
+func (a *AddUserToTeam) GetUserID() string {
+	if a == nil {
 		return ""
 	}
-	return o.UserID
+	return a.UserID
 }

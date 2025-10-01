@@ -19,36 +19,36 @@ func (s SlugConflict) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SlugConflict) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"status", "title", "instance"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *SlugConflict) GetStatus() float64 {
-	if o == nil {
+func (s *SlugConflict) GetStatus() float64 {
+	if s == nil {
 		return 0.0
 	}
-	return o.Status
+	return s.Status
 }
 
-func (o *SlugConflict) GetTitle() string {
-	if o == nil {
+func (s *SlugConflict) GetTitle() string {
+	if s == nil {
 		return ""
 	}
-	return o.Title
+	return s.Title
 }
 
-func (o *SlugConflict) GetType() *string {
-	if o == nil {
+func (s *SlugConflict) GetType() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Type
+	return s.Type
 }
 
-func (o *SlugConflict) GetInstance() string {
-	if o == nil {
+func (s *SlugConflict) GetInstance() string {
+	if s == nil {
 		return ""
 	}
-	return o.Instance
+	return s.Instance
 }

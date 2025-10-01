@@ -8,9 +8,9 @@ type ReplacePortalImageAsset struct {
 	Data string `json:"data"`
 }
 
-func (o *ReplacePortalImageAsset) GetData() string {
-	if o == nil {
+func (r *ReplacePortalImageAsset) GetData() string {
+	if r == nil {
 		return ""
 	}
-	return o.Data
+	return r.Data
 }

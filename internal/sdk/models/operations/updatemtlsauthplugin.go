@@ -15,25 +15,25 @@ type UpdateMtlsauthPluginRequest struct {
 	MtlsAuthPlugin shared.MtlsAuthPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateMtlsauthPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateMtlsauthPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateMtlsauthPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateMtlsauthPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateMtlsauthPluginRequest) GetMtlsAuthPlugin() shared.MtlsAuthPlugin {
-	if o == nil {
+func (u *UpdateMtlsauthPluginRequest) GetMtlsAuthPlugin() shared.MtlsAuthPlugin {
+	if u == nil {
 		return shared.MtlsAuthPlugin{}
 	}
-	return o.MtlsAuthPlugin
+	return u.MtlsAuthPlugin
 }
 
 type UpdateMtlsauthPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateMtlsauthPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateMtlsauthPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateMtlsauthPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateMtlsauthPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateMtlsauthPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateMtlsauthPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateMtlsauthPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateMtlsauthPluginResponse) GetMtlsAuthPlugin() *shared.MtlsAuthPlugin {
-	if o == nil {
+func (u *UpdateMtlsauthPluginResponse) GetMtlsAuthPlugin() *shared.MtlsAuthPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.MtlsAuthPlugin
+	return u.MtlsAuthPlugin
 }
 
-func (o *UpdateMtlsauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateMtlsauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

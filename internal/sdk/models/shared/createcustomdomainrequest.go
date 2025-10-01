@@ -11,23 +11,23 @@ type CreateCustomDomainRequest struct {
 	Domain string `json:"domain"`
 }
 
-func (o *CreateCustomDomainRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateCustomDomainRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateCustomDomainRequest) GetControlPlaneGeo() ControlPlaneGeo {
-	if o == nil {
+func (c *CreateCustomDomainRequest) GetControlPlaneGeo() ControlPlaneGeo {
+	if c == nil {
 		return ControlPlaneGeo("")
 	}
-	return o.ControlPlaneGeo
+	return c.ControlPlaneGeo
 }
 
-func (o *CreateCustomDomainRequest) GetDomain() string {
-	if o == nil {
+func (c *CreateCustomDomainRequest) GetDomain() string {
+	if c == nil {
 		return ""
 	}
-	return o.Domain
+	return c.Domain
 }

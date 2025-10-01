@@ -16,8 +16,8 @@ const (
 )
 
 type ConfigurationDataPlaneGroupAutoscale struct {
-	ConfigurationDataPlaneGroupAutoscaleStatic    *ConfigurationDataPlaneGroupAutoscaleStatic    `queryParam:"inline"`
-	ConfigurationDataPlaneGroupAutoscaleAutopilot *ConfigurationDataPlaneGroupAutoscaleAutopilot `queryParam:"inline"`
+	ConfigurationDataPlaneGroupAutoscaleStatic    *ConfigurationDataPlaneGroupAutoscaleStatic    `queryParam:"inline,name=ConfigurationDataPlaneGroupAutoscale"`
+	ConfigurationDataPlaneGroupAutoscaleAutopilot *ConfigurationDataPlaneGroupAutoscaleAutopilot `queryParam:"inline,name=ConfigurationDataPlaneGroupAutoscale"`
 
 	Type ConfigurationDataPlaneGroupAutoscaleType
 }
@@ -43,14 +43,14 @@ func CreateConfigurationDataPlaneGroupAutoscaleConfigurationDataPlaneGroupAutosc
 func (u *ConfigurationDataPlaneGroupAutoscale) UnmarshalJSON(data []byte) error {
 
 	var configurationDataPlaneGroupAutoscaleStatic ConfigurationDataPlaneGroupAutoscaleStatic = ConfigurationDataPlaneGroupAutoscaleStatic{}
-	if err := utils.UnmarshalJSON(data, &configurationDataPlaneGroupAutoscaleStatic, "", true, true); err == nil {
+	if err := utils.UnmarshalJSON(data, &configurationDataPlaneGroupAutoscaleStatic, "", true, nil); err == nil {
 		u.ConfigurationDataPlaneGroupAutoscaleStatic = &configurationDataPlaneGroupAutoscaleStatic
 		u.Type = ConfigurationDataPlaneGroupAutoscaleTypeConfigurationDataPlaneGroupAutoscaleStatic
 		return nil
 	}
 
 	var configurationDataPlaneGroupAutoscaleAutopilot ConfigurationDataPlaneGroupAutoscaleAutopilot = ConfigurationDataPlaneGroupAutoscaleAutopilot{}
-	if err := utils.UnmarshalJSON(data, &configurationDataPlaneGroupAutoscaleAutopilot, "", true, true); err == nil {
+	if err := utils.UnmarshalJSON(data, &configurationDataPlaneGroupAutoscaleAutopilot, "", true, nil); err == nil {
 		u.ConfigurationDataPlaneGroupAutoscaleAutopilot = &configurationDataPlaneGroupAutoscaleAutopilot
 		u.Type = ConfigurationDataPlaneGroupAutoscaleTypeConfigurationDataPlaneGroupAutoscaleAutopilot
 		return nil

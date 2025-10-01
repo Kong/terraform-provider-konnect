@@ -14,18 +14,18 @@ type GetAiresponsetransformerPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetAiresponsetransformerPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetAiresponsetransformerPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetAiresponsetransformerPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetAiresponsetransformerPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetAiresponsetransformerPluginResponse struct {
@@ -41,37 +41,37 @@ type GetAiresponsetransformerPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetAiresponsetransformerPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetAiresponsetransformerPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetAiresponsetransformerPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetAiresponsetransformerPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetAiresponsetransformerPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetAiresponsetransformerPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetAiresponsetransformerPluginResponse) GetAiResponseTransformerPlugin() *shared.AiResponseTransformerPlugin {
-	if o == nil {
+func (g *GetAiresponsetransformerPluginResponse) GetAiResponseTransformerPlugin() *shared.AiResponseTransformerPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.AiResponseTransformerPlugin
+	return g.AiResponseTransformerPlugin
 }
 
-func (o *GetAiresponsetransformerPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetAiresponsetransformerPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

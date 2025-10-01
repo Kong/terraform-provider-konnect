@@ -13,18 +13,18 @@ type CreateXmlthreatprotectionPluginRequest struct {
 	XMLThreatProtectionPlugin shared.XMLThreatProtectionPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateXmlthreatprotectionPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateXmlthreatprotectionPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateXmlthreatprotectionPluginRequest) GetXMLThreatProtectionPlugin() shared.XMLThreatProtectionPlugin {
-	if o == nil {
+func (c *CreateXmlthreatprotectionPluginRequest) GetXMLThreatProtectionPlugin() shared.XMLThreatProtectionPlugin {
+	if c == nil {
 		return shared.XMLThreatProtectionPlugin{}
 	}
-	return o.XMLThreatProtectionPlugin
+	return c.XMLThreatProtectionPlugin
 }
 
 type CreateXmlthreatprotectionPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateXmlthreatprotectionPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateXmlthreatprotectionPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateXmlthreatprotectionPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateXmlthreatprotectionPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateXmlthreatprotectionPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateXmlthreatprotectionPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateXmlthreatprotectionPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateXmlthreatprotectionPluginResponse) GetXMLThreatProtectionPlugin() *shared.XMLThreatProtectionPlugin {
-	if o == nil {
+func (c *CreateXmlthreatprotectionPluginResponse) GetXMLThreatProtectionPlugin() *shared.XMLThreatProtectionPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.XMLThreatProtectionPlugin
+	return c.XMLThreatProtectionPlugin
 }
 
-func (o *CreateXmlthreatprotectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateXmlthreatprotectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

@@ -15,25 +15,25 @@ type UpdateAiprompttemplatePluginRequest struct {
 	AiPromptTemplatePlugin shared.AiPromptTemplatePlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateAiprompttemplatePluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateAiprompttemplatePluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateAiprompttemplatePluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateAiprompttemplatePluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateAiprompttemplatePluginRequest) GetAiPromptTemplatePlugin() shared.AiPromptTemplatePlugin {
-	if o == nil {
+func (u *UpdateAiprompttemplatePluginRequest) GetAiPromptTemplatePlugin() shared.AiPromptTemplatePlugin {
+	if u == nil {
 		return shared.AiPromptTemplatePlugin{}
 	}
-	return o.AiPromptTemplatePlugin
+	return u.AiPromptTemplatePlugin
 }
 
 type UpdateAiprompttemplatePluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateAiprompttemplatePluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateAiprompttemplatePluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateAiprompttemplatePluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateAiprompttemplatePluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateAiprompttemplatePluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateAiprompttemplatePluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateAiprompttemplatePluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateAiprompttemplatePluginResponse) GetAiPromptTemplatePlugin() *shared.AiPromptTemplatePlugin {
-	if o == nil {
+func (u *UpdateAiprompttemplatePluginResponse) GetAiPromptTemplatePlugin() *shared.AiPromptTemplatePlugin {
+	if u == nil {
 		return nil
 	}
-	return o.AiPromptTemplatePlugin
+	return u.AiPromptTemplatePlugin
 }
 
-func (o *UpdateAiprompttemplatePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateAiprompttemplatePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

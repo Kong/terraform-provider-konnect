@@ -32,71 +32,71 @@ func (c Certificate) MarshalJSON() ([]byte, error) {
 }
 
 func (c *Certificate) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"cert", "key", "snis", "tags"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Certificate) GetCert() string {
-	if o == nil {
+func (c *Certificate) GetCert() string {
+	if c == nil {
 		return ""
 	}
-	return o.Cert
+	return c.Cert
 }
 
-func (o *Certificate) GetCertAlt() *string {
-	if o == nil {
+func (c *Certificate) GetCertAlt() *string {
+	if c == nil {
 		return nil
 	}
-	return o.CertAlt
+	return c.CertAlt
 }
 
-func (o *Certificate) GetCreatedAt() *int64 {
-	if o == nil {
+func (c *Certificate) GetCreatedAt() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return c.CreatedAt
 }
 
-func (o *Certificate) GetID() *string {
-	if o == nil {
+func (c *Certificate) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *Certificate) GetKey() string {
-	if o == nil {
+func (c *Certificate) GetKey() string {
+	if c == nil {
 		return ""
 	}
-	return o.Key
+	return c.Key
 }
 
-func (o *Certificate) GetKeyAlt() *string {
-	if o == nil {
+func (c *Certificate) GetKeyAlt() *string {
+	if c == nil {
 		return nil
 	}
-	return o.KeyAlt
+	return c.KeyAlt
 }
 
-func (o *Certificate) GetSnis() []string {
-	if o == nil {
+func (c *Certificate) GetSnis() []string {
+	if c == nil {
 		return nil
 	}
-	return o.Snis
+	return c.Snis
 }
 
-func (o *Certificate) GetTags() []string {
-	if o == nil {
+func (c *Certificate) GetTags() []string {
+	if c == nil {
 		return nil
 	}
-	return o.Tags
+	return c.Tags
 }
 
-func (o *Certificate) GetUpdatedAt() *int64 {
-	if o == nil {
+func (c *Certificate) GetUpdatedAt() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return c.UpdatedAt
 }

@@ -14,18 +14,18 @@ type DeleteConfluentPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteConfluentPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteConfluentPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteConfluentPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteConfluentPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteConfluentPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteConfluentPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteConfluentPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteConfluentPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteConfluentPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteConfluentPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteConfluentPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteConfluentPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteConfluentPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteConfluentPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

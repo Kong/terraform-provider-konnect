@@ -17,18 +17,18 @@ type CreateTransitGatewayRequest struct {
 	CreateTransitGatewayRequest shared.CreateTransitGatewayRequest `request:"mediaType=application/json"`
 }
 
-func (o *CreateTransitGatewayRequest) GetNetworkID() string {
-	if o == nil {
+func (c *CreateTransitGatewayRequest) GetNetworkID() string {
+	if c == nil {
 		return ""
 	}
-	return o.NetworkID
+	return c.NetworkID
 }
 
-func (o *CreateTransitGatewayRequest) GetCreateTransitGatewayRequest() shared.CreateTransitGatewayRequest {
-	if o == nil {
+func (c *CreateTransitGatewayRequest) GetCreateTransitGatewayRequest() shared.CreateTransitGatewayRequest {
+	if c == nil {
 		return shared.CreateTransitGatewayRequest{}
 	}
-	return o.CreateTransitGatewayRequest
+	return c.CreateTransitGatewayRequest
 }
 
 type CreateTransitGatewayResponse struct {
@@ -52,65 +52,65 @@ type CreateTransitGatewayResponse struct {
 	ConflictError *shared.ConflictError
 }
 
-func (o *CreateTransitGatewayResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateTransitGatewayResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateTransitGatewayResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateTransitGatewayResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateTransitGatewayResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateTransitGatewayResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateTransitGatewayResponse) GetTransitGatewayResponse() *shared.TransitGatewayResponse {
-	if o == nil {
+func (c *CreateTransitGatewayResponse) GetTransitGatewayResponse() *shared.TransitGatewayResponse {
+	if c == nil {
 		return nil
 	}
-	return o.TransitGatewayResponse
+	return c.TransitGatewayResponse
 }
 
-func (o *CreateTransitGatewayResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreateTransitGatewayResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreateTransitGatewayResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (c *CreateTransitGatewayResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return c.UnauthorizedError
 }
 
-func (o *CreateTransitGatewayResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreateTransitGatewayResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }
 
-func (o *CreateTransitGatewayResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (c *CreateTransitGatewayResponse) GetNotFoundError() *shared.NotFoundError {
+	if c == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return c.NotFoundError
 }
 
-func (o *CreateTransitGatewayResponse) GetConflictError() *shared.ConflictError {
-	if o == nil {
+func (c *CreateTransitGatewayResponse) GetConflictError() *shared.ConflictError {
+	if c == nil {
 		return nil
 	}
-	return o.ConflictError
+	return c.ConflictError
 }

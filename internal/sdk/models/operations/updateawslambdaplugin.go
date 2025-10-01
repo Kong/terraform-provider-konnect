@@ -15,25 +15,25 @@ type UpdateAwslambdaPluginRequest struct {
 	AwsLambdaPlugin shared.AwsLambdaPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateAwslambdaPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateAwslambdaPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateAwslambdaPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateAwslambdaPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateAwslambdaPluginRequest) GetAwsLambdaPlugin() shared.AwsLambdaPlugin {
-	if o == nil {
+func (u *UpdateAwslambdaPluginRequest) GetAwsLambdaPlugin() shared.AwsLambdaPlugin {
+	if u == nil {
 		return shared.AwsLambdaPlugin{}
 	}
-	return o.AwsLambdaPlugin
+	return u.AwsLambdaPlugin
 }
 
 type UpdateAwslambdaPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateAwslambdaPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateAwslambdaPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateAwslambdaPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateAwslambdaPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateAwslambdaPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateAwslambdaPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateAwslambdaPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateAwslambdaPluginResponse) GetAwsLambdaPlugin() *shared.AwsLambdaPlugin {
-	if o == nil {
+func (u *UpdateAwslambdaPluginResponse) GetAwsLambdaPlugin() *shared.AwsLambdaPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.AwsLambdaPlugin
+	return u.AwsLambdaPlugin
 }
 
-func (o *UpdateAwslambdaPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateAwslambdaPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

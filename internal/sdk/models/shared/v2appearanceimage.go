@@ -18,22 +18,22 @@ func (v V2AppearanceImage) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V2AppearanceImage) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"data"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *V2AppearanceImage) GetData() string {
-	if o == nil {
+func (v *V2AppearanceImage) GetData() string {
+	if v == nil {
 		return ""
 	}
-	return o.Data
+	return v.Data
 }
 
-func (o *V2AppearanceImage) GetFilename() *string {
-	if o == nil {
+func (v *V2AppearanceImage) GetFilename() *string {
+	if v == nil {
 		return nil
 	}
-	return o.Filename
+	return v.Filename
 }

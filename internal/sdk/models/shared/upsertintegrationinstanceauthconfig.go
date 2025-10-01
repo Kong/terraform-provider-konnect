@@ -15,7 +15,7 @@ const (
 )
 
 type UpsertIntegrationInstanceAuthConfig struct {
-	OauthConfig *OauthConfig `queryParam:"inline"`
+	OauthConfig *OauthConfig `queryParam:"inline,name=UpsertIntegrationInstanceAuthConfig"`
 
 	Type UpsertIntegrationInstanceAuthConfigType
 }
@@ -32,7 +32,7 @@ func CreateUpsertIntegrationInstanceAuthConfigOauthConfig(oauthConfig OauthConfi
 func (u *UpsertIntegrationInstanceAuthConfig) UnmarshalJSON(data []byte) error {
 
 	var oauthConfig OauthConfig = OauthConfig{}
-	if err := utils.UnmarshalJSON(data, &oauthConfig, "", true, true); err == nil {
+	if err := utils.UnmarshalJSON(data, &oauthConfig, "", true, nil); err == nil {
 		u.OauthConfig = &oauthConfig
 		u.Type = UpsertIntegrationInstanceAuthConfigTypeOauthConfig
 		return nil

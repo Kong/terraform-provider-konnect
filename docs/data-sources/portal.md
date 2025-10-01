@@ -116,10 +116,7 @@ data "konnect_portal" "my_portal" {
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `name` (String) The name of the portal, used to distinguish it from other portals. Name must be unique.
-- `number` (Number)
 - `rbac_enabled` (Boolean) Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.
-- `size` (Number)
-- `total` (Number)
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--filter"></a>

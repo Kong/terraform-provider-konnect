@@ -15,25 +15,25 @@ type UpdateRequestcalloutPluginRequest struct {
 	RequestCalloutPlugin shared.RequestCalloutPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateRequestcalloutPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateRequestcalloutPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateRequestcalloutPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateRequestcalloutPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateRequestcalloutPluginRequest) GetRequestCalloutPlugin() shared.RequestCalloutPlugin {
-	if o == nil {
+func (u *UpdateRequestcalloutPluginRequest) GetRequestCalloutPlugin() shared.RequestCalloutPlugin {
+	if u == nil {
 		return shared.RequestCalloutPlugin{}
 	}
-	return o.RequestCalloutPlugin
+	return u.RequestCalloutPlugin
 }
 
 type UpdateRequestcalloutPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateRequestcalloutPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateRequestcalloutPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateRequestcalloutPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateRequestcalloutPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateRequestcalloutPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateRequestcalloutPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateRequestcalloutPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateRequestcalloutPluginResponse) GetRequestCalloutPlugin() *shared.RequestCalloutPlugin {
-	if o == nil {
+func (u *UpdateRequestcalloutPluginResponse) GetRequestCalloutPlugin() *shared.RequestCalloutPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.RequestCalloutPlugin
+	return u.RequestCalloutPlugin
 }
 
-func (o *UpdateRequestcalloutPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateRequestcalloutPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

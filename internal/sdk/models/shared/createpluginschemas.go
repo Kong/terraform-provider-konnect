@@ -8,9 +8,9 @@ type CreatePluginSchemas struct {
 	LuaSchema string `json:"lua_schema"`
 }
 
-func (o *CreatePluginSchemas) GetLuaSchema() string {
-	if o == nil {
+func (c *CreatePluginSchemas) GetLuaSchema() string {
+	if c == nil {
 		return ""
 	}
-	return o.LuaSchema
+	return c.LuaSchema
 }

@@ -59,71 +59,71 @@ func (a APIProductDocument) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APIProductDocument) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "title", "slug", "status", "metadata", "content", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *APIProductDocument) GetID() string {
-	if o == nil {
+func (a *APIProductDocument) GetID() string {
+	if a == nil {
 		return ""
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *APIProductDocument) GetParentDocumentID() *string {
-	if o == nil {
+func (a *APIProductDocument) GetParentDocumentID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ParentDocumentID
+	return a.ParentDocumentID
 }
 
-func (o *APIProductDocument) GetTitle() string {
-	if o == nil {
+func (a *APIProductDocument) GetTitle() string {
+	if a == nil {
 		return ""
 	}
-	return o.Title
+	return a.Title
 }
 
-func (o *APIProductDocument) GetSlug() string {
-	if o == nil {
+func (a *APIProductDocument) GetSlug() string {
+	if a == nil {
 		return ""
 	}
-	return o.Slug
+	return a.Slug
 }
 
-func (o *APIProductDocument) GetStatus() Status {
-	if o == nil {
+func (a *APIProductDocument) GetStatus() Status {
+	if a == nil {
 		return Status("")
 	}
-	return o.Status
+	return a.Status
 }
 
-func (o *APIProductDocument) GetMetadata() APIProductDocumentMetadata {
-	if o == nil {
+func (a *APIProductDocument) GetMetadata() APIProductDocumentMetadata {
+	if a == nil {
 		return APIProductDocumentMetadata{}
 	}
-	return o.Metadata
+	return a.Metadata
 }
 
-func (o *APIProductDocument) GetContent() string {
-	if o == nil {
+func (a *APIProductDocument) GetContent() string {
+	if a == nil {
 		return ""
 	}
-	return o.Content
+	return a.Content
 }
 
-func (o *APIProductDocument) GetCreatedAt() time.Time {
-	if o == nil {
+func (a *APIProductDocument) GetCreatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *APIProductDocument) GetUpdatedAt() time.Time {
-	if o == nil {
+func (a *APIProductDocument) GetUpdatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }

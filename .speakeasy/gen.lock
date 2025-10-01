@@ -3,19 +3,19 @@ id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
   docChecksum: 103d2baed100121f90b1783bcb0c7acd
   docVersion: 2.0.0
-  speakeasyVersion: 1.602.0
-  generationVersion: 2.681.1
+  speakeasyVersion: 1.631.5
+  generationVersion: 2.716.16
   releaseVersion: 3.2.0
-  configChecksum: 3cfb66abe3120203174b08e2f71cc83b
+  configChecksum: 4af7d14b5916b74f56bacc0deb9b4630
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
-    constsAndDefaults: 0.2.1
-    core: 3.44.0
+    constsAndDefaults: 0.3.0
+    core: 3.45.1
     deepObjectParams: 0.1.0
     deprecations: 2.82.0
-    globalSecurity: 2.81.12
+    globalSecurity: 2.82.1
     globalServerURLs: 2.83.0
     groups: 2.81.2
     ignores: 2.81.1
@@ -30,7 +30,6 @@ features:
 generatedFiles:
   - .gitattributes
   - USAGE.md
-  - examples/README.md
   - examples/data-sources/konnect_cloud_gateway_provider_account_list/data-source.tf
   - examples/data-sources/konnect_gateway_control_plane/data-source.tf
   - examples/data-sources/konnect_mesh_control_planes/data-source.tf
@@ -38,345 +37,513 @@ generatedFiles:
   - examples/data-sources/konnect_portal/data-source.tf
   - examples/data-sources/konnect_portal_classic_list/data-source.tf
   - examples/provider/provider.tf
+  - examples/resources/konnect_api/import-by-string-id.tf
   - examples/resources/konnect_api/import.sh
   - examples/resources/konnect_api/resource.tf
+  - examples/resources/konnect_api_document/import-by-string-id.tf
   - examples/resources/konnect_api_document/import.sh
   - examples/resources/konnect_api_document/resource.tf
+  - examples/resources/konnect_api_implementation/import-by-string-id.tf
   - examples/resources/konnect_api_implementation/import.sh
   - examples/resources/konnect_api_implementation/resource.tf
+  - examples/resources/konnect_api_product/import-by-string-id.tf
   - examples/resources/konnect_api_product/import.sh
   - examples/resources/konnect_api_product/resource.tf
+  - examples/resources/konnect_api_product_document/import-by-string-id.tf
   - examples/resources/konnect_api_product_document/import.sh
   - examples/resources/konnect_api_product_document/resource.tf
+  - examples/resources/konnect_api_product_specification/import-by-string-id.tf
   - examples/resources/konnect_api_product_specification/import.sh
   - examples/resources/konnect_api_product_specification/resource.tf
+  - examples/resources/konnect_api_product_version/import-by-string-id.tf
   - examples/resources/konnect_api_product_version/import.sh
   - examples/resources/konnect_api_product_version/resource.tf
+  - examples/resources/konnect_api_publication/import-by-string-id.tf
   - examples/resources/konnect_api_publication/import.sh
   - examples/resources/konnect_api_publication/resource.tf
+  - examples/resources/konnect_api_specification/import-by-string-id.tf
   - examples/resources/konnect_api_specification/import.sh
   - examples/resources/konnect_api_specification/resource.tf
+  - examples/resources/konnect_api_version/import-by-string-id.tf
   - examples/resources/konnect_api_version/import.sh
   - examples/resources/konnect_api_version/resource.tf
+  - examples/resources/konnect_application_auth_strategy/import-by-string-id.tf
   - examples/resources/konnect_application_auth_strategy/import.sh
   - examples/resources/konnect_application_auth_strategy/resource.tf
   - examples/resources/konnect_audit_log/resource.tf
+  - examples/resources/konnect_audit_log_destination/import-by-string-id.tf
   - examples/resources/konnect_audit_log_destination/import.sh
   - examples/resources/konnect_audit_log_destination/resource.tf
+  - examples/resources/konnect_catalog_service/import-by-string-id.tf
   - examples/resources/konnect_catalog_service/import.sh
   - examples/resources/konnect_catalog_service/resource.tf
+  - examples/resources/konnect_centralized_consumer/import-by-string-id.tf
   - examples/resources/konnect_centralized_consumer/import.sh
   - examples/resources/konnect_centralized_consumer/resource.tf
+  - examples/resources/konnect_centralized_consumer_key/import-by-string-id.tf
   - examples/resources/konnect_centralized_consumer_key/import.sh
   - examples/resources/konnect_centralized_consumer_key/resource.tf
+  - examples/resources/konnect_cloud_gateway_configuration/import-by-string-id.tf
   - examples/resources/konnect_cloud_gateway_configuration/import.sh
   - examples/resources/konnect_cloud_gateway_configuration/resource.tf
+  - examples/resources/konnect_cloud_gateway_custom_domain/import-by-string-id.tf
   - examples/resources/konnect_cloud_gateway_custom_domain/import.sh
   - examples/resources/konnect_cloud_gateway_custom_domain/resource.tf
+  - examples/resources/konnect_cloud_gateway_network/import-by-string-id.tf
   - examples/resources/konnect_cloud_gateway_network/import.sh
   - examples/resources/konnect_cloud_gateway_network/resource.tf
+  - examples/resources/konnect_cloud_gateway_private_dns/import-by-string-id.tf
   - examples/resources/konnect_cloud_gateway_private_dns/import.sh
   - examples/resources/konnect_cloud_gateway_private_dns/resource.tf
+  - examples/resources/konnect_cloud_gateway_transit_gateway/import-by-string-id.tf
   - examples/resources/konnect_cloud_gateway_transit_gateway/import.sh
   - examples/resources/konnect_cloud_gateway_transit_gateway/resource.tf
+  - examples/resources/konnect_cmek/import-by-string-id.tf
   - examples/resources/konnect_cmek/import.sh
   - examples/resources/konnect_cmek/resource.tf
+  - examples/resources/konnect_gateway_acl/import-by-string-id.tf
   - examples/resources/konnect_gateway_acl/import.sh
   - examples/resources/konnect_gateway_acl/resource.tf
+  - examples/resources/konnect_gateway_basic_auth/import-by-string-id.tf
   - examples/resources/konnect_gateway_basic_auth/import.sh
   - examples/resources/konnect_gateway_basic_auth/resource.tf
+  - examples/resources/konnect_gateway_ca_certificate/import-by-string-id.tf
   - examples/resources/konnect_gateway_ca_certificate/import.sh
   - examples/resources/konnect_gateway_ca_certificate/resource.tf
+  - examples/resources/konnect_gateway_certificate/import-by-string-id.tf
   - examples/resources/konnect_gateway_certificate/import.sh
   - examples/resources/konnect_gateway_certificate/resource.tf
+  - examples/resources/konnect_gateway_config_store/import-by-string-id.tf
   - examples/resources/konnect_gateway_config_store/import.sh
   - examples/resources/konnect_gateway_config_store/resource.tf
+  - examples/resources/konnect_gateway_config_store_secret/import-by-string-id.tf
   - examples/resources/konnect_gateway_config_store_secret/import.sh
   - examples/resources/konnect_gateway_config_store_secret/resource.tf
+  - examples/resources/konnect_gateway_consumer/import-by-string-id.tf
   - examples/resources/konnect_gateway_consumer/import.sh
   - examples/resources/konnect_gateway_consumer/resource.tf
+  - examples/resources/konnect_gateway_consumer_group/import-by-string-id.tf
   - examples/resources/konnect_gateway_consumer_group/import.sh
   - examples/resources/konnect_gateway_consumer_group/resource.tf
   - examples/resources/konnect_gateway_consumer_group_member/resource.tf
+  - examples/resources/konnect_gateway_control_plane/import-by-string-id.tf
   - examples/resources/konnect_gateway_control_plane/import.sh
   - examples/resources/konnect_gateway_control_plane/resource.tf
   - examples/resources/konnect_gateway_control_plane_membership/resource.tf
+  - examples/resources/konnect_gateway_custom_plugin_schema/import-by-string-id.tf
   - examples/resources/konnect_gateway_custom_plugin_schema/import.sh
   - examples/resources/konnect_gateway_custom_plugin_schema/resource.tf
+  - examples/resources/konnect_gateway_custom_plugin_streaming/import-by-string-id.tf
   - examples/resources/konnect_gateway_custom_plugin_streaming/import.sh
   - examples/resources/konnect_gateway_custom_plugin_streaming/resource.tf
+  - examples/resources/konnect_gateway_data_plane_client_certificate/import-by-string-id.tf
   - examples/resources/konnect_gateway_data_plane_client_certificate/import.sh
   - examples/resources/konnect_gateway_data_plane_client_certificate/resource.tf
+  - examples/resources/konnect_gateway_hmac_auth/import-by-string-id.tf
   - examples/resources/konnect_gateway_hmac_auth/import.sh
   - examples/resources/konnect_gateway_hmac_auth/resource.tf
+  - examples/resources/konnect_gateway_jwt/import-by-string-id.tf
   - examples/resources/konnect_gateway_jwt/import.sh
   - examples/resources/konnect_gateway_jwt/resource.tf
+  - examples/resources/konnect_gateway_key/import-by-string-id.tf
   - examples/resources/konnect_gateway_key/import.sh
   - examples/resources/konnect_gateway_key/resource.tf
+  - examples/resources/konnect_gateway_key_auth/import-by-string-id.tf
   - examples/resources/konnect_gateway_key_auth/import.sh
   - examples/resources/konnect_gateway_key_auth/resource.tf
+  - examples/resources/konnect_gateway_key_set/import-by-string-id.tf
   - examples/resources/konnect_gateway_key_set/import.sh
   - examples/resources/konnect_gateway_key_set/resource.tf
+  - examples/resources/konnect_gateway_mtls_auth/import-by-string-id.tf
   - examples/resources/konnect_gateway_mtls_auth/import.sh
   - examples/resources/konnect_gateway_mtls_auth/resource.tf
+  - examples/resources/konnect_gateway_partial/import-by-string-id.tf
   - examples/resources/konnect_gateway_partial/import.sh
   - examples/resources/konnect_gateway_partial/resource.tf
+  - examples/resources/konnect_gateway_plugin_acl/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_acl/import.sh
   - examples/resources/konnect_gateway_plugin_acl/resource.tf
+  - examples/resources/konnect_gateway_plugin_acme/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_acme/import.sh
   - examples/resources/konnect_gateway_plugin_acme/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_aws_guardrails/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_ai_aws_guardrails/import.sh
   - examples/resources/konnect_gateway_plugin_ai_aws_guardrails/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_azure_content_safety/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_ai_azure_content_safety/import.sh
   - examples/resources/konnect_gateway_plugin_ai_azure_content_safety/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_prompt_compressor/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_ai_prompt_compressor/import.sh
   - examples/resources/konnect_gateway_plugin_ai_prompt_compressor/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_prompt_decorator/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_ai_prompt_decorator/import.sh
   - examples/resources/konnect_gateway_plugin_ai_prompt_decorator/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_prompt_guard/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_ai_prompt_guard/import.sh
   - examples/resources/konnect_gateway_plugin_ai_prompt_guard/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_prompt_template/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_ai_prompt_template/import.sh
   - examples/resources/konnect_gateway_plugin_ai_prompt_template/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_proxy/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_ai_proxy/import.sh
   - examples/resources/konnect_gateway_plugin_ai_proxy/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_proxy_advanced/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_ai_proxy_advanced/import.sh
   - examples/resources/konnect_gateway_plugin_ai_proxy_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_rag_injector/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_ai_rag_injector/import.sh
   - examples/resources/konnect_gateway_plugin_ai_rag_injector/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_rate_limiting_advanced/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_ai_rate_limiting_advanced/import.sh
   - examples/resources/konnect_gateway_plugin_ai_rate_limiting_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_request_transformer/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_ai_request_transformer/import.sh
   - examples/resources/konnect_gateway_plugin_ai_request_transformer/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_response_transformer/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_ai_response_transformer/import.sh
   - examples/resources/konnect_gateway_plugin_ai_response_transformer/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_sanitizer/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_ai_sanitizer/import.sh
   - examples/resources/konnect_gateway_plugin_ai_sanitizer/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_semantic_cache/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_ai_semantic_cache/import.sh
   - examples/resources/konnect_gateway_plugin_ai_semantic_cache/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_semantic_prompt_guard/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_ai_semantic_prompt_guard/import.sh
   - examples/resources/konnect_gateway_plugin_ai_semantic_prompt_guard/resource.tf
+  - examples/resources/konnect_gateway_plugin_aws_lambda/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_aws_lambda/import.sh
   - examples/resources/konnect_gateway_plugin_aws_lambda/resource.tf
+  - examples/resources/konnect_gateway_plugin_azure_functions/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_azure_functions/import.sh
   - examples/resources/konnect_gateway_plugin_azure_functions/resource.tf
+  - examples/resources/konnect_gateway_plugin_basic_auth/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_basic_auth/import.sh
   - examples/resources/konnect_gateway_plugin_basic_auth/resource.tf
+  - examples/resources/konnect_gateway_plugin_bot_detection/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_bot_detection/import.sh
   - examples/resources/konnect_gateway_plugin_bot_detection/resource.tf
+  - examples/resources/konnect_gateway_plugin_canary/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_canary/import.sh
   - examples/resources/konnect_gateway_plugin_canary/resource.tf
+  - examples/resources/konnect_gateway_plugin_confluent/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_confluent/import.sh
   - examples/resources/konnect_gateway_plugin_confluent/resource.tf
+  - examples/resources/konnect_gateway_plugin_confluent_consume/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_confluent_consume/import.sh
   - examples/resources/konnect_gateway_plugin_confluent_consume/resource.tf
+  - examples/resources/konnect_gateway_plugin_correlation_id/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_correlation_id/import.sh
   - examples/resources/konnect_gateway_plugin_correlation_id/resource.tf
+  - examples/resources/konnect_gateway_plugin_cors/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_cors/import.sh
   - examples/resources/konnect_gateway_plugin_cors/resource.tf
+  - examples/resources/konnect_gateway_plugin_datadog/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_datadog/import.sh
   - examples/resources/konnect_gateway_plugin_datadog/resource.tf
+  - examples/resources/konnect_gateway_plugin_datadog_tracing/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_datadog_tracing/import.sh
   - examples/resources/konnect_gateway_plugin_datadog_tracing/resource.tf
+  - examples/resources/konnect_gateway_plugin_datakit/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_datakit/import.sh
   - examples/resources/konnect_gateway_plugin_datakit/resource.tf
+  - examples/resources/konnect_gateway_plugin_degraphql/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_degraphql/import.sh
   - examples/resources/konnect_gateway_plugin_degraphql/resource.tf
+  - examples/resources/konnect_gateway_plugin_exit_transformer/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_exit_transformer/import.sh
   - examples/resources/konnect_gateway_plugin_exit_transformer/resource.tf
+  - examples/resources/konnect_gateway_plugin_file_log/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_file_log/import.sh
   - examples/resources/konnect_gateway_plugin_file_log/resource.tf
+  - examples/resources/konnect_gateway_plugin_forward_proxy/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_forward_proxy/import.sh
   - examples/resources/konnect_gateway_plugin_forward_proxy/resource.tf
+  - examples/resources/konnect_gateway_plugin_graphql_proxy_cache_advanced/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_graphql_proxy_cache_advanced/import.sh
   - examples/resources/konnect_gateway_plugin_graphql_proxy_cache_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_graphql_rate_limiting_advanced/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_graphql_rate_limiting_advanced/import.sh
   - examples/resources/konnect_gateway_plugin_graphql_rate_limiting_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_grpc_gateway/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_grpc_gateway/import.sh
   - examples/resources/konnect_gateway_plugin_grpc_gateway/resource.tf
+  - examples/resources/konnect_gateway_plugin_grpc_web/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_grpc_web/import.sh
   - examples/resources/konnect_gateway_plugin_grpc_web/resource.tf
+  - examples/resources/konnect_gateway_plugin_header_cert_auth/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_header_cert_auth/import.sh
   - examples/resources/konnect_gateway_plugin_header_cert_auth/resource.tf
+  - examples/resources/konnect_gateway_plugin_hmac_auth/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_hmac_auth/import.sh
   - examples/resources/konnect_gateway_plugin_hmac_auth/resource.tf
+  - examples/resources/konnect_gateway_plugin_http_log/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_http_log/import.sh
   - examples/resources/konnect_gateway_plugin_http_log/resource.tf
+  - examples/resources/konnect_gateway_plugin_injection_protection/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_injection_protection/import.sh
   - examples/resources/konnect_gateway_plugin_injection_protection/resource.tf
+  - examples/resources/konnect_gateway_plugin_ip_restriction/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_ip_restriction/import.sh
   - examples/resources/konnect_gateway_plugin_ip_restriction/resource.tf
+  - examples/resources/konnect_gateway_plugin_jq/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_jq/import.sh
   - examples/resources/konnect_gateway_plugin_jq/resource.tf
+  - examples/resources/konnect_gateway_plugin_json_threat_protection/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_json_threat_protection/import.sh
   - examples/resources/konnect_gateway_plugin_json_threat_protection/resource.tf
+  - examples/resources/konnect_gateway_plugin_jwe_decrypt/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_jwe_decrypt/import.sh
   - examples/resources/konnect_gateway_plugin_jwe_decrypt/resource.tf
+  - examples/resources/konnect_gateway_plugin_jwt/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_jwt/import.sh
   - examples/resources/konnect_gateway_plugin_jwt/resource.tf
+  - examples/resources/konnect_gateway_plugin_jwt_signer/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_jwt_signer/import.sh
   - examples/resources/konnect_gateway_plugin_jwt_signer/resource.tf
+  - examples/resources/konnect_gateway_plugin_kafka_consume/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_kafka_consume/import.sh
   - examples/resources/konnect_gateway_plugin_kafka_consume/resource.tf
+  - examples/resources/konnect_gateway_plugin_kafka_log/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_kafka_log/import.sh
   - examples/resources/konnect_gateway_plugin_kafka_log/resource.tf
+  - examples/resources/konnect_gateway_plugin_kafka_upstream/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_kafka_upstream/import.sh
   - examples/resources/konnect_gateway_plugin_kafka_upstream/resource.tf
+  - examples/resources/konnect_gateway_plugin_key_auth/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_key_auth/import.sh
   - examples/resources/konnect_gateway_plugin_key_auth/resource.tf
+  - examples/resources/konnect_gateway_plugin_key_auth_enc/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_key_auth_enc/import.sh
   - examples/resources/konnect_gateway_plugin_key_auth_enc/resource.tf
+  - examples/resources/konnect_gateway_plugin_ldap_auth/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_ldap_auth/import.sh
   - examples/resources/konnect_gateway_plugin_ldap_auth/resource.tf
+  - examples/resources/konnect_gateway_plugin_ldap_auth_advanced/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_ldap_auth_advanced/import.sh
   - examples/resources/konnect_gateway_plugin_ldap_auth_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_loggly/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_loggly/import.sh
   - examples/resources/konnect_gateway_plugin_loggly/resource.tf
+  - examples/resources/konnect_gateway_plugin_mocking/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_mocking/import.sh
   - examples/resources/konnect_gateway_plugin_mocking/resource.tf
+  - examples/resources/konnect_gateway_plugin_mtls_auth/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_mtls_auth/import.sh
   - examples/resources/konnect_gateway_plugin_mtls_auth/resource.tf
+  - examples/resources/konnect_gateway_plugin_oas_validation/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_oas_validation/import.sh
   - examples/resources/konnect_gateway_plugin_oas_validation/resource.tf
+  - examples/resources/konnect_gateway_plugin_oauth2_introspection/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_oauth2_introspection/import.sh
   - examples/resources/konnect_gateway_plugin_oauth2_introspection/resource.tf
+  - examples/resources/konnect_gateway_plugin_opa/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_opa/import.sh
   - examples/resources/konnect_gateway_plugin_opa/resource.tf
+  - examples/resources/konnect_gateway_plugin_openid_connect/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_openid_connect/import.sh
   - examples/resources/konnect_gateway_plugin_openid_connect/resource.tf
+  - examples/resources/konnect_gateway_plugin_opentelemetry/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_opentelemetry/import.sh
   - examples/resources/konnect_gateway_plugin_opentelemetry/resource.tf
+  - examples/resources/konnect_gateway_plugin_post_function/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_post_function/import.sh
   - examples/resources/konnect_gateway_plugin_post_function/resource.tf
+  - examples/resources/konnect_gateway_plugin_pre_function/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_pre_function/import.sh
   - examples/resources/konnect_gateway_plugin_pre_function/resource.tf
+  - examples/resources/konnect_gateway_plugin_prometheus/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_prometheus/import.sh
   - examples/resources/konnect_gateway_plugin_prometheus/resource.tf
+  - examples/resources/konnect_gateway_plugin_proxy_cache/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_proxy_cache/import.sh
   - examples/resources/konnect_gateway_plugin_proxy_cache/resource.tf
+  - examples/resources/konnect_gateway_plugin_proxy_cache_advanced/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_proxy_cache_advanced/import.sh
   - examples/resources/konnect_gateway_plugin_proxy_cache_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_rate_limiting/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_rate_limiting/import.sh
   - examples/resources/konnect_gateway_plugin_rate_limiting/resource.tf
+  - examples/resources/konnect_gateway_plugin_rate_limiting_advanced/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_rate_limiting_advanced/import.sh
   - examples/resources/konnect_gateway_plugin_rate_limiting_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_redirect/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_redirect/import.sh
   - examples/resources/konnect_gateway_plugin_redirect/resource.tf
+  - examples/resources/konnect_gateway_plugin_request_callout/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_request_callout/import.sh
   - examples/resources/konnect_gateway_plugin_request_callout/resource.tf
+  - examples/resources/konnect_gateway_plugin_request_size_limiting/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_request_size_limiting/import.sh
   - examples/resources/konnect_gateway_plugin_request_size_limiting/resource.tf
+  - examples/resources/konnect_gateway_plugin_request_termination/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_request_termination/import.sh
   - examples/resources/konnect_gateway_plugin_request_termination/resource.tf
+  - examples/resources/konnect_gateway_plugin_request_transformer/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_request_transformer/import.sh
   - examples/resources/konnect_gateway_plugin_request_transformer/resource.tf
+  - examples/resources/konnect_gateway_plugin_request_transformer_advanced/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_request_transformer_advanced/import.sh
   - examples/resources/konnect_gateway_plugin_request_transformer_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_request_validator/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_request_validator/import.sh
   - examples/resources/konnect_gateway_plugin_request_validator/resource.tf
+  - examples/resources/konnect_gateway_plugin_response_ratelimiting/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_response_ratelimiting/import.sh
   - examples/resources/konnect_gateway_plugin_response_ratelimiting/resource.tf
+  - examples/resources/konnect_gateway_plugin_response_transformer/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_response_transformer/import.sh
   - examples/resources/konnect_gateway_plugin_response_transformer/resource.tf
+  - examples/resources/konnect_gateway_plugin_response_transformer_advanced/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_response_transformer_advanced/import.sh
   - examples/resources/konnect_gateway_plugin_response_transformer_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_route_by_header/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_route_by_header/import.sh
   - examples/resources/konnect_gateway_plugin_route_by_header/resource.tf
+  - examples/resources/konnect_gateway_plugin_route_transformer_advanced/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_route_transformer_advanced/import.sh
   - examples/resources/konnect_gateway_plugin_route_transformer_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_saml/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_saml/import.sh
   - examples/resources/konnect_gateway_plugin_saml/resource.tf
+  - examples/resources/konnect_gateway_plugin_service_protection/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_service_protection/import.sh
   - examples/resources/konnect_gateway_plugin_service_protection/resource.tf
+  - examples/resources/konnect_gateway_plugin_session/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_session/import.sh
   - examples/resources/konnect_gateway_plugin_session/resource.tf
+  - examples/resources/konnect_gateway_plugin_solace_upstream/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_solace_upstream/import.sh
   - examples/resources/konnect_gateway_plugin_solace_upstream/resource.tf
+  - examples/resources/konnect_gateway_plugin_standard_webhooks/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_standard_webhooks/import.sh
   - examples/resources/konnect_gateway_plugin_standard_webhooks/resource.tf
+  - examples/resources/konnect_gateway_plugin_statsd/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_statsd/import.sh
   - examples/resources/konnect_gateway_plugin_statsd/resource.tf
+  - examples/resources/konnect_gateway_plugin_statsd_advanced/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_statsd_advanced/import.sh
   - examples/resources/konnect_gateway_plugin_statsd_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_syslog/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_syslog/import.sh
   - examples/resources/konnect_gateway_plugin_syslog/resource.tf
+  - examples/resources/konnect_gateway_plugin_tcp_log/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_tcp_log/import.sh
   - examples/resources/konnect_gateway_plugin_tcp_log/resource.tf
+  - examples/resources/konnect_gateway_plugin_tls_handshake_modifier/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_tls_handshake_modifier/import.sh
   - examples/resources/konnect_gateway_plugin_tls_handshake_modifier/resource.tf
+  - examples/resources/konnect_gateway_plugin_tls_metadata_headers/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_tls_metadata_headers/import.sh
   - examples/resources/konnect_gateway_plugin_tls_metadata_headers/resource.tf
+  - examples/resources/konnect_gateway_plugin_udp_log/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_udp_log/import.sh
   - examples/resources/konnect_gateway_plugin_udp_log/resource.tf
+  - examples/resources/konnect_gateway_plugin_upstream_oauth/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_upstream_oauth/import.sh
   - examples/resources/konnect_gateway_plugin_upstream_oauth/resource.tf
+  - examples/resources/konnect_gateway_plugin_upstream_timeout/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_upstream_timeout/import.sh
   - examples/resources/konnect_gateway_plugin_upstream_timeout/resource.tf
+  - examples/resources/konnect_gateway_plugin_vault_auth/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_vault_auth/import.sh
   - examples/resources/konnect_gateway_plugin_vault_auth/resource.tf
+  - examples/resources/konnect_gateway_plugin_websocket_size_limit/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_websocket_size_limit/import.sh
   - examples/resources/konnect_gateway_plugin_websocket_size_limit/resource.tf
+  - examples/resources/konnect_gateway_plugin_websocket_validator/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_websocket_validator/import.sh
   - examples/resources/konnect_gateway_plugin_websocket_validator/resource.tf
+  - examples/resources/konnect_gateway_plugin_xml_threat_protection/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_xml_threat_protection/import.sh
   - examples/resources/konnect_gateway_plugin_xml_threat_protection/resource.tf
+  - examples/resources/konnect_gateway_plugin_zipkin/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_zipkin/import.sh
   - examples/resources/konnect_gateway_plugin_zipkin/resource.tf
+  - examples/resources/konnect_gateway_route/import-by-string-id.tf
   - examples/resources/konnect_gateway_route/import.sh
   - examples/resources/konnect_gateway_route/resource.tf
+  - examples/resources/konnect_gateway_route_expression/import-by-string-id.tf
   - examples/resources/konnect_gateway_route_expression/import.sh
   - examples/resources/konnect_gateway_route_expression/resource.tf
+  - examples/resources/konnect_gateway_service/import-by-string-id.tf
   - examples/resources/konnect_gateway_service/import.sh
   - examples/resources/konnect_gateway_service/resource.tf
+  - examples/resources/konnect_gateway_sni/import-by-string-id.tf
   - examples/resources/konnect_gateway_sni/import.sh
   - examples/resources/konnect_gateway_sni/resource.tf
+  - examples/resources/konnect_gateway_target/import-by-string-id.tf
   - examples/resources/konnect_gateway_target/import.sh
   - examples/resources/konnect_gateway_target/resource.tf
+  - examples/resources/konnect_gateway_upstream/import-by-string-id.tf
   - examples/resources/konnect_gateway_upstream/import.sh
   - examples/resources/konnect_gateway_upstream/resource.tf
+  - examples/resources/konnect_gateway_vault/import-by-string-id.tf
   - examples/resources/konnect_gateway_vault/import.sh
   - examples/resources/konnect_gateway_vault/resource.tf
+  - examples/resources/konnect_integration_instance/import-by-string-id.tf
   - examples/resources/konnect_integration_instance/import.sh
   - examples/resources/konnect_integration_instance/resource.tf
+  - examples/resources/konnect_integration_instance_auth_config/import-by-string-id.tf
   - examples/resources/konnect_integration_instance_auth_config/import.sh
   - examples/resources/konnect_integration_instance_auth_config/resource.tf
+  - examples/resources/konnect_integration_instance_auth_credential/import-by-string-id.tf
   - examples/resources/konnect_integration_instance_auth_credential/import.sh
   - examples/resources/konnect_integration_instance_auth_credential/resource.tf
+  - examples/resources/konnect_mesh_control_plane/import-by-string-id.tf
   - examples/resources/konnect_mesh_control_plane/import.sh
   - examples/resources/konnect_mesh_control_plane/resource.tf
+  - examples/resources/konnect_portal/import-by-string-id.tf
   - examples/resources/konnect_portal/import.sh
   - examples/resources/konnect_portal/resource.tf
+  - examples/resources/konnect_portal_appearance/import-by-string-id.tf
   - examples/resources/konnect_portal_appearance/import.sh
   - examples/resources/konnect_portal_appearance/resource.tf
+  - examples/resources/konnect_portal_auth/import-by-string-id.tf
   - examples/resources/konnect_portal_auth/import.sh
   - examples/resources/konnect_portal_auth/resource.tf
+  - examples/resources/konnect_portal_classic/import-by-string-id.tf
   - examples/resources/konnect_portal_classic/import.sh
   - examples/resources/konnect_portal_classic/resource.tf
+  - examples/resources/konnect_portal_custom_domain/import-by-string-id.tf
   - examples/resources/konnect_portal_custom_domain/import.sh
   - examples/resources/konnect_portal_custom_domain/resource.tf
+  - examples/resources/konnect_portal_customization/import-by-string-id.tf
   - examples/resources/konnect_portal_customization/import.sh
   - examples/resources/konnect_portal_customization/resource.tf
+  - examples/resources/konnect_portal_favicon/import-by-string-id.tf
   - examples/resources/konnect_portal_favicon/import.sh
   - examples/resources/konnect_portal_favicon/resource.tf
+  - examples/resources/konnect_portal_logo/import-by-string-id.tf
   - examples/resources/konnect_portal_logo/import.sh
   - examples/resources/konnect_portal_logo/resource.tf
+  - examples/resources/konnect_portal_page/import-by-string-id.tf
   - examples/resources/konnect_portal_page/import.sh
   - examples/resources/konnect_portal_page/resource.tf
+  - examples/resources/konnect_portal_product_version/import-by-string-id.tf
   - examples/resources/konnect_portal_product_version/import.sh
   - examples/resources/konnect_portal_product_version/resource.tf
+  - examples/resources/konnect_portal_snippet/import-by-string-id.tf
   - examples/resources/konnect_portal_snippet/import.sh
   - examples/resources/konnect_portal_snippet/resource.tf
+  - examples/resources/konnect_portal_team/import-by-string-id.tf
   - examples/resources/konnect_portal_team/import.sh
   - examples/resources/konnect_portal_team/resource.tf
+  - examples/resources/konnect_realm/import-by-string-id.tf
   - examples/resources/konnect_realm/import.sh
   - examples/resources/konnect_realm/resource.tf
+  - examples/resources/konnect_serverless_cloud_gateway/import-by-string-id.tf
   - examples/resources/konnect_serverless_cloud_gateway/import.sh
   - examples/resources/konnect_serverless_cloud_gateway/resource.tf
+  - examples/resources/konnect_system_account/import-by-string-id.tf
   - examples/resources/konnect_system_account/import.sh
   - examples/resources/konnect_system_account/resource.tf
+  - examples/resources/konnect_system_account_access_token/import-by-string-id.tf
   - examples/resources/konnect_system_account_access_token/import.sh
   - examples/resources/konnect_system_account_access_token/resource.tf
   - examples/resources/konnect_system_account_role/resource.tf
   - examples/resources/konnect_system_account_team/resource.tf
+  - examples/resources/konnect_team/import-by-string-id.tf
   - examples/resources/konnect_team/import.sh
   - examples/resources/konnect_team/resource.tf
   - examples/resources/konnect_team_role/resource.tf
@@ -2230,6 +2397,8 @@ generatedFiles:
   - internal/sdk/models/shared/xmlthreatprotectionplugin.go
   - internal/sdk/models/shared/zipkinplugin.go
   - internal/sdk/mtlsauthcredentials.go
+  - internal/sdk/optionalnullable/optionalnullable.go
+  - internal/sdk/optionalnullable/optionalnullable_test.go
   - internal/sdk/pages.go
   - internal/sdk/partials.go
   - internal/sdk/platformips.go
@@ -2259,7 +2428,6 @@ generatedFiles:
   - internal/sdk/types/bigint.go
   - internal/sdk/types/date.go
   - internal/sdk/types/datetime.go
-  - internal/sdk/types/decimal.go
   - internal/sdk/types/pointers.go
   - internal/sdk/upstreams.go
   - internal/sdk/vaults.go

@@ -15,25 +15,25 @@ type DeleteTargetWithUpstreamRequest struct {
 	TargetID string `pathParam:"style=simple,explode=false,name=TargetId"`
 }
 
-func (o *DeleteTargetWithUpstreamRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteTargetWithUpstreamRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
-func (o *DeleteTargetWithUpstreamRequest) GetUpstreamID() string {
-	if o == nil {
+func (d *DeleteTargetWithUpstreamRequest) GetUpstreamID() string {
+	if d == nil {
 		return ""
 	}
-	return o.UpstreamID
+	return d.UpstreamID
 }
 
-func (o *DeleteTargetWithUpstreamRequest) GetTargetID() string {
-	if o == nil {
+func (d *DeleteTargetWithUpstreamRequest) GetTargetID() string {
+	if d == nil {
 		return ""
 	}
-	return o.TargetID
+	return d.TargetID
 }
 
 type DeleteTargetWithUpstreamResponse struct {
@@ -45,23 +45,23 @@ type DeleteTargetWithUpstreamResponse struct {
 	RawResponse *http.Response
 }
 
-func (o *DeleteTargetWithUpstreamResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteTargetWithUpstreamResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteTargetWithUpstreamResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteTargetWithUpstreamResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteTargetWithUpstreamResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteTargetWithUpstreamResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }

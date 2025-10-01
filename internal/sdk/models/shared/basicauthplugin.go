@@ -12,22 +12,22 @@ type BasicAuthPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *BasicAuthPluginAfter) GetAccess() []string {
-	if o == nil {
+func (b *BasicAuthPluginAfter) GetAccess() []string {
+	if b == nil {
 		return nil
 	}
-	return o.Access
+	return b.Access
 }
 
 type BasicAuthPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *BasicAuthPluginBefore) GetAccess() []string {
-	if o == nil {
+func (b *BasicAuthPluginBefore) GetAccess() []string {
+	if b == nil {
 		return nil
 	}
-	return o.Access
+	return b.Access
 }
 
 type BasicAuthPluginOrdering struct {
@@ -35,18 +35,18 @@ type BasicAuthPluginOrdering struct {
 	Before *BasicAuthPluginBefore `json:"before,omitempty"`
 }
 
-func (o *BasicAuthPluginOrdering) GetAfter() *BasicAuthPluginAfter {
-	if o == nil {
+func (b *BasicAuthPluginOrdering) GetAfter() *BasicAuthPluginAfter {
+	if b == nil {
 		return nil
 	}
-	return o.After
+	return b.After
 }
 
-func (o *BasicAuthPluginOrdering) GetBefore() *BasicAuthPluginBefore {
-	if o == nil {
+func (b *BasicAuthPluginOrdering) GetBefore() *BasicAuthPluginBefore {
+	if b == nil {
 		return nil
 	}
-	return o.Before
+	return b.Before
 }
 
 type BasicAuthPluginPartials struct {
@@ -57,25 +57,25 @@ type BasicAuthPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *BasicAuthPluginPartials) GetID() *string {
-	if o == nil {
+func (b *BasicAuthPluginPartials) GetID() *string {
+	if b == nil {
 		return nil
 	}
-	return o.ID
+	return b.ID
 }
 
-func (o *BasicAuthPluginPartials) GetName() *string {
-	if o == nil {
+func (b *BasicAuthPluginPartials) GetName() *string {
+	if b == nil {
 		return nil
 	}
-	return o.Name
+	return b.Name
 }
 
-func (o *BasicAuthPluginPartials) GetPath() *string {
-	if o == nil {
+func (b *BasicAuthPluginPartials) GetPath() *string {
+	if b == nil {
 		return nil
 	}
-	return o.Path
+	return b.Path
 }
 
 type BasicAuthPluginConfig struct {
@@ -92,31 +92,31 @@ func (b BasicAuthPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BasicAuthPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *BasicAuthPluginConfig) GetAnonymous() *string {
-	if o == nil {
+func (b *BasicAuthPluginConfig) GetAnonymous() *string {
+	if b == nil {
 		return nil
 	}
-	return o.Anonymous
+	return b.Anonymous
 }
 
-func (o *BasicAuthPluginConfig) GetHideCredentials() *bool {
-	if o == nil {
+func (b *BasicAuthPluginConfig) GetHideCredentials() *bool {
+	if b == nil {
 		return nil
 	}
-	return o.HideCredentials
+	return b.HideCredentials
 }
 
-func (o *BasicAuthPluginConfig) GetRealm() *string {
-	if o == nil {
+func (b *BasicAuthPluginConfig) GetRealm() *string {
+	if b == nil {
 		return nil
 	}
-	return o.Realm
+	return b.Realm
 }
 
 type BasicAuthPluginProtocols string
@@ -162,11 +162,11 @@ type BasicAuthPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *BasicAuthPluginRoute) GetID() *string {
-	if o == nil {
+func (b *BasicAuthPluginRoute) GetID() *string {
+	if b == nil {
 		return nil
 	}
-	return o.ID
+	return b.ID
 }
 
 // BasicAuthPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -174,11 +174,11 @@ type BasicAuthPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *BasicAuthPluginService) GetID() *string {
-	if o == nil {
+func (b *BasicAuthPluginService) GetID() *string {
+	if b == nil {
 		return nil
 	}
-	return o.ID
+	return b.ID
 }
 
 // BasicAuthPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -213,96 +213,96 @@ func (b BasicAuthPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BasicAuthPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"name", "ordering", "partials", "tags", "config", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *BasicAuthPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (b *BasicAuthPlugin) GetCreatedAt() *int64 {
+	if b == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return b.CreatedAt
 }
 
-func (o *BasicAuthPlugin) GetEnabled() *bool {
-	if o == nil {
+func (b *BasicAuthPlugin) GetEnabled() *bool {
+	if b == nil {
 		return nil
 	}
-	return o.Enabled
+	return b.Enabled
 }
 
-func (o *BasicAuthPlugin) GetID() *string {
-	if o == nil {
+func (b *BasicAuthPlugin) GetID() *string {
+	if b == nil {
 		return nil
 	}
-	return o.ID
+	return b.ID
 }
 
-func (o *BasicAuthPlugin) GetInstanceName() *string {
-	if o == nil {
+func (b *BasicAuthPlugin) GetInstanceName() *string {
+	if b == nil {
 		return nil
 	}
-	return o.InstanceName
+	return b.InstanceName
 }
 
-func (o *BasicAuthPlugin) GetName() string {
+func (b *BasicAuthPlugin) GetName() string {
 	return "basic-auth"
 }
 
-func (o *BasicAuthPlugin) GetOrdering() *BasicAuthPluginOrdering {
-	if o == nil {
+func (b *BasicAuthPlugin) GetOrdering() *BasicAuthPluginOrdering {
+	if b == nil {
 		return nil
 	}
-	return o.Ordering
+	return b.Ordering
 }
 
-func (o *BasicAuthPlugin) GetPartials() []BasicAuthPluginPartials {
-	if o == nil {
+func (b *BasicAuthPlugin) GetPartials() []BasicAuthPluginPartials {
+	if b == nil {
 		return nil
 	}
-	return o.Partials
+	return b.Partials
 }
 
-func (o *BasicAuthPlugin) GetTags() []string {
-	if o == nil {
+func (b *BasicAuthPlugin) GetTags() []string {
+	if b == nil {
 		return nil
 	}
-	return o.Tags
+	return b.Tags
 }
 
-func (o *BasicAuthPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (b *BasicAuthPlugin) GetUpdatedAt() *int64 {
+	if b == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return b.UpdatedAt
 }
 
-func (o *BasicAuthPlugin) GetConfig() *BasicAuthPluginConfig {
-	if o == nil {
+func (b *BasicAuthPlugin) GetConfig() *BasicAuthPluginConfig {
+	if b == nil {
 		return nil
 	}
-	return o.Config
+	return b.Config
 }
 
-func (o *BasicAuthPlugin) GetProtocols() []BasicAuthPluginProtocols {
-	if o == nil {
+func (b *BasicAuthPlugin) GetProtocols() []BasicAuthPluginProtocols {
+	if b == nil {
 		return nil
 	}
-	return o.Protocols
+	return b.Protocols
 }
 
-func (o *BasicAuthPlugin) GetRoute() *BasicAuthPluginRoute {
-	if o == nil {
+func (b *BasicAuthPlugin) GetRoute() *BasicAuthPluginRoute {
+	if b == nil {
 		return nil
 	}
-	return o.Route
+	return b.Route
 }
 
-func (o *BasicAuthPlugin) GetService() *BasicAuthPluginService {
-	if o == nil {
+func (b *BasicAuthPlugin) GetService() *BasicAuthPluginService {
+	if b == nil {
 		return nil
 	}
-	return o.Service
+	return b.Service
 }

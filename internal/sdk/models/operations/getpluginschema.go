@@ -14,18 +14,18 @@ type GetPluginSchemaRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (o *GetPluginSchemaRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetPluginSchemaRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
-func (o *GetPluginSchemaRequest) GetName() string {
-	if o == nil {
+func (g *GetPluginSchemaRequest) GetName() string {
+	if g == nil {
 		return ""
 	}
-	return o.Name
+	return g.Name
 }
 
 type GetPluginSchemaResponse struct {
@@ -45,51 +45,51 @@ type GetPluginSchemaResponse struct {
 	KonnectCPLegacyNotFoundError *shared.KonnectCPLegacyNotFoundError
 }
 
-func (o *GetPluginSchemaResponse) GetContentType() string {
-	if o == nil {
+func (g *GetPluginSchemaResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetPluginSchemaResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetPluginSchemaResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetPluginSchemaResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetPluginSchemaResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetPluginSchemaResponse) GetPluginSchemas() *shared.PluginSchemas {
-	if o == nil {
+func (g *GetPluginSchemaResponse) GetPluginSchemas() *shared.PluginSchemas {
+	if g == nil {
 		return nil
 	}
-	return o.PluginSchemas
+	return g.PluginSchemas
 }
 
-func (o *GetPluginSchemaResponse) GetKonnectCPLegacyUnauthorizedError() *shared.KonnectCPLegacyUnauthorizedError {
-	if o == nil {
+func (g *GetPluginSchemaResponse) GetKonnectCPLegacyUnauthorizedError() *shared.KonnectCPLegacyUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.KonnectCPLegacyUnauthorizedError
+	return g.KonnectCPLegacyUnauthorizedError
 }
 
-func (o *GetPluginSchemaResponse) GetKonnectCPLegacyForbiddenError() *shared.KonnectCPLegacyForbiddenError {
-	if o == nil {
+func (g *GetPluginSchemaResponse) GetKonnectCPLegacyForbiddenError() *shared.KonnectCPLegacyForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.KonnectCPLegacyForbiddenError
+	return g.KonnectCPLegacyForbiddenError
 }
 
-func (o *GetPluginSchemaResponse) GetKonnectCPLegacyNotFoundError() *shared.KonnectCPLegacyNotFoundError {
-	if o == nil {
+func (g *GetPluginSchemaResponse) GetKonnectCPLegacyNotFoundError() *shared.KonnectCPLegacyNotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.KonnectCPLegacyNotFoundError
+	return g.KonnectCPLegacyNotFoundError
 }

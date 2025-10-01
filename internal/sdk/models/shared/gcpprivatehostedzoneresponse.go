@@ -21,24 +21,24 @@ func (g GcpPrivateHostedZoneResponsePrivateDNSStateMetadata) MarshalJSON() ([]by
 }
 
 func (g *GcpPrivateHostedZoneResponsePrivateDNSStateMetadata) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *GcpPrivateHostedZoneResponsePrivateDNSStateMetadata) GetReportedStatus() *string {
-	if o == nil {
+func (g *GcpPrivateHostedZoneResponsePrivateDNSStateMetadata) GetReportedStatus() *string {
+	if g == nil {
 		return nil
 	}
-	return o.ReportedStatus
+	return g.ReportedStatus
 }
 
-func (o *GcpPrivateHostedZoneResponsePrivateDNSStateMetadata) GetReason() *string {
-	if o == nil {
+func (g *GcpPrivateHostedZoneResponsePrivateDNSStateMetadata) GetReason() *string {
+	if g == nil {
 		return nil
 	}
-	return o.Reason
+	return g.Reason
 }
 
 type GcpPrivateHostedZoneResponse struct {
@@ -74,64 +74,64 @@ func (g GcpPrivateHostedZoneResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GcpPrivateHostedZoneResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, true); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"id", "state", "state_metadata", "entity_version", "created_at", "updated_at", "name", "private_dns_attachment_config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *GcpPrivateHostedZoneResponse) GetID() string {
-	if o == nil {
+func (g *GcpPrivateHostedZoneResponse) GetID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ID
+	return g.ID
 }
 
-func (o *GcpPrivateHostedZoneResponse) GetState() PrivateDNSState {
-	if o == nil {
+func (g *GcpPrivateHostedZoneResponse) GetState() PrivateDNSState {
+	if g == nil {
 		return PrivateDNSState("")
 	}
-	return o.State
+	return g.State
 }
 
-func (o *GcpPrivateHostedZoneResponse) GetStateMetadata() GcpPrivateHostedZoneResponsePrivateDNSStateMetadata {
-	if o == nil {
+func (g *GcpPrivateHostedZoneResponse) GetStateMetadata() GcpPrivateHostedZoneResponsePrivateDNSStateMetadata {
+	if g == nil {
 		return GcpPrivateHostedZoneResponsePrivateDNSStateMetadata{}
 	}
-	return o.StateMetadata
+	return g.StateMetadata
 }
 
-func (o *GcpPrivateHostedZoneResponse) GetEntityVersion() int64 {
-	if o == nil {
+func (g *GcpPrivateHostedZoneResponse) GetEntityVersion() int64 {
+	if g == nil {
 		return 0
 	}
-	return o.EntityVersion
+	return g.EntityVersion
 }
 
-func (o *GcpPrivateHostedZoneResponse) GetCreatedAt() time.Time {
-	if o == nil {
+func (g *GcpPrivateHostedZoneResponse) GetCreatedAt() time.Time {
+	if g == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return g.CreatedAt
 }
 
-func (o *GcpPrivateHostedZoneResponse) GetUpdatedAt() time.Time {
-	if o == nil {
+func (g *GcpPrivateHostedZoneResponse) GetUpdatedAt() time.Time {
+	if g == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return g.UpdatedAt
 }
 
-func (o *GcpPrivateHostedZoneResponse) GetName() string {
-	if o == nil {
+func (g *GcpPrivateHostedZoneResponse) GetName() string {
+	if g == nil {
 		return ""
 	}
-	return o.Name
+	return g.Name
 }
 
-func (o *GcpPrivateHostedZoneResponse) GetPrivateDNSAttachmentConfig() GcpPrivateHostedZoneAttachmentConfig {
-	if o == nil {
+func (g *GcpPrivateHostedZoneResponse) GetPrivateDNSAttachmentConfig() GcpPrivateHostedZoneAttachmentConfig {
+	if g == nil {
 		return GcpPrivateHostedZoneAttachmentConfig{}
 	}
-	return o.PrivateDNSAttachmentConfig
+	return g.PrivateDNSAttachmentConfig
 }

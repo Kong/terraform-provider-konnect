@@ -12,22 +12,22 @@ type KafkaConsumePluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *KafkaConsumePluginAfter) GetAccess() []string {
-	if o == nil {
+func (k *KafkaConsumePluginAfter) GetAccess() []string {
+	if k == nil {
 		return nil
 	}
-	return o.Access
+	return k.Access
 }
 
 type KafkaConsumePluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *KafkaConsumePluginBefore) GetAccess() []string {
-	if o == nil {
+func (k *KafkaConsumePluginBefore) GetAccess() []string {
+	if k == nil {
 		return nil
 	}
-	return o.Access
+	return k.Access
 }
 
 type KafkaConsumePluginOrdering struct {
@@ -35,18 +35,18 @@ type KafkaConsumePluginOrdering struct {
 	Before *KafkaConsumePluginBefore `json:"before,omitempty"`
 }
 
-func (o *KafkaConsumePluginOrdering) GetAfter() *KafkaConsumePluginAfter {
-	if o == nil {
+func (k *KafkaConsumePluginOrdering) GetAfter() *KafkaConsumePluginAfter {
+	if k == nil {
 		return nil
 	}
-	return o.After
+	return k.After
 }
 
-func (o *KafkaConsumePluginOrdering) GetBefore() *KafkaConsumePluginBefore {
-	if o == nil {
+func (k *KafkaConsumePluginOrdering) GetBefore() *KafkaConsumePluginBefore {
+	if k == nil {
 		return nil
 	}
-	return o.Before
+	return k.Before
 }
 
 type KafkaConsumePluginPartials struct {
@@ -57,25 +57,25 @@ type KafkaConsumePluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *KafkaConsumePluginPartials) GetID() *string {
-	if o == nil {
+func (k *KafkaConsumePluginPartials) GetID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ID
+	return k.ID
 }
 
-func (o *KafkaConsumePluginPartials) GetName() *string {
-	if o == nil {
+func (k *KafkaConsumePluginPartials) GetName() *string {
+	if k == nil {
 		return nil
 	}
-	return o.Name
+	return k.Name
 }
 
-func (o *KafkaConsumePluginPartials) GetPath() *string {
-	if o == nil {
+func (k *KafkaConsumePluginPartials) GetPath() *string {
+	if k == nil {
 		return nil
 	}
-	return o.Path
+	return k.Path
 }
 
 // Mechanism - The SASL authentication mechanism.  Supported options: `PLAIN` or `SCRAM-SHA-256`.
@@ -150,45 +150,45 @@ func (a Authentication) MarshalJSON() ([]byte, error) {
 }
 
 func (a *Authentication) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Authentication) GetMechanism() *Mechanism {
-	if o == nil {
+func (a *Authentication) GetMechanism() *Mechanism {
+	if a == nil {
 		return nil
 	}
-	return o.Mechanism
+	return a.Mechanism
 }
 
-func (o *Authentication) GetPassword() *string {
-	if o == nil {
+func (a *Authentication) GetPassword() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Password
+	return a.Password
 }
 
-func (o *Authentication) GetStrategy() *KafkaConsumePluginStrategy {
-	if o == nil {
+func (a *Authentication) GetStrategy() *KafkaConsumePluginStrategy {
+	if a == nil {
 		return nil
 	}
-	return o.Strategy
+	return a.Strategy
 }
 
-func (o *Authentication) GetTokenauth() *bool {
-	if o == nil {
+func (a *Authentication) GetTokenauth() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Tokenauth
+	return a.Tokenauth
 }
 
-func (o *Authentication) GetUser() *string {
-	if o == nil {
+func (a *Authentication) GetUser() *string {
+	if a == nil {
 		return nil
 	}
-	return o.User
+	return a.User
 }
 
 // KafkaConsumePluginAutoOffsetReset - The offset to start from when there is no initial offset in the consumer group.
@@ -225,18 +225,18 @@ type KafkaConsumePluginBootstrapServers struct {
 	Port int64 `json:"port"`
 }
 
-func (o *KafkaConsumePluginBootstrapServers) GetHost() string {
-	if o == nil {
+func (k *KafkaConsumePluginBootstrapServers) GetHost() string {
+	if k == nil {
 		return ""
 	}
-	return o.Host
+	return k.Host
 }
 
-func (o *KafkaConsumePluginBootstrapServers) GetPort() int64 {
-	if o == nil {
+func (k *KafkaConsumePluginBootstrapServers) GetPort() int64 {
+	if k == nil {
 		return 0
 	}
-	return o.Port
+	return k.Port
 }
 
 // KafkaConsumePluginCommitStrategy - The strategy to use for committing offsets.
@@ -328,18 +328,18 @@ type KafkaConsumePluginBasic struct {
 	Username string `json:"username"`
 }
 
-func (o *KafkaConsumePluginBasic) GetPassword() string {
-	if o == nil {
+func (k *KafkaConsumePluginBasic) GetPassword() string {
+	if k == nil {
 		return ""
 	}
-	return o.Password
+	return k.Password
 }
 
-func (o *KafkaConsumePluginBasic) GetUsername() string {
-	if o == nil {
+func (k *KafkaConsumePluginBasic) GetUsername() string {
+	if k == nil {
 		return ""
 	}
-	return o.Username
+	return k.Username
 }
 
 // KafkaConsumePluginConfigMode - Authentication mode to use with the schema registry.
@@ -380,24 +380,24 @@ func (k KafkaConsumePluginAuthentication) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaConsumePluginAuthentication) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"basic"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KafkaConsumePluginAuthentication) GetBasic() *KafkaConsumePluginBasic {
-	if o == nil {
+func (k *KafkaConsumePluginAuthentication) GetBasic() *KafkaConsumePluginBasic {
+	if k == nil {
 		return nil
 	}
-	return o.Basic
+	return k.Basic
 }
 
-func (o *KafkaConsumePluginAuthentication) GetMode() *KafkaConsumePluginConfigMode {
-	if o == nil {
+func (k *KafkaConsumePluginAuthentication) GetMode() *KafkaConsumePluginConfigMode {
+	if k == nil {
 		return nil
 	}
-	return o.Mode
+	return k.Mode
 }
 
 type KafkaConsumePluginConfluent struct {
@@ -415,38 +415,38 @@ func (k KafkaConsumePluginConfluent) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaConsumePluginConfluent) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"authentication"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KafkaConsumePluginConfluent) GetAuthentication() KafkaConsumePluginAuthentication {
-	if o == nil {
+func (k *KafkaConsumePluginConfluent) GetAuthentication() KafkaConsumePluginAuthentication {
+	if k == nil {
 		return KafkaConsumePluginAuthentication{}
 	}
-	return o.Authentication
+	return k.Authentication
 }
 
-func (o *KafkaConsumePluginConfluent) GetSslVerify() *bool {
-	if o == nil {
+func (k *KafkaConsumePluginConfluent) GetSslVerify() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.SslVerify
+	return k.SslVerify
 }
 
-func (o *KafkaConsumePluginConfluent) GetTTL() *float64 {
-	if o == nil {
+func (k *KafkaConsumePluginConfluent) GetTTL() *float64 {
+	if k == nil {
 		return nil
 	}
-	return o.TTL
+	return k.TTL
 }
 
-func (o *KafkaConsumePluginConfluent) GetURL() *string {
-	if o == nil {
+func (k *KafkaConsumePluginConfluent) GetURL() *string {
+	if k == nil {
 		return nil
 	}
-	return o.URL
+	return k.URL
 }
 
 // KafkaConsumePluginSchemaRegistry - The plugin-global schema registry configuration.
@@ -454,11 +454,11 @@ type KafkaConsumePluginSchemaRegistry struct {
 	Confluent *KafkaConsumePluginConfluent `json:"confluent"`
 }
 
-func (o *KafkaConsumePluginSchemaRegistry) GetConfluent() *KafkaConsumePluginConfluent {
-	if o == nil {
+func (k *KafkaConsumePluginSchemaRegistry) GetConfluent() *KafkaConsumePluginConfluent {
+	if k == nil {
 		return nil
 	}
-	return o.Confluent
+	return k.Confluent
 }
 
 type KafkaConsumePluginSecurity struct {
@@ -473,24 +473,24 @@ func (k KafkaConsumePluginSecurity) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaConsumePluginSecurity) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KafkaConsumePluginSecurity) GetCertificateID() *string {
-	if o == nil {
+func (k *KafkaConsumePluginSecurity) GetCertificateID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.CertificateID
+	return k.CertificateID
 }
 
-func (o *KafkaConsumePluginSecurity) GetSsl() *bool {
-	if o == nil {
+func (k *KafkaConsumePluginSecurity) GetSsl() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.Ssl
+	return k.Ssl
 }
 
 type KafkaConsumePluginConfigBasic struct {
@@ -498,18 +498,18 @@ type KafkaConsumePluginConfigBasic struct {
 	Username string `json:"username"`
 }
 
-func (o *KafkaConsumePluginConfigBasic) GetPassword() string {
-	if o == nil {
+func (k *KafkaConsumePluginConfigBasic) GetPassword() string {
+	if k == nil {
 		return ""
 	}
-	return o.Password
+	return k.Password
 }
 
-func (o *KafkaConsumePluginConfigBasic) GetUsername() string {
-	if o == nil {
+func (k *KafkaConsumePluginConfigBasic) GetUsername() string {
+	if k == nil {
 		return ""
 	}
-	return o.Username
+	return k.Username
 }
 
 // KafkaConsumePluginConfigTopicsMode - Authentication mode to use with the schema registry.
@@ -550,24 +550,24 @@ func (k KafkaConsumePluginConfigAuthentication) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaConsumePluginConfigAuthentication) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"basic"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KafkaConsumePluginConfigAuthentication) GetBasic() *KafkaConsumePluginConfigBasic {
-	if o == nil {
+func (k *KafkaConsumePluginConfigAuthentication) GetBasic() *KafkaConsumePluginConfigBasic {
+	if k == nil {
 		return nil
 	}
-	return o.Basic
+	return k.Basic
 }
 
-func (o *KafkaConsumePluginConfigAuthentication) GetMode() *KafkaConsumePluginConfigTopicsMode {
-	if o == nil {
+func (k *KafkaConsumePluginConfigAuthentication) GetMode() *KafkaConsumePluginConfigTopicsMode {
+	if k == nil {
 		return nil
 	}
-	return o.Mode
+	return k.Mode
 }
 
 type KafkaConsumePluginConfigConfluent struct {
@@ -585,38 +585,38 @@ func (k KafkaConsumePluginConfigConfluent) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaConsumePluginConfigConfluent) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"authentication"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KafkaConsumePluginConfigConfluent) GetAuthentication() KafkaConsumePluginConfigAuthentication {
-	if o == nil {
+func (k *KafkaConsumePluginConfigConfluent) GetAuthentication() KafkaConsumePluginConfigAuthentication {
+	if k == nil {
 		return KafkaConsumePluginConfigAuthentication{}
 	}
-	return o.Authentication
+	return k.Authentication
 }
 
-func (o *KafkaConsumePluginConfigConfluent) GetSslVerify() *bool {
-	if o == nil {
+func (k *KafkaConsumePluginConfigConfluent) GetSslVerify() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.SslVerify
+	return k.SslVerify
 }
 
-func (o *KafkaConsumePluginConfigConfluent) GetTTL() *float64 {
-	if o == nil {
+func (k *KafkaConsumePluginConfigConfluent) GetTTL() *float64 {
+	if k == nil {
 		return nil
 	}
-	return o.TTL
+	return k.TTL
 }
 
-func (o *KafkaConsumePluginConfigConfluent) GetURL() *string {
-	if o == nil {
+func (k *KafkaConsumePluginConfigConfluent) GetURL() *string {
+	if k == nil {
 		return nil
 	}
-	return o.URL
+	return k.URL
 }
 
 // KafkaConsumePluginConfigSchemaRegistry - The plugin-global schema registry configuration.
@@ -624,11 +624,11 @@ type KafkaConsumePluginConfigSchemaRegistry struct {
 	Confluent *KafkaConsumePluginConfigConfluent `json:"confluent"`
 }
 
-func (o *KafkaConsumePluginConfigSchemaRegistry) GetConfluent() *KafkaConsumePluginConfigConfluent {
-	if o == nil {
+func (k *KafkaConsumePluginConfigSchemaRegistry) GetConfluent() *KafkaConsumePluginConfigConfluent {
+	if k == nil {
 		return nil
 	}
-	return o.Confluent
+	return k.Confluent
 }
 
 type KafkaConsumePluginTopics struct {
@@ -637,18 +637,18 @@ type KafkaConsumePluginTopics struct {
 	SchemaRegistry KafkaConsumePluginConfigSchemaRegistry `json:"schema_registry"`
 }
 
-func (o *KafkaConsumePluginTopics) GetName() string {
-	if o == nil {
+func (k *KafkaConsumePluginTopics) GetName() string {
+	if k == nil {
 		return ""
 	}
-	return o.Name
+	return k.Name
 }
 
-func (o *KafkaConsumePluginTopics) GetSchemaRegistry() KafkaConsumePluginConfigSchemaRegistry {
-	if o == nil {
+func (k *KafkaConsumePluginTopics) GetSchemaRegistry() KafkaConsumePluginConfigSchemaRegistry {
+	if k == nil {
 		return KafkaConsumePluginConfigSchemaRegistry{}
 	}
-	return o.SchemaRegistry
+	return k.SchemaRegistry
 }
 
 type KafkaConsumePluginConfig struct {
@@ -677,80 +677,80 @@ func (k KafkaConsumePluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaConsumePluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"authentication", "bootstrap_servers", "schema_registry", "security", "topics"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KafkaConsumePluginConfig) GetAuthentication() *Authentication {
-	if o == nil {
+func (k *KafkaConsumePluginConfig) GetAuthentication() *Authentication {
+	if k == nil {
 		return nil
 	}
-	return o.Authentication
+	return k.Authentication
 }
 
-func (o *KafkaConsumePluginConfig) GetAutoOffsetReset() *KafkaConsumePluginAutoOffsetReset {
-	if o == nil {
+func (k *KafkaConsumePluginConfig) GetAutoOffsetReset() *KafkaConsumePluginAutoOffsetReset {
+	if k == nil {
 		return nil
 	}
-	return o.AutoOffsetReset
+	return k.AutoOffsetReset
 }
 
-func (o *KafkaConsumePluginConfig) GetBootstrapServers() []KafkaConsumePluginBootstrapServers {
-	if o == nil {
+func (k *KafkaConsumePluginConfig) GetBootstrapServers() []KafkaConsumePluginBootstrapServers {
+	if k == nil {
 		return []KafkaConsumePluginBootstrapServers{}
 	}
-	return o.BootstrapServers
+	return k.BootstrapServers
 }
 
-func (o *KafkaConsumePluginConfig) GetClusterName() *string {
-	if o == nil {
+func (k *KafkaConsumePluginConfig) GetClusterName() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ClusterName
+	return k.ClusterName
 }
 
-func (o *KafkaConsumePluginConfig) GetCommitStrategy() *KafkaConsumePluginCommitStrategy {
-	if o == nil {
+func (k *KafkaConsumePluginConfig) GetCommitStrategy() *KafkaConsumePluginCommitStrategy {
+	if k == nil {
 		return nil
 	}
-	return o.CommitStrategy
+	return k.CommitStrategy
 }
 
-func (o *KafkaConsumePluginConfig) GetMessageDeserializer() *KafkaConsumePluginMessageDeserializer {
-	if o == nil {
+func (k *KafkaConsumePluginConfig) GetMessageDeserializer() *KafkaConsumePluginMessageDeserializer {
+	if k == nil {
 		return nil
 	}
-	return o.MessageDeserializer
+	return k.MessageDeserializer
 }
 
-func (o *KafkaConsumePluginConfig) GetMode() *KafkaConsumePluginMode {
-	if o == nil {
+func (k *KafkaConsumePluginConfig) GetMode() *KafkaConsumePluginMode {
+	if k == nil {
 		return nil
 	}
-	return o.Mode
+	return k.Mode
 }
 
-func (o *KafkaConsumePluginConfig) GetSchemaRegistry() *KafkaConsumePluginSchemaRegistry {
-	if o == nil {
+func (k *KafkaConsumePluginConfig) GetSchemaRegistry() *KafkaConsumePluginSchemaRegistry {
+	if k == nil {
 		return nil
 	}
-	return o.SchemaRegistry
+	return k.SchemaRegistry
 }
 
-func (o *KafkaConsumePluginConfig) GetSecurity() *KafkaConsumePluginSecurity {
-	if o == nil {
+func (k *KafkaConsumePluginConfig) GetSecurity() *KafkaConsumePluginSecurity {
+	if k == nil {
 		return nil
 	}
-	return o.Security
+	return k.Security
 }
 
-func (o *KafkaConsumePluginConfig) GetTopics() []KafkaConsumePluginTopics {
-	if o == nil {
+func (k *KafkaConsumePluginConfig) GetTopics() []KafkaConsumePluginTopics {
+	if k == nil {
 		return []KafkaConsumePluginTopics{}
 	}
-	return o.Topics
+	return k.Topics
 }
 
 // KafkaConsumePluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -758,11 +758,11 @@ type KafkaConsumePluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *KafkaConsumePluginConsumer) GetID() *string {
-	if o == nil {
+func (k *KafkaConsumePluginConsumer) GetID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ID
+	return k.ID
 }
 
 type KafkaConsumePluginProtocols string
@@ -808,11 +808,11 @@ type KafkaConsumePluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *KafkaConsumePluginRoute) GetID() *string {
-	if o == nil {
+func (k *KafkaConsumePluginRoute) GetID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ID
+	return k.ID
 }
 
 // KafkaConsumePluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -820,11 +820,11 @@ type KafkaConsumePluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *KafkaConsumePluginService) GetID() *string {
-	if o == nil {
+func (k *KafkaConsumePluginService) GetID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ID
+	return k.ID
 }
 
 // KafkaConsumePlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -861,103 +861,103 @@ func (k KafkaConsumePlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaConsumePlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"name", "ordering", "partials", "tags", "config", "consumer", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KafkaConsumePlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (k *KafkaConsumePlugin) GetCreatedAt() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return k.CreatedAt
 }
 
-func (o *KafkaConsumePlugin) GetEnabled() *bool {
-	if o == nil {
+func (k *KafkaConsumePlugin) GetEnabled() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.Enabled
+	return k.Enabled
 }
 
-func (o *KafkaConsumePlugin) GetID() *string {
-	if o == nil {
+func (k *KafkaConsumePlugin) GetID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ID
+	return k.ID
 }
 
-func (o *KafkaConsumePlugin) GetInstanceName() *string {
-	if o == nil {
+func (k *KafkaConsumePlugin) GetInstanceName() *string {
+	if k == nil {
 		return nil
 	}
-	return o.InstanceName
+	return k.InstanceName
 }
 
-func (o *KafkaConsumePlugin) GetName() string {
+func (k *KafkaConsumePlugin) GetName() string {
 	return "kafka-consume"
 }
 
-func (o *KafkaConsumePlugin) GetOrdering() *KafkaConsumePluginOrdering {
-	if o == nil {
+func (k *KafkaConsumePlugin) GetOrdering() *KafkaConsumePluginOrdering {
+	if k == nil {
 		return nil
 	}
-	return o.Ordering
+	return k.Ordering
 }
 
-func (o *KafkaConsumePlugin) GetPartials() []KafkaConsumePluginPartials {
-	if o == nil {
+func (k *KafkaConsumePlugin) GetPartials() []KafkaConsumePluginPartials {
+	if k == nil {
 		return nil
 	}
-	return o.Partials
+	return k.Partials
 }
 
-func (o *KafkaConsumePlugin) GetTags() []string {
-	if o == nil {
+func (k *KafkaConsumePlugin) GetTags() []string {
+	if k == nil {
 		return nil
 	}
-	return o.Tags
+	return k.Tags
 }
 
-func (o *KafkaConsumePlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (k *KafkaConsumePlugin) GetUpdatedAt() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return k.UpdatedAt
 }
 
-func (o *KafkaConsumePlugin) GetConfig() KafkaConsumePluginConfig {
-	if o == nil {
+func (k *KafkaConsumePlugin) GetConfig() KafkaConsumePluginConfig {
+	if k == nil {
 		return KafkaConsumePluginConfig{}
 	}
-	return o.Config
+	return k.Config
 }
 
-func (o *KafkaConsumePlugin) GetConsumer() *KafkaConsumePluginConsumer {
-	if o == nil {
+func (k *KafkaConsumePlugin) GetConsumer() *KafkaConsumePluginConsumer {
+	if k == nil {
 		return nil
 	}
-	return o.Consumer
+	return k.Consumer
 }
 
-func (o *KafkaConsumePlugin) GetProtocols() []KafkaConsumePluginProtocols {
-	if o == nil {
+func (k *KafkaConsumePlugin) GetProtocols() []KafkaConsumePluginProtocols {
+	if k == nil {
 		return nil
 	}
-	return o.Protocols
+	return k.Protocols
 }
 
-func (o *KafkaConsumePlugin) GetRoute() *KafkaConsumePluginRoute {
-	if o == nil {
+func (k *KafkaConsumePlugin) GetRoute() *KafkaConsumePluginRoute {
+	if k == nil {
 		return nil
 	}
-	return o.Route
+	return k.Route
 }
 
-func (o *KafkaConsumePlugin) GetService() *KafkaConsumePluginService {
-	if o == nil {
+func (k *KafkaConsumePlugin) GetService() *KafkaConsumePluginService {
+	if k == nil {
 		return nil
 	}
-	return o.Service
+	return k.Service
 }

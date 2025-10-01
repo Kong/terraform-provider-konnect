@@ -33,43 +33,43 @@ func (c CreateAPIProductDTO) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateAPIProductDTO) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "portal_ids"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CreateAPIProductDTO) GetName() string {
-	if o == nil {
+func (c *CreateAPIProductDTO) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *CreateAPIProductDTO) GetDescription() *string {
-	if o == nil {
+func (c *CreateAPIProductDTO) GetDescription() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Description
+	return c.Description
 }
 
-func (o *CreateAPIProductDTO) GetLabels() map[string]*string {
-	if o == nil {
+func (c *CreateAPIProductDTO) GetLabels() map[string]*string {
+	if c == nil {
 		return nil
 	}
-	return o.Labels
+	return c.Labels
 }
 
-func (o *CreateAPIProductDTO) GetPublicLabels() map[string]string {
-	if o == nil {
+func (c *CreateAPIProductDTO) GetPublicLabels() map[string]string {
+	if c == nil {
 		return nil
 	}
-	return o.PublicLabels
+	return c.PublicLabels
 }
 
-func (o *CreateAPIProductDTO) GetPortalIds() []string {
-	if o == nil {
+func (c *CreateAPIProductDTO) GetPortalIds() []string {
+	if c == nil {
 		return []string{}
 	}
-	return o.PortalIds
+	return c.PortalIds
 }

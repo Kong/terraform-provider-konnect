@@ -15,25 +15,25 @@ type UpdateIprestrictionPluginRequest struct {
 	IPRestrictionPlugin shared.IPRestrictionPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateIprestrictionPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateIprestrictionPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateIprestrictionPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateIprestrictionPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateIprestrictionPluginRequest) GetIPRestrictionPlugin() shared.IPRestrictionPlugin {
-	if o == nil {
+func (u *UpdateIprestrictionPluginRequest) GetIPRestrictionPlugin() shared.IPRestrictionPlugin {
+	if u == nil {
 		return shared.IPRestrictionPlugin{}
 	}
-	return o.IPRestrictionPlugin
+	return u.IPRestrictionPlugin
 }
 
 type UpdateIprestrictionPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateIprestrictionPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateIprestrictionPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateIprestrictionPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateIprestrictionPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateIprestrictionPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateIprestrictionPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateIprestrictionPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateIprestrictionPluginResponse) GetIPRestrictionPlugin() *shared.IPRestrictionPlugin {
-	if o == nil {
+func (u *UpdateIprestrictionPluginResponse) GetIPRestrictionPlugin() *shared.IPRestrictionPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.IPRestrictionPlugin
+	return u.IPRestrictionPlugin
 }
 
-func (o *UpdateIprestrictionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateIprestrictionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

@@ -30,72 +30,72 @@ type CreateControlPlaneResponse struct {
 	ServiceUnavailable *shared.ServiceUnavailable
 }
 
-func (o *CreateControlPlaneResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateControlPlaneResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateControlPlaneResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateControlPlaneResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateControlPlaneResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateControlPlaneResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateControlPlaneResponse) GetControlPlane() *shared.ControlPlane {
-	if o == nil {
+func (c *CreateControlPlaneResponse) GetControlPlane() *shared.ControlPlane {
+	if c == nil {
 		return nil
 	}
-	return o.ControlPlane
+	return c.ControlPlane
 }
 
-func (o *CreateControlPlaneResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreateControlPlaneResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreateControlPlaneResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (c *CreateControlPlaneResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return c.UnauthorizedError
 }
 
-func (o *CreateControlPlaneResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreateControlPlaneResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }
 
-func (o *CreateControlPlaneResponse) GetConflictError() *shared.ConflictError {
-	if o == nil {
+func (c *CreateControlPlaneResponse) GetConflictError() *shared.ConflictError {
+	if c == nil {
 		return nil
 	}
-	return o.ConflictError
+	return c.ConflictError
 }
 
-func (o *CreateControlPlaneResponse) GetInternalServerError() *shared.InternalServerError {
-	if o == nil {
+func (c *CreateControlPlaneResponse) GetInternalServerError() *shared.InternalServerError {
+	if c == nil {
 		return nil
 	}
-	return o.InternalServerError
+	return c.InternalServerError
 }
 
-func (o *CreateControlPlaneResponse) GetServiceUnavailable() *shared.ServiceUnavailable {
-	if o == nil {
+func (c *CreateControlPlaneResponse) GetServiceUnavailable() *shared.ServiceUnavailable {
+	if c == nil {
 		return nil
 	}
-	return o.ServiceUnavailable
+	return c.ServiceUnavailable
 }

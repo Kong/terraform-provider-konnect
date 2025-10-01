@@ -12,22 +12,22 @@ type RouteByHeaderPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *RouteByHeaderPluginAfter) GetAccess() []string {
-	if o == nil {
+func (r *RouteByHeaderPluginAfter) GetAccess() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Access
+	return r.Access
 }
 
 type RouteByHeaderPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *RouteByHeaderPluginBefore) GetAccess() []string {
-	if o == nil {
+func (r *RouteByHeaderPluginBefore) GetAccess() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Access
+	return r.Access
 }
 
 type RouteByHeaderPluginOrdering struct {
@@ -35,18 +35,18 @@ type RouteByHeaderPluginOrdering struct {
 	Before *RouteByHeaderPluginBefore `json:"before,omitempty"`
 }
 
-func (o *RouteByHeaderPluginOrdering) GetAfter() *RouteByHeaderPluginAfter {
-	if o == nil {
+func (r *RouteByHeaderPluginOrdering) GetAfter() *RouteByHeaderPluginAfter {
+	if r == nil {
 		return nil
 	}
-	return o.After
+	return r.After
 }
 
-func (o *RouteByHeaderPluginOrdering) GetBefore() *RouteByHeaderPluginBefore {
-	if o == nil {
+func (r *RouteByHeaderPluginOrdering) GetBefore() *RouteByHeaderPluginBefore {
+	if r == nil {
 		return nil
 	}
-	return o.Before
+	return r.Before
 }
 
 type RouteByHeaderPluginPartials struct {
@@ -57,25 +57,25 @@ type RouteByHeaderPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *RouteByHeaderPluginPartials) GetID() *string {
-	if o == nil {
+func (r *RouteByHeaderPluginPartials) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
-func (o *RouteByHeaderPluginPartials) GetName() *string {
-	if o == nil {
+func (r *RouteByHeaderPluginPartials) GetName() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Name
+	return r.Name
 }
 
-func (o *RouteByHeaderPluginPartials) GetPath() *string {
-	if o == nil {
+func (r *RouteByHeaderPluginPartials) GetPath() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Path
+	return r.Path
 }
 
 type RouteByHeaderPluginRules struct {
@@ -83,18 +83,18 @@ type RouteByHeaderPluginRules struct {
 	UpstreamName string         `json:"upstream_name"`
 }
 
-func (o *RouteByHeaderPluginRules) GetCondition() map[string]any {
-	if o == nil {
+func (r *RouteByHeaderPluginRules) GetCondition() map[string]any {
+	if r == nil {
 		return map[string]any{}
 	}
-	return o.Condition
+	return r.Condition
 }
 
-func (o *RouteByHeaderPluginRules) GetUpstreamName() string {
-	if o == nil {
+func (r *RouteByHeaderPluginRules) GetUpstreamName() string {
+	if r == nil {
 		return ""
 	}
-	return o.UpstreamName
+	return r.UpstreamName
 }
 
 type RouteByHeaderPluginConfig struct {
@@ -102,11 +102,11 @@ type RouteByHeaderPluginConfig struct {
 	Rules []RouteByHeaderPluginRules `json:"rules,omitempty"`
 }
 
-func (o *RouteByHeaderPluginConfig) GetRules() []RouteByHeaderPluginRules {
-	if o == nil {
+func (r *RouteByHeaderPluginConfig) GetRules() []RouteByHeaderPluginRules {
+	if r == nil {
 		return nil
 	}
-	return o.Rules
+	return r.Rules
 }
 
 // RouteByHeaderPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -114,11 +114,11 @@ type RouteByHeaderPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *RouteByHeaderPluginConsumer) GetID() *string {
-	if o == nil {
+func (r *RouteByHeaderPluginConsumer) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
 type RouteByHeaderPluginProtocols string
@@ -158,11 +158,11 @@ type RouteByHeaderPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *RouteByHeaderPluginRoute) GetID() *string {
-	if o == nil {
+func (r *RouteByHeaderPluginRoute) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
 // RouteByHeaderPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -170,11 +170,11 @@ type RouteByHeaderPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *RouteByHeaderPluginService) GetID() *string {
-	if o == nil {
+func (r *RouteByHeaderPluginService) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
 // RouteByHeaderPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -211,103 +211,103 @@ func (r RouteByHeaderPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RouteByHeaderPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"name", "ordering", "partials", "tags", "config", "consumer", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RouteByHeaderPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (r *RouteByHeaderPlugin) GetCreatedAt() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return r.CreatedAt
 }
 
-func (o *RouteByHeaderPlugin) GetEnabled() *bool {
-	if o == nil {
+func (r *RouteByHeaderPlugin) GetEnabled() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Enabled
+	return r.Enabled
 }
 
-func (o *RouteByHeaderPlugin) GetID() *string {
-	if o == nil {
+func (r *RouteByHeaderPlugin) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
-func (o *RouteByHeaderPlugin) GetInstanceName() *string {
-	if o == nil {
+func (r *RouteByHeaderPlugin) GetInstanceName() *string {
+	if r == nil {
 		return nil
 	}
-	return o.InstanceName
+	return r.InstanceName
 }
 
-func (o *RouteByHeaderPlugin) GetName() string {
+func (r *RouteByHeaderPlugin) GetName() string {
 	return "route-by-header"
 }
 
-func (o *RouteByHeaderPlugin) GetOrdering() *RouteByHeaderPluginOrdering {
-	if o == nil {
+func (r *RouteByHeaderPlugin) GetOrdering() *RouteByHeaderPluginOrdering {
+	if r == nil {
 		return nil
 	}
-	return o.Ordering
+	return r.Ordering
 }
 
-func (o *RouteByHeaderPlugin) GetPartials() []RouteByHeaderPluginPartials {
-	if o == nil {
+func (r *RouteByHeaderPlugin) GetPartials() []RouteByHeaderPluginPartials {
+	if r == nil {
 		return nil
 	}
-	return o.Partials
+	return r.Partials
 }
 
-func (o *RouteByHeaderPlugin) GetTags() []string {
-	if o == nil {
+func (r *RouteByHeaderPlugin) GetTags() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Tags
+	return r.Tags
 }
 
-func (o *RouteByHeaderPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (r *RouteByHeaderPlugin) GetUpdatedAt() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return r.UpdatedAt
 }
 
-func (o *RouteByHeaderPlugin) GetConfig() *RouteByHeaderPluginConfig {
-	if o == nil {
+func (r *RouteByHeaderPlugin) GetConfig() *RouteByHeaderPluginConfig {
+	if r == nil {
 		return nil
 	}
-	return o.Config
+	return r.Config
 }
 
-func (o *RouteByHeaderPlugin) GetConsumer() *RouteByHeaderPluginConsumer {
-	if o == nil {
+func (r *RouteByHeaderPlugin) GetConsumer() *RouteByHeaderPluginConsumer {
+	if r == nil {
 		return nil
 	}
-	return o.Consumer
+	return r.Consumer
 }
 
-func (o *RouteByHeaderPlugin) GetProtocols() []RouteByHeaderPluginProtocols {
-	if o == nil {
+func (r *RouteByHeaderPlugin) GetProtocols() []RouteByHeaderPluginProtocols {
+	if r == nil {
 		return nil
 	}
-	return o.Protocols
+	return r.Protocols
 }
 
-func (o *RouteByHeaderPlugin) GetRoute() *RouteByHeaderPluginRoute {
-	if o == nil {
+func (r *RouteByHeaderPlugin) GetRoute() *RouteByHeaderPluginRoute {
+	if r == nil {
 		return nil
 	}
-	return o.Route
+	return r.Route
 }
 
-func (o *RouteByHeaderPlugin) GetService() *RouteByHeaderPluginService {
-	if o == nil {
+func (r *RouteByHeaderPlugin) GetService() *RouteByHeaderPluginService {
+	if r == nil {
 		return nil
 	}
-	return o.Service
+	return r.Service
 }

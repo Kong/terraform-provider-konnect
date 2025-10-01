@@ -46,6 +46,21 @@ resource "konnect_gateway_key_auth" "my_gatewaykeyauth" {
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_gateway_key_auth.my_konnect_gateway_key_auth
+  id = jsonencode({
+    consumer_id = "f28acbfa-c866-4587-b688-0208ac24df21"
+    control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = ""
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 terraform import konnect_gateway_key_auth.my_konnect_gateway_key_auth '{"consumer_id": "f28acbfa-c866-4587-b688-0208ac24df21", "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}'
 ```

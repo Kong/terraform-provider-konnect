@@ -14,18 +14,18 @@ type FetchPluginSchemaRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *FetchPluginSchemaRequest) GetPluginName() string {
-	if o == nil {
+func (f *FetchPluginSchemaRequest) GetPluginName() string {
+	if f == nil {
 		return ""
 	}
-	return o.PluginName
+	return f.PluginName
 }
 
-func (o *FetchPluginSchemaRequest) GetControlPlaneID() string {
-	if o == nil {
+func (f *FetchPluginSchemaRequest) GetControlPlaneID() string {
+	if f == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return f.ControlPlaneID
 }
 
 type FetchPluginSchemaResponse struct {
@@ -39,30 +39,30 @@ type FetchPluginSchemaResponse struct {
 	GetPluginSchemaResponse *shared.GetPluginSchemaResponse
 }
 
-func (o *FetchPluginSchemaResponse) GetContentType() string {
-	if o == nil {
+func (f *FetchPluginSchemaResponse) GetContentType() string {
+	if f == nil {
 		return ""
 	}
-	return o.ContentType
+	return f.ContentType
 }
 
-func (o *FetchPluginSchemaResponse) GetStatusCode() int {
-	if o == nil {
+func (f *FetchPluginSchemaResponse) GetStatusCode() int {
+	if f == nil {
 		return 0
 	}
-	return o.StatusCode
+	return f.StatusCode
 }
 
-func (o *FetchPluginSchemaResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (f *FetchPluginSchemaResponse) GetRawResponse() *http.Response {
+	if f == nil {
 		return nil
 	}
-	return o.RawResponse
+	return f.RawResponse
 }
 
-func (o *FetchPluginSchemaResponse) GetGetPluginSchemaResponse() *shared.GetPluginSchemaResponse {
-	if o == nil {
+func (f *FetchPluginSchemaResponse) GetGetPluginSchemaResponse() *shared.GetPluginSchemaResponse {
+	if f == nil {
 		return nil
 	}
-	return o.GetPluginSchemaResponse
+	return f.GetPluginSchemaResponse
 }

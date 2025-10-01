@@ -14,18 +14,18 @@ type DeleteJwtsignerPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteJwtsignerPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteJwtsignerPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteJwtsignerPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteJwtsignerPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteJwtsignerPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteJwtsignerPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteJwtsignerPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteJwtsignerPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteJwtsignerPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteJwtsignerPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteJwtsignerPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteJwtsignerPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteJwtsignerPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteJwtsignerPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

@@ -16,25 +16,25 @@ type GetKeyAuthWithConsumerRequest struct {
 	KeyAuthID string `pathParam:"style=simple,explode=false,name=KeyAuthId"`
 }
 
-func (o *GetKeyAuthWithConsumerRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetKeyAuthWithConsumerRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
-func (o *GetKeyAuthWithConsumerRequest) GetConsumerID() string {
-	if o == nil {
+func (g *GetKeyAuthWithConsumerRequest) GetConsumerID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ConsumerID
+	return g.ConsumerID
 }
 
-func (o *GetKeyAuthWithConsumerRequest) GetKeyAuthID() string {
-	if o == nil {
+func (g *GetKeyAuthWithConsumerRequest) GetKeyAuthID() string {
+	if g == nil {
 		return ""
 	}
-	return o.KeyAuthID
+	return g.KeyAuthID
 }
 
 type GetKeyAuthWithConsumerResponse struct {
@@ -48,30 +48,30 @@ type GetKeyAuthWithConsumerResponse struct {
 	KeyAuth *shared.KeyAuth
 }
 
-func (o *GetKeyAuthWithConsumerResponse) GetContentType() string {
-	if o == nil {
+func (g *GetKeyAuthWithConsumerResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetKeyAuthWithConsumerResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetKeyAuthWithConsumerResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetKeyAuthWithConsumerResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetKeyAuthWithConsumerResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetKeyAuthWithConsumerResponse) GetKeyAuth() *shared.KeyAuth {
-	if o == nil {
+func (g *GetKeyAuthWithConsumerResponse) GetKeyAuth() *shared.KeyAuth {
+	if g == nil {
 		return nil
 	}
-	return o.KeyAuth
+	return g.KeyAuth
 }

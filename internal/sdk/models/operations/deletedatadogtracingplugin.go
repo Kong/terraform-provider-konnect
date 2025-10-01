@@ -14,18 +14,18 @@ type DeleteDatadogtracingPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteDatadogtracingPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteDatadogtracingPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteDatadogtracingPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteDatadogtracingPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteDatadogtracingPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteDatadogtracingPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteDatadogtracingPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteDatadogtracingPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteDatadogtracingPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteDatadogtracingPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteDatadogtracingPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteDatadogtracingPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteDatadogtracingPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteDatadogtracingPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

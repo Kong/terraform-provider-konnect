@@ -12,22 +12,22 @@ type DatakitPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *DatakitPluginAfter) GetAccess() []string {
-	if o == nil {
+func (d *DatakitPluginAfter) GetAccess() []string {
+	if d == nil {
 		return nil
 	}
-	return o.Access
+	return d.Access
 }
 
 type DatakitPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *DatakitPluginBefore) GetAccess() []string {
-	if o == nil {
+func (d *DatakitPluginBefore) GetAccess() []string {
+	if d == nil {
 		return nil
 	}
-	return o.Access
+	return d.Access
 }
 
 type DatakitPluginOrdering struct {
@@ -35,18 +35,18 @@ type DatakitPluginOrdering struct {
 	Before *DatakitPluginBefore `json:"before,omitempty"`
 }
 
-func (o *DatakitPluginOrdering) GetAfter() *DatakitPluginAfter {
-	if o == nil {
+func (d *DatakitPluginOrdering) GetAfter() *DatakitPluginAfter {
+	if d == nil {
 		return nil
 	}
-	return o.After
+	return d.After
 }
 
-func (o *DatakitPluginOrdering) GetBefore() *DatakitPluginBefore {
-	if o == nil {
+func (d *DatakitPluginOrdering) GetBefore() *DatakitPluginBefore {
+	if d == nil {
 		return nil
 	}
-	return o.Before
+	return d.Before
 }
 
 type DatakitPluginPartials struct {
@@ -57,25 +57,25 @@ type DatakitPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *DatakitPluginPartials) GetID() *string {
-	if o == nil {
+func (d *DatakitPluginPartials) GetID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ID
+	return d.ID
 }
 
-func (o *DatakitPluginPartials) GetName() *string {
-	if o == nil {
+func (d *DatakitPluginPartials) GetName() *string {
+	if d == nil {
 		return nil
 	}
-	return o.Name
+	return d.Name
 }
 
-func (o *DatakitPluginPartials) GetPath() *string {
-	if o == nil {
+func (d *DatakitPluginPartials) GetPath() *string {
+	if d == nil {
 		return nil
 	}
-	return o.Path
+	return d.Path
 }
 
 type DatakitPluginType string
@@ -120,18 +120,18 @@ type Nodes struct {
 	Type DatakitPluginType `json:"type"`
 }
 
-func (o *Nodes) GetName() string {
-	if o == nil {
+func (n *Nodes) GetName() string {
+	if n == nil {
 		return ""
 	}
-	return o.Name
+	return n.Name
 }
 
-func (o *Nodes) GetType() DatakitPluginType {
-	if o == nil {
+func (n *Nodes) GetType() DatakitPluginType {
+	if n == nil {
 		return DatakitPluginType("")
 	}
-	return o.Type
+	return n.Type
 }
 
 type DatakitPluginConfig struct {
@@ -144,24 +144,24 @@ func (d DatakitPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DatakitPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"nodes"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *DatakitPluginConfig) GetDebug() *bool {
-	if o == nil {
+func (d *DatakitPluginConfig) GetDebug() *bool {
+	if d == nil {
 		return nil
 	}
-	return o.Debug
+	return d.Debug
 }
 
-func (o *DatakitPluginConfig) GetNodes() []Nodes {
-	if o == nil {
+func (d *DatakitPluginConfig) GetNodes() []Nodes {
+	if d == nil {
 		return []Nodes{}
 	}
-	return o.Nodes
+	return d.Nodes
 }
 
 // DatakitPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -169,11 +169,11 @@ type DatakitPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *DatakitPluginConsumer) GetID() *string {
-	if o == nil {
+func (d *DatakitPluginConsumer) GetID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ID
+	return d.ID
 }
 
 // DatakitPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -181,11 +181,11 @@ type DatakitPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *DatakitPluginConsumerGroup) GetID() *string {
-	if o == nil {
+func (d *DatakitPluginConsumerGroup) GetID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ID
+	return d.ID
 }
 
 type DatakitPluginProtocols string
@@ -225,11 +225,11 @@ type DatakitPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *DatakitPluginRoute) GetID() *string {
-	if o == nil {
+func (d *DatakitPluginRoute) GetID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ID
+	return d.ID
 }
 
 // DatakitPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -237,11 +237,11 @@ type DatakitPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *DatakitPluginService) GetID() *string {
-	if o == nil {
+func (d *DatakitPluginService) GetID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ID
+	return d.ID
 }
 
 // DatakitPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -280,110 +280,110 @@ func (d DatakitPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DatakitPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"name", "ordering", "partials", "tags", "config", "consumer", "consumer_group", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *DatakitPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (d *DatakitPlugin) GetCreatedAt() *int64 {
+	if d == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return d.CreatedAt
 }
 
-func (o *DatakitPlugin) GetEnabled() *bool {
-	if o == nil {
+func (d *DatakitPlugin) GetEnabled() *bool {
+	if d == nil {
 		return nil
 	}
-	return o.Enabled
+	return d.Enabled
 }
 
-func (o *DatakitPlugin) GetID() *string {
-	if o == nil {
+func (d *DatakitPlugin) GetID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ID
+	return d.ID
 }
 
-func (o *DatakitPlugin) GetInstanceName() *string {
-	if o == nil {
+func (d *DatakitPlugin) GetInstanceName() *string {
+	if d == nil {
 		return nil
 	}
-	return o.InstanceName
+	return d.InstanceName
 }
 
-func (o *DatakitPlugin) GetName() string {
+func (d *DatakitPlugin) GetName() string {
 	return "datakit"
 }
 
-func (o *DatakitPlugin) GetOrdering() *DatakitPluginOrdering {
-	if o == nil {
+func (d *DatakitPlugin) GetOrdering() *DatakitPluginOrdering {
+	if d == nil {
 		return nil
 	}
-	return o.Ordering
+	return d.Ordering
 }
 
-func (o *DatakitPlugin) GetPartials() []DatakitPluginPartials {
-	if o == nil {
+func (d *DatakitPlugin) GetPartials() []DatakitPluginPartials {
+	if d == nil {
 		return nil
 	}
-	return o.Partials
+	return d.Partials
 }
 
-func (o *DatakitPlugin) GetTags() []string {
-	if o == nil {
+func (d *DatakitPlugin) GetTags() []string {
+	if d == nil {
 		return nil
 	}
-	return o.Tags
+	return d.Tags
 }
 
-func (o *DatakitPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (d *DatakitPlugin) GetUpdatedAt() *int64 {
+	if d == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return d.UpdatedAt
 }
 
-func (o *DatakitPlugin) GetConfig() DatakitPluginConfig {
-	if o == nil {
+func (d *DatakitPlugin) GetConfig() DatakitPluginConfig {
+	if d == nil {
 		return DatakitPluginConfig{}
 	}
-	return o.Config
+	return d.Config
 }
 
-func (o *DatakitPlugin) GetConsumer() *DatakitPluginConsumer {
-	if o == nil {
+func (d *DatakitPlugin) GetConsumer() *DatakitPluginConsumer {
+	if d == nil {
 		return nil
 	}
-	return o.Consumer
+	return d.Consumer
 }
 
-func (o *DatakitPlugin) GetConsumerGroup() *DatakitPluginConsumerGroup {
-	if o == nil {
+func (d *DatakitPlugin) GetConsumerGroup() *DatakitPluginConsumerGroup {
+	if d == nil {
 		return nil
 	}
-	return o.ConsumerGroup
+	return d.ConsumerGroup
 }
 
-func (o *DatakitPlugin) GetProtocols() []DatakitPluginProtocols {
-	if o == nil {
+func (d *DatakitPlugin) GetProtocols() []DatakitPluginProtocols {
+	if d == nil {
 		return nil
 	}
-	return o.Protocols
+	return d.Protocols
 }
 
-func (o *DatakitPlugin) GetRoute() *DatakitPluginRoute {
-	if o == nil {
+func (d *DatakitPlugin) GetRoute() *DatakitPluginRoute {
+	if d == nil {
 		return nil
 	}
-	return o.Route
+	return d.Route
 }
 
-func (o *DatakitPlugin) GetService() *DatakitPluginService {
-	if o == nil {
+func (d *DatakitPlugin) GetService() *DatakitPluginService {
+	if d == nil {
 		return nil
 	}
-	return o.Service
+	return d.Service
 }

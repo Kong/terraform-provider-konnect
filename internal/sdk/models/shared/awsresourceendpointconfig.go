@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type AwsResourceEndpointConfig struct {
 	// Resource Config ID to uniquely identify a resource configuration.
 	ResourceConfigID string `json:"resource_config_id"`
@@ -9,16 +13,27 @@ type AwsResourceEndpointConfig struct {
 	DomainName string `json:"domain_name"`
 }
 
-func (o *AwsResourceEndpointConfig) GetResourceConfigID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ResourceConfigID
+func (a AwsResourceEndpointConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (o *AwsResourceEndpointConfig) GetDomainName() string {
-	if o == nil {
+func (a *AwsResourceEndpointConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"resource_config_id", "domain_name"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AwsResourceEndpointConfig) GetResourceConfigID() string {
+	if a == nil {
 		return ""
 	}
-	return o.DomainName
+	return a.ResourceConfigID
+}
+
+func (a *AwsResourceEndpointConfig) GetDomainName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DomainName
 }

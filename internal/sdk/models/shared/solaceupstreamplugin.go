@@ -12,22 +12,22 @@ type SolaceUpstreamPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *SolaceUpstreamPluginAfter) GetAccess() []string {
-	if o == nil {
+func (s *SolaceUpstreamPluginAfter) GetAccess() []string {
+	if s == nil {
 		return nil
 	}
-	return o.Access
+	return s.Access
 }
 
 type SolaceUpstreamPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *SolaceUpstreamPluginBefore) GetAccess() []string {
-	if o == nil {
+func (s *SolaceUpstreamPluginBefore) GetAccess() []string {
+	if s == nil {
 		return nil
 	}
-	return o.Access
+	return s.Access
 }
 
 type SolaceUpstreamPluginOrdering struct {
@@ -35,18 +35,18 @@ type SolaceUpstreamPluginOrdering struct {
 	Before *SolaceUpstreamPluginBefore `json:"before,omitempty"`
 }
 
-func (o *SolaceUpstreamPluginOrdering) GetAfter() *SolaceUpstreamPluginAfter {
-	if o == nil {
+func (s *SolaceUpstreamPluginOrdering) GetAfter() *SolaceUpstreamPluginAfter {
+	if s == nil {
 		return nil
 	}
-	return o.After
+	return s.After
 }
 
-func (o *SolaceUpstreamPluginOrdering) GetBefore() *SolaceUpstreamPluginBefore {
-	if o == nil {
+func (s *SolaceUpstreamPluginOrdering) GetBefore() *SolaceUpstreamPluginBefore {
+	if s == nil {
 		return nil
 	}
-	return o.Before
+	return s.Before
 }
 
 type SolaceUpstreamPluginPartials struct {
@@ -57,25 +57,25 @@ type SolaceUpstreamPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *SolaceUpstreamPluginPartials) GetID() *string {
-	if o == nil {
+func (s *SolaceUpstreamPluginPartials) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
-func (o *SolaceUpstreamPluginPartials) GetName() *string {
-	if o == nil {
+func (s *SolaceUpstreamPluginPartials) GetName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Name
+	return s.Name
 }
 
-func (o *SolaceUpstreamPluginPartials) GetPath() *string {
-	if o == nil {
+func (s *SolaceUpstreamPluginPartials) GetPath() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Path
+	return s.Path
 }
 
 // DeliveryMode - Sets the message delivery mode.
@@ -144,24 +144,24 @@ func (s SolaceUpstreamPluginDestinations) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SolaceUpstreamPluginDestinations) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *SolaceUpstreamPluginDestinations) GetName() string {
-	if o == nil {
+func (s *SolaceUpstreamPluginDestinations) GetName() string {
+	if s == nil {
 		return ""
 	}
-	return o.Name
+	return s.Name
 }
 
-func (o *SolaceUpstreamPluginDestinations) GetType() *SolaceUpstreamPluginType {
-	if o == nil {
+func (s *SolaceUpstreamPluginDestinations) GetType() *SolaceUpstreamPluginType {
+	if s == nil {
 		return nil
 	}
-	return o.Type
+	return s.Type
 }
 
 // Message - The message related configuration.
@@ -203,115 +203,115 @@ func (m Message) MarshalJSON() ([]byte, error) {
 }
 
 func (m *Message) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"destinations", "functions"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Message) GetAckTimeout() *int64 {
-	if o == nil {
+func (m *Message) GetAckTimeout() *int64 {
+	if m == nil {
 		return nil
 	}
-	return o.AckTimeout
+	return m.AckTimeout
 }
 
-func (o *Message) GetDefaultContent() *string {
-	if o == nil {
+func (m *Message) GetDefaultContent() *string {
+	if m == nil {
 		return nil
 	}
-	return o.DefaultContent
+	return m.DefaultContent
 }
 
-func (o *Message) GetDeliveryMode() *DeliveryMode {
-	if o == nil {
+func (m *Message) GetDeliveryMode() *DeliveryMode {
+	if m == nil {
 		return nil
 	}
-	return o.DeliveryMode
+	return m.DeliveryMode
 }
 
-func (o *Message) GetDestinations() []SolaceUpstreamPluginDestinations {
-	if o == nil {
+func (m *Message) GetDestinations() []SolaceUpstreamPluginDestinations {
+	if m == nil {
 		return []SolaceUpstreamPluginDestinations{}
 	}
-	return o.Destinations
+	return m.Destinations
 }
 
-func (o *Message) GetDmqEligible() *bool {
-	if o == nil {
+func (m *Message) GetDmqEligible() *bool {
+	if m == nil {
 		return nil
 	}
-	return o.DmqEligible
+	return m.DmqEligible
 }
 
-func (o *Message) GetForwardBody() *bool {
-	if o == nil {
+func (m *Message) GetForwardBody() *bool {
+	if m == nil {
 		return nil
 	}
-	return o.ForwardBody
+	return m.ForwardBody
 }
 
-func (o *Message) GetForwardHeaders() *bool {
-	if o == nil {
+func (m *Message) GetForwardHeaders() *bool {
+	if m == nil {
 		return nil
 	}
-	return o.ForwardHeaders
+	return m.ForwardHeaders
 }
 
-func (o *Message) GetForwardMethod() *bool {
-	if o == nil {
+func (m *Message) GetForwardMethod() *bool {
+	if m == nil {
 		return nil
 	}
-	return o.ForwardMethod
+	return m.ForwardMethod
 }
 
-func (o *Message) GetForwardURI() *bool {
-	if o == nil {
+func (m *Message) GetForwardURI() *bool {
+	if m == nil {
 		return nil
 	}
-	return o.ForwardURI
+	return m.ForwardURI
 }
 
-func (o *Message) GetFunctions() []string {
-	if o == nil {
+func (m *Message) GetFunctions() []string {
+	if m == nil {
 		return nil
 	}
-	return o.Functions
+	return m.Functions
 }
 
-func (o *Message) GetPriority() *int64 {
-	if o == nil {
+func (m *Message) GetPriority() *int64 {
+	if m == nil {
 		return nil
 	}
-	return o.Priority
+	return m.Priority
 }
 
-func (o *Message) GetSenderID() *string {
-	if o == nil {
+func (m *Message) GetSenderID() *string {
+	if m == nil {
 		return nil
 	}
-	return o.SenderID
+	return m.SenderID
 }
 
-func (o *Message) GetTracing() *bool {
-	if o == nil {
+func (m *Message) GetTracing() *bool {
+	if m == nil {
 		return nil
 	}
-	return o.Tracing
+	return m.Tracing
 }
 
-func (o *Message) GetTracingSampled() *bool {
-	if o == nil {
+func (m *Message) GetTracingSampled() *bool {
+	if m == nil {
 		return nil
 	}
-	return o.TracingSampled
+	return m.TracingSampled
 }
 
-func (o *Message) GetTTL() *int64 {
-	if o == nil {
+func (m *Message) GetTTL() *int64 {
+	if m == nil {
 		return nil
 	}
-	return o.TTL
+	return m.TTL
 }
 
 // Scheme - The client authentication scheme used when connection to an event broker.
@@ -365,59 +365,59 @@ func (s SolaceUpstreamPluginAuthentication) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SolaceUpstreamPluginAuthentication) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *SolaceUpstreamPluginAuthentication) GetAccessToken() *string {
-	if o == nil {
+func (s *SolaceUpstreamPluginAuthentication) GetAccessToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.AccessToken
+	return s.AccessToken
 }
 
-func (o *SolaceUpstreamPluginAuthentication) GetAccessTokenHeader() *string {
-	if o == nil {
+func (s *SolaceUpstreamPluginAuthentication) GetAccessTokenHeader() *string {
+	if s == nil {
 		return nil
 	}
-	return o.AccessTokenHeader
+	return s.AccessTokenHeader
 }
 
-func (o *SolaceUpstreamPluginAuthentication) GetIDToken() *string {
-	if o == nil {
+func (s *SolaceUpstreamPluginAuthentication) GetIDToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.IDToken
+	return s.IDToken
 }
 
-func (o *SolaceUpstreamPluginAuthentication) GetIDTokenHeader() *string {
-	if o == nil {
+func (s *SolaceUpstreamPluginAuthentication) GetIDTokenHeader() *string {
+	if s == nil {
 		return nil
 	}
-	return o.IDTokenHeader
+	return s.IDTokenHeader
 }
 
-func (o *SolaceUpstreamPluginAuthentication) GetPassword() *string {
-	if o == nil {
+func (s *SolaceUpstreamPluginAuthentication) GetPassword() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Password
+	return s.Password
 }
 
-func (o *SolaceUpstreamPluginAuthentication) GetScheme() *Scheme {
-	if o == nil {
+func (s *SolaceUpstreamPluginAuthentication) GetScheme() *Scheme {
+	if s == nil {
 		return nil
 	}
-	return o.Scheme
+	return s.Scheme
 }
 
-func (o *SolaceUpstreamPluginAuthentication) GetUsername() *string {
-	if o == nil {
+func (s *SolaceUpstreamPluginAuthentication) GetUsername() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Username
+	return s.Username
 }
 
 // Session related configuration.
@@ -441,52 +441,52 @@ func (s Session) MarshalJSON() ([]byte, error) {
 }
 
 func (s *Session) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"authentication", "host"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Session) GetAuthentication() *SolaceUpstreamPluginAuthentication {
-	if o == nil {
+func (s *Session) GetAuthentication() *SolaceUpstreamPluginAuthentication {
+	if s == nil {
 		return nil
 	}
-	return o.Authentication
+	return s.Authentication
 }
 
-func (o *Session) GetConnectTimeout() *int64 {
-	if o == nil {
+func (s *Session) GetConnectTimeout() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.ConnectTimeout
+	return s.ConnectTimeout
 }
 
-func (o *Session) GetHost() string {
-	if o == nil {
+func (s *Session) GetHost() string {
+	if s == nil {
 		return ""
 	}
-	return o.Host
+	return s.Host
 }
 
-func (o *Session) GetProperties() map[string]any {
-	if o == nil {
+func (s *Session) GetProperties() map[string]any {
+	if s == nil {
 		return nil
 	}
-	return o.Properties
+	return s.Properties
 }
 
-func (o *Session) GetSslValidateCertificate() *bool {
-	if o == nil {
+func (s *Session) GetSslValidateCertificate() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.SslValidateCertificate
+	return s.SslValidateCertificate
 }
 
-func (o *Session) GetVpnName() *string {
-	if o == nil {
+func (s *Session) GetVpnName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.VpnName
+	return s.VpnName
 }
 
 type SolaceUpstreamPluginConfig struct {
@@ -496,18 +496,18 @@ type SolaceUpstreamPluginConfig struct {
 	Session Session `json:"session"`
 }
 
-func (o *SolaceUpstreamPluginConfig) GetMessage() Message {
-	if o == nil {
+func (s *SolaceUpstreamPluginConfig) GetMessage() Message {
+	if s == nil {
 		return Message{}
 	}
-	return o.Message
+	return s.Message
 }
 
-func (o *SolaceUpstreamPluginConfig) GetSession() Session {
-	if o == nil {
+func (s *SolaceUpstreamPluginConfig) GetSession() Session {
+	if s == nil {
 		return Session{}
 	}
-	return o.Session
+	return s.Session
 }
 
 type SolaceUpstreamPluginProtocols string
@@ -547,11 +547,11 @@ type SolaceUpstreamPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *SolaceUpstreamPluginRoute) GetID() *string {
-	if o == nil {
+func (s *SolaceUpstreamPluginRoute) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
 // SolaceUpstreamPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -559,11 +559,11 @@ type SolaceUpstreamPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *SolaceUpstreamPluginService) GetID() *string {
-	if o == nil {
+func (s *SolaceUpstreamPluginService) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
 // SolaceUpstreamPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -598,96 +598,96 @@ func (s SolaceUpstreamPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SolaceUpstreamPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"name", "ordering", "partials", "tags", "config", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *SolaceUpstreamPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (s *SolaceUpstreamPlugin) GetCreatedAt() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return s.CreatedAt
 }
 
-func (o *SolaceUpstreamPlugin) GetEnabled() *bool {
-	if o == nil {
+func (s *SolaceUpstreamPlugin) GetEnabled() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.Enabled
+	return s.Enabled
 }
 
-func (o *SolaceUpstreamPlugin) GetID() *string {
-	if o == nil {
+func (s *SolaceUpstreamPlugin) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
-func (o *SolaceUpstreamPlugin) GetInstanceName() *string {
-	if o == nil {
+func (s *SolaceUpstreamPlugin) GetInstanceName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.InstanceName
+	return s.InstanceName
 }
 
-func (o *SolaceUpstreamPlugin) GetName() string {
+func (s *SolaceUpstreamPlugin) GetName() string {
 	return "solace-upstream"
 }
 
-func (o *SolaceUpstreamPlugin) GetOrdering() *SolaceUpstreamPluginOrdering {
-	if o == nil {
+func (s *SolaceUpstreamPlugin) GetOrdering() *SolaceUpstreamPluginOrdering {
+	if s == nil {
 		return nil
 	}
-	return o.Ordering
+	return s.Ordering
 }
 
-func (o *SolaceUpstreamPlugin) GetPartials() []SolaceUpstreamPluginPartials {
-	if o == nil {
+func (s *SolaceUpstreamPlugin) GetPartials() []SolaceUpstreamPluginPartials {
+	if s == nil {
 		return nil
 	}
-	return o.Partials
+	return s.Partials
 }
 
-func (o *SolaceUpstreamPlugin) GetTags() []string {
-	if o == nil {
+func (s *SolaceUpstreamPlugin) GetTags() []string {
+	if s == nil {
 		return nil
 	}
-	return o.Tags
+	return s.Tags
 }
 
-func (o *SolaceUpstreamPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (s *SolaceUpstreamPlugin) GetUpdatedAt() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return s.UpdatedAt
 }
 
-func (o *SolaceUpstreamPlugin) GetConfig() SolaceUpstreamPluginConfig {
-	if o == nil {
+func (s *SolaceUpstreamPlugin) GetConfig() SolaceUpstreamPluginConfig {
+	if s == nil {
 		return SolaceUpstreamPluginConfig{}
 	}
-	return o.Config
+	return s.Config
 }
 
-func (o *SolaceUpstreamPlugin) GetProtocols() []SolaceUpstreamPluginProtocols {
-	if o == nil {
+func (s *SolaceUpstreamPlugin) GetProtocols() []SolaceUpstreamPluginProtocols {
+	if s == nil {
 		return nil
 	}
-	return o.Protocols
+	return s.Protocols
 }
 
-func (o *SolaceUpstreamPlugin) GetRoute() *SolaceUpstreamPluginRoute {
-	if o == nil {
+func (s *SolaceUpstreamPlugin) GetRoute() *SolaceUpstreamPluginRoute {
+	if s == nil {
 		return nil
 	}
-	return o.Route
+	return s.Route
 }
 
-func (o *SolaceUpstreamPlugin) GetService() *SolaceUpstreamPluginService {
-	if o == nil {
+func (s *SolaceUpstreamPlugin) GetService() *SolaceUpstreamPluginService {
+	if s == nil {
 		return nil
 	}
-	return o.Service
+	return s.Service
 }

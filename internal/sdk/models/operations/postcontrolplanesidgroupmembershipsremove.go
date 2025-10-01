@@ -14,18 +14,18 @@ type PostControlPlanesIDGroupMembershipsRemoveRequest struct {
 	GroupMembership *shared.GroupMembership `request:"mediaType=application/json"`
 }
 
-func (o *PostControlPlanesIDGroupMembershipsRemoveRequest) GetID() string {
-	if o == nil {
+func (p *PostControlPlanesIDGroupMembershipsRemoveRequest) GetID() string {
+	if p == nil {
 		return ""
 	}
-	return o.ID
+	return p.ID
 }
 
-func (o *PostControlPlanesIDGroupMembershipsRemoveRequest) GetGroupMembership() *shared.GroupMembership {
-	if o == nil {
+func (p *PostControlPlanesIDGroupMembershipsRemoveRequest) GetGroupMembership() *shared.GroupMembership {
+	if p == nil {
 		return nil
 	}
-	return o.GroupMembership
+	return p.GroupMembership
 }
 
 type PostControlPlanesIDGroupMembershipsRemoveResponse struct {
@@ -49,65 +49,65 @@ type PostControlPlanesIDGroupMembershipsRemoveResponse struct {
 	ServiceUnavailable *shared.ServiceUnavailable
 }
 
-func (o *PostControlPlanesIDGroupMembershipsRemoveResponse) GetContentType() string {
-	if o == nil {
+func (p *PostControlPlanesIDGroupMembershipsRemoveResponse) GetContentType() string {
+	if p == nil {
 		return ""
 	}
-	return o.ContentType
+	return p.ContentType
 }
 
-func (o *PostControlPlanesIDGroupMembershipsRemoveResponse) GetStatusCode() int {
-	if o == nil {
+func (p *PostControlPlanesIDGroupMembershipsRemoveResponse) GetStatusCode() int {
+	if p == nil {
 		return 0
 	}
-	return o.StatusCode
+	return p.StatusCode
 }
 
-func (o *PostControlPlanesIDGroupMembershipsRemoveResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (p *PostControlPlanesIDGroupMembershipsRemoveResponse) GetRawResponse() *http.Response {
+	if p == nil {
 		return nil
 	}
-	return o.RawResponse
+	return p.RawResponse
 }
 
-func (o *PostControlPlanesIDGroupMembershipsRemoveResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (p *PostControlPlanesIDGroupMembershipsRemoveResponse) GetBadRequestError() *shared.BadRequestError {
+	if p == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return p.BadRequestError
 }
 
-func (o *PostControlPlanesIDGroupMembershipsRemoveResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (p *PostControlPlanesIDGroupMembershipsRemoveResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if p == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return p.UnauthorizedError
 }
 
-func (o *PostControlPlanesIDGroupMembershipsRemoveResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (p *PostControlPlanesIDGroupMembershipsRemoveResponse) GetForbiddenError() *shared.ForbiddenError {
+	if p == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return p.ForbiddenError
 }
 
-func (o *PostControlPlanesIDGroupMembershipsRemoveResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (p *PostControlPlanesIDGroupMembershipsRemoveResponse) GetNotFoundError() *shared.NotFoundError {
+	if p == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return p.NotFoundError
 }
 
-func (o *PostControlPlanesIDGroupMembershipsRemoveResponse) GetBaseError() *shared.BaseError {
-	if o == nil {
+func (p *PostControlPlanesIDGroupMembershipsRemoveResponse) GetBaseError() *shared.BaseError {
+	if p == nil {
 		return nil
 	}
-	return o.BaseError
+	return p.BaseError
 }
 
-func (o *PostControlPlanesIDGroupMembershipsRemoveResponse) GetServiceUnavailable() *shared.ServiceUnavailable {
-	if o == nil {
+func (p *PostControlPlanesIDGroupMembershipsRemoveResponse) GetServiceUnavailable() *shared.ServiceUnavailable {
+	if p == nil {
 		return nil
 	}
-	return o.ServiceUnavailable
+	return p.ServiceUnavailable
 }

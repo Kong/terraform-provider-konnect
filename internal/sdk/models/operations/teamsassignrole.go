@@ -18,18 +18,18 @@ type TeamsAssignRoleRequest struct {
 	AssignRole *shared.AssignRole `request:"mediaType=application/json"`
 }
 
-func (o *TeamsAssignRoleRequest) GetTeamID() string {
-	if o == nil {
+func (t *TeamsAssignRoleRequest) GetTeamID() string {
+	if t == nil {
 		return ""
 	}
-	return o.TeamID
+	return t.TeamID
 }
 
-func (o *TeamsAssignRoleRequest) GetAssignRole() *shared.AssignRole {
-	if o == nil {
+func (t *TeamsAssignRoleRequest) GetAssignRole() *shared.AssignRole {
+	if t == nil {
 		return nil
 	}
-	return o.AssignRole
+	return t.AssignRole
 }
 
 type TeamsAssignRoleResponse struct {
@@ -53,65 +53,65 @@ type TeamsAssignRoleResponse struct {
 	ConflictError *shared.ConflictError
 }
 
-func (o *TeamsAssignRoleResponse) GetContentType() string {
-	if o == nil {
+func (t *TeamsAssignRoleResponse) GetContentType() string {
+	if t == nil {
 		return ""
 	}
-	return o.ContentType
+	return t.ContentType
 }
 
-func (o *TeamsAssignRoleResponse) GetStatusCode() int {
-	if o == nil {
+func (t *TeamsAssignRoleResponse) GetStatusCode() int {
+	if t == nil {
 		return 0
 	}
-	return o.StatusCode
+	return t.StatusCode
 }
 
-func (o *TeamsAssignRoleResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (t *TeamsAssignRoleResponse) GetRawResponse() *http.Response {
+	if t == nil {
 		return nil
 	}
-	return o.RawResponse
+	return t.RawResponse
 }
 
-func (o *TeamsAssignRoleResponse) GetAssignedRole() *shared.AssignedRole {
-	if o == nil {
+func (t *TeamsAssignRoleResponse) GetAssignedRole() *shared.AssignedRole {
+	if t == nil {
 		return nil
 	}
-	return o.AssignedRole
+	return t.AssignedRole
 }
 
-func (o *TeamsAssignRoleResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (t *TeamsAssignRoleResponse) GetBadRequestError() *shared.BadRequestError {
+	if t == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return t.BadRequestError
 }
 
-func (o *TeamsAssignRoleResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (t *TeamsAssignRoleResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if t == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return t.UnauthorizedError
 }
 
-func (o *TeamsAssignRoleResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (t *TeamsAssignRoleResponse) GetForbiddenError() *shared.ForbiddenError {
+	if t == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return t.ForbiddenError
 }
 
-func (o *TeamsAssignRoleResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (t *TeamsAssignRoleResponse) GetNotFoundError() *shared.NotFoundError {
+	if t == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return t.NotFoundError
 }
 
-func (o *TeamsAssignRoleResponse) GetConflictError() *shared.ConflictError {
-	if o == nil {
+func (t *TeamsAssignRoleResponse) GetConflictError() *shared.ConflictError {
+	if t == nil {
 		return nil
 	}
-	return o.ConflictError
+	return t.ConflictError
 }

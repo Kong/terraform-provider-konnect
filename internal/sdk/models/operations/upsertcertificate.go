@@ -16,25 +16,25 @@ type UpsertCertificateRequest struct {
 	Certificate shared.CertificateInput `request:"mediaType=application/json"`
 }
 
-func (o *UpsertCertificateRequest) GetCertificateID() string {
-	if o == nil {
+func (u *UpsertCertificateRequest) GetCertificateID() string {
+	if u == nil {
 		return ""
 	}
-	return o.CertificateID
+	return u.CertificateID
 }
 
-func (o *UpsertCertificateRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpsertCertificateRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpsertCertificateRequest) GetCertificate() shared.CertificateInput {
-	if o == nil {
+func (u *UpsertCertificateRequest) GetCertificate() shared.CertificateInput {
+	if u == nil {
 		return shared.CertificateInput{}
 	}
-	return o.Certificate
+	return u.Certificate
 }
 
 type UpsertCertificateResponse struct {
@@ -50,37 +50,37 @@ type UpsertCertificateResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpsertCertificateResponse) GetContentType() string {
-	if o == nil {
+func (u *UpsertCertificateResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpsertCertificateResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpsertCertificateResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpsertCertificateResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpsertCertificateResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpsertCertificateResponse) GetCertificate() *shared.Certificate {
-	if o == nil {
+func (u *UpsertCertificateResponse) GetCertificate() *shared.Certificate {
+	if u == nil {
 		return nil
 	}
-	return o.Certificate
+	return u.Certificate
 }
 
-func (o *UpsertCertificateResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpsertCertificateResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

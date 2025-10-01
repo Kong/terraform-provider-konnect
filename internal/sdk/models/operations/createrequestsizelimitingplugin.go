@@ -13,18 +13,18 @@ type CreateRequestsizelimitingPluginRequest struct {
 	RequestSizeLimitingPlugin shared.RequestSizeLimitingPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateRequestsizelimitingPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateRequestsizelimitingPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateRequestsizelimitingPluginRequest) GetRequestSizeLimitingPlugin() shared.RequestSizeLimitingPlugin {
-	if o == nil {
+func (c *CreateRequestsizelimitingPluginRequest) GetRequestSizeLimitingPlugin() shared.RequestSizeLimitingPlugin {
+	if c == nil {
 		return shared.RequestSizeLimitingPlugin{}
 	}
-	return o.RequestSizeLimitingPlugin
+	return c.RequestSizeLimitingPlugin
 }
 
 type CreateRequestsizelimitingPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateRequestsizelimitingPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateRequestsizelimitingPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateRequestsizelimitingPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateRequestsizelimitingPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateRequestsizelimitingPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateRequestsizelimitingPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateRequestsizelimitingPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateRequestsizelimitingPluginResponse) GetRequestSizeLimitingPlugin() *shared.RequestSizeLimitingPlugin {
-	if o == nil {
+func (c *CreateRequestsizelimitingPluginResponse) GetRequestSizeLimitingPlugin() *shared.RequestSizeLimitingPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.RequestSizeLimitingPlugin
+	return c.RequestSizeLimitingPlugin
 }
 
-func (o *CreateRequestsizelimitingPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateRequestsizelimitingPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

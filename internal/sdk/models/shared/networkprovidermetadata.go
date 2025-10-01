@@ -17,22 +17,22 @@ func (n NetworkProviderMetadata) MarshalJSON() ([]byte, error) {
 }
 
 func (n *NetworkProviderMetadata) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &n, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &n, "", false, []string{"subnet_ids"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *NetworkProviderMetadata) GetVpcID() *string {
-	if o == nil {
+func (n *NetworkProviderMetadata) GetVpcID() *string {
+	if n == nil {
 		return nil
 	}
-	return o.VpcID
+	return n.VpcID
 }
 
-func (o *NetworkProviderMetadata) GetSubnetIds() []string {
-	if o == nil {
+func (n *NetworkProviderMetadata) GetSubnetIds() []string {
+	if n == nil {
 		return nil
 	}
-	return o.SubnetIds
+	return n.SubnetIds
 }

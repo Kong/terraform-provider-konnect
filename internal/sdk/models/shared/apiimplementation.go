@@ -16,7 +16,7 @@ const (
 
 // APIImplementation - An entity that implements an API
 type APIImplementation struct {
-	ServiceReference *ServiceReference `queryParam:"inline"`
+	ServiceReference *ServiceReference `queryParam:"inline,name=ApiImplementation"`
 
 	Type APIImplementationType
 }
@@ -33,7 +33,7 @@ func CreateAPIImplementationServiceReference(serviceReference ServiceReference) 
 func (u *APIImplementation) UnmarshalJSON(data []byte) error {
 
 	var serviceReference ServiceReference = ServiceReference{}
-	if err := utils.UnmarshalJSON(data, &serviceReference, "", true, true); err == nil {
+	if err := utils.UnmarshalJSON(data, &serviceReference, "", true, nil); err == nil {
 		u.ServiceReference = &serviceReference
 		u.Type = APIImplementationTypeServiceReference
 		return nil

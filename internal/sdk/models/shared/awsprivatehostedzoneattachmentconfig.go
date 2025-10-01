@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type AWSPrivateHostedZoneType string
@@ -36,16 +37,27 @@ type AwsPrivateHostedZoneAttachmentConfig struct {
 	HostedZoneID string `json:"hosted_zone_id"`
 }
 
-func (o *AwsPrivateHostedZoneAttachmentConfig) GetKind() AWSPrivateHostedZoneType {
-	if o == nil {
-		return AWSPrivateHostedZoneType("")
-	}
-	return o.Kind
+func (a AwsPrivateHostedZoneAttachmentConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (o *AwsPrivateHostedZoneAttachmentConfig) GetHostedZoneID() string {
-	if o == nil {
+func (a *AwsPrivateHostedZoneAttachmentConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"kind", "hosted_zone_id"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AwsPrivateHostedZoneAttachmentConfig) GetKind() AWSPrivateHostedZoneType {
+	if a == nil {
+		return AWSPrivateHostedZoneType("")
+	}
+	return a.Kind
+}
+
+func (a *AwsPrivateHostedZoneAttachmentConfig) GetHostedZoneID() string {
+	if a == nil {
 		return ""
 	}
-	return o.HostedZoneID
+	return a.HostedZoneID
 }

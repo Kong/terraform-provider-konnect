@@ -14,18 +14,18 @@ type DeleteWebsocketvalidatorPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteWebsocketvalidatorPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteWebsocketvalidatorPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteWebsocketvalidatorPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteWebsocketvalidatorPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteWebsocketvalidatorPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteWebsocketvalidatorPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteWebsocketvalidatorPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteWebsocketvalidatorPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteWebsocketvalidatorPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteWebsocketvalidatorPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteWebsocketvalidatorPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteWebsocketvalidatorPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteWebsocketvalidatorPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteWebsocketvalidatorPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

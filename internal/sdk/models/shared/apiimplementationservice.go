@@ -2,22 +2,37 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // APIImplementationService - A Gateway service that implements an API
 type APIImplementationService struct {
 	ControlPlaneID string `json:"control_plane_id"`
 	ID             string `json:"id"`
 }
 
-func (o *APIImplementationService) GetControlPlaneID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ControlPlaneID
+func (a APIImplementationService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (o *APIImplementationService) GetID() string {
-	if o == nil {
+func (a *APIImplementationService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"control_plane_id", "id"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *APIImplementationService) GetControlPlaneID() string {
+	if a == nil {
 		return ""
 	}
-	return o.ID
+	return a.ControlPlaneID
+}
+
+func (a *APIImplementationService) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
 }

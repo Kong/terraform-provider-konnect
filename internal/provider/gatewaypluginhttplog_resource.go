@@ -159,7 +159,7 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 								Default:     float64default.StaticFloat64(0.01),
 								Description: `Time in seconds before the initial retry is made for a failing batch. Default: 0.01`,
 								Validators: []validator.Float64{
-									float64validator.AtMost(1000000),
+									float64validator.Between(0.001, 1000000),
 								},
 							},
 							"max_batch_size": schema.Int64Attribute{
@@ -199,7 +199,7 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 								Default:     float64default.StaticFloat64(60),
 								Description: `Maximum time in seconds between retries, caps exponential backoff. Default: 60`,
 								Validators: []validator.Float64{
-									float64validator.AtMost(1000000),
+									float64validator.Between(0.001, 1000000),
 								},
 							},
 							"max_retry_time": schema.Float64Attribute{

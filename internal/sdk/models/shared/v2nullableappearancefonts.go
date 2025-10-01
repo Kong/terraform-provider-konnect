@@ -12,23 +12,23 @@ type V2NullableAppearanceFonts struct {
 	Headings V2AppearanceFontName `json:"headings"`
 }
 
-func (o *V2NullableAppearanceFonts) GetBase() V2AppearanceFontName {
-	if o == nil {
+func (v *V2NullableAppearanceFonts) GetBase() V2AppearanceFontName {
+	if v == nil {
 		return V2AppearanceFontName("")
 	}
-	return o.Base
+	return v.Base
 }
 
-func (o *V2NullableAppearanceFonts) GetCode() V2AppearanceFontName {
-	if o == nil {
+func (v *V2NullableAppearanceFonts) GetCode() V2AppearanceFontName {
+	if v == nil {
 		return V2AppearanceFontName("")
 	}
-	return o.Code
+	return v.Code
 }
 
-func (o *V2NullableAppearanceFonts) GetHeadings() V2AppearanceFontName {
-	if o == nil {
+func (v *V2NullableAppearanceFonts) GetHeadings() V2AppearanceFontName {
+	if v == nil {
 		return V2AppearanceFontName("")
 	}
-	return o.Headings
+	return v.Headings
 }

@@ -18,18 +18,18 @@ type DeletePrivateDNSRequest struct {
 	PrivateDNSID string `pathParam:"style=simple,explode=false,name=privateDnsId"`
 }
 
-func (o *DeletePrivateDNSRequest) GetNetworkID() string {
-	if o == nil {
+func (d *DeletePrivateDNSRequest) GetNetworkID() string {
+	if d == nil {
 		return ""
 	}
-	return o.NetworkID
+	return d.NetworkID
 }
 
-func (o *DeletePrivateDNSRequest) GetPrivateDNSID() string {
-	if o == nil {
+func (d *DeletePrivateDNSRequest) GetPrivateDNSID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PrivateDNSID
+	return d.PrivateDNSID
 }
 
 type DeletePrivateDNSResponse struct {
@@ -49,51 +49,51 @@ type DeletePrivateDNSResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *DeletePrivateDNSResponse) GetContentType() string {
-	if o == nil {
+func (d *DeletePrivateDNSResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeletePrivateDNSResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeletePrivateDNSResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeletePrivateDNSResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeletePrivateDNSResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeletePrivateDNSResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (d *DeletePrivateDNSResponse) GetBadRequestError() *shared.BadRequestError {
+	if d == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return d.BadRequestError
 }
 
-func (o *DeletePrivateDNSResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (d *DeletePrivateDNSResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return d.UnauthorizedError
 }
 
-func (o *DeletePrivateDNSResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (d *DeletePrivateDNSResponse) GetForbiddenError() *shared.ForbiddenError {
+	if d == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return d.ForbiddenError
 }
 
-func (o *DeletePrivateDNSResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (d *DeletePrivateDNSResponse) GetNotFoundError() *shared.NotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return d.NotFoundError
 }

@@ -14,18 +14,18 @@ type DeleteKafkalogPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteKafkalogPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteKafkalogPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteKafkalogPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteKafkalogPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteKafkalogPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteKafkalogPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteKafkalogPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteKafkalogPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteKafkalogPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteKafkalogPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteKafkalogPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteKafkalogPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteKafkalogPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteKafkalogPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

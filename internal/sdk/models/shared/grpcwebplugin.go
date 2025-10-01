@@ -12,22 +12,22 @@ type GrpcWebPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *GrpcWebPluginAfter) GetAccess() []string {
-	if o == nil {
+func (g *GrpcWebPluginAfter) GetAccess() []string {
+	if g == nil {
 		return nil
 	}
-	return o.Access
+	return g.Access
 }
 
 type GrpcWebPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *GrpcWebPluginBefore) GetAccess() []string {
-	if o == nil {
+func (g *GrpcWebPluginBefore) GetAccess() []string {
+	if g == nil {
 		return nil
 	}
-	return o.Access
+	return g.Access
 }
 
 type GrpcWebPluginOrdering struct {
@@ -35,18 +35,18 @@ type GrpcWebPluginOrdering struct {
 	Before *GrpcWebPluginBefore `json:"before,omitempty"`
 }
 
-func (o *GrpcWebPluginOrdering) GetAfter() *GrpcWebPluginAfter {
-	if o == nil {
+func (g *GrpcWebPluginOrdering) GetAfter() *GrpcWebPluginAfter {
+	if g == nil {
 		return nil
 	}
-	return o.After
+	return g.After
 }
 
-func (o *GrpcWebPluginOrdering) GetBefore() *GrpcWebPluginBefore {
-	if o == nil {
+func (g *GrpcWebPluginOrdering) GetBefore() *GrpcWebPluginBefore {
+	if g == nil {
 		return nil
 	}
-	return o.Before
+	return g.Before
 }
 
 type GrpcWebPluginPartials struct {
@@ -57,25 +57,25 @@ type GrpcWebPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *GrpcWebPluginPartials) GetID() *string {
-	if o == nil {
+func (g *GrpcWebPluginPartials) GetID() *string {
+	if g == nil {
 		return nil
 	}
-	return o.ID
+	return g.ID
 }
 
-func (o *GrpcWebPluginPartials) GetName() *string {
-	if o == nil {
+func (g *GrpcWebPluginPartials) GetName() *string {
+	if g == nil {
 		return nil
 	}
-	return o.Name
+	return g.Name
 }
 
-func (o *GrpcWebPluginPartials) GetPath() *string {
-	if o == nil {
+func (g *GrpcWebPluginPartials) GetPath() *string {
+	if g == nil {
 		return nil
 	}
-	return o.Path
+	return g.Path
 }
 
 type GrpcWebPluginConfig struct {
@@ -92,31 +92,31 @@ func (g GrpcWebPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GrpcWebPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *GrpcWebPluginConfig) GetAllowOriginHeader() *string {
-	if o == nil {
+func (g *GrpcWebPluginConfig) GetAllowOriginHeader() *string {
+	if g == nil {
 		return nil
 	}
-	return o.AllowOriginHeader
+	return g.AllowOriginHeader
 }
 
-func (o *GrpcWebPluginConfig) GetPassStrippedPath() *bool {
-	if o == nil {
+func (g *GrpcWebPluginConfig) GetPassStrippedPath() *bool {
+	if g == nil {
 		return nil
 	}
-	return o.PassStrippedPath
+	return g.PassStrippedPath
 }
 
-func (o *GrpcWebPluginConfig) GetProto() *string {
-	if o == nil {
+func (g *GrpcWebPluginConfig) GetProto() *string {
+	if g == nil {
 		return nil
 	}
-	return o.Proto
+	return g.Proto
 }
 
 // GrpcWebPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -124,11 +124,11 @@ type GrpcWebPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *GrpcWebPluginConsumer) GetID() *string {
-	if o == nil {
+func (g *GrpcWebPluginConsumer) GetID() *string {
+	if g == nil {
 		return nil
 	}
-	return o.ID
+	return g.ID
 }
 
 // GrpcWebPluginProtocols - A string representing a protocol, such as HTTP or HTTPS.
@@ -187,11 +187,11 @@ type GrpcWebPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *GrpcWebPluginRoute) GetID() *string {
-	if o == nil {
+func (g *GrpcWebPluginRoute) GetID() *string {
+	if g == nil {
 		return nil
 	}
-	return o.ID
+	return g.ID
 }
 
 // GrpcWebPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -199,11 +199,11 @@ type GrpcWebPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *GrpcWebPluginService) GetID() *string {
-	if o == nil {
+func (g *GrpcWebPluginService) GetID() *string {
+	if g == nil {
 		return nil
 	}
-	return o.ID
+	return g.ID
 }
 
 // GrpcWebPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -240,103 +240,103 @@ func (g GrpcWebPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GrpcWebPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"name", "ordering", "partials", "tags", "config", "consumer", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *GrpcWebPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (g *GrpcWebPlugin) GetCreatedAt() *int64 {
+	if g == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return g.CreatedAt
 }
 
-func (o *GrpcWebPlugin) GetEnabled() *bool {
-	if o == nil {
+func (g *GrpcWebPlugin) GetEnabled() *bool {
+	if g == nil {
 		return nil
 	}
-	return o.Enabled
+	return g.Enabled
 }
 
-func (o *GrpcWebPlugin) GetID() *string {
-	if o == nil {
+func (g *GrpcWebPlugin) GetID() *string {
+	if g == nil {
 		return nil
 	}
-	return o.ID
+	return g.ID
 }
 
-func (o *GrpcWebPlugin) GetInstanceName() *string {
-	if o == nil {
+func (g *GrpcWebPlugin) GetInstanceName() *string {
+	if g == nil {
 		return nil
 	}
-	return o.InstanceName
+	return g.InstanceName
 }
 
-func (o *GrpcWebPlugin) GetName() string {
+func (g *GrpcWebPlugin) GetName() string {
 	return "grpc-web"
 }
 
-func (o *GrpcWebPlugin) GetOrdering() *GrpcWebPluginOrdering {
-	if o == nil {
+func (g *GrpcWebPlugin) GetOrdering() *GrpcWebPluginOrdering {
+	if g == nil {
 		return nil
 	}
-	return o.Ordering
+	return g.Ordering
 }
 
-func (o *GrpcWebPlugin) GetPartials() []GrpcWebPluginPartials {
-	if o == nil {
+func (g *GrpcWebPlugin) GetPartials() []GrpcWebPluginPartials {
+	if g == nil {
 		return nil
 	}
-	return o.Partials
+	return g.Partials
 }
 
-func (o *GrpcWebPlugin) GetTags() []string {
-	if o == nil {
+func (g *GrpcWebPlugin) GetTags() []string {
+	if g == nil {
 		return nil
 	}
-	return o.Tags
+	return g.Tags
 }
 
-func (o *GrpcWebPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (g *GrpcWebPlugin) GetUpdatedAt() *int64 {
+	if g == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return g.UpdatedAt
 }
 
-func (o *GrpcWebPlugin) GetConfig() *GrpcWebPluginConfig {
-	if o == nil {
+func (g *GrpcWebPlugin) GetConfig() *GrpcWebPluginConfig {
+	if g == nil {
 		return nil
 	}
-	return o.Config
+	return g.Config
 }
 
-func (o *GrpcWebPlugin) GetConsumer() *GrpcWebPluginConsumer {
-	if o == nil {
+func (g *GrpcWebPlugin) GetConsumer() *GrpcWebPluginConsumer {
+	if g == nil {
 		return nil
 	}
-	return o.Consumer
+	return g.Consumer
 }
 
-func (o *GrpcWebPlugin) GetProtocols() []GrpcWebPluginProtocols {
-	if o == nil {
+func (g *GrpcWebPlugin) GetProtocols() []GrpcWebPluginProtocols {
+	if g == nil {
 		return nil
 	}
-	return o.Protocols
+	return g.Protocols
 }
 
-func (o *GrpcWebPlugin) GetRoute() *GrpcWebPluginRoute {
-	if o == nil {
+func (g *GrpcWebPlugin) GetRoute() *GrpcWebPluginRoute {
+	if g == nil {
 		return nil
 	}
-	return o.Route
+	return g.Route
 }
 
-func (o *GrpcWebPlugin) GetService() *GrpcWebPluginService {
-	if o == nil {
+func (g *GrpcWebPlugin) GetService() *GrpcWebPluginService {
+	if g == nil {
 		return nil
 	}
-	return o.Service
+	return g.Service
 }

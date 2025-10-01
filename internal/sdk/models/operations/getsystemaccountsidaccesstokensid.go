@@ -18,18 +18,18 @@ type GetSystemAccountsIDAccessTokensIDRequest struct {
 	TokenID string `pathParam:"style=simple,explode=false,name=tokenId"`
 }
 
-func (o *GetSystemAccountsIDAccessTokensIDRequest) GetAccountID() string {
-	if o == nil {
+func (g *GetSystemAccountsIDAccessTokensIDRequest) GetAccountID() string {
+	if g == nil {
 		return ""
 	}
-	return o.AccountID
+	return g.AccountID
 }
 
-func (o *GetSystemAccountsIDAccessTokensIDRequest) GetTokenID() string {
-	if o == nil {
+func (g *GetSystemAccountsIDAccessTokensIDRequest) GetTokenID() string {
+	if g == nil {
 		return ""
 	}
-	return o.TokenID
+	return g.TokenID
 }
 
 type GetSystemAccountsIDAccessTokensIDResponse struct {
@@ -47,44 +47,44 @@ type GetSystemAccountsIDAccessTokensIDResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetSystemAccountsIDAccessTokensIDResponse) GetContentType() string {
-	if o == nil {
+func (g *GetSystemAccountsIDAccessTokensIDResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetSystemAccountsIDAccessTokensIDResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetSystemAccountsIDAccessTokensIDResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetSystemAccountsIDAccessTokensIDResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetSystemAccountsIDAccessTokensIDResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetSystemAccountsIDAccessTokensIDResponse) GetSystemAccountAccessToken() *shared.SystemAccountAccessToken {
-	if o == nil {
+func (g *GetSystemAccountsIDAccessTokensIDResponse) GetSystemAccountAccessToken() *shared.SystemAccountAccessToken {
+	if g == nil {
 		return nil
 	}
-	return o.SystemAccountAccessToken
+	return g.SystemAccountAccessToken
 }
 
-func (o *GetSystemAccountsIDAccessTokensIDResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetSystemAccountsIDAccessTokensIDResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetSystemAccountsIDAccessTokensIDResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetSystemAccountsIDAccessTokensIDResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

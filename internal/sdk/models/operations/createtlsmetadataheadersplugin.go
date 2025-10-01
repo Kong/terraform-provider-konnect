@@ -13,18 +13,18 @@ type CreateTlsmetadataheadersPluginRequest struct {
 	TLSMetadataHeadersPlugin shared.TLSMetadataHeadersPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateTlsmetadataheadersPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateTlsmetadataheadersPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateTlsmetadataheadersPluginRequest) GetTLSMetadataHeadersPlugin() shared.TLSMetadataHeadersPlugin {
-	if o == nil {
+func (c *CreateTlsmetadataheadersPluginRequest) GetTLSMetadataHeadersPlugin() shared.TLSMetadataHeadersPlugin {
+	if c == nil {
 		return shared.TLSMetadataHeadersPlugin{}
 	}
-	return o.TLSMetadataHeadersPlugin
+	return c.TLSMetadataHeadersPlugin
 }
 
 type CreateTlsmetadataheadersPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateTlsmetadataheadersPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateTlsmetadataheadersPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateTlsmetadataheadersPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateTlsmetadataheadersPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateTlsmetadataheadersPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateTlsmetadataheadersPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateTlsmetadataheadersPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateTlsmetadataheadersPluginResponse) GetTLSMetadataHeadersPlugin() *shared.TLSMetadataHeadersPlugin {
-	if o == nil {
+func (c *CreateTlsmetadataheadersPluginResponse) GetTLSMetadataHeadersPlugin() *shared.TLSMetadataHeadersPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.TLSMetadataHeadersPlugin
+	return c.TLSMetadataHeadersPlugin
 }
 
-func (o *CreateTlsmetadataheadersPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateTlsmetadataheadersPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

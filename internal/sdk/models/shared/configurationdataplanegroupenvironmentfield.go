@@ -11,16 +11,16 @@ type ConfigurationDataPlaneGroupEnvironmentField struct {
 	Value string `json:"value"`
 }
 
-func (o *ConfigurationDataPlaneGroupEnvironmentField) GetName() string {
-	if o == nil {
+func (c *ConfigurationDataPlaneGroupEnvironmentField) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *ConfigurationDataPlaneGroupEnvironmentField) GetValue() string {
-	if o == nil {
+func (c *ConfigurationDataPlaneGroupEnvironmentField) GetValue() string {
+	if c == nil {
 		return ""
 	}
-	return o.Value
+	return c.Value
 }

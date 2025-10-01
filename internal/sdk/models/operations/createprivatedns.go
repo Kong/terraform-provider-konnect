@@ -17,18 +17,18 @@ type CreatePrivateDNSRequest struct {
 	CreatePrivateDNSRequest shared.CreatePrivateDNSRequest `request:"mediaType=application/json"`
 }
 
-func (o *CreatePrivateDNSRequest) GetNetworkID() string {
-	if o == nil {
+func (c *CreatePrivateDNSRequest) GetNetworkID() string {
+	if c == nil {
 		return ""
 	}
-	return o.NetworkID
+	return c.NetworkID
 }
 
-func (o *CreatePrivateDNSRequest) GetCreatePrivateDNSRequest() shared.CreatePrivateDNSRequest {
-	if o == nil {
+func (c *CreatePrivateDNSRequest) GetCreatePrivateDNSRequest() shared.CreatePrivateDNSRequest {
+	if c == nil {
 		return shared.CreatePrivateDNSRequest{}
 	}
-	return o.CreatePrivateDNSRequest
+	return c.CreatePrivateDNSRequest
 }
 
 type CreatePrivateDNSResponse struct {
@@ -52,65 +52,65 @@ type CreatePrivateDNSResponse struct {
 	ConflictError *shared.ConflictError
 }
 
-func (o *CreatePrivateDNSResponse) GetContentType() string {
-	if o == nil {
+func (c *CreatePrivateDNSResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreatePrivateDNSResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreatePrivateDNSResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreatePrivateDNSResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreatePrivateDNSResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreatePrivateDNSResponse) GetPrivateDNSResponse() *shared.PrivateDNSResponse {
-	if o == nil {
+func (c *CreatePrivateDNSResponse) GetPrivateDNSResponse() *shared.PrivateDNSResponse {
+	if c == nil {
 		return nil
 	}
-	return o.PrivateDNSResponse
+	return c.PrivateDNSResponse
 }
 
-func (o *CreatePrivateDNSResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreatePrivateDNSResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreatePrivateDNSResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (c *CreatePrivateDNSResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return c.UnauthorizedError
 }
 
-func (o *CreatePrivateDNSResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreatePrivateDNSResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }
 
-func (o *CreatePrivateDNSResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (c *CreatePrivateDNSResponse) GetNotFoundError() *shared.NotFoundError {
+	if c == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return c.NotFoundError
 }
 
-func (o *CreatePrivateDNSResponse) GetConflictError() *shared.ConflictError {
-	if o == nil {
+func (c *CreatePrivateDNSResponse) GetConflictError() *shared.ConflictError {
+	if c == nil {
 		return nil
 	}
-	return o.ConflictError
+	return c.ConflictError
 }

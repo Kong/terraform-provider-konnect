@@ -13,18 +13,18 @@ type CreateBotdetectionPluginRequest struct {
 	BotDetectionPlugin shared.BotDetectionPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateBotdetectionPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateBotdetectionPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateBotdetectionPluginRequest) GetBotDetectionPlugin() shared.BotDetectionPlugin {
-	if o == nil {
+func (c *CreateBotdetectionPluginRequest) GetBotDetectionPlugin() shared.BotDetectionPlugin {
+	if c == nil {
 		return shared.BotDetectionPlugin{}
 	}
-	return o.BotDetectionPlugin
+	return c.BotDetectionPlugin
 }
 
 type CreateBotdetectionPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateBotdetectionPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateBotdetectionPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateBotdetectionPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateBotdetectionPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateBotdetectionPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateBotdetectionPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateBotdetectionPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateBotdetectionPluginResponse) GetBotDetectionPlugin() *shared.BotDetectionPlugin {
-	if o == nil {
+func (c *CreateBotdetectionPluginResponse) GetBotDetectionPlugin() *shared.BotDetectionPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.BotDetectionPlugin
+	return c.BotDetectionPlugin
 }
 
-func (o *CreateBotdetectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateBotdetectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }
