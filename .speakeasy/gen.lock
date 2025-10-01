@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: c1ac8ec36f0e74f9ebd75e4cf1052c10
+  docChecksum: 103d2baed100121f90b1783bcb0c7acd
   docVersion: 2.0.0
   speakeasyVersion: 1.602.0
   generationVersion: 2.681.1
@@ -1766,7 +1766,6 @@ generatedFiles:
   - internal/sdk/models/operations/updateportalteam.go
   - internal/sdk/models/operations/updatepostfunctionplugin.go
   - internal/sdk/models/operations/updateprefunctionplugin.go
-  - internal/sdk/models/operations/updateprivatedns.go
   - internal/sdk/models/operations/updateprometheusplugin.go
   - internal/sdk/models/operations/updateproxycacheadvancedplugin.go
   - internal/sdk/models/operations/updateproxycacheplugin.go
@@ -1797,7 +1796,6 @@ generatedFiles:
   - internal/sdk/models/operations/updateteam.go
   - internal/sdk/models/operations/updatetlshandshakemodifierplugin.go
   - internal/sdk/models/operations/updatetlsmetadataheadersplugin.go
-  - internal/sdk/models/operations/updatetransitgateway.go
   - internal/sdk/models/operations/updateudplogplugin.go
   - internal/sdk/models/operations/updateupstreamoauthplugin.go
   - internal/sdk/models/operations/updateupstreamtimeoutplugin.go
@@ -2089,9 +2087,6 @@ generatedFiles:
   - internal/sdk/models/shared/partial.go
   - internal/sdk/models/shared/partialappauthstrategyconfigopenidconnect.go
   - internal/sdk/models/shared/patchnetworkrequest.go
-  - internal/sdk/models/shared/patchprivatednsrequest.go
-  - internal/sdk/models/shared/patchtransitgatewayrequest.go
-  - internal/sdk/models/shared/patchtransitgatewayresponse.go
   - internal/sdk/models/shared/plugin.go
   - internal/sdk/models/shared/pluginschemas.go
   - internal/sdk/models/shared/portalassetresponse.go
