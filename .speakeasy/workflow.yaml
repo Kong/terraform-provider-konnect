@@ -1,12 +1,12 @@
 workflowVersion: 1.0.0
-speakeasyVersion: 1.602.0
+speakeasyVersion: 1.636.2
 sources:
-    kong:
-        inputs:
-            - location: openapi.yaml
-        registry:
-            location: registry.speakeasyapi.dev/kong/kong/kong
+  kong:
+    inputs:
+      - location: openapi.yaml
+    registry:
+      location: registry.speakeasyapi.dev/kong/kong/kong
 targets:
-    terraform:
-        target: terraform
-        source: kong
+  terraform:
+    target: terraform
+    source: kong
