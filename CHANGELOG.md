@@ -1,10 +1,7 @@
 # Changelog
 
-## 3.3.0
-> Released on 2025/??/??
-
-### Features
-* ...
+## 3.2.1
+> Released on 2025/10/09
 
 ### Bug Fixes
 * Properties such as `theme`, `menu` can now be unset in `konnect_portal_customization` resource
