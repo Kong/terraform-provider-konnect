@@ -21,24 +21,24 @@ func (c CustomDomainStateMetadata) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CustomDomainStateMetadata) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CustomDomainStateMetadata) GetReportedStatus() *string {
-	if o == nil {
+func (c *CustomDomainStateMetadata) GetReportedStatus() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ReportedStatus
+	return c.ReportedStatus
 }
 
-func (o *CustomDomainStateMetadata) GetReason() *string {
-	if o == nil {
+func (c *CustomDomainStateMetadata) GetReason() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Reason
+	return c.Reason
 }
 
 // CustomDomain - Object containing information about a custom domain for a control-plane.
@@ -77,85 +77,85 @@ func (c CustomDomain) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CustomDomain) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "control_plane_id", "control_plane_geo", "domain", "state", "state_metadata", "entity_version", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CustomDomain) GetID() string {
-	if o == nil {
+func (c *CustomDomain) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *CustomDomain) GetControlPlaneID() string {
-	if o == nil {
+func (c *CustomDomain) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CustomDomain) GetControlPlaneGeo() ControlPlaneGeo {
-	if o == nil {
+func (c *CustomDomain) GetControlPlaneGeo() ControlPlaneGeo {
+	if c == nil {
 		return ControlPlaneGeo("")
 	}
-	return o.ControlPlaneGeo
+	return c.ControlPlaneGeo
 }
 
-func (o *CustomDomain) GetDomain() string {
-	if o == nil {
+func (c *CustomDomain) GetDomain() string {
+	if c == nil {
 		return ""
 	}
-	return o.Domain
+	return c.Domain
 }
 
-func (o *CustomDomain) GetCertificateID() *string {
-	if o == nil {
+func (c *CustomDomain) GetCertificateID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.CertificateID
+	return c.CertificateID
 }
 
-func (o *CustomDomain) GetSniID() *string {
-	if o == nil {
+func (c *CustomDomain) GetSniID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.SniID
+	return c.SniID
 }
 
-func (o *CustomDomain) GetState() CustomDomainState {
-	if o == nil {
+func (c *CustomDomain) GetState() CustomDomainState {
+	if c == nil {
 		return CustomDomainState("")
 	}
-	return o.State
+	return c.State
 }
 
-func (o *CustomDomain) GetStateMetadata() CustomDomainStateMetadata {
-	if o == nil {
+func (c *CustomDomain) GetStateMetadata() CustomDomainStateMetadata {
+	if c == nil {
 		return CustomDomainStateMetadata{}
 	}
-	return o.StateMetadata
+	return c.StateMetadata
 }
 
-func (o *CustomDomain) GetEntityVersion() int64 {
-	if o == nil {
+func (c *CustomDomain) GetEntityVersion() int64 {
+	if c == nil {
 		return 0
 	}
-	return o.EntityVersion
+	return c.EntityVersion
 }
 
-func (o *CustomDomain) GetCreatedAt() time.Time {
-	if o == nil {
+func (c *CustomDomain) GetCreatedAt() time.Time {
+	if c == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return c.CreatedAt
 }
 
-func (o *CustomDomain) GetUpdatedAt() time.Time {
-	if o == nil {
+func (c *CustomDomain) GetUpdatedAt() time.Time {
+	if c == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return c.UpdatedAt
 }

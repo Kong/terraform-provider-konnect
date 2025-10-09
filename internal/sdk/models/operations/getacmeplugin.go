@@ -14,18 +14,18 @@ type GetAcmePluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetAcmePluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetAcmePluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetAcmePluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetAcmePluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetAcmePluginResponse struct {
@@ -41,37 +41,37 @@ type GetAcmePluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetAcmePluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetAcmePluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetAcmePluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetAcmePluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetAcmePluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetAcmePluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetAcmePluginResponse) GetAcmePlugin() *shared.AcmePlugin {
-	if o == nil {
+func (g *GetAcmePluginResponse) GetAcmePlugin() *shared.AcmePlugin {
+	if g == nil {
 		return nil
 	}
-	return o.AcmePlugin
+	return g.AcmePlugin
 }
 
-func (o *GetAcmePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetAcmePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

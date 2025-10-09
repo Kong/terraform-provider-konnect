@@ -14,18 +14,18 @@ type GetLogglyPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetLogglyPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetLogglyPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetLogglyPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetLogglyPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetLogglyPluginResponse struct {
@@ -41,37 +41,37 @@ type GetLogglyPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetLogglyPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetLogglyPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetLogglyPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetLogglyPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetLogglyPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetLogglyPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetLogglyPluginResponse) GetLogglyPlugin() *shared.LogglyPlugin {
-	if o == nil {
+func (g *GetLogglyPluginResponse) GetLogglyPlugin() *shared.LogglyPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.LogglyPlugin
+	return g.LogglyPlugin
 }
 
-func (o *GetLogglyPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetLogglyPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

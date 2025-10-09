@@ -12,11 +12,11 @@ type FetchCatalogServiceRequest struct {
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (o *FetchCatalogServiceRequest) GetID() string {
-	if o == nil {
+func (f *FetchCatalogServiceRequest) GetID() string {
+	if f == nil {
 		return ""
 	}
-	return o.ID
+	return f.ID
 }
 
 type FetchCatalogServiceResponse struct {
@@ -36,51 +36,51 @@ type FetchCatalogServiceResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *FetchCatalogServiceResponse) GetContentType() string {
-	if o == nil {
+func (f *FetchCatalogServiceResponse) GetContentType() string {
+	if f == nil {
 		return ""
 	}
-	return o.ContentType
+	return f.ContentType
 }
 
-func (o *FetchCatalogServiceResponse) GetStatusCode() int {
-	if o == nil {
+func (f *FetchCatalogServiceResponse) GetStatusCode() int {
+	if f == nil {
 		return 0
 	}
-	return o.StatusCode
+	return f.StatusCode
 }
 
-func (o *FetchCatalogServiceResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (f *FetchCatalogServiceResponse) GetRawResponse() *http.Response {
+	if f == nil {
 		return nil
 	}
-	return o.RawResponse
+	return f.RawResponse
 }
 
-func (o *FetchCatalogServiceResponse) GetCatalogService() *shared.CatalogService {
-	if o == nil {
+func (f *FetchCatalogServiceResponse) GetCatalogService() *shared.CatalogService {
+	if f == nil {
 		return nil
 	}
-	return o.CatalogService
+	return f.CatalogService
 }
 
-func (o *FetchCatalogServiceResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (f *FetchCatalogServiceResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if f == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return f.UnauthorizedError
 }
 
-func (o *FetchCatalogServiceResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (f *FetchCatalogServiceResponse) GetForbiddenError() *shared.ForbiddenError {
+	if f == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return f.ForbiddenError
 }
 
-func (o *FetchCatalogServiceResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (f *FetchCatalogServiceResponse) GetNotFoundError() *shared.NotFoundError {
+	if f == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return f.NotFoundError
 }

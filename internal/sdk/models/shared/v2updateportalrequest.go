@@ -42,85 +42,85 @@ func (v V2UpdatePortalRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V2UpdatePortalRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *V2UpdatePortalRequest) GetName() *string {
-	if o == nil {
+func (v *V2UpdatePortalRequest) GetName() *string {
+	if v == nil {
 		return nil
 	}
-	return o.Name
+	return v.Name
 }
 
-func (o *V2UpdatePortalRequest) GetDisplayName() *string {
-	if o == nil {
+func (v *V2UpdatePortalRequest) GetDisplayName() *string {
+	if v == nil {
 		return nil
 	}
-	return o.DisplayName
+	return v.DisplayName
 }
 
-func (o *V2UpdatePortalRequest) GetDescription() *string {
-	if o == nil {
+func (v *V2UpdatePortalRequest) GetDescription() *string {
+	if v == nil {
 		return nil
 	}
-	return o.Description
+	return v.Description
 }
 
-func (o *V2UpdatePortalRequest) GetIsPublic() *bool {
-	if o == nil {
+func (v *V2UpdatePortalRequest) GetIsPublic() *bool {
+	if v == nil {
 		return nil
 	}
-	return o.IsPublic
+	return v.IsPublic
 }
 
-func (o *V2UpdatePortalRequest) GetRbacEnabled() *bool {
-	if o == nil {
+func (v *V2UpdatePortalRequest) GetRbacEnabled() *bool {
+	if v == nil {
 		return nil
 	}
-	return o.RbacEnabled
+	return v.RbacEnabled
 }
 
-func (o *V2UpdatePortalRequest) GetAutoApproveApplications() *bool {
-	if o == nil {
+func (v *V2UpdatePortalRequest) GetAutoApproveApplications() *bool {
+	if v == nil {
 		return nil
 	}
-	return o.AutoApproveApplications
+	return v.AutoApproveApplications
 }
 
-func (o *V2UpdatePortalRequest) GetAutoApproveDevelopers() *bool {
-	if o == nil {
+func (v *V2UpdatePortalRequest) GetAutoApproveDevelopers() *bool {
+	if v == nil {
 		return nil
 	}
-	return o.AutoApproveDevelopers
+	return v.AutoApproveDevelopers
 }
 
-func (o *V2UpdatePortalRequest) GetCustomDomain() *string {
-	if o == nil {
+func (v *V2UpdatePortalRequest) GetCustomDomain() *string {
+	if v == nil {
 		return nil
 	}
-	return o.CustomDomain
+	return v.CustomDomain
 }
 
-func (o *V2UpdatePortalRequest) GetCustomClientDomain() *string {
-	if o == nil {
+func (v *V2UpdatePortalRequest) GetCustomClientDomain() *string {
+	if v == nil {
 		return nil
 	}
-	return o.CustomClientDomain
+	return v.CustomClientDomain
 }
 
-func (o *V2UpdatePortalRequest) GetDefaultApplicationAuthStrategyID() *string {
-	if o == nil {
+func (v *V2UpdatePortalRequest) GetDefaultApplicationAuthStrategyID() *string {
+	if v == nil {
 		return nil
 	}
-	return o.DefaultApplicationAuthStrategyID
+	return v.DefaultApplicationAuthStrategyID
 }
 
-func (o *V2UpdatePortalRequest) GetLabels() map[string]*string {
-	if o == nil {
+func (v *V2UpdatePortalRequest) GetLabels() map[string]*string {
+	if v == nil {
 		return nil
 	}
-	return o.Labels
+	return v.Labels
 }

@@ -17,18 +17,18 @@ type UpdateNetworkRequest struct {
 	PatchNetworkRequest shared.PatchNetworkRequest `request:"mediaType=application/json"`
 }
 
-func (o *UpdateNetworkRequest) GetNetworkID() string {
-	if o == nil {
+func (u *UpdateNetworkRequest) GetNetworkID() string {
+	if u == nil {
 		return ""
 	}
-	return o.NetworkID
+	return u.NetworkID
 }
 
-func (o *UpdateNetworkRequest) GetPatchNetworkRequest() shared.PatchNetworkRequest {
-	if o == nil {
+func (u *UpdateNetworkRequest) GetPatchNetworkRequest() shared.PatchNetworkRequest {
+	if u == nil {
 		return shared.PatchNetworkRequest{}
 	}
-	return o.PatchNetworkRequest
+	return u.PatchNetworkRequest
 }
 
 type UpdateNetworkResponse struct {
@@ -52,65 +52,65 @@ type UpdateNetworkResponse struct {
 	ConflictError *shared.ConflictError
 }
 
-func (o *UpdateNetworkResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateNetworkResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateNetworkResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateNetworkResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateNetworkResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateNetworkResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateNetworkResponse) GetNetwork() *shared.Network {
-	if o == nil {
+func (u *UpdateNetworkResponse) GetNetwork() *shared.Network {
+	if u == nil {
 		return nil
 	}
-	return o.Network
+	return u.Network
 }
 
-func (o *UpdateNetworkResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (u *UpdateNetworkResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return u.BadRequestError
 }
 
-func (o *UpdateNetworkResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (u *UpdateNetworkResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return u.UnauthorizedError
 }
 
-func (o *UpdateNetworkResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (u *UpdateNetworkResponse) GetForbiddenError() *shared.ForbiddenError {
+	if u == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return u.ForbiddenError
 }
 
-func (o *UpdateNetworkResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (u *UpdateNetworkResponse) GetNotFoundError() *shared.NotFoundError {
+	if u == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return u.NotFoundError
 }
 
-func (o *UpdateNetworkResponse) GetConflictError() *shared.ConflictError {
-	if o == nil {
+func (u *UpdateNetworkResponse) GetConflictError() *shared.ConflictError {
+	if u == nil {
 		return nil
 	}
-	return o.ConflictError
+	return u.ConflictError
 }

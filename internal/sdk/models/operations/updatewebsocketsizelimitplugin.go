@@ -15,25 +15,25 @@ type UpdateWebsocketsizelimitPluginRequest struct {
 	WebsocketSizeLimitPlugin shared.WebsocketSizeLimitPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateWebsocketsizelimitPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateWebsocketsizelimitPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateWebsocketsizelimitPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateWebsocketsizelimitPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateWebsocketsizelimitPluginRequest) GetWebsocketSizeLimitPlugin() shared.WebsocketSizeLimitPlugin {
-	if o == nil {
+func (u *UpdateWebsocketsizelimitPluginRequest) GetWebsocketSizeLimitPlugin() shared.WebsocketSizeLimitPlugin {
+	if u == nil {
 		return shared.WebsocketSizeLimitPlugin{}
 	}
-	return o.WebsocketSizeLimitPlugin
+	return u.WebsocketSizeLimitPlugin
 }
 
 type UpdateWebsocketsizelimitPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateWebsocketsizelimitPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateWebsocketsizelimitPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateWebsocketsizelimitPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateWebsocketsizelimitPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateWebsocketsizelimitPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateWebsocketsizelimitPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateWebsocketsizelimitPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateWebsocketsizelimitPluginResponse) GetWebsocketSizeLimitPlugin() *shared.WebsocketSizeLimitPlugin {
-	if o == nil {
+func (u *UpdateWebsocketsizelimitPluginResponse) GetWebsocketSizeLimitPlugin() *shared.WebsocketSizeLimitPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.WebsocketSizeLimitPlugin
+	return u.WebsocketSizeLimitPlugin
 }
 
-func (o *UpdateWebsocketsizelimitPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateWebsocketsizelimitPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

@@ -13,18 +13,18 @@ type UpdateCatalogServiceRequest struct {
 	UpdateCatalogService shared.UpdateCatalogService `request:"mediaType=application/json"`
 }
 
-func (o *UpdateCatalogServiceRequest) GetID() string {
-	if o == nil {
+func (u *UpdateCatalogServiceRequest) GetID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ID
+	return u.ID
 }
 
-func (o *UpdateCatalogServiceRequest) GetUpdateCatalogService() shared.UpdateCatalogService {
-	if o == nil {
+func (u *UpdateCatalogServiceRequest) GetUpdateCatalogService() shared.UpdateCatalogService {
+	if u == nil {
 		return shared.UpdateCatalogService{}
 	}
-	return o.UpdateCatalogService
+	return u.UpdateCatalogService
 }
 
 type UpdateCatalogServiceResponse struct {
@@ -48,65 +48,65 @@ type UpdateCatalogServiceResponse struct {
 	ConflictError *shared.ConflictError
 }
 
-func (o *UpdateCatalogServiceResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateCatalogServiceResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateCatalogServiceResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateCatalogServiceResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateCatalogServiceResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateCatalogServiceResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateCatalogServiceResponse) GetCatalogService() *shared.CatalogService {
-	if o == nil {
+func (u *UpdateCatalogServiceResponse) GetCatalogService() *shared.CatalogService {
+	if u == nil {
 		return nil
 	}
-	return o.CatalogService
+	return u.CatalogService
 }
 
-func (o *UpdateCatalogServiceResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (u *UpdateCatalogServiceResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return u.BadRequestError
 }
 
-func (o *UpdateCatalogServiceResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (u *UpdateCatalogServiceResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return u.UnauthorizedError
 }
 
-func (o *UpdateCatalogServiceResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (u *UpdateCatalogServiceResponse) GetForbiddenError() *shared.ForbiddenError {
+	if u == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return u.ForbiddenError
 }
 
-func (o *UpdateCatalogServiceResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (u *UpdateCatalogServiceResponse) GetNotFoundError() *shared.NotFoundError {
+	if u == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return u.NotFoundError
 }
 
-func (o *UpdateCatalogServiceResponse) GetConflictError() *shared.ConflictError {
-	if o == nil {
+func (u *UpdateCatalogServiceResponse) GetConflictError() *shared.ConflictError {
+	if u == nil {
 		return nil
 	}
-	return o.ConflictError
+	return u.ConflictError
 }

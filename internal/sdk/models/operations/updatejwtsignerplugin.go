@@ -15,25 +15,25 @@ type UpdateJwtsignerPluginRequest struct {
 	JwtSignerPlugin shared.JwtSignerPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateJwtsignerPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateJwtsignerPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateJwtsignerPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateJwtsignerPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateJwtsignerPluginRequest) GetJwtSignerPlugin() shared.JwtSignerPlugin {
-	if o == nil {
+func (u *UpdateJwtsignerPluginRequest) GetJwtSignerPlugin() shared.JwtSignerPlugin {
+	if u == nil {
 		return shared.JwtSignerPlugin{}
 	}
-	return o.JwtSignerPlugin
+	return u.JwtSignerPlugin
 }
 
 type UpdateJwtsignerPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateJwtsignerPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateJwtsignerPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateJwtsignerPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateJwtsignerPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateJwtsignerPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateJwtsignerPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateJwtsignerPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateJwtsignerPluginResponse) GetJwtSignerPlugin() *shared.JwtSignerPlugin {
-	if o == nil {
+func (u *UpdateJwtsignerPluginResponse) GetJwtSignerPlugin() *shared.JwtSignerPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.JwtSignerPlugin
+	return u.JwtSignerPlugin
 }
 
-func (o *UpdateJwtsignerPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateJwtsignerPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

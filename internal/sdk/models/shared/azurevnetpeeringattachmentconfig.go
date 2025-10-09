@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type AzureVNETPeeringAttachmentType string
@@ -42,37 +43,48 @@ type AzureVNETPeeringAttachmentConfig struct {
 	VnetName string `json:"vnet_name"`
 }
 
-func (o *AzureVNETPeeringAttachmentConfig) GetKind() AzureVNETPeeringAttachmentType {
-	if o == nil {
+func (a AzureVNETPeeringAttachmentConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AzureVNETPeeringAttachmentConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"kind", "tenant_id", "subscription_id", "resource_group_name", "vnet_name"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AzureVNETPeeringAttachmentConfig) GetKind() AzureVNETPeeringAttachmentType {
+	if a == nil {
 		return AzureVNETPeeringAttachmentType("")
 	}
-	return o.Kind
+	return a.Kind
 }
 
-func (o *AzureVNETPeeringAttachmentConfig) GetTenantID() string {
-	if o == nil {
+func (a *AzureVNETPeeringAttachmentConfig) GetTenantID() string {
+	if a == nil {
 		return ""
 	}
-	return o.TenantID
+	return a.TenantID
 }
 
-func (o *AzureVNETPeeringAttachmentConfig) GetSubscriptionID() string {
-	if o == nil {
+func (a *AzureVNETPeeringAttachmentConfig) GetSubscriptionID() string {
+	if a == nil {
 		return ""
 	}
-	return o.SubscriptionID
+	return a.SubscriptionID
 }
 
-func (o *AzureVNETPeeringAttachmentConfig) GetResourceGroupName() string {
-	if o == nil {
+func (a *AzureVNETPeeringAttachmentConfig) GetResourceGroupName() string {
+	if a == nil {
 		return ""
 	}
-	return o.ResourceGroupName
+	return a.ResourceGroupName
 }
 
-func (o *AzureVNETPeeringAttachmentConfig) GetVnetName() string {
-	if o == nil {
+func (a *AzureVNETPeeringAttachmentConfig) GetVnetName() string {
+	if a == nil {
 		return ""
 	}
-	return o.VnetName
+	return a.VnetName
 }

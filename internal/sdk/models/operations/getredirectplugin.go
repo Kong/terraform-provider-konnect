@@ -14,18 +14,18 @@ type GetRedirectPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetRedirectPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetRedirectPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetRedirectPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetRedirectPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetRedirectPluginResponse struct {
@@ -41,37 +41,37 @@ type GetRedirectPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetRedirectPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetRedirectPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetRedirectPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetRedirectPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetRedirectPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetRedirectPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetRedirectPluginResponse) GetRedirectPlugin() *shared.RedirectPlugin {
-	if o == nil {
+func (g *GetRedirectPluginResponse) GetRedirectPlugin() *shared.RedirectPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.RedirectPlugin
+	return g.RedirectPlugin
 }
 
-func (o *GetRedirectPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetRedirectPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

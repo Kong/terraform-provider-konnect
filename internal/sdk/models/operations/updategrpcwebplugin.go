@@ -15,25 +15,25 @@ type UpdateGrpcwebPluginRequest struct {
 	GrpcWebPlugin  shared.GrpcWebPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateGrpcwebPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateGrpcwebPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateGrpcwebPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateGrpcwebPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateGrpcwebPluginRequest) GetGrpcWebPlugin() shared.GrpcWebPlugin {
-	if o == nil {
+func (u *UpdateGrpcwebPluginRequest) GetGrpcWebPlugin() shared.GrpcWebPlugin {
+	if u == nil {
 		return shared.GrpcWebPlugin{}
 	}
-	return o.GrpcWebPlugin
+	return u.GrpcWebPlugin
 }
 
 type UpdateGrpcwebPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateGrpcwebPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateGrpcwebPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateGrpcwebPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateGrpcwebPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateGrpcwebPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateGrpcwebPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateGrpcwebPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateGrpcwebPluginResponse) GetGrpcWebPlugin() *shared.GrpcWebPlugin {
-	if o == nil {
+func (u *UpdateGrpcwebPluginResponse) GetGrpcWebPlugin() *shared.GrpcWebPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.GrpcWebPlugin
+	return u.GrpcWebPlugin
 }
 
-func (o *UpdateGrpcwebPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateGrpcwebPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

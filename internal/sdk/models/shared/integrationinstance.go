@@ -37,71 +37,71 @@ func (i IntegrationInstance) MarshalJSON() ([]byte, error) {
 }
 
 func (i *IntegrationInstance) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"id", "name", "display_name", "integration", "authorized", "config", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *IntegrationInstance) GetID() string {
-	if o == nil {
+func (i *IntegrationInstance) GetID() string {
+	if i == nil {
 		return ""
 	}
-	return o.ID
+	return i.ID
 }
 
-func (o *IntegrationInstance) GetName() string {
-	if o == nil {
+func (i *IntegrationInstance) GetName() string {
+	if i == nil {
 		return ""
 	}
-	return o.Name
+	return i.Name
 }
 
-func (o *IntegrationInstance) GetDisplayName() string {
-	if o == nil {
+func (i *IntegrationInstance) GetDisplayName() string {
+	if i == nil {
 		return ""
 	}
-	return o.DisplayName
+	return i.DisplayName
 }
 
-func (o *IntegrationInstance) GetDescription() *string {
-	if o == nil {
+func (i *IntegrationInstance) GetDescription() *string {
+	if i == nil {
 		return nil
 	}
-	return o.Description
+	return i.Description
 }
 
-func (o *IntegrationInstance) GetIntegration() IntegrationRefWithoutInstance {
-	if o == nil {
+func (i *IntegrationInstance) GetIntegration() IntegrationRefWithoutInstance {
+	if i == nil {
 		return IntegrationRefWithoutInstance{}
 	}
-	return o.Integration
+	return i.Integration
 }
 
-func (o *IntegrationInstance) GetAuthorized() bool {
-	if o == nil {
+func (i *IntegrationInstance) GetAuthorized() bool {
+	if i == nil {
 		return false
 	}
-	return o.Authorized
+	return i.Authorized
 }
 
-func (o *IntegrationInstance) GetConfig() any {
-	if o == nil {
+func (i *IntegrationInstance) GetConfig() any {
+	if i == nil {
 		return nil
 	}
-	return o.Config
+	return i.Config
 }
 
-func (o *IntegrationInstance) GetCreatedAt() time.Time {
-	if o == nil {
+func (i *IntegrationInstance) GetCreatedAt() time.Time {
+	if i == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return i.CreatedAt
 }
 
-func (o *IntegrationInstance) GetUpdatedAt() time.Time {
-	if o == nil {
+func (i *IntegrationInstance) GetUpdatedAt() time.Time {
+	if i == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return i.UpdatedAt
 }

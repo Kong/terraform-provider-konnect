@@ -24,51 +24,51 @@ type CreatePortalResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *CreatePortalResponse) GetContentType() string {
-	if o == nil {
+func (c *CreatePortalResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreatePortalResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreatePortalResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreatePortalResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreatePortalResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreatePortalResponse) GetPortalResponse() *shared.PortalResponse {
-	if o == nil {
+func (c *CreatePortalResponse) GetPortalResponse() *shared.PortalResponse {
+	if c == nil {
 		return nil
 	}
-	return o.PortalResponse
+	return c.PortalResponse
 }
 
-func (o *CreatePortalResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreatePortalResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreatePortalResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (c *CreatePortalResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return c.UnauthorizedError
 }
 
-func (o *CreatePortalResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreatePortalResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }

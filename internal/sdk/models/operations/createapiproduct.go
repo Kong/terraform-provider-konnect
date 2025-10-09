@@ -26,58 +26,58 @@ type CreateAPIProductResponse struct {
 	UnsupportedMediaTypeError *shared.UnsupportedMediaTypeError
 }
 
-func (o *CreateAPIProductResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateAPIProductResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateAPIProductResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateAPIProductResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateAPIProductResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateAPIProductResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateAPIProductResponse) GetAPIProduct() *shared.APIProduct {
-	if o == nil {
+func (c *CreateAPIProductResponse) GetAPIProduct() *shared.APIProduct {
+	if c == nil {
 		return nil
 	}
-	return o.APIProduct
+	return c.APIProduct
 }
 
-func (o *CreateAPIProductResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreateAPIProductResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreateAPIProductResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (c *CreateAPIProductResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return c.UnauthorizedError
 }
 
-func (o *CreateAPIProductResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreateAPIProductResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }
 
-func (o *CreateAPIProductResponse) GetUnsupportedMediaTypeError() *shared.UnsupportedMediaTypeError {
-	if o == nil {
+func (c *CreateAPIProductResponse) GetUnsupportedMediaTypeError() *shared.UnsupportedMediaTypeError {
+	if c == nil {
 		return nil
 	}
-	return o.UnsupportedMediaTypeError
+	return c.UnsupportedMediaTypeError
 }

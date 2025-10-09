@@ -11,37 +11,37 @@ type UnsupportedMediaTypeError struct {
 	Detail   any `json:"detail"`
 }
 
-func (o *UnsupportedMediaTypeError) GetStatus() any {
-	if o == nil {
+func (u *UnsupportedMediaTypeError) GetStatus() any {
+	if u == nil {
 		return nil
 	}
-	return o.Status
+	return u.Status
 }
 
-func (o *UnsupportedMediaTypeError) GetTitle() any {
-	if o == nil {
+func (u *UnsupportedMediaTypeError) GetTitle() any {
+	if u == nil {
 		return nil
 	}
-	return o.Title
+	return u.Title
 }
 
-func (o *UnsupportedMediaTypeError) GetType() any {
-	if o == nil {
+func (u *UnsupportedMediaTypeError) GetType() any {
+	if u == nil {
 		return nil
 	}
-	return o.Type
+	return u.Type
 }
 
-func (o *UnsupportedMediaTypeError) GetInstance() any {
-	if o == nil {
+func (u *UnsupportedMediaTypeError) GetInstance() any {
+	if u == nil {
 		return nil
 	}
-	return o.Instance
+	return u.Instance
 }
 
-func (o *UnsupportedMediaTypeError) GetDetail() any {
-	if o == nil {
+func (u *UnsupportedMediaTypeError) GetDetail() any {
+	if u == nil {
 		return nil
 	}
-	return o.Detail
+	return u.Detail
 }

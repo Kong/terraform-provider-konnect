@@ -16,25 +16,25 @@ type GetConsumerKeyRequest struct {
 	KeyID string `pathParam:"style=simple,explode=false,name=keyId"`
 }
 
-func (o *GetConsumerKeyRequest) GetRealmID() string {
-	if o == nil {
+func (g *GetConsumerKeyRequest) GetRealmID() string {
+	if g == nil {
 		return ""
 	}
-	return o.RealmID
+	return g.RealmID
 }
 
-func (o *GetConsumerKeyRequest) GetConsumerID() string {
-	if o == nil {
+func (g *GetConsumerKeyRequest) GetConsumerID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ConsumerID
+	return g.ConsumerID
 }
 
-func (o *GetConsumerKeyRequest) GetKeyID() string {
-	if o == nil {
+func (g *GetConsumerKeyRequest) GetKeyID() string {
+	if g == nil {
 		return ""
 	}
-	return o.KeyID
+	return g.KeyID
 }
 
 type GetConsumerKeyResponse struct {
@@ -50,37 +50,37 @@ type GetConsumerKeyResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetConsumerKeyResponse) GetContentType() string {
-	if o == nil {
+func (g *GetConsumerKeyResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetConsumerKeyResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetConsumerKeyResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetConsumerKeyResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetConsumerKeyResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetConsumerKeyResponse) GetAPIKey() *shared.APIKey {
-	if o == nil {
+func (g *GetConsumerKeyResponse) GetAPIKey() *shared.APIKey {
+	if g == nil {
 		return nil
 	}
-	return o.APIKey
+	return g.APIKey
 }
 
-func (o *GetConsumerKeyResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetConsumerKeyResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

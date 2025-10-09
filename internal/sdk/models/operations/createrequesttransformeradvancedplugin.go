@@ -13,18 +13,18 @@ type CreateRequesttransformeradvancedPluginRequest struct {
 	RequestTransformerAdvancedPlugin shared.RequestTransformerAdvancedPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateRequesttransformeradvancedPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateRequesttransformeradvancedPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateRequesttransformeradvancedPluginRequest) GetRequestTransformerAdvancedPlugin() shared.RequestTransformerAdvancedPlugin {
-	if o == nil {
+func (c *CreateRequesttransformeradvancedPluginRequest) GetRequestTransformerAdvancedPlugin() shared.RequestTransformerAdvancedPlugin {
+	if c == nil {
 		return shared.RequestTransformerAdvancedPlugin{}
 	}
-	return o.RequestTransformerAdvancedPlugin
+	return c.RequestTransformerAdvancedPlugin
 }
 
 type CreateRequesttransformeradvancedPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateRequesttransformeradvancedPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateRequesttransformeradvancedPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateRequesttransformeradvancedPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateRequesttransformeradvancedPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateRequesttransformeradvancedPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateRequesttransformeradvancedPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateRequesttransformeradvancedPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateRequesttransformeradvancedPluginResponse) GetRequestTransformerAdvancedPlugin() *shared.RequestTransformerAdvancedPlugin {
-	if o == nil {
+func (c *CreateRequesttransformeradvancedPluginResponse) GetRequestTransformerAdvancedPlugin() *shared.RequestTransformerAdvancedPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.RequestTransformerAdvancedPlugin
+	return c.RequestTransformerAdvancedPlugin
 }
 
-func (o *CreateRequesttransformeradvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateRequesttransformeradvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

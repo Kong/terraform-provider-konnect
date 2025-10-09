@@ -13,18 +13,18 @@ type UpdateIntegrationInstanceRequest struct {
 	UpdateIntegrationInstance shared.UpdateIntegrationInstance `request:"mediaType=application/json"`
 }
 
-func (o *UpdateIntegrationInstanceRequest) GetID() string {
-	if o == nil {
+func (u *UpdateIntegrationInstanceRequest) GetID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ID
+	return u.ID
 }
 
-func (o *UpdateIntegrationInstanceRequest) GetUpdateIntegrationInstance() shared.UpdateIntegrationInstance {
-	if o == nil {
+func (u *UpdateIntegrationInstanceRequest) GetUpdateIntegrationInstance() shared.UpdateIntegrationInstance {
+	if u == nil {
 		return shared.UpdateIntegrationInstance{}
 	}
-	return o.UpdateIntegrationInstance
+	return u.UpdateIntegrationInstance
 }
 
 type UpdateIntegrationInstanceResponse struct {
@@ -48,65 +48,65 @@ type UpdateIntegrationInstanceResponse struct {
 	ConflictError *shared.ConflictError
 }
 
-func (o *UpdateIntegrationInstanceResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateIntegrationInstanceResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateIntegrationInstanceResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateIntegrationInstanceResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateIntegrationInstanceResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateIntegrationInstanceResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateIntegrationInstanceResponse) GetIntegrationInstance() *shared.IntegrationInstance {
-	if o == nil {
+func (u *UpdateIntegrationInstanceResponse) GetIntegrationInstance() *shared.IntegrationInstance {
+	if u == nil {
 		return nil
 	}
-	return o.IntegrationInstance
+	return u.IntegrationInstance
 }
 
-func (o *UpdateIntegrationInstanceResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (u *UpdateIntegrationInstanceResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return u.BadRequestError
 }
 
-func (o *UpdateIntegrationInstanceResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (u *UpdateIntegrationInstanceResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return u.UnauthorizedError
 }
 
-func (o *UpdateIntegrationInstanceResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (u *UpdateIntegrationInstanceResponse) GetForbiddenError() *shared.ForbiddenError {
+	if u == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return u.ForbiddenError
 }
 
-func (o *UpdateIntegrationInstanceResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (u *UpdateIntegrationInstanceResponse) GetNotFoundError() *shared.NotFoundError {
+	if u == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return u.NotFoundError
 }
 
-func (o *UpdateIntegrationInstanceResponse) GetConflictError() *shared.ConflictError {
-	if o == nil {
+func (u *UpdateIntegrationInstanceResponse) GetConflictError() *shared.ConflictError {
+	if u == nil {
 		return nil
 	}
-	return o.ConflictError
+	return u.ConflictError
 }

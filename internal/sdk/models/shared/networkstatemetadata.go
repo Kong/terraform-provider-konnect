@@ -20,22 +20,22 @@ func (n NetworkStateMetadata) MarshalJSON() ([]byte, error) {
 }
 
 func (n *NetworkStateMetadata) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &n, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &n, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *NetworkStateMetadata) GetReportedStatus() *string {
-	if o == nil {
+func (n *NetworkStateMetadata) GetReportedStatus() *string {
+	if n == nil {
 		return nil
 	}
-	return o.ReportedStatus
+	return n.ReportedStatus
 }
 
-func (o *NetworkStateMetadata) GetReason() *string {
-	if o == nil {
+func (n *NetworkStateMetadata) GetReason() *string {
+	if n == nil {
 		return nil
 	}
-	return o.Reason
+	return n.Reason
 }

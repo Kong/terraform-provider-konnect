@@ -26,44 +26,44 @@ type CreateTeamResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *CreateTeamResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateTeamResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateTeamResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateTeamResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateTeamResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateTeamResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateTeamResponse) GetTeam() *shared.Team {
-	if o == nil {
+func (c *CreateTeamResponse) GetTeam() *shared.Team {
+	if c == nil {
 		return nil
 	}
-	return o.Team
+	return c.Team
 }
 
-func (o *CreateTeamResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreateTeamResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreateTeamResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreateTeamResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }

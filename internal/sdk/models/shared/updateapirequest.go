@@ -35,50 +35,50 @@ func (u UpdateAPIRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateAPIRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *UpdateAPIRequest) GetName() *string {
-	if o == nil {
+func (u *UpdateAPIRequest) GetName() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Name
+	return u.Name
 }
 
-func (o *UpdateAPIRequest) GetDescription() *string {
-	if o == nil {
+func (u *UpdateAPIRequest) GetDescription() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Description
+	return u.Description
 }
 
-func (o *UpdateAPIRequest) GetVersion() *string {
-	if o == nil {
+func (u *UpdateAPIRequest) GetVersion() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Version
+	return u.Version
 }
 
-func (o *UpdateAPIRequest) GetSlug() *string {
-	if o == nil {
+func (u *UpdateAPIRequest) GetSlug() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Slug
+	return u.Slug
 }
 
-func (o *UpdateAPIRequest) GetLabels() map[string]*string {
-	if o == nil {
+func (u *UpdateAPIRequest) GetLabels() map[string]*string {
+	if u == nil {
 		return nil
 	}
-	return o.Labels
+	return u.Labels
 }
 
-func (o *UpdateAPIRequest) GetAttributes() any {
-	if o == nil {
+func (u *UpdateAPIRequest) GetAttributes() any {
+	if u == nil {
 		return nil
 	}
-	return o.Attributes
+	return u.Attributes
 }

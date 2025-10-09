@@ -123,6 +123,17 @@ Optional:
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_cloud_gateway_configuration.my_konnect_cloud_gateway_configuration
+  id = "edaf40f9-9fb0-4ffe-bb74-4e763a6bd471"
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 terraform import konnect_cloud_gateway_configuration.my_konnect_cloud_gateway_configuration "edaf40f9-9fb0-4ffe-bb74-4e763a6bd471"
 ```

@@ -14,18 +14,18 @@ type DeleteAiazurecontentsafetyPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteAiazurecontentsafetyPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteAiazurecontentsafetyPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteAiazurecontentsafetyPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteAiazurecontentsafetyPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteAiazurecontentsafetyPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteAiazurecontentsafetyPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteAiazurecontentsafetyPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteAiazurecontentsafetyPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteAiazurecontentsafetyPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteAiazurecontentsafetyPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteAiazurecontentsafetyPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteAiazurecontentsafetyPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteAiazurecontentsafetyPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteAiazurecontentsafetyPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

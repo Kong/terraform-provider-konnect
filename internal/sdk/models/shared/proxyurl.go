@@ -12,23 +12,23 @@ type ProxyURL struct {
 	Protocol string `json:"protocol"`
 }
 
-func (o *ProxyURL) GetHost() string {
-	if o == nil {
+func (p *ProxyURL) GetHost() string {
+	if p == nil {
 		return ""
 	}
-	return o.Host
+	return p.Host
 }
 
-func (o *ProxyURL) GetPort() int64 {
-	if o == nil {
+func (p *ProxyURL) GetPort() int64 {
+	if p == nil {
 		return 0
 	}
-	return o.Port
+	return p.Port
 }
 
-func (o *ProxyURL) GetProtocol() string {
-	if o == nil {
+func (p *ProxyURL) GetProtocol() string {
+	if p == nil {
 		return ""
 	}
-	return o.Protocol
+	return p.Protocol
 }

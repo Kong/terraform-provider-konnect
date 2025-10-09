@@ -13,18 +13,18 @@ type CreateJwtPluginRequest struct {
 	JwtPlugin      shared.JwtPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateJwtPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateJwtPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateJwtPluginRequest) GetJwtPlugin() shared.JwtPlugin {
-	if o == nil {
+func (c *CreateJwtPluginRequest) GetJwtPlugin() shared.JwtPlugin {
+	if c == nil {
 		return shared.JwtPlugin{}
 	}
-	return o.JwtPlugin
+	return c.JwtPlugin
 }
 
 type CreateJwtPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateJwtPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateJwtPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateJwtPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateJwtPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateJwtPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateJwtPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateJwtPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateJwtPluginResponse) GetJwtPlugin() *shared.JwtPlugin {
-	if o == nil {
+func (c *CreateJwtPluginResponse) GetJwtPlugin() *shared.JwtPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.JwtPlugin
+	return c.JwtPlugin
 }
 
-func (o *CreateJwtPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateJwtPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

@@ -12,22 +12,22 @@ type DatadogTracingPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *DatadogTracingPluginAfter) GetAccess() []string {
-	if o == nil {
+func (d *DatadogTracingPluginAfter) GetAccess() []string {
+	if d == nil {
 		return nil
 	}
-	return o.Access
+	return d.Access
 }
 
 type DatadogTracingPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *DatadogTracingPluginBefore) GetAccess() []string {
-	if o == nil {
+func (d *DatadogTracingPluginBefore) GetAccess() []string {
+	if d == nil {
 		return nil
 	}
-	return o.Access
+	return d.Access
 }
 
 type DatadogTracingPluginOrdering struct {
@@ -35,18 +35,18 @@ type DatadogTracingPluginOrdering struct {
 	Before *DatadogTracingPluginBefore `json:"before,omitempty"`
 }
 
-func (o *DatadogTracingPluginOrdering) GetAfter() *DatadogTracingPluginAfter {
-	if o == nil {
+func (d *DatadogTracingPluginOrdering) GetAfter() *DatadogTracingPluginAfter {
+	if d == nil {
 		return nil
 	}
-	return o.After
+	return d.After
 }
 
-func (o *DatadogTracingPluginOrdering) GetBefore() *DatadogTracingPluginBefore {
-	if o == nil {
+func (d *DatadogTracingPluginOrdering) GetBefore() *DatadogTracingPluginBefore {
+	if d == nil {
 		return nil
 	}
-	return o.Before
+	return d.Before
 }
 
 type DatadogTracingPluginPartials struct {
@@ -57,25 +57,25 @@ type DatadogTracingPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *DatadogTracingPluginPartials) GetID() *string {
-	if o == nil {
+func (d *DatadogTracingPluginPartials) GetID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ID
+	return d.ID
 }
 
-func (o *DatadogTracingPluginPartials) GetName() *string {
-	if o == nil {
+func (d *DatadogTracingPluginPartials) GetName() *string {
+	if d == nil {
 		return nil
 	}
-	return o.Name
+	return d.Name
 }
 
-func (o *DatadogTracingPluginPartials) GetPath() *string {
-	if o == nil {
+func (d *DatadogTracingPluginPartials) GetPath() *string {
+	if d == nil {
 		return nil
 	}
-	return o.Path
+	return d.Path
 }
 
 type DatadogTracingPluginConfig struct {
@@ -94,66 +94,66 @@ func (d DatadogTracingPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DatadogTracingPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *DatadogTracingPluginConfig) GetBatchFlushDelay() *int64 {
-	if o == nil {
+func (d *DatadogTracingPluginConfig) GetBatchFlushDelay() *int64 {
+	if d == nil {
 		return nil
 	}
-	return o.BatchFlushDelay
+	return d.BatchFlushDelay
 }
 
-func (o *DatadogTracingPluginConfig) GetBatchSpanCount() *int64 {
-	if o == nil {
+func (d *DatadogTracingPluginConfig) GetBatchSpanCount() *int64 {
+	if d == nil {
 		return nil
 	}
-	return o.BatchSpanCount
+	return d.BatchSpanCount
 }
 
-func (o *DatadogTracingPluginConfig) GetConnectTimeout() *int64 {
-	if o == nil {
+func (d *DatadogTracingPluginConfig) GetConnectTimeout() *int64 {
+	if d == nil {
 		return nil
 	}
-	return o.ConnectTimeout
+	return d.ConnectTimeout
 }
 
-func (o *DatadogTracingPluginConfig) GetEndpoint() *string {
-	if o == nil {
+func (d *DatadogTracingPluginConfig) GetEndpoint() *string {
+	if d == nil {
 		return nil
 	}
-	return o.Endpoint
+	return d.Endpoint
 }
 
-func (o *DatadogTracingPluginConfig) GetEnvironment() *string {
-	if o == nil {
+func (d *DatadogTracingPluginConfig) GetEnvironment() *string {
+	if d == nil {
 		return nil
 	}
-	return o.Environment
+	return d.Environment
 }
 
-func (o *DatadogTracingPluginConfig) GetReadTimeout() *int64 {
-	if o == nil {
+func (d *DatadogTracingPluginConfig) GetReadTimeout() *int64 {
+	if d == nil {
 		return nil
 	}
-	return o.ReadTimeout
+	return d.ReadTimeout
 }
 
-func (o *DatadogTracingPluginConfig) GetSendTimeout() *int64 {
-	if o == nil {
+func (d *DatadogTracingPluginConfig) GetSendTimeout() *int64 {
+	if d == nil {
 		return nil
 	}
-	return o.SendTimeout
+	return d.SendTimeout
 }
 
-func (o *DatadogTracingPluginConfig) GetServiceName() *string {
-	if o == nil {
+func (d *DatadogTracingPluginConfig) GetServiceName() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ServiceName
+	return d.ServiceName
 }
 
 // DatadogTracingPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -161,11 +161,11 @@ type DatadogTracingPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *DatadogTracingPluginConsumerGroup) GetID() *string {
-	if o == nil {
+func (d *DatadogTracingPluginConsumerGroup) GetID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ID
+	return d.ID
 }
 
 type DatadogTracingPluginProtocols string
@@ -205,11 +205,11 @@ type DatadogTracingPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *DatadogTracingPluginRoute) GetID() *string {
-	if o == nil {
+func (d *DatadogTracingPluginRoute) GetID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ID
+	return d.ID
 }
 
 // DatadogTracingPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -217,11 +217,11 @@ type DatadogTracingPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *DatadogTracingPluginService) GetID() *string {
-	if o == nil {
+func (d *DatadogTracingPluginService) GetID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ID
+	return d.ID
 }
 
 // DatadogTracingPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -258,103 +258,103 @@ func (d DatadogTracingPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DatadogTracingPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"name", "ordering", "partials", "tags", "config", "consumer_group", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *DatadogTracingPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (d *DatadogTracingPlugin) GetCreatedAt() *int64 {
+	if d == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return d.CreatedAt
 }
 
-func (o *DatadogTracingPlugin) GetEnabled() *bool {
-	if o == nil {
+func (d *DatadogTracingPlugin) GetEnabled() *bool {
+	if d == nil {
 		return nil
 	}
-	return o.Enabled
+	return d.Enabled
 }
 
-func (o *DatadogTracingPlugin) GetID() *string {
-	if o == nil {
+func (d *DatadogTracingPlugin) GetID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ID
+	return d.ID
 }
 
-func (o *DatadogTracingPlugin) GetInstanceName() *string {
-	if o == nil {
+func (d *DatadogTracingPlugin) GetInstanceName() *string {
+	if d == nil {
 		return nil
 	}
-	return o.InstanceName
+	return d.InstanceName
 }
 
-func (o *DatadogTracingPlugin) GetName() string {
+func (d *DatadogTracingPlugin) GetName() string {
 	return "datadog-tracing"
 }
 
-func (o *DatadogTracingPlugin) GetOrdering() *DatadogTracingPluginOrdering {
-	if o == nil {
+func (d *DatadogTracingPlugin) GetOrdering() *DatadogTracingPluginOrdering {
+	if d == nil {
 		return nil
 	}
-	return o.Ordering
+	return d.Ordering
 }
 
-func (o *DatadogTracingPlugin) GetPartials() []DatadogTracingPluginPartials {
-	if o == nil {
+func (d *DatadogTracingPlugin) GetPartials() []DatadogTracingPluginPartials {
+	if d == nil {
 		return nil
 	}
-	return o.Partials
+	return d.Partials
 }
 
-func (o *DatadogTracingPlugin) GetTags() []string {
-	if o == nil {
+func (d *DatadogTracingPlugin) GetTags() []string {
+	if d == nil {
 		return nil
 	}
-	return o.Tags
+	return d.Tags
 }
 
-func (o *DatadogTracingPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (d *DatadogTracingPlugin) GetUpdatedAt() *int64 {
+	if d == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return d.UpdatedAt
 }
 
-func (o *DatadogTracingPlugin) GetConfig() *DatadogTracingPluginConfig {
-	if o == nil {
+func (d *DatadogTracingPlugin) GetConfig() *DatadogTracingPluginConfig {
+	if d == nil {
 		return nil
 	}
-	return o.Config
+	return d.Config
 }
 
-func (o *DatadogTracingPlugin) GetConsumerGroup() *DatadogTracingPluginConsumerGroup {
-	if o == nil {
+func (d *DatadogTracingPlugin) GetConsumerGroup() *DatadogTracingPluginConsumerGroup {
+	if d == nil {
 		return nil
 	}
-	return o.ConsumerGroup
+	return d.ConsumerGroup
 }
 
-func (o *DatadogTracingPlugin) GetProtocols() []DatadogTracingPluginProtocols {
-	if o == nil {
+func (d *DatadogTracingPlugin) GetProtocols() []DatadogTracingPluginProtocols {
+	if d == nil {
 		return nil
 	}
-	return o.Protocols
+	return d.Protocols
 }
 
-func (o *DatadogTracingPlugin) GetRoute() *DatadogTracingPluginRoute {
-	if o == nil {
+func (d *DatadogTracingPlugin) GetRoute() *DatadogTracingPluginRoute {
+	if d == nil {
 		return nil
 	}
-	return o.Route
+	return d.Route
 }
 
-func (o *DatadogTracingPlugin) GetService() *DatadogTracingPluginService {
-	if o == nil {
+func (d *DatadogTracingPlugin) GetService() *DatadogTracingPluginService {
+	if d == nil {
 		return nil
 	}
-	return o.Service
+	return d.Service
 }

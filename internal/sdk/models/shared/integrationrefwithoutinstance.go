@@ -8,16 +8,16 @@ type IntegrationRefWithoutInstance struct {
 	DisplayName string `json:"display_name"`
 }
 
-func (o *IntegrationRefWithoutInstance) GetName() string {
-	if o == nil {
+func (i *IntegrationRefWithoutInstance) GetName() string {
+	if i == nil {
 		return ""
 	}
-	return o.Name
+	return i.Name
 }
 
-func (o *IntegrationRefWithoutInstance) GetDisplayName() string {
-	if o == nil {
+func (i *IntegrationRefWithoutInstance) GetDisplayName() string {
+	if i == nil {
 		return ""
 	}
-	return o.DisplayName
+	return i.DisplayName
 }

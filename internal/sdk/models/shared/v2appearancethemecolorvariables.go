@@ -12,53 +12,53 @@ type Section struct {
 	Footer   V2AppearanceColorVariable `json:"footer"`
 }
 
-func (o *Section) GetHeader() V2AppearanceColorVariable {
-	if o == nil {
+func (s *Section) GetHeader() V2AppearanceColorVariable {
+	if s == nil {
 		return V2AppearanceColorVariable{}
 	}
-	return o.Header
+	return s.Header
 }
 
-func (o *Section) GetBody() V2AppearanceColorVariable {
-	if o == nil {
+func (s *Section) GetBody() V2AppearanceColorVariable {
+	if s == nil {
 		return V2AppearanceColorVariable{}
 	}
-	return o.Body
+	return s.Body
 }
 
-func (o *Section) GetHero() V2AppearanceColorVariable {
-	if o == nil {
+func (s *Section) GetHero() V2AppearanceColorVariable {
+	if s == nil {
 		return V2AppearanceColorVariable{}
 	}
-	return o.Hero
+	return s.Hero
 }
 
-func (o *Section) GetAccent() V2AppearanceColorVariable {
-	if o == nil {
+func (s *Section) GetAccent() V2AppearanceColorVariable {
+	if s == nil {
 		return V2AppearanceColorVariable{}
 	}
-	return o.Accent
+	return s.Accent
 }
 
-func (o *Section) GetTertiary() V2AppearanceColorVariable {
-	if o == nil {
+func (s *Section) GetTertiary() V2AppearanceColorVariable {
+	if s == nil {
 		return V2AppearanceColorVariable{}
 	}
-	return o.Tertiary
+	return s.Tertiary
 }
 
-func (o *Section) GetStroke() V2AppearanceColorVariable {
-	if o == nil {
+func (s *Section) GetStroke() V2AppearanceColorVariable {
+	if s == nil {
 		return V2AppearanceColorVariable{}
 	}
-	return o.Stroke
+	return s.Stroke
 }
 
-func (o *Section) GetFooter() V2AppearanceColorVariable {
-	if o == nil {
+func (s *Section) GetFooter() V2AppearanceColorVariable {
+	if s == nil {
 		return V2AppearanceColorVariable{}
 	}
-	return o.Footer
+	return s.Footer
 }
 
 type Text struct {
@@ -72,60 +72,60 @@ type Text struct {
 	Footer    V2AppearanceColorVariable `json:"footer"`
 }
 
-func (o *Text) GetHeader() V2AppearanceColorVariable {
-	if o == nil {
+func (t *Text) GetHeader() V2AppearanceColorVariable {
+	if t == nil {
 		return V2AppearanceColorVariable{}
 	}
-	return o.Header
+	return t.Header
 }
 
-func (o *Text) GetHero() V2AppearanceColorVariable {
-	if o == nil {
+func (t *Text) GetHero() V2AppearanceColorVariable {
+	if t == nil {
 		return V2AppearanceColorVariable{}
 	}
-	return o.Hero
+	return t.Hero
 }
 
-func (o *Text) GetHeadings() V2AppearanceColorVariable {
-	if o == nil {
+func (t *Text) GetHeadings() V2AppearanceColorVariable {
+	if t == nil {
 		return V2AppearanceColorVariable{}
 	}
-	return o.Headings
+	return t.Headings
 }
 
-func (o *Text) GetPrimary() V2AppearanceColorVariable {
-	if o == nil {
+func (t *Text) GetPrimary() V2AppearanceColorVariable {
+	if t == nil {
 		return V2AppearanceColorVariable{}
 	}
-	return o.Primary
+	return t.Primary
 }
 
-func (o *Text) GetSecondary() V2AppearanceColorVariable {
-	if o == nil {
+func (t *Text) GetSecondary() V2AppearanceColorVariable {
+	if t == nil {
 		return V2AppearanceColorVariable{}
 	}
-	return o.Secondary
+	return t.Secondary
 }
 
-func (o *Text) GetAccent() V2AppearanceColorVariable {
-	if o == nil {
+func (t *Text) GetAccent() V2AppearanceColorVariable {
+	if t == nil {
 		return V2AppearanceColorVariable{}
 	}
-	return o.Accent
+	return t.Accent
 }
 
-func (o *Text) GetLink() V2AppearanceColorVariable {
-	if o == nil {
+func (t *Text) GetLink() V2AppearanceColorVariable {
+	if t == nil {
 		return V2AppearanceColorVariable{}
 	}
-	return o.Link
+	return t.Link
 }
 
-func (o *Text) GetFooter() V2AppearanceColorVariable {
-	if o == nil {
+func (t *Text) GetFooter() V2AppearanceColorVariable {
+	if t == nil {
 		return V2AppearanceColorVariable{}
 	}
-	return o.Footer
+	return t.Footer
 }
 
 type Button struct {
@@ -133,18 +133,18 @@ type Button struct {
 	PrimaryText V2AppearanceColorVariable `json:"primary_text"`
 }
 
-func (o *Button) GetPrimaryFill() V2AppearanceColorVariable {
-	if o == nil {
+func (b *Button) GetPrimaryFill() V2AppearanceColorVariable {
+	if b == nil {
 		return V2AppearanceColorVariable{}
 	}
-	return o.PrimaryFill
+	return b.PrimaryFill
 }
 
-func (o *Button) GetPrimaryText() V2AppearanceColorVariable {
-	if o == nil {
+func (b *Button) GetPrimaryText() V2AppearanceColorVariable {
+	if b == nil {
 		return V2AppearanceColorVariable{}
 	}
-	return o.PrimaryText
+	return b.PrimaryText
 }
 
 type V2AppearanceThemeColorVariables struct {
@@ -153,23 +153,23 @@ type V2AppearanceThemeColorVariables struct {
 	Button  Button  `json:"button"`
 }
 
-func (o *V2AppearanceThemeColorVariables) GetSection() Section {
-	if o == nil {
+func (v *V2AppearanceThemeColorVariables) GetSection() Section {
+	if v == nil {
 		return Section{}
 	}
-	return o.Section
+	return v.Section
 }
 
-func (o *V2AppearanceThemeColorVariables) GetText() Text {
-	if o == nil {
+func (v *V2AppearanceThemeColorVariables) GetText() Text {
+	if v == nil {
 		return Text{}
 	}
-	return o.Text
+	return v.Text
 }
 
-func (o *V2AppearanceThemeColorVariables) GetButton() Button {
-	if o == nil {
+func (v *V2AppearanceThemeColorVariables) GetButton() Button {
+	if v == nil {
 		return Button{}
 	}
-	return o.Button
+	return v.Button
 }

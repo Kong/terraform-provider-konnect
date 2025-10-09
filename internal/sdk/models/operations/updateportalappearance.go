@@ -14,18 +14,18 @@ type UpdatePortalAppearanceRequest struct {
 	V2PortalAppearance shared.V2PortalAppearance `request:"mediaType=application/json"`
 }
 
-func (o *UpdatePortalAppearanceRequest) GetPortalID() string {
-	if o == nil {
+func (u *UpdatePortalAppearanceRequest) GetPortalID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PortalID
+	return u.PortalID
 }
 
-func (o *UpdatePortalAppearanceRequest) GetV2PortalAppearance() shared.V2PortalAppearance {
-	if o == nil {
+func (u *UpdatePortalAppearanceRequest) GetV2PortalAppearance() shared.V2PortalAppearance {
+	if u == nil {
 		return shared.V2PortalAppearance{}
 	}
-	return o.V2PortalAppearance
+	return u.V2PortalAppearance
 }
 
 type UpdatePortalAppearanceResponse struct {
@@ -47,58 +47,58 @@ type UpdatePortalAppearanceResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *UpdatePortalAppearanceResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdatePortalAppearanceResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdatePortalAppearanceResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdatePortalAppearanceResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdatePortalAppearanceResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdatePortalAppearanceResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdatePortalAppearanceResponse) GetV2UpdatePortalAppearanceResponse() *shared.V2UpdatePortalAppearanceResponse {
-	if o == nil {
+func (u *UpdatePortalAppearanceResponse) GetV2UpdatePortalAppearanceResponse() *shared.V2UpdatePortalAppearanceResponse {
+	if u == nil {
 		return nil
 	}
-	return o.V2UpdatePortalAppearanceResponse
+	return u.V2UpdatePortalAppearanceResponse
 }
 
-func (o *UpdatePortalAppearanceResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (u *UpdatePortalAppearanceResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return u.BadRequestError
 }
 
-func (o *UpdatePortalAppearanceResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (u *UpdatePortalAppearanceResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return u.UnauthorizedError
 }
 
-func (o *UpdatePortalAppearanceResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (u *UpdatePortalAppearanceResponse) GetForbiddenError() *shared.ForbiddenError {
+	if u == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return u.ForbiddenError
 }
 
-func (o *UpdatePortalAppearanceResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (u *UpdatePortalAppearanceResponse) GetNotFoundError() *shared.NotFoundError {
+	if u == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return u.NotFoundError
 }

@@ -15,25 +15,25 @@ type DeleteJwtWithConsumerRequest struct {
 	JWTID string `pathParam:"style=simple,explode=false,name=JWTId"`
 }
 
-func (o *DeleteJwtWithConsumerRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteJwtWithConsumerRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
-func (o *DeleteJwtWithConsumerRequest) GetConsumerID() string {
-	if o == nil {
+func (d *DeleteJwtWithConsumerRequest) GetConsumerID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ConsumerID
+	return d.ConsumerID
 }
 
-func (o *DeleteJwtWithConsumerRequest) GetJWTID() string {
-	if o == nil {
+func (d *DeleteJwtWithConsumerRequest) GetJWTID() string {
+	if d == nil {
 		return ""
 	}
-	return o.JWTID
+	return d.JWTID
 }
 
 type DeleteJwtWithConsumerResponse struct {
@@ -45,23 +45,23 @@ type DeleteJwtWithConsumerResponse struct {
 	RawResponse *http.Response
 }
 
-func (o *DeleteJwtWithConsumerResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteJwtWithConsumerResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteJwtWithConsumerResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteJwtWithConsumerResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteJwtWithConsumerResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteJwtWithConsumerResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }

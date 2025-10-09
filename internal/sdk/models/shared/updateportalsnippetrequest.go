@@ -17,44 +17,44 @@ type UpdatePortalSnippetRequest struct {
 	Description *string          `json:"description,omitempty"`
 }
 
-func (o *UpdatePortalSnippetRequest) GetName() *string {
-	if o == nil {
+func (u *UpdatePortalSnippetRequest) GetName() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Name
+	return u.Name
 }
 
-func (o *UpdatePortalSnippetRequest) GetTitle() *string {
-	if o == nil {
+func (u *UpdatePortalSnippetRequest) GetTitle() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Title
+	return u.Title
 }
 
-func (o *UpdatePortalSnippetRequest) GetContent() *string {
-	if o == nil {
+func (u *UpdatePortalSnippetRequest) GetContent() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Content
+	return u.Content
 }
 
-func (o *UpdatePortalSnippetRequest) GetVisibility() *VisibilityStatus {
-	if o == nil {
+func (u *UpdatePortalSnippetRequest) GetVisibility() *VisibilityStatus {
+	if u == nil {
 		return nil
 	}
-	return o.Visibility
+	return u.Visibility
 }
 
-func (o *UpdatePortalSnippetRequest) GetStatus() *PublishedStatus {
-	if o == nil {
+func (u *UpdatePortalSnippetRequest) GetStatus() *PublishedStatus {
+	if u == nil {
 		return nil
 	}
-	return o.Status
+	return u.Status
 }
 
-func (o *UpdatePortalSnippetRequest) GetDescription() *string {
-	if o == nil {
+func (u *UpdatePortalSnippetRequest) GetDescription() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Description
+	return u.Description
 }

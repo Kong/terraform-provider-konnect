@@ -15,25 +15,25 @@ type UpdateHmacauthPluginRequest struct {
 	HmacAuthPlugin shared.HmacAuthPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateHmacauthPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateHmacauthPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateHmacauthPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateHmacauthPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateHmacauthPluginRequest) GetHmacAuthPlugin() shared.HmacAuthPlugin {
-	if o == nil {
+func (u *UpdateHmacauthPluginRequest) GetHmacAuthPlugin() shared.HmacAuthPlugin {
+	if u == nil {
 		return shared.HmacAuthPlugin{}
 	}
-	return o.HmacAuthPlugin
+	return u.HmacAuthPlugin
 }
 
 type UpdateHmacauthPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateHmacauthPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateHmacauthPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateHmacauthPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateHmacauthPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateHmacauthPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateHmacauthPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateHmacauthPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateHmacauthPluginResponse) GetHmacAuthPlugin() *shared.HmacAuthPlugin {
-	if o == nil {
+func (u *UpdateHmacauthPluginResponse) GetHmacAuthPlugin() *shared.HmacAuthPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.HmacAuthPlugin
+	return u.HmacAuthPlugin
 }
 
-func (o *UpdateHmacauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateHmacauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

@@ -7,16 +7,16 @@ type APIProductPortal struct {
 	PortalName string `json:"portal_name"`
 }
 
-func (o *APIProductPortal) GetPortalID() string {
-	if o == nil {
+func (a *APIProductPortal) GetPortalID() string {
+	if a == nil {
 		return ""
 	}
-	return o.PortalID
+	return a.PortalID
 }
 
-func (o *APIProductPortal) GetPortalName() string {
-	if o == nil {
+func (a *APIProductPortal) GetPortalName() string {
+	if a == nil {
 		return ""
 	}
-	return o.PortalName
+	return a.PortalName
 }

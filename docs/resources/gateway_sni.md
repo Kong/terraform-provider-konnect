@@ -55,6 +55,20 @@ Optional:
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_gateway_sni.my_konnect_gateway_sni
+  id = jsonencode({
+    control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = "64c17a1a-b7d7-4a65-a5a4-42e4a7016e7f"
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 terraform import konnect_gateway_sni.my_konnect_gateway_sni '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "64c17a1a-b7d7-4a65-a5a4-42e4a7016e7f"}'
 ```

@@ -14,18 +14,18 @@ type DeleteConsumerGroupRequest struct {
 	ConsumerGroupID string `pathParam:"style=simple,explode=false,name=ConsumerGroupId"`
 }
 
-func (o *DeleteConsumerGroupRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteConsumerGroupRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
-func (o *DeleteConsumerGroupRequest) GetConsumerGroupID() string {
-	if o == nil {
+func (d *DeleteConsumerGroupRequest) GetConsumerGroupID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ConsumerGroupID
+	return d.ConsumerGroupID
 }
 
 type DeleteConsumerGroupResponse struct {
@@ -39,30 +39,30 @@ type DeleteConsumerGroupResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteConsumerGroupResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteConsumerGroupResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteConsumerGroupResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteConsumerGroupResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteConsumerGroupResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteConsumerGroupResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteConsumerGroupResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteConsumerGroupResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

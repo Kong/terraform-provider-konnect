@@ -24,36 +24,36 @@ func (c ConfigStore) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfigStore) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ConfigStore) GetID() *string {
-	if o == nil {
+func (c *ConfigStore) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *ConfigStore) GetName() *string {
-	if o == nil {
+func (c *ConfigStore) GetName() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *ConfigStore) GetCreatedAt() *time.Time {
-	if o == nil {
+func (c *ConfigStore) GetCreatedAt() *time.Time {
+	if c == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return c.CreatedAt
 }
 
-func (o *ConfigStore) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (c *ConfigStore) GetUpdatedAt() *time.Time {
+	if c == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return c.UpdatedAt
 }

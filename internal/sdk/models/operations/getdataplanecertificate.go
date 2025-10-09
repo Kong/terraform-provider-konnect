@@ -13,18 +13,18 @@ type GetDataplaneCertificateRequest struct {
 	CertificateID  string `pathParam:"style=simple,explode=false,name=certificateId"`
 }
 
-func (o *GetDataplaneCertificateRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetDataplaneCertificateRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
-func (o *GetDataplaneCertificateRequest) GetCertificateID() string {
-	if o == nil {
+func (g *GetDataplaneCertificateRequest) GetCertificateID() string {
+	if g == nil {
 		return ""
 	}
-	return o.CertificateID
+	return g.CertificateID
 }
 
 type GetDataplaneCertificateResponse struct {
@@ -44,51 +44,51 @@ type GetDataplaneCertificateResponse struct {
 	KonnectCPLegacyNotFoundError *shared.KonnectCPLegacyNotFoundError
 }
 
-func (o *GetDataplaneCertificateResponse) GetContentType() string {
-	if o == nil {
+func (g *GetDataplaneCertificateResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetDataplaneCertificateResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetDataplaneCertificateResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetDataplaneCertificateResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetDataplaneCertificateResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetDataplaneCertificateResponse) GetDataPlaneClientCertificateResponse() *shared.DataPlaneClientCertificateResponse {
-	if o == nil {
+func (g *GetDataplaneCertificateResponse) GetDataPlaneClientCertificateResponse() *shared.DataPlaneClientCertificateResponse {
+	if g == nil {
 		return nil
 	}
-	return o.DataPlaneClientCertificateResponse
+	return g.DataPlaneClientCertificateResponse
 }
 
-func (o *GetDataplaneCertificateResponse) GetKonnectCPLegacyUnauthorizedError() *shared.KonnectCPLegacyUnauthorizedError {
-	if o == nil {
+func (g *GetDataplaneCertificateResponse) GetKonnectCPLegacyUnauthorizedError() *shared.KonnectCPLegacyUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.KonnectCPLegacyUnauthorizedError
+	return g.KonnectCPLegacyUnauthorizedError
 }
 
-func (o *GetDataplaneCertificateResponse) GetKonnectCPLegacyForbiddenError() *shared.KonnectCPLegacyForbiddenError {
-	if o == nil {
+func (g *GetDataplaneCertificateResponse) GetKonnectCPLegacyForbiddenError() *shared.KonnectCPLegacyForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.KonnectCPLegacyForbiddenError
+	return g.KonnectCPLegacyForbiddenError
 }
 
-func (o *GetDataplaneCertificateResponse) GetKonnectCPLegacyNotFoundError() *shared.KonnectCPLegacyNotFoundError {
-	if o == nil {
+func (g *GetDataplaneCertificateResponse) GetKonnectCPLegacyNotFoundError() *shared.KonnectCPLegacyNotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.KonnectCPLegacyNotFoundError
+	return g.KonnectCPLegacyNotFoundError
 }

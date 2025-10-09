@@ -16,25 +16,25 @@ type UpsertVaultRequest struct {
 	Vault shared.Vault `request:"mediaType=application/json"`
 }
 
-func (o *UpsertVaultRequest) GetVaultID() string {
-	if o == nil {
+func (u *UpsertVaultRequest) GetVaultID() string {
+	if u == nil {
 		return ""
 	}
-	return o.VaultID
+	return u.VaultID
 }
 
-func (o *UpsertVaultRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpsertVaultRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpsertVaultRequest) GetVault() shared.Vault {
-	if o == nil {
+func (u *UpsertVaultRequest) GetVault() shared.Vault {
+	if u == nil {
 		return shared.Vault{}
 	}
-	return o.Vault
+	return u.Vault
 }
 
 type UpsertVaultResponse struct {
@@ -50,37 +50,37 @@ type UpsertVaultResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpsertVaultResponse) GetContentType() string {
-	if o == nil {
+func (u *UpsertVaultResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpsertVaultResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpsertVaultResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpsertVaultResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpsertVaultResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpsertVaultResponse) GetVault() *shared.Vault {
-	if o == nil {
+func (u *UpsertVaultResponse) GetVault() *shared.Vault {
+	if u == nil {
 		return nil
 	}
-	return o.Vault
+	return u.Vault
 }
 
-func (o *UpsertVaultResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpsertVaultResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

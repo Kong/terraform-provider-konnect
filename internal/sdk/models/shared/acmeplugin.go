@@ -12,22 +12,22 @@ type AcmePluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AcmePluginAfter) GetAccess() []string {
-	if o == nil {
+func (a *AcmePluginAfter) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AcmePluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AcmePluginBefore) GetAccess() []string {
-	if o == nil {
+func (a *AcmePluginBefore) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AcmePluginOrdering struct {
@@ -35,18 +35,18 @@ type AcmePluginOrdering struct {
 	Before *AcmePluginBefore `json:"before,omitempty"`
 }
 
-func (o *AcmePluginOrdering) GetAfter() *AcmePluginAfter {
-	if o == nil {
+func (a *AcmePluginOrdering) GetAfter() *AcmePluginAfter {
+	if a == nil {
 		return nil
 	}
-	return o.After
+	return a.After
 }
 
-func (o *AcmePluginOrdering) GetBefore() *AcmePluginBefore {
-	if o == nil {
+func (a *AcmePluginOrdering) GetBefore() *AcmePluginBefore {
+	if a == nil {
 		return nil
 	}
-	return o.Before
+	return a.Before
 }
 
 type AcmePluginPartials struct {
@@ -57,25 +57,25 @@ type AcmePluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *AcmePluginPartials) GetID() *string {
-	if o == nil {
+func (a *AcmePluginPartials) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AcmePluginPartials) GetName() *string {
-	if o == nil {
+func (a *AcmePluginPartials) GetName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AcmePluginPartials) GetPath() *string {
-	if o == nil {
+func (a *AcmePluginPartials) GetPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Path
+	return a.Path
 }
 
 // AccountKey - The private key associated with the account.
@@ -91,24 +91,24 @@ func (a AccountKey) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AccountKey) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"key_id"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AccountKey) GetKeyID() string {
-	if o == nil {
+func (a *AccountKey) GetKeyID() string {
+	if a == nil {
 		return ""
 	}
-	return o.KeyID
+	return a.KeyID
 }
 
-func (o *AccountKey) GetKeySet() *string {
-	if o == nil {
+func (a *AccountKey) GetKeySet() *string {
+	if a == nil {
 		return nil
 	}
-	return o.KeySet
+	return a.KeySet
 }
 
 // CertType - The certificate type to create. The possible values are `rsa` for RSA certificate or `ecc` for EC certificate.
@@ -224,52 +224,52 @@ func (c Consul) MarshalJSON() ([]byte, error) {
 }
 
 func (c *Consul) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Consul) GetHost() *string {
-	if o == nil {
+func (c *Consul) GetHost() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Host
+	return c.Host
 }
 
-func (o *Consul) GetHTTPS() *bool {
-	if o == nil {
+func (c *Consul) GetHTTPS() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.HTTPS
+	return c.HTTPS
 }
 
-func (o *Consul) GetKvPath() *string {
-	if o == nil {
+func (c *Consul) GetKvPath() *string {
+	if c == nil {
 		return nil
 	}
-	return o.KvPath
+	return c.KvPath
 }
 
-func (o *Consul) GetPort() *int64 {
-	if o == nil {
+func (c *Consul) GetPort() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.Port
+	return c.Port
 }
 
-func (o *Consul) GetTimeout() *float64 {
-	if o == nil {
+func (c *Consul) GetTimeout() *float64 {
+	if c == nil {
 		return nil
 	}
-	return o.Timeout
+	return c.Timeout
 }
 
-func (o *Consul) GetToken() *string {
-	if o == nil {
+func (c *Consul) GetToken() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Token
+	return c.Token
 }
 
 // ExtraOptions - Custom ACME Redis options
@@ -285,24 +285,24 @@ func (e ExtraOptions) MarshalJSON() ([]byte, error) {
 }
 
 func (e *ExtraOptions) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ExtraOptions) GetNamespace() *string {
-	if o == nil {
+func (e *ExtraOptions) GetNamespace() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Namespace
+	return e.Namespace
 }
 
-func (o *ExtraOptions) GetScanCount() *float64 {
-	if o == nil {
+func (e *ExtraOptions) GetScanCount() *float64 {
+	if e == nil {
 		return nil
 	}
-	return o.ScanCount
+	return e.ScanCount
 }
 
 type AcmePluginRedis struct {
@@ -333,80 +333,80 @@ func (a AcmePluginRedis) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AcmePluginRedis) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"extra_options"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AcmePluginRedis) GetDatabase() *int64 {
-	if o == nil {
+func (a *AcmePluginRedis) GetDatabase() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Database
+	return a.Database
 }
 
-func (o *AcmePluginRedis) GetExtraOptions() *ExtraOptions {
-	if o == nil {
+func (a *AcmePluginRedis) GetExtraOptions() *ExtraOptions {
+	if a == nil {
 		return nil
 	}
-	return o.ExtraOptions
+	return a.ExtraOptions
 }
 
-func (o *AcmePluginRedis) GetHost() *string {
-	if o == nil {
+func (a *AcmePluginRedis) GetHost() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Host
+	return a.Host
 }
 
-func (o *AcmePluginRedis) GetPassword() *string {
-	if o == nil {
+func (a *AcmePluginRedis) GetPassword() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Password
+	return a.Password
 }
 
-func (o *AcmePluginRedis) GetPort() *int64 {
-	if o == nil {
+func (a *AcmePluginRedis) GetPort() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Port
+	return a.Port
 }
 
-func (o *AcmePluginRedis) GetServerName() *string {
-	if o == nil {
+func (a *AcmePluginRedis) GetServerName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ServerName
+	return a.ServerName
 }
 
-func (o *AcmePluginRedis) GetSsl() *bool {
-	if o == nil {
+func (a *AcmePluginRedis) GetSsl() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Ssl
+	return a.Ssl
 }
 
-func (o *AcmePluginRedis) GetSslVerify() *bool {
-	if o == nil {
+func (a *AcmePluginRedis) GetSslVerify() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.SslVerify
+	return a.SslVerify
 }
 
-func (o *AcmePluginRedis) GetTimeout() *int64 {
-	if o == nil {
+func (a *AcmePluginRedis) GetTimeout() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Timeout
+	return a.Timeout
 }
 
-func (o *AcmePluginRedis) GetUsername() *string {
-	if o == nil {
+func (a *AcmePluginRedis) GetUsername() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Username
+	return a.Username
 }
 
 type Shm struct {
@@ -419,17 +419,17 @@ func (s Shm) MarshalJSON() ([]byte, error) {
 }
 
 func (s *Shm) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Shm) GetShmName() *string {
-	if o == nil {
+func (s *Shm) GetShmName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ShmName
+	return s.ShmName
 }
 
 // AcmePluginAuthMethod - Auth Method, default to token, can be 'token' or 'kubernetes'.
@@ -491,94 +491,94 @@ func (a AcmePluginVault) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AcmePluginVault) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AcmePluginVault) GetAuthMethod() *AcmePluginAuthMethod {
-	if o == nil {
+func (a *AcmePluginVault) GetAuthMethod() *AcmePluginAuthMethod {
+	if a == nil {
 		return nil
 	}
-	return o.AuthMethod
+	return a.AuthMethod
 }
 
-func (o *AcmePluginVault) GetAuthPath() *string {
-	if o == nil {
+func (a *AcmePluginVault) GetAuthPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AuthPath
+	return a.AuthPath
 }
 
-func (o *AcmePluginVault) GetAuthRole() *string {
-	if o == nil {
+func (a *AcmePluginVault) GetAuthRole() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AuthRole
+	return a.AuthRole
 }
 
-func (o *AcmePluginVault) GetHost() *string {
-	if o == nil {
+func (a *AcmePluginVault) GetHost() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Host
+	return a.Host
 }
 
-func (o *AcmePluginVault) GetHTTPS() *bool {
-	if o == nil {
+func (a *AcmePluginVault) GetHTTPS() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.HTTPS
+	return a.HTTPS
 }
 
-func (o *AcmePluginVault) GetJwtPath() *string {
-	if o == nil {
+func (a *AcmePluginVault) GetJwtPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.JwtPath
+	return a.JwtPath
 }
 
-func (o *AcmePluginVault) GetKvPath() *string {
-	if o == nil {
+func (a *AcmePluginVault) GetKvPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.KvPath
+	return a.KvPath
 }
 
-func (o *AcmePluginVault) GetPort() *int64 {
-	if o == nil {
+func (a *AcmePluginVault) GetPort() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Port
+	return a.Port
 }
 
-func (o *AcmePluginVault) GetTimeout() *float64 {
-	if o == nil {
+func (a *AcmePluginVault) GetTimeout() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.Timeout
+	return a.Timeout
 }
 
-func (o *AcmePluginVault) GetTLSServerName() *string {
-	if o == nil {
+func (a *AcmePluginVault) GetTLSServerName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.TLSServerName
+	return a.TLSServerName
 }
 
-func (o *AcmePluginVault) GetTLSVerify() *bool {
-	if o == nil {
+func (a *AcmePluginVault) GetTLSVerify() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.TLSVerify
+	return a.TLSVerify
 }
 
-func (o *AcmePluginVault) GetToken() *string {
-	if o == nil {
+func (a *AcmePluginVault) GetToken() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Token
+	return a.Token
 }
 
 type StorageConfig struct {
@@ -589,39 +589,39 @@ type StorageConfig struct {
 	Vault  *AcmePluginVault `json:"vault"`
 }
 
-func (o *StorageConfig) GetConsul() *Consul {
-	if o == nil {
+func (s *StorageConfig) GetConsul() *Consul {
+	if s == nil {
 		return nil
 	}
-	return o.Consul
+	return s.Consul
 }
 
-func (o *StorageConfig) GetKong() map[string]any {
-	if o == nil {
+func (s *StorageConfig) GetKong() map[string]any {
+	if s == nil {
 		return nil
 	}
-	return o.Kong
+	return s.Kong
 }
 
-func (o *StorageConfig) GetRedis() *AcmePluginRedis {
-	if o == nil {
+func (s *StorageConfig) GetRedis() *AcmePluginRedis {
+	if s == nil {
 		return nil
 	}
-	return o.Redis
+	return s.Redis
 }
 
-func (o *StorageConfig) GetShm() *Shm {
-	if o == nil {
+func (s *StorageConfig) GetShm() *Shm {
+	if s == nil {
 		return nil
 	}
-	return o.Shm
+	return s.Shm
 }
 
-func (o *StorageConfig) GetVault() *AcmePluginVault {
-	if o == nil {
+func (s *StorageConfig) GetVault() *AcmePluginVault {
+	if s == nil {
 		return nil
 	}
-	return o.Vault
+	return s.Vault
 }
 
 type AcmePluginConfig struct {
@@ -664,122 +664,122 @@ func (a AcmePluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AcmePluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"account_email", "account_key", "domains", "storage_config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AcmePluginConfig) GetAccountEmail() string {
-	if o == nil {
+func (a *AcmePluginConfig) GetAccountEmail() string {
+	if a == nil {
 		return ""
 	}
-	return o.AccountEmail
+	return a.AccountEmail
 }
 
-func (o *AcmePluginConfig) GetAccountKey() *AccountKey {
-	if o == nil {
+func (a *AcmePluginConfig) GetAccountKey() *AccountKey {
+	if a == nil {
 		return nil
 	}
-	return o.AccountKey
+	return a.AccountKey
 }
 
-func (o *AcmePluginConfig) GetAllowAnyDomain() *bool {
-	if o == nil {
+func (a *AcmePluginConfig) GetAllowAnyDomain() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.AllowAnyDomain
+	return a.AllowAnyDomain
 }
 
-func (o *AcmePluginConfig) GetAPIURI() *string {
-	if o == nil {
+func (a *AcmePluginConfig) GetAPIURI() *string {
+	if a == nil {
 		return nil
 	}
-	return o.APIURI
+	return a.APIURI
 }
 
-func (o *AcmePluginConfig) GetCertType() *CertType {
-	if o == nil {
+func (a *AcmePluginConfig) GetCertType() *CertType {
+	if a == nil {
 		return nil
 	}
-	return o.CertType
+	return a.CertType
 }
 
-func (o *AcmePluginConfig) GetDomains() []string {
-	if o == nil {
+func (a *AcmePluginConfig) GetDomains() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Domains
+	return a.Domains
 }
 
-func (o *AcmePluginConfig) GetEabHmacKey() *string {
-	if o == nil {
+func (a *AcmePluginConfig) GetEabHmacKey() *string {
+	if a == nil {
 		return nil
 	}
-	return o.EabHmacKey
+	return a.EabHmacKey
 }
 
-func (o *AcmePluginConfig) GetEabKid() *string {
-	if o == nil {
+func (a *AcmePluginConfig) GetEabKid() *string {
+	if a == nil {
 		return nil
 	}
-	return o.EabKid
+	return a.EabKid
 }
 
-func (o *AcmePluginConfig) GetEnableIpv4CommonName() *bool {
-	if o == nil {
+func (a *AcmePluginConfig) GetEnableIpv4CommonName() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.EnableIpv4CommonName
+	return a.EnableIpv4CommonName
 }
 
-func (o *AcmePluginConfig) GetFailBackoffMinutes() *float64 {
-	if o == nil {
+func (a *AcmePluginConfig) GetFailBackoffMinutes() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.FailBackoffMinutes
+	return a.FailBackoffMinutes
 }
 
-func (o *AcmePluginConfig) GetPreferredChain() *string {
-	if o == nil {
+func (a *AcmePluginConfig) GetPreferredChain() *string {
+	if a == nil {
 		return nil
 	}
-	return o.PreferredChain
+	return a.PreferredChain
 }
 
-func (o *AcmePluginConfig) GetRenewThresholdDays() *float64 {
-	if o == nil {
+func (a *AcmePluginConfig) GetRenewThresholdDays() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.RenewThresholdDays
+	return a.RenewThresholdDays
 }
 
-func (o *AcmePluginConfig) GetRsaKeySize() *RsaKeySize {
-	if o == nil {
+func (a *AcmePluginConfig) GetRsaKeySize() *RsaKeySize {
+	if a == nil {
 		return nil
 	}
-	return o.RsaKeySize
+	return a.RsaKeySize
 }
 
-func (o *AcmePluginConfig) GetStorage() *Storage {
-	if o == nil {
+func (a *AcmePluginConfig) GetStorage() *Storage {
+	if a == nil {
 		return nil
 	}
-	return o.Storage
+	return a.Storage
 }
 
-func (o *AcmePluginConfig) GetStorageConfig() *StorageConfig {
-	if o == nil {
+func (a *AcmePluginConfig) GetStorageConfig() *StorageConfig {
+	if a == nil {
 		return nil
 	}
-	return o.StorageConfig
+	return a.StorageConfig
 }
 
-func (o *AcmePluginConfig) GetTosAccepted() *bool {
-	if o == nil {
+func (a *AcmePluginConfig) GetTosAccepted() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.TosAccepted
+	return a.TosAccepted
 }
 
 type AcmePluginProtocols string
@@ -842,82 +842,82 @@ func (a AcmePlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AcmePlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "ordering", "partials", "tags", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AcmePlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (a *AcmePlugin) GetCreatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AcmePlugin) GetEnabled() *bool {
-	if o == nil {
+func (a *AcmePlugin) GetEnabled() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Enabled
+	return a.Enabled
 }
 
-func (o *AcmePlugin) GetID() *string {
-	if o == nil {
+func (a *AcmePlugin) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AcmePlugin) GetInstanceName() *string {
-	if o == nil {
+func (a *AcmePlugin) GetInstanceName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.InstanceName
+	return a.InstanceName
 }
 
-func (o *AcmePlugin) GetName() string {
+func (a *AcmePlugin) GetName() string {
 	return "acme"
 }
 
-func (o *AcmePlugin) GetOrdering() *AcmePluginOrdering {
-	if o == nil {
+func (a *AcmePlugin) GetOrdering() *AcmePluginOrdering {
+	if a == nil {
 		return nil
 	}
-	return o.Ordering
+	return a.Ordering
 }
 
-func (o *AcmePlugin) GetPartials() []AcmePluginPartials {
-	if o == nil {
+func (a *AcmePlugin) GetPartials() []AcmePluginPartials {
+	if a == nil {
 		return nil
 	}
-	return o.Partials
+	return a.Partials
 }
 
-func (o *AcmePlugin) GetTags() []string {
-	if o == nil {
+func (a *AcmePlugin) GetTags() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Tags
+	return a.Tags
 }
 
-func (o *AcmePlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (a *AcmePlugin) GetUpdatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }
 
-func (o *AcmePlugin) GetConfig() AcmePluginConfig {
-	if o == nil {
+func (a *AcmePlugin) GetConfig() AcmePluginConfig {
+	if a == nil {
 		return AcmePluginConfig{}
 	}
-	return o.Config
+	return a.Config
 }
 
-func (o *AcmePlugin) GetProtocols() []AcmePluginProtocols {
-	if o == nil {
+func (a *AcmePlugin) GetProtocols() []AcmePluginProtocols {
+	if a == nil {
 		return nil
 	}
-	return o.Protocols
+	return a.Protocols
 }

@@ -13,18 +13,29 @@ type Headers struct {
 	Key string `json:"key"`
 }
 
-func (o *Headers) GetName() string {
-	if o == nil {
-		return ""
-	}
-	return o.Name
+func (h Headers) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
 }
 
-func (o *Headers) GetKey() string {
-	if o == nil {
+func (h *Headers) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, []string{"name", "key"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (h *Headers) GetName() string {
+	if h == nil {
 		return ""
 	}
-	return o.Key
+	return h.Name
+}
+
+func (h *Headers) GetKey() string {
+	if h == nil {
+		return ""
+	}
+	return h.Key
 }
 
 type CreateMultiKeyAuthCredentialConfig struct {
@@ -34,11 +45,22 @@ type CreateMultiKeyAuthCredentialConfig struct {
 	Headers []Headers `json:"headers"`
 }
 
-func (o *CreateMultiKeyAuthCredentialConfig) GetHeaders() []Headers {
-	if o == nil {
+func (c CreateMultiKeyAuthCredentialConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateMultiKeyAuthCredentialConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"headers"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *CreateMultiKeyAuthCredentialConfig) GetHeaders() []Headers {
+	if c == nil {
 		return []Headers{}
 	}
-	return o.Headers
+	return c.Headers
 }
 
 // MultiKeyAuth - Payload used to create an `Multi Key` credential for an integration instance.
@@ -52,19 +74,19 @@ func (m MultiKeyAuth) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MultiKeyAuth) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, true); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *MultiKeyAuth) GetType() string {
+func (m *MultiKeyAuth) GetType() string {
 	return "multi_key_auth"
 }
 
-func (o *MultiKeyAuth) GetConfig() CreateMultiKeyAuthCredentialConfig {
-	if o == nil {
+func (m *MultiKeyAuth) GetConfig() CreateMultiKeyAuthCredentialConfig {
+	if m == nil {
 		return CreateMultiKeyAuthCredentialConfig{}
 	}
-	return o.Config
+	return m.Config
 }

@@ -15,25 +15,25 @@ type UpdateKeyauthencPluginRequest struct {
 	KeyAuthEncPlugin shared.KeyAuthEncPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateKeyauthencPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateKeyauthencPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateKeyauthencPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateKeyauthencPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateKeyauthencPluginRequest) GetKeyAuthEncPlugin() shared.KeyAuthEncPlugin {
-	if o == nil {
+func (u *UpdateKeyauthencPluginRequest) GetKeyAuthEncPlugin() shared.KeyAuthEncPlugin {
+	if u == nil {
 		return shared.KeyAuthEncPlugin{}
 	}
-	return o.KeyAuthEncPlugin
+	return u.KeyAuthEncPlugin
 }
 
 type UpdateKeyauthencPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateKeyauthencPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateKeyauthencPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateKeyauthencPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateKeyauthencPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateKeyauthencPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateKeyauthencPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateKeyauthencPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateKeyauthencPluginResponse) GetKeyAuthEncPlugin() *shared.KeyAuthEncPlugin {
-	if o == nil {
+func (u *UpdateKeyauthencPluginResponse) GetKeyAuthEncPlugin() *shared.KeyAuthEncPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.KeyAuthEncPlugin
+	return u.KeyAuthEncPlugin
 }
 
-func (o *UpdateKeyauthencPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateKeyauthencPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

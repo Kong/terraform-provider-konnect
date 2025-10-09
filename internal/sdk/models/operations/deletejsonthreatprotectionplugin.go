@@ -14,18 +14,18 @@ type DeleteJsonthreatprotectionPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteJsonthreatprotectionPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteJsonthreatprotectionPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteJsonthreatprotectionPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteJsonthreatprotectionPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteJsonthreatprotectionPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteJsonthreatprotectionPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteJsonthreatprotectionPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteJsonthreatprotectionPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteJsonthreatprotectionPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteJsonthreatprotectionPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteJsonthreatprotectionPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteJsonthreatprotectionPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteJsonthreatprotectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteJsonthreatprotectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

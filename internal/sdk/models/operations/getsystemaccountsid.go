@@ -16,11 +16,11 @@ type GetSystemAccountsIDRequest struct {
 	AccountID string `pathParam:"style=simple,explode=false,name=accountId"`
 }
 
-func (o *GetSystemAccountsIDRequest) GetAccountID() string {
-	if o == nil {
+func (g *GetSystemAccountsIDRequest) GetAccountID() string {
+	if g == nil {
 		return ""
 	}
-	return o.AccountID
+	return g.AccountID
 }
 
 type GetSystemAccountsIDResponse struct {
@@ -38,44 +38,44 @@ type GetSystemAccountsIDResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetSystemAccountsIDResponse) GetContentType() string {
-	if o == nil {
+func (g *GetSystemAccountsIDResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetSystemAccountsIDResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetSystemAccountsIDResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetSystemAccountsIDResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetSystemAccountsIDResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetSystemAccountsIDResponse) GetSystemAccount() *shared.SystemAccount {
-	if o == nil {
+func (g *GetSystemAccountsIDResponse) GetSystemAccount() *shared.SystemAccount {
+	if g == nil {
 		return nil
 	}
-	return o.SystemAccount
+	return g.SystemAccount
 }
 
-func (o *GetSystemAccountsIDResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetSystemAccountsIDResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetSystemAccountsIDResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetSystemAccountsIDResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

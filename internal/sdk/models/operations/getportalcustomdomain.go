@@ -12,11 +12,11 @@ type GetPortalCustomDomainRequest struct {
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 }
 
-func (o *GetPortalCustomDomainRequest) GetPortalID() string {
-	if o == nil {
+func (g *GetPortalCustomDomainRequest) GetPortalID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PortalID
+	return g.PortalID
 }
 
 type GetPortalCustomDomainResponse struct {
@@ -36,51 +36,51 @@ type GetPortalCustomDomainResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetPortalCustomDomainResponse) GetContentType() string {
-	if o == nil {
+func (g *GetPortalCustomDomainResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetPortalCustomDomainResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetPortalCustomDomainResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetPortalCustomDomainResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetPortalCustomDomainResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetPortalCustomDomainResponse) GetPortalCustomDomain() *shared.PortalCustomDomain {
-	if o == nil {
+func (g *GetPortalCustomDomainResponse) GetPortalCustomDomain() *shared.PortalCustomDomain {
+	if g == nil {
 		return nil
 	}
-	return o.PortalCustomDomain
+	return g.PortalCustomDomain
 }
 
-func (o *GetPortalCustomDomainResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetPortalCustomDomainResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetPortalCustomDomainResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (g *GetPortalCustomDomainResponse) GetForbiddenError() *shared.ForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return g.ForbiddenError
 }
 
-func (o *GetPortalCustomDomainResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetPortalCustomDomainResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

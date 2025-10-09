@@ -137,6 +137,17 @@ May also include a message on how to resolve the missing permission.
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_integration_instance_auth_credential.my_konnect_integration_instance_auth_credential
+  id = "3f51fa25-310a-421d-bd1a-007f859021a3"
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 terraform import konnect_integration_instance_auth_credential.my_konnect_integration_instance_auth_credential "3f51fa25-310a-421d-bd1a-007f859021a3"
 ```

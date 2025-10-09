@@ -18,18 +18,18 @@ type PatchSystemAccountsIDRequest struct {
 	UpdateSystemAccount *shared.UpdateSystemAccount `request:"mediaType=application/json"`
 }
 
-func (o *PatchSystemAccountsIDRequest) GetAccountID() string {
-	if o == nil {
+func (p *PatchSystemAccountsIDRequest) GetAccountID() string {
+	if p == nil {
 		return ""
 	}
-	return o.AccountID
+	return p.AccountID
 }
 
-func (o *PatchSystemAccountsIDRequest) GetUpdateSystemAccount() *shared.UpdateSystemAccount {
-	if o == nil {
+func (p *PatchSystemAccountsIDRequest) GetUpdateSystemAccount() *shared.UpdateSystemAccount {
+	if p == nil {
 		return nil
 	}
-	return o.UpdateSystemAccount
+	return p.UpdateSystemAccount
 }
 
 type PatchSystemAccountsIDResponse struct {
@@ -49,51 +49,51 @@ type PatchSystemAccountsIDResponse struct {
 	ConflictError *shared.ConflictError
 }
 
-func (o *PatchSystemAccountsIDResponse) GetContentType() string {
-	if o == nil {
+func (p *PatchSystemAccountsIDResponse) GetContentType() string {
+	if p == nil {
 		return ""
 	}
-	return o.ContentType
+	return p.ContentType
 }
 
-func (o *PatchSystemAccountsIDResponse) GetStatusCode() int {
-	if o == nil {
+func (p *PatchSystemAccountsIDResponse) GetStatusCode() int {
+	if p == nil {
 		return 0
 	}
-	return o.StatusCode
+	return p.StatusCode
 }
 
-func (o *PatchSystemAccountsIDResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (p *PatchSystemAccountsIDResponse) GetRawResponse() *http.Response {
+	if p == nil {
 		return nil
 	}
-	return o.RawResponse
+	return p.RawResponse
 }
 
-func (o *PatchSystemAccountsIDResponse) GetSystemAccount() *shared.SystemAccount {
-	if o == nil {
+func (p *PatchSystemAccountsIDResponse) GetSystemAccount() *shared.SystemAccount {
+	if p == nil {
 		return nil
 	}
-	return o.SystemAccount
+	return p.SystemAccount
 }
 
-func (o *PatchSystemAccountsIDResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (p *PatchSystemAccountsIDResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if p == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return p.UnauthorizedError
 }
 
-func (o *PatchSystemAccountsIDResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (p *PatchSystemAccountsIDResponse) GetNotFoundError() *shared.NotFoundError {
+	if p == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return p.NotFoundError
 }
 
-func (o *PatchSystemAccountsIDResponse) GetConflictError() *shared.ConflictError {
-	if o == nil {
+func (p *PatchSystemAccountsIDResponse) GetConflictError() *shared.ConflictError {
+	if p == nil {
 		return nil
 	}
-	return o.ConflictError
+	return p.ConflictError
 }

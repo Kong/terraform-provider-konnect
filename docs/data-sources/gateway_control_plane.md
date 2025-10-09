@@ -58,9 +58,6 @@ data "konnect_gateway_control_plane" "my_gatewaycontrolplane" {
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `name` (String) The name of the control plane.
-- `number` (Number)
-- `size` (Number)
-- `total` (Number)
 
 <a id="nestedatt--filter"></a>
 ### Nested Schema for `filter`

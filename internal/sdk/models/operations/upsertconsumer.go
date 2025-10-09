@@ -16,25 +16,25 @@ type UpsertConsumerRequest struct {
 	Consumer shared.Consumer `request:"mediaType=application/json"`
 }
 
-func (o *UpsertConsumerRequest) GetConsumerID() string {
-	if o == nil {
+func (u *UpsertConsumerRequest) GetConsumerID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ConsumerID
+	return u.ConsumerID
 }
 
-func (o *UpsertConsumerRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpsertConsumerRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpsertConsumerRequest) GetConsumer() shared.Consumer {
-	if o == nil {
+func (u *UpsertConsumerRequest) GetConsumer() shared.Consumer {
+	if u == nil {
 		return shared.Consumer{}
 	}
-	return o.Consumer
+	return u.Consumer
 }
 
 type UpsertConsumerResponse struct {
@@ -50,37 +50,37 @@ type UpsertConsumerResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpsertConsumerResponse) GetContentType() string {
-	if o == nil {
+func (u *UpsertConsumerResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpsertConsumerResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpsertConsumerResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpsertConsumerResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpsertConsumerResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpsertConsumerResponse) GetConsumer() *shared.Consumer {
-	if o == nil {
+func (u *UpsertConsumerResponse) GetConsumer() *shared.Consumer {
+	if u == nil {
 		return nil
 	}
-	return o.Consumer
+	return u.Consumer
 }
 
-func (o *UpsertConsumerResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpsertConsumerResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

@@ -12,22 +12,22 @@ type WebsocketSizeLimitPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *WebsocketSizeLimitPluginAfter) GetAccess() []string {
-	if o == nil {
+func (w *WebsocketSizeLimitPluginAfter) GetAccess() []string {
+	if w == nil {
 		return nil
 	}
-	return o.Access
+	return w.Access
 }
 
 type WebsocketSizeLimitPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *WebsocketSizeLimitPluginBefore) GetAccess() []string {
-	if o == nil {
+func (w *WebsocketSizeLimitPluginBefore) GetAccess() []string {
+	if w == nil {
 		return nil
 	}
-	return o.Access
+	return w.Access
 }
 
 type WebsocketSizeLimitPluginOrdering struct {
@@ -35,18 +35,18 @@ type WebsocketSizeLimitPluginOrdering struct {
 	Before *WebsocketSizeLimitPluginBefore `json:"before,omitempty"`
 }
 
-func (o *WebsocketSizeLimitPluginOrdering) GetAfter() *WebsocketSizeLimitPluginAfter {
-	if o == nil {
+func (w *WebsocketSizeLimitPluginOrdering) GetAfter() *WebsocketSizeLimitPluginAfter {
+	if w == nil {
 		return nil
 	}
-	return o.After
+	return w.After
 }
 
-func (o *WebsocketSizeLimitPluginOrdering) GetBefore() *WebsocketSizeLimitPluginBefore {
-	if o == nil {
+func (w *WebsocketSizeLimitPluginOrdering) GetBefore() *WebsocketSizeLimitPluginBefore {
+	if w == nil {
 		return nil
 	}
-	return o.Before
+	return w.Before
 }
 
 type WebsocketSizeLimitPluginPartials struct {
@@ -57,25 +57,25 @@ type WebsocketSizeLimitPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *WebsocketSizeLimitPluginPartials) GetID() *string {
-	if o == nil {
+func (w *WebsocketSizeLimitPluginPartials) GetID() *string {
+	if w == nil {
 		return nil
 	}
-	return o.ID
+	return w.ID
 }
 
-func (o *WebsocketSizeLimitPluginPartials) GetName() *string {
-	if o == nil {
+func (w *WebsocketSizeLimitPluginPartials) GetName() *string {
+	if w == nil {
 		return nil
 	}
-	return o.Name
+	return w.Name
 }
 
-func (o *WebsocketSizeLimitPluginPartials) GetPath() *string {
-	if o == nil {
+func (w *WebsocketSizeLimitPluginPartials) GetPath() *string {
+	if w == nil {
 		return nil
 	}
-	return o.Path
+	return w.Path
 }
 
 type WebsocketSizeLimitPluginConfig struct {
@@ -88,24 +88,24 @@ func (w WebsocketSizeLimitPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (w *WebsocketSizeLimitPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &w, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &w, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *WebsocketSizeLimitPluginConfig) GetClientMaxPayload() *int64 {
-	if o == nil {
+func (w *WebsocketSizeLimitPluginConfig) GetClientMaxPayload() *int64 {
+	if w == nil {
 		return nil
 	}
-	return o.ClientMaxPayload
+	return w.ClientMaxPayload
 }
 
-func (o *WebsocketSizeLimitPluginConfig) GetUpstreamMaxPayload() *int64 {
-	if o == nil {
+func (w *WebsocketSizeLimitPluginConfig) GetUpstreamMaxPayload() *int64 {
+	if w == nil {
 		return nil
 	}
-	return o.UpstreamMaxPayload
+	return w.UpstreamMaxPayload
 }
 
 // WebsocketSizeLimitPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -113,11 +113,11 @@ type WebsocketSizeLimitPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *WebsocketSizeLimitPluginConsumer) GetID() *string {
-	if o == nil {
+func (w *WebsocketSizeLimitPluginConsumer) GetID() *string {
+	if w == nil {
 		return nil
 	}
-	return o.ID
+	return w.ID
 }
 
 type WebsocketSizeLimitPluginProtocols string
@@ -151,11 +151,11 @@ type WebsocketSizeLimitPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *WebsocketSizeLimitPluginRoute) GetID() *string {
-	if o == nil {
+func (w *WebsocketSizeLimitPluginRoute) GetID() *string {
+	if w == nil {
 		return nil
 	}
-	return o.ID
+	return w.ID
 }
 
 // WebsocketSizeLimitPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -163,11 +163,11 @@ type WebsocketSizeLimitPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *WebsocketSizeLimitPluginService) GetID() *string {
-	if o == nil {
+func (w *WebsocketSizeLimitPluginService) GetID() *string {
+	if w == nil {
 		return nil
 	}
-	return o.ID
+	return w.ID
 }
 
 // WebsocketSizeLimitPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -204,103 +204,103 @@ func (w WebsocketSizeLimitPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (w *WebsocketSizeLimitPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &w, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &w, "", false, []string{"name", "ordering", "partials", "tags", "config", "consumer", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *WebsocketSizeLimitPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (w *WebsocketSizeLimitPlugin) GetCreatedAt() *int64 {
+	if w == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return w.CreatedAt
 }
 
-func (o *WebsocketSizeLimitPlugin) GetEnabled() *bool {
-	if o == nil {
+func (w *WebsocketSizeLimitPlugin) GetEnabled() *bool {
+	if w == nil {
 		return nil
 	}
-	return o.Enabled
+	return w.Enabled
 }
 
-func (o *WebsocketSizeLimitPlugin) GetID() *string {
-	if o == nil {
+func (w *WebsocketSizeLimitPlugin) GetID() *string {
+	if w == nil {
 		return nil
 	}
-	return o.ID
+	return w.ID
 }
 
-func (o *WebsocketSizeLimitPlugin) GetInstanceName() *string {
-	if o == nil {
+func (w *WebsocketSizeLimitPlugin) GetInstanceName() *string {
+	if w == nil {
 		return nil
 	}
-	return o.InstanceName
+	return w.InstanceName
 }
 
-func (o *WebsocketSizeLimitPlugin) GetName() string {
+func (w *WebsocketSizeLimitPlugin) GetName() string {
 	return "websocket-size-limit"
 }
 
-func (o *WebsocketSizeLimitPlugin) GetOrdering() *WebsocketSizeLimitPluginOrdering {
-	if o == nil {
+func (w *WebsocketSizeLimitPlugin) GetOrdering() *WebsocketSizeLimitPluginOrdering {
+	if w == nil {
 		return nil
 	}
-	return o.Ordering
+	return w.Ordering
 }
 
-func (o *WebsocketSizeLimitPlugin) GetPartials() []WebsocketSizeLimitPluginPartials {
-	if o == nil {
+func (w *WebsocketSizeLimitPlugin) GetPartials() []WebsocketSizeLimitPluginPartials {
+	if w == nil {
 		return nil
 	}
-	return o.Partials
+	return w.Partials
 }
 
-func (o *WebsocketSizeLimitPlugin) GetTags() []string {
-	if o == nil {
+func (w *WebsocketSizeLimitPlugin) GetTags() []string {
+	if w == nil {
 		return nil
 	}
-	return o.Tags
+	return w.Tags
 }
 
-func (o *WebsocketSizeLimitPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (w *WebsocketSizeLimitPlugin) GetUpdatedAt() *int64 {
+	if w == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return w.UpdatedAt
 }
 
-func (o *WebsocketSizeLimitPlugin) GetConfig() *WebsocketSizeLimitPluginConfig {
-	if o == nil {
+func (w *WebsocketSizeLimitPlugin) GetConfig() *WebsocketSizeLimitPluginConfig {
+	if w == nil {
 		return nil
 	}
-	return o.Config
+	return w.Config
 }
 
-func (o *WebsocketSizeLimitPlugin) GetConsumer() *WebsocketSizeLimitPluginConsumer {
-	if o == nil {
+func (w *WebsocketSizeLimitPlugin) GetConsumer() *WebsocketSizeLimitPluginConsumer {
+	if w == nil {
 		return nil
 	}
-	return o.Consumer
+	return w.Consumer
 }
 
-func (o *WebsocketSizeLimitPlugin) GetProtocols() []WebsocketSizeLimitPluginProtocols {
-	if o == nil {
+func (w *WebsocketSizeLimitPlugin) GetProtocols() []WebsocketSizeLimitPluginProtocols {
+	if w == nil {
 		return nil
 	}
-	return o.Protocols
+	return w.Protocols
 }
 
-func (o *WebsocketSizeLimitPlugin) GetRoute() *WebsocketSizeLimitPluginRoute {
-	if o == nil {
+func (w *WebsocketSizeLimitPlugin) GetRoute() *WebsocketSizeLimitPluginRoute {
+	if w == nil {
 		return nil
 	}
-	return o.Route
+	return w.Route
 }
 
-func (o *WebsocketSizeLimitPlugin) GetService() *WebsocketSizeLimitPluginService {
-	if o == nil {
+func (w *WebsocketSizeLimitPlugin) GetService() *WebsocketSizeLimitPluginService {
+	if w == nil {
 		return nil
 	}
-	return o.Service
+	return w.Service
 }

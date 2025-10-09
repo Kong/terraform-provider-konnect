@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type GCPPrivateHostedZoneType string
@@ -40,30 +41,41 @@ type GcpPrivateHostedZoneAttachmentConfig struct {
 	PeerVpcName string `json:"peer_vpc_name"`
 }
 
-func (o *GcpPrivateHostedZoneAttachmentConfig) GetKind() GCPPrivateHostedZoneType {
-	if o == nil {
+func (g GcpPrivateHostedZoneAttachmentConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GcpPrivateHostedZoneAttachmentConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"kind", "domain_name", "peer_project_id", "peer_vpc_name"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (g *GcpPrivateHostedZoneAttachmentConfig) GetKind() GCPPrivateHostedZoneType {
+	if g == nil {
 		return GCPPrivateHostedZoneType("")
 	}
-	return o.Kind
+	return g.Kind
 }
 
-func (o *GcpPrivateHostedZoneAttachmentConfig) GetDomainName() string {
-	if o == nil {
+func (g *GcpPrivateHostedZoneAttachmentConfig) GetDomainName() string {
+	if g == nil {
 		return ""
 	}
-	return o.DomainName
+	return g.DomainName
 }
 
-func (o *GcpPrivateHostedZoneAttachmentConfig) GetPeerProjectID() string {
-	if o == nil {
+func (g *GcpPrivateHostedZoneAttachmentConfig) GetPeerProjectID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PeerProjectID
+	return g.PeerProjectID
 }
 
-func (o *GcpPrivateHostedZoneAttachmentConfig) GetPeerVpcName() string {
-	if o == nil {
+func (g *GcpPrivateHostedZoneAttachmentConfig) GetPeerVpcName() string {
+	if g == nil {
 		return ""
 	}
-	return o.PeerVpcName
+	return g.PeerVpcName
 }

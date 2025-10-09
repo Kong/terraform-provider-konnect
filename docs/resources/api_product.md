@@ -67,6 +67,17 @@ Read-Only:
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_api_product.my_konnect_api_product
+  id = "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 terraform import konnect_api_product.my_konnect_api_product "d32d905a-ed33-46a3-a093-d8f536af9a8a"
 ```

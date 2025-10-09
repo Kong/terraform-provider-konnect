@@ -6,22 +6,22 @@ type MTLSAuthCaCertificate struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *MTLSAuthCaCertificate) GetID() *string {
-	if o == nil {
+func (m *MTLSAuthCaCertificate) GetID() *string {
+	if m == nil {
 		return nil
 	}
-	return o.ID
+	return m.ID
 }
 
 type MTLSAuthConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *MTLSAuthConsumer) GetID() *string {
-	if o == nil {
+func (m *MTLSAuthConsumer) GetID() *string {
+	if m == nil {
 		return nil
 	}
-	return o.ID
+	return m.ID
 }
 
 type MTLSAuth struct {
@@ -36,44 +36,44 @@ type MTLSAuth struct {
 	Tags []string `json:"tags"`
 }
 
-func (o *MTLSAuth) GetCaCertificate() *MTLSAuthCaCertificate {
-	if o == nil {
+func (m *MTLSAuth) GetCaCertificate() *MTLSAuthCaCertificate {
+	if m == nil {
 		return nil
 	}
-	return o.CaCertificate
+	return m.CaCertificate
 }
 
-func (o *MTLSAuth) GetConsumer() *MTLSAuthConsumer {
-	if o == nil {
+func (m *MTLSAuth) GetConsumer() *MTLSAuthConsumer {
+	if m == nil {
 		return nil
 	}
-	return o.Consumer
+	return m.Consumer
 }
 
-func (o *MTLSAuth) GetCreatedAt() *int64 {
-	if o == nil {
+func (m *MTLSAuth) GetCreatedAt() *int64 {
+	if m == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return m.CreatedAt
 }
 
-func (o *MTLSAuth) GetID() *string {
-	if o == nil {
+func (m *MTLSAuth) GetID() *string {
+	if m == nil {
 		return nil
 	}
-	return o.ID
+	return m.ID
 }
 
-func (o *MTLSAuth) GetSubjectName() string {
-	if o == nil {
+func (m *MTLSAuth) GetSubjectName() string {
+	if m == nil {
 		return ""
 	}
-	return o.SubjectName
+	return m.SubjectName
 }
 
-func (o *MTLSAuth) GetTags() []string {
-	if o == nil {
+func (m *MTLSAuth) GetTags() []string {
+	if m == nil {
 		return nil
 	}
-	return o.Tags
+	return m.Tags
 }

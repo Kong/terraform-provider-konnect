@@ -12,23 +12,23 @@ type ReplaceCMEK struct {
 	Description *string `json:"description,omitempty"`
 }
 
-func (o *ReplaceCMEK) GetKeyArn() string {
-	if o == nil {
+func (r *ReplaceCMEK) GetKeyArn() string {
+	if r == nil {
 		return ""
 	}
-	return o.KeyArn
+	return r.KeyArn
 }
 
-func (o *ReplaceCMEK) GetName() string {
-	if o == nil {
+func (r *ReplaceCMEK) GetName() string {
+	if r == nil {
 		return ""
 	}
-	return o.Name
+	return r.Name
 }
 
-func (o *ReplaceCMEK) GetDescription() *string {
-	if o == nil {
+func (r *ReplaceCMEK) GetDescription() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Description
+	return r.Description
 }

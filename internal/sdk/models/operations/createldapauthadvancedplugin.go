@@ -13,18 +13,18 @@ type CreateLdapauthadvancedPluginRequest struct {
 	LdapAuthAdvancedPlugin shared.LdapAuthAdvancedPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateLdapauthadvancedPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateLdapauthadvancedPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateLdapauthadvancedPluginRequest) GetLdapAuthAdvancedPlugin() shared.LdapAuthAdvancedPlugin {
-	if o == nil {
+func (c *CreateLdapauthadvancedPluginRequest) GetLdapAuthAdvancedPlugin() shared.LdapAuthAdvancedPlugin {
+	if c == nil {
 		return shared.LdapAuthAdvancedPlugin{}
 	}
-	return o.LdapAuthAdvancedPlugin
+	return c.LdapAuthAdvancedPlugin
 }
 
 type CreateLdapauthadvancedPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateLdapauthadvancedPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateLdapauthadvancedPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateLdapauthadvancedPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateLdapauthadvancedPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateLdapauthadvancedPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateLdapauthadvancedPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateLdapauthadvancedPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateLdapauthadvancedPluginResponse) GetLdapAuthAdvancedPlugin() *shared.LdapAuthAdvancedPlugin {
-	if o == nil {
+func (c *CreateLdapauthadvancedPluginResponse) GetLdapAuthAdvancedPlugin() *shared.LdapAuthAdvancedPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.LdapAuthAdvancedPlugin
+	return c.LdapAuthAdvancedPlugin
 }
 
-func (o *CreateLdapauthadvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateLdapauthadvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

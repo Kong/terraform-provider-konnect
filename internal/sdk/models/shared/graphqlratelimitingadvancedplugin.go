@@ -12,22 +12,22 @@ type GraphqlRateLimitingAdvancedPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginAfter) GetAccess() []string {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginAfter) GetAccess() []string {
+	if g == nil {
 		return nil
 	}
-	return o.Access
+	return g.Access
 }
 
 type GraphqlRateLimitingAdvancedPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginBefore) GetAccess() []string {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginBefore) GetAccess() []string {
+	if g == nil {
 		return nil
 	}
-	return o.Access
+	return g.Access
 }
 
 type GraphqlRateLimitingAdvancedPluginOrdering struct {
@@ -35,18 +35,18 @@ type GraphqlRateLimitingAdvancedPluginOrdering struct {
 	Before *GraphqlRateLimitingAdvancedPluginBefore `json:"before,omitempty"`
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginOrdering) GetAfter() *GraphqlRateLimitingAdvancedPluginAfter {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginOrdering) GetAfter() *GraphqlRateLimitingAdvancedPluginAfter {
+	if g == nil {
 		return nil
 	}
-	return o.After
+	return g.After
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginOrdering) GetBefore() *GraphqlRateLimitingAdvancedPluginBefore {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginOrdering) GetBefore() *GraphqlRateLimitingAdvancedPluginBefore {
+	if g == nil {
 		return nil
 	}
-	return o.Before
+	return g.Before
 }
 
 type GraphqlRateLimitingAdvancedPluginPartials struct {
@@ -57,25 +57,25 @@ type GraphqlRateLimitingAdvancedPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginPartials) GetID() *string {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginPartials) GetID() *string {
+	if g == nil {
 		return nil
 	}
-	return o.ID
+	return g.ID
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginPartials) GetName() *string {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginPartials) GetName() *string {
+	if g == nil {
 		return nil
 	}
-	return o.Name
+	return g.Name
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginPartials) GetPath() *string {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginPartials) GetPath() *string {
+	if g == nil {
 		return nil
 	}
-	return o.Path
+	return g.Path
 }
 
 // CostStrategy - Strategy to use to evaluate query costs. Either `default` or `node_quantifier`.
@@ -147,24 +147,24 @@ func (g GraphqlRateLimitingAdvancedPluginClusterNodes) MarshalJSON() ([]byte, er
 }
 
 func (g *GraphqlRateLimitingAdvancedPluginClusterNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginClusterNodes) GetIP() *string {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginClusterNodes) GetIP() *string {
+	if g == nil {
 		return nil
 	}
-	return o.IP
+	return g.IP
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginClusterNodes) GetPort() *int64 {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginClusterNodes) GetPort() *int64 {
+	if g == nil {
 		return nil
 	}
-	return o.Port
+	return g.Port
 }
 
 type GraphqlRateLimitingAdvancedPluginSentinelNodes struct {
@@ -179,24 +179,24 @@ func (g GraphqlRateLimitingAdvancedPluginSentinelNodes) MarshalJSON() ([]byte, e
 }
 
 func (g *GraphqlRateLimitingAdvancedPluginSentinelNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginSentinelNodes) GetHost() *string {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginSentinelNodes) GetHost() *string {
+	if g == nil {
 		return nil
 	}
-	return o.Host
+	return g.Host
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginSentinelNodes) GetPort() *int64 {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginSentinelNodes) GetPort() *int64 {
+	if g == nil {
 		return nil
 	}
-	return o.Port
+	return g.Port
 }
 
 // GraphqlRateLimitingAdvancedPluginSentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -279,157 +279,157 @@ func (g GraphqlRateLimitingAdvancedPluginRedis) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GraphqlRateLimitingAdvancedPluginRedis) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"cluster_nodes", "sentinel_nodes"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginRedis) GetClusterMaxRedirections() *int64 {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginRedis) GetClusterMaxRedirections() *int64 {
+	if g == nil {
 		return nil
 	}
-	return o.ClusterMaxRedirections
+	return g.ClusterMaxRedirections
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginRedis) GetClusterNodes() []GraphqlRateLimitingAdvancedPluginClusterNodes {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginRedis) GetClusterNodes() []GraphqlRateLimitingAdvancedPluginClusterNodes {
+	if g == nil {
 		return nil
 	}
-	return o.ClusterNodes
+	return g.ClusterNodes
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginRedis) GetConnectTimeout() *int64 {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginRedis) GetConnectTimeout() *int64 {
+	if g == nil {
 		return nil
 	}
-	return o.ConnectTimeout
+	return g.ConnectTimeout
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginRedis) GetConnectionIsProxied() *bool {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginRedis) GetConnectionIsProxied() *bool {
+	if g == nil {
 		return nil
 	}
-	return o.ConnectionIsProxied
+	return g.ConnectionIsProxied
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginRedis) GetDatabase() *int64 {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginRedis) GetDatabase() *int64 {
+	if g == nil {
 		return nil
 	}
-	return o.Database
+	return g.Database
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginRedis) GetHost() *string {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginRedis) GetHost() *string {
+	if g == nil {
 		return nil
 	}
-	return o.Host
+	return g.Host
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginRedis) GetKeepaliveBacklog() *int64 {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginRedis) GetKeepaliveBacklog() *int64 {
+	if g == nil {
 		return nil
 	}
-	return o.KeepaliveBacklog
+	return g.KeepaliveBacklog
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginRedis) GetKeepalivePoolSize() *int64 {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginRedis) GetKeepalivePoolSize() *int64 {
+	if g == nil {
 		return nil
 	}
-	return o.KeepalivePoolSize
+	return g.KeepalivePoolSize
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginRedis) GetPassword() *string {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginRedis) GetPassword() *string {
+	if g == nil {
 		return nil
 	}
-	return o.Password
+	return g.Password
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginRedis) GetPort() *int64 {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginRedis) GetPort() *int64 {
+	if g == nil {
 		return nil
 	}
-	return o.Port
+	return g.Port
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginRedis) GetReadTimeout() *int64 {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginRedis) GetReadTimeout() *int64 {
+	if g == nil {
 		return nil
 	}
-	return o.ReadTimeout
+	return g.ReadTimeout
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginRedis) GetSendTimeout() *int64 {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginRedis) GetSendTimeout() *int64 {
+	if g == nil {
 		return nil
 	}
-	return o.SendTimeout
+	return g.SendTimeout
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginRedis) GetSentinelMaster() *string {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginRedis) GetSentinelMaster() *string {
+	if g == nil {
 		return nil
 	}
-	return o.SentinelMaster
+	return g.SentinelMaster
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginRedis) GetSentinelNodes() []GraphqlRateLimitingAdvancedPluginSentinelNodes {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginRedis) GetSentinelNodes() []GraphqlRateLimitingAdvancedPluginSentinelNodes {
+	if g == nil {
 		return nil
 	}
-	return o.SentinelNodes
+	return g.SentinelNodes
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginRedis) GetSentinelPassword() *string {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginRedis) GetSentinelPassword() *string {
+	if g == nil {
 		return nil
 	}
-	return o.SentinelPassword
+	return g.SentinelPassword
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginRedis) GetSentinelRole() *GraphqlRateLimitingAdvancedPluginSentinelRole {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginRedis) GetSentinelRole() *GraphqlRateLimitingAdvancedPluginSentinelRole {
+	if g == nil {
 		return nil
 	}
-	return o.SentinelRole
+	return g.SentinelRole
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginRedis) GetSentinelUsername() *string {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginRedis) GetSentinelUsername() *string {
+	if g == nil {
 		return nil
 	}
-	return o.SentinelUsername
+	return g.SentinelUsername
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginRedis) GetServerName() *string {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginRedis) GetServerName() *string {
+	if g == nil {
 		return nil
 	}
-	return o.ServerName
+	return g.ServerName
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginRedis) GetSsl() *bool {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginRedis) GetSsl() *bool {
+	if g == nil {
 		return nil
 	}
-	return o.Ssl
+	return g.Ssl
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginRedis) GetSslVerify() *bool {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginRedis) GetSslVerify() *bool {
+	if g == nil {
 		return nil
 	}
-	return o.SslVerify
+	return g.SslVerify
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginRedis) GetUsername() *string {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginRedis) GetUsername() *string {
+	if g == nil {
 		return nil
 	}
-	return o.Username
+	return g.Username
 }
 
 // GraphqlRateLimitingAdvancedPluginStrategy - The rate-limiting strategy to use for retrieving and incrementing the limits.
@@ -521,108 +521,108 @@ func (g GraphqlRateLimitingAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GraphqlRateLimitingAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"limit", "redis", "sync_rate", "window_size"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginConfig) GetCostStrategy() *CostStrategy {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginConfig) GetCostStrategy() *CostStrategy {
+	if g == nil {
 		return nil
 	}
-	return o.CostStrategy
+	return g.CostStrategy
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginConfig) GetDictionaryName() *string {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginConfig) GetDictionaryName() *string {
+	if g == nil {
 		return nil
 	}
-	return o.DictionaryName
+	return g.DictionaryName
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginConfig) GetHideClientHeaders() *bool {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginConfig) GetHideClientHeaders() *bool {
+	if g == nil {
 		return nil
 	}
-	return o.HideClientHeaders
+	return g.HideClientHeaders
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginConfig) GetIdentifier() *GraphqlRateLimitingAdvancedPluginIdentifier {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginConfig) GetIdentifier() *GraphqlRateLimitingAdvancedPluginIdentifier {
+	if g == nil {
 		return nil
 	}
-	return o.Identifier
+	return g.Identifier
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginConfig) GetLimit() []float64 {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginConfig) GetLimit() []float64 {
+	if g == nil {
 		return []float64{}
 	}
-	return o.Limit
+	return g.Limit
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginConfig) GetMaxCost() *float64 {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginConfig) GetMaxCost() *float64 {
+	if g == nil {
 		return nil
 	}
-	return o.MaxCost
+	return g.MaxCost
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginConfig) GetNamespace() *string {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginConfig) GetNamespace() *string {
+	if g == nil {
 		return nil
 	}
-	return o.Namespace
+	return g.Namespace
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginConfig) GetPassAllDownstreamHeaders() *bool {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginConfig) GetPassAllDownstreamHeaders() *bool {
+	if g == nil {
 		return nil
 	}
-	return o.PassAllDownstreamHeaders
+	return g.PassAllDownstreamHeaders
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginConfig) GetRedis() *GraphqlRateLimitingAdvancedPluginRedis {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginConfig) GetRedis() *GraphqlRateLimitingAdvancedPluginRedis {
+	if g == nil {
 		return nil
 	}
-	return o.Redis
+	return g.Redis
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginConfig) GetScoreFactor() *float64 {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginConfig) GetScoreFactor() *float64 {
+	if g == nil {
 		return nil
 	}
-	return o.ScoreFactor
+	return g.ScoreFactor
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginConfig) GetStrategy() *GraphqlRateLimitingAdvancedPluginStrategy {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginConfig) GetStrategy() *GraphqlRateLimitingAdvancedPluginStrategy {
+	if g == nil {
 		return nil
 	}
-	return o.Strategy
+	return g.Strategy
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginConfig) GetSyncRate() float64 {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginConfig) GetSyncRate() float64 {
+	if g == nil {
 		return 0.0
 	}
-	return o.SyncRate
+	return g.SyncRate
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginConfig) GetWindowSize() []float64 {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginConfig) GetWindowSize() []float64 {
+	if g == nil {
 		return []float64{}
 	}
-	return o.WindowSize
+	return g.WindowSize
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginConfig) GetWindowType() *GraphqlRateLimitingAdvancedPluginWindowType {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginConfig) GetWindowType() *GraphqlRateLimitingAdvancedPluginWindowType {
+	if g == nil {
 		return nil
 	}
-	return o.WindowType
+	return g.WindowType
 }
 
 // GraphqlRateLimitingAdvancedPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -630,11 +630,11 @@ type GraphqlRateLimitingAdvancedPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginConsumer) GetID() *string {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginConsumer) GetID() *string {
+	if g == nil {
 		return nil
 	}
-	return o.ID
+	return g.ID
 }
 
 type GraphqlRateLimitingAdvancedPluginProtocols string
@@ -674,11 +674,11 @@ type GraphqlRateLimitingAdvancedPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginRoute) GetID() *string {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginRoute) GetID() *string {
+	if g == nil {
 		return nil
 	}
-	return o.ID
+	return g.ID
 }
 
 // GraphqlRateLimitingAdvancedPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -686,11 +686,11 @@ type GraphqlRateLimitingAdvancedPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *GraphqlRateLimitingAdvancedPluginService) GetID() *string {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPluginService) GetID() *string {
+	if g == nil {
 		return nil
 	}
-	return o.ID
+	return g.ID
 }
 
 // GraphqlRateLimitingAdvancedPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -727,103 +727,103 @@ func (g GraphqlRateLimitingAdvancedPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GraphqlRateLimitingAdvancedPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"name", "ordering", "partials", "tags", "config", "consumer", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *GraphqlRateLimitingAdvancedPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPlugin) GetCreatedAt() *int64 {
+	if g == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return g.CreatedAt
 }
 
-func (o *GraphqlRateLimitingAdvancedPlugin) GetEnabled() *bool {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPlugin) GetEnabled() *bool {
+	if g == nil {
 		return nil
 	}
-	return o.Enabled
+	return g.Enabled
 }
 
-func (o *GraphqlRateLimitingAdvancedPlugin) GetID() *string {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPlugin) GetID() *string {
+	if g == nil {
 		return nil
 	}
-	return o.ID
+	return g.ID
 }
 
-func (o *GraphqlRateLimitingAdvancedPlugin) GetInstanceName() *string {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPlugin) GetInstanceName() *string {
+	if g == nil {
 		return nil
 	}
-	return o.InstanceName
+	return g.InstanceName
 }
 
-func (o *GraphqlRateLimitingAdvancedPlugin) GetName() string {
+func (g *GraphqlRateLimitingAdvancedPlugin) GetName() string {
 	return "graphql-rate-limiting-advanced"
 }
 
-func (o *GraphqlRateLimitingAdvancedPlugin) GetOrdering() *GraphqlRateLimitingAdvancedPluginOrdering {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPlugin) GetOrdering() *GraphqlRateLimitingAdvancedPluginOrdering {
+	if g == nil {
 		return nil
 	}
-	return o.Ordering
+	return g.Ordering
 }
 
-func (o *GraphqlRateLimitingAdvancedPlugin) GetPartials() []GraphqlRateLimitingAdvancedPluginPartials {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPlugin) GetPartials() []GraphqlRateLimitingAdvancedPluginPartials {
+	if g == nil {
 		return nil
 	}
-	return o.Partials
+	return g.Partials
 }
 
-func (o *GraphqlRateLimitingAdvancedPlugin) GetTags() []string {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPlugin) GetTags() []string {
+	if g == nil {
 		return nil
 	}
-	return o.Tags
+	return g.Tags
 }
 
-func (o *GraphqlRateLimitingAdvancedPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPlugin) GetUpdatedAt() *int64 {
+	if g == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return g.UpdatedAt
 }
 
-func (o *GraphqlRateLimitingAdvancedPlugin) GetConfig() GraphqlRateLimitingAdvancedPluginConfig {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPlugin) GetConfig() GraphqlRateLimitingAdvancedPluginConfig {
+	if g == nil {
 		return GraphqlRateLimitingAdvancedPluginConfig{}
 	}
-	return o.Config
+	return g.Config
 }
 
-func (o *GraphqlRateLimitingAdvancedPlugin) GetConsumer() *GraphqlRateLimitingAdvancedPluginConsumer {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPlugin) GetConsumer() *GraphqlRateLimitingAdvancedPluginConsumer {
+	if g == nil {
 		return nil
 	}
-	return o.Consumer
+	return g.Consumer
 }
 
-func (o *GraphqlRateLimitingAdvancedPlugin) GetProtocols() []GraphqlRateLimitingAdvancedPluginProtocols {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPlugin) GetProtocols() []GraphqlRateLimitingAdvancedPluginProtocols {
+	if g == nil {
 		return nil
 	}
-	return o.Protocols
+	return g.Protocols
 }
 
-func (o *GraphqlRateLimitingAdvancedPlugin) GetRoute() *GraphqlRateLimitingAdvancedPluginRoute {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPlugin) GetRoute() *GraphqlRateLimitingAdvancedPluginRoute {
+	if g == nil {
 		return nil
 	}
-	return o.Route
+	return g.Route
 }
 
-func (o *GraphqlRateLimitingAdvancedPlugin) GetService() *GraphqlRateLimitingAdvancedPluginService {
-	if o == nil {
+func (g *GraphqlRateLimitingAdvancedPlugin) GetService() *GraphqlRateLimitingAdvancedPluginService {
+	if g == nil {
 		return nil
 	}
-	return o.Service
+	return g.Service
 }

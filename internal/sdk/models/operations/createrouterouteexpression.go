@@ -14,18 +14,18 @@ type CreateRouteRouteExpressionRequest struct {
 	RouteExpression shared.RouteExpression `request:"mediaType=application/json"`
 }
 
-func (o *CreateRouteRouteExpressionRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateRouteRouteExpressionRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateRouteRouteExpressionRequest) GetRouteExpression() shared.RouteExpression {
-	if o == nil {
+func (c *CreateRouteRouteExpressionRequest) GetRouteExpression() shared.RouteExpression {
+	if c == nil {
 		return shared.RouteExpression{}
 	}
-	return o.RouteExpression
+	return c.RouteExpression
 }
 
 type CreateRouteRouteExpressionResponse struct {
@@ -41,37 +41,37 @@ type CreateRouteRouteExpressionResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateRouteRouteExpressionResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateRouteRouteExpressionResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateRouteRouteExpressionResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateRouteRouteExpressionResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateRouteRouteExpressionResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateRouteRouteExpressionResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateRouteRouteExpressionResponse) GetRouteExpression() *shared.RouteExpression {
-	if o == nil {
+func (c *CreateRouteRouteExpressionResponse) GetRouteExpression() *shared.RouteExpression {
+	if c == nil {
 		return nil
 	}
-	return o.RouteExpression
+	return c.RouteExpression
 }
 
-func (o *CreateRouteRouteExpressionResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateRouteRouteExpressionResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

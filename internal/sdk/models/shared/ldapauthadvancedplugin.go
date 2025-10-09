@@ -12,22 +12,22 @@ type LdapAuthAdvancedPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *LdapAuthAdvancedPluginAfter) GetAccess() []string {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginAfter) GetAccess() []string {
+	if l == nil {
 		return nil
 	}
-	return o.Access
+	return l.Access
 }
 
 type LdapAuthAdvancedPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *LdapAuthAdvancedPluginBefore) GetAccess() []string {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginBefore) GetAccess() []string {
+	if l == nil {
 		return nil
 	}
-	return o.Access
+	return l.Access
 }
 
 type LdapAuthAdvancedPluginOrdering struct {
@@ -35,18 +35,18 @@ type LdapAuthAdvancedPluginOrdering struct {
 	Before *LdapAuthAdvancedPluginBefore `json:"before,omitempty"`
 }
 
-func (o *LdapAuthAdvancedPluginOrdering) GetAfter() *LdapAuthAdvancedPluginAfter {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginOrdering) GetAfter() *LdapAuthAdvancedPluginAfter {
+	if l == nil {
 		return nil
 	}
-	return o.After
+	return l.After
 }
 
-func (o *LdapAuthAdvancedPluginOrdering) GetBefore() *LdapAuthAdvancedPluginBefore {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginOrdering) GetBefore() *LdapAuthAdvancedPluginBefore {
+	if l == nil {
 		return nil
 	}
-	return o.Before
+	return l.Before
 }
 
 type LdapAuthAdvancedPluginPartials struct {
@@ -57,25 +57,25 @@ type LdapAuthAdvancedPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *LdapAuthAdvancedPluginPartials) GetID() *string {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginPartials) GetID() *string {
+	if l == nil {
 		return nil
 	}
-	return o.ID
+	return l.ID
 }
 
-func (o *LdapAuthAdvancedPluginPartials) GetName() *string {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginPartials) GetName() *string {
+	if l == nil {
 		return nil
 	}
-	return o.Name
+	return l.Name
 }
 
-func (o *LdapAuthAdvancedPluginPartials) GetPath() *string {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginPartials) GetPath() *string {
+	if l == nil {
 		return nil
 	}
-	return o.Path
+	return l.Path
 }
 
 type LdapAuthAdvancedPluginConsumerBy string
@@ -158,171 +158,171 @@ func (l LdapAuthAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (l *LdapAuthAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"attribute", "base_dn", "groups_required", "ldap_host"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetAnonymous() *string {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginConfig) GetAnonymous() *string {
+	if l == nil {
 		return nil
 	}
-	return o.Anonymous
+	return l.Anonymous
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetAttribute() string {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginConfig) GetAttribute() string {
+	if l == nil {
 		return ""
 	}
-	return o.Attribute
+	return l.Attribute
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetBaseDn() string {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginConfig) GetBaseDn() string {
+	if l == nil {
 		return ""
 	}
-	return o.BaseDn
+	return l.BaseDn
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetBindDn() *string {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginConfig) GetBindDn() *string {
+	if l == nil {
 		return nil
 	}
-	return o.BindDn
+	return l.BindDn
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetCacheTTL() *float64 {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginConfig) GetCacheTTL() *float64 {
+	if l == nil {
 		return nil
 	}
-	return o.CacheTTL
+	return l.CacheTTL
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetConsumerBy() []LdapAuthAdvancedPluginConsumerBy {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginConfig) GetConsumerBy() []LdapAuthAdvancedPluginConsumerBy {
+	if l == nil {
 		return nil
 	}
-	return o.ConsumerBy
+	return l.ConsumerBy
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetConsumerOptional() *bool {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginConfig) GetConsumerOptional() *bool {
+	if l == nil {
 		return nil
 	}
-	return o.ConsumerOptional
+	return l.ConsumerOptional
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetGroupBaseDn() *string {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginConfig) GetGroupBaseDn() *string {
+	if l == nil {
 		return nil
 	}
-	return o.GroupBaseDn
+	return l.GroupBaseDn
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetGroupMemberAttribute() *string {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginConfig) GetGroupMemberAttribute() *string {
+	if l == nil {
 		return nil
 	}
-	return o.GroupMemberAttribute
+	return l.GroupMemberAttribute
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetGroupNameAttribute() *string {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginConfig) GetGroupNameAttribute() *string {
+	if l == nil {
 		return nil
 	}
-	return o.GroupNameAttribute
+	return l.GroupNameAttribute
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetGroupsRequired() []string {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginConfig) GetGroupsRequired() []string {
+	if l == nil {
 		return nil
 	}
-	return o.GroupsRequired
+	return l.GroupsRequired
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetHeaderType() *string {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginConfig) GetHeaderType() *string {
+	if l == nil {
 		return nil
 	}
-	return o.HeaderType
+	return l.HeaderType
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetHideCredentials() *bool {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginConfig) GetHideCredentials() *bool {
+	if l == nil {
 		return nil
 	}
-	return o.HideCredentials
+	return l.HideCredentials
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetKeepalive() *float64 {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginConfig) GetKeepalive() *float64 {
+	if l == nil {
 		return nil
 	}
-	return o.Keepalive
+	return l.Keepalive
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetLdapHost() string {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginConfig) GetLdapHost() string {
+	if l == nil {
 		return ""
 	}
-	return o.LdapHost
+	return l.LdapHost
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetLdapPassword() *string {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginConfig) GetLdapPassword() *string {
+	if l == nil {
 		return nil
 	}
-	return o.LdapPassword
+	return l.LdapPassword
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetLdapPort() *float64 {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginConfig) GetLdapPort() *float64 {
+	if l == nil {
 		return nil
 	}
-	return o.LdapPort
+	return l.LdapPort
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetLdaps() *bool {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginConfig) GetLdaps() *bool {
+	if l == nil {
 		return nil
 	}
-	return o.Ldaps
+	return l.Ldaps
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetLogSearchResults() *bool {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginConfig) GetLogSearchResults() *bool {
+	if l == nil {
 		return nil
 	}
-	return o.LogSearchResults
+	return l.LogSearchResults
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetRealm() *string {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginConfig) GetRealm() *string {
+	if l == nil {
 		return nil
 	}
-	return o.Realm
+	return l.Realm
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetStartTLS() *bool {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginConfig) GetStartTLS() *bool {
+	if l == nil {
 		return nil
 	}
-	return o.StartTLS
+	return l.StartTLS
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetTimeout() *float64 {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginConfig) GetTimeout() *float64 {
+	if l == nil {
 		return nil
 	}
-	return o.Timeout
+	return l.Timeout
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetVerifyLdapHost() *bool {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginConfig) GetVerifyLdapHost() *bool {
+	if l == nil {
 		return nil
 	}
-	return o.VerifyLdapHost
+	return l.VerifyLdapHost
 }
 
 type LdapAuthAdvancedPluginProtocols string
@@ -368,11 +368,11 @@ type LdapAuthAdvancedPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *LdapAuthAdvancedPluginRoute) GetID() *string {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginRoute) GetID() *string {
+	if l == nil {
 		return nil
 	}
-	return o.ID
+	return l.ID
 }
 
 // LdapAuthAdvancedPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -380,11 +380,11 @@ type LdapAuthAdvancedPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *LdapAuthAdvancedPluginService) GetID() *string {
-	if o == nil {
+func (l *LdapAuthAdvancedPluginService) GetID() *string {
+	if l == nil {
 		return nil
 	}
-	return o.ID
+	return l.ID
 }
 
 // LdapAuthAdvancedPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -419,96 +419,96 @@ func (l LdapAuthAdvancedPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (l *LdapAuthAdvancedPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"name", "ordering", "partials", "tags", "config", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *LdapAuthAdvancedPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (l *LdapAuthAdvancedPlugin) GetCreatedAt() *int64 {
+	if l == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return l.CreatedAt
 }
 
-func (o *LdapAuthAdvancedPlugin) GetEnabled() *bool {
-	if o == nil {
+func (l *LdapAuthAdvancedPlugin) GetEnabled() *bool {
+	if l == nil {
 		return nil
 	}
-	return o.Enabled
+	return l.Enabled
 }
 
-func (o *LdapAuthAdvancedPlugin) GetID() *string {
-	if o == nil {
+func (l *LdapAuthAdvancedPlugin) GetID() *string {
+	if l == nil {
 		return nil
 	}
-	return o.ID
+	return l.ID
 }
 
-func (o *LdapAuthAdvancedPlugin) GetInstanceName() *string {
-	if o == nil {
+func (l *LdapAuthAdvancedPlugin) GetInstanceName() *string {
+	if l == nil {
 		return nil
 	}
-	return o.InstanceName
+	return l.InstanceName
 }
 
-func (o *LdapAuthAdvancedPlugin) GetName() string {
+func (l *LdapAuthAdvancedPlugin) GetName() string {
 	return "ldap-auth-advanced"
 }
 
-func (o *LdapAuthAdvancedPlugin) GetOrdering() *LdapAuthAdvancedPluginOrdering {
-	if o == nil {
+func (l *LdapAuthAdvancedPlugin) GetOrdering() *LdapAuthAdvancedPluginOrdering {
+	if l == nil {
 		return nil
 	}
-	return o.Ordering
+	return l.Ordering
 }
 
-func (o *LdapAuthAdvancedPlugin) GetPartials() []LdapAuthAdvancedPluginPartials {
-	if o == nil {
+func (l *LdapAuthAdvancedPlugin) GetPartials() []LdapAuthAdvancedPluginPartials {
+	if l == nil {
 		return nil
 	}
-	return o.Partials
+	return l.Partials
 }
 
-func (o *LdapAuthAdvancedPlugin) GetTags() []string {
-	if o == nil {
+func (l *LdapAuthAdvancedPlugin) GetTags() []string {
+	if l == nil {
 		return nil
 	}
-	return o.Tags
+	return l.Tags
 }
 
-func (o *LdapAuthAdvancedPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (l *LdapAuthAdvancedPlugin) GetUpdatedAt() *int64 {
+	if l == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return l.UpdatedAt
 }
 
-func (o *LdapAuthAdvancedPlugin) GetConfig() LdapAuthAdvancedPluginConfig {
-	if o == nil {
+func (l *LdapAuthAdvancedPlugin) GetConfig() LdapAuthAdvancedPluginConfig {
+	if l == nil {
 		return LdapAuthAdvancedPluginConfig{}
 	}
-	return o.Config
+	return l.Config
 }
 
-func (o *LdapAuthAdvancedPlugin) GetProtocols() []LdapAuthAdvancedPluginProtocols {
-	if o == nil {
+func (l *LdapAuthAdvancedPlugin) GetProtocols() []LdapAuthAdvancedPluginProtocols {
+	if l == nil {
 		return nil
 	}
-	return o.Protocols
+	return l.Protocols
 }
 
-func (o *LdapAuthAdvancedPlugin) GetRoute() *LdapAuthAdvancedPluginRoute {
-	if o == nil {
+func (l *LdapAuthAdvancedPlugin) GetRoute() *LdapAuthAdvancedPluginRoute {
+	if l == nil {
 		return nil
 	}
-	return o.Route
+	return l.Route
 }
 
-func (o *LdapAuthAdvancedPlugin) GetService() *LdapAuthAdvancedPluginService {
-	if o == nil {
+func (l *LdapAuthAdvancedPlugin) GetService() *LdapAuthAdvancedPluginService {
+	if l == nil {
 		return nil
 	}
-	return o.Service
+	return l.Service
 }

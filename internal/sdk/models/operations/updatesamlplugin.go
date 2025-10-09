@@ -15,25 +15,25 @@ type UpdateSamlPluginRequest struct {
 	SamlPlugin     shared.SamlPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateSamlPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateSamlPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateSamlPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateSamlPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateSamlPluginRequest) GetSamlPlugin() shared.SamlPlugin {
-	if o == nil {
+func (u *UpdateSamlPluginRequest) GetSamlPlugin() shared.SamlPlugin {
+	if u == nil {
 		return shared.SamlPlugin{}
 	}
-	return o.SamlPlugin
+	return u.SamlPlugin
 }
 
 type UpdateSamlPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateSamlPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateSamlPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateSamlPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateSamlPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateSamlPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateSamlPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateSamlPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateSamlPluginResponse) GetSamlPlugin() *shared.SamlPlugin {
-	if o == nil {
+func (u *UpdateSamlPluginResponse) GetSamlPlugin() *shared.SamlPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.SamlPlugin
+	return u.SamlPlugin
 }
 
-func (o *UpdateSamlPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateSamlPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

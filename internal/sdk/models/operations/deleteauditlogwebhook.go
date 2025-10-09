@@ -20,14 +20,14 @@ func (d DeleteAuditLogWebhookRequestBody) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteAuditLogWebhookRequestBody) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *DeleteAuditLogWebhookRequestBody) GetEnabled() *bool {
-	return types.Bool(false)
+func (d *DeleteAuditLogWebhookRequestBody) GetEnabled() *bool {
+	return types.Pointer(false)
 }
 
 type DeleteAuditLogWebhookResponse struct {
@@ -47,51 +47,51 @@ type DeleteAuditLogWebhookResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *DeleteAuditLogWebhookResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteAuditLogWebhookResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteAuditLogWebhookResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteAuditLogWebhookResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteAuditLogWebhookResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteAuditLogWebhookResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteAuditLogWebhookResponse) GetAuditLogWebhook() *shared.AuditLogWebhook {
-	if o == nil {
+func (d *DeleteAuditLogWebhookResponse) GetAuditLogWebhook() *shared.AuditLogWebhook {
+	if d == nil {
 		return nil
 	}
-	return o.AuditLogWebhook
+	return d.AuditLogWebhook
 }
 
-func (o *DeleteAuditLogWebhookResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (d *DeleteAuditLogWebhookResponse) GetBadRequestError() *shared.BadRequestError {
+	if d == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return d.BadRequestError
 }
 
-func (o *DeleteAuditLogWebhookResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (d *DeleteAuditLogWebhookResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return d.UnauthorizedError
 }
 
-func (o *DeleteAuditLogWebhookResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (d *DeleteAuditLogWebhookResponse) GetForbiddenError() *shared.ForbiddenError {
+	if d == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return d.ForbiddenError
 }

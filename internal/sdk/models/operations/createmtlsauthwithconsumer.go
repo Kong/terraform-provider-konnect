@@ -16,25 +16,25 @@ type CreateMtlsAuthWithConsumerRequest struct {
 	MTLSAuthWithoutParents shared.MTLSAuthWithoutParents `request:"mediaType=application/json"`
 }
 
-func (o *CreateMtlsAuthWithConsumerRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateMtlsAuthWithConsumerRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateMtlsAuthWithConsumerRequest) GetConsumerID() string {
-	if o == nil {
+func (c *CreateMtlsAuthWithConsumerRequest) GetConsumerID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ConsumerID
+	return c.ConsumerID
 }
 
-func (o *CreateMtlsAuthWithConsumerRequest) GetMTLSAuthWithoutParents() shared.MTLSAuthWithoutParents {
-	if o == nil {
+func (c *CreateMtlsAuthWithConsumerRequest) GetMTLSAuthWithoutParents() shared.MTLSAuthWithoutParents {
+	if c == nil {
 		return shared.MTLSAuthWithoutParents{}
 	}
-	return o.MTLSAuthWithoutParents
+	return c.MTLSAuthWithoutParents
 }
 
 type CreateMtlsAuthWithConsumerResponse struct {
@@ -48,30 +48,30 @@ type CreateMtlsAuthWithConsumerResponse struct {
 	MTLSAuth *shared.MTLSAuth
 }
 
-func (o *CreateMtlsAuthWithConsumerResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateMtlsAuthWithConsumerResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateMtlsAuthWithConsumerResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateMtlsAuthWithConsumerResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateMtlsAuthWithConsumerResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateMtlsAuthWithConsumerResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateMtlsAuthWithConsumerResponse) GetMTLSAuth() *shared.MTLSAuth {
-	if o == nil {
+func (c *CreateMtlsAuthWithConsumerResponse) GetMTLSAuth() *shared.MTLSAuth {
+	if c == nil {
 		return nil
 	}
-	return o.MTLSAuth
+	return c.MTLSAuth
 }

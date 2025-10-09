@@ -35,43 +35,43 @@ func (u UpdateAPIProductDTO) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateAPIProductDTO) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"portal_ids"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *UpdateAPIProductDTO) GetName() *string {
-	if o == nil {
+func (u *UpdateAPIProductDTO) GetName() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Name
+	return u.Name
 }
 
-func (o *UpdateAPIProductDTO) GetDescription() *string {
-	if o == nil {
+func (u *UpdateAPIProductDTO) GetDescription() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Description
+	return u.Description
 }
 
-func (o *UpdateAPIProductDTO) GetLabels() map[string]*string {
-	if o == nil {
+func (u *UpdateAPIProductDTO) GetLabels() map[string]*string {
+	if u == nil {
 		return nil
 	}
-	return o.Labels
+	return u.Labels
 }
 
-func (o *UpdateAPIProductDTO) GetPublicLabels() map[string]*string {
-	if o == nil {
+func (u *UpdateAPIProductDTO) GetPublicLabels() map[string]*string {
+	if u == nil {
 		return nil
 	}
-	return o.PublicLabels
+	return u.PublicLabels
 }
 
-func (o *UpdateAPIProductDTO) GetPortalIds() []string {
-	if o == nil {
+func (u *UpdateAPIProductDTO) GetPortalIds() []string {
+	if u == nil {
 		return []string{}
 	}
-	return o.PortalIds
+	return u.PortalIds
 }

@@ -28,51 +28,51 @@ type CreateServerlessCloudGatewayResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *CreateServerlessCloudGatewayResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateServerlessCloudGatewayResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateServerlessCloudGatewayResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateServerlessCloudGatewayResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateServerlessCloudGatewayResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateServerlessCloudGatewayResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateServerlessCloudGatewayResponse) GetServerlessCloudGateway() *shared.ServerlessCloudGateway {
-	if o == nil {
+func (c *CreateServerlessCloudGatewayResponse) GetServerlessCloudGateway() *shared.ServerlessCloudGateway {
+	if c == nil {
 		return nil
 	}
-	return o.ServerlessCloudGateway
+	return c.ServerlessCloudGateway
 }
 
-func (o *CreateServerlessCloudGatewayResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreateServerlessCloudGatewayResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreateServerlessCloudGatewayResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (c *CreateServerlessCloudGatewayResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return c.UnauthorizedError
 }
 
-func (o *CreateServerlessCloudGatewayResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreateServerlessCloudGatewayResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }

@@ -15,25 +15,25 @@ type UpdateAcmePluginRequest struct {
 	AcmePlugin     shared.AcmePlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateAcmePluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateAcmePluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateAcmePluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateAcmePluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateAcmePluginRequest) GetAcmePlugin() shared.AcmePlugin {
-	if o == nil {
+func (u *UpdateAcmePluginRequest) GetAcmePlugin() shared.AcmePlugin {
+	if u == nil {
 		return shared.AcmePlugin{}
 	}
-	return o.AcmePlugin
+	return u.AcmePlugin
 }
 
 type UpdateAcmePluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateAcmePluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateAcmePluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateAcmePluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateAcmePluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateAcmePluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateAcmePluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateAcmePluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateAcmePluginResponse) GetAcmePlugin() *shared.AcmePlugin {
-	if o == nil {
+func (u *UpdateAcmePluginResponse) GetAcmePlugin() *shared.AcmePlugin {
+	if u == nil {
 		return nil
 	}
-	return o.AcmePlugin
+	return u.AcmePlugin
 }
 
-func (o *UpdateAcmePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateAcmePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

@@ -12,30 +12,30 @@ type CreateMeshControlPlaneRequest struct {
 	Labels map[string]*string `json:"labels,omitempty"`
 }
 
-func (o *CreateMeshControlPlaneRequest) GetName() string {
-	if o == nil {
+func (c *CreateMeshControlPlaneRequest) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *CreateMeshControlPlaneRequest) GetDescription() *string {
-	if o == nil {
+func (c *CreateMeshControlPlaneRequest) GetDescription() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Description
+	return c.Description
 }
 
-func (o *CreateMeshControlPlaneRequest) GetFeatures() []MeshControlPlaneFeature {
-	if o == nil {
+func (c *CreateMeshControlPlaneRequest) GetFeatures() []MeshControlPlaneFeature {
+	if c == nil {
 		return nil
 	}
-	return o.Features
+	return c.Features
 }
 
-func (o *CreateMeshControlPlaneRequest) GetLabels() map[string]*string {
-	if o == nil {
+func (c *CreateMeshControlPlaneRequest) GetLabels() map[string]*string {
+	if c == nil {
 		return nil
 	}
-	return o.Labels
+	return c.Labels
 }

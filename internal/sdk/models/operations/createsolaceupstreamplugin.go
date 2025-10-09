@@ -13,18 +13,18 @@ type CreateSolaceupstreamPluginRequest struct {
 	SolaceUpstreamPlugin shared.SolaceUpstreamPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateSolaceupstreamPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateSolaceupstreamPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateSolaceupstreamPluginRequest) GetSolaceUpstreamPlugin() shared.SolaceUpstreamPlugin {
-	if o == nil {
+func (c *CreateSolaceupstreamPluginRequest) GetSolaceUpstreamPlugin() shared.SolaceUpstreamPlugin {
+	if c == nil {
 		return shared.SolaceUpstreamPlugin{}
 	}
-	return o.SolaceUpstreamPlugin
+	return c.SolaceUpstreamPlugin
 }
 
 type CreateSolaceupstreamPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateSolaceupstreamPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateSolaceupstreamPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateSolaceupstreamPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateSolaceupstreamPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateSolaceupstreamPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateSolaceupstreamPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateSolaceupstreamPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateSolaceupstreamPluginResponse) GetSolaceUpstreamPlugin() *shared.SolaceUpstreamPlugin {
-	if o == nil {
+func (c *CreateSolaceupstreamPluginResponse) GetSolaceUpstreamPlugin() *shared.SolaceUpstreamPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.SolaceUpstreamPlugin
+	return c.SolaceUpstreamPlugin
 }
 
-func (o *CreateSolaceupstreamPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateSolaceupstreamPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

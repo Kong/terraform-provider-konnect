@@ -18,8 +18,8 @@ const (
 )
 
 type AuthStrategy struct {
-	AuthStrategyKeyAuth           *AuthStrategyKeyAuth           `queryParam:"inline"`
-	AuthStrategyClientCredentials *AuthStrategyClientCredentials `queryParam:"inline"`
+	AuthStrategyKeyAuth           *AuthStrategyKeyAuth           `queryParam:"inline,name=AuthStrategy"`
+	AuthStrategyClientCredentials *AuthStrategyClientCredentials `queryParam:"inline,name=AuthStrategy"`
 
 	Type AuthStrategyType
 }
@@ -74,7 +74,7 @@ func (u *AuthStrategy) UnmarshalJSON(data []byte) error {
 	switch dis.CredentialType {
 	case "key_auth":
 		authStrategyKeyAuth := new(AuthStrategyKeyAuth)
-		if err := utils.UnmarshalJSON(data, &authStrategyKeyAuth, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &authStrategyKeyAuth, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (CredentialType == key_auth) type AuthStrategyKeyAuth within AuthStrategy: %w", string(data), err)
 		}
 
@@ -83,7 +83,7 @@ func (u *AuthStrategy) UnmarshalJSON(data []byte) error {
 		return nil
 	case "client_credentials":
 		authStrategyClientCredentials := new(AuthStrategyClientCredentials)
-		if err := utils.UnmarshalJSON(data, &authStrategyClientCredentials, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &authStrategyClientCredentials, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (CredentialType == client_credentials) type AuthStrategyClientCredentials within AuthStrategy: %w", string(data), err)
 		}
 
@@ -92,7 +92,7 @@ func (u *AuthStrategy) UnmarshalJSON(data []byte) error {
 		return nil
 	case "self_managed_client_credentials":
 		authStrategyClientCredentials := new(AuthStrategyClientCredentials)
-		if err := utils.UnmarshalJSON(data, &authStrategyClientCredentials, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &authStrategyClientCredentials, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (CredentialType == self_managed_client_credentials) type AuthStrategyClientCredentials within AuthStrategy: %w", string(data), err)
 		}
 

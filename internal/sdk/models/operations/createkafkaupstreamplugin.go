@@ -13,18 +13,18 @@ type CreateKafkaupstreamPluginRequest struct {
 	KafkaUpstreamPlugin shared.KafkaUpstreamPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateKafkaupstreamPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateKafkaupstreamPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateKafkaupstreamPluginRequest) GetKafkaUpstreamPlugin() shared.KafkaUpstreamPlugin {
-	if o == nil {
+func (c *CreateKafkaupstreamPluginRequest) GetKafkaUpstreamPlugin() shared.KafkaUpstreamPlugin {
+	if c == nil {
 		return shared.KafkaUpstreamPlugin{}
 	}
-	return o.KafkaUpstreamPlugin
+	return c.KafkaUpstreamPlugin
 }
 
 type CreateKafkaupstreamPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateKafkaupstreamPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateKafkaupstreamPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateKafkaupstreamPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateKafkaupstreamPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateKafkaupstreamPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateKafkaupstreamPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateKafkaupstreamPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateKafkaupstreamPluginResponse) GetKafkaUpstreamPlugin() *shared.KafkaUpstreamPlugin {
-	if o == nil {
+func (c *CreateKafkaupstreamPluginResponse) GetKafkaUpstreamPlugin() *shared.KafkaUpstreamPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.KafkaUpstreamPlugin
+	return c.KafkaUpstreamPlugin
 }
 
-func (o *CreateKafkaupstreamPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateKafkaupstreamPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

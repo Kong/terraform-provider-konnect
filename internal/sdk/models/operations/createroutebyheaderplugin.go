@@ -13,18 +13,18 @@ type CreateRoutebyheaderPluginRequest struct {
 	RouteByHeaderPlugin shared.RouteByHeaderPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateRoutebyheaderPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateRoutebyheaderPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateRoutebyheaderPluginRequest) GetRouteByHeaderPlugin() shared.RouteByHeaderPlugin {
-	if o == nil {
+func (c *CreateRoutebyheaderPluginRequest) GetRouteByHeaderPlugin() shared.RouteByHeaderPlugin {
+	if c == nil {
 		return shared.RouteByHeaderPlugin{}
 	}
-	return o.RouteByHeaderPlugin
+	return c.RouteByHeaderPlugin
 }
 
 type CreateRoutebyheaderPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateRoutebyheaderPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateRoutebyheaderPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateRoutebyheaderPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateRoutebyheaderPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateRoutebyheaderPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateRoutebyheaderPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateRoutebyheaderPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateRoutebyheaderPluginResponse) GetRouteByHeaderPlugin() *shared.RouteByHeaderPlugin {
-	if o == nil {
+func (c *CreateRoutebyheaderPluginResponse) GetRouteByHeaderPlugin() *shared.RouteByHeaderPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.RouteByHeaderPlugin
+	return c.RouteByHeaderPlugin
 }
 
-func (o *CreateRoutebyheaderPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateRoutebyheaderPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

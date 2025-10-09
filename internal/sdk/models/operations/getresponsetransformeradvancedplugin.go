@@ -14,18 +14,18 @@ type GetResponsetransformeradvancedPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetResponsetransformeradvancedPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetResponsetransformeradvancedPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetResponsetransformeradvancedPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetResponsetransformeradvancedPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetResponsetransformeradvancedPluginResponse struct {
@@ -41,37 +41,37 @@ type GetResponsetransformeradvancedPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetResponsetransformeradvancedPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetResponsetransformeradvancedPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetResponsetransformeradvancedPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetResponsetransformeradvancedPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetResponsetransformeradvancedPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetResponsetransformeradvancedPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetResponsetransformeradvancedPluginResponse) GetResponseTransformerAdvancedPlugin() *shared.ResponseTransformerAdvancedPlugin {
-	if o == nil {
+func (g *GetResponsetransformeradvancedPluginResponse) GetResponseTransformerAdvancedPlugin() *shared.ResponseTransformerAdvancedPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.ResponseTransformerAdvancedPlugin
+	return g.ResponseTransformerAdvancedPlugin
 }
 
-func (o *GetResponsetransformeradvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetResponsetransformeradvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

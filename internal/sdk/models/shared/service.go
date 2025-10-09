@@ -13,11 +13,11 @@ type ClientCertificate struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *ClientCertificate) GetID() *string {
-	if o == nil {
+func (c *ClientCertificate) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
 // Protocol - The protocol used to communicate with the upstream.
@@ -79,18 +79,18 @@ type TLSSans struct {
 	Uris []string `json:"uris"`
 }
 
-func (o *TLSSans) GetDnsnames() []string {
-	if o == nil {
+func (t *TLSSans) GetDnsnames() []string {
+	if t == nil {
 		return nil
 	}
-	return o.Dnsnames
+	return t.Dnsnames
 }
 
-func (o *TLSSans) GetUris() []string {
-	if o == nil {
+func (t *TLSSans) GetUris() []string {
+	if t == nil {
 		return nil
 	}
-	return o.Uris
+	return t.Uris
 }
 
 // Service entities, as the name implies, are abstractions of each of your own upstream services. Examples of Services would be a data transformation microservice, a billing API, etc. The main attribute of a Service is its URL (where Kong should proxy traffic to), which can be set as a single string or by specifying its `protocol`, `host`, `port` and `path` individually. Services are associated to Routes (a Service can have many Routes associated with it). Routes are entry-points in Kong and define rules to match client requests. Once a Route is matched, Kong proxies the request to its associated Service. See the [Proxy Reference][proxy-reference] for a detailed explanation of how Kong proxies traffic.
@@ -140,141 +140,141 @@ func (s Service) MarshalJSON() ([]byte, error) {
 }
 
 func (s *Service) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"ca_certificates", "client_certificate", "host", "tags", "tls_sans"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Service) GetCaCertificates() []string {
-	if o == nil {
+func (s *Service) GetCaCertificates() []string {
+	if s == nil {
 		return nil
 	}
-	return o.CaCertificates
+	return s.CaCertificates
 }
 
-func (o *Service) GetClientCertificate() *ClientCertificate {
-	if o == nil {
+func (s *Service) GetClientCertificate() *ClientCertificate {
+	if s == nil {
 		return nil
 	}
-	return o.ClientCertificate
+	return s.ClientCertificate
 }
 
-func (o *Service) GetConnectTimeout() *int64 {
-	if o == nil {
+func (s *Service) GetConnectTimeout() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.ConnectTimeout
+	return s.ConnectTimeout
 }
 
-func (o *Service) GetCreatedAt() *int64 {
-	if o == nil {
+func (s *Service) GetCreatedAt() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return s.CreatedAt
 }
 
-func (o *Service) GetEnabled() *bool {
-	if o == nil {
+func (s *Service) GetEnabled() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.Enabled
+	return s.Enabled
 }
 
-func (o *Service) GetHost() string {
-	if o == nil {
+func (s *Service) GetHost() string {
+	if s == nil {
 		return ""
 	}
-	return o.Host
+	return s.Host
 }
 
-func (o *Service) GetID() *string {
-	if o == nil {
+func (s *Service) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
-func (o *Service) GetName() *string {
-	if o == nil {
+func (s *Service) GetName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Name
+	return s.Name
 }
 
-func (o *Service) GetPath() *string {
-	if o == nil {
+func (s *Service) GetPath() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Path
+	return s.Path
 }
 
-func (o *Service) GetPort() *int64 {
-	if o == nil {
+func (s *Service) GetPort() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.Port
+	return s.Port
 }
 
-func (o *Service) GetProtocol() *Protocol {
-	if o == nil {
+func (s *Service) GetProtocol() *Protocol {
+	if s == nil {
 		return nil
 	}
-	return o.Protocol
+	return s.Protocol
 }
 
-func (o *Service) GetReadTimeout() *int64 {
-	if o == nil {
+func (s *Service) GetReadTimeout() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.ReadTimeout
+	return s.ReadTimeout
 }
 
-func (o *Service) GetRetries() *int64 {
-	if o == nil {
+func (s *Service) GetRetries() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.Retries
+	return s.Retries
 }
 
-func (o *Service) GetTags() []string {
-	if o == nil {
+func (s *Service) GetTags() []string {
+	if s == nil {
 		return nil
 	}
-	return o.Tags
+	return s.Tags
 }
 
-func (o *Service) GetTLSSans() *TLSSans {
-	if o == nil {
+func (s *Service) GetTLSSans() *TLSSans {
+	if s == nil {
 		return nil
 	}
-	return o.TLSSans
+	return s.TLSSans
 }
 
-func (o *Service) GetTLSVerify() *bool {
-	if o == nil {
+func (s *Service) GetTLSVerify() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.TLSVerify
+	return s.TLSVerify
 }
 
-func (o *Service) GetTLSVerifyDepth() *int64 {
-	if o == nil {
+func (s *Service) GetTLSVerifyDepth() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.TLSVerifyDepth
+	return s.TLSVerifyDepth
 }
 
-func (o *Service) GetUpdatedAt() *int64 {
-	if o == nil {
+func (s *Service) GetUpdatedAt() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return s.UpdatedAt
 }
 
-func (o *Service) GetWriteTimeout() *int64 {
-	if o == nil {
+func (s *Service) GetWriteTimeout() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.WriteTimeout
+	return s.WriteTimeout
 }

@@ -14,18 +14,18 @@ type DeleteAiraginjectorPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteAiraginjectorPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteAiraginjectorPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteAiraginjectorPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteAiraginjectorPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteAiraginjectorPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteAiraginjectorPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteAiraginjectorPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteAiraginjectorPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteAiraginjectorPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteAiraginjectorPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteAiraginjectorPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteAiraginjectorPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteAiraginjectorPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteAiraginjectorPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

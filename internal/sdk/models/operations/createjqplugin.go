@@ -13,18 +13,18 @@ type CreateJqPluginRequest struct {
 	JqPlugin       shared.JqPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateJqPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateJqPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateJqPluginRequest) GetJqPlugin() shared.JqPlugin {
-	if o == nil {
+func (c *CreateJqPluginRequest) GetJqPlugin() shared.JqPlugin {
+	if c == nil {
 		return shared.JqPlugin{}
 	}
-	return o.JqPlugin
+	return c.JqPlugin
 }
 
 type CreateJqPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateJqPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateJqPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateJqPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateJqPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateJqPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateJqPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateJqPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateJqPluginResponse) GetJqPlugin() *shared.JqPlugin {
-	if o == nil {
+func (c *CreateJqPluginResponse) GetJqPlugin() *shared.JqPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.JqPlugin
+	return c.JqPlugin
 }
 
-func (o *CreateJqPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateJqPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

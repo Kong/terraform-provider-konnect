@@ -9,16 +9,16 @@ type ListProviderAccountsResponse struct {
 	Data []ProviderAccount `json:"data"`
 }
 
-func (o *ListProviderAccountsResponse) GetMeta() PaginatedMeta {
-	if o == nil {
+func (l *ListProviderAccountsResponse) GetMeta() PaginatedMeta {
+	if l == nil {
 		return PaginatedMeta{}
 	}
-	return o.Meta
+	return l.Meta
 }
 
-func (o *ListProviderAccountsResponse) GetData() []ProviderAccount {
-	if o == nil {
+func (l *ListProviderAccountsResponse) GetData() []ProviderAccount {
+	if l == nil {
 		return []ProviderAccount{}
 	}
-	return o.Data
+	return l.Data
 }

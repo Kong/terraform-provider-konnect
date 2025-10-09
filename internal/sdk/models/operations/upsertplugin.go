@@ -16,25 +16,25 @@ type UpsertPluginRequest struct {
 	Plugin shared.Plugin `request:"mediaType=application/json"`
 }
 
-func (o *UpsertPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpsertPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpsertPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpsertPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpsertPluginRequest) GetPlugin() shared.Plugin {
-	if o == nil {
+func (u *UpsertPluginRequest) GetPlugin() shared.Plugin {
+	if u == nil {
 		return shared.Plugin{}
 	}
-	return o.Plugin
+	return u.Plugin
 }
 
 type UpsertPluginResponse struct {
@@ -50,37 +50,37 @@ type UpsertPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpsertPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpsertPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpsertPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpsertPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpsertPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpsertPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpsertPluginResponse) GetPlugin() *shared.Plugin {
-	if o == nil {
+func (u *UpsertPluginResponse) GetPlugin() *shared.Plugin {
+	if u == nil {
 		return nil
 	}
-	return o.Plugin
+	return u.Plugin
 }
 
-func (o *UpsertPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpsertPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

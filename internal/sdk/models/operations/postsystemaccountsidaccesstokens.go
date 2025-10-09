@@ -18,18 +18,18 @@ type PostSystemAccountsIDAccessTokensRequest struct {
 	CreateSystemAccountAccessToken *shared.CreateSystemAccountAccessToken `request:"mediaType=application/json"`
 }
 
-func (o *PostSystemAccountsIDAccessTokensRequest) GetAccountID() string {
-	if o == nil {
+func (p *PostSystemAccountsIDAccessTokensRequest) GetAccountID() string {
+	if p == nil {
 		return ""
 	}
-	return o.AccountID
+	return p.AccountID
 }
 
-func (o *PostSystemAccountsIDAccessTokensRequest) GetCreateSystemAccountAccessToken() *shared.CreateSystemAccountAccessToken {
-	if o == nil {
+func (p *PostSystemAccountsIDAccessTokensRequest) GetCreateSystemAccountAccessToken() *shared.CreateSystemAccountAccessToken {
+	if p == nil {
 		return nil
 	}
-	return o.CreateSystemAccountAccessToken
+	return p.CreateSystemAccountAccessToken
 }
 
 type PostSystemAccountsIDAccessTokensResponse struct {
@@ -49,51 +49,51 @@ type PostSystemAccountsIDAccessTokensResponse struct {
 	ConflictError *shared.ConflictError
 }
 
-func (o *PostSystemAccountsIDAccessTokensResponse) GetContentType() string {
-	if o == nil {
+func (p *PostSystemAccountsIDAccessTokensResponse) GetContentType() string {
+	if p == nil {
 		return ""
 	}
-	return o.ContentType
+	return p.ContentType
 }
 
-func (o *PostSystemAccountsIDAccessTokensResponse) GetStatusCode() int {
-	if o == nil {
+func (p *PostSystemAccountsIDAccessTokensResponse) GetStatusCode() int {
+	if p == nil {
 		return 0
 	}
-	return o.StatusCode
+	return p.StatusCode
 }
 
-func (o *PostSystemAccountsIDAccessTokensResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (p *PostSystemAccountsIDAccessTokensResponse) GetRawResponse() *http.Response {
+	if p == nil {
 		return nil
 	}
-	return o.RawResponse
+	return p.RawResponse
 }
 
-func (o *PostSystemAccountsIDAccessTokensResponse) GetSystemAccountAccessTokenCreated() *shared.SystemAccountAccessTokenCreated {
-	if o == nil {
+func (p *PostSystemAccountsIDAccessTokensResponse) GetSystemAccountAccessTokenCreated() *shared.SystemAccountAccessTokenCreated {
+	if p == nil {
 		return nil
 	}
-	return o.SystemAccountAccessTokenCreated
+	return p.SystemAccountAccessTokenCreated
 }
 
-func (o *PostSystemAccountsIDAccessTokensResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (p *PostSystemAccountsIDAccessTokensResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if p == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return p.UnauthorizedError
 }
 
-func (o *PostSystemAccountsIDAccessTokensResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (p *PostSystemAccountsIDAccessTokensResponse) GetNotFoundError() *shared.NotFoundError {
+	if p == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return p.NotFoundError
 }
 
-func (o *PostSystemAccountsIDAccessTokensResponse) GetConflictError() *shared.ConflictError {
-	if o == nil {
+func (p *PostSystemAccountsIDAccessTokensResponse) GetConflictError() *shared.ConflictError {
+	if p == nil {
 		return nil
 	}
-	return o.ConflictError
+	return p.ConflictError
 }

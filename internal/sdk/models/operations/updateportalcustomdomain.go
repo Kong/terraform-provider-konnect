@@ -14,18 +14,18 @@ type UpdatePortalCustomDomainRequest struct {
 	UpdatePortalCustomDomainRequest shared.UpdatePortalCustomDomainRequest `request:"mediaType=application/json"`
 }
 
-func (o *UpdatePortalCustomDomainRequest) GetPortalID() string {
-	if o == nil {
+func (u *UpdatePortalCustomDomainRequest) GetPortalID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PortalID
+	return u.PortalID
 }
 
-func (o *UpdatePortalCustomDomainRequest) GetUpdatePortalCustomDomainRequest() shared.UpdatePortalCustomDomainRequest {
-	if o == nil {
+func (u *UpdatePortalCustomDomainRequest) GetUpdatePortalCustomDomainRequest() shared.UpdatePortalCustomDomainRequest {
+	if u == nil {
 		return shared.UpdatePortalCustomDomainRequest{}
 	}
-	return o.UpdatePortalCustomDomainRequest
+	return u.UpdatePortalCustomDomainRequest
 }
 
 type UpdatePortalCustomDomainResponse struct {
@@ -45,51 +45,51 @@ type UpdatePortalCustomDomainResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *UpdatePortalCustomDomainResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdatePortalCustomDomainResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdatePortalCustomDomainResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdatePortalCustomDomainResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdatePortalCustomDomainResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdatePortalCustomDomainResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdatePortalCustomDomainResponse) GetPortalCustomDomain() *shared.PortalCustomDomain {
-	if o == nil {
+func (u *UpdatePortalCustomDomainResponse) GetPortalCustomDomain() *shared.PortalCustomDomain {
+	if u == nil {
 		return nil
 	}
-	return o.PortalCustomDomain
+	return u.PortalCustomDomain
 }
 
-func (o *UpdatePortalCustomDomainResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (u *UpdatePortalCustomDomainResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return u.BadRequestError
 }
 
-func (o *UpdatePortalCustomDomainResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (u *UpdatePortalCustomDomainResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return u.UnauthorizedError
 }
 
-func (o *UpdatePortalCustomDomainResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (u *UpdatePortalCustomDomainResponse) GetForbiddenError() *shared.ForbiddenError {
+	if u == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return u.ForbiddenError
 }

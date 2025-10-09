@@ -18,18 +18,18 @@ type TeamsRemoveRoleRequest struct {
 	RoleID string `pathParam:"style=simple,explode=false,name=roleId"`
 }
 
-func (o *TeamsRemoveRoleRequest) GetTeamID() string {
-	if o == nil {
+func (t *TeamsRemoveRoleRequest) GetTeamID() string {
+	if t == nil {
 		return ""
 	}
-	return o.TeamID
+	return t.TeamID
 }
 
-func (o *TeamsRemoveRoleRequest) GetRoleID() string {
-	if o == nil {
+func (t *TeamsRemoveRoleRequest) GetRoleID() string {
+	if t == nil {
 		return ""
 	}
-	return o.RoleID
+	return t.RoleID
 }
 
 type TeamsRemoveRoleResponse struct {
@@ -49,51 +49,51 @@ type TeamsRemoveRoleResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *TeamsRemoveRoleResponse) GetContentType() string {
-	if o == nil {
+func (t *TeamsRemoveRoleResponse) GetContentType() string {
+	if t == nil {
 		return ""
 	}
-	return o.ContentType
+	return t.ContentType
 }
 
-func (o *TeamsRemoveRoleResponse) GetStatusCode() int {
-	if o == nil {
+func (t *TeamsRemoveRoleResponse) GetStatusCode() int {
+	if t == nil {
 		return 0
 	}
-	return o.StatusCode
+	return t.StatusCode
 }
 
-func (o *TeamsRemoveRoleResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (t *TeamsRemoveRoleResponse) GetRawResponse() *http.Response {
+	if t == nil {
 		return nil
 	}
-	return o.RawResponse
+	return t.RawResponse
 }
 
-func (o *TeamsRemoveRoleResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (t *TeamsRemoveRoleResponse) GetBadRequestError() *shared.BadRequestError {
+	if t == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return t.BadRequestError
 }
 
-func (o *TeamsRemoveRoleResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (t *TeamsRemoveRoleResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if t == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return t.UnauthorizedError
 }
 
-func (o *TeamsRemoveRoleResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (t *TeamsRemoveRoleResponse) GetForbiddenError() *shared.ForbiddenError {
+	if t == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return t.ForbiddenError
 }
 
-func (o *TeamsRemoveRoleResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (t *TeamsRemoveRoleResponse) GetNotFoundError() *shared.NotFoundError {
+	if t == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return t.NotFoundError
 }

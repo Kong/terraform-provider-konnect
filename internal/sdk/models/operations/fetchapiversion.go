@@ -14,18 +14,18 @@ type FetchAPIVersionRequest struct {
 	VersionID string `pathParam:"style=simple,explode=false,name=versionId"`
 }
 
-func (o *FetchAPIVersionRequest) GetAPIID() string {
-	if o == nil {
+func (f *FetchAPIVersionRequest) GetAPIID() string {
+	if f == nil {
 		return ""
 	}
-	return o.APIID
+	return f.APIID
 }
 
-func (o *FetchAPIVersionRequest) GetVersionID() string {
-	if o == nil {
+func (f *FetchAPIVersionRequest) GetVersionID() string {
+	if f == nil {
 		return ""
 	}
-	return o.VersionID
+	return f.VersionID
 }
 
 type FetchAPIVersionResponse struct {
@@ -45,51 +45,51 @@ type FetchAPIVersionResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *FetchAPIVersionResponse) GetContentType() string {
-	if o == nil {
+func (f *FetchAPIVersionResponse) GetContentType() string {
+	if f == nil {
 		return ""
 	}
-	return o.ContentType
+	return f.ContentType
 }
 
-func (o *FetchAPIVersionResponse) GetStatusCode() int {
-	if o == nil {
+func (f *FetchAPIVersionResponse) GetStatusCode() int {
+	if f == nil {
 		return 0
 	}
-	return o.StatusCode
+	return f.StatusCode
 }
 
-func (o *FetchAPIVersionResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (f *FetchAPIVersionResponse) GetRawResponse() *http.Response {
+	if f == nil {
 		return nil
 	}
-	return o.RawResponse
+	return f.RawResponse
 }
 
-func (o *FetchAPIVersionResponse) GetAPIVersionResponse() *shared.APIVersionResponse {
-	if o == nil {
+func (f *FetchAPIVersionResponse) GetAPIVersionResponse() *shared.APIVersionResponse {
+	if f == nil {
 		return nil
 	}
-	return o.APIVersionResponse
+	return f.APIVersionResponse
 }
 
-func (o *FetchAPIVersionResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (f *FetchAPIVersionResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if f == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return f.UnauthorizedError
 }
 
-func (o *FetchAPIVersionResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (f *FetchAPIVersionResponse) GetForbiddenError() *shared.ForbiddenError {
+	if f == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return f.ForbiddenError
 }
 
-func (o *FetchAPIVersionResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (f *FetchAPIVersionResponse) GetNotFoundError() *shared.NotFoundError {
+	if f == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return f.NotFoundError
 }

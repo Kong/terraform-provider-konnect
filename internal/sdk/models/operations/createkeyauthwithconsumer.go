@@ -16,25 +16,25 @@ type CreateKeyAuthWithConsumerRequest struct {
 	KeyAuthWithoutParents *shared.KeyAuthWithoutParents `request:"mediaType=application/json"`
 }
 
-func (o *CreateKeyAuthWithConsumerRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateKeyAuthWithConsumerRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateKeyAuthWithConsumerRequest) GetConsumerID() string {
-	if o == nil {
+func (c *CreateKeyAuthWithConsumerRequest) GetConsumerID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ConsumerID
+	return c.ConsumerID
 }
 
-func (o *CreateKeyAuthWithConsumerRequest) GetKeyAuthWithoutParents() *shared.KeyAuthWithoutParents {
-	if o == nil {
+func (c *CreateKeyAuthWithConsumerRequest) GetKeyAuthWithoutParents() *shared.KeyAuthWithoutParents {
+	if c == nil {
 		return nil
 	}
-	return o.KeyAuthWithoutParents
+	return c.KeyAuthWithoutParents
 }
 
 type CreateKeyAuthWithConsumerResponse struct {
@@ -48,30 +48,30 @@ type CreateKeyAuthWithConsumerResponse struct {
 	KeyAuth *shared.KeyAuth
 }
 
-func (o *CreateKeyAuthWithConsumerResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateKeyAuthWithConsumerResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateKeyAuthWithConsumerResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateKeyAuthWithConsumerResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateKeyAuthWithConsumerResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateKeyAuthWithConsumerResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateKeyAuthWithConsumerResponse) GetKeyAuth() *shared.KeyAuth {
-	if o == nil {
+func (c *CreateKeyAuthWithConsumerResponse) GetKeyAuth() *shared.KeyAuth {
+	if c == nil {
 		return nil
 	}
-	return o.KeyAuth
+	return c.KeyAuth
 }

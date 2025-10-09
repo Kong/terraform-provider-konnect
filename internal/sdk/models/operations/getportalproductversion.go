@@ -14,18 +14,18 @@ type GetPortalProductVersionRequest struct {
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 }
 
-func (o *GetPortalProductVersionRequest) GetProductVersionID() string {
-	if o == nil {
+func (g *GetPortalProductVersionRequest) GetProductVersionID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ProductVersionID
+	return g.ProductVersionID
 }
 
-func (o *GetPortalProductVersionRequest) GetPortalID() string {
-	if o == nil {
+func (g *GetPortalProductVersionRequest) GetPortalID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PortalID
+	return g.PortalID
 }
 
 type GetPortalProductVersionResponse struct {
@@ -47,58 +47,58 @@ type GetPortalProductVersionResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetPortalProductVersionResponse) GetContentType() string {
-	if o == nil {
+func (g *GetPortalProductVersionResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetPortalProductVersionResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetPortalProductVersionResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetPortalProductVersionResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetPortalProductVersionResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetPortalProductVersionResponse) GetV2PortalProductVersion() *shared.V2PortalProductVersion {
-	if o == nil {
+func (g *GetPortalProductVersionResponse) GetV2PortalProductVersion() *shared.V2PortalProductVersion {
+	if g == nil {
 		return nil
 	}
-	return o.V2PortalProductVersion
+	return g.V2PortalProductVersion
 }
 
-func (o *GetPortalProductVersionResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (g *GetPortalProductVersionResponse) GetBadRequestError() *shared.BadRequestError {
+	if g == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return g.BadRequestError
 }
 
-func (o *GetPortalProductVersionResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetPortalProductVersionResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetPortalProductVersionResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (g *GetPortalProductVersionResponse) GetForbiddenError() *shared.ForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return g.ForbiddenError
 }
 
-func (o *GetPortalProductVersionResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetPortalProductVersionResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

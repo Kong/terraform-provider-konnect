@@ -16,25 +16,25 @@ type GetHmacAuthWithConsumerRequest struct {
 	HMACAuthID string `pathParam:"style=simple,explode=false,name=HMACAuthId"`
 }
 
-func (o *GetHmacAuthWithConsumerRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetHmacAuthWithConsumerRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
-func (o *GetHmacAuthWithConsumerRequest) GetConsumerID() string {
-	if o == nil {
+func (g *GetHmacAuthWithConsumerRequest) GetConsumerID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ConsumerID
+	return g.ConsumerID
 }
 
-func (o *GetHmacAuthWithConsumerRequest) GetHMACAuthID() string {
-	if o == nil {
+func (g *GetHmacAuthWithConsumerRequest) GetHMACAuthID() string {
+	if g == nil {
 		return ""
 	}
-	return o.HMACAuthID
+	return g.HMACAuthID
 }
 
 type GetHmacAuthWithConsumerResponse struct {
@@ -48,30 +48,30 @@ type GetHmacAuthWithConsumerResponse struct {
 	HMACAuth *shared.HMACAuth
 }
 
-func (o *GetHmacAuthWithConsumerResponse) GetContentType() string {
-	if o == nil {
+func (g *GetHmacAuthWithConsumerResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetHmacAuthWithConsumerResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetHmacAuthWithConsumerResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetHmacAuthWithConsumerResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetHmacAuthWithConsumerResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetHmacAuthWithConsumerResponse) GetHMACAuth() *shared.HMACAuth {
-	if o == nil {
+func (g *GetHmacAuthWithConsumerResponse) GetHMACAuth() *shared.HMACAuth {
+	if g == nil {
 		return nil
 	}
-	return o.HMACAuth
+	return g.HMACAuth
 }

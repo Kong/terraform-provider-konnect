@@ -11,23 +11,23 @@ type ServerlessControlPlane struct {
 	Region CpRegion `json:"region"`
 }
 
-func (o *ServerlessControlPlane) GetID() string {
-	if o == nil {
+func (s *ServerlessControlPlane) GetID() string {
+	if s == nil {
 		return ""
 	}
-	return o.ID
+	return s.ID
 }
 
-func (o *ServerlessControlPlane) GetPrefix() string {
-	if o == nil {
+func (s *ServerlessControlPlane) GetPrefix() string {
+	if s == nil {
 		return ""
 	}
-	return o.Prefix
+	return s.Prefix
 }
 
-func (o *ServerlessControlPlane) GetRegion() CpRegion {
-	if o == nil {
+func (s *ServerlessControlPlane) GetRegion() CpRegion {
+	if s == nil {
 		return CpRegion("")
 	}
-	return o.Region
+	return s.Region
 }

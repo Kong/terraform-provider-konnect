@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type UpdateAppAuthStrategyRequestOpenIDConnect struct {
 	// A more advanced mode to configure an API Product Version’s Application Auth Strategy.
 	// Using this mode will allow developers to use API credentials issued from an external IdP that will authenticate their application requests.
@@ -11,9 +15,20 @@ type UpdateAppAuthStrategyRequestOpenIDConnect struct {
 	OpenidConnect PartialAppAuthStrategyConfigOpenIDConnect `json:"openid-connect"`
 }
 
-func (o *UpdateAppAuthStrategyRequestOpenIDConnect) GetOpenidConnect() PartialAppAuthStrategyConfigOpenIDConnect {
-	if o == nil {
+func (u UpdateAppAuthStrategyRequestOpenIDConnect) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAppAuthStrategyRequestOpenIDConnect) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"openid-connect"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (u *UpdateAppAuthStrategyRequestOpenIDConnect) GetOpenidConnect() PartialAppAuthStrategyConfigOpenIDConnect {
+	if u == nil {
 		return PartialAppAuthStrategyConfigOpenIDConnect{}
 	}
-	return o.OpenidConnect
+	return u.OpenidConnect
 }

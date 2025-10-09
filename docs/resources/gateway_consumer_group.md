@@ -44,6 +44,20 @@ resource "konnect_gateway_consumer_group" "my_gatewayconsumergroup" {
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_gateway_consumer_group.my_konnect_gateway_consumer_group
+  id = jsonencode({
+    control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = ""
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 terraform import konnect_gateway_consumer_group.my_konnect_gateway_consumer_group '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}'
 ```

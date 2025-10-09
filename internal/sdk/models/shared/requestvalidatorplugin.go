@@ -12,22 +12,22 @@ type RequestValidatorPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *RequestValidatorPluginAfter) GetAccess() []string {
-	if o == nil {
+func (r *RequestValidatorPluginAfter) GetAccess() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Access
+	return r.Access
 }
 
 type RequestValidatorPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *RequestValidatorPluginBefore) GetAccess() []string {
-	if o == nil {
+func (r *RequestValidatorPluginBefore) GetAccess() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Access
+	return r.Access
 }
 
 type RequestValidatorPluginOrdering struct {
@@ -35,18 +35,18 @@ type RequestValidatorPluginOrdering struct {
 	Before *RequestValidatorPluginBefore `json:"before,omitempty"`
 }
 
-func (o *RequestValidatorPluginOrdering) GetAfter() *RequestValidatorPluginAfter {
-	if o == nil {
+func (r *RequestValidatorPluginOrdering) GetAfter() *RequestValidatorPluginAfter {
+	if r == nil {
 		return nil
 	}
-	return o.After
+	return r.After
 }
 
-func (o *RequestValidatorPluginOrdering) GetBefore() *RequestValidatorPluginBefore {
-	if o == nil {
+func (r *RequestValidatorPluginOrdering) GetBefore() *RequestValidatorPluginBefore {
+	if r == nil {
 		return nil
 	}
-	return o.Before
+	return r.Before
 }
 
 type RequestValidatorPluginPartials struct {
@@ -57,25 +57,25 @@ type RequestValidatorPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *RequestValidatorPluginPartials) GetID() *string {
-	if o == nil {
+func (r *RequestValidatorPluginPartials) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
-func (o *RequestValidatorPluginPartials) GetName() *string {
-	if o == nil {
+func (r *RequestValidatorPluginPartials) GetName() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Name
+	return r.Name
 }
 
-func (o *RequestValidatorPluginPartials) GetPath() *string {
-	if o == nil {
+func (r *RequestValidatorPluginPartials) GetPath() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Path
+	return r.Path
 }
 
 // In - The location of the parameter.
@@ -170,52 +170,52 @@ func (p ParameterSchema) MarshalJSON() ([]byte, error) {
 }
 
 func (p *ParameterSchema) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"in", "name", "required"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ParameterSchema) GetExplode() *bool {
-	if o == nil {
+func (p *ParameterSchema) GetExplode() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.Explode
+	return p.Explode
 }
 
-func (o *ParameterSchema) GetIn() In {
-	if o == nil {
+func (p *ParameterSchema) GetIn() In {
+	if p == nil {
 		return In("")
 	}
-	return o.In
+	return p.In
 }
 
-func (o *ParameterSchema) GetName() string {
-	if o == nil {
+func (p *ParameterSchema) GetName() string {
+	if p == nil {
 		return ""
 	}
-	return o.Name
+	return p.Name
 }
 
-func (o *ParameterSchema) GetRequired() bool {
-	if o == nil {
+func (p *ParameterSchema) GetRequired() bool {
+	if p == nil {
 		return false
 	}
-	return o.Required
+	return p.Required
 }
 
-func (o *ParameterSchema) GetSchema() *string {
-	if o == nil {
+func (p *ParameterSchema) GetSchema() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Schema
+	return p.Schema
 }
 
-func (o *ParameterSchema) GetStyle() *Style {
-	if o == nil {
+func (p *ParameterSchema) GetStyle() *Style {
+	if p == nil {
 		return nil
 	}
-	return o.Style
+	return p.Style
 }
 
 // Version - Which validator to use. Supported values are `kong` (default) for using Kong's own schema validator, or `draft4`, `draft7`, `draft201909`, and `draft202012` for using their respective JSON Schema Draft compliant validators.
@@ -277,52 +277,52 @@ func (r RequestValidatorPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestValidatorPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"parameter_schema"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RequestValidatorPluginConfig) GetAllowedContentTypes() []string {
-	if o == nil {
+func (r *RequestValidatorPluginConfig) GetAllowedContentTypes() []string {
+	if r == nil {
 		return nil
 	}
-	return o.AllowedContentTypes
+	return r.AllowedContentTypes
 }
 
-func (o *RequestValidatorPluginConfig) GetBodySchema() *string {
-	if o == nil {
+func (r *RequestValidatorPluginConfig) GetBodySchema() *string {
+	if r == nil {
 		return nil
 	}
-	return o.BodySchema
+	return r.BodySchema
 }
 
-func (o *RequestValidatorPluginConfig) GetContentTypeParameterValidation() *bool {
-	if o == nil {
+func (r *RequestValidatorPluginConfig) GetContentTypeParameterValidation() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.ContentTypeParameterValidation
+	return r.ContentTypeParameterValidation
 }
 
-func (o *RequestValidatorPluginConfig) GetParameterSchema() []ParameterSchema {
-	if o == nil {
+func (r *RequestValidatorPluginConfig) GetParameterSchema() []ParameterSchema {
+	if r == nil {
 		return nil
 	}
-	return o.ParameterSchema
+	return r.ParameterSchema
 }
 
-func (o *RequestValidatorPluginConfig) GetVerboseResponse() *bool {
-	if o == nil {
+func (r *RequestValidatorPluginConfig) GetVerboseResponse() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.VerboseResponse
+	return r.VerboseResponse
 }
 
-func (o *RequestValidatorPluginConfig) GetVersion() *Version {
-	if o == nil {
+func (r *RequestValidatorPluginConfig) GetVersion() *Version {
+	if r == nil {
 		return nil
 	}
-	return o.Version
+	return r.Version
 }
 
 // RequestValidatorPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -330,11 +330,11 @@ type RequestValidatorPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *RequestValidatorPluginConsumer) GetID() *string {
-	if o == nil {
+func (r *RequestValidatorPluginConsumer) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
 type RequestValidatorPluginProtocols string
@@ -374,11 +374,11 @@ type RequestValidatorPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *RequestValidatorPluginRoute) GetID() *string {
-	if o == nil {
+func (r *RequestValidatorPluginRoute) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
 // RequestValidatorPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -386,11 +386,11 @@ type RequestValidatorPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *RequestValidatorPluginService) GetID() *string {
-	if o == nil {
+func (r *RequestValidatorPluginService) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
 // RequestValidatorPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -427,103 +427,103 @@ func (r RequestValidatorPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestValidatorPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"name", "ordering", "partials", "tags", "config", "consumer", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RequestValidatorPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (r *RequestValidatorPlugin) GetCreatedAt() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return r.CreatedAt
 }
 
-func (o *RequestValidatorPlugin) GetEnabled() *bool {
-	if o == nil {
+func (r *RequestValidatorPlugin) GetEnabled() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Enabled
+	return r.Enabled
 }
 
-func (o *RequestValidatorPlugin) GetID() *string {
-	if o == nil {
+func (r *RequestValidatorPlugin) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
-func (o *RequestValidatorPlugin) GetInstanceName() *string {
-	if o == nil {
+func (r *RequestValidatorPlugin) GetInstanceName() *string {
+	if r == nil {
 		return nil
 	}
-	return o.InstanceName
+	return r.InstanceName
 }
 
-func (o *RequestValidatorPlugin) GetName() string {
+func (r *RequestValidatorPlugin) GetName() string {
 	return "request-validator"
 }
 
-func (o *RequestValidatorPlugin) GetOrdering() *RequestValidatorPluginOrdering {
-	if o == nil {
+func (r *RequestValidatorPlugin) GetOrdering() *RequestValidatorPluginOrdering {
+	if r == nil {
 		return nil
 	}
-	return o.Ordering
+	return r.Ordering
 }
 
-func (o *RequestValidatorPlugin) GetPartials() []RequestValidatorPluginPartials {
-	if o == nil {
+func (r *RequestValidatorPlugin) GetPartials() []RequestValidatorPluginPartials {
+	if r == nil {
 		return nil
 	}
-	return o.Partials
+	return r.Partials
 }
 
-func (o *RequestValidatorPlugin) GetTags() []string {
-	if o == nil {
+func (r *RequestValidatorPlugin) GetTags() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Tags
+	return r.Tags
 }
 
-func (o *RequestValidatorPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (r *RequestValidatorPlugin) GetUpdatedAt() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return r.UpdatedAt
 }
 
-func (o *RequestValidatorPlugin) GetConfig() *RequestValidatorPluginConfig {
-	if o == nil {
+func (r *RequestValidatorPlugin) GetConfig() *RequestValidatorPluginConfig {
+	if r == nil {
 		return nil
 	}
-	return o.Config
+	return r.Config
 }
 
-func (o *RequestValidatorPlugin) GetConsumer() *RequestValidatorPluginConsumer {
-	if o == nil {
+func (r *RequestValidatorPlugin) GetConsumer() *RequestValidatorPluginConsumer {
+	if r == nil {
 		return nil
 	}
-	return o.Consumer
+	return r.Consumer
 }
 
-func (o *RequestValidatorPlugin) GetProtocols() []RequestValidatorPluginProtocols {
-	if o == nil {
+func (r *RequestValidatorPlugin) GetProtocols() []RequestValidatorPluginProtocols {
+	if r == nil {
 		return nil
 	}
-	return o.Protocols
+	return r.Protocols
 }
 
-func (o *RequestValidatorPlugin) GetRoute() *RequestValidatorPluginRoute {
-	if o == nil {
+func (r *RequestValidatorPlugin) GetRoute() *RequestValidatorPluginRoute {
+	if r == nil {
 		return nil
 	}
-	return o.Route
+	return r.Route
 }
 
-func (o *RequestValidatorPlugin) GetService() *RequestValidatorPluginService {
-	if o == nil {
+func (r *RequestValidatorPlugin) GetService() *RequestValidatorPluginService {
+	if r == nil {
 		return nil
 	}
-	return o.Service
+	return r.Service
 }

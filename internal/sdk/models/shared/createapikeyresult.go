@@ -23,50 +23,50 @@ func (c CreateAPIKeyResult) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateAPIKeyResult) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "type", "secret", "created_at", "updated_at", "tags"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CreateAPIKeyResult) GetID() string {
-	if o == nil {
+func (c *CreateAPIKeyResult) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *CreateAPIKeyResult) GetType() KeyTypeEnum {
-	if o == nil {
+func (c *CreateAPIKeyResult) GetType() KeyTypeEnum {
+	if c == nil {
 		return KeyTypeEnum("")
 	}
-	return o.Type
+	return c.Type
 }
 
-func (o *CreateAPIKeyResult) GetSecret() string {
-	if o == nil {
+func (c *CreateAPIKeyResult) GetSecret() string {
+	if c == nil {
 		return ""
 	}
-	return o.Secret
+	return c.Secret
 }
 
-func (o *CreateAPIKeyResult) GetCreatedAt() time.Time {
-	if o == nil {
+func (c *CreateAPIKeyResult) GetCreatedAt() time.Time {
+	if c == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return c.CreatedAt
 }
 
-func (o *CreateAPIKeyResult) GetUpdatedAt() time.Time {
-	if o == nil {
+func (c *CreateAPIKeyResult) GetUpdatedAt() time.Time {
+	if c == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return c.UpdatedAt
 }
 
-func (o *CreateAPIKeyResult) GetTags() []string {
-	if o == nil {
+func (c *CreateAPIKeyResult) GetTags() []string {
+	if c == nil {
 		return []string{}
 	}
-	return o.Tags
+	return c.Tags
 }

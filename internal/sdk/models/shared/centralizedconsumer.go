@@ -34,64 +34,64 @@ func (c CentralizedConsumer) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CentralizedConsumer) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "username", "tags", "consumer_groups", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CentralizedConsumer) GetID() string {
-	if o == nil {
+func (c *CentralizedConsumer) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *CentralizedConsumer) GetUsername() string {
-	if o == nil {
+func (c *CentralizedConsumer) GetUsername() string {
+	if c == nil {
 		return ""
 	}
-	return o.Username
+	return c.Username
 }
 
-func (o *CentralizedConsumer) GetCustomID() *string {
-	if o == nil {
+func (c *CentralizedConsumer) GetCustomID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.CustomID
+	return c.CustomID
 }
 
-func (o *CentralizedConsumer) GetType() *ConsumerType {
-	if o == nil {
+func (c *CentralizedConsumer) GetType() *ConsumerType {
+	if c == nil {
 		return nil
 	}
-	return o.Type
+	return c.Type
 }
 
-func (o *CentralizedConsumer) GetTags() []string {
-	if o == nil {
+func (c *CentralizedConsumer) GetTags() []string {
+	if c == nil {
 		return []string{}
 	}
-	return o.Tags
+	return c.Tags
 }
 
-func (o *CentralizedConsumer) GetConsumerGroups() []string {
-	if o == nil {
+func (c *CentralizedConsumer) GetConsumerGroups() []string {
+	if c == nil {
 		return []string{}
 	}
-	return o.ConsumerGroups
+	return c.ConsumerGroups
 }
 
-func (o *CentralizedConsumer) GetCreatedAt() time.Time {
-	if o == nil {
+func (c *CentralizedConsumer) GetCreatedAt() time.Time {
+	if c == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return c.CreatedAt
 }
 
-func (o *CentralizedConsumer) GetUpdatedAt() time.Time {
-	if o == nil {
+func (c *CentralizedConsumer) GetUpdatedAt() time.Time {
+	if c == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return c.UpdatedAt
 }

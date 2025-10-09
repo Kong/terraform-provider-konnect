@@ -14,18 +14,18 @@ type GetUpstreamRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetUpstreamRequest) GetUpstreamID() string {
-	if o == nil {
+func (g *GetUpstreamRequest) GetUpstreamID() string {
+	if g == nil {
 		return ""
 	}
-	return o.UpstreamID
+	return g.UpstreamID
 }
 
-func (o *GetUpstreamRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetUpstreamRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetUpstreamResponse struct {
@@ -41,37 +41,37 @@ type GetUpstreamResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetUpstreamResponse) GetContentType() string {
-	if o == nil {
+func (g *GetUpstreamResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetUpstreamResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetUpstreamResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetUpstreamResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetUpstreamResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetUpstreamResponse) GetUpstream() *shared.Upstream {
-	if o == nil {
+func (g *GetUpstreamResponse) GetUpstream() *shared.Upstream {
+	if g == nil {
 		return nil
 	}
-	return o.Upstream
+	return g.Upstream
 }
 
-func (o *GetUpstreamResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetUpstreamResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

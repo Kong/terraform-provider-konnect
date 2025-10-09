@@ -14,18 +14,18 @@ type GetHmacauthPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetHmacauthPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetHmacauthPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetHmacauthPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetHmacauthPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetHmacauthPluginResponse struct {
@@ -41,37 +41,37 @@ type GetHmacauthPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetHmacauthPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetHmacauthPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetHmacauthPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetHmacauthPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetHmacauthPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetHmacauthPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetHmacauthPluginResponse) GetHmacAuthPlugin() *shared.HmacAuthPlugin {
-	if o == nil {
+func (g *GetHmacauthPluginResponse) GetHmacAuthPlugin() *shared.HmacAuthPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.HmacAuthPlugin
+	return g.HmacAuthPlugin
 }
 
-func (o *GetHmacauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetHmacauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

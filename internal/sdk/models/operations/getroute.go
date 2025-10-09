@@ -14,18 +14,18 @@ type GetRouteRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetRouteRequest) GetRouteID() string {
-	if o == nil {
+func (g *GetRouteRequest) GetRouteID() string {
+	if g == nil {
 		return ""
 	}
-	return o.RouteID
+	return g.RouteID
 }
 
-func (o *GetRouteRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetRouteRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetRouteResponse struct {
@@ -41,37 +41,37 @@ type GetRouteResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetRouteResponse) GetContentType() string {
-	if o == nil {
+func (g *GetRouteResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetRouteResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetRouteResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetRouteResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetRouteResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetRouteResponse) GetRouteJSON() *shared.RouteJSON {
-	if o == nil {
+func (g *GetRouteResponse) GetRouteJSON() *shared.RouteJSON {
+	if g == nil {
 		return nil
 	}
-	return o.RouteJSON
+	return g.RouteJSON
 }
 
-func (o *GetRouteResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetRouteResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

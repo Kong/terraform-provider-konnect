@@ -15,25 +15,25 @@ type UpdateTlshandshakemodifierPluginRequest struct {
 	TLSHandshakeModifierPlugin shared.TLSHandshakeModifierPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateTlshandshakemodifierPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateTlshandshakemodifierPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateTlshandshakemodifierPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateTlshandshakemodifierPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateTlshandshakemodifierPluginRequest) GetTLSHandshakeModifierPlugin() shared.TLSHandshakeModifierPlugin {
-	if o == nil {
+func (u *UpdateTlshandshakemodifierPluginRequest) GetTLSHandshakeModifierPlugin() shared.TLSHandshakeModifierPlugin {
+	if u == nil {
 		return shared.TLSHandshakeModifierPlugin{}
 	}
-	return o.TLSHandshakeModifierPlugin
+	return u.TLSHandshakeModifierPlugin
 }
 
 type UpdateTlshandshakemodifierPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateTlshandshakemodifierPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateTlshandshakemodifierPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateTlshandshakemodifierPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateTlshandshakemodifierPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateTlshandshakemodifierPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateTlshandshakemodifierPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateTlshandshakemodifierPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateTlshandshakemodifierPluginResponse) GetTLSHandshakeModifierPlugin() *shared.TLSHandshakeModifierPlugin {
-	if o == nil {
+func (u *UpdateTlshandshakemodifierPluginResponse) GetTLSHandshakeModifierPlugin() *shared.TLSHandshakeModifierPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.TLSHandshakeModifierPlugin
+	return u.TLSHandshakeModifierPlugin
 }
 
-func (o *UpdateTlshandshakemodifierPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateTlshandshakemodifierPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

@@ -14,18 +14,18 @@ type GetTlsmetadataheadersPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetTlsmetadataheadersPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetTlsmetadataheadersPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetTlsmetadataheadersPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetTlsmetadataheadersPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetTlsmetadataheadersPluginResponse struct {
@@ -41,37 +41,37 @@ type GetTlsmetadataheadersPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetTlsmetadataheadersPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetTlsmetadataheadersPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetTlsmetadataheadersPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetTlsmetadataheadersPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetTlsmetadataheadersPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetTlsmetadataheadersPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetTlsmetadataheadersPluginResponse) GetTLSMetadataHeadersPlugin() *shared.TLSMetadataHeadersPlugin {
-	if o == nil {
+func (g *GetTlsmetadataheadersPluginResponse) GetTLSMetadataHeadersPlugin() *shared.TLSMetadataHeadersPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.TLSMetadataHeadersPlugin
+	return g.TLSMetadataHeadersPlugin
 }
 
-func (o *GetTlsmetadataheadersPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetTlsmetadataheadersPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

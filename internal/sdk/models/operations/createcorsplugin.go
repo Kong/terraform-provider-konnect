@@ -13,18 +13,18 @@ type CreateCorsPluginRequest struct {
 	CorsPlugin     shared.CorsPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateCorsPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateCorsPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateCorsPluginRequest) GetCorsPlugin() shared.CorsPlugin {
-	if o == nil {
+func (c *CreateCorsPluginRequest) GetCorsPlugin() shared.CorsPlugin {
+	if c == nil {
 		return shared.CorsPlugin{}
 	}
-	return o.CorsPlugin
+	return c.CorsPlugin
 }
 
 type CreateCorsPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateCorsPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateCorsPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateCorsPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateCorsPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateCorsPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateCorsPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateCorsPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateCorsPluginResponse) GetCorsPlugin() *shared.CorsPlugin {
-	if o == nil {
+func (c *CreateCorsPluginResponse) GetCorsPlugin() *shared.CorsPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.CorsPlugin
+	return c.CorsPlugin
 }
 
-func (o *CreateCorsPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateCorsPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

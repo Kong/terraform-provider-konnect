@@ -14,18 +14,18 @@ type CreateCaCertificateRequest struct {
 	CACertificate shared.CACertificateInput `request:"mediaType=application/json"`
 }
 
-func (o *CreateCaCertificateRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateCaCertificateRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateCaCertificateRequest) GetCACertificate() shared.CACertificateInput {
-	if o == nil {
+func (c *CreateCaCertificateRequest) GetCACertificate() shared.CACertificateInput {
+	if c == nil {
 		return shared.CACertificateInput{}
 	}
-	return o.CACertificate
+	return c.CACertificate
 }
 
 type CreateCaCertificateResponse struct {
@@ -41,37 +41,37 @@ type CreateCaCertificateResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateCaCertificateResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateCaCertificateResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateCaCertificateResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateCaCertificateResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateCaCertificateResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateCaCertificateResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateCaCertificateResponse) GetCACertificate() *shared.CACertificate {
-	if o == nil {
+func (c *CreateCaCertificateResponse) GetCACertificate() *shared.CACertificate {
+	if c == nil {
 		return nil
 	}
-	return o.CACertificate
+	return c.CACertificate
 }
 
-func (o *CreateCaCertificateResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateCaCertificateResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

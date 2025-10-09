@@ -8,9 +8,9 @@ type AddSystemAccountToTeam struct {
 	AccountID *string `json:"id,omitempty"`
 }
 
-func (o *AddSystemAccountToTeam) GetAccountID() *string {
-	if o == nil {
+func (a *AddSystemAccountToTeam) GetAccountID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AccountID
+	return a.AccountID
 }

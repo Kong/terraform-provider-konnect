@@ -14,18 +14,18 @@ type CreateConsumerRequest struct {
 	Consumer shared.Consumer `request:"mediaType=application/json"`
 }
 
-func (o *CreateConsumerRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateConsumerRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateConsumerRequest) GetConsumer() shared.Consumer {
-	if o == nil {
+func (c *CreateConsumerRequest) GetConsumer() shared.Consumer {
+	if c == nil {
 		return shared.Consumer{}
 	}
-	return o.Consumer
+	return c.Consumer
 }
 
 type CreateConsumerResponse struct {
@@ -41,37 +41,37 @@ type CreateConsumerResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateConsumerResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateConsumerResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateConsumerResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateConsumerResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateConsumerResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateConsumerResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateConsumerResponse) GetConsumer() *shared.Consumer {
-	if o == nil {
+func (c *CreateConsumerResponse) GetConsumer() *shared.Consumer {
+	if c == nil {
 		return nil
 	}
-	return o.Consumer
+	return c.Consumer
 }
 
-func (o *CreateConsumerResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateConsumerResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

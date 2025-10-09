@@ -27,43 +27,43 @@ func (c CreateIntegrationInstance) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateIntegrationInstance) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"integration_name", "name", "display_name", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CreateIntegrationInstance) GetIntegrationName() string {
-	if o == nil {
+func (c *CreateIntegrationInstance) GetIntegrationName() string {
+	if c == nil {
 		return ""
 	}
-	return o.IntegrationName
+	return c.IntegrationName
 }
 
-func (o *CreateIntegrationInstance) GetName() string {
-	if o == nil {
+func (c *CreateIntegrationInstance) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *CreateIntegrationInstance) GetDisplayName() string {
-	if o == nil {
+func (c *CreateIntegrationInstance) GetDisplayName() string {
+	if c == nil {
 		return ""
 	}
-	return o.DisplayName
+	return c.DisplayName
 }
 
-func (o *CreateIntegrationInstance) GetDescription() *string {
-	if o == nil {
+func (c *CreateIntegrationInstance) GetDescription() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Description
+	return c.Description
 }
 
-func (o *CreateIntegrationInstance) GetConfig() any {
-	if o == nil {
+func (c *CreateIntegrationInstance) GetConfig() any {
+	if c == nil {
 		return nil
 	}
-	return o.Config
+	return c.Config
 }

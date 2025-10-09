@@ -14,25 +14,25 @@ type RemoveConsumerFromGroupRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *RemoveConsumerFromGroupRequest) GetConsumerGroupID() string {
-	if o == nil {
+func (r *RemoveConsumerFromGroupRequest) GetConsumerGroupID() string {
+	if r == nil {
 		return ""
 	}
-	return o.ConsumerGroupID
+	return r.ConsumerGroupID
 }
 
-func (o *RemoveConsumerFromGroupRequest) GetConsumerID() string {
-	if o == nil {
+func (r *RemoveConsumerFromGroupRequest) GetConsumerID() string {
+	if r == nil {
 		return ""
 	}
-	return o.ConsumerID
+	return r.ConsumerID
 }
 
-func (o *RemoveConsumerFromGroupRequest) GetControlPlaneID() string {
-	if o == nil {
+func (r *RemoveConsumerFromGroupRequest) GetControlPlaneID() string {
+	if r == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return r.ControlPlaneID
 }
 
 type RemoveConsumerFromGroupResponse struct {
@@ -44,23 +44,23 @@ type RemoveConsumerFromGroupResponse struct {
 	RawResponse *http.Response
 }
 
-func (o *RemoveConsumerFromGroupResponse) GetContentType() string {
-	if o == nil {
+func (r *RemoveConsumerFromGroupResponse) GetContentType() string {
+	if r == nil {
 		return ""
 	}
-	return o.ContentType
+	return r.ContentType
 }
 
-func (o *RemoveConsumerFromGroupResponse) GetStatusCode() int {
-	if o == nil {
+func (r *RemoveConsumerFromGroupResponse) GetStatusCode() int {
+	if r == nil {
 		return 0
 	}
-	return o.StatusCode
+	return r.StatusCode
 }
 
-func (o *RemoveConsumerFromGroupResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (r *RemoveConsumerFromGroupResponse) GetRawResponse() *http.Response {
+	if r == nil {
 		return nil
 	}
-	return o.RawResponse
+	return r.RawResponse
 }

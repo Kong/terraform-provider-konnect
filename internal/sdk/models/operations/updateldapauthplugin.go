@@ -15,25 +15,25 @@ type UpdateLdapauthPluginRequest struct {
 	LdapAuthPlugin shared.LdapAuthPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateLdapauthPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateLdapauthPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateLdapauthPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateLdapauthPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateLdapauthPluginRequest) GetLdapAuthPlugin() shared.LdapAuthPlugin {
-	if o == nil {
+func (u *UpdateLdapauthPluginRequest) GetLdapAuthPlugin() shared.LdapAuthPlugin {
+	if u == nil {
 		return shared.LdapAuthPlugin{}
 	}
-	return o.LdapAuthPlugin
+	return u.LdapAuthPlugin
 }
 
 type UpdateLdapauthPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateLdapauthPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateLdapauthPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateLdapauthPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateLdapauthPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateLdapauthPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateLdapauthPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateLdapauthPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateLdapauthPluginResponse) GetLdapAuthPlugin() *shared.LdapAuthPlugin {
-	if o == nil {
+func (u *UpdateLdapauthPluginResponse) GetLdapAuthPlugin() *shared.LdapAuthPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.LdapAuthPlugin
+	return u.LdapAuthPlugin
 }
 
-func (o *UpdateLdapauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateLdapauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

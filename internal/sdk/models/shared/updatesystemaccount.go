@@ -19,22 +19,22 @@ func (u UpdateSystemAccount) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateSystemAccount) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *UpdateSystemAccount) GetName() *string {
-	if o == nil {
+func (u *UpdateSystemAccount) GetName() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Name
+	return u.Name
 }
 
-func (o *UpdateSystemAccount) GetDescription() *string {
-	if o == nil {
+func (u *UpdateSystemAccount) GetDescription() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Description
+	return u.Description
 }

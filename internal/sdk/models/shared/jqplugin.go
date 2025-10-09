@@ -12,22 +12,22 @@ type JqPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *JqPluginAfter) GetAccess() []string {
-	if o == nil {
+func (j *JqPluginAfter) GetAccess() []string {
+	if j == nil {
 		return nil
 	}
-	return o.Access
+	return j.Access
 }
 
 type JqPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *JqPluginBefore) GetAccess() []string {
-	if o == nil {
+func (j *JqPluginBefore) GetAccess() []string {
+	if j == nil {
 		return nil
 	}
-	return o.Access
+	return j.Access
 }
 
 type JqPluginOrdering struct {
@@ -35,18 +35,18 @@ type JqPluginOrdering struct {
 	Before *JqPluginBefore `json:"before,omitempty"`
 }
 
-func (o *JqPluginOrdering) GetAfter() *JqPluginAfter {
-	if o == nil {
+func (j *JqPluginOrdering) GetAfter() *JqPluginAfter {
+	if j == nil {
 		return nil
 	}
-	return o.After
+	return j.After
 }
 
-func (o *JqPluginOrdering) GetBefore() *JqPluginBefore {
-	if o == nil {
+func (j *JqPluginOrdering) GetBefore() *JqPluginBefore {
+	if j == nil {
 		return nil
 	}
-	return o.Before
+	return j.Before
 }
 
 type JqPluginPartials struct {
@@ -57,25 +57,25 @@ type JqPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *JqPluginPartials) GetID() *string {
-	if o == nil {
+func (j *JqPluginPartials) GetID() *string {
+	if j == nil {
 		return nil
 	}
-	return o.ID
+	return j.ID
 }
 
-func (o *JqPluginPartials) GetName() *string {
-	if o == nil {
+func (j *JqPluginPartials) GetName() *string {
+	if j == nil {
 		return nil
 	}
-	return o.Name
+	return j.Name
 }
 
-func (o *JqPluginPartials) GetPath() *string {
-	if o == nil {
+func (j *JqPluginPartials) GetPath() *string {
+	if j == nil {
 		return nil
 	}
-	return o.Path
+	return j.Path
 }
 
 type RequestJqProgramOptions struct {
@@ -91,45 +91,45 @@ func (r RequestJqProgramOptions) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestJqProgramOptions) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RequestJqProgramOptions) GetASCIIOutput() *bool {
-	if o == nil {
+func (r *RequestJqProgramOptions) GetASCIIOutput() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.ASCIIOutput
+	return r.ASCIIOutput
 }
 
-func (o *RequestJqProgramOptions) GetCompactOutput() *bool {
-	if o == nil {
+func (r *RequestJqProgramOptions) GetCompactOutput() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.CompactOutput
+	return r.CompactOutput
 }
 
-func (o *RequestJqProgramOptions) GetJoinOutput() *bool {
-	if o == nil {
+func (r *RequestJqProgramOptions) GetJoinOutput() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.JoinOutput
+	return r.JoinOutput
 }
 
-func (o *RequestJqProgramOptions) GetRawOutput() *bool {
-	if o == nil {
+func (r *RequestJqProgramOptions) GetRawOutput() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.RawOutput
+	return r.RawOutput
 }
 
-func (o *RequestJqProgramOptions) GetSortKeys() *bool {
-	if o == nil {
+func (r *RequestJqProgramOptions) GetSortKeys() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.SortKeys
+	return r.SortKeys
 }
 
 type ResponseJqProgramOptions struct {
@@ -145,45 +145,45 @@ func (r ResponseJqProgramOptions) MarshalJSON() ([]byte, error) {
 }
 
 func (r *ResponseJqProgramOptions) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ResponseJqProgramOptions) GetASCIIOutput() *bool {
-	if o == nil {
+func (r *ResponseJqProgramOptions) GetASCIIOutput() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.ASCIIOutput
+	return r.ASCIIOutput
 }
 
-func (o *ResponseJqProgramOptions) GetCompactOutput() *bool {
-	if o == nil {
+func (r *ResponseJqProgramOptions) GetCompactOutput() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.CompactOutput
+	return r.CompactOutput
 }
 
-func (o *ResponseJqProgramOptions) GetJoinOutput() *bool {
-	if o == nil {
+func (r *ResponseJqProgramOptions) GetJoinOutput() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.JoinOutput
+	return r.JoinOutput
 }
 
-func (o *ResponseJqProgramOptions) GetRawOutput() *bool {
-	if o == nil {
+func (r *ResponseJqProgramOptions) GetRawOutput() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.RawOutput
+	return r.RawOutput
 }
 
-func (o *ResponseJqProgramOptions) GetSortKeys() *bool {
-	if o == nil {
+func (r *ResponseJqProgramOptions) GetSortKeys() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.SortKeys
+	return r.SortKeys
 }
 
 type JqPluginConfig struct {
@@ -201,59 +201,59 @@ func (j JqPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (j *JqPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &j, "", false, []string{"request_jq_program_options", "response_jq_program_options"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *JqPluginConfig) GetRequestIfMediaType() []string {
-	if o == nil {
+func (j *JqPluginConfig) GetRequestIfMediaType() []string {
+	if j == nil {
 		return nil
 	}
-	return o.RequestIfMediaType
+	return j.RequestIfMediaType
 }
 
-func (o *JqPluginConfig) GetRequestJqProgram() *string {
-	if o == nil {
+func (j *JqPluginConfig) GetRequestJqProgram() *string {
+	if j == nil {
 		return nil
 	}
-	return o.RequestJqProgram
+	return j.RequestJqProgram
 }
 
-func (o *JqPluginConfig) GetRequestJqProgramOptions() *RequestJqProgramOptions {
-	if o == nil {
+func (j *JqPluginConfig) GetRequestJqProgramOptions() *RequestJqProgramOptions {
+	if j == nil {
 		return nil
 	}
-	return o.RequestJqProgramOptions
+	return j.RequestJqProgramOptions
 }
 
-func (o *JqPluginConfig) GetResponseIfMediaType() []string {
-	if o == nil {
+func (j *JqPluginConfig) GetResponseIfMediaType() []string {
+	if j == nil {
 		return nil
 	}
-	return o.ResponseIfMediaType
+	return j.ResponseIfMediaType
 }
 
-func (o *JqPluginConfig) GetResponseIfStatusCode() []int64 {
-	if o == nil {
+func (j *JqPluginConfig) GetResponseIfStatusCode() []int64 {
+	if j == nil {
 		return nil
 	}
-	return o.ResponseIfStatusCode
+	return j.ResponseIfStatusCode
 }
 
-func (o *JqPluginConfig) GetResponseJqProgram() *string {
-	if o == nil {
+func (j *JqPluginConfig) GetResponseJqProgram() *string {
+	if j == nil {
 		return nil
 	}
-	return o.ResponseJqProgram
+	return j.ResponseJqProgram
 }
 
-func (o *JqPluginConfig) GetResponseJqProgramOptions() *ResponseJqProgramOptions {
-	if o == nil {
+func (j *JqPluginConfig) GetResponseJqProgramOptions() *ResponseJqProgramOptions {
+	if j == nil {
 		return nil
 	}
-	return o.ResponseJqProgramOptions
+	return j.ResponseJqProgramOptions
 }
 
 // JqPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -261,11 +261,11 @@ type JqPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *JqPluginConsumer) GetID() *string {
-	if o == nil {
+func (j *JqPluginConsumer) GetID() *string {
+	if j == nil {
 		return nil
 	}
-	return o.ID
+	return j.ID
 }
 
 type JqPluginProtocols string
@@ -305,11 +305,11 @@ type JqPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *JqPluginRoute) GetID() *string {
-	if o == nil {
+func (j *JqPluginRoute) GetID() *string {
+	if j == nil {
 		return nil
 	}
-	return o.ID
+	return j.ID
 }
 
 // JqPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -317,11 +317,11 @@ type JqPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *JqPluginService) GetID() *string {
-	if o == nil {
+func (j *JqPluginService) GetID() *string {
+	if j == nil {
 		return nil
 	}
-	return o.ID
+	return j.ID
 }
 
 // JqPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -358,103 +358,103 @@ func (j JqPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (j *JqPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &j, "", false, []string{"name", "ordering", "partials", "tags", "config", "consumer", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *JqPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (j *JqPlugin) GetCreatedAt() *int64 {
+	if j == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return j.CreatedAt
 }
 
-func (o *JqPlugin) GetEnabled() *bool {
-	if o == nil {
+func (j *JqPlugin) GetEnabled() *bool {
+	if j == nil {
 		return nil
 	}
-	return o.Enabled
+	return j.Enabled
 }
 
-func (o *JqPlugin) GetID() *string {
-	if o == nil {
+func (j *JqPlugin) GetID() *string {
+	if j == nil {
 		return nil
 	}
-	return o.ID
+	return j.ID
 }
 
-func (o *JqPlugin) GetInstanceName() *string {
-	if o == nil {
+func (j *JqPlugin) GetInstanceName() *string {
+	if j == nil {
 		return nil
 	}
-	return o.InstanceName
+	return j.InstanceName
 }
 
-func (o *JqPlugin) GetName() string {
+func (j *JqPlugin) GetName() string {
 	return "jq"
 }
 
-func (o *JqPlugin) GetOrdering() *JqPluginOrdering {
-	if o == nil {
+func (j *JqPlugin) GetOrdering() *JqPluginOrdering {
+	if j == nil {
 		return nil
 	}
-	return o.Ordering
+	return j.Ordering
 }
 
-func (o *JqPlugin) GetPartials() []JqPluginPartials {
-	if o == nil {
+func (j *JqPlugin) GetPartials() []JqPluginPartials {
+	if j == nil {
 		return nil
 	}
-	return o.Partials
+	return j.Partials
 }
 
-func (o *JqPlugin) GetTags() []string {
-	if o == nil {
+func (j *JqPlugin) GetTags() []string {
+	if j == nil {
 		return nil
 	}
-	return o.Tags
+	return j.Tags
 }
 
-func (o *JqPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (j *JqPlugin) GetUpdatedAt() *int64 {
+	if j == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return j.UpdatedAt
 }
 
-func (o *JqPlugin) GetConfig() *JqPluginConfig {
-	if o == nil {
+func (j *JqPlugin) GetConfig() *JqPluginConfig {
+	if j == nil {
 		return nil
 	}
-	return o.Config
+	return j.Config
 }
 
-func (o *JqPlugin) GetConsumer() *JqPluginConsumer {
-	if o == nil {
+func (j *JqPlugin) GetConsumer() *JqPluginConsumer {
+	if j == nil {
 		return nil
 	}
-	return o.Consumer
+	return j.Consumer
 }
 
-func (o *JqPlugin) GetProtocols() []JqPluginProtocols {
-	if o == nil {
+func (j *JqPlugin) GetProtocols() []JqPluginProtocols {
+	if j == nil {
 		return nil
 	}
-	return o.Protocols
+	return j.Protocols
 }
 
-func (o *JqPlugin) GetRoute() *JqPluginRoute {
-	if o == nil {
+func (j *JqPlugin) GetRoute() *JqPluginRoute {
+	if j == nil {
 		return nil
 	}
-	return o.Route
+	return j.Route
 }
 
-func (o *JqPlugin) GetService() *JqPluginService {
-	if o == nil {
+func (j *JqPlugin) GetService() *JqPluginService {
+	if j == nil {
 		return nil
 	}
-	return o.Service
+	return j.Service
 }

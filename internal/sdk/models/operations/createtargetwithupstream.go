@@ -16,25 +16,25 @@ type CreateTargetWithUpstreamRequest struct {
 	TargetWithoutParents shared.TargetWithoutParents `request:"mediaType=application/json"`
 }
 
-func (o *CreateTargetWithUpstreamRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateTargetWithUpstreamRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateTargetWithUpstreamRequest) GetUpstreamID() string {
-	if o == nil {
+func (c *CreateTargetWithUpstreamRequest) GetUpstreamID() string {
+	if c == nil {
 		return ""
 	}
-	return o.UpstreamID
+	return c.UpstreamID
 }
 
-func (o *CreateTargetWithUpstreamRequest) GetTargetWithoutParents() shared.TargetWithoutParents {
-	if o == nil {
+func (c *CreateTargetWithUpstreamRequest) GetTargetWithoutParents() shared.TargetWithoutParents {
+	if c == nil {
 		return shared.TargetWithoutParents{}
 	}
-	return o.TargetWithoutParents
+	return c.TargetWithoutParents
 }
 
 type CreateTargetWithUpstreamResponse struct {
@@ -48,30 +48,30 @@ type CreateTargetWithUpstreamResponse struct {
 	Target *shared.Target
 }
 
-func (o *CreateTargetWithUpstreamResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateTargetWithUpstreamResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateTargetWithUpstreamResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateTargetWithUpstreamResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateTargetWithUpstreamResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateTargetWithUpstreamResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateTargetWithUpstreamResponse) GetTarget() *shared.Target {
-	if o == nil {
+func (c *CreateTargetWithUpstreamResponse) GetTarget() *shared.Target {
+	if c == nil {
 		return nil
 	}
-	return o.Target
+	return c.Target
 }

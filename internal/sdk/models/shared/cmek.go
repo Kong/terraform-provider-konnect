@@ -26,43 +26,43 @@ func (c Cmek) MarshalJSON() ([]byte, error) {
 }
 
 func (c *Cmek) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"key_arn", "name", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Cmek) GetKeyArn() string {
-	if o == nil {
+func (c *Cmek) GetKeyArn() string {
+	if c == nil {
 		return ""
 	}
-	return o.KeyArn
+	return c.KeyArn
 }
 
-func (o *Cmek) GetName() string {
-	if o == nil {
+func (c *Cmek) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *Cmek) GetDescription() *string {
-	if o == nil {
+func (c *Cmek) GetDescription() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Description
+	return c.Description
 }
 
-func (o *Cmek) GetCreatedAt() time.Time {
-	if o == nil {
+func (c *Cmek) GetCreatedAt() time.Time {
+	if c == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return c.CreatedAt
 }
 
-func (o *Cmek) GetUpdatedAt() time.Time {
-	if o == nil {
+func (c *Cmek) GetUpdatedAt() time.Time {
+	if c == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return c.UpdatedAt
 }

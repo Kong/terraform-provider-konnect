@@ -15,25 +15,25 @@ type UpdateBasicauthPluginRequest struct {
 	BasicAuthPlugin shared.BasicAuthPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateBasicauthPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateBasicauthPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateBasicauthPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateBasicauthPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateBasicauthPluginRequest) GetBasicAuthPlugin() shared.BasicAuthPlugin {
-	if o == nil {
+func (u *UpdateBasicauthPluginRequest) GetBasicAuthPlugin() shared.BasicAuthPlugin {
+	if u == nil {
 		return shared.BasicAuthPlugin{}
 	}
-	return o.BasicAuthPlugin
+	return u.BasicAuthPlugin
 }
 
 type UpdateBasicauthPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateBasicauthPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateBasicauthPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateBasicauthPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateBasicauthPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateBasicauthPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateBasicauthPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateBasicauthPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateBasicauthPluginResponse) GetBasicAuthPlugin() *shared.BasicAuthPlugin {
-	if o == nil {
+func (u *UpdateBasicauthPluginResponse) GetBasicAuthPlugin() *shared.BasicAuthPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.BasicAuthPlugin
+	return u.BasicAuthPlugin
 }
 
-func (o *UpdateBasicauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateBasicauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

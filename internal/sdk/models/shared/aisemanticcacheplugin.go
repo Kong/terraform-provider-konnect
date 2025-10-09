@@ -12,22 +12,22 @@ type AiSemanticCachePluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AiSemanticCachePluginAfter) GetAccess() []string {
-	if o == nil {
+func (a *AiSemanticCachePluginAfter) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AiSemanticCachePluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AiSemanticCachePluginBefore) GetAccess() []string {
-	if o == nil {
+func (a *AiSemanticCachePluginBefore) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AiSemanticCachePluginOrdering struct {
@@ -35,18 +35,18 @@ type AiSemanticCachePluginOrdering struct {
 	Before *AiSemanticCachePluginBefore `json:"before,omitempty"`
 }
 
-func (o *AiSemanticCachePluginOrdering) GetAfter() *AiSemanticCachePluginAfter {
-	if o == nil {
+func (a *AiSemanticCachePluginOrdering) GetAfter() *AiSemanticCachePluginAfter {
+	if a == nil {
 		return nil
 	}
-	return o.After
+	return a.After
 }
 
-func (o *AiSemanticCachePluginOrdering) GetBefore() *AiSemanticCachePluginBefore {
-	if o == nil {
+func (a *AiSemanticCachePluginOrdering) GetBefore() *AiSemanticCachePluginBefore {
+	if a == nil {
 		return nil
 	}
-	return o.Before
+	return a.Before
 }
 
 type AiSemanticCachePluginPartials struct {
@@ -57,25 +57,25 @@ type AiSemanticCachePluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *AiSemanticCachePluginPartials) GetID() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginPartials) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AiSemanticCachePluginPartials) GetName() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginPartials) GetName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AiSemanticCachePluginPartials) GetPath() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginPartials) GetPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Path
+	return a.Path
 }
 
 // AiSemanticCachePluginParamLocation - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
@@ -141,108 +141,108 @@ func (a AiSemanticCachePluginAuth) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticCachePluginAuth) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticCachePluginAuth) GetAllowOverride() *bool {
-	if o == nil {
+func (a *AiSemanticCachePluginAuth) GetAllowOverride() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.AllowOverride
+	return a.AllowOverride
 }
 
-func (o *AiSemanticCachePluginAuth) GetAwsAccessKeyID() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginAuth) GetAwsAccessKeyID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsAccessKeyID
+	return a.AwsAccessKeyID
 }
 
-func (o *AiSemanticCachePluginAuth) GetAwsSecretAccessKey() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginAuth) GetAwsSecretAccessKey() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsSecretAccessKey
+	return a.AwsSecretAccessKey
 }
 
-func (o *AiSemanticCachePluginAuth) GetAzureClientID() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginAuth) GetAzureClientID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureClientID
+	return a.AzureClientID
 }
 
-func (o *AiSemanticCachePluginAuth) GetAzureClientSecret() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginAuth) GetAzureClientSecret() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureClientSecret
+	return a.AzureClientSecret
 }
 
-func (o *AiSemanticCachePluginAuth) GetAzureTenantID() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginAuth) GetAzureTenantID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureTenantID
+	return a.AzureTenantID
 }
 
-func (o *AiSemanticCachePluginAuth) GetAzureUseManagedIdentity() *bool {
-	if o == nil {
+func (a *AiSemanticCachePluginAuth) GetAzureUseManagedIdentity() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.AzureUseManagedIdentity
+	return a.AzureUseManagedIdentity
 }
 
-func (o *AiSemanticCachePluginAuth) GetGcpServiceAccountJSON() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginAuth) GetGcpServiceAccountJSON() *string {
+	if a == nil {
 		return nil
 	}
-	return o.GcpServiceAccountJSON
+	return a.GcpServiceAccountJSON
 }
 
-func (o *AiSemanticCachePluginAuth) GetGcpUseServiceAccount() *bool {
-	if o == nil {
+func (a *AiSemanticCachePluginAuth) GetGcpUseServiceAccount() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.GcpUseServiceAccount
+	return a.GcpUseServiceAccount
 }
 
-func (o *AiSemanticCachePluginAuth) GetHeaderName() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginAuth) GetHeaderName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.HeaderName
+	return a.HeaderName
 }
 
-func (o *AiSemanticCachePluginAuth) GetHeaderValue() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginAuth) GetHeaderValue() *string {
+	if a == nil {
 		return nil
 	}
-	return o.HeaderValue
+	return a.HeaderValue
 }
 
-func (o *AiSemanticCachePluginAuth) GetParamLocation() *AiSemanticCachePluginParamLocation {
-	if o == nil {
+func (a *AiSemanticCachePluginAuth) GetParamLocation() *AiSemanticCachePluginParamLocation {
+	if a == nil {
 		return nil
 	}
-	return o.ParamLocation
+	return a.ParamLocation
 }
 
-func (o *AiSemanticCachePluginAuth) GetParamName() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginAuth) GetParamName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ParamName
+	return a.ParamName
 }
 
-func (o *AiSemanticCachePluginAuth) GetParamValue() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginAuth) GetParamValue() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ParamValue
+	return a.ParamValue
 }
 
 type AiSemanticCachePluginAzure struct {
@@ -259,31 +259,31 @@ func (a AiSemanticCachePluginAzure) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticCachePluginAzure) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticCachePluginAzure) GetAPIVersion() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginAzure) GetAPIVersion() *string {
+	if a == nil {
 		return nil
 	}
-	return o.APIVersion
+	return a.APIVersion
 }
 
-func (o *AiSemanticCachePluginAzure) GetDeploymentID() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginAzure) GetDeploymentID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DeploymentID
+	return a.DeploymentID
 }
 
-func (o *AiSemanticCachePluginAzure) GetInstance() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginAzure) GetInstance() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Instance
+	return a.Instance
 }
 
 type AiSemanticCachePluginBedrock struct {
@@ -306,52 +306,52 @@ func (a AiSemanticCachePluginBedrock) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticCachePluginBedrock) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticCachePluginBedrock) GetAwsAssumeRoleArn() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginBedrock) GetAwsAssumeRoleArn() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsAssumeRoleArn
+	return a.AwsAssumeRoleArn
 }
 
-func (o *AiSemanticCachePluginBedrock) GetAwsRegion() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginBedrock) GetAwsRegion() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsRegion
+	return a.AwsRegion
 }
 
-func (o *AiSemanticCachePluginBedrock) GetAwsRoleSessionName() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginBedrock) GetAwsRoleSessionName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsRoleSessionName
+	return a.AwsRoleSessionName
 }
 
-func (o *AiSemanticCachePluginBedrock) GetAwsStsEndpointURL() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginBedrock) GetAwsStsEndpointURL() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsStsEndpointURL
+	return a.AwsStsEndpointURL
 }
 
-func (o *AiSemanticCachePluginBedrock) GetEmbeddingsNormalize() *bool {
-	if o == nil {
+func (a *AiSemanticCachePluginBedrock) GetEmbeddingsNormalize() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.EmbeddingsNormalize
+	return a.EmbeddingsNormalize
 }
 
-func (o *AiSemanticCachePluginBedrock) GetPerformanceConfigLatency() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginBedrock) GetPerformanceConfigLatency() *string {
+	if a == nil {
 		return nil
 	}
-	return o.PerformanceConfigLatency
+	return a.PerformanceConfigLatency
 }
 
 type AiSemanticCachePluginGemini struct {
@@ -368,31 +368,31 @@ func (a AiSemanticCachePluginGemini) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticCachePluginGemini) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticCachePluginGemini) GetAPIEndpoint() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginGemini) GetAPIEndpoint() *string {
+	if a == nil {
 		return nil
 	}
-	return o.APIEndpoint
+	return a.APIEndpoint
 }
 
-func (o *AiSemanticCachePluginGemini) GetLocationID() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginGemini) GetLocationID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.LocationID
+	return a.LocationID
 }
 
-func (o *AiSemanticCachePluginGemini) GetProjectID() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginGemini) GetProjectID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ProjectID
+	return a.ProjectID
 }
 
 type AiSemanticCachePluginHuggingface struct {
@@ -407,24 +407,24 @@ func (a AiSemanticCachePluginHuggingface) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticCachePluginHuggingface) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticCachePluginHuggingface) GetUseCache() *bool {
-	if o == nil {
+func (a *AiSemanticCachePluginHuggingface) GetUseCache() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.UseCache
+	return a.UseCache
 }
 
-func (o *AiSemanticCachePluginHuggingface) GetWaitForModel() *bool {
-	if o == nil {
+func (a *AiSemanticCachePluginHuggingface) GetWaitForModel() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.WaitForModel
+	return a.WaitForModel
 }
 
 // AiSemanticCachePluginOptions - Key/value settings for the model
@@ -442,45 +442,45 @@ func (a AiSemanticCachePluginOptions) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticCachePluginOptions) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"azure", "bedrock", "gemini", "huggingface"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticCachePluginOptions) GetAzure() AiSemanticCachePluginAzure {
-	if o == nil {
+func (a *AiSemanticCachePluginOptions) GetAzure() AiSemanticCachePluginAzure {
+	if a == nil {
 		return AiSemanticCachePluginAzure{}
 	}
-	return o.Azure
+	return a.Azure
 }
 
-func (o *AiSemanticCachePluginOptions) GetBedrock() *AiSemanticCachePluginBedrock {
-	if o == nil {
+func (a *AiSemanticCachePluginOptions) GetBedrock() *AiSemanticCachePluginBedrock {
+	if a == nil {
 		return nil
 	}
-	return o.Bedrock
+	return a.Bedrock
 }
 
-func (o *AiSemanticCachePluginOptions) GetGemini() *AiSemanticCachePluginGemini {
-	if o == nil {
+func (a *AiSemanticCachePluginOptions) GetGemini() *AiSemanticCachePluginGemini {
+	if a == nil {
 		return nil
 	}
-	return o.Gemini
+	return a.Gemini
 }
 
-func (o *AiSemanticCachePluginOptions) GetHuggingface() *AiSemanticCachePluginHuggingface {
-	if o == nil {
+func (a *AiSemanticCachePluginOptions) GetHuggingface() *AiSemanticCachePluginHuggingface {
+	if a == nil {
 		return nil
 	}
-	return o.Huggingface
+	return a.Huggingface
 }
 
-func (o *AiSemanticCachePluginOptions) GetUpstreamURL() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginOptions) GetUpstreamURL() *string {
+	if a == nil {
 		return nil
 	}
-	return o.UpstreamURL
+	return a.UpstreamURL
 }
 
 // AiSemanticCachePluginProvider - AI provider format to use for embeddings API
@@ -531,25 +531,25 @@ type AiSemanticCachePluginModel struct {
 	Provider AiSemanticCachePluginProvider `json:"provider"`
 }
 
-func (o *AiSemanticCachePluginModel) GetName() string {
-	if o == nil {
+func (a *AiSemanticCachePluginModel) GetName() string {
+	if a == nil {
 		return ""
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AiSemanticCachePluginModel) GetOptions() *AiSemanticCachePluginOptions {
-	if o == nil {
+func (a *AiSemanticCachePluginModel) GetOptions() *AiSemanticCachePluginOptions {
+	if a == nil {
 		return nil
 	}
-	return o.Options
+	return a.Options
 }
 
-func (o *AiSemanticCachePluginModel) GetProvider() AiSemanticCachePluginProvider {
-	if o == nil {
+func (a *AiSemanticCachePluginModel) GetProvider() AiSemanticCachePluginProvider {
+	if a == nil {
 		return AiSemanticCachePluginProvider("")
 	}
-	return o.Provider
+	return a.Provider
 }
 
 type AiSemanticCachePluginEmbeddings struct {
@@ -557,18 +557,18 @@ type AiSemanticCachePluginEmbeddings struct {
 	Model AiSemanticCachePluginModel `json:"model"`
 }
 
-func (o *AiSemanticCachePluginEmbeddings) GetAuth() *AiSemanticCachePluginAuth {
-	if o == nil {
+func (a *AiSemanticCachePluginEmbeddings) GetAuth() *AiSemanticCachePluginAuth {
+	if a == nil {
 		return nil
 	}
-	return o.Auth
+	return a.Auth
 }
 
-func (o *AiSemanticCachePluginEmbeddings) GetModel() AiSemanticCachePluginModel {
-	if o == nil {
+func (a *AiSemanticCachePluginEmbeddings) GetModel() AiSemanticCachePluginModel {
+	if a == nil {
 		return AiSemanticCachePluginModel{}
 	}
-	return o.Model
+	return a.Model
 }
 
 // AiSemanticCachePluginLlmFormat - LLM input and output format and schema to use
@@ -696,94 +696,94 @@ func (a AiSemanticCachePluginPgvector) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticCachePluginPgvector) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticCachePluginPgvector) GetDatabase() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginPgvector) GetDatabase() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Database
+	return a.Database
 }
 
-func (o *AiSemanticCachePluginPgvector) GetHost() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginPgvector) GetHost() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Host
+	return a.Host
 }
 
-func (o *AiSemanticCachePluginPgvector) GetPassword() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginPgvector) GetPassword() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Password
+	return a.Password
 }
 
-func (o *AiSemanticCachePluginPgvector) GetPort() *int64 {
-	if o == nil {
+func (a *AiSemanticCachePluginPgvector) GetPort() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Port
+	return a.Port
 }
 
-func (o *AiSemanticCachePluginPgvector) GetSsl() *bool {
-	if o == nil {
+func (a *AiSemanticCachePluginPgvector) GetSsl() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Ssl
+	return a.Ssl
 }
 
-func (o *AiSemanticCachePluginPgvector) GetSslCert() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginPgvector) GetSslCert() *string {
+	if a == nil {
 		return nil
 	}
-	return o.SslCert
+	return a.SslCert
 }
 
-func (o *AiSemanticCachePluginPgvector) GetSslCertKey() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginPgvector) GetSslCertKey() *string {
+	if a == nil {
 		return nil
 	}
-	return o.SslCertKey
+	return a.SslCertKey
 }
 
-func (o *AiSemanticCachePluginPgvector) GetSslRequired() *bool {
-	if o == nil {
+func (a *AiSemanticCachePluginPgvector) GetSslRequired() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.SslRequired
+	return a.SslRequired
 }
 
-func (o *AiSemanticCachePluginPgvector) GetSslVerify() *bool {
-	if o == nil {
+func (a *AiSemanticCachePluginPgvector) GetSslVerify() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.SslVerify
+	return a.SslVerify
 }
 
-func (o *AiSemanticCachePluginPgvector) GetSslVersion() *AiSemanticCachePluginSslVersion {
-	if o == nil {
+func (a *AiSemanticCachePluginPgvector) GetSslVersion() *AiSemanticCachePluginSslVersion {
+	if a == nil {
 		return nil
 	}
-	return o.SslVersion
+	return a.SslVersion
 }
 
-func (o *AiSemanticCachePluginPgvector) GetTimeout() *float64 {
-	if o == nil {
+func (a *AiSemanticCachePluginPgvector) GetTimeout() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.Timeout
+	return a.Timeout
 }
 
-func (o *AiSemanticCachePluginPgvector) GetUser() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginPgvector) GetUser() *string {
+	if a == nil {
 		return nil
 	}
-	return o.User
+	return a.User
 }
 
 type AiSemanticCachePluginClusterNodes struct {
@@ -798,24 +798,24 @@ func (a AiSemanticCachePluginClusterNodes) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticCachePluginClusterNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticCachePluginClusterNodes) GetIP() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginClusterNodes) GetIP() *string {
+	if a == nil {
 		return nil
 	}
-	return o.IP
+	return a.IP
 }
 
-func (o *AiSemanticCachePluginClusterNodes) GetPort() *int64 {
-	if o == nil {
+func (a *AiSemanticCachePluginClusterNodes) GetPort() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Port
+	return a.Port
 }
 
 type AiSemanticCachePluginSentinelNodes struct {
@@ -830,24 +830,24 @@ func (a AiSemanticCachePluginSentinelNodes) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticCachePluginSentinelNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticCachePluginSentinelNodes) GetHost() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginSentinelNodes) GetHost() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Host
+	return a.Host
 }
 
-func (o *AiSemanticCachePluginSentinelNodes) GetPort() *int64 {
-	if o == nil {
+func (a *AiSemanticCachePluginSentinelNodes) GetPort() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Port
+	return a.Port
 }
 
 // AiSemanticCachePluginSentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -930,157 +930,157 @@ func (a AiSemanticCachePluginRedis) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticCachePluginRedis) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"cluster_nodes", "sentinel_nodes"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticCachePluginRedis) GetClusterMaxRedirections() *int64 {
-	if o == nil {
+func (a *AiSemanticCachePluginRedis) GetClusterMaxRedirections() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.ClusterMaxRedirections
+	return a.ClusterMaxRedirections
 }
 
-func (o *AiSemanticCachePluginRedis) GetClusterNodes() []AiSemanticCachePluginClusterNodes {
-	if o == nil {
+func (a *AiSemanticCachePluginRedis) GetClusterNodes() []AiSemanticCachePluginClusterNodes {
+	if a == nil {
 		return nil
 	}
-	return o.ClusterNodes
+	return a.ClusterNodes
 }
 
-func (o *AiSemanticCachePluginRedis) GetConnectTimeout() *int64 {
-	if o == nil {
+func (a *AiSemanticCachePluginRedis) GetConnectTimeout() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.ConnectTimeout
+	return a.ConnectTimeout
 }
 
-func (o *AiSemanticCachePluginRedis) GetConnectionIsProxied() *bool {
-	if o == nil {
+func (a *AiSemanticCachePluginRedis) GetConnectionIsProxied() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.ConnectionIsProxied
+	return a.ConnectionIsProxied
 }
 
-func (o *AiSemanticCachePluginRedis) GetDatabase() *int64 {
-	if o == nil {
+func (a *AiSemanticCachePluginRedis) GetDatabase() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Database
+	return a.Database
 }
 
-func (o *AiSemanticCachePluginRedis) GetHost() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginRedis) GetHost() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Host
+	return a.Host
 }
 
-func (o *AiSemanticCachePluginRedis) GetKeepaliveBacklog() *int64 {
-	if o == nil {
+func (a *AiSemanticCachePluginRedis) GetKeepaliveBacklog() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.KeepaliveBacklog
+	return a.KeepaliveBacklog
 }
 
-func (o *AiSemanticCachePluginRedis) GetKeepalivePoolSize() *int64 {
-	if o == nil {
+func (a *AiSemanticCachePluginRedis) GetKeepalivePoolSize() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.KeepalivePoolSize
+	return a.KeepalivePoolSize
 }
 
-func (o *AiSemanticCachePluginRedis) GetPassword() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginRedis) GetPassword() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Password
+	return a.Password
 }
 
-func (o *AiSemanticCachePluginRedis) GetPort() *int64 {
-	if o == nil {
+func (a *AiSemanticCachePluginRedis) GetPort() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Port
+	return a.Port
 }
 
-func (o *AiSemanticCachePluginRedis) GetReadTimeout() *int64 {
-	if o == nil {
+func (a *AiSemanticCachePluginRedis) GetReadTimeout() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.ReadTimeout
+	return a.ReadTimeout
 }
 
-func (o *AiSemanticCachePluginRedis) GetSendTimeout() *int64 {
-	if o == nil {
+func (a *AiSemanticCachePluginRedis) GetSendTimeout() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.SendTimeout
+	return a.SendTimeout
 }
 
-func (o *AiSemanticCachePluginRedis) GetSentinelMaster() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginRedis) GetSentinelMaster() *string {
+	if a == nil {
 		return nil
 	}
-	return o.SentinelMaster
+	return a.SentinelMaster
 }
 
-func (o *AiSemanticCachePluginRedis) GetSentinelNodes() []AiSemanticCachePluginSentinelNodes {
-	if o == nil {
+func (a *AiSemanticCachePluginRedis) GetSentinelNodes() []AiSemanticCachePluginSentinelNodes {
+	if a == nil {
 		return nil
 	}
-	return o.SentinelNodes
+	return a.SentinelNodes
 }
 
-func (o *AiSemanticCachePluginRedis) GetSentinelPassword() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginRedis) GetSentinelPassword() *string {
+	if a == nil {
 		return nil
 	}
-	return o.SentinelPassword
+	return a.SentinelPassword
 }
 
-func (o *AiSemanticCachePluginRedis) GetSentinelRole() *AiSemanticCachePluginSentinelRole {
-	if o == nil {
+func (a *AiSemanticCachePluginRedis) GetSentinelRole() *AiSemanticCachePluginSentinelRole {
+	if a == nil {
 		return nil
 	}
-	return o.SentinelRole
+	return a.SentinelRole
 }
 
-func (o *AiSemanticCachePluginRedis) GetSentinelUsername() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginRedis) GetSentinelUsername() *string {
+	if a == nil {
 		return nil
 	}
-	return o.SentinelUsername
+	return a.SentinelUsername
 }
 
-func (o *AiSemanticCachePluginRedis) GetServerName() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginRedis) GetServerName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ServerName
+	return a.ServerName
 }
 
-func (o *AiSemanticCachePluginRedis) GetSsl() *bool {
-	if o == nil {
+func (a *AiSemanticCachePluginRedis) GetSsl() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Ssl
+	return a.Ssl
 }
 
-func (o *AiSemanticCachePluginRedis) GetSslVerify() *bool {
-	if o == nil {
+func (a *AiSemanticCachePluginRedis) GetSslVerify() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.SslVerify
+	return a.SslVerify
 }
 
-func (o *AiSemanticCachePluginRedis) GetUsername() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginRedis) GetUsername() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Username
+	return a.Username
 }
 
 // AiSemanticCachePluginStrategy - which vector database driver to use
@@ -1123,46 +1123,46 @@ type AiSemanticCachePluginVectordb struct {
 	Threshold float64 `json:"threshold"`
 }
 
-func (o *AiSemanticCachePluginVectordb) GetDimensions() int64 {
-	if o == nil {
+func (a *AiSemanticCachePluginVectordb) GetDimensions() int64 {
+	if a == nil {
 		return 0
 	}
-	return o.Dimensions
+	return a.Dimensions
 }
 
-func (o *AiSemanticCachePluginVectordb) GetDistanceMetric() AiSemanticCachePluginDistanceMetric {
-	if o == nil {
+func (a *AiSemanticCachePluginVectordb) GetDistanceMetric() AiSemanticCachePluginDistanceMetric {
+	if a == nil {
 		return AiSemanticCachePluginDistanceMetric("")
 	}
-	return o.DistanceMetric
+	return a.DistanceMetric
 }
 
-func (o *AiSemanticCachePluginVectordb) GetPgvector() *AiSemanticCachePluginPgvector {
-	if o == nil {
+func (a *AiSemanticCachePluginVectordb) GetPgvector() *AiSemanticCachePluginPgvector {
+	if a == nil {
 		return nil
 	}
-	return o.Pgvector
+	return a.Pgvector
 }
 
-func (o *AiSemanticCachePluginVectordb) GetRedis() *AiSemanticCachePluginRedis {
-	if o == nil {
+func (a *AiSemanticCachePluginVectordb) GetRedis() *AiSemanticCachePluginRedis {
+	if a == nil {
 		return nil
 	}
-	return o.Redis
+	return a.Redis
 }
 
-func (o *AiSemanticCachePluginVectordb) GetStrategy() AiSemanticCachePluginStrategy {
-	if o == nil {
+func (a *AiSemanticCachePluginVectordb) GetStrategy() AiSemanticCachePluginStrategy {
+	if a == nil {
 		return AiSemanticCachePluginStrategy("")
 	}
-	return o.Strategy
+	return a.Strategy
 }
 
-func (o *AiSemanticCachePluginVectordb) GetThreshold() float64 {
-	if o == nil {
+func (a *AiSemanticCachePluginVectordb) GetThreshold() float64 {
+	if a == nil {
 		return 0.0
 	}
-	return o.Threshold
+	return a.Threshold
 }
 
 type AiSemanticCachePluginConfig struct {
@@ -1193,87 +1193,87 @@ func (a AiSemanticCachePluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticCachePluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"embeddings", "vectordb"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticCachePluginConfig) GetCacheControl() *bool {
-	if o == nil {
+func (a *AiSemanticCachePluginConfig) GetCacheControl() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.CacheControl
+	return a.CacheControl
 }
 
-func (o *AiSemanticCachePluginConfig) GetCacheTTL() *int64 {
-	if o == nil {
+func (a *AiSemanticCachePluginConfig) GetCacheTTL() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.CacheTTL
+	return a.CacheTTL
 }
 
-func (o *AiSemanticCachePluginConfig) GetEmbeddings() AiSemanticCachePluginEmbeddings {
-	if o == nil {
+func (a *AiSemanticCachePluginConfig) GetEmbeddings() AiSemanticCachePluginEmbeddings {
+	if a == nil {
 		return AiSemanticCachePluginEmbeddings{}
 	}
-	return o.Embeddings
+	return a.Embeddings
 }
 
-func (o *AiSemanticCachePluginConfig) GetExactCaching() *bool {
-	if o == nil {
+func (a *AiSemanticCachePluginConfig) GetExactCaching() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.ExactCaching
+	return a.ExactCaching
 }
 
-func (o *AiSemanticCachePluginConfig) GetIgnoreAssistantPrompts() *bool {
-	if o == nil {
+func (a *AiSemanticCachePluginConfig) GetIgnoreAssistantPrompts() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.IgnoreAssistantPrompts
+	return a.IgnoreAssistantPrompts
 }
 
-func (o *AiSemanticCachePluginConfig) GetIgnoreSystemPrompts() *bool {
-	if o == nil {
+func (a *AiSemanticCachePluginConfig) GetIgnoreSystemPrompts() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.IgnoreSystemPrompts
+	return a.IgnoreSystemPrompts
 }
 
-func (o *AiSemanticCachePluginConfig) GetIgnoreToolPrompts() *bool {
-	if o == nil {
+func (a *AiSemanticCachePluginConfig) GetIgnoreToolPrompts() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.IgnoreToolPrompts
+	return a.IgnoreToolPrompts
 }
 
-func (o *AiSemanticCachePluginConfig) GetLlmFormat() *AiSemanticCachePluginLlmFormat {
-	if o == nil {
+func (a *AiSemanticCachePluginConfig) GetLlmFormat() *AiSemanticCachePluginLlmFormat {
+	if a == nil {
 		return nil
 	}
-	return o.LlmFormat
+	return a.LlmFormat
 }
 
-func (o *AiSemanticCachePluginConfig) GetMessageCountback() *float64 {
-	if o == nil {
+func (a *AiSemanticCachePluginConfig) GetMessageCountback() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.MessageCountback
+	return a.MessageCountback
 }
 
-func (o *AiSemanticCachePluginConfig) GetStopOnFailure() *bool {
-	if o == nil {
+func (a *AiSemanticCachePluginConfig) GetStopOnFailure() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.StopOnFailure
+	return a.StopOnFailure
 }
 
-func (o *AiSemanticCachePluginConfig) GetVectordb() AiSemanticCachePluginVectordb {
-	if o == nil {
+func (a *AiSemanticCachePluginConfig) GetVectordb() AiSemanticCachePluginVectordb {
+	if a == nil {
 		return AiSemanticCachePluginVectordb{}
 	}
-	return o.Vectordb
+	return a.Vectordb
 }
 
 // AiSemanticCachePluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -1281,11 +1281,11 @@ type AiSemanticCachePluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiSemanticCachePluginConsumer) GetID() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginConsumer) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiSemanticCachePluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -1293,11 +1293,11 @@ type AiSemanticCachePluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiSemanticCachePluginConsumerGroup) GetID() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginConsumerGroup) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 type AiSemanticCachePluginProtocols string
@@ -1337,11 +1337,11 @@ type AiSemanticCachePluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiSemanticCachePluginRoute) GetID() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginRoute) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiSemanticCachePluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -1349,11 +1349,11 @@ type AiSemanticCachePluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiSemanticCachePluginService) GetID() *string {
-	if o == nil {
+func (a *AiSemanticCachePluginService) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiSemanticCachePlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -1392,110 +1392,110 @@ func (a AiSemanticCachePlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticCachePlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "ordering", "partials", "tags", "config", "consumer", "consumer_group", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSemanticCachePlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (a *AiSemanticCachePlugin) GetCreatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AiSemanticCachePlugin) GetEnabled() *bool {
-	if o == nil {
+func (a *AiSemanticCachePlugin) GetEnabled() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Enabled
+	return a.Enabled
 }
 
-func (o *AiSemanticCachePlugin) GetID() *string {
-	if o == nil {
+func (a *AiSemanticCachePlugin) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AiSemanticCachePlugin) GetInstanceName() *string {
-	if o == nil {
+func (a *AiSemanticCachePlugin) GetInstanceName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.InstanceName
+	return a.InstanceName
 }
 
-func (o *AiSemanticCachePlugin) GetName() string {
+func (a *AiSemanticCachePlugin) GetName() string {
 	return "ai-semantic-cache"
 }
 
-func (o *AiSemanticCachePlugin) GetOrdering() *AiSemanticCachePluginOrdering {
-	if o == nil {
+func (a *AiSemanticCachePlugin) GetOrdering() *AiSemanticCachePluginOrdering {
+	if a == nil {
 		return nil
 	}
-	return o.Ordering
+	return a.Ordering
 }
 
-func (o *AiSemanticCachePlugin) GetPartials() []AiSemanticCachePluginPartials {
-	if o == nil {
+func (a *AiSemanticCachePlugin) GetPartials() []AiSemanticCachePluginPartials {
+	if a == nil {
 		return nil
 	}
-	return o.Partials
+	return a.Partials
 }
 
-func (o *AiSemanticCachePlugin) GetTags() []string {
-	if o == nil {
+func (a *AiSemanticCachePlugin) GetTags() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Tags
+	return a.Tags
 }
 
-func (o *AiSemanticCachePlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (a *AiSemanticCachePlugin) GetUpdatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }
 
-func (o *AiSemanticCachePlugin) GetConfig() AiSemanticCachePluginConfig {
-	if o == nil {
+func (a *AiSemanticCachePlugin) GetConfig() AiSemanticCachePluginConfig {
+	if a == nil {
 		return AiSemanticCachePluginConfig{}
 	}
-	return o.Config
+	return a.Config
 }
 
-func (o *AiSemanticCachePlugin) GetConsumer() *AiSemanticCachePluginConsumer {
-	if o == nil {
+func (a *AiSemanticCachePlugin) GetConsumer() *AiSemanticCachePluginConsumer {
+	if a == nil {
 		return nil
 	}
-	return o.Consumer
+	return a.Consumer
 }
 
-func (o *AiSemanticCachePlugin) GetConsumerGroup() *AiSemanticCachePluginConsumerGroup {
-	if o == nil {
+func (a *AiSemanticCachePlugin) GetConsumerGroup() *AiSemanticCachePluginConsumerGroup {
+	if a == nil {
 		return nil
 	}
-	return o.ConsumerGroup
+	return a.ConsumerGroup
 }
 
-func (o *AiSemanticCachePlugin) GetProtocols() []AiSemanticCachePluginProtocols {
-	if o == nil {
+func (a *AiSemanticCachePlugin) GetProtocols() []AiSemanticCachePluginProtocols {
+	if a == nil {
 		return nil
 	}
-	return o.Protocols
+	return a.Protocols
 }
 
-func (o *AiSemanticCachePlugin) GetRoute() *AiSemanticCachePluginRoute {
-	if o == nil {
+func (a *AiSemanticCachePlugin) GetRoute() *AiSemanticCachePluginRoute {
+	if a == nil {
 		return nil
 	}
-	return o.Route
+	return a.Route
 }
 
-func (o *AiSemanticCachePlugin) GetService() *AiSemanticCachePluginService {
-	if o == nil {
+func (a *AiSemanticCachePlugin) GetService() *AiSemanticCachePluginService {
+	if a == nil {
 		return nil
 	}
-	return o.Service
+	return a.Service
 }

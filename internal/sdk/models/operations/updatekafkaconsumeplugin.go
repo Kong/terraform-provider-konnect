@@ -15,25 +15,25 @@ type UpdateKafkaconsumePluginRequest struct {
 	KafkaConsumePlugin shared.KafkaConsumePlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateKafkaconsumePluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateKafkaconsumePluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateKafkaconsumePluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateKafkaconsumePluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateKafkaconsumePluginRequest) GetKafkaConsumePlugin() shared.KafkaConsumePlugin {
-	if o == nil {
+func (u *UpdateKafkaconsumePluginRequest) GetKafkaConsumePlugin() shared.KafkaConsumePlugin {
+	if u == nil {
 		return shared.KafkaConsumePlugin{}
 	}
-	return o.KafkaConsumePlugin
+	return u.KafkaConsumePlugin
 }
 
 type UpdateKafkaconsumePluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateKafkaconsumePluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateKafkaconsumePluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateKafkaconsumePluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateKafkaconsumePluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateKafkaconsumePluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateKafkaconsumePluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateKafkaconsumePluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateKafkaconsumePluginResponse) GetKafkaConsumePlugin() *shared.KafkaConsumePlugin {
-	if o == nil {
+func (u *UpdateKafkaconsumePluginResponse) GetKafkaConsumePlugin() *shared.KafkaConsumePlugin {
+	if u == nil {
 		return nil
 	}
-	return o.KafkaConsumePlugin
+	return u.KafkaConsumePlugin
 }
 
-func (o *UpdateKafkaconsumePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateKafkaconsumePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

@@ -15,25 +15,25 @@ type UpdateFilelogPluginRequest struct {
 	FileLogPlugin  shared.FileLogPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateFilelogPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateFilelogPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateFilelogPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateFilelogPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateFilelogPluginRequest) GetFileLogPlugin() shared.FileLogPlugin {
-	if o == nil {
+func (u *UpdateFilelogPluginRequest) GetFileLogPlugin() shared.FileLogPlugin {
+	if u == nil {
 		return shared.FileLogPlugin{}
 	}
-	return o.FileLogPlugin
+	return u.FileLogPlugin
 }
 
 type UpdateFilelogPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateFilelogPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateFilelogPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateFilelogPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateFilelogPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateFilelogPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateFilelogPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateFilelogPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateFilelogPluginResponse) GetFileLogPlugin() *shared.FileLogPlugin {
-	if o == nil {
+func (u *UpdateFilelogPluginResponse) GetFileLogPlugin() *shared.FileLogPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.FileLogPlugin
+	return u.FileLogPlugin
 }
 
-func (o *UpdateFilelogPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateFilelogPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

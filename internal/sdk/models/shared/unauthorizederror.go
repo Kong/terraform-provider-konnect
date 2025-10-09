@@ -11,37 +11,37 @@ type UnauthorizedError struct {
 	Detail   any `json:"detail"`
 }
 
-func (o *UnauthorizedError) GetStatus() any {
-	if o == nil {
+func (u *UnauthorizedError) GetStatus() any {
+	if u == nil {
 		return nil
 	}
-	return o.Status
+	return u.Status
 }
 
-func (o *UnauthorizedError) GetTitle() any {
-	if o == nil {
+func (u *UnauthorizedError) GetTitle() any {
+	if u == nil {
 		return nil
 	}
-	return o.Title
+	return u.Title
 }
 
-func (o *UnauthorizedError) GetType() any {
-	if o == nil {
+func (u *UnauthorizedError) GetType() any {
+	if u == nil {
 		return nil
 	}
-	return o.Type
+	return u.Type
 }
 
-func (o *UnauthorizedError) GetInstance() any {
-	if o == nil {
+func (u *UnauthorizedError) GetInstance() any {
+	if u == nil {
 		return nil
 	}
-	return o.Instance
+	return u.Instance
 }
 
-func (o *UnauthorizedError) GetDetail() any {
-	if o == nil {
+func (u *UnauthorizedError) GetDetail() any {
+	if u == nil {
 		return nil
 	}
-	return o.Detail
+	return u.Detail
 }

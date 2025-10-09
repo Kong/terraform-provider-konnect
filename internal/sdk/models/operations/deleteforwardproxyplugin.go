@@ -14,18 +14,18 @@ type DeleteForwardproxyPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteForwardproxyPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteForwardproxyPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteForwardproxyPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteForwardproxyPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteForwardproxyPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteForwardproxyPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteForwardproxyPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteForwardproxyPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteForwardproxyPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteForwardproxyPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteForwardproxyPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteForwardproxyPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteForwardproxyPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteForwardproxyPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

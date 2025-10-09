@@ -21,29 +21,29 @@ func (c ConfigStoreSecret) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfigStoreSecret) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ConfigStoreSecret) GetKey() *string {
-	if o == nil {
+func (c *ConfigStoreSecret) GetKey() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Key
+	return c.Key
 }
 
-func (o *ConfigStoreSecret) GetCreatedAt() *time.Time {
-	if o == nil {
+func (c *ConfigStoreSecret) GetCreatedAt() *time.Time {
+	if c == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return c.CreatedAt
 }
 
-func (o *ConfigStoreSecret) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (c *ConfigStoreSecret) GetUpdatedAt() *time.Time {
+	if c == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return c.UpdatedAt
 }

@@ -13,18 +13,18 @@ type CreateSyslogPluginRequest struct {
 	SyslogPlugin   shared.SyslogPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateSyslogPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateSyslogPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateSyslogPluginRequest) GetSyslogPlugin() shared.SyslogPlugin {
-	if o == nil {
+func (c *CreateSyslogPluginRequest) GetSyslogPlugin() shared.SyslogPlugin {
+	if c == nil {
 		return shared.SyslogPlugin{}
 	}
-	return o.SyslogPlugin
+	return c.SyslogPlugin
 }
 
 type CreateSyslogPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateSyslogPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateSyslogPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateSyslogPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateSyslogPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateSyslogPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateSyslogPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateSyslogPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateSyslogPluginResponse) GetSyslogPlugin() *shared.SyslogPlugin {
-	if o == nil {
+func (c *CreateSyslogPluginResponse) GetSyslogPlugin() *shared.SyslogPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.SyslogPlugin
+	return c.SyslogPlugin
 }
 
-func (o *CreateSyslogPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateSyslogPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

@@ -52,22 +52,22 @@ func (a APISpec) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APISpec) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *APISpec) GetContent() *string {
-	if o == nil {
+func (a *APISpec) GetContent() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Content
+	return a.Content
 }
 
-func (o *APISpec) GetType() *APISpecAPISpecType {
-	if o == nil {
+func (a *APISpec) GetType() *APISpecAPISpecType {
+	if a == nil {
 		return nil
 	}
-	return o.Type
+	return a.Type
 }

@@ -12,22 +12,22 @@ type KeyAuthPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *KeyAuthPluginAfter) GetAccess() []string {
-	if o == nil {
+func (k *KeyAuthPluginAfter) GetAccess() []string {
+	if k == nil {
 		return nil
 	}
-	return o.Access
+	return k.Access
 }
 
 type KeyAuthPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *KeyAuthPluginBefore) GetAccess() []string {
-	if o == nil {
+func (k *KeyAuthPluginBefore) GetAccess() []string {
+	if k == nil {
 		return nil
 	}
-	return o.Access
+	return k.Access
 }
 
 type KeyAuthPluginOrdering struct {
@@ -35,18 +35,18 @@ type KeyAuthPluginOrdering struct {
 	Before *KeyAuthPluginBefore `json:"before,omitempty"`
 }
 
-func (o *KeyAuthPluginOrdering) GetAfter() *KeyAuthPluginAfter {
-	if o == nil {
+func (k *KeyAuthPluginOrdering) GetAfter() *KeyAuthPluginAfter {
+	if k == nil {
 		return nil
 	}
-	return o.After
+	return k.After
 }
 
-func (o *KeyAuthPluginOrdering) GetBefore() *KeyAuthPluginBefore {
-	if o == nil {
+func (k *KeyAuthPluginOrdering) GetBefore() *KeyAuthPluginBefore {
+	if k == nil {
 		return nil
 	}
-	return o.Before
+	return k.Before
 }
 
 type KeyAuthPluginPartials struct {
@@ -57,25 +57,25 @@ type KeyAuthPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *KeyAuthPluginPartials) GetID() *string {
-	if o == nil {
+func (k *KeyAuthPluginPartials) GetID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ID
+	return k.ID
 }
 
-func (o *KeyAuthPluginPartials) GetName() *string {
-	if o == nil {
+func (k *KeyAuthPluginPartials) GetName() *string {
+	if k == nil {
 		return nil
 	}
-	return o.Name
+	return k.Name
 }
 
-func (o *KeyAuthPluginPartials) GetPath() *string {
-	if o == nil {
+func (k *KeyAuthPluginPartials) GetPath() *string {
+	if k == nil {
 		return nil
 	}
-	return o.Path
+	return k.Path
 }
 
 type Scope string
@@ -116,31 +116,31 @@ func (i IdentityRealms) MarshalJSON() ([]byte, error) {
 }
 
 func (i *IdentityRealms) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *IdentityRealms) GetID() *string {
-	if o == nil {
+func (i *IdentityRealms) GetID() *string {
+	if i == nil {
 		return nil
 	}
-	return o.ID
+	return i.ID
 }
 
-func (o *IdentityRealms) GetRegion() *string {
-	if o == nil {
+func (i *IdentityRealms) GetRegion() *string {
+	if i == nil {
 		return nil
 	}
-	return o.Region
+	return i.Region
 }
 
-func (o *IdentityRealms) GetScope() *Scope {
-	if o == nil {
+func (i *IdentityRealms) GetScope() *Scope {
+	if i == nil {
 		return nil
 	}
-	return o.Scope
+	return i.Scope
 }
 
 type KeyAuthPluginConfig struct {
@@ -169,73 +169,73 @@ func (k KeyAuthPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KeyAuthPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KeyAuthPluginConfig) GetAnonymous() *string {
-	if o == nil {
+func (k *KeyAuthPluginConfig) GetAnonymous() *string {
+	if k == nil {
 		return nil
 	}
-	return o.Anonymous
+	return k.Anonymous
 }
 
-func (o *KeyAuthPluginConfig) GetHideCredentials() *bool {
-	if o == nil {
+func (k *KeyAuthPluginConfig) GetHideCredentials() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.HideCredentials
+	return k.HideCredentials
 }
 
-func (o *KeyAuthPluginConfig) GetIdentityRealms() []IdentityRealms {
-	if o == nil {
+func (k *KeyAuthPluginConfig) GetIdentityRealms() []IdentityRealms {
+	if k == nil {
 		return nil
 	}
-	return o.IdentityRealms
+	return k.IdentityRealms
 }
 
-func (o *KeyAuthPluginConfig) GetKeyInBody() *bool {
-	if o == nil {
+func (k *KeyAuthPluginConfig) GetKeyInBody() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.KeyInBody
+	return k.KeyInBody
 }
 
-func (o *KeyAuthPluginConfig) GetKeyInHeader() *bool {
-	if o == nil {
+func (k *KeyAuthPluginConfig) GetKeyInHeader() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.KeyInHeader
+	return k.KeyInHeader
 }
 
-func (o *KeyAuthPluginConfig) GetKeyInQuery() *bool {
-	if o == nil {
+func (k *KeyAuthPluginConfig) GetKeyInQuery() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.KeyInQuery
+	return k.KeyInQuery
 }
 
-func (o *KeyAuthPluginConfig) GetKeyNames() []string {
-	if o == nil {
+func (k *KeyAuthPluginConfig) GetKeyNames() []string {
+	if k == nil {
 		return nil
 	}
-	return o.KeyNames
+	return k.KeyNames
 }
 
-func (o *KeyAuthPluginConfig) GetRealm() *string {
-	if o == nil {
+func (k *KeyAuthPluginConfig) GetRealm() *string {
+	if k == nil {
 		return nil
 	}
-	return o.Realm
+	return k.Realm
 }
 
-func (o *KeyAuthPluginConfig) GetRunOnPreflight() *bool {
-	if o == nil {
+func (k *KeyAuthPluginConfig) GetRunOnPreflight() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.RunOnPreflight
+	return k.RunOnPreflight
 }
 
 type KeyAuthPluginProtocols string
@@ -281,11 +281,11 @@ type KeyAuthPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *KeyAuthPluginRoute) GetID() *string {
-	if o == nil {
+func (k *KeyAuthPluginRoute) GetID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ID
+	return k.ID
 }
 
 // KeyAuthPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -293,11 +293,11 @@ type KeyAuthPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *KeyAuthPluginService) GetID() *string {
-	if o == nil {
+func (k *KeyAuthPluginService) GetID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ID
+	return k.ID
 }
 
 // KeyAuthPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -332,96 +332,96 @@ func (k KeyAuthPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KeyAuthPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"name", "ordering", "partials", "tags", "config", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KeyAuthPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (k *KeyAuthPlugin) GetCreatedAt() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return k.CreatedAt
 }
 
-func (o *KeyAuthPlugin) GetEnabled() *bool {
-	if o == nil {
+func (k *KeyAuthPlugin) GetEnabled() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.Enabled
+	return k.Enabled
 }
 
-func (o *KeyAuthPlugin) GetID() *string {
-	if o == nil {
+func (k *KeyAuthPlugin) GetID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ID
+	return k.ID
 }
 
-func (o *KeyAuthPlugin) GetInstanceName() *string {
-	if o == nil {
+func (k *KeyAuthPlugin) GetInstanceName() *string {
+	if k == nil {
 		return nil
 	}
-	return o.InstanceName
+	return k.InstanceName
 }
 
-func (o *KeyAuthPlugin) GetName() string {
+func (k *KeyAuthPlugin) GetName() string {
 	return "key-auth"
 }
 
-func (o *KeyAuthPlugin) GetOrdering() *KeyAuthPluginOrdering {
-	if o == nil {
+func (k *KeyAuthPlugin) GetOrdering() *KeyAuthPluginOrdering {
+	if k == nil {
 		return nil
 	}
-	return o.Ordering
+	return k.Ordering
 }
 
-func (o *KeyAuthPlugin) GetPartials() []KeyAuthPluginPartials {
-	if o == nil {
+func (k *KeyAuthPlugin) GetPartials() []KeyAuthPluginPartials {
+	if k == nil {
 		return nil
 	}
-	return o.Partials
+	return k.Partials
 }
 
-func (o *KeyAuthPlugin) GetTags() []string {
-	if o == nil {
+func (k *KeyAuthPlugin) GetTags() []string {
+	if k == nil {
 		return nil
 	}
-	return o.Tags
+	return k.Tags
 }
 
-func (o *KeyAuthPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (k *KeyAuthPlugin) GetUpdatedAt() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return k.UpdatedAt
 }
 
-func (o *KeyAuthPlugin) GetConfig() *KeyAuthPluginConfig {
-	if o == nil {
+func (k *KeyAuthPlugin) GetConfig() *KeyAuthPluginConfig {
+	if k == nil {
 		return nil
 	}
-	return o.Config
+	return k.Config
 }
 
-func (o *KeyAuthPlugin) GetProtocols() []KeyAuthPluginProtocols {
-	if o == nil {
+func (k *KeyAuthPlugin) GetProtocols() []KeyAuthPluginProtocols {
+	if k == nil {
 		return nil
 	}
-	return o.Protocols
+	return k.Protocols
 }
 
-func (o *KeyAuthPlugin) GetRoute() *KeyAuthPluginRoute {
-	if o == nil {
+func (k *KeyAuthPlugin) GetRoute() *KeyAuthPluginRoute {
+	if k == nil {
 		return nil
 	}
-	return o.Route
+	return k.Route
 }
 
-func (o *KeyAuthPlugin) GetService() *KeyAuthPluginService {
-	if o == nil {
+func (k *KeyAuthPlugin) GetService() *KeyAuthPluginService {
+	if k == nil {
 		return nil
 	}
-	return o.Service
+	return k.Service
 }

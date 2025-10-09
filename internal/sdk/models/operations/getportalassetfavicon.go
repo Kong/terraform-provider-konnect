@@ -12,11 +12,11 @@ type GetPortalAssetFaviconRequest struct {
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 }
 
-func (o *GetPortalAssetFaviconRequest) GetPortalID() string {
-	if o == nil {
+func (g *GetPortalAssetFaviconRequest) GetPortalID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PortalID
+	return g.PortalID
 }
 
 type GetPortalAssetFaviconResponse struct {
@@ -34,44 +34,44 @@ type GetPortalAssetFaviconResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *GetPortalAssetFaviconResponse) GetContentType() string {
-	if o == nil {
+func (g *GetPortalAssetFaviconResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetPortalAssetFaviconResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetPortalAssetFaviconResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetPortalAssetFaviconResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetPortalAssetFaviconResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetPortalAssetFaviconResponse) GetPortalAssetResponse() *shared.PortalAssetResponse {
-	if o == nil {
+func (g *GetPortalAssetFaviconResponse) GetPortalAssetResponse() *shared.PortalAssetResponse {
+	if g == nil {
 		return nil
 	}
-	return o.PortalAssetResponse
+	return g.PortalAssetResponse
 }
 
-func (o *GetPortalAssetFaviconResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetPortalAssetFaviconResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetPortalAssetFaviconResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (g *GetPortalAssetFaviconResponse) GetForbiddenError() *shared.ForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return g.ForbiddenError
 }

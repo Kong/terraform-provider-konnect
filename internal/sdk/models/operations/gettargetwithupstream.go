@@ -16,25 +16,25 @@ type GetTargetWithUpstreamRequest struct {
 	TargetID string `pathParam:"style=simple,explode=false,name=TargetId"`
 }
 
-func (o *GetTargetWithUpstreamRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetTargetWithUpstreamRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
-func (o *GetTargetWithUpstreamRequest) GetUpstreamID() string {
-	if o == nil {
+func (g *GetTargetWithUpstreamRequest) GetUpstreamID() string {
+	if g == nil {
 		return ""
 	}
-	return o.UpstreamID
+	return g.UpstreamID
 }
 
-func (o *GetTargetWithUpstreamRequest) GetTargetID() string {
-	if o == nil {
+func (g *GetTargetWithUpstreamRequest) GetTargetID() string {
+	if g == nil {
 		return ""
 	}
-	return o.TargetID
+	return g.TargetID
 }
 
 type GetTargetWithUpstreamResponse struct {
@@ -48,30 +48,30 @@ type GetTargetWithUpstreamResponse struct {
 	Target *shared.Target
 }
 
-func (o *GetTargetWithUpstreamResponse) GetContentType() string {
-	if o == nil {
+func (g *GetTargetWithUpstreamResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetTargetWithUpstreamResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetTargetWithUpstreamResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetTargetWithUpstreamResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetTargetWithUpstreamResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetTargetWithUpstreamResponse) GetTarget() *shared.Target {
-	if o == nil {
+func (g *GetTargetWithUpstreamResponse) GetTarget() *shared.Target {
+	if g == nil {
 		return nil
 	}
-	return o.Target
+	return g.Target
 }

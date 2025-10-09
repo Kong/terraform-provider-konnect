@@ -12,22 +12,22 @@ type AiSanitizerPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AiSanitizerPluginAfter) GetAccess() []string {
-	if o == nil {
+func (a *AiSanitizerPluginAfter) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AiSanitizerPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AiSanitizerPluginBefore) GetAccess() []string {
-	if o == nil {
+func (a *AiSanitizerPluginBefore) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AiSanitizerPluginOrdering struct {
@@ -35,18 +35,18 @@ type AiSanitizerPluginOrdering struct {
 	Before *AiSanitizerPluginBefore `json:"before,omitempty"`
 }
 
-func (o *AiSanitizerPluginOrdering) GetAfter() *AiSanitizerPluginAfter {
-	if o == nil {
+func (a *AiSanitizerPluginOrdering) GetAfter() *AiSanitizerPluginAfter {
+	if a == nil {
 		return nil
 	}
-	return o.After
+	return a.After
 }
 
-func (o *AiSanitizerPluginOrdering) GetBefore() *AiSanitizerPluginBefore {
-	if o == nil {
+func (a *AiSanitizerPluginOrdering) GetBefore() *AiSanitizerPluginBefore {
+	if a == nil {
 		return nil
 	}
-	return o.Before
+	return a.Before
 }
 
 type AiSanitizerPluginPartials struct {
@@ -57,25 +57,25 @@ type AiSanitizerPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *AiSanitizerPluginPartials) GetID() *string {
-	if o == nil {
+func (a *AiSanitizerPluginPartials) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AiSanitizerPluginPartials) GetName() *string {
-	if o == nil {
+func (a *AiSanitizerPluginPartials) GetName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AiSanitizerPluginPartials) GetPath() *string {
-	if o == nil {
+func (a *AiSanitizerPluginPartials) GetPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Path
+	return a.Path
 }
 
 type Anonymize string
@@ -169,31 +169,31 @@ func (c CustomPatterns) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CustomPatterns) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "regex"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CustomPatterns) GetName() string {
-	if o == nil {
+func (c *CustomPatterns) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *CustomPatterns) GetRegex() string {
-	if o == nil {
+func (c *CustomPatterns) GetRegex() string {
+	if c == nil {
 		return ""
 	}
-	return o.Regex
+	return c.Regex
 }
 
-func (o *CustomPatterns) GetScore() *float64 {
-	if o == nil {
+func (c *CustomPatterns) GetScore() *float64 {
+	if c == nil {
 		return nil
 	}
-	return o.Score
+	return c.Score
 }
 
 // RedactType - What value to be used to redacted to
@@ -251,80 +251,80 @@ func (a AiSanitizerPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSanitizerPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"custom_patterns"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSanitizerPluginConfig) GetAnonymize() []Anonymize {
-	if o == nil {
+func (a *AiSanitizerPluginConfig) GetAnonymize() []Anonymize {
+	if a == nil {
 		return nil
 	}
-	return o.Anonymize
+	return a.Anonymize
 }
 
-func (o *AiSanitizerPluginConfig) GetCustomPatterns() []CustomPatterns {
-	if o == nil {
+func (a *AiSanitizerPluginConfig) GetCustomPatterns() []CustomPatterns {
+	if a == nil {
 		return nil
 	}
-	return o.CustomPatterns
+	return a.CustomPatterns
 }
 
-func (o *AiSanitizerPluginConfig) GetHost() *string {
-	if o == nil {
+func (a *AiSanitizerPluginConfig) GetHost() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Host
+	return a.Host
 }
 
-func (o *AiSanitizerPluginConfig) GetKeepaliveTimeout() *float64 {
-	if o == nil {
+func (a *AiSanitizerPluginConfig) GetKeepaliveTimeout() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.KeepaliveTimeout
+	return a.KeepaliveTimeout
 }
 
-func (o *AiSanitizerPluginConfig) GetPort() *float64 {
-	if o == nil {
+func (a *AiSanitizerPluginConfig) GetPort() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.Port
+	return a.Port
 }
 
-func (o *AiSanitizerPluginConfig) GetRecoverRedacted() *bool {
-	if o == nil {
+func (a *AiSanitizerPluginConfig) GetRecoverRedacted() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.RecoverRedacted
+	return a.RecoverRedacted
 }
 
-func (o *AiSanitizerPluginConfig) GetRedactType() *RedactType {
-	if o == nil {
+func (a *AiSanitizerPluginConfig) GetRedactType() *RedactType {
+	if a == nil {
 		return nil
 	}
-	return o.RedactType
+	return a.RedactType
 }
 
-func (o *AiSanitizerPluginConfig) GetScheme() *string {
-	if o == nil {
+func (a *AiSanitizerPluginConfig) GetScheme() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Scheme
+	return a.Scheme
 }
 
-func (o *AiSanitizerPluginConfig) GetStopOnError() *bool {
-	if o == nil {
+func (a *AiSanitizerPluginConfig) GetStopOnError() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.StopOnError
+	return a.StopOnError
 }
 
-func (o *AiSanitizerPluginConfig) GetTimeout() *float64 {
-	if o == nil {
+func (a *AiSanitizerPluginConfig) GetTimeout() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.Timeout
+	return a.Timeout
 }
 
 // AiSanitizerPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -332,11 +332,11 @@ type AiSanitizerPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiSanitizerPluginConsumer) GetID() *string {
-	if o == nil {
+func (a *AiSanitizerPluginConsumer) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiSanitizerPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -344,11 +344,11 @@ type AiSanitizerPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiSanitizerPluginConsumerGroup) GetID() *string {
-	if o == nil {
+func (a *AiSanitizerPluginConsumerGroup) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 type AiSanitizerPluginProtocols string
@@ -388,11 +388,11 @@ type AiSanitizerPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiSanitizerPluginRoute) GetID() *string {
-	if o == nil {
+func (a *AiSanitizerPluginRoute) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiSanitizerPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -400,11 +400,11 @@ type AiSanitizerPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiSanitizerPluginService) GetID() *string {
-	if o == nil {
+func (a *AiSanitizerPluginService) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiSanitizerPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -443,110 +443,110 @@ func (a AiSanitizerPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSanitizerPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "ordering", "partials", "tags", "config", "consumer", "consumer_group", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiSanitizerPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (a *AiSanitizerPlugin) GetCreatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AiSanitizerPlugin) GetEnabled() *bool {
-	if o == nil {
+func (a *AiSanitizerPlugin) GetEnabled() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Enabled
+	return a.Enabled
 }
 
-func (o *AiSanitizerPlugin) GetID() *string {
-	if o == nil {
+func (a *AiSanitizerPlugin) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AiSanitizerPlugin) GetInstanceName() *string {
-	if o == nil {
+func (a *AiSanitizerPlugin) GetInstanceName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.InstanceName
+	return a.InstanceName
 }
 
-func (o *AiSanitizerPlugin) GetName() string {
+func (a *AiSanitizerPlugin) GetName() string {
 	return "ai-sanitizer"
 }
 
-func (o *AiSanitizerPlugin) GetOrdering() *AiSanitizerPluginOrdering {
-	if o == nil {
+func (a *AiSanitizerPlugin) GetOrdering() *AiSanitizerPluginOrdering {
+	if a == nil {
 		return nil
 	}
-	return o.Ordering
+	return a.Ordering
 }
 
-func (o *AiSanitizerPlugin) GetPartials() []AiSanitizerPluginPartials {
-	if o == nil {
+func (a *AiSanitizerPlugin) GetPartials() []AiSanitizerPluginPartials {
+	if a == nil {
 		return nil
 	}
-	return o.Partials
+	return a.Partials
 }
 
-func (o *AiSanitizerPlugin) GetTags() []string {
-	if o == nil {
+func (a *AiSanitizerPlugin) GetTags() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Tags
+	return a.Tags
 }
 
-func (o *AiSanitizerPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (a *AiSanitizerPlugin) GetUpdatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }
 
-func (o *AiSanitizerPlugin) GetConfig() *AiSanitizerPluginConfig {
-	if o == nil {
+func (a *AiSanitizerPlugin) GetConfig() *AiSanitizerPluginConfig {
+	if a == nil {
 		return nil
 	}
-	return o.Config
+	return a.Config
 }
 
-func (o *AiSanitizerPlugin) GetConsumer() *AiSanitizerPluginConsumer {
-	if o == nil {
+func (a *AiSanitizerPlugin) GetConsumer() *AiSanitizerPluginConsumer {
+	if a == nil {
 		return nil
 	}
-	return o.Consumer
+	return a.Consumer
 }
 
-func (o *AiSanitizerPlugin) GetConsumerGroup() *AiSanitizerPluginConsumerGroup {
-	if o == nil {
+func (a *AiSanitizerPlugin) GetConsumerGroup() *AiSanitizerPluginConsumerGroup {
+	if a == nil {
 		return nil
 	}
-	return o.ConsumerGroup
+	return a.ConsumerGroup
 }
 
-func (o *AiSanitizerPlugin) GetProtocols() []AiSanitizerPluginProtocols {
-	if o == nil {
+func (a *AiSanitizerPlugin) GetProtocols() []AiSanitizerPluginProtocols {
+	if a == nil {
 		return nil
 	}
-	return o.Protocols
+	return a.Protocols
 }
 
-func (o *AiSanitizerPlugin) GetRoute() *AiSanitizerPluginRoute {
-	if o == nil {
+func (a *AiSanitizerPlugin) GetRoute() *AiSanitizerPluginRoute {
+	if a == nil {
 		return nil
 	}
-	return o.Route
+	return a.Route
 }
 
-func (o *AiSanitizerPlugin) GetService() *AiSanitizerPluginService {
-	if o == nil {
+func (a *AiSanitizerPlugin) GetService() *AiSanitizerPluginService {
+	if a == nil {
 		return nil
 	}
-	return o.Service
+	return a.Service
 }

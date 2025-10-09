@@ -14,18 +14,18 @@ type GetAPIProductVersionRequest struct {
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (o *GetAPIProductVersionRequest) GetAPIProductID() string {
-	if o == nil {
+func (g *GetAPIProductVersionRequest) GetAPIProductID() string {
+	if g == nil {
 		return ""
 	}
-	return o.APIProductID
+	return g.APIProductID
 }
 
-func (o *GetAPIProductVersionRequest) GetID() string {
-	if o == nil {
+func (g *GetAPIProductVersionRequest) GetID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ID
+	return g.ID
 }
 
 type GetAPIProductVersionResponse struct {
@@ -45,51 +45,51 @@ type GetAPIProductVersionResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetAPIProductVersionResponse) GetContentType() string {
-	if o == nil {
+func (g *GetAPIProductVersionResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetAPIProductVersionResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetAPIProductVersionResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetAPIProductVersionResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetAPIProductVersionResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetAPIProductVersionResponse) GetAPIProductVersion() *shared.APIProductVersion {
-	if o == nil {
+func (g *GetAPIProductVersionResponse) GetAPIProductVersion() *shared.APIProductVersion {
+	if g == nil {
 		return nil
 	}
-	return o.APIProductVersion
+	return g.APIProductVersion
 }
 
-func (o *GetAPIProductVersionResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetAPIProductVersionResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetAPIProductVersionResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (g *GetAPIProductVersionResponse) GetForbiddenError() *shared.ForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return g.ForbiddenError
 }
 
-func (o *GetAPIProductVersionResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetAPIProductVersionResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

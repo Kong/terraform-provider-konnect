@@ -26,43 +26,43 @@ func (u UpdateConsumerPayload) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateConsumerPayload) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"consumer_groups"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *UpdateConsumerPayload) GetUsername() *string {
-	if o == nil {
+func (u *UpdateConsumerPayload) GetUsername() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Username
+	return u.Username
 }
 
-func (o *UpdateConsumerPayload) GetCustomID() *string {
-	if o == nil {
+func (u *UpdateConsumerPayload) GetCustomID() *string {
+	if u == nil {
 		return nil
 	}
-	return o.CustomID
+	return u.CustomID
 }
 
-func (o *UpdateConsumerPayload) GetConsumerGroups() []string {
-	if o == nil {
+func (u *UpdateConsumerPayload) GetConsumerGroups() []string {
+	if u == nil {
 		return nil
 	}
-	return o.ConsumerGroups
+	return u.ConsumerGroups
 }
 
-func (o *UpdateConsumerPayload) GetType() *ConsumerType {
-	if o == nil {
+func (u *UpdateConsumerPayload) GetType() *ConsumerType {
+	if u == nil {
 		return nil
 	}
-	return o.Type
+	return u.Type
 }
 
-func (o *UpdateConsumerPayload) GetTags() []string {
-	if o == nil {
+func (u *UpdateConsumerPayload) GetTags() []string {
+	if u == nil {
 		return nil
 	}
-	return o.Tags
+	return u.Tags
 }

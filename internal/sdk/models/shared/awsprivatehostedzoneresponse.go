@@ -21,24 +21,24 @@ func (p PrivateDNSStateMetadata) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PrivateDNSStateMetadata) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *PrivateDNSStateMetadata) GetReportedStatus() *string {
-	if o == nil {
+func (p *PrivateDNSStateMetadata) GetReportedStatus() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ReportedStatus
+	return p.ReportedStatus
 }
 
-func (o *PrivateDNSStateMetadata) GetReason() *string {
-	if o == nil {
+func (p *PrivateDNSStateMetadata) GetReason() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Reason
+	return p.Reason
 }
 
 type AwsPrivateHostedZoneResponse struct {
@@ -74,64 +74,64 @@ func (a AwsPrivateHostedZoneResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AwsPrivateHostedZoneResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, true); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "state", "state_metadata", "entity_version", "created_at", "updated_at", "name", "private_dns_attachment_config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AwsPrivateHostedZoneResponse) GetID() string {
-	if o == nil {
+func (a *AwsPrivateHostedZoneResponse) GetID() string {
+	if a == nil {
 		return ""
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AwsPrivateHostedZoneResponse) GetState() PrivateDNSState {
-	if o == nil {
+func (a *AwsPrivateHostedZoneResponse) GetState() PrivateDNSState {
+	if a == nil {
 		return PrivateDNSState("")
 	}
-	return o.State
+	return a.State
 }
 
-func (o *AwsPrivateHostedZoneResponse) GetStateMetadata() PrivateDNSStateMetadata {
-	if o == nil {
+func (a *AwsPrivateHostedZoneResponse) GetStateMetadata() PrivateDNSStateMetadata {
+	if a == nil {
 		return PrivateDNSStateMetadata{}
 	}
-	return o.StateMetadata
+	return a.StateMetadata
 }
 
-func (o *AwsPrivateHostedZoneResponse) GetEntityVersion() int64 {
-	if o == nil {
+func (a *AwsPrivateHostedZoneResponse) GetEntityVersion() int64 {
+	if a == nil {
 		return 0
 	}
-	return o.EntityVersion
+	return a.EntityVersion
 }
 
-func (o *AwsPrivateHostedZoneResponse) GetCreatedAt() time.Time {
-	if o == nil {
+func (a *AwsPrivateHostedZoneResponse) GetCreatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AwsPrivateHostedZoneResponse) GetUpdatedAt() time.Time {
-	if o == nil {
+func (a *AwsPrivateHostedZoneResponse) GetUpdatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }
 
-func (o *AwsPrivateHostedZoneResponse) GetName() string {
-	if o == nil {
+func (a *AwsPrivateHostedZoneResponse) GetName() string {
+	if a == nil {
 		return ""
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AwsPrivateHostedZoneResponse) GetPrivateDNSAttachmentConfig() AwsPrivateHostedZoneAttachmentConfig {
-	if o == nil {
+func (a *AwsPrivateHostedZoneResponse) GetPrivateDNSAttachmentConfig() AwsPrivateHostedZoneAttachmentConfig {
+	if a == nil {
 		return AwsPrivateHostedZoneAttachmentConfig{}
 	}
-	return o.PrivateDNSAttachmentConfig
+	return a.PrivateDNSAttachmentConfig
 }

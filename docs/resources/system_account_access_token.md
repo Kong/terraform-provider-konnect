@@ -41,6 +41,20 @@ resource "konnect_system_account_access_token" "my_systemaccountaccesstoken" {
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_system_account_access_token.my_konnect_system_account_access_token
+  id = jsonencode({
+    account_id = "..."
+    id = "..."
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
-terraform import konnect_system_account_access_token.my_konnect_system_account_access_token '{"account_id": "", "id": ""}'
+terraform import konnect_system_account_access_token.my_konnect_system_account_access_token '{"account_id": "...", "id": "..."}'
 ```

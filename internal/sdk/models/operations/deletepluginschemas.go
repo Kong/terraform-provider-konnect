@@ -14,18 +14,18 @@ type DeletePluginSchemasRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (o *DeletePluginSchemasRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeletePluginSchemasRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
-func (o *DeletePluginSchemasRequest) GetName() string {
-	if o == nil {
+func (d *DeletePluginSchemasRequest) GetName() string {
+	if d == nil {
 		return ""
 	}
-	return o.Name
+	return d.Name
 }
 
 type DeletePluginSchemasResponse struct {
@@ -43,44 +43,44 @@ type DeletePluginSchemasResponse struct {
 	KonnectCPLegacyNotFoundError *shared.KonnectCPLegacyNotFoundError
 }
 
-func (o *DeletePluginSchemasResponse) GetContentType() string {
-	if o == nil {
+func (d *DeletePluginSchemasResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeletePluginSchemasResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeletePluginSchemasResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeletePluginSchemasResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeletePluginSchemasResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeletePluginSchemasResponse) GetKonnectCPLegacyUnauthorizedError() *shared.KonnectCPLegacyUnauthorizedError {
-	if o == nil {
+func (d *DeletePluginSchemasResponse) GetKonnectCPLegacyUnauthorizedError() *shared.KonnectCPLegacyUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.KonnectCPLegacyUnauthorizedError
+	return d.KonnectCPLegacyUnauthorizedError
 }
 
-func (o *DeletePluginSchemasResponse) GetKonnectCPLegacyForbiddenError() *shared.KonnectCPLegacyForbiddenError {
-	if o == nil {
+func (d *DeletePluginSchemasResponse) GetKonnectCPLegacyForbiddenError() *shared.KonnectCPLegacyForbiddenError {
+	if d == nil {
 		return nil
 	}
-	return o.KonnectCPLegacyForbiddenError
+	return d.KonnectCPLegacyForbiddenError
 }
 
-func (o *DeletePluginSchemasResponse) GetKonnectCPLegacyNotFoundError() *shared.KonnectCPLegacyNotFoundError {
-	if o == nil {
+func (d *DeletePluginSchemasResponse) GetKonnectCPLegacyNotFoundError() *shared.KonnectCPLegacyNotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.KonnectCPLegacyNotFoundError
+	return d.KonnectCPLegacyNotFoundError
 }

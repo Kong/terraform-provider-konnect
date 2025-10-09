@@ -14,18 +14,18 @@ type DeleteResponsetransformeradvancedPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteResponsetransformeradvancedPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteResponsetransformeradvancedPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteResponsetransformeradvancedPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteResponsetransformeradvancedPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteResponsetransformeradvancedPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteResponsetransformeradvancedPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteResponsetransformeradvancedPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteResponsetransformeradvancedPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteResponsetransformeradvancedPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteResponsetransformeradvancedPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteResponsetransformeradvancedPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteResponsetransformeradvancedPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteResponsetransformeradvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteResponsetransformeradvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

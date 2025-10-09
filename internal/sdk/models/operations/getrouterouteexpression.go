@@ -14,18 +14,18 @@ type GetRouteRouteExpressionRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetRouteRouteExpressionRequest) GetRouteID() string {
-	if o == nil {
+func (g *GetRouteRouteExpressionRequest) GetRouteID() string {
+	if g == nil {
 		return ""
 	}
-	return o.RouteID
+	return g.RouteID
 }
 
-func (o *GetRouteRouteExpressionRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetRouteRouteExpressionRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetRouteRouteExpressionResponse struct {
@@ -41,37 +41,37 @@ type GetRouteRouteExpressionResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetRouteRouteExpressionResponse) GetContentType() string {
-	if o == nil {
+func (g *GetRouteRouteExpressionResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetRouteRouteExpressionResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetRouteRouteExpressionResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetRouteRouteExpressionResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetRouteRouteExpressionResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetRouteRouteExpressionResponse) GetRouteExpression() *shared.RouteExpression {
-	if o == nil {
+func (g *GetRouteRouteExpressionResponse) GetRouteExpression() *shared.RouteExpression {
+	if g == nil {
 		return nil
 	}
-	return o.RouteExpression
+	return g.RouteExpression
 }
 
-func (o *GetRouteRouteExpressionResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetRouteRouteExpressionResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

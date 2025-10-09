@@ -42,11 +42,22 @@ type AppAuthStrategyOpenIDConnectRequestConfigs struct {
 	OpenidConnect AppAuthStrategyConfigOpenIDConnect `json:"openid-connect"`
 }
 
-func (o *AppAuthStrategyOpenIDConnectRequestConfigs) GetOpenidConnect() AppAuthStrategyConfigOpenIDConnect {
-	if o == nil {
+func (a AppAuthStrategyOpenIDConnectRequestConfigs) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AppAuthStrategyOpenIDConnectRequestConfigs) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"openid-connect"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AppAuthStrategyOpenIDConnectRequestConfigs) GetOpenidConnect() AppAuthStrategyConfigOpenIDConnect {
+	if a == nil {
 		return AppAuthStrategyConfigOpenIDConnect{}
 	}
-	return o.OpenidConnect
+	return a.OpenidConnect
 }
 
 // AppAuthStrategyOpenIDConnectRequest - Payload for creating an OIDC Application Auth Strategy
@@ -73,52 +84,52 @@ func (a AppAuthStrategyOpenIDConnectRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AppAuthStrategyOpenIDConnectRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "display_name", "strategy_type", "configs"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AppAuthStrategyOpenIDConnectRequest) GetName() string {
-	if o == nil {
+func (a *AppAuthStrategyOpenIDConnectRequest) GetName() string {
+	if a == nil {
 		return ""
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AppAuthStrategyOpenIDConnectRequest) GetDisplayName() string {
-	if o == nil {
+func (a *AppAuthStrategyOpenIDConnectRequest) GetDisplayName() string {
+	if a == nil {
 		return ""
 	}
-	return o.DisplayName
+	return a.DisplayName
 }
 
-func (o *AppAuthStrategyOpenIDConnectRequest) GetStrategyType() AppAuthStrategyOpenIDConnectRequestStrategyType {
-	if o == nil {
+func (a *AppAuthStrategyOpenIDConnectRequest) GetStrategyType() AppAuthStrategyOpenIDConnectRequestStrategyType {
+	if a == nil {
 		return AppAuthStrategyOpenIDConnectRequestStrategyType("")
 	}
-	return o.StrategyType
+	return a.StrategyType
 }
 
-func (o *AppAuthStrategyOpenIDConnectRequest) GetConfigs() AppAuthStrategyOpenIDConnectRequestConfigs {
-	if o == nil {
+func (a *AppAuthStrategyOpenIDConnectRequest) GetConfigs() AppAuthStrategyOpenIDConnectRequestConfigs {
+	if a == nil {
 		return AppAuthStrategyOpenIDConnectRequestConfigs{}
 	}
-	return o.Configs
+	return a.Configs
 }
 
-func (o *AppAuthStrategyOpenIDConnectRequest) GetDcrProviderID() *string {
-	if o == nil {
+func (a *AppAuthStrategyOpenIDConnectRequest) GetDcrProviderID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DcrProviderID
+	return a.DcrProviderID
 }
 
-func (o *AppAuthStrategyOpenIDConnectRequest) GetLabels() map[string]*string {
-	if o == nil {
+func (a *AppAuthStrategyOpenIDConnectRequest) GetLabels() map[string]*string {
+	if a == nil {
 		return nil
 	}
-	return o.Labels
+	return a.Labels
 }
 
 type StrategyType string
@@ -153,11 +164,22 @@ type AppAuthStrategyKeyAuthRequestConfigs struct {
 	KeyAuth AppAuthStrategyConfigKeyAuth `json:"key-auth"`
 }
 
-func (o *AppAuthStrategyKeyAuthRequestConfigs) GetKeyAuth() AppAuthStrategyConfigKeyAuth {
-	if o == nil {
+func (a AppAuthStrategyKeyAuthRequestConfigs) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AppAuthStrategyKeyAuthRequestConfigs) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"key-auth"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AppAuthStrategyKeyAuthRequestConfigs) GetKeyAuth() AppAuthStrategyConfigKeyAuth {
+	if a == nil {
 		return AppAuthStrategyConfigKeyAuth{}
 	}
-	return o.KeyAuth
+	return a.KeyAuth
 }
 
 // AppAuthStrategyKeyAuthRequest - Request for creating a Key Auth Application Auth Strategy
@@ -178,39 +200,50 @@ type AppAuthStrategyKeyAuthRequest struct {
 	Labels map[string]*string `json:"labels,omitempty"`
 }
 
-func (o *AppAuthStrategyKeyAuthRequest) GetName() string {
-	if o == nil {
-		return ""
-	}
-	return o.Name
+func (a AppAuthStrategyKeyAuthRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (o *AppAuthStrategyKeyAuthRequest) GetDisplayName() string {
-	if o == nil {
-		return ""
+func (a *AppAuthStrategyKeyAuthRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "display_name", "strategy_type", "configs"}); err != nil {
+		return err
 	}
-	return o.DisplayName
+	return nil
 }
 
-func (o *AppAuthStrategyKeyAuthRequest) GetStrategyType() StrategyType {
-	if o == nil {
+func (a *AppAuthStrategyKeyAuthRequest) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+func (a *AppAuthStrategyKeyAuthRequest) GetDisplayName() string {
+	if a == nil {
+		return ""
+	}
+	return a.DisplayName
+}
+
+func (a *AppAuthStrategyKeyAuthRequest) GetStrategyType() StrategyType {
+	if a == nil {
 		return StrategyType("")
 	}
-	return o.StrategyType
+	return a.StrategyType
 }
 
-func (o *AppAuthStrategyKeyAuthRequest) GetConfigs() AppAuthStrategyKeyAuthRequestConfigs {
-	if o == nil {
+func (a *AppAuthStrategyKeyAuthRequest) GetConfigs() AppAuthStrategyKeyAuthRequestConfigs {
+	if a == nil {
 		return AppAuthStrategyKeyAuthRequestConfigs{}
 	}
-	return o.Configs
+	return a.Configs
 }
 
-func (o *AppAuthStrategyKeyAuthRequest) GetLabels() map[string]*string {
-	if o == nil {
+func (a *AppAuthStrategyKeyAuthRequest) GetLabels() map[string]*string {
+	if a == nil {
 		return nil
 	}
-	return o.Labels
+	return a.Labels
 }
 
 type CreateAppAuthStrategyRequestType string
@@ -222,8 +255,8 @@ const (
 
 // CreateAppAuthStrategyRequest - Request body for creating an Application Auth Strategy
 type CreateAppAuthStrategyRequest struct {
-	AppAuthStrategyKeyAuthRequest       *AppAuthStrategyKeyAuthRequest       `queryParam:"inline"`
-	AppAuthStrategyOpenIDConnectRequest *AppAuthStrategyOpenIDConnectRequest `queryParam:"inline"`
+	AppAuthStrategyKeyAuthRequest       *AppAuthStrategyKeyAuthRequest       `queryParam:"inline,name=CreateAppAuthStrategyRequest"`
+	AppAuthStrategyOpenIDConnectRequest *AppAuthStrategyOpenIDConnectRequest `queryParam:"inline,name=CreateAppAuthStrategyRequest"`
 
 	Type CreateAppAuthStrategyRequestType
 }
@@ -266,7 +299,7 @@ func (u *CreateAppAuthStrategyRequest) UnmarshalJSON(data []byte) error {
 	switch dis.StrategyType {
 	case "key_auth":
 		appAuthStrategyKeyAuthRequest := new(AppAuthStrategyKeyAuthRequest)
-		if err := utils.UnmarshalJSON(data, &appAuthStrategyKeyAuthRequest, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &appAuthStrategyKeyAuthRequest, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (StrategyType == key_auth) type AppAuthStrategyKeyAuthRequest within CreateAppAuthStrategyRequest: %w", string(data), err)
 		}
 
@@ -275,7 +308,7 @@ func (u *CreateAppAuthStrategyRequest) UnmarshalJSON(data []byte) error {
 		return nil
 	case "openid_connect":
 		appAuthStrategyOpenIDConnectRequest := new(AppAuthStrategyOpenIDConnectRequest)
-		if err := utils.UnmarshalJSON(data, &appAuthStrategyOpenIDConnectRequest, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &appAuthStrategyOpenIDConnectRequest, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (StrategyType == openid_connect) type AppAuthStrategyOpenIDConnectRequest within CreateAppAuthStrategyRequest: %w", string(data), err)
 		}
 

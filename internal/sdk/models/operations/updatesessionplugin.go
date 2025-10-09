@@ -15,25 +15,25 @@ type UpdateSessionPluginRequest struct {
 	SessionPlugin  shared.SessionPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateSessionPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateSessionPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateSessionPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateSessionPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateSessionPluginRequest) GetSessionPlugin() shared.SessionPlugin {
-	if o == nil {
+func (u *UpdateSessionPluginRequest) GetSessionPlugin() shared.SessionPlugin {
+	if u == nil {
 		return shared.SessionPlugin{}
 	}
-	return o.SessionPlugin
+	return u.SessionPlugin
 }
 
 type UpdateSessionPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateSessionPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateSessionPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateSessionPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateSessionPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateSessionPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateSessionPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateSessionPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateSessionPluginResponse) GetSessionPlugin() *shared.SessionPlugin {
-	if o == nil {
+func (u *UpdateSessionPluginResponse) GetSessionPlugin() *shared.SessionPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.SessionPlugin
+	return u.SessionPlugin
 }
 
-func (o *UpdateSessionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateSessionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

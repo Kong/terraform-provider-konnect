@@ -14,18 +14,18 @@ type CreateVaultRequest struct {
 	Vault shared.Vault `request:"mediaType=application/json"`
 }
 
-func (o *CreateVaultRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateVaultRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateVaultRequest) GetVault() shared.Vault {
-	if o == nil {
+func (c *CreateVaultRequest) GetVault() shared.Vault {
+	if c == nil {
 		return shared.Vault{}
 	}
-	return o.Vault
+	return c.Vault
 }
 
 type CreateVaultResponse struct {
@@ -41,37 +41,37 @@ type CreateVaultResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateVaultResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateVaultResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateVaultResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateVaultResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateVaultResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateVaultResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateVaultResponse) GetVault() *shared.Vault {
-	if o == nil {
+func (c *CreateVaultResponse) GetVault() *shared.Vault {
+	if c == nil {
 		return nil
 	}
-	return o.Vault
+	return c.Vault
 }
 
-func (o *CreateVaultResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateVaultResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

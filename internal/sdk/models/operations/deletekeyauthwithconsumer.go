@@ -15,25 +15,25 @@ type DeleteKeyAuthWithConsumerRequest struct {
 	KeyAuthID string `pathParam:"style=simple,explode=false,name=KeyAuthId"`
 }
 
-func (o *DeleteKeyAuthWithConsumerRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteKeyAuthWithConsumerRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
-func (o *DeleteKeyAuthWithConsumerRequest) GetConsumerID() string {
-	if o == nil {
+func (d *DeleteKeyAuthWithConsumerRequest) GetConsumerID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ConsumerID
+	return d.ConsumerID
 }
 
-func (o *DeleteKeyAuthWithConsumerRequest) GetKeyAuthID() string {
-	if o == nil {
+func (d *DeleteKeyAuthWithConsumerRequest) GetKeyAuthID() string {
+	if d == nil {
 		return ""
 	}
-	return o.KeyAuthID
+	return d.KeyAuthID
 }
 
 type DeleteKeyAuthWithConsumerResponse struct {
@@ -45,23 +45,23 @@ type DeleteKeyAuthWithConsumerResponse struct {
 	RawResponse *http.Response
 }
 
-func (o *DeleteKeyAuthWithConsumerResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteKeyAuthWithConsumerResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteKeyAuthWithConsumerResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteKeyAuthWithConsumerResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteKeyAuthWithConsumerResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteKeyAuthWithConsumerResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }

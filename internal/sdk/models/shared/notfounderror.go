@@ -11,37 +11,37 @@ type NotFoundError struct {
 	Detail   any `json:"detail"`
 }
 
-func (o *NotFoundError) GetStatus() any {
-	if o == nil {
+func (n *NotFoundError) GetStatus() any {
+	if n == nil {
 		return nil
 	}
-	return o.Status
+	return n.Status
 }
 
-func (o *NotFoundError) GetTitle() any {
-	if o == nil {
+func (n *NotFoundError) GetTitle() any {
+	if n == nil {
 		return nil
 	}
-	return o.Title
+	return n.Title
 }
 
-func (o *NotFoundError) GetType() any {
-	if o == nil {
+func (n *NotFoundError) GetType() any {
+	if n == nil {
 		return nil
 	}
-	return o.Type
+	return n.Type
 }
 
-func (o *NotFoundError) GetInstance() any {
-	if o == nil {
+func (n *NotFoundError) GetInstance() any {
+	if n == nil {
 		return nil
 	}
-	return o.Instance
+	return n.Instance
 }
 
-func (o *NotFoundError) GetDetail() any {
-	if o == nil {
+func (n *NotFoundError) GetDetail() any {
+	if n == nil {
 		return nil
 	}
-	return o.Detail
+	return n.Detail
 }

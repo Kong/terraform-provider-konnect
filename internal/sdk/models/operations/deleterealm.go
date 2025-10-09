@@ -54,24 +54,24 @@ func (d DeleteRealmRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteRealmRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"realmId"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *DeleteRealmRequest) GetRealmID() string {
-	if o == nil {
+func (d *DeleteRealmRequest) GetRealmID() string {
+	if d == nil {
 		return ""
 	}
-	return o.RealmID
+	return d.RealmID
 }
 
-func (o *DeleteRealmRequest) GetForceDestroy() *Force {
-	if o == nil {
+func (d *DeleteRealmRequest) GetForceDestroy() *Force {
+	if d == nil {
 		return nil
 	}
-	return o.ForceDestroy
+	return d.ForceDestroy
 }
 
 type DeleteRealmResponse struct {
@@ -87,37 +87,37 @@ type DeleteRealmResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *DeleteRealmResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteRealmResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteRealmResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteRealmResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteRealmResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteRealmResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteRealmResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (d *DeleteRealmResponse) GetBadRequestError() *shared.BadRequestError {
+	if d == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return d.BadRequestError
 }
 
-func (o *DeleteRealmResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (d *DeleteRealmResponse) GetNotFoundError() *shared.NotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return d.NotFoundError
 }

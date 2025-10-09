@@ -8,9 +8,9 @@ type PortalAssetResponse struct {
 	Data string `json:"data"`
 }
 
-func (o *PortalAssetResponse) GetData() string {
-	if o == nil {
+func (p *PortalAssetResponse) GetData() string {
+	if p == nil {
 		return ""
 	}
-	return o.Data
+	return p.Data
 }

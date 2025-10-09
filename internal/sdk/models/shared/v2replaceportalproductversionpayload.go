@@ -18,44 +18,44 @@ type V2ReplacePortalProductVersionPayload struct {
 	NotifyDevelopers *bool `json:"notify_developers,omitempty"`
 }
 
-func (o *V2ReplacePortalProductVersionPayload) GetPublishStatus() V2PortalProductVersionPublishStatus {
-	if o == nil {
+func (v *V2ReplacePortalProductVersionPayload) GetPublishStatus() V2PortalProductVersionPublishStatus {
+	if v == nil {
 		return V2PortalProductVersionPublishStatus("")
 	}
-	return o.PublishStatus
+	return v.PublishStatus
 }
 
-func (o *V2ReplacePortalProductVersionPayload) GetAuthStrategyIds() []string {
-	if o == nil {
+func (v *V2ReplacePortalProductVersionPayload) GetAuthStrategyIds() []string {
+	if v == nil {
 		return []string{}
 	}
-	return o.AuthStrategyIds
+	return v.AuthStrategyIds
 }
 
-func (o *V2ReplacePortalProductVersionPayload) GetApplicationRegistrationEnabled() bool {
-	if o == nil {
+func (v *V2ReplacePortalProductVersionPayload) GetApplicationRegistrationEnabled() bool {
+	if v == nil {
 		return false
 	}
-	return o.ApplicationRegistrationEnabled
+	return v.ApplicationRegistrationEnabled
 }
 
-func (o *V2ReplacePortalProductVersionPayload) GetAutoApproveRegistration() bool {
-	if o == nil {
+func (v *V2ReplacePortalProductVersionPayload) GetAutoApproveRegistration() bool {
+	if v == nil {
 		return false
 	}
-	return o.AutoApproveRegistration
+	return v.AutoApproveRegistration
 }
 
-func (o *V2ReplacePortalProductVersionPayload) GetDeprecated() bool {
-	if o == nil {
+func (v *V2ReplacePortalProductVersionPayload) GetDeprecated() bool {
+	if v == nil {
 		return false
 	}
-	return o.Deprecated
+	return v.Deprecated
 }
 
-func (o *V2ReplacePortalProductVersionPayload) GetNotifyDevelopers() *bool {
-	if o == nil {
+func (v *V2ReplacePortalProductVersionPayload) GetNotifyDevelopers() *bool {
+	if v == nil {
 		return nil
 	}
-	return o.NotifyDevelopers
+	return v.NotifyDevelopers
 }

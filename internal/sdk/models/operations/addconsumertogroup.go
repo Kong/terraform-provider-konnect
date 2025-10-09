@@ -16,17 +16,17 @@ func (a AddConsumerToGroupRequestBody) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AddConsumerToGroupRequestBody) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AddConsumerToGroupRequestBody) GetConsumerID() *string {
-	if o == nil {
+func (a *AddConsumerToGroupRequestBody) GetConsumerID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ConsumerID
+	return a.ConsumerID
 }
 
 type AddConsumerToGroupRequest struct {
@@ -37,25 +37,25 @@ type AddConsumerToGroupRequest struct {
 	RequestBody    *AddConsumerToGroupRequestBody `request:"mediaType=application/json"`
 }
 
-func (o *AddConsumerToGroupRequest) GetConsumerGroupID() string {
-	if o == nil {
+func (a *AddConsumerToGroupRequest) GetConsumerGroupID() string {
+	if a == nil {
 		return ""
 	}
-	return o.ConsumerGroupID
+	return a.ConsumerGroupID
 }
 
-func (o *AddConsumerToGroupRequest) GetControlPlaneID() string {
-	if o == nil {
+func (a *AddConsumerToGroupRequest) GetControlPlaneID() string {
+	if a == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return a.ControlPlaneID
 }
 
-func (o *AddConsumerToGroupRequest) GetRequestBody() *AddConsumerToGroupRequestBody {
-	if o == nil {
+func (a *AddConsumerToGroupRequest) GetRequestBody() *AddConsumerToGroupRequestBody {
+	if a == nil {
 		return nil
 	}
-	return o.RequestBody
+	return a.RequestBody
 }
 
 type AddConsumerToGroupResponse struct {
@@ -67,23 +67,23 @@ type AddConsumerToGroupResponse struct {
 	RawResponse *http.Response
 }
 
-func (o *AddConsumerToGroupResponse) GetContentType() string {
-	if o == nil {
+func (a *AddConsumerToGroupResponse) GetContentType() string {
+	if a == nil {
 		return ""
 	}
-	return o.ContentType
+	return a.ContentType
 }
 
-func (o *AddConsumerToGroupResponse) GetStatusCode() int {
-	if o == nil {
+func (a *AddConsumerToGroupResponse) GetStatusCode() int {
+	if a == nil {
 		return 0
 	}
-	return o.StatusCode
+	return a.StatusCode
 }
 
-func (o *AddConsumerToGroupResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (a *AddConsumerToGroupResponse) GetRawResponse() *http.Response {
+	if a == nil {
 		return nil
 	}
-	return o.RawResponse
+	return a.RawResponse
 }

@@ -44,13 +44,10 @@ type PortalDataSourceModel struct {
 	ID                               types.String                    `tfsdk:"id"`
 	Labels                           map[string]types.String         `tfsdk:"labels"`
 	Name                             types.String                    `tfsdk:"name"`
-	Number                           types.Float64                   `tfsdk:"number"`
 	PageNumber                       types.Int64                     `queryParam:"style=form,explode=true,name=page[number]" tfsdk:"page_number"`
 	PageSize                         types.Int64                     `queryParam:"style=form,explode=true,name=page[size]" tfsdk:"page_size"`
 	RbacEnabled                      types.Bool                      `tfsdk:"rbac_enabled"`
-	Size                             types.Float64                   `tfsdk:"size"`
 	Sort                             types.String                    `queryParam:"style=form,explode=true,name=sort" tfsdk:"sort"`
-	Total                            types.Float64                   `tfsdk:"total"`
 	UpdatedAt                        types.String                    `tfsdk:"updated_at"`
 }
 
@@ -302,9 +299,6 @@ func (r *PortalDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				Computed:    true,
 				Description: `The name of the portal, used to distinguish it from other portals. Name must be unique.`,
 			},
-			"number": schema.Float64Attribute{
-				Computed: true,
-			},
 			"page_number": schema.Int64Attribute{
 				Optional:    true,
 				Description: `Determines which page of the entities to retrieve.`,
@@ -316,9 +310,6 @@ func (r *PortalDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 			"rbac_enabled": schema.BoolAttribute{
 				Computed:    true,
 				Description: `Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.`,
-			},
-			"size": schema.Float64Attribute{
-				Computed: true,
 			},
 			"sort": schema.StringAttribute{
 				Optional: true,
@@ -333,9 +324,6 @@ func (r *PortalDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 					`  - canonical_domain` + "\n" +
 					`  - created_at` + "\n" +
 					`  - updated_at`,
-			},
-			"total": schema.Float64Attribute{
-				Computed: true,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed:    true,

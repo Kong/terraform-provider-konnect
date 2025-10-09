@@ -13,18 +13,18 @@ type CreateHeadercertauthPluginRequest struct {
 	HeaderCertAuthPlugin shared.HeaderCertAuthPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateHeadercertauthPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateHeadercertauthPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateHeadercertauthPluginRequest) GetHeaderCertAuthPlugin() shared.HeaderCertAuthPlugin {
-	if o == nil {
+func (c *CreateHeadercertauthPluginRequest) GetHeaderCertAuthPlugin() shared.HeaderCertAuthPlugin {
+	if c == nil {
 		return shared.HeaderCertAuthPlugin{}
 	}
-	return o.HeaderCertAuthPlugin
+	return c.HeaderCertAuthPlugin
 }
 
 type CreateHeadercertauthPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateHeadercertauthPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateHeadercertauthPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateHeadercertauthPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateHeadercertauthPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateHeadercertauthPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateHeadercertauthPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateHeadercertauthPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateHeadercertauthPluginResponse) GetHeaderCertAuthPlugin() *shared.HeaderCertAuthPlugin {
-	if o == nil {
+func (c *CreateHeadercertauthPluginResponse) GetHeaderCertAuthPlugin() *shared.HeaderCertAuthPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.HeaderCertAuthPlugin
+	return c.HeaderCertAuthPlugin
 }
 
-func (o *CreateHeadercertauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateHeadercertauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

@@ -14,18 +14,18 @@ type CreatePluginRequest struct {
 	Plugin shared.Plugin `request:"mediaType=application/json"`
 }
 
-func (o *CreatePluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreatePluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreatePluginRequest) GetPlugin() shared.Plugin {
-	if o == nil {
+func (c *CreatePluginRequest) GetPlugin() shared.Plugin {
+	if c == nil {
 		return shared.Plugin{}
 	}
-	return o.Plugin
+	return c.Plugin
 }
 
 type CreatePluginResponse struct {
@@ -41,37 +41,37 @@ type CreatePluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreatePluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreatePluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreatePluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreatePluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreatePluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreatePluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreatePluginResponse) GetPlugin() *shared.Plugin {
-	if o == nil {
+func (c *CreatePluginResponse) GetPlugin() *shared.Plugin {
+	if c == nil {
 		return nil
 	}
-	return o.Plugin
+	return c.Plugin
 }
 
-func (o *CreatePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreatePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

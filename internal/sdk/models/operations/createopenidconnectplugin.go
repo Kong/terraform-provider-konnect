@@ -13,18 +13,18 @@ type CreateOpenidconnectPluginRequest struct {
 	OpenidConnectPlugin shared.OpenidConnectPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateOpenidconnectPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateOpenidconnectPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateOpenidconnectPluginRequest) GetOpenidConnectPlugin() shared.OpenidConnectPlugin {
-	if o == nil {
+func (c *CreateOpenidconnectPluginRequest) GetOpenidConnectPlugin() shared.OpenidConnectPlugin {
+	if c == nil {
 		return shared.OpenidConnectPlugin{}
 	}
-	return o.OpenidConnectPlugin
+	return c.OpenidConnectPlugin
 }
 
 type CreateOpenidconnectPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateOpenidconnectPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateOpenidconnectPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateOpenidconnectPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateOpenidconnectPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateOpenidconnectPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateOpenidconnectPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateOpenidconnectPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateOpenidconnectPluginResponse) GetOpenidConnectPlugin() *shared.OpenidConnectPlugin {
-	if o == nil {
+func (c *CreateOpenidconnectPluginResponse) GetOpenidConnectPlugin() *shared.OpenidConnectPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.OpenidConnectPlugin
+	return c.OpenidConnectPlugin
 }
 
-func (o *CreateOpenidconnectPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateOpenidconnectPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

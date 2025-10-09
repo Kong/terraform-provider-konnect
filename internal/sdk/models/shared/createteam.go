@@ -26,29 +26,29 @@ func (c CreateTeam) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateTeam) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CreateTeam) GetName() string {
-	if o == nil {
+func (c *CreateTeam) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *CreateTeam) GetDescription() *string {
-	if o == nil {
+func (c *CreateTeam) GetDescription() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Description
+	return c.Description
 }
 
-func (o *CreateTeam) GetLabels() map[string]*string {
-	if o == nil {
+func (c *CreateTeam) GetLabels() map[string]*string {
+	if c == nil {
 		return nil
 	}
-	return o.Labels
+	return c.Labels
 }

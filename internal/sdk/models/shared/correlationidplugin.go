@@ -12,22 +12,22 @@ type CorrelationIDPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *CorrelationIDPluginAfter) GetAccess() []string {
-	if o == nil {
+func (c *CorrelationIDPluginAfter) GetAccess() []string {
+	if c == nil {
 		return nil
 	}
-	return o.Access
+	return c.Access
 }
 
 type CorrelationIDPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *CorrelationIDPluginBefore) GetAccess() []string {
-	if o == nil {
+func (c *CorrelationIDPluginBefore) GetAccess() []string {
+	if c == nil {
 		return nil
 	}
-	return o.Access
+	return c.Access
 }
 
 type CorrelationIDPluginOrdering struct {
@@ -35,18 +35,18 @@ type CorrelationIDPluginOrdering struct {
 	Before *CorrelationIDPluginBefore `json:"before,omitempty"`
 }
 
-func (o *CorrelationIDPluginOrdering) GetAfter() *CorrelationIDPluginAfter {
-	if o == nil {
+func (c *CorrelationIDPluginOrdering) GetAfter() *CorrelationIDPluginAfter {
+	if c == nil {
 		return nil
 	}
-	return o.After
+	return c.After
 }
 
-func (o *CorrelationIDPluginOrdering) GetBefore() *CorrelationIDPluginBefore {
-	if o == nil {
+func (c *CorrelationIDPluginOrdering) GetBefore() *CorrelationIDPluginBefore {
+	if c == nil {
 		return nil
 	}
-	return o.Before
+	return c.Before
 }
 
 type CorrelationIDPluginPartials struct {
@@ -57,25 +57,25 @@ type CorrelationIDPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *CorrelationIDPluginPartials) GetID() *string {
-	if o == nil {
+func (c *CorrelationIDPluginPartials) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *CorrelationIDPluginPartials) GetName() *string {
-	if o == nil {
+func (c *CorrelationIDPluginPartials) GetName() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *CorrelationIDPluginPartials) GetPath() *string {
-	if o == nil {
+func (c *CorrelationIDPluginPartials) GetPath() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Path
+	return c.Path
 }
 
 // Generator - The generator to use for the correlation ID. Accepted values are `uuid`, `uuid#counter`, and `tracker`. See [Generators](#generators).
@@ -122,31 +122,31 @@ func (c CorrelationIDPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CorrelationIDPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CorrelationIDPluginConfig) GetEchoDownstream() *bool {
-	if o == nil {
+func (c *CorrelationIDPluginConfig) GetEchoDownstream() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.EchoDownstream
+	return c.EchoDownstream
 }
 
-func (o *CorrelationIDPluginConfig) GetGenerator() *Generator {
-	if o == nil {
+func (c *CorrelationIDPluginConfig) GetGenerator() *Generator {
+	if c == nil {
 		return nil
 	}
-	return o.Generator
+	return c.Generator
 }
 
-func (o *CorrelationIDPluginConfig) GetHeaderName() *string {
-	if o == nil {
+func (c *CorrelationIDPluginConfig) GetHeaderName() *string {
+	if c == nil {
 		return nil
 	}
-	return o.HeaderName
+	return c.HeaderName
 }
 
 // CorrelationIDPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -154,11 +154,11 @@ type CorrelationIDPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *CorrelationIDPluginConsumer) GetID() *string {
-	if o == nil {
+func (c *CorrelationIDPluginConsumer) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
 type CorrelationIDPluginProtocols string
@@ -198,11 +198,11 @@ type CorrelationIDPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *CorrelationIDPluginRoute) GetID() *string {
-	if o == nil {
+func (c *CorrelationIDPluginRoute) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
 // CorrelationIDPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -210,11 +210,11 @@ type CorrelationIDPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *CorrelationIDPluginService) GetID() *string {
-	if o == nil {
+func (c *CorrelationIDPluginService) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
 // CorrelationIDPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -251,103 +251,103 @@ func (c CorrelationIDPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CorrelationIDPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "ordering", "partials", "tags", "config", "consumer", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CorrelationIDPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (c *CorrelationIDPlugin) GetCreatedAt() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return c.CreatedAt
 }
 
-func (o *CorrelationIDPlugin) GetEnabled() *bool {
-	if o == nil {
+func (c *CorrelationIDPlugin) GetEnabled() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.Enabled
+	return c.Enabled
 }
 
-func (o *CorrelationIDPlugin) GetID() *string {
-	if o == nil {
+func (c *CorrelationIDPlugin) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *CorrelationIDPlugin) GetInstanceName() *string {
-	if o == nil {
+func (c *CorrelationIDPlugin) GetInstanceName() *string {
+	if c == nil {
 		return nil
 	}
-	return o.InstanceName
+	return c.InstanceName
 }
 
-func (o *CorrelationIDPlugin) GetName() string {
+func (c *CorrelationIDPlugin) GetName() string {
 	return "correlation-id"
 }
 
-func (o *CorrelationIDPlugin) GetOrdering() *CorrelationIDPluginOrdering {
-	if o == nil {
+func (c *CorrelationIDPlugin) GetOrdering() *CorrelationIDPluginOrdering {
+	if c == nil {
 		return nil
 	}
-	return o.Ordering
+	return c.Ordering
 }
 
-func (o *CorrelationIDPlugin) GetPartials() []CorrelationIDPluginPartials {
-	if o == nil {
+func (c *CorrelationIDPlugin) GetPartials() []CorrelationIDPluginPartials {
+	if c == nil {
 		return nil
 	}
-	return o.Partials
+	return c.Partials
 }
 
-func (o *CorrelationIDPlugin) GetTags() []string {
-	if o == nil {
+func (c *CorrelationIDPlugin) GetTags() []string {
+	if c == nil {
 		return nil
 	}
-	return o.Tags
+	return c.Tags
 }
 
-func (o *CorrelationIDPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (c *CorrelationIDPlugin) GetUpdatedAt() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return c.UpdatedAt
 }
 
-func (o *CorrelationIDPlugin) GetConfig() *CorrelationIDPluginConfig {
-	if o == nil {
+func (c *CorrelationIDPlugin) GetConfig() *CorrelationIDPluginConfig {
+	if c == nil {
 		return nil
 	}
-	return o.Config
+	return c.Config
 }
 
-func (o *CorrelationIDPlugin) GetConsumer() *CorrelationIDPluginConsumer {
-	if o == nil {
+func (c *CorrelationIDPlugin) GetConsumer() *CorrelationIDPluginConsumer {
+	if c == nil {
 		return nil
 	}
-	return o.Consumer
+	return c.Consumer
 }
 
-func (o *CorrelationIDPlugin) GetProtocols() []CorrelationIDPluginProtocols {
-	if o == nil {
+func (c *CorrelationIDPlugin) GetProtocols() []CorrelationIDPluginProtocols {
+	if c == nil {
 		return nil
 	}
-	return o.Protocols
+	return c.Protocols
 }
 
-func (o *CorrelationIDPlugin) GetRoute() *CorrelationIDPluginRoute {
-	if o == nil {
+func (c *CorrelationIDPlugin) GetRoute() *CorrelationIDPluginRoute {
+	if c == nil {
 		return nil
 	}
-	return o.Route
+	return c.Route
 }
 
-func (o *CorrelationIDPlugin) GetService() *CorrelationIDPluginService {
-	if o == nil {
+func (c *CorrelationIDPlugin) GetService() *CorrelationIDPluginService {
+	if c == nil {
 		return nil
 	}
-	return o.Service
+	return c.Service
 }

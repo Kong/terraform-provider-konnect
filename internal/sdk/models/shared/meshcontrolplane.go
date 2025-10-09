@@ -26,57 +26,57 @@ func (m MeshControlPlane) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshControlPlane) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"id", "name", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *MeshControlPlane) GetID() string {
-	if o == nil {
+func (m *MeshControlPlane) GetID() string {
+	if m == nil {
 		return ""
 	}
-	return o.ID
+	return m.ID
 }
 
-func (o *MeshControlPlane) GetName() string {
-	if o == nil {
+func (m *MeshControlPlane) GetName() string {
+	if m == nil {
 		return ""
 	}
-	return o.Name
+	return m.Name
 }
 
-func (o *MeshControlPlane) GetDescription() *string {
-	if o == nil {
+func (m *MeshControlPlane) GetDescription() *string {
+	if m == nil {
 		return nil
 	}
-	return o.Description
+	return m.Description
 }
 
-func (o *MeshControlPlane) GetLabels() map[string]*string {
-	if o == nil {
+func (m *MeshControlPlane) GetLabels() map[string]*string {
+	if m == nil {
 		return nil
 	}
-	return o.Labels
+	return m.Labels
 }
 
-func (o *MeshControlPlane) GetFeatures() []MeshControlPlaneFeature {
-	if o == nil {
+func (m *MeshControlPlane) GetFeatures() []MeshControlPlaneFeature {
+	if m == nil {
 		return nil
 	}
-	return o.Features
+	return m.Features
 }
 
-func (o *MeshControlPlane) GetCreatedAt() time.Time {
-	if o == nil {
+func (m *MeshControlPlane) GetCreatedAt() time.Time {
+	if m == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return m.CreatedAt
 }
 
-func (o *MeshControlPlane) GetUpdatedAt() time.Time {
-	if o == nil {
+func (m *MeshControlPlane) GetUpdatedAt() time.Time {
+	if m == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return m.UpdatedAt
 }

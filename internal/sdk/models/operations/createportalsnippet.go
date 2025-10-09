@@ -14,18 +14,18 @@ type CreatePortalSnippetRequest struct {
 	CreatePortalSnippetRequest shared.CreatePortalSnippetRequest `request:"mediaType=application/json"`
 }
 
-func (o *CreatePortalSnippetRequest) GetPortalID() string {
-	if o == nil {
+func (c *CreatePortalSnippetRequest) GetPortalID() string {
+	if c == nil {
 		return ""
 	}
-	return o.PortalID
+	return c.PortalID
 }
 
-func (o *CreatePortalSnippetRequest) GetCreatePortalSnippetRequest() shared.CreatePortalSnippetRequest {
-	if o == nil {
+func (c *CreatePortalSnippetRequest) GetCreatePortalSnippetRequest() shared.CreatePortalSnippetRequest {
+	if c == nil {
 		return shared.CreatePortalSnippetRequest{}
 	}
-	return o.CreatePortalSnippetRequest
+	return c.CreatePortalSnippetRequest
 }
 
 type CreatePortalSnippetResponse struct {
@@ -47,58 +47,58 @@ type CreatePortalSnippetResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *CreatePortalSnippetResponse) GetContentType() string {
-	if o == nil {
+func (c *CreatePortalSnippetResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreatePortalSnippetResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreatePortalSnippetResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreatePortalSnippetResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreatePortalSnippetResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreatePortalSnippetResponse) GetPortalSnippetResponse() *shared.PortalSnippetResponse {
-	if o == nil {
+func (c *CreatePortalSnippetResponse) GetPortalSnippetResponse() *shared.PortalSnippetResponse {
+	if c == nil {
 		return nil
 	}
-	return o.PortalSnippetResponse
+	return c.PortalSnippetResponse
 }
 
-func (o *CreatePortalSnippetResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreatePortalSnippetResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreatePortalSnippetResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (c *CreatePortalSnippetResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return c.UnauthorizedError
 }
 
-func (o *CreatePortalSnippetResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreatePortalSnippetResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }
 
-func (o *CreatePortalSnippetResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (c *CreatePortalSnippetResponse) GetNotFoundError() *shared.NotFoundError {
+	if c == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return c.NotFoundError
 }

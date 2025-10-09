@@ -14,18 +14,18 @@ type CreateKeySetRequest struct {
 	KeySet *shared.KeySet `request:"mediaType=application/json"`
 }
 
-func (o *CreateKeySetRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateKeySetRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateKeySetRequest) GetKeySet() *shared.KeySet {
-	if o == nil {
+func (c *CreateKeySetRequest) GetKeySet() *shared.KeySet {
+	if c == nil {
 		return nil
 	}
-	return o.KeySet
+	return c.KeySet
 }
 
 type CreateKeySetResponse struct {
@@ -41,37 +41,37 @@ type CreateKeySetResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateKeySetResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateKeySetResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateKeySetResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateKeySetResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateKeySetResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateKeySetResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateKeySetResponse) GetKeySet() *shared.KeySet {
-	if o == nil {
+func (c *CreateKeySetResponse) GetKeySet() *shared.KeySet {
+	if c == nil {
 		return nil
 	}
-	return o.KeySet
+	return c.KeySet
 }
 
-func (o *CreateKeySetResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateKeySetResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

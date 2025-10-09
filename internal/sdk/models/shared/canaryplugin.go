@@ -12,22 +12,22 @@ type CanaryPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *CanaryPluginAfter) GetAccess() []string {
-	if o == nil {
+func (c *CanaryPluginAfter) GetAccess() []string {
+	if c == nil {
 		return nil
 	}
-	return o.Access
+	return c.Access
 }
 
 type CanaryPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *CanaryPluginBefore) GetAccess() []string {
-	if o == nil {
+func (c *CanaryPluginBefore) GetAccess() []string {
+	if c == nil {
 		return nil
 	}
-	return o.Access
+	return c.Access
 }
 
 type CanaryPluginOrdering struct {
@@ -35,18 +35,18 @@ type CanaryPluginOrdering struct {
 	Before *CanaryPluginBefore `json:"before,omitempty"`
 }
 
-func (o *CanaryPluginOrdering) GetAfter() *CanaryPluginAfter {
-	if o == nil {
+func (c *CanaryPluginOrdering) GetAfter() *CanaryPluginAfter {
+	if c == nil {
 		return nil
 	}
-	return o.After
+	return c.After
 }
 
-func (o *CanaryPluginOrdering) GetBefore() *CanaryPluginBefore {
-	if o == nil {
+func (c *CanaryPluginOrdering) GetBefore() *CanaryPluginBefore {
+	if c == nil {
 		return nil
 	}
-	return o.Before
+	return c.Before
 }
 
 type CanaryPluginPartials struct {
@@ -57,25 +57,25 @@ type CanaryPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *CanaryPluginPartials) GetID() *string {
-	if o == nil {
+func (c *CanaryPluginPartials) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *CanaryPluginPartials) GetName() *string {
-	if o == nil {
+func (c *CanaryPluginPartials) GetName() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *CanaryPluginPartials) GetPath() *string {
-	if o == nil {
+func (c *CanaryPluginPartials) GetPath() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Path
+	return c.Path
 }
 
 // Hash algorithm to be used for canary release.
@@ -163,94 +163,94 @@ func (c CanaryPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CanaryPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"groups"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CanaryPluginConfig) GetCanaryByHeaderName() *string {
-	if o == nil {
+func (c *CanaryPluginConfig) GetCanaryByHeaderName() *string {
+	if c == nil {
 		return nil
 	}
-	return o.CanaryByHeaderName
+	return c.CanaryByHeaderName
 }
 
-func (o *CanaryPluginConfig) GetDuration() *float64 {
-	if o == nil {
+func (c *CanaryPluginConfig) GetDuration() *float64 {
+	if c == nil {
 		return nil
 	}
-	return o.Duration
+	return c.Duration
 }
 
-func (o *CanaryPluginConfig) GetGroups() []string {
-	if o == nil {
+func (c *CanaryPluginConfig) GetGroups() []string {
+	if c == nil {
 		return nil
 	}
-	return o.Groups
+	return c.Groups
 }
 
-func (o *CanaryPluginConfig) GetHash() *Hash {
-	if o == nil {
+func (c *CanaryPluginConfig) GetHash() *Hash {
+	if c == nil {
 		return nil
 	}
-	return o.Hash
+	return c.Hash
 }
 
-func (o *CanaryPluginConfig) GetHashHeader() *string {
-	if o == nil {
+func (c *CanaryPluginConfig) GetHashHeader() *string {
+	if c == nil {
 		return nil
 	}
-	return o.HashHeader
+	return c.HashHeader
 }
 
-func (o *CanaryPluginConfig) GetPercentage() *float64 {
-	if o == nil {
+func (c *CanaryPluginConfig) GetPercentage() *float64 {
+	if c == nil {
 		return nil
 	}
-	return o.Percentage
+	return c.Percentage
 }
 
-func (o *CanaryPluginConfig) GetStart() *float64 {
-	if o == nil {
+func (c *CanaryPluginConfig) GetStart() *float64 {
+	if c == nil {
 		return nil
 	}
-	return o.Start
+	return c.Start
 }
 
-func (o *CanaryPluginConfig) GetSteps() *float64 {
-	if o == nil {
+func (c *CanaryPluginConfig) GetSteps() *float64 {
+	if c == nil {
 		return nil
 	}
-	return o.Steps
+	return c.Steps
 }
 
-func (o *CanaryPluginConfig) GetUpstreamFallback() *bool {
-	if o == nil {
+func (c *CanaryPluginConfig) GetUpstreamFallback() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.UpstreamFallback
+	return c.UpstreamFallback
 }
 
-func (o *CanaryPluginConfig) GetUpstreamHost() *string {
-	if o == nil {
+func (c *CanaryPluginConfig) GetUpstreamHost() *string {
+	if c == nil {
 		return nil
 	}
-	return o.UpstreamHost
+	return c.UpstreamHost
 }
 
-func (o *CanaryPluginConfig) GetUpstreamPort() *int64 {
-	if o == nil {
+func (c *CanaryPluginConfig) GetUpstreamPort() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.UpstreamPort
+	return c.UpstreamPort
 }
 
-func (o *CanaryPluginConfig) GetUpstreamURI() *string {
-	if o == nil {
+func (c *CanaryPluginConfig) GetUpstreamURI() *string {
+	if c == nil {
 		return nil
 	}
-	return o.UpstreamURI
+	return c.UpstreamURI
 }
 
 type CanaryPluginProtocols string
@@ -290,11 +290,11 @@ type CanaryPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *CanaryPluginRoute) GetID() *string {
-	if o == nil {
+func (c *CanaryPluginRoute) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
 // CanaryPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -302,11 +302,11 @@ type CanaryPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *CanaryPluginService) GetID() *string {
-	if o == nil {
+func (c *CanaryPluginService) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
 // CanaryPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -341,96 +341,96 @@ func (c CanaryPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CanaryPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "ordering", "partials", "tags", "config", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CanaryPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (c *CanaryPlugin) GetCreatedAt() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return c.CreatedAt
 }
 
-func (o *CanaryPlugin) GetEnabled() *bool {
-	if o == nil {
+func (c *CanaryPlugin) GetEnabled() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.Enabled
+	return c.Enabled
 }
 
-func (o *CanaryPlugin) GetID() *string {
-	if o == nil {
+func (c *CanaryPlugin) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *CanaryPlugin) GetInstanceName() *string {
-	if o == nil {
+func (c *CanaryPlugin) GetInstanceName() *string {
+	if c == nil {
 		return nil
 	}
-	return o.InstanceName
+	return c.InstanceName
 }
 
-func (o *CanaryPlugin) GetName() string {
+func (c *CanaryPlugin) GetName() string {
 	return "canary"
 }
 
-func (o *CanaryPlugin) GetOrdering() *CanaryPluginOrdering {
-	if o == nil {
+func (c *CanaryPlugin) GetOrdering() *CanaryPluginOrdering {
+	if c == nil {
 		return nil
 	}
-	return o.Ordering
+	return c.Ordering
 }
 
-func (o *CanaryPlugin) GetPartials() []CanaryPluginPartials {
-	if o == nil {
+func (c *CanaryPlugin) GetPartials() []CanaryPluginPartials {
+	if c == nil {
 		return nil
 	}
-	return o.Partials
+	return c.Partials
 }
 
-func (o *CanaryPlugin) GetTags() []string {
-	if o == nil {
+func (c *CanaryPlugin) GetTags() []string {
+	if c == nil {
 		return nil
 	}
-	return o.Tags
+	return c.Tags
 }
 
-func (o *CanaryPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (c *CanaryPlugin) GetUpdatedAt() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return c.UpdatedAt
 }
 
-func (o *CanaryPlugin) GetConfig() *CanaryPluginConfig {
-	if o == nil {
+func (c *CanaryPlugin) GetConfig() *CanaryPluginConfig {
+	if c == nil {
 		return nil
 	}
-	return o.Config
+	return c.Config
 }
 
-func (o *CanaryPlugin) GetProtocols() []CanaryPluginProtocols {
-	if o == nil {
+func (c *CanaryPlugin) GetProtocols() []CanaryPluginProtocols {
+	if c == nil {
 		return nil
 	}
-	return o.Protocols
+	return c.Protocols
 }
 
-func (o *CanaryPlugin) GetRoute() *CanaryPluginRoute {
-	if o == nil {
+func (c *CanaryPlugin) GetRoute() *CanaryPluginRoute {
+	if c == nil {
 		return nil
 	}
-	return o.Route
+	return c.Route
 }
 
-func (o *CanaryPlugin) GetService() *CanaryPluginService {
-	if o == nil {
+func (c *CanaryPlugin) GetService() *CanaryPluginService {
+	if c == nil {
 		return nil
 	}
-	return o.Service
+	return c.Service
 }

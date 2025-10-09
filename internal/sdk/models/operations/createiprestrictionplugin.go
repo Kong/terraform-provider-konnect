@@ -13,18 +13,18 @@ type CreateIprestrictionPluginRequest struct {
 	IPRestrictionPlugin shared.IPRestrictionPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateIprestrictionPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateIprestrictionPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateIprestrictionPluginRequest) GetIPRestrictionPlugin() shared.IPRestrictionPlugin {
-	if o == nil {
+func (c *CreateIprestrictionPluginRequest) GetIPRestrictionPlugin() shared.IPRestrictionPlugin {
+	if c == nil {
 		return shared.IPRestrictionPlugin{}
 	}
-	return o.IPRestrictionPlugin
+	return c.IPRestrictionPlugin
 }
 
 type CreateIprestrictionPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateIprestrictionPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateIprestrictionPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateIprestrictionPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateIprestrictionPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateIprestrictionPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateIprestrictionPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateIprestrictionPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateIprestrictionPluginResponse) GetIPRestrictionPlugin() *shared.IPRestrictionPlugin {
-	if o == nil {
+func (c *CreateIprestrictionPluginResponse) GetIPRestrictionPlugin() *shared.IPRestrictionPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.IPRestrictionPlugin
+	return c.IPRestrictionPlugin
 }
 
-func (o *CreateIprestrictionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateIprestrictionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

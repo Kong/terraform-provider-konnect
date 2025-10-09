@@ -18,17 +18,17 @@ func (d DeleteCmekRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteCmekRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"cmekId"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *DeleteCmekRequest) GetID() shared.CmekID {
-	if o == nil {
+func (d *DeleteCmekRequest) GetID() shared.CmekID {
+	if d == nil {
 		return shared.CmekID("")
 	}
-	return o.ID
+	return d.ID
 }
 
 type DeleteCmekResponse struct {
@@ -46,44 +46,44 @@ type DeleteCmekResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *DeleteCmekResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteCmekResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteCmekResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteCmekResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteCmekResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteCmekResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteCmekResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (d *DeleteCmekResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return d.UnauthorizedError
 }
 
-func (o *DeleteCmekResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (d *DeleteCmekResponse) GetForbiddenError() *shared.ForbiddenError {
+	if d == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return d.ForbiddenError
 }
 
-func (o *DeleteCmekResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (d *DeleteCmekResponse) GetNotFoundError() *shared.NotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return d.NotFoundError
 }

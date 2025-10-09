@@ -20,11 +20,11 @@ const (
 
 // CreateTransitGatewayRequest - Request schema for creating a transit gateway.
 type CreateTransitGatewayRequest struct {
-	AWSTransitGateway           *AWSTransitGateway           `queryParam:"inline"`
-	AWSVpcPeeringGateway        *AWSVpcPeeringGateway        `queryParam:"inline"`
-	AWSResourceEndpointGateway  *AWSResourceEndpointGateway  `queryParam:"inline"`
-	AzureTransitGateway         *AzureTransitGateway         `queryParam:"inline"`
-	GcpVpcPeeringTransitGateway *GcpVpcPeeringTransitGateway `queryParam:"inline"`
+	AWSTransitGateway           *AWSTransitGateway           `queryParam:"inline,name=CreateTransitGatewayRequest"`
+	AWSVpcPeeringGateway        *AWSVpcPeeringGateway        `queryParam:"inline,name=CreateTransitGatewayRequest"`
+	AWSResourceEndpointGateway  *AWSResourceEndpointGateway  `queryParam:"inline,name=CreateTransitGatewayRequest"`
+	AzureTransitGateway         *AzureTransitGateway         `queryParam:"inline,name=CreateTransitGatewayRequest"`
+	GcpVpcPeeringTransitGateway *GcpVpcPeeringTransitGateway `queryParam:"inline,name=CreateTransitGatewayRequest"`
 
 	Type CreateTransitGatewayRequestType
 }
@@ -76,38 +76,38 @@ func CreateCreateTransitGatewayRequestGcpVpcPeeringTransitGateway(gcpVpcPeeringT
 
 func (u *CreateTransitGatewayRequest) UnmarshalJSON(data []byte) error {
 
-	var awsResourceEndpointGateway AWSResourceEndpointGateway = AWSResourceEndpointGateway{}
-	if err := utils.UnmarshalJSON(data, &awsResourceEndpointGateway, "", true, true); err == nil {
-		u.AWSResourceEndpointGateway = &awsResourceEndpointGateway
-		u.Type = CreateTransitGatewayRequestTypeAWSResourceEndpointGateway
-		return nil
-	}
-
-	var azureTransitGateway AzureTransitGateway = AzureTransitGateway{}
-	if err := utils.UnmarshalJSON(data, &azureTransitGateway, "", true, true); err == nil {
-		u.AzureTransitGateway = &azureTransitGateway
-		u.Type = CreateTransitGatewayRequestTypeAzureTransitGateway
-		return nil
-	}
-
-	var gcpVpcPeeringTransitGateway GcpVpcPeeringTransitGateway = GcpVpcPeeringTransitGateway{}
-	if err := utils.UnmarshalJSON(data, &gcpVpcPeeringTransitGateway, "", true, true); err == nil {
-		u.GcpVpcPeeringTransitGateway = &gcpVpcPeeringTransitGateway
-		u.Type = CreateTransitGatewayRequestTypeGcpVpcPeeringTransitGateway
-		return nil
-	}
-
 	var awsTransitGateway AWSTransitGateway = AWSTransitGateway{}
-	if err := utils.UnmarshalJSON(data, &awsTransitGateway, "", true, true); err == nil {
+	if err := utils.UnmarshalJSON(data, &awsTransitGateway, "", true, nil); err == nil {
 		u.AWSTransitGateway = &awsTransitGateway
 		u.Type = CreateTransitGatewayRequestTypeAWSTransitGateway
 		return nil
 	}
 
 	var awsVpcPeeringGateway AWSVpcPeeringGateway = AWSVpcPeeringGateway{}
-	if err := utils.UnmarshalJSON(data, &awsVpcPeeringGateway, "", true, true); err == nil {
+	if err := utils.UnmarshalJSON(data, &awsVpcPeeringGateway, "", true, nil); err == nil {
 		u.AWSVpcPeeringGateway = &awsVpcPeeringGateway
 		u.Type = CreateTransitGatewayRequestTypeAWSVpcPeeringGateway
+		return nil
+	}
+
+	var awsResourceEndpointGateway AWSResourceEndpointGateway = AWSResourceEndpointGateway{}
+	if err := utils.UnmarshalJSON(data, &awsResourceEndpointGateway, "", true, nil); err == nil {
+		u.AWSResourceEndpointGateway = &awsResourceEndpointGateway
+		u.Type = CreateTransitGatewayRequestTypeAWSResourceEndpointGateway
+		return nil
+	}
+
+	var azureTransitGateway AzureTransitGateway = AzureTransitGateway{}
+	if err := utils.UnmarshalJSON(data, &azureTransitGateway, "", true, nil); err == nil {
+		u.AzureTransitGateway = &azureTransitGateway
+		u.Type = CreateTransitGatewayRequestTypeAzureTransitGateway
+		return nil
+	}
+
+	var gcpVpcPeeringTransitGateway GcpVpcPeeringTransitGateway = GcpVpcPeeringTransitGateway{}
+	if err := utils.UnmarshalJSON(data, &gcpVpcPeeringTransitGateway, "", true, nil); err == nil {
+		u.GcpVpcPeeringTransitGateway = &gcpVpcPeeringTransitGateway
+		u.Type = CreateTransitGatewayRequestTypeGcpVpcPeeringTransitGateway
 		return nil
 	}
 

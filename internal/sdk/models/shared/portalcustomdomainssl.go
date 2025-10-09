@@ -8,23 +8,23 @@ type PortalCustomDomainSSL struct {
 	ValidationErrors         []string                             `json:"validation_errors,omitempty"`
 }
 
-func (o *PortalCustomDomainSSL) GetDomainVerificationMethod() PortalCustomDomainVerificationMethod {
-	if o == nil {
+func (p *PortalCustomDomainSSL) GetDomainVerificationMethod() PortalCustomDomainVerificationMethod {
+	if p == nil {
 		return PortalCustomDomainVerificationMethod("")
 	}
-	return o.DomainVerificationMethod
+	return p.DomainVerificationMethod
 }
 
-func (o *PortalCustomDomainSSL) GetVerificationStatus() PortalCustomDomainVerificationStatus {
-	if o == nil {
+func (p *PortalCustomDomainSSL) GetVerificationStatus() PortalCustomDomainVerificationStatus {
+	if p == nil {
 		return PortalCustomDomainVerificationStatus("")
 	}
-	return o.VerificationStatus
+	return p.VerificationStatus
 }
 
-func (o *PortalCustomDomainSSL) GetValidationErrors() []string {
-	if o == nil {
+func (p *PortalCustomDomainSSL) GetValidationErrors() []string {
+	if p == nil {
 		return nil
 	}
-	return o.ValidationErrors
+	return p.ValidationErrors
 }

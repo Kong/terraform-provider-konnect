@@ -16,11 +16,11 @@ type GetNetworkRequest struct {
 	NetworkID string `pathParam:"style=simple,explode=false,name=networkId"`
 }
 
-func (o *GetNetworkRequest) GetNetworkID() string {
-	if o == nil {
+func (g *GetNetworkRequest) GetNetworkID() string {
+	if g == nil {
 		return ""
 	}
-	return o.NetworkID
+	return g.NetworkID
 }
 
 type GetNetworkResponse struct {
@@ -40,51 +40,51 @@ type GetNetworkResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetNetworkResponse) GetContentType() string {
-	if o == nil {
+func (g *GetNetworkResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetNetworkResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetNetworkResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetNetworkResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetNetworkResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetNetworkResponse) GetNetwork() *shared.Network {
-	if o == nil {
+func (g *GetNetworkResponse) GetNetwork() *shared.Network {
+	if g == nil {
 		return nil
 	}
-	return o.Network
+	return g.Network
 }
 
-func (o *GetNetworkResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetNetworkResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetNetworkResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (g *GetNetworkResponse) GetForbiddenError() *shared.ForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return g.ForbiddenError
 }
 
-func (o *GetNetworkResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetNetworkResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

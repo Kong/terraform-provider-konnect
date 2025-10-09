@@ -15,25 +15,25 @@ type ReplacePortalProductVersionRequest struct {
 	V2ReplacePortalProductVersionPayload shared.V2ReplacePortalProductVersionPayload `request:"mediaType=application/json"`
 }
 
-func (o *ReplacePortalProductVersionRequest) GetProductVersionID() string {
-	if o == nil {
+func (r *ReplacePortalProductVersionRequest) GetProductVersionID() string {
+	if r == nil {
 		return ""
 	}
-	return o.ProductVersionID
+	return r.ProductVersionID
 }
 
-func (o *ReplacePortalProductVersionRequest) GetPortalID() string {
-	if o == nil {
+func (r *ReplacePortalProductVersionRequest) GetPortalID() string {
+	if r == nil {
 		return ""
 	}
-	return o.PortalID
+	return r.PortalID
 }
 
-func (o *ReplacePortalProductVersionRequest) GetV2ReplacePortalProductVersionPayload() shared.V2ReplacePortalProductVersionPayload {
-	if o == nil {
+func (r *ReplacePortalProductVersionRequest) GetV2ReplacePortalProductVersionPayload() shared.V2ReplacePortalProductVersionPayload {
+	if r == nil {
 		return shared.V2ReplacePortalProductVersionPayload{}
 	}
-	return o.V2ReplacePortalProductVersionPayload
+	return r.V2ReplacePortalProductVersionPayload
 }
 
 type ReplacePortalProductVersionResponse struct {
@@ -55,58 +55,58 @@ type ReplacePortalProductVersionResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *ReplacePortalProductVersionResponse) GetContentType() string {
-	if o == nil {
+func (r *ReplacePortalProductVersionResponse) GetContentType() string {
+	if r == nil {
 		return ""
 	}
-	return o.ContentType
+	return r.ContentType
 }
 
-func (o *ReplacePortalProductVersionResponse) GetStatusCode() int {
-	if o == nil {
+func (r *ReplacePortalProductVersionResponse) GetStatusCode() int {
+	if r == nil {
 		return 0
 	}
-	return o.StatusCode
+	return r.StatusCode
 }
 
-func (o *ReplacePortalProductVersionResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (r *ReplacePortalProductVersionResponse) GetRawResponse() *http.Response {
+	if r == nil {
 		return nil
 	}
-	return o.RawResponse
+	return r.RawResponse
 }
 
-func (o *ReplacePortalProductVersionResponse) GetV2PortalProductVersion() *shared.V2PortalProductVersion {
-	if o == nil {
+func (r *ReplacePortalProductVersionResponse) GetV2PortalProductVersion() *shared.V2PortalProductVersion {
+	if r == nil {
 		return nil
 	}
-	return o.V2PortalProductVersion
+	return r.V2PortalProductVersion
 }
 
-func (o *ReplacePortalProductVersionResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (r *ReplacePortalProductVersionResponse) GetBadRequestError() *shared.BadRequestError {
+	if r == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return r.BadRequestError
 }
 
-func (o *ReplacePortalProductVersionResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (r *ReplacePortalProductVersionResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if r == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return r.UnauthorizedError
 }
 
-func (o *ReplacePortalProductVersionResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (r *ReplacePortalProductVersionResponse) GetForbiddenError() *shared.ForbiddenError {
+	if r == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return r.ForbiddenError
 }
 
-func (o *ReplacePortalProductVersionResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (r *ReplacePortalProductVersionResponse) GetNotFoundError() *shared.NotFoundError {
+	if r == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return r.NotFoundError
 }

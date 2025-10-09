@@ -13,18 +13,18 @@ type CreateAiresponsetransformerPluginRequest struct {
 	AiResponseTransformerPlugin shared.AiResponseTransformerPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateAiresponsetransformerPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateAiresponsetransformerPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateAiresponsetransformerPluginRequest) GetAiResponseTransformerPlugin() shared.AiResponseTransformerPlugin {
-	if o == nil {
+func (c *CreateAiresponsetransformerPluginRequest) GetAiResponseTransformerPlugin() shared.AiResponseTransformerPlugin {
+	if c == nil {
 		return shared.AiResponseTransformerPlugin{}
 	}
-	return o.AiResponseTransformerPlugin
+	return c.AiResponseTransformerPlugin
 }
 
 type CreateAiresponsetransformerPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateAiresponsetransformerPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateAiresponsetransformerPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateAiresponsetransformerPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateAiresponsetransformerPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateAiresponsetransformerPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateAiresponsetransformerPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateAiresponsetransformerPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateAiresponsetransformerPluginResponse) GetAiResponseTransformerPlugin() *shared.AiResponseTransformerPlugin {
-	if o == nil {
+func (c *CreateAiresponsetransformerPluginResponse) GetAiResponseTransformerPlugin() *shared.AiResponseTransformerPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.AiResponseTransformerPlugin
+	return c.AiResponseTransformerPlugin
 }
 
-func (o *CreateAiresponsetransformerPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateAiresponsetransformerPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

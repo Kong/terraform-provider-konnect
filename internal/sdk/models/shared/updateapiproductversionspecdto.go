@@ -19,22 +19,22 @@ func (u UpdateAPIProductVersionSpecDTO) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateAPIProductVersionSpecDTO) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *UpdateAPIProductVersionSpecDTO) GetName() *string {
-	if o == nil {
+func (u *UpdateAPIProductVersionSpecDTO) GetName() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Name
+	return u.Name
 }
 
-func (o *UpdateAPIProductVersionSpecDTO) GetContent() *string {
-	if o == nil {
+func (u *UpdateAPIProductVersionSpecDTO) GetContent() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Content
+	return u.Content
 }

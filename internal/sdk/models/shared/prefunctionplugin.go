@@ -12,22 +12,22 @@ type PreFunctionPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *PreFunctionPluginAfter) GetAccess() []string {
-	if o == nil {
+func (p *PreFunctionPluginAfter) GetAccess() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Access
+	return p.Access
 }
 
 type PreFunctionPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *PreFunctionPluginBefore) GetAccess() []string {
-	if o == nil {
+func (p *PreFunctionPluginBefore) GetAccess() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Access
+	return p.Access
 }
 
 type PreFunctionPluginOrdering struct {
@@ -35,18 +35,18 @@ type PreFunctionPluginOrdering struct {
 	Before *PreFunctionPluginBefore `json:"before,omitempty"`
 }
 
-func (o *PreFunctionPluginOrdering) GetAfter() *PreFunctionPluginAfter {
-	if o == nil {
+func (p *PreFunctionPluginOrdering) GetAfter() *PreFunctionPluginAfter {
+	if p == nil {
 		return nil
 	}
-	return o.After
+	return p.After
 }
 
-func (o *PreFunctionPluginOrdering) GetBefore() *PreFunctionPluginBefore {
-	if o == nil {
+func (p *PreFunctionPluginOrdering) GetBefore() *PreFunctionPluginBefore {
+	if p == nil {
 		return nil
 	}
-	return o.Before
+	return p.Before
 }
 
 type PreFunctionPluginPartials struct {
@@ -57,25 +57,25 @@ type PreFunctionPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *PreFunctionPluginPartials) GetID() *string {
-	if o == nil {
+func (p *PreFunctionPluginPartials) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
-func (o *PreFunctionPluginPartials) GetName() *string {
-	if o == nil {
+func (p *PreFunctionPluginPartials) GetName() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Name
+	return p.Name
 }
 
-func (o *PreFunctionPluginPartials) GetPath() *string {
-	if o == nil {
+func (p *PreFunctionPluginPartials) GetPath() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Path
+	return p.Path
 }
 
 type PreFunctionPluginConfig struct {
@@ -91,74 +91,74 @@ type PreFunctionPluginConfig struct {
 	WsUpstreamFrame []string `json:"ws_upstream_frame,omitempty"`
 }
 
-func (o *PreFunctionPluginConfig) GetAccess() []string {
-	if o == nil {
+func (p *PreFunctionPluginConfig) GetAccess() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Access
+	return p.Access
 }
 
-func (o *PreFunctionPluginConfig) GetBodyFilter() []string {
-	if o == nil {
+func (p *PreFunctionPluginConfig) GetBodyFilter() []string {
+	if p == nil {
 		return nil
 	}
-	return o.BodyFilter
+	return p.BodyFilter
 }
 
-func (o *PreFunctionPluginConfig) GetCertificate() []string {
-	if o == nil {
+func (p *PreFunctionPluginConfig) GetCertificate() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Certificate
+	return p.Certificate
 }
 
-func (o *PreFunctionPluginConfig) GetHeaderFilter() []string {
-	if o == nil {
+func (p *PreFunctionPluginConfig) GetHeaderFilter() []string {
+	if p == nil {
 		return nil
 	}
-	return o.HeaderFilter
+	return p.HeaderFilter
 }
 
-func (o *PreFunctionPluginConfig) GetLog() []string {
-	if o == nil {
+func (p *PreFunctionPluginConfig) GetLog() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Log
+	return p.Log
 }
 
-func (o *PreFunctionPluginConfig) GetRewrite() []string {
-	if o == nil {
+func (p *PreFunctionPluginConfig) GetRewrite() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Rewrite
+	return p.Rewrite
 }
 
-func (o *PreFunctionPluginConfig) GetWsClientFrame() []string {
-	if o == nil {
+func (p *PreFunctionPluginConfig) GetWsClientFrame() []string {
+	if p == nil {
 		return nil
 	}
-	return o.WsClientFrame
+	return p.WsClientFrame
 }
 
-func (o *PreFunctionPluginConfig) GetWsClose() []string {
-	if o == nil {
+func (p *PreFunctionPluginConfig) GetWsClose() []string {
+	if p == nil {
 		return nil
 	}
-	return o.WsClose
+	return p.WsClose
 }
 
-func (o *PreFunctionPluginConfig) GetWsHandshake() []string {
-	if o == nil {
+func (p *PreFunctionPluginConfig) GetWsHandshake() []string {
+	if p == nil {
 		return nil
 	}
-	return o.WsHandshake
+	return p.WsHandshake
 }
 
-func (o *PreFunctionPluginConfig) GetWsUpstreamFrame() []string {
-	if o == nil {
+func (p *PreFunctionPluginConfig) GetWsUpstreamFrame() []string {
+	if p == nil {
 		return nil
 	}
-	return o.WsUpstreamFrame
+	return p.WsUpstreamFrame
 }
 
 // PreFunctionPluginProtocols - A string representing a protocol, such as HTTP or HTTPS.
@@ -217,11 +217,11 @@ type PreFunctionPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *PreFunctionPluginRoute) GetID() *string {
-	if o == nil {
+func (p *PreFunctionPluginRoute) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
 // PreFunctionPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -229,11 +229,11 @@ type PreFunctionPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *PreFunctionPluginService) GetID() *string {
-	if o == nil {
+func (p *PreFunctionPluginService) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
 // PreFunctionPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -268,96 +268,96 @@ func (p PreFunctionPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PreFunctionPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"name", "ordering", "partials", "tags", "config", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *PreFunctionPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (p *PreFunctionPlugin) GetCreatedAt() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return p.CreatedAt
 }
 
-func (o *PreFunctionPlugin) GetEnabled() *bool {
-	if o == nil {
+func (p *PreFunctionPlugin) GetEnabled() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.Enabled
+	return p.Enabled
 }
 
-func (o *PreFunctionPlugin) GetID() *string {
-	if o == nil {
+func (p *PreFunctionPlugin) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
-func (o *PreFunctionPlugin) GetInstanceName() *string {
-	if o == nil {
+func (p *PreFunctionPlugin) GetInstanceName() *string {
+	if p == nil {
 		return nil
 	}
-	return o.InstanceName
+	return p.InstanceName
 }
 
-func (o *PreFunctionPlugin) GetName() string {
+func (p *PreFunctionPlugin) GetName() string {
 	return "pre-function"
 }
 
-func (o *PreFunctionPlugin) GetOrdering() *PreFunctionPluginOrdering {
-	if o == nil {
+func (p *PreFunctionPlugin) GetOrdering() *PreFunctionPluginOrdering {
+	if p == nil {
 		return nil
 	}
-	return o.Ordering
+	return p.Ordering
 }
 
-func (o *PreFunctionPlugin) GetPartials() []PreFunctionPluginPartials {
-	if o == nil {
+func (p *PreFunctionPlugin) GetPartials() []PreFunctionPluginPartials {
+	if p == nil {
 		return nil
 	}
-	return o.Partials
+	return p.Partials
 }
 
-func (o *PreFunctionPlugin) GetTags() []string {
-	if o == nil {
+func (p *PreFunctionPlugin) GetTags() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Tags
+	return p.Tags
 }
 
-func (o *PreFunctionPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (p *PreFunctionPlugin) GetUpdatedAt() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return p.UpdatedAt
 }
 
-func (o *PreFunctionPlugin) GetConfig() *PreFunctionPluginConfig {
-	if o == nil {
+func (p *PreFunctionPlugin) GetConfig() *PreFunctionPluginConfig {
+	if p == nil {
 		return nil
 	}
-	return o.Config
+	return p.Config
 }
 
-func (o *PreFunctionPlugin) GetProtocols() []PreFunctionPluginProtocols {
-	if o == nil {
+func (p *PreFunctionPlugin) GetProtocols() []PreFunctionPluginProtocols {
+	if p == nil {
 		return nil
 	}
-	return o.Protocols
+	return p.Protocols
 }
 
-func (o *PreFunctionPlugin) GetRoute() *PreFunctionPluginRoute {
-	if o == nil {
+func (p *PreFunctionPlugin) GetRoute() *PreFunctionPluginRoute {
+	if p == nil {
 		return nil
 	}
-	return o.Route
+	return p.Route
 }
 
-func (o *PreFunctionPlugin) GetService() *PreFunctionPluginService {
-	if o == nil {
+func (p *PreFunctionPlugin) GetService() *PreFunctionPluginService {
+	if p == nil {
 		return nil
 	}
-	return o.Service
+	return p.Service
 }

@@ -15,25 +15,25 @@ type DeleteMtlsAuthWithConsumerRequest struct {
 	MTLSAuthID string `pathParam:"style=simple,explode=false,name=MTLSAuthId"`
 }
 
-func (o *DeleteMtlsAuthWithConsumerRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteMtlsAuthWithConsumerRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
-func (o *DeleteMtlsAuthWithConsumerRequest) GetConsumerID() string {
-	if o == nil {
+func (d *DeleteMtlsAuthWithConsumerRequest) GetConsumerID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ConsumerID
+	return d.ConsumerID
 }
 
-func (o *DeleteMtlsAuthWithConsumerRequest) GetMTLSAuthID() string {
-	if o == nil {
+func (d *DeleteMtlsAuthWithConsumerRequest) GetMTLSAuthID() string {
+	if d == nil {
 		return ""
 	}
-	return o.MTLSAuthID
+	return d.MTLSAuthID
 }
 
 type DeleteMtlsAuthWithConsumerResponse struct {
@@ -45,23 +45,23 @@ type DeleteMtlsAuthWithConsumerResponse struct {
 	RawResponse *http.Response
 }
 
-func (o *DeleteMtlsAuthWithConsumerResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteMtlsAuthWithConsumerResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteMtlsAuthWithConsumerResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteMtlsAuthWithConsumerResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteMtlsAuthWithConsumerResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteMtlsAuthWithConsumerResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }

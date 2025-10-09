@@ -18,10 +18,10 @@ resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway"
     dns_config = [
       {
         domain_proxy_list = [
-          "..."
+          "foobar.com",
         ]
         remote_dns_server_ip_addresses = [
-          "..."
+          "10.0.0.2",
         ]
       }
     ]
@@ -39,15 +39,17 @@ resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway"
   }
   aws_transit_gateway = {
     cidr_blocks = [
-      "..."
+      "10.0.0.0/8",
+      "100.64.0.0/10",
+      "172.16.0.0/12",
     ]
     dns_config = [
       {
         domain_proxy_list = [
-          "..."
+          "foobar.com",
         ]
         remote_dns_server_ip_addresses = [
-          "..."
+          "10.0.0.2",
         ]
       }
     ]
@@ -60,15 +62,17 @@ resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway"
   }
   aws_vpc_peering_gateway = {
     cidr_blocks = [
-      "..."
+      "10.0.0.0/8",
+      "100.64.0.0/10",
+      "172.16.0.0/12",
     ]
     dns_config = [
       {
         domain_proxy_list = [
-          "..."
+          "foobar.com",
         ]
         remote_dns_server_ip_addresses = [
-          "..."
+          "10.0.0.2",
         ]
       }
     ]
@@ -84,10 +88,10 @@ resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway"
     dns_config = [
       {
         domain_proxy_list = [
-          "..."
+          "foobar.com",
         ]
         remote_dns_server_ip_addresses = [
-          "..."
+          "10.0.0.2",
         ]
       }
     ]
@@ -104,10 +108,10 @@ resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway"
     dns_config = [
       {
         domain_proxy_list = [
-          "..."
+          "foobar.com",
         ]
         remote_dns_server_ip_addresses = [
-          "..."
+          "10.0.0.2",
         ]
       }
     ]
@@ -649,6 +653,20 @@ Read-Only:
 ## Import
 
 Import is supported using the following syntax:
+
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_cloud_gateway_transit_gateway.my_konnect_cloud_gateway_transit_gateway
+  id = jsonencode({
+    id = "0850820b-d153-4a2a-b9be-7d2204779139"
+    network_id = "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import konnect_cloud_gateway_transit_gateway.my_konnect_cloud_gateway_transit_gateway '{"id": "0850820b-d153-4a2a-b9be-7d2204779139", "network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695"}'

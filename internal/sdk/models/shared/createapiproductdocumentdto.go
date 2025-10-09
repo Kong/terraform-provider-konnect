@@ -30,50 +30,50 @@ func (c CreateAPIProductDocumentDTO) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateAPIProductDocumentDTO) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"slug", "status", "title"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CreateAPIProductDocumentDTO) GetParentDocumentID() *string {
-	if o == nil {
+func (c *CreateAPIProductDocumentDTO) GetParentDocumentID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ParentDocumentID
+	return c.ParentDocumentID
 }
 
-func (o *CreateAPIProductDocumentDTO) GetSlug() string {
-	if o == nil {
+func (c *CreateAPIProductDocumentDTO) GetSlug() string {
+	if c == nil {
 		return ""
 	}
-	return o.Slug
+	return c.Slug
 }
 
-func (o *CreateAPIProductDocumentDTO) GetStatus() PublishStatus {
-	if o == nil {
+func (c *CreateAPIProductDocumentDTO) GetStatus() PublishStatus {
+	if c == nil {
 		return PublishStatus("")
 	}
-	return o.Status
+	return c.Status
 }
 
-func (o *CreateAPIProductDocumentDTO) GetTitle() string {
-	if o == nil {
+func (c *CreateAPIProductDocumentDTO) GetTitle() string {
+	if c == nil {
 		return ""
 	}
-	return o.Title
+	return c.Title
 }
 
-func (o *CreateAPIProductDocumentDTO) GetContent() *string {
-	if o == nil {
+func (c *CreateAPIProductDocumentDTO) GetContent() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Content
+	return c.Content
 }
 
-func (o *CreateAPIProductDocumentDTO) GetMetadata() *Metadata {
-	if o == nil {
+func (c *CreateAPIProductDocumentDTO) GetMetadata() *Metadata {
+	if c == nil {
 		return nil
 	}
-	return o.Metadata
+	return c.Metadata
 }

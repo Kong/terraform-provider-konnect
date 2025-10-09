@@ -12,22 +12,22 @@ type DegraphqlPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *DegraphqlPluginAfter) GetAccess() []string {
-	if o == nil {
+func (d *DegraphqlPluginAfter) GetAccess() []string {
+	if d == nil {
 		return nil
 	}
-	return o.Access
+	return d.Access
 }
 
 type DegraphqlPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *DegraphqlPluginBefore) GetAccess() []string {
-	if o == nil {
+func (d *DegraphqlPluginBefore) GetAccess() []string {
+	if d == nil {
 		return nil
 	}
-	return o.Access
+	return d.Access
 }
 
 type DegraphqlPluginOrdering struct {
@@ -35,18 +35,18 @@ type DegraphqlPluginOrdering struct {
 	Before *DegraphqlPluginBefore `json:"before,omitempty"`
 }
 
-func (o *DegraphqlPluginOrdering) GetAfter() *DegraphqlPluginAfter {
-	if o == nil {
+func (d *DegraphqlPluginOrdering) GetAfter() *DegraphqlPluginAfter {
+	if d == nil {
 		return nil
 	}
-	return o.After
+	return d.After
 }
 
-func (o *DegraphqlPluginOrdering) GetBefore() *DegraphqlPluginBefore {
-	if o == nil {
+func (d *DegraphqlPluginOrdering) GetBefore() *DegraphqlPluginBefore {
+	if d == nil {
 		return nil
 	}
-	return o.Before
+	return d.Before
 }
 
 type DegraphqlPluginPartials struct {
@@ -57,25 +57,25 @@ type DegraphqlPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *DegraphqlPluginPartials) GetID() *string {
-	if o == nil {
+func (d *DegraphqlPluginPartials) GetID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ID
+	return d.ID
 }
 
-func (o *DegraphqlPluginPartials) GetName() *string {
-	if o == nil {
+func (d *DegraphqlPluginPartials) GetName() *string {
+	if d == nil {
 		return nil
 	}
-	return o.Name
+	return d.Name
 }
 
-func (o *DegraphqlPluginPartials) GetPath() *string {
-	if o == nil {
+func (d *DegraphqlPluginPartials) GetPath() *string {
+	if d == nil {
 		return nil
 	}
-	return o.Path
+	return d.Path
 }
 
 type DegraphqlPluginConfig struct {
@@ -88,17 +88,17 @@ func (d DegraphqlPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DegraphqlPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *DegraphqlPluginConfig) GetGraphqlServerPath() *string {
-	if o == nil {
+func (d *DegraphqlPluginConfig) GetGraphqlServerPath() *string {
+	if d == nil {
 		return nil
 	}
-	return o.GraphqlServerPath
+	return d.GraphqlServerPath
 }
 
 type DegraphqlPluginProtocols string
@@ -138,11 +138,11 @@ type DegraphqlPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *DegraphqlPluginRoute) GetID() *string {
-	if o == nil {
+func (d *DegraphqlPluginRoute) GetID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ID
+	return d.ID
 }
 
 // DegraphqlPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -150,11 +150,11 @@ type DegraphqlPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *DegraphqlPluginService) GetID() *string {
-	if o == nil {
+func (d *DegraphqlPluginService) GetID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ID
+	return d.ID
 }
 
 // DegraphqlPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -189,96 +189,96 @@ func (d DegraphqlPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DegraphqlPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"name", "ordering", "partials", "tags", "config", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *DegraphqlPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (d *DegraphqlPlugin) GetCreatedAt() *int64 {
+	if d == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return d.CreatedAt
 }
 
-func (o *DegraphqlPlugin) GetEnabled() *bool {
-	if o == nil {
+func (d *DegraphqlPlugin) GetEnabled() *bool {
+	if d == nil {
 		return nil
 	}
-	return o.Enabled
+	return d.Enabled
 }
 
-func (o *DegraphqlPlugin) GetID() *string {
-	if o == nil {
+func (d *DegraphqlPlugin) GetID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ID
+	return d.ID
 }
 
-func (o *DegraphqlPlugin) GetInstanceName() *string {
-	if o == nil {
+func (d *DegraphqlPlugin) GetInstanceName() *string {
+	if d == nil {
 		return nil
 	}
-	return o.InstanceName
+	return d.InstanceName
 }
 
-func (o *DegraphqlPlugin) GetName() string {
+func (d *DegraphqlPlugin) GetName() string {
 	return "degraphql"
 }
 
-func (o *DegraphqlPlugin) GetOrdering() *DegraphqlPluginOrdering {
-	if o == nil {
+func (d *DegraphqlPlugin) GetOrdering() *DegraphqlPluginOrdering {
+	if d == nil {
 		return nil
 	}
-	return o.Ordering
+	return d.Ordering
 }
 
-func (o *DegraphqlPlugin) GetPartials() []DegraphqlPluginPartials {
-	if o == nil {
+func (d *DegraphqlPlugin) GetPartials() []DegraphqlPluginPartials {
+	if d == nil {
 		return nil
 	}
-	return o.Partials
+	return d.Partials
 }
 
-func (o *DegraphqlPlugin) GetTags() []string {
-	if o == nil {
+func (d *DegraphqlPlugin) GetTags() []string {
+	if d == nil {
 		return nil
 	}
-	return o.Tags
+	return d.Tags
 }
 
-func (o *DegraphqlPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (d *DegraphqlPlugin) GetUpdatedAt() *int64 {
+	if d == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return d.UpdatedAt
 }
 
-func (o *DegraphqlPlugin) GetConfig() *DegraphqlPluginConfig {
-	if o == nil {
+func (d *DegraphqlPlugin) GetConfig() *DegraphqlPluginConfig {
+	if d == nil {
 		return nil
 	}
-	return o.Config
+	return d.Config
 }
 
-func (o *DegraphqlPlugin) GetProtocols() []DegraphqlPluginProtocols {
-	if o == nil {
+func (d *DegraphqlPlugin) GetProtocols() []DegraphqlPluginProtocols {
+	if d == nil {
 		return nil
 	}
-	return o.Protocols
+	return d.Protocols
 }
 
-func (o *DegraphqlPlugin) GetRoute() *DegraphqlPluginRoute {
-	if o == nil {
+func (d *DegraphqlPlugin) GetRoute() *DegraphqlPluginRoute {
+	if d == nil {
 		return nil
 	}
-	return o.Route
+	return d.Route
 }
 
-func (o *DegraphqlPlugin) GetService() *DegraphqlPluginService {
-	if o == nil {
+func (d *DegraphqlPlugin) GetService() *DegraphqlPluginService {
+	if d == nil {
 		return nil
 	}
-	return o.Service
+	return d.Service
 }

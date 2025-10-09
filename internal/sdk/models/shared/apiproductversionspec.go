@@ -26,43 +26,43 @@ func (a APIProductVersionSpec) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APIProductVersionSpec) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name", "content", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *APIProductVersionSpec) GetID() string {
-	if o == nil {
+func (a *APIProductVersionSpec) GetID() string {
+	if a == nil {
 		return ""
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *APIProductVersionSpec) GetName() string {
-	if o == nil {
+func (a *APIProductVersionSpec) GetName() string {
+	if a == nil {
 		return ""
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *APIProductVersionSpec) GetContent() string {
-	if o == nil {
+func (a *APIProductVersionSpec) GetContent() string {
+	if a == nil {
 		return ""
 	}
-	return o.Content
+	return a.Content
 }
 
-func (o *APIProductVersionSpec) GetCreatedAt() time.Time {
-	if o == nil {
+func (a *APIProductVersionSpec) GetCreatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *APIProductVersionSpec) GetUpdatedAt() time.Time {
-	if o == nil {
+func (a *APIProductVersionSpec) GetUpdatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }

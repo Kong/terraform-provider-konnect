@@ -15,25 +15,25 @@ type DeleteBasicAuthWithConsumerRequest struct {
 	BasicAuthID string `pathParam:"style=simple,explode=false,name=BasicAuthId"`
 }
 
-func (o *DeleteBasicAuthWithConsumerRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteBasicAuthWithConsumerRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
-func (o *DeleteBasicAuthWithConsumerRequest) GetConsumerID() string {
-	if o == nil {
+func (d *DeleteBasicAuthWithConsumerRequest) GetConsumerID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ConsumerID
+	return d.ConsumerID
 }
 
-func (o *DeleteBasicAuthWithConsumerRequest) GetBasicAuthID() string {
-	if o == nil {
+func (d *DeleteBasicAuthWithConsumerRequest) GetBasicAuthID() string {
+	if d == nil {
 		return ""
 	}
-	return o.BasicAuthID
+	return d.BasicAuthID
 }
 
 type DeleteBasicAuthWithConsumerResponse struct {
@@ -45,23 +45,23 @@ type DeleteBasicAuthWithConsumerResponse struct {
 	RawResponse *http.Response
 }
 
-func (o *DeleteBasicAuthWithConsumerResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteBasicAuthWithConsumerResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteBasicAuthWithConsumerResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteBasicAuthWithConsumerResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteBasicAuthWithConsumerResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteBasicAuthWithConsumerResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }

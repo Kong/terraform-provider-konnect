@@ -21,24 +21,24 @@ func (g GCPVPCPeeringGatewayResponseTransitGatewayStateMetadata) MarshalJSON() (
 }
 
 func (g *GCPVPCPeeringGatewayResponseTransitGatewayStateMetadata) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *GCPVPCPeeringGatewayResponseTransitGatewayStateMetadata) GetReportedStatus() *string {
-	if o == nil {
+func (g *GCPVPCPeeringGatewayResponseTransitGatewayStateMetadata) GetReportedStatus() *string {
+	if g == nil {
 		return nil
 	}
-	return o.ReportedStatus
+	return g.ReportedStatus
 }
 
-func (o *GCPVPCPeeringGatewayResponseTransitGatewayStateMetadata) GetReason() *string {
-	if o == nil {
+func (g *GCPVPCPeeringGatewayResponseTransitGatewayStateMetadata) GetReason() *string {
+	if g == nil {
 		return nil
 	}
-	return o.Reason
+	return g.Reason
 }
 
 type GCPVPCPeeringGatewayResponse struct {
@@ -78,71 +78,71 @@ func (g GCPVPCPeeringGatewayResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GCPVPCPeeringGatewayResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, true); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"name", "dns_config", "transit_gateway_attachment_config", "id", "state", "entity_version", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *GCPVPCPeeringGatewayResponse) GetName() string {
-	if o == nil {
+func (g *GCPVPCPeeringGatewayResponse) GetName() string {
+	if g == nil {
 		return ""
 	}
-	return o.Name
+	return g.Name
 }
 
-func (o *GCPVPCPeeringGatewayResponse) GetDNSConfig() []TransitGatewayDNSConfig {
-	if o == nil {
+func (g *GCPVPCPeeringGatewayResponse) GetDNSConfig() []TransitGatewayDNSConfig {
+	if g == nil {
 		return []TransitGatewayDNSConfig{}
 	}
-	return o.DNSConfig
+	return g.DNSConfig
 }
 
-func (o *GCPVPCPeeringGatewayResponse) GetTransitGatewayAttachmentConfig() GCPVPCPeeringAttachmentConfig {
-	if o == nil {
+func (g *GCPVPCPeeringGatewayResponse) GetTransitGatewayAttachmentConfig() GCPVPCPeeringAttachmentConfig {
+	if g == nil {
 		return GCPVPCPeeringAttachmentConfig{}
 	}
-	return o.TransitGatewayAttachmentConfig
+	return g.TransitGatewayAttachmentConfig
 }
 
-func (o *GCPVPCPeeringGatewayResponse) GetID() string {
-	if o == nil {
+func (g *GCPVPCPeeringGatewayResponse) GetID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ID
+	return g.ID
 }
 
-func (o *GCPVPCPeeringGatewayResponse) GetState() TransitGatewayState {
-	if o == nil {
+func (g *GCPVPCPeeringGatewayResponse) GetState() TransitGatewayState {
+	if g == nil {
 		return TransitGatewayState("")
 	}
-	return o.State
+	return g.State
 }
 
-func (o *GCPVPCPeeringGatewayResponse) GetStateMetadata() *GCPVPCPeeringGatewayResponseTransitGatewayStateMetadata {
-	if o == nil {
+func (g *GCPVPCPeeringGatewayResponse) GetStateMetadata() *GCPVPCPeeringGatewayResponseTransitGatewayStateMetadata {
+	if g == nil {
 		return nil
 	}
-	return o.StateMetadata
+	return g.StateMetadata
 }
 
-func (o *GCPVPCPeeringGatewayResponse) GetEntityVersion() int64 {
-	if o == nil {
+func (g *GCPVPCPeeringGatewayResponse) GetEntityVersion() int64 {
+	if g == nil {
 		return 0
 	}
-	return o.EntityVersion
+	return g.EntityVersion
 }
 
-func (o *GCPVPCPeeringGatewayResponse) GetCreatedAt() time.Time {
-	if o == nil {
+func (g *GCPVPCPeeringGatewayResponse) GetCreatedAt() time.Time {
+	if g == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return g.CreatedAt
 }
 
-func (o *GCPVPCPeeringGatewayResponse) GetUpdatedAt() time.Time {
-	if o == nil {
+func (g *GCPVPCPeeringGatewayResponse) GetUpdatedAt() time.Time {
+	if g == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return g.UpdatedAt
 }

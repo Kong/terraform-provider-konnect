@@ -13,18 +13,18 @@ type CreateConfigStoreRequest struct {
 	CreateConfigStore shared.CreateConfigStore `request:"mediaType=application/json"`
 }
 
-func (o *CreateConfigStoreRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateConfigStoreRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateConfigStoreRequest) GetCreateConfigStore() shared.CreateConfigStore {
-	if o == nil {
+func (c *CreateConfigStoreRequest) GetCreateConfigStore() shared.CreateConfigStore {
+	if c == nil {
 		return shared.CreateConfigStore{}
 	}
-	return o.CreateConfigStore
+	return c.CreateConfigStore
 }
 
 type CreateConfigStoreResponse struct {
@@ -46,58 +46,58 @@ type CreateConfigStoreResponse struct {
 	UnsupportedMediaTypeError *shared.UnsupportedMediaTypeError
 }
 
-func (o *CreateConfigStoreResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateConfigStoreResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateConfigStoreResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateConfigStoreResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateConfigStoreResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateConfigStoreResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateConfigStoreResponse) GetConfigStore() *shared.ConfigStore {
-	if o == nil {
+func (c *CreateConfigStoreResponse) GetConfigStore() *shared.ConfigStore {
+	if c == nil {
 		return nil
 	}
-	return o.ConfigStore
+	return c.ConfigStore
 }
 
-func (o *CreateConfigStoreResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreateConfigStoreResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreateConfigStoreResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (c *CreateConfigStoreResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return c.UnauthorizedError
 }
 
-func (o *CreateConfigStoreResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreateConfigStoreResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }
 
-func (o *CreateConfigStoreResponse) GetUnsupportedMediaTypeError() *shared.UnsupportedMediaTypeError {
-	if o == nil {
+func (c *CreateConfigStoreResponse) GetUnsupportedMediaTypeError() *shared.UnsupportedMediaTypeError {
+	if c == nil {
 		return nil
 	}
-	return o.UnsupportedMediaTypeError
+	return c.UnsupportedMediaTypeError
 }

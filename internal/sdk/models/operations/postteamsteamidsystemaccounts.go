@@ -18,18 +18,18 @@ type PostTeamsTeamIDSystemAccountsRequest struct {
 	AddSystemAccountToTeam *shared.AddSystemAccountToTeam `request:"mediaType=application/json"`
 }
 
-func (o *PostTeamsTeamIDSystemAccountsRequest) GetTeamID() string {
-	if o == nil {
+func (p *PostTeamsTeamIDSystemAccountsRequest) GetTeamID() string {
+	if p == nil {
 		return ""
 	}
-	return o.TeamID
+	return p.TeamID
 }
 
-func (o *PostTeamsTeamIDSystemAccountsRequest) GetAddSystemAccountToTeam() *shared.AddSystemAccountToTeam {
-	if o == nil {
+func (p *PostTeamsTeamIDSystemAccountsRequest) GetAddSystemAccountToTeam() *shared.AddSystemAccountToTeam {
+	if p == nil {
 		return nil
 	}
-	return o.AddSystemAccountToTeam
+	return p.AddSystemAccountToTeam
 }
 
 type PostTeamsTeamIDSystemAccountsResponse struct {
@@ -47,44 +47,44 @@ type PostTeamsTeamIDSystemAccountsResponse struct {
 	ConflictError *shared.ConflictError
 }
 
-func (o *PostTeamsTeamIDSystemAccountsResponse) GetContentType() string {
-	if o == nil {
+func (p *PostTeamsTeamIDSystemAccountsResponse) GetContentType() string {
+	if p == nil {
 		return ""
 	}
-	return o.ContentType
+	return p.ContentType
 }
 
-func (o *PostTeamsTeamIDSystemAccountsResponse) GetStatusCode() int {
-	if o == nil {
+func (p *PostTeamsTeamIDSystemAccountsResponse) GetStatusCode() int {
+	if p == nil {
 		return 0
 	}
-	return o.StatusCode
+	return p.StatusCode
 }
 
-func (o *PostTeamsTeamIDSystemAccountsResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (p *PostTeamsTeamIDSystemAccountsResponse) GetRawResponse() *http.Response {
+	if p == nil {
 		return nil
 	}
-	return o.RawResponse
+	return p.RawResponse
 }
 
-func (o *PostTeamsTeamIDSystemAccountsResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (p *PostTeamsTeamIDSystemAccountsResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if p == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return p.UnauthorizedError
 }
 
-func (o *PostTeamsTeamIDSystemAccountsResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (p *PostTeamsTeamIDSystemAccountsResponse) GetNotFoundError() *shared.NotFoundError {
+	if p == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return p.NotFoundError
 }
 
-func (o *PostTeamsTeamIDSystemAccountsResponse) GetConflictError() *shared.ConflictError {
-	if o == nil {
+func (p *PostTeamsTeamIDSystemAccountsResponse) GetConflictError() *shared.ConflictError {
+	if p == nil {
 		return nil
 	}
-	return o.ConflictError
+	return p.ConflictError
 }

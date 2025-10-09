@@ -15,25 +15,25 @@ type UpdatePrometheusPluginRequest struct {
 	PrometheusPlugin shared.PrometheusPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdatePrometheusPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdatePrometheusPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdatePrometheusPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdatePrometheusPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdatePrometheusPluginRequest) GetPrometheusPlugin() shared.PrometheusPlugin {
-	if o == nil {
+func (u *UpdatePrometheusPluginRequest) GetPrometheusPlugin() shared.PrometheusPlugin {
+	if u == nil {
 		return shared.PrometheusPlugin{}
 	}
-	return o.PrometheusPlugin
+	return u.PrometheusPlugin
 }
 
 type UpdatePrometheusPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdatePrometheusPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdatePrometheusPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdatePrometheusPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdatePrometheusPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdatePrometheusPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdatePrometheusPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdatePrometheusPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdatePrometheusPluginResponse) GetPrometheusPlugin() *shared.PrometheusPlugin {
-	if o == nil {
+func (u *UpdatePrometheusPluginResponse) GetPrometheusPlugin() *shared.PrometheusPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.PrometheusPlugin
+	return u.PrometheusPlugin
 }
 
-func (o *UpdatePrometheusPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdatePrometheusPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

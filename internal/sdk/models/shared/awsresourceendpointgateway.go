@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type AWSResourceEndpointGateway struct {
 	// Human-readable name of the transit gateway.
 	Name string `json:"name"`
@@ -12,23 +16,34 @@ type AWSResourceEndpointGateway struct {
 	TransitGatewayAttachmentConfig AwsResourceEndpointAttachmentConfig `json:"transit_gateway_attachment_config"`
 }
 
-func (o *AWSResourceEndpointGateway) GetName() string {
-	if o == nil {
+func (a AWSResourceEndpointGateway) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AWSResourceEndpointGateway) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "transit_gateway_attachment_config"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AWSResourceEndpointGateway) GetName() string {
+	if a == nil {
 		return ""
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AWSResourceEndpointGateway) GetDNSConfig() []TransitGatewayDNSConfig {
-	if o == nil {
+func (a *AWSResourceEndpointGateway) GetDNSConfig() []TransitGatewayDNSConfig {
+	if a == nil {
 		return nil
 	}
-	return o.DNSConfig
+	return a.DNSConfig
 }
 
-func (o *AWSResourceEndpointGateway) GetTransitGatewayAttachmentConfig() AwsResourceEndpointAttachmentConfig {
-	if o == nil {
+func (a *AWSResourceEndpointGateway) GetTransitGatewayAttachmentConfig() AwsResourceEndpointAttachmentConfig {
+	if a == nil {
 		return AwsResourceEndpointAttachmentConfig{}
 	}
-	return o.TransitGatewayAttachmentConfig
+	return a.TransitGatewayAttachmentConfig
 }

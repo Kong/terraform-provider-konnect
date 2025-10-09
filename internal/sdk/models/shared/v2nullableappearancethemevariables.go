@@ -7,9 +7,9 @@ type V2NullableAppearanceThemeVariables struct {
 	Colors V2AppearanceThemeColorVariables `json:"colors"`
 }
 
-func (o *V2NullableAppearanceThemeVariables) GetColors() V2AppearanceThemeColorVariables {
-	if o == nil {
+func (v *V2NullableAppearanceThemeVariables) GetColors() V2AppearanceThemeColorVariables {
+	if v == nil {
 		return V2AppearanceThemeColorVariables{}
 	}
-	return o.Colors
+	return v.Colors
 }

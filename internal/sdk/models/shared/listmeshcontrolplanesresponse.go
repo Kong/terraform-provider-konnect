@@ -9,16 +9,16 @@ type ListMeshControlPlanesResponse struct {
 	Data []MeshControlPlane `json:"data,omitempty"`
 }
 
-func (o *ListMeshControlPlanesResponse) GetMeta() *PaginatedMeta {
-	if o == nil {
+func (l *ListMeshControlPlanesResponse) GetMeta() *PaginatedMeta {
+	if l == nil {
 		return nil
 	}
-	return o.Meta
+	return l.Meta
 }
 
-func (o *ListMeshControlPlanesResponse) GetData() []MeshControlPlane {
-	if o == nil {
+func (l *ListMeshControlPlanesResponse) GetData() []MeshControlPlane {
+	if l == nil {
 		return nil
 	}
-	return o.Data
+	return l.Data
 }

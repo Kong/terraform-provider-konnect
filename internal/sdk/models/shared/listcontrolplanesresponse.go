@@ -9,16 +9,16 @@ type ListControlPlanesResponse struct {
 	Data []ControlPlane `json:"data"`
 }
 
-func (o *ListControlPlanesResponse) GetMeta() PaginatedMeta {
-	if o == nil {
+func (l *ListControlPlanesResponse) GetMeta() PaginatedMeta {
+	if l == nil {
 		return PaginatedMeta{}
 	}
-	return o.Meta
+	return l.Meta
 }
 
-func (o *ListControlPlanesResponse) GetData() []ControlPlane {
-	if o == nil {
+func (l *ListControlPlanesResponse) GetData() []ControlPlane {
+	if l == nil {
 		return []ControlPlane{}
 	}
-	return o.Data
+	return l.Data
 }

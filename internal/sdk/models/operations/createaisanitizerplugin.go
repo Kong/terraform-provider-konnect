@@ -13,18 +13,18 @@ type CreateAisanitizerPluginRequest struct {
 	AiSanitizerPlugin shared.AiSanitizerPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateAisanitizerPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateAisanitizerPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateAisanitizerPluginRequest) GetAiSanitizerPlugin() shared.AiSanitizerPlugin {
-	if o == nil {
+func (c *CreateAisanitizerPluginRequest) GetAiSanitizerPlugin() shared.AiSanitizerPlugin {
+	if c == nil {
 		return shared.AiSanitizerPlugin{}
 	}
-	return o.AiSanitizerPlugin
+	return c.AiSanitizerPlugin
 }
 
 type CreateAisanitizerPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateAisanitizerPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateAisanitizerPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateAisanitizerPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateAisanitizerPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateAisanitizerPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateAisanitizerPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateAisanitizerPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateAisanitizerPluginResponse) GetAiSanitizerPlugin() *shared.AiSanitizerPlugin {
-	if o == nil {
+func (c *CreateAisanitizerPluginResponse) GetAiSanitizerPlugin() *shared.AiSanitizerPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.AiSanitizerPlugin
+	return c.AiSanitizerPlugin
 }
 
-func (o *CreateAisanitizerPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateAisanitizerPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

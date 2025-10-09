@@ -16,25 +16,25 @@ type UpsertSniRequest struct {
 	Sni shared.Sni `request:"mediaType=application/json"`
 }
 
-func (o *UpsertSniRequest) GetSNIID() string {
-	if o == nil {
+func (u *UpsertSniRequest) GetSNIID() string {
+	if u == nil {
 		return ""
 	}
-	return o.SNIID
+	return u.SNIID
 }
 
-func (o *UpsertSniRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpsertSniRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpsertSniRequest) GetSni() shared.Sni {
-	if o == nil {
+func (u *UpsertSniRequest) GetSni() shared.Sni {
+	if u == nil {
 		return shared.Sni{}
 	}
-	return o.Sni
+	return u.Sni
 }
 
 type UpsertSniResponse struct {
@@ -50,37 +50,37 @@ type UpsertSniResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpsertSniResponse) GetContentType() string {
-	if o == nil {
+func (u *UpsertSniResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpsertSniResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpsertSniResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpsertSniResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpsertSniResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpsertSniResponse) GetSni() *shared.Sni {
-	if o == nil {
+func (u *UpsertSniResponse) GetSni() *shared.Sni {
+	if u == nil {
 		return nil
 	}
-	return o.Sni
+	return u.Sni
 }
 
-func (o *UpsertSniResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpsertSniResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

@@ -13,18 +13,18 @@ type CreateOpentelemetryPluginRequest struct {
 	OpentelemetryPlugin shared.OpentelemetryPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateOpentelemetryPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateOpentelemetryPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateOpentelemetryPluginRequest) GetOpentelemetryPlugin() shared.OpentelemetryPlugin {
-	if o == nil {
+func (c *CreateOpentelemetryPluginRequest) GetOpentelemetryPlugin() shared.OpentelemetryPlugin {
+	if c == nil {
 		return shared.OpentelemetryPlugin{}
 	}
-	return o.OpentelemetryPlugin
+	return c.OpentelemetryPlugin
 }
 
 type CreateOpentelemetryPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateOpentelemetryPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateOpentelemetryPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateOpentelemetryPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateOpentelemetryPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateOpentelemetryPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateOpentelemetryPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateOpentelemetryPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateOpentelemetryPluginResponse) GetOpentelemetryPlugin() *shared.OpentelemetryPlugin {
-	if o == nil {
+func (c *CreateOpentelemetryPluginResponse) GetOpentelemetryPlugin() *shared.OpentelemetryPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.OpentelemetryPlugin
+	return c.OpentelemetryPlugin
 }
 
-func (o *CreateOpentelemetryPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateOpentelemetryPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

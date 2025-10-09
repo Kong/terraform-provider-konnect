@@ -13,18 +13,18 @@ type CreateRedirectPluginRequest struct {
 	RedirectPlugin shared.RedirectPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateRedirectPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateRedirectPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateRedirectPluginRequest) GetRedirectPlugin() shared.RedirectPlugin {
-	if o == nil {
+func (c *CreateRedirectPluginRequest) GetRedirectPlugin() shared.RedirectPlugin {
+	if c == nil {
 		return shared.RedirectPlugin{}
 	}
-	return o.RedirectPlugin
+	return c.RedirectPlugin
 }
 
 type CreateRedirectPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateRedirectPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateRedirectPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateRedirectPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateRedirectPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateRedirectPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateRedirectPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateRedirectPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateRedirectPluginResponse) GetRedirectPlugin() *shared.RedirectPlugin {
-	if o == nil {
+func (c *CreateRedirectPluginResponse) GetRedirectPlugin() *shared.RedirectPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.RedirectPlugin
+	return c.RedirectPlugin
 }
 
-func (o *CreateRedirectPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateRedirectPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

@@ -30,57 +30,57 @@ func (s SystemAccountAccessTokenCreated) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SystemAccountAccessTokenCreated) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *SystemAccountAccessTokenCreated) GetID() *string {
-	if o == nil {
+func (s *SystemAccountAccessTokenCreated) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
-func (o *SystemAccountAccessTokenCreated) GetName() *string {
-	if o == nil {
+func (s *SystemAccountAccessTokenCreated) GetName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Name
+	return s.Name
 }
 
-func (o *SystemAccountAccessTokenCreated) GetCreatedAt() *time.Time {
-	if o == nil {
+func (s *SystemAccountAccessTokenCreated) GetCreatedAt() *time.Time {
+	if s == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return s.CreatedAt
 }
 
-func (o *SystemAccountAccessTokenCreated) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (s *SystemAccountAccessTokenCreated) GetUpdatedAt() *time.Time {
+	if s == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return s.UpdatedAt
 }
 
-func (o *SystemAccountAccessTokenCreated) GetExpiresAt() *time.Time {
-	if o == nil {
+func (s *SystemAccountAccessTokenCreated) GetExpiresAt() *time.Time {
+	if s == nil {
 		return nil
 	}
-	return o.ExpiresAt
+	return s.ExpiresAt
 }
 
-func (o *SystemAccountAccessTokenCreated) GetLastUsedAt() *time.Time {
-	if o == nil {
+func (s *SystemAccountAccessTokenCreated) GetLastUsedAt() *time.Time {
+	if s == nil {
 		return nil
 	}
-	return o.LastUsedAt
+	return s.LastUsedAt
 }
 
-func (o *SystemAccountAccessTokenCreated) GetToken() *string {
-	if o == nil {
+func (s *SystemAccountAccessTokenCreated) GetToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Token
+	return s.Token
 }

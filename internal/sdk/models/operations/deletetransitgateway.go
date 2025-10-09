@@ -18,18 +18,18 @@ type DeleteTransitGatewayRequest struct {
 	TransitGatewayID string `pathParam:"style=simple,explode=false,name=transitGatewayId"`
 }
 
-func (o *DeleteTransitGatewayRequest) GetNetworkID() string {
-	if o == nil {
+func (d *DeleteTransitGatewayRequest) GetNetworkID() string {
+	if d == nil {
 		return ""
 	}
-	return o.NetworkID
+	return d.NetworkID
 }
 
-func (o *DeleteTransitGatewayRequest) GetTransitGatewayID() string {
-	if o == nil {
+func (d *DeleteTransitGatewayRequest) GetTransitGatewayID() string {
+	if d == nil {
 		return ""
 	}
-	return o.TransitGatewayID
+	return d.TransitGatewayID
 }
 
 type DeleteTransitGatewayResponse struct {
@@ -49,51 +49,51 @@ type DeleteTransitGatewayResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *DeleteTransitGatewayResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteTransitGatewayResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteTransitGatewayResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteTransitGatewayResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteTransitGatewayResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteTransitGatewayResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteTransitGatewayResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (d *DeleteTransitGatewayResponse) GetBadRequestError() *shared.BadRequestError {
+	if d == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return d.BadRequestError
 }
 
-func (o *DeleteTransitGatewayResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (d *DeleteTransitGatewayResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return d.UnauthorizedError
 }
 
-func (o *DeleteTransitGatewayResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (d *DeleteTransitGatewayResponse) GetForbiddenError() *shared.ForbiddenError {
+	if d == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return d.ForbiddenError
 }
 
-func (o *DeleteTransitGatewayResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (d *DeleteTransitGatewayResponse) GetNotFoundError() *shared.NotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return d.NotFoundError
 }

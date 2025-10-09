@@ -15,25 +15,25 @@ type CreateAPIProductVersionSpecRequest struct {
 	CreateAPIProductVersionSpecDTO shared.CreateAPIProductVersionSpecDTO `request:"mediaType=application/json"`
 }
 
-func (o *CreateAPIProductVersionSpecRequest) GetAPIProductID() string {
-	if o == nil {
+func (c *CreateAPIProductVersionSpecRequest) GetAPIProductID() string {
+	if c == nil {
 		return ""
 	}
-	return o.APIProductID
+	return c.APIProductID
 }
 
-func (o *CreateAPIProductVersionSpecRequest) GetAPIProductVersionID() string {
-	if o == nil {
+func (c *CreateAPIProductVersionSpecRequest) GetAPIProductVersionID() string {
+	if c == nil {
 		return ""
 	}
-	return o.APIProductVersionID
+	return c.APIProductVersionID
 }
 
-func (o *CreateAPIProductVersionSpecRequest) GetCreateAPIProductVersionSpecDTO() shared.CreateAPIProductVersionSpecDTO {
-	if o == nil {
+func (c *CreateAPIProductVersionSpecRequest) GetCreateAPIProductVersionSpecDTO() shared.CreateAPIProductVersionSpecDTO {
+	if c == nil {
 		return shared.CreateAPIProductVersionSpecDTO{}
 	}
-	return o.CreateAPIProductVersionSpecDTO
+	return c.CreateAPIProductVersionSpecDTO
 }
 
 type CreateAPIProductVersionSpecResponse struct {
@@ -59,72 +59,72 @@ type CreateAPIProductVersionSpecResponse struct {
 	UnsupportedMediaTypeError *shared.UnsupportedMediaTypeError
 }
 
-func (o *CreateAPIProductVersionSpecResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateAPIProductVersionSpecResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateAPIProductVersionSpecResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateAPIProductVersionSpecResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateAPIProductVersionSpecResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateAPIProductVersionSpecResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateAPIProductVersionSpecResponse) GetAPIProductVersionSpec() *shared.APIProductVersionSpec {
-	if o == nil {
+func (c *CreateAPIProductVersionSpecResponse) GetAPIProductVersionSpec() *shared.APIProductVersionSpec {
+	if c == nil {
 		return nil
 	}
-	return o.APIProductVersionSpec
+	return c.APIProductVersionSpec
 }
 
-func (o *CreateAPIProductVersionSpecResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreateAPIProductVersionSpecResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreateAPIProductVersionSpecResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (c *CreateAPIProductVersionSpecResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return c.UnauthorizedError
 }
 
-func (o *CreateAPIProductVersionSpecResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreateAPIProductVersionSpecResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }
 
-func (o *CreateAPIProductVersionSpecResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (c *CreateAPIProductVersionSpecResponse) GetNotFoundError() *shared.NotFoundError {
+	if c == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return c.NotFoundError
 }
 
-func (o *CreateAPIProductVersionSpecResponse) GetConflictError() *shared.ConflictError {
-	if o == nil {
+func (c *CreateAPIProductVersionSpecResponse) GetConflictError() *shared.ConflictError {
+	if c == nil {
 		return nil
 	}
-	return o.ConflictError
+	return c.ConflictError
 }
 
-func (o *CreateAPIProductVersionSpecResponse) GetUnsupportedMediaTypeError() *shared.UnsupportedMediaTypeError {
-	if o == nil {
+func (c *CreateAPIProductVersionSpecResponse) GetUnsupportedMediaTypeError() *shared.UnsupportedMediaTypeError {
+	if c == nil {
 		return nil
 	}
-	return o.UnsupportedMediaTypeError
+	return c.UnsupportedMediaTypeError
 }

@@ -13,18 +13,18 @@ type CreateRoutetransformeradvancedPluginRequest struct {
 	RouteTransformerAdvancedPlugin shared.RouteTransformerAdvancedPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateRoutetransformeradvancedPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateRoutetransformeradvancedPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateRoutetransformeradvancedPluginRequest) GetRouteTransformerAdvancedPlugin() shared.RouteTransformerAdvancedPlugin {
-	if o == nil {
+func (c *CreateRoutetransformeradvancedPluginRequest) GetRouteTransformerAdvancedPlugin() shared.RouteTransformerAdvancedPlugin {
+	if c == nil {
 		return shared.RouteTransformerAdvancedPlugin{}
 	}
-	return o.RouteTransformerAdvancedPlugin
+	return c.RouteTransformerAdvancedPlugin
 }
 
 type CreateRoutetransformeradvancedPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateRoutetransformeradvancedPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateRoutetransformeradvancedPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateRoutetransformeradvancedPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateRoutetransformeradvancedPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateRoutetransformeradvancedPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateRoutetransformeradvancedPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateRoutetransformeradvancedPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateRoutetransformeradvancedPluginResponse) GetRouteTransformerAdvancedPlugin() *shared.RouteTransformerAdvancedPlugin {
-	if o == nil {
+func (c *CreateRoutetransformeradvancedPluginResponse) GetRouteTransformerAdvancedPlugin() *shared.RouteTransformerAdvancedPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.RouteTransformerAdvancedPlugin
+	return c.RouteTransformerAdvancedPlugin
 }
 
-func (o *CreateRoutetransformeradvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateRoutetransformeradvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type TransitGatewayDNSConfig struct {
 	// Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway.
 	RemoteDNSServerIPAddresses []string `json:"remote_dns_server_ip_addresses"`
@@ -11,16 +15,27 @@ type TransitGatewayDNSConfig struct {
 	DomainProxyList []string `json:"domain_proxy_list"`
 }
 
-func (o *TransitGatewayDNSConfig) GetRemoteDNSServerIPAddresses() []string {
-	if o == nil {
-		return []string{}
-	}
-	return o.RemoteDNSServerIPAddresses
+func (t TransitGatewayDNSConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
 }
 
-func (o *TransitGatewayDNSConfig) GetDomainProxyList() []string {
-	if o == nil {
+func (t *TransitGatewayDNSConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"remote_dns_server_ip_addresses", "domain_proxy_list"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (t *TransitGatewayDNSConfig) GetRemoteDNSServerIPAddresses() []string {
+	if t == nil {
 		return []string{}
 	}
-	return o.DomainProxyList
+	return t.RemoteDNSServerIPAddresses
+}
+
+func (t *TransitGatewayDNSConfig) GetDomainProxyList() []string {
+	if t == nil {
+		return []string{}
+	}
+	return t.DomainProxyList
 }

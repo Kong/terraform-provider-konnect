@@ -52,43 +52,43 @@ func (i InvalidParameterMaximumLength) MarshalJSON() ([]byte, error) {
 }
 
 func (i *InvalidParameterMaximumLength) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, true); err != nil {
+	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"field", "rule", "maximum", "reason"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *InvalidParameterMaximumLength) GetField() string {
-	if o == nil {
+func (i *InvalidParameterMaximumLength) GetField() string {
+	if i == nil {
 		return ""
 	}
-	return o.Field
+	return i.Field
 }
 
-func (o *InvalidParameterMaximumLength) GetRule() InvalidParameterMaximumLengthRule {
-	if o == nil {
+func (i *InvalidParameterMaximumLength) GetRule() InvalidParameterMaximumLengthRule {
+	if i == nil {
 		return InvalidParameterMaximumLengthRule("")
 	}
-	return o.Rule
+	return i.Rule
 }
 
-func (o *InvalidParameterMaximumLength) GetMaximum() int64 {
-	if o == nil {
+func (i *InvalidParameterMaximumLength) GetMaximum() int64 {
+	if i == nil {
 		return 0
 	}
-	return o.Maximum
+	return i.Maximum
 }
 
-func (o *InvalidParameterMaximumLength) GetSource() *string {
-	if o == nil {
+func (i *InvalidParameterMaximumLength) GetSource() *string {
+	if i == nil {
 		return nil
 	}
-	return o.Source
+	return i.Source
 }
 
-func (o *InvalidParameterMaximumLength) GetReason() string {
-	if o == nil {
+func (i *InvalidParameterMaximumLength) GetReason() string {
+	if i == nil {
 		return ""
 	}
-	return o.Reason
+	return i.Reason
 }

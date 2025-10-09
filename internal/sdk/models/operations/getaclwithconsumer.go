@@ -16,25 +16,25 @@ type GetACLWithConsumerRequest struct {
 	ACLID string `pathParam:"style=simple,explode=false,name=ACLId"`
 }
 
-func (o *GetACLWithConsumerRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetACLWithConsumerRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
-func (o *GetACLWithConsumerRequest) GetConsumerID() string {
-	if o == nil {
+func (g *GetACLWithConsumerRequest) GetConsumerID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ConsumerID
+	return g.ConsumerID
 }
 
-func (o *GetACLWithConsumerRequest) GetACLID() string {
-	if o == nil {
+func (g *GetACLWithConsumerRequest) GetACLID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ACLID
+	return g.ACLID
 }
 
 type GetACLWithConsumerResponse struct {
@@ -48,30 +48,30 @@ type GetACLWithConsumerResponse struct {
 	ACL *shared.ACL
 }
 
-func (o *GetACLWithConsumerResponse) GetContentType() string {
-	if o == nil {
+func (g *GetACLWithConsumerResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetACLWithConsumerResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetACLWithConsumerResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetACLWithConsumerResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetACLWithConsumerResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetACLWithConsumerResponse) GetACL() *shared.ACL {
-	if o == nil {
+func (g *GetACLWithConsumerResponse) GetACL() *shared.ACL {
+	if g == nil {
 		return nil
 	}
-	return o.ACL
+	return g.ACL
 }

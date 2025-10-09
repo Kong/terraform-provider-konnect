@@ -14,18 +14,18 @@ type DeleteExittransformerPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteExittransformerPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteExittransformerPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteExittransformerPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteExittransformerPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteExittransformerPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteExittransformerPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteExittransformerPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteExittransformerPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteExittransformerPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteExittransformerPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteExittransformerPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteExittransformerPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteExittransformerPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteExittransformerPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

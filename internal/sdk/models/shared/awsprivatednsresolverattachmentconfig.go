@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type AWSPrivateDNSResolverType string
@@ -37,16 +38,27 @@ type AwsPrivateDNSResolverAttachmentConfig struct {
 	DNSConfig map[string]PrivateDNSResolverConfig `json:"dns_config"`
 }
 
-func (o *AwsPrivateDNSResolverAttachmentConfig) GetKind() AWSPrivateDNSResolverType {
-	if o == nil {
-		return AWSPrivateDNSResolverType("")
-	}
-	return o.Kind
+func (a AwsPrivateDNSResolverAttachmentConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (o *AwsPrivateDNSResolverAttachmentConfig) GetDNSConfig() map[string]PrivateDNSResolverConfig {
-	if o == nil {
+func (a *AwsPrivateDNSResolverAttachmentConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"kind", "dns_config"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AwsPrivateDNSResolverAttachmentConfig) GetKind() AWSPrivateDNSResolverType {
+	if a == nil {
+		return AWSPrivateDNSResolverType("")
+	}
+	return a.Kind
+}
+
+func (a *AwsPrivateDNSResolverAttachmentConfig) GetDNSConfig() map[string]PrivateDNSResolverConfig {
+	if a == nil {
 		return map[string]PrivateDNSResolverConfig{}
 	}
-	return o.DNSConfig
+	return a.DNSConfig
 }

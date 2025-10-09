@@ -14,18 +14,18 @@ type UpdateAuditLogDestinationRequest struct {
 	UpdateAuditLogDestination *shared.UpdateAuditLogDestination `request:"mediaType=application/json"`
 }
 
-func (o *UpdateAuditLogDestinationRequest) GetAuditLogDestinationID() string {
-	if o == nil {
+func (u *UpdateAuditLogDestinationRequest) GetAuditLogDestinationID() string {
+	if u == nil {
 		return ""
 	}
-	return o.AuditLogDestinationID
+	return u.AuditLogDestinationID
 }
 
-func (o *UpdateAuditLogDestinationRequest) GetUpdateAuditLogDestination() *shared.UpdateAuditLogDestination {
-	if o == nil {
+func (u *UpdateAuditLogDestinationRequest) GetUpdateAuditLogDestination() *shared.UpdateAuditLogDestination {
+	if u == nil {
 		return nil
 	}
-	return o.UpdateAuditLogDestination
+	return u.UpdateAuditLogDestination
 }
 
 type UpdateAuditLogDestinationResponse struct {
@@ -47,58 +47,58 @@ type UpdateAuditLogDestinationResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *UpdateAuditLogDestinationResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateAuditLogDestinationResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateAuditLogDestinationResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateAuditLogDestinationResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateAuditLogDestinationResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateAuditLogDestinationResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateAuditLogDestinationResponse) GetAuditLogDestination() *shared.AuditLogDestination {
-	if o == nil {
+func (u *UpdateAuditLogDestinationResponse) GetAuditLogDestination() *shared.AuditLogDestination {
+	if u == nil {
 		return nil
 	}
-	return o.AuditLogDestination
+	return u.AuditLogDestination
 }
 
-func (o *UpdateAuditLogDestinationResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (u *UpdateAuditLogDestinationResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return u.BadRequestError
 }
 
-func (o *UpdateAuditLogDestinationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (u *UpdateAuditLogDestinationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return u.UnauthorizedError
 }
 
-func (o *UpdateAuditLogDestinationResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (u *UpdateAuditLogDestinationResponse) GetForbiddenError() *shared.ForbiddenError {
+	if u == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return u.ForbiddenError
 }
 
-func (o *UpdateAuditLogDestinationResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (u *UpdateAuditLogDestinationResponse) GetNotFoundError() *shared.NotFoundError {
+	if u == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return u.NotFoundError
 }

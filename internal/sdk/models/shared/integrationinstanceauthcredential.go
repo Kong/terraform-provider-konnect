@@ -16,7 +16,7 @@ const (
 
 // IntegrationInstanceAuthCredential - Object containing metadata for an integration instance auth credential.
 type IntegrationInstanceAuthCredential struct {
-	MultiKeyAuthCredential *MultiKeyAuthCredential `queryParam:"inline"`
+	MultiKeyAuthCredential *MultiKeyAuthCredential `queryParam:"inline,name=IntegrationInstanceAuthCredential"`
 
 	Type IntegrationInstanceAuthCredentialType
 }
@@ -33,7 +33,7 @@ func CreateIntegrationInstanceAuthCredentialMultiKeyAuthCredential(multiKeyAuthC
 func (u *IntegrationInstanceAuthCredential) UnmarshalJSON(data []byte) error {
 
 	var multiKeyAuthCredential MultiKeyAuthCredential = MultiKeyAuthCredential{}
-	if err := utils.UnmarshalJSON(data, &multiKeyAuthCredential, "", true, true); err == nil {
+	if err := utils.UnmarshalJSON(data, &multiKeyAuthCredential, "", true, nil); err == nil {
 		u.MultiKeyAuthCredential = &multiKeyAuthCredential
 		u.Type = IntegrationInstanceAuthCredentialTypeMultiKeyAuthCredential
 		return nil

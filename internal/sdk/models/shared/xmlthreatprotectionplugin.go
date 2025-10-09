@@ -12,22 +12,22 @@ type XMLThreatProtectionPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *XMLThreatProtectionPluginAfter) GetAccess() []string {
-	if o == nil {
+func (x *XMLThreatProtectionPluginAfter) GetAccess() []string {
+	if x == nil {
 		return nil
 	}
-	return o.Access
+	return x.Access
 }
 
 type XMLThreatProtectionPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *XMLThreatProtectionPluginBefore) GetAccess() []string {
-	if o == nil {
+func (x *XMLThreatProtectionPluginBefore) GetAccess() []string {
+	if x == nil {
 		return nil
 	}
-	return o.Access
+	return x.Access
 }
 
 type XMLThreatProtectionPluginOrdering struct {
@@ -35,18 +35,18 @@ type XMLThreatProtectionPluginOrdering struct {
 	Before *XMLThreatProtectionPluginBefore `json:"before,omitempty"`
 }
 
-func (o *XMLThreatProtectionPluginOrdering) GetAfter() *XMLThreatProtectionPluginAfter {
-	if o == nil {
+func (x *XMLThreatProtectionPluginOrdering) GetAfter() *XMLThreatProtectionPluginAfter {
+	if x == nil {
 		return nil
 	}
-	return o.After
+	return x.After
 }
 
-func (o *XMLThreatProtectionPluginOrdering) GetBefore() *XMLThreatProtectionPluginBefore {
-	if o == nil {
+func (x *XMLThreatProtectionPluginOrdering) GetBefore() *XMLThreatProtectionPluginBefore {
+	if x == nil {
 		return nil
 	}
-	return o.Before
+	return x.Before
 }
 
 type XMLThreatProtectionPluginPartials struct {
@@ -57,25 +57,25 @@ type XMLThreatProtectionPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *XMLThreatProtectionPluginPartials) GetID() *string {
-	if o == nil {
+func (x *XMLThreatProtectionPluginPartials) GetID() *string {
+	if x == nil {
 		return nil
 	}
-	return o.ID
+	return x.ID
 }
 
-func (o *XMLThreatProtectionPluginPartials) GetName() *string {
-	if o == nil {
+func (x *XMLThreatProtectionPluginPartials) GetName() *string {
+	if x == nil {
 		return nil
 	}
-	return o.Name
+	return x.Name
 }
 
-func (o *XMLThreatProtectionPluginPartials) GetPath() *string {
-	if o == nil {
+func (x *XMLThreatProtectionPluginPartials) GetPath() *string {
+	if x == nil {
 		return nil
 	}
-	return o.Path
+	return x.Path
 }
 
 type XMLThreatProtectionPluginConfig struct {
@@ -132,171 +132,171 @@ func (x XMLThreatProtectionPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (x *XMLThreatProtectionPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &x, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &x, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *XMLThreatProtectionPluginConfig) GetAllowDtd() *bool {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConfig) GetAllowDtd() *bool {
+	if x == nil {
 		return nil
 	}
-	return o.AllowDtd
+	return x.AllowDtd
 }
 
-func (o *XMLThreatProtectionPluginConfig) GetAllowedContentTypes() []string {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConfig) GetAllowedContentTypes() []string {
+	if x == nil {
 		return nil
 	}
-	return o.AllowedContentTypes
+	return x.AllowedContentTypes
 }
 
-func (o *XMLThreatProtectionPluginConfig) GetAttribute() *int64 {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConfig) GetAttribute() *int64 {
+	if x == nil {
 		return nil
 	}
-	return o.Attribute
+	return x.Attribute
 }
 
-func (o *XMLThreatProtectionPluginConfig) GetBlaMaxAmplification() *float64 {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConfig) GetBlaMaxAmplification() *float64 {
+	if x == nil {
 		return nil
 	}
-	return o.BlaMaxAmplification
+	return x.BlaMaxAmplification
 }
 
-func (o *XMLThreatProtectionPluginConfig) GetBlaThreshold() *int64 {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConfig) GetBlaThreshold() *int64 {
+	if x == nil {
 		return nil
 	}
-	return o.BlaThreshold
+	return x.BlaThreshold
 }
 
-func (o *XMLThreatProtectionPluginConfig) GetBuffer() *int64 {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConfig) GetBuffer() *int64 {
+	if x == nil {
 		return nil
 	}
-	return o.Buffer
+	return x.Buffer
 }
 
-func (o *XMLThreatProtectionPluginConfig) GetCheckedContentTypes() []string {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConfig) GetCheckedContentTypes() []string {
+	if x == nil {
 		return nil
 	}
-	return o.CheckedContentTypes
+	return x.CheckedContentTypes
 }
 
-func (o *XMLThreatProtectionPluginConfig) GetComment() *int64 {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConfig) GetComment() *int64 {
+	if x == nil {
 		return nil
 	}
-	return o.Comment
+	return x.Comment
 }
 
-func (o *XMLThreatProtectionPluginConfig) GetDocument() *int64 {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConfig) GetDocument() *int64 {
+	if x == nil {
 		return nil
 	}
-	return o.Document
+	return x.Document
 }
 
-func (o *XMLThreatProtectionPluginConfig) GetEntity() *int64 {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConfig) GetEntity() *int64 {
+	if x == nil {
 		return nil
 	}
-	return o.Entity
+	return x.Entity
 }
 
-func (o *XMLThreatProtectionPluginConfig) GetEntityname() *int64 {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConfig) GetEntityname() *int64 {
+	if x == nil {
 		return nil
 	}
-	return o.Entityname
+	return x.Entityname
 }
 
-func (o *XMLThreatProtectionPluginConfig) GetEntityproperty() *int64 {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConfig) GetEntityproperty() *int64 {
+	if x == nil {
 		return nil
 	}
-	return o.Entityproperty
+	return x.Entityproperty
 }
 
-func (o *XMLThreatProtectionPluginConfig) GetLocalname() *int64 {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConfig) GetLocalname() *int64 {
+	if x == nil {
 		return nil
 	}
-	return o.Localname
+	return x.Localname
 }
 
-func (o *XMLThreatProtectionPluginConfig) GetMaxAttributes() *int64 {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConfig) GetMaxAttributes() *int64 {
+	if x == nil {
 		return nil
 	}
-	return o.MaxAttributes
+	return x.MaxAttributes
 }
 
-func (o *XMLThreatProtectionPluginConfig) GetMaxChildren() *int64 {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConfig) GetMaxChildren() *int64 {
+	if x == nil {
 		return nil
 	}
-	return o.MaxChildren
+	return x.MaxChildren
 }
 
-func (o *XMLThreatProtectionPluginConfig) GetMaxDepth() *int64 {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConfig) GetMaxDepth() *int64 {
+	if x == nil {
 		return nil
 	}
-	return o.MaxDepth
+	return x.MaxDepth
 }
 
-func (o *XMLThreatProtectionPluginConfig) GetMaxNamespaces() *int64 {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConfig) GetMaxNamespaces() *int64 {
+	if x == nil {
 		return nil
 	}
-	return o.MaxNamespaces
+	return x.MaxNamespaces
 }
 
-func (o *XMLThreatProtectionPluginConfig) GetNamespaceAware() *bool {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConfig) GetNamespaceAware() *bool {
+	if x == nil {
 		return nil
 	}
-	return o.NamespaceAware
+	return x.NamespaceAware
 }
 
-func (o *XMLThreatProtectionPluginConfig) GetNamespaceuri() *int64 {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConfig) GetNamespaceuri() *int64 {
+	if x == nil {
 		return nil
 	}
-	return o.Namespaceuri
+	return x.Namespaceuri
 }
 
-func (o *XMLThreatProtectionPluginConfig) GetPidata() *int64 {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConfig) GetPidata() *int64 {
+	if x == nil {
 		return nil
 	}
-	return o.Pidata
+	return x.Pidata
 }
 
-func (o *XMLThreatProtectionPluginConfig) GetPitarget() *int64 {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConfig) GetPitarget() *int64 {
+	if x == nil {
 		return nil
 	}
-	return o.Pitarget
+	return x.Pitarget
 }
 
-func (o *XMLThreatProtectionPluginConfig) GetPrefix() *int64 {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConfig) GetPrefix() *int64 {
+	if x == nil {
 		return nil
 	}
-	return o.Prefix
+	return x.Prefix
 }
 
-func (o *XMLThreatProtectionPluginConfig) GetText() *int64 {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConfig) GetText() *int64 {
+	if x == nil {
 		return nil
 	}
-	return o.Text
+	return x.Text
 }
 
 // XMLThreatProtectionPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -304,11 +304,11 @@ type XMLThreatProtectionPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *XMLThreatProtectionPluginConsumer) GetID() *string {
-	if o == nil {
+func (x *XMLThreatProtectionPluginConsumer) GetID() *string {
+	if x == nil {
 		return nil
 	}
-	return o.ID
+	return x.ID
 }
 
 type XMLThreatProtectionPluginProtocols string
@@ -348,11 +348,11 @@ type XMLThreatProtectionPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *XMLThreatProtectionPluginRoute) GetID() *string {
-	if o == nil {
+func (x *XMLThreatProtectionPluginRoute) GetID() *string {
+	if x == nil {
 		return nil
 	}
-	return o.ID
+	return x.ID
 }
 
 // XMLThreatProtectionPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -360,11 +360,11 @@ type XMLThreatProtectionPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *XMLThreatProtectionPluginService) GetID() *string {
-	if o == nil {
+func (x *XMLThreatProtectionPluginService) GetID() *string {
+	if x == nil {
 		return nil
 	}
-	return o.ID
+	return x.ID
 }
 
 // XMLThreatProtectionPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -401,103 +401,103 @@ func (x XMLThreatProtectionPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (x *XMLThreatProtectionPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &x, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &x, "", false, []string{"name", "ordering", "partials", "tags", "config", "consumer", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *XMLThreatProtectionPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (x *XMLThreatProtectionPlugin) GetCreatedAt() *int64 {
+	if x == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return x.CreatedAt
 }
 
-func (o *XMLThreatProtectionPlugin) GetEnabled() *bool {
-	if o == nil {
+func (x *XMLThreatProtectionPlugin) GetEnabled() *bool {
+	if x == nil {
 		return nil
 	}
-	return o.Enabled
+	return x.Enabled
 }
 
-func (o *XMLThreatProtectionPlugin) GetID() *string {
-	if o == nil {
+func (x *XMLThreatProtectionPlugin) GetID() *string {
+	if x == nil {
 		return nil
 	}
-	return o.ID
+	return x.ID
 }
 
-func (o *XMLThreatProtectionPlugin) GetInstanceName() *string {
-	if o == nil {
+func (x *XMLThreatProtectionPlugin) GetInstanceName() *string {
+	if x == nil {
 		return nil
 	}
-	return o.InstanceName
+	return x.InstanceName
 }
 
-func (o *XMLThreatProtectionPlugin) GetName() string {
+func (x *XMLThreatProtectionPlugin) GetName() string {
 	return "xml-threat-protection"
 }
 
-func (o *XMLThreatProtectionPlugin) GetOrdering() *XMLThreatProtectionPluginOrdering {
-	if o == nil {
+func (x *XMLThreatProtectionPlugin) GetOrdering() *XMLThreatProtectionPluginOrdering {
+	if x == nil {
 		return nil
 	}
-	return o.Ordering
+	return x.Ordering
 }
 
-func (o *XMLThreatProtectionPlugin) GetPartials() []XMLThreatProtectionPluginPartials {
-	if o == nil {
+func (x *XMLThreatProtectionPlugin) GetPartials() []XMLThreatProtectionPluginPartials {
+	if x == nil {
 		return nil
 	}
-	return o.Partials
+	return x.Partials
 }
 
-func (o *XMLThreatProtectionPlugin) GetTags() []string {
-	if o == nil {
+func (x *XMLThreatProtectionPlugin) GetTags() []string {
+	if x == nil {
 		return nil
 	}
-	return o.Tags
+	return x.Tags
 }
 
-func (o *XMLThreatProtectionPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (x *XMLThreatProtectionPlugin) GetUpdatedAt() *int64 {
+	if x == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return x.UpdatedAt
 }
 
-func (o *XMLThreatProtectionPlugin) GetConfig() *XMLThreatProtectionPluginConfig {
-	if o == nil {
+func (x *XMLThreatProtectionPlugin) GetConfig() *XMLThreatProtectionPluginConfig {
+	if x == nil {
 		return nil
 	}
-	return o.Config
+	return x.Config
 }
 
-func (o *XMLThreatProtectionPlugin) GetConsumer() *XMLThreatProtectionPluginConsumer {
-	if o == nil {
+func (x *XMLThreatProtectionPlugin) GetConsumer() *XMLThreatProtectionPluginConsumer {
+	if x == nil {
 		return nil
 	}
-	return o.Consumer
+	return x.Consumer
 }
 
-func (o *XMLThreatProtectionPlugin) GetProtocols() []XMLThreatProtectionPluginProtocols {
-	if o == nil {
+func (x *XMLThreatProtectionPlugin) GetProtocols() []XMLThreatProtectionPluginProtocols {
+	if x == nil {
 		return nil
 	}
-	return o.Protocols
+	return x.Protocols
 }
 
-func (o *XMLThreatProtectionPlugin) GetRoute() *XMLThreatProtectionPluginRoute {
-	if o == nil {
+func (x *XMLThreatProtectionPlugin) GetRoute() *XMLThreatProtectionPluginRoute {
+	if x == nil {
 		return nil
 	}
-	return o.Route
+	return x.Route
 }
 
-func (o *XMLThreatProtectionPlugin) GetService() *XMLThreatProtectionPluginService {
-	if o == nil {
+func (x *XMLThreatProtectionPlugin) GetService() *XMLThreatProtectionPluginService {
+	if x == nil {
 		return nil
 	}
-	return o.Service
+	return x.Service
 }

@@ -13,18 +13,18 @@ type CreateSamlPluginRequest struct {
 	SamlPlugin     shared.SamlPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateSamlPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateSamlPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateSamlPluginRequest) GetSamlPlugin() shared.SamlPlugin {
-	if o == nil {
+func (c *CreateSamlPluginRequest) GetSamlPlugin() shared.SamlPlugin {
+	if c == nil {
 		return shared.SamlPlugin{}
 	}
-	return o.SamlPlugin
+	return c.SamlPlugin
 }
 
 type CreateSamlPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateSamlPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateSamlPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateSamlPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateSamlPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateSamlPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateSamlPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateSamlPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateSamlPluginResponse) GetSamlPlugin() *shared.SamlPlugin {
-	if o == nil {
+func (c *CreateSamlPluginResponse) GetSamlPlugin() *shared.SamlPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.SamlPlugin
+	return c.SamlPlugin
 }
 
-func (o *CreateSamlPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateSamlPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

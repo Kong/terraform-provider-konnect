@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type AWSTransitGateway struct {
 	// Human-readable name of the transit gateway.
 	Name string `json:"name"`
@@ -16,30 +20,41 @@ type AWSTransitGateway struct {
 	TransitGatewayAttachmentConfig AwsTransitGatewayAttachmentConfig `json:"transit_gateway_attachment_config"`
 }
 
-func (o *AWSTransitGateway) GetName() string {
-	if o == nil {
+func (a AWSTransitGateway) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AWSTransitGateway) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "cidr_blocks", "transit_gateway_attachment_config"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AWSTransitGateway) GetName() string {
+	if a == nil {
 		return ""
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AWSTransitGateway) GetDNSConfig() []TransitGatewayDNSConfig {
-	if o == nil {
+func (a *AWSTransitGateway) GetDNSConfig() []TransitGatewayDNSConfig {
+	if a == nil {
 		return nil
 	}
-	return o.DNSConfig
+	return a.DNSConfig
 }
 
-func (o *AWSTransitGateway) GetCidrBlocks() []string {
-	if o == nil {
+func (a *AWSTransitGateway) GetCidrBlocks() []string {
+	if a == nil {
 		return []string{}
 	}
-	return o.CidrBlocks
+	return a.CidrBlocks
 }
 
-func (o *AWSTransitGateway) GetTransitGatewayAttachmentConfig() AwsTransitGatewayAttachmentConfig {
-	if o == nil {
+func (a *AWSTransitGateway) GetTransitGatewayAttachmentConfig() AwsTransitGatewayAttachmentConfig {
+	if a == nil {
 		return AwsTransitGatewayAttachmentConfig{}
 	}
-	return o.TransitGatewayAttachmentConfig
+	return a.TransitGatewayAttachmentConfig
 }

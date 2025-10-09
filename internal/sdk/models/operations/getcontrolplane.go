@@ -12,11 +12,11 @@ type GetControlPlaneRequest struct {
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (o *GetControlPlaneRequest) GetID() string {
-	if o == nil {
+func (g *GetControlPlaneRequest) GetID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ID
+	return g.ID
 }
 
 type GetControlPlaneResponse struct {
@@ -42,72 +42,72 @@ type GetControlPlaneResponse struct {
 	ServiceUnavailable *shared.ServiceUnavailable
 }
 
-func (o *GetControlPlaneResponse) GetContentType() string {
-	if o == nil {
+func (g *GetControlPlaneResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetControlPlaneResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetControlPlaneResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetControlPlaneResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetControlPlaneResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetControlPlaneResponse) GetControlPlane() *shared.ControlPlane {
-	if o == nil {
+func (g *GetControlPlaneResponse) GetControlPlane() *shared.ControlPlane {
+	if g == nil {
 		return nil
 	}
-	return o.ControlPlane
+	return g.ControlPlane
 }
 
-func (o *GetControlPlaneResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (g *GetControlPlaneResponse) GetBadRequestError() *shared.BadRequestError {
+	if g == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return g.BadRequestError
 }
 
-func (o *GetControlPlaneResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetControlPlaneResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetControlPlaneResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (g *GetControlPlaneResponse) GetForbiddenError() *shared.ForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return g.ForbiddenError
 }
 
-func (o *GetControlPlaneResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetControlPlaneResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }
 
-func (o *GetControlPlaneResponse) GetBaseError() *shared.BaseError {
-	if o == nil {
+func (g *GetControlPlaneResponse) GetBaseError() *shared.BaseError {
+	if g == nil {
 		return nil
 	}
-	return o.BaseError
+	return g.BaseError
 }
 
-func (o *GetControlPlaneResponse) GetServiceUnavailable() *shared.ServiceUnavailable {
-	if o == nil {
+func (g *GetControlPlaneResponse) GetServiceUnavailable() *shared.ServiceUnavailable {
+	if g == nil {
 		return nil
 	}
-	return o.ServiceUnavailable
+	return g.ServiceUnavailable
 }

@@ -13,11 +13,11 @@ type PluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *PluginConsumer) GetID() *string {
-	if o == nil {
+func (p *PluginConsumer) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
 // PluginConsumerGroup - If set, the plugin will activate only for requests where the specified group has been authenticated
@@ -25,33 +25,33 @@ type PluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *PluginConsumerGroup) GetID() *string {
-	if o == nil {
+func (p *PluginConsumerGroup) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
 type After struct {
 	Access []string `json:"access"`
 }
 
-func (o *After) GetAccess() []string {
-	if o == nil {
+func (a *After) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type Before struct {
 	Access []string `json:"access"`
 }
 
-func (o *Before) GetAccess() []string {
-	if o == nil {
+func (b *Before) GetAccess() []string {
+	if b == nil {
 		return nil
 	}
-	return o.Access
+	return b.Access
 }
 
 type Ordering struct {
@@ -129,11 +129,11 @@ type Route struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *Route) GetID() *string {
-	if o == nil {
+func (r *Route) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
 // PluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -141,11 +141,11 @@ type PluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *PluginService) GetID() *string {
-	if o == nil {
+func (p *PluginService) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
 // A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -184,106 +184,106 @@ func (p Plugin) MarshalJSON() ([]byte, error) {
 }
 
 func (p *Plugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"consumer", "consumer_group", "name", "ordering", "protocols", "route", "service", "tags"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Plugin) GetConfig() map[string]any {
-	if o == nil {
+func (p *Plugin) GetConfig() map[string]any {
+	if p == nil {
 		return nil
 	}
-	return o.Config
+	return p.Config
 }
 
-func (o *Plugin) GetConsumer() *PluginConsumer {
-	if o == nil {
+func (p *Plugin) GetConsumer() *PluginConsumer {
+	if p == nil {
 		return nil
 	}
-	return o.Consumer
+	return p.Consumer
 }
 
-func (o *Plugin) GetConsumerGroup() *PluginConsumerGroup {
-	if o == nil {
+func (p *Plugin) GetConsumerGroup() *PluginConsumerGroup {
+	if p == nil {
 		return nil
 	}
-	return o.ConsumerGroup
+	return p.ConsumerGroup
 }
 
-func (o *Plugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (p *Plugin) GetCreatedAt() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return p.CreatedAt
 }
 
-func (o *Plugin) GetEnabled() *bool {
-	if o == nil {
+func (p *Plugin) GetEnabled() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.Enabled
+	return p.Enabled
 }
 
-func (o *Plugin) GetID() *string {
-	if o == nil {
+func (p *Plugin) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
-func (o *Plugin) GetInstanceName() *string {
-	if o == nil {
+func (p *Plugin) GetInstanceName() *string {
+	if p == nil {
 		return nil
 	}
-	return o.InstanceName
+	return p.InstanceName
 }
 
-func (o *Plugin) GetName() string {
-	if o == nil {
+func (p *Plugin) GetName() string {
+	if p == nil {
 		return ""
 	}
-	return o.Name
+	return p.Name
 }
 
-func (o *Plugin) GetOrdering() *Ordering {
-	if o == nil {
+func (p *Plugin) GetOrdering() *Ordering {
+	if p == nil {
 		return nil
 	}
-	return o.Ordering
+	return p.Ordering
 }
 
-func (o *Plugin) GetProtocols() []Protocols {
-	if o == nil {
+func (p *Plugin) GetProtocols() []Protocols {
+	if p == nil {
 		return nil
 	}
-	return o.Protocols
+	return p.Protocols
 }
 
-func (o *Plugin) GetRoute() *Route {
-	if o == nil {
+func (p *Plugin) GetRoute() *Route {
+	if p == nil {
 		return nil
 	}
-	return o.Route
+	return p.Route
 }
 
-func (o *Plugin) GetService() *PluginService {
-	if o == nil {
+func (p *Plugin) GetService() *PluginService {
+	if p == nil {
 		return nil
 	}
-	return o.Service
+	return p.Service
 }
 
-func (o *Plugin) GetTags() []string {
-	if o == nil {
+func (p *Plugin) GetTags() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Tags
+	return p.Tags
 }
 
-func (o *Plugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (p *Plugin) GetUpdatedAt() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return p.UpdatedAt
 }

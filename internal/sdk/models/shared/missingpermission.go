@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type MissingPermission struct {
 	Scopes []*string `json:"scopes"`
 	// Describes the degraded experience of the integration instance due to the missing permission.
@@ -10,16 +14,27 @@ type MissingPermission struct {
 	Message string `json:"message"`
 }
 
-func (o *MissingPermission) GetScopes() []*string {
-	if o == nil {
-		return []*string{}
-	}
-	return o.Scopes
+func (m MissingPermission) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
 }
 
-func (o *MissingPermission) GetMessage() string {
-	if o == nil {
+func (m *MissingPermission) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"scopes", "message"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *MissingPermission) GetScopes() []*string {
+	if m == nil {
+		return []*string{}
+	}
+	return m.Scopes
+}
+
+func (m *MissingPermission) GetMessage() string {
+	if m == nil {
 		return ""
 	}
-	return o.Message
+	return m.Message
 }

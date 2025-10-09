@@ -6,22 +6,22 @@ type MTLSAuthWithoutParentsCaCertificate struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *MTLSAuthWithoutParentsCaCertificate) GetID() *string {
-	if o == nil {
+func (m *MTLSAuthWithoutParentsCaCertificate) GetID() *string {
+	if m == nil {
 		return nil
 	}
-	return o.ID
+	return m.ID
 }
 
 type MTLSAuthWithoutParentsConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *MTLSAuthWithoutParentsConsumer) GetID() *string {
-	if o == nil {
+func (m *MTLSAuthWithoutParentsConsumer) GetID() *string {
+	if m == nil {
 		return nil
 	}
-	return o.ID
+	return m.ID
 }
 
 type MTLSAuthWithoutParents struct {
@@ -36,44 +36,44 @@ type MTLSAuthWithoutParents struct {
 	Tags []string `json:"tags"`
 }
 
-func (o *MTLSAuthWithoutParents) GetCaCertificate() *MTLSAuthWithoutParentsCaCertificate {
-	if o == nil {
+func (m *MTLSAuthWithoutParents) GetCaCertificate() *MTLSAuthWithoutParentsCaCertificate {
+	if m == nil {
 		return nil
 	}
-	return o.CaCertificate
+	return m.CaCertificate
 }
 
-func (o *MTLSAuthWithoutParents) GetConsumer() *MTLSAuthWithoutParentsConsumer {
-	if o == nil {
+func (m *MTLSAuthWithoutParents) GetConsumer() *MTLSAuthWithoutParentsConsumer {
+	if m == nil {
 		return nil
 	}
-	return o.Consumer
+	return m.Consumer
 }
 
-func (o *MTLSAuthWithoutParents) GetCreatedAt() *int64 {
-	if o == nil {
+func (m *MTLSAuthWithoutParents) GetCreatedAt() *int64 {
+	if m == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return m.CreatedAt
 }
 
-func (o *MTLSAuthWithoutParents) GetID() *string {
-	if o == nil {
+func (m *MTLSAuthWithoutParents) GetID() *string {
+	if m == nil {
 		return nil
 	}
-	return o.ID
+	return m.ID
 }
 
-func (o *MTLSAuthWithoutParents) GetSubjectName() string {
-	if o == nil {
+func (m *MTLSAuthWithoutParents) GetSubjectName() string {
+	if m == nil {
 		return ""
 	}
-	return o.SubjectName
+	return m.SubjectName
 }
 
-func (o *MTLSAuthWithoutParents) GetTags() []string {
-	if o == nil {
+func (m *MTLSAuthWithoutParents) GetTags() []string {
+	if m == nil {
 		return nil
 	}
-	return o.Tags
+	return m.Tags
 }

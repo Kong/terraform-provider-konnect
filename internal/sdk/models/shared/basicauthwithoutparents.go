@@ -6,11 +6,11 @@ type BasicAuthWithoutParentsConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *BasicAuthWithoutParentsConsumer) GetID() *string {
-	if o == nil {
+func (b *BasicAuthWithoutParentsConsumer) GetID() *string {
+	if b == nil {
 		return nil
 	}
-	return o.ID
+	return b.ID
 }
 
 type BasicAuthWithoutParents struct {
@@ -25,44 +25,44 @@ type BasicAuthWithoutParents struct {
 	Username string   `json:"username"`
 }
 
-func (o *BasicAuthWithoutParents) GetConsumer() *BasicAuthWithoutParentsConsumer {
-	if o == nil {
+func (b *BasicAuthWithoutParents) GetConsumer() *BasicAuthWithoutParentsConsumer {
+	if b == nil {
 		return nil
 	}
-	return o.Consumer
+	return b.Consumer
 }
 
-func (o *BasicAuthWithoutParents) GetCreatedAt() *int64 {
-	if o == nil {
+func (b *BasicAuthWithoutParents) GetCreatedAt() *int64 {
+	if b == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return b.CreatedAt
 }
 
-func (o *BasicAuthWithoutParents) GetID() *string {
-	if o == nil {
+func (b *BasicAuthWithoutParents) GetID() *string {
+	if b == nil {
 		return nil
 	}
-	return o.ID
+	return b.ID
 }
 
-func (o *BasicAuthWithoutParents) GetPassword() string {
-	if o == nil {
+func (b *BasicAuthWithoutParents) GetPassword() string {
+	if b == nil {
 		return ""
 	}
-	return o.Password
+	return b.Password
 }
 
-func (o *BasicAuthWithoutParents) GetTags() []string {
-	if o == nil {
+func (b *BasicAuthWithoutParents) GetTags() []string {
+	if b == nil {
 		return nil
 	}
-	return o.Tags
+	return b.Tags
 }
 
-func (o *BasicAuthWithoutParents) GetUsername() string {
-	if o == nil {
+func (b *BasicAuthWithoutParents) GetUsername() string {
+	if b == nil {
 		return ""
 	}
-	return o.Username
+	return b.Username
 }

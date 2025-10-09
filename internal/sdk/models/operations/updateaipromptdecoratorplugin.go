@@ -15,25 +15,25 @@ type UpdateAipromptdecoratorPluginRequest struct {
 	AiPromptDecoratorPlugin shared.AiPromptDecoratorPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateAipromptdecoratorPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateAipromptdecoratorPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateAipromptdecoratorPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateAipromptdecoratorPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateAipromptdecoratorPluginRequest) GetAiPromptDecoratorPlugin() shared.AiPromptDecoratorPlugin {
-	if o == nil {
+func (u *UpdateAipromptdecoratorPluginRequest) GetAiPromptDecoratorPlugin() shared.AiPromptDecoratorPlugin {
+	if u == nil {
 		return shared.AiPromptDecoratorPlugin{}
 	}
-	return o.AiPromptDecoratorPlugin
+	return u.AiPromptDecoratorPlugin
 }
 
 type UpdateAipromptdecoratorPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateAipromptdecoratorPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateAipromptdecoratorPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateAipromptdecoratorPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateAipromptdecoratorPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateAipromptdecoratorPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateAipromptdecoratorPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateAipromptdecoratorPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateAipromptdecoratorPluginResponse) GetAiPromptDecoratorPlugin() *shared.AiPromptDecoratorPlugin {
-	if o == nil {
+func (u *UpdateAipromptdecoratorPluginResponse) GetAiPromptDecoratorPlugin() *shared.AiPromptDecoratorPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.AiPromptDecoratorPlugin
+	return u.AiPromptDecoratorPlugin
 }
 
-func (o *UpdateAipromptdecoratorPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateAipromptdecoratorPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

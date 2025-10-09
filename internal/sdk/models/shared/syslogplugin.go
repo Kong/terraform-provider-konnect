@@ -12,22 +12,22 @@ type SyslogPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *SyslogPluginAfter) GetAccess() []string {
-	if o == nil {
+func (s *SyslogPluginAfter) GetAccess() []string {
+	if s == nil {
 		return nil
 	}
-	return o.Access
+	return s.Access
 }
 
 type SyslogPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *SyslogPluginBefore) GetAccess() []string {
-	if o == nil {
+func (s *SyslogPluginBefore) GetAccess() []string {
+	if s == nil {
 		return nil
 	}
-	return o.Access
+	return s.Access
 }
 
 type SyslogPluginOrdering struct {
@@ -35,18 +35,18 @@ type SyslogPluginOrdering struct {
 	Before *SyslogPluginBefore `json:"before,omitempty"`
 }
 
-func (o *SyslogPluginOrdering) GetAfter() *SyslogPluginAfter {
-	if o == nil {
+func (s *SyslogPluginOrdering) GetAfter() *SyslogPluginAfter {
+	if s == nil {
 		return nil
 	}
-	return o.After
+	return s.After
 }
 
-func (o *SyslogPluginOrdering) GetBefore() *SyslogPluginBefore {
-	if o == nil {
+func (s *SyslogPluginOrdering) GetBefore() *SyslogPluginBefore {
+	if s == nil {
 		return nil
 	}
-	return o.Before
+	return s.Before
 }
 
 type SyslogPluginPartials struct {
@@ -57,25 +57,25 @@ type SyslogPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *SyslogPluginPartials) GetID() *string {
-	if o == nil {
+func (s *SyslogPluginPartials) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
-func (o *SyslogPluginPartials) GetName() *string {
-	if o == nil {
+func (s *SyslogPluginPartials) GetName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Name
+	return s.Name
 }
 
-func (o *SyslogPluginPartials) GetPath() *string {
-	if o == nil {
+func (s *SyslogPluginPartials) GetPath() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Path
+	return s.Path
 }
 
 type SyslogPluginClientErrorsSeverity string
@@ -351,52 +351,52 @@ func (s SyslogPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SyslogPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *SyslogPluginConfig) GetClientErrorsSeverity() *SyslogPluginClientErrorsSeverity {
-	if o == nil {
+func (s *SyslogPluginConfig) GetClientErrorsSeverity() *SyslogPluginClientErrorsSeverity {
+	if s == nil {
 		return nil
 	}
-	return o.ClientErrorsSeverity
+	return s.ClientErrorsSeverity
 }
 
-func (o *SyslogPluginConfig) GetCustomFieldsByLua() map[string]any {
-	if o == nil {
+func (s *SyslogPluginConfig) GetCustomFieldsByLua() map[string]any {
+	if s == nil {
 		return nil
 	}
-	return o.CustomFieldsByLua
+	return s.CustomFieldsByLua
 }
 
-func (o *SyslogPluginConfig) GetFacility() *Facility {
-	if o == nil {
+func (s *SyslogPluginConfig) GetFacility() *Facility {
+	if s == nil {
 		return nil
 	}
-	return o.Facility
+	return s.Facility
 }
 
-func (o *SyslogPluginConfig) GetLogLevel() *SyslogPluginLogLevel {
-	if o == nil {
+func (s *SyslogPluginConfig) GetLogLevel() *SyslogPluginLogLevel {
+	if s == nil {
 		return nil
 	}
-	return o.LogLevel
+	return s.LogLevel
 }
 
-func (o *SyslogPluginConfig) GetServerErrorsSeverity() *SyslogPluginServerErrorsSeverity {
-	if o == nil {
+func (s *SyslogPluginConfig) GetServerErrorsSeverity() *SyslogPluginServerErrorsSeverity {
+	if s == nil {
 		return nil
 	}
-	return o.ServerErrorsSeverity
+	return s.ServerErrorsSeverity
 }
 
-func (o *SyslogPluginConfig) GetSuccessfulSeverity() *SyslogPluginSuccessfulSeverity {
-	if o == nil {
+func (s *SyslogPluginConfig) GetSuccessfulSeverity() *SyslogPluginSuccessfulSeverity {
+	if s == nil {
 		return nil
 	}
-	return o.SuccessfulSeverity
+	return s.SuccessfulSeverity
 }
 
 // SyslogPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -404,11 +404,11 @@ type SyslogPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *SyslogPluginConsumer) GetID() *string {
-	if o == nil {
+func (s *SyslogPluginConsumer) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
 // SyslogPluginProtocols - A string representing a protocol, such as HTTP or HTTPS.
@@ -467,11 +467,11 @@ type SyslogPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *SyslogPluginRoute) GetID() *string {
-	if o == nil {
+func (s *SyslogPluginRoute) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
 // SyslogPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -479,11 +479,11 @@ type SyslogPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *SyslogPluginService) GetID() *string {
-	if o == nil {
+func (s *SyslogPluginService) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
 // SyslogPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -520,103 +520,103 @@ func (s SyslogPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SyslogPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"name", "ordering", "partials", "tags", "config", "consumer", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *SyslogPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (s *SyslogPlugin) GetCreatedAt() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return s.CreatedAt
 }
 
-func (o *SyslogPlugin) GetEnabled() *bool {
-	if o == nil {
+func (s *SyslogPlugin) GetEnabled() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.Enabled
+	return s.Enabled
 }
 
-func (o *SyslogPlugin) GetID() *string {
-	if o == nil {
+func (s *SyslogPlugin) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
-func (o *SyslogPlugin) GetInstanceName() *string {
-	if o == nil {
+func (s *SyslogPlugin) GetInstanceName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.InstanceName
+	return s.InstanceName
 }
 
-func (o *SyslogPlugin) GetName() string {
+func (s *SyslogPlugin) GetName() string {
 	return "syslog"
 }
 
-func (o *SyslogPlugin) GetOrdering() *SyslogPluginOrdering {
-	if o == nil {
+func (s *SyslogPlugin) GetOrdering() *SyslogPluginOrdering {
+	if s == nil {
 		return nil
 	}
-	return o.Ordering
+	return s.Ordering
 }
 
-func (o *SyslogPlugin) GetPartials() []SyslogPluginPartials {
-	if o == nil {
+func (s *SyslogPlugin) GetPartials() []SyslogPluginPartials {
+	if s == nil {
 		return nil
 	}
-	return o.Partials
+	return s.Partials
 }
 
-func (o *SyslogPlugin) GetTags() []string {
-	if o == nil {
+func (s *SyslogPlugin) GetTags() []string {
+	if s == nil {
 		return nil
 	}
-	return o.Tags
+	return s.Tags
 }
 
-func (o *SyslogPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (s *SyslogPlugin) GetUpdatedAt() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return s.UpdatedAt
 }
 
-func (o *SyslogPlugin) GetConfig() *SyslogPluginConfig {
-	if o == nil {
+func (s *SyslogPlugin) GetConfig() *SyslogPluginConfig {
+	if s == nil {
 		return nil
 	}
-	return o.Config
+	return s.Config
 }
 
-func (o *SyslogPlugin) GetConsumer() *SyslogPluginConsumer {
-	if o == nil {
+func (s *SyslogPlugin) GetConsumer() *SyslogPluginConsumer {
+	if s == nil {
 		return nil
 	}
-	return o.Consumer
+	return s.Consumer
 }
 
-func (o *SyslogPlugin) GetProtocols() []SyslogPluginProtocols {
-	if o == nil {
+func (s *SyslogPlugin) GetProtocols() []SyslogPluginProtocols {
+	if s == nil {
 		return nil
 	}
-	return o.Protocols
+	return s.Protocols
 }
 
-func (o *SyslogPlugin) GetRoute() *SyslogPluginRoute {
-	if o == nil {
+func (s *SyslogPlugin) GetRoute() *SyslogPluginRoute {
+	if s == nil {
 		return nil
 	}
-	return o.Route
+	return s.Route
 }
 
-func (o *SyslogPlugin) GetService() *SyslogPluginService {
-	if o == nil {
+func (s *SyslogPlugin) GetService() *SyslogPluginService {
+	if s == nil {
 		return nil
 	}
-	return o.Service
+	return s.Service
 }

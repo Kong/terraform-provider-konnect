@@ -28,37 +28,37 @@ type BaseError struct {
 	Detail string `json:"detail"`
 }
 
-func (o *BaseError) GetStatus() int64 {
-	if o == nil {
+func (b *BaseError) GetStatus() int64 {
+	if b == nil {
 		return 0
 	}
-	return o.Status
+	return b.Status
 }
 
-func (o *BaseError) GetTitle() string {
-	if o == nil {
+func (b *BaseError) GetTitle() string {
+	if b == nil {
 		return ""
 	}
-	return o.Title
+	return b.Title
 }
 
-func (o *BaseError) GetType() *string {
-	if o == nil {
+func (b *BaseError) GetType() *string {
+	if b == nil {
 		return nil
 	}
-	return o.Type
+	return b.Type
 }
 
-func (o *BaseError) GetInstance() string {
-	if o == nil {
+func (b *BaseError) GetInstance() string {
+	if b == nil {
 		return ""
 	}
-	return o.Instance
+	return b.Instance
 }
 
-func (o *BaseError) GetDetail() string {
-	if o == nil {
+func (b *BaseError) GetDetail() string {
+	if b == nil {
 		return ""
 	}
-	return o.Detail
+	return b.Detail
 }

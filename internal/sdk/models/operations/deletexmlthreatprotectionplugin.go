@@ -14,18 +14,18 @@ type DeleteXmlthreatprotectionPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteXmlthreatprotectionPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteXmlthreatprotectionPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteXmlthreatprotectionPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteXmlthreatprotectionPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteXmlthreatprotectionPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteXmlthreatprotectionPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteXmlthreatprotectionPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteXmlthreatprotectionPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteXmlthreatprotectionPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteXmlthreatprotectionPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteXmlthreatprotectionPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteXmlthreatprotectionPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteXmlthreatprotectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteXmlthreatprotectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

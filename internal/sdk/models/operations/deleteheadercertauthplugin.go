@@ -14,18 +14,18 @@ type DeleteHeadercertauthPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteHeadercertauthPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteHeadercertauthPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteHeadercertauthPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteHeadercertauthPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteHeadercertauthPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteHeadercertauthPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteHeadercertauthPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteHeadercertauthPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteHeadercertauthPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteHeadercertauthPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteHeadercertauthPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteHeadercertauthPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteHeadercertauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteHeadercertauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

@@ -12,11 +12,11 @@ type GetAPIProductRequest struct {
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (o *GetAPIProductRequest) GetID() string {
-	if o == nil {
+func (g *GetAPIProductRequest) GetID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ID
+	return g.ID
 }
 
 type GetAPIProductResponse struct {
@@ -36,51 +36,51 @@ type GetAPIProductResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetAPIProductResponse) GetContentType() string {
-	if o == nil {
+func (g *GetAPIProductResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetAPIProductResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetAPIProductResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetAPIProductResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetAPIProductResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetAPIProductResponse) GetAPIProduct() *shared.APIProduct {
-	if o == nil {
+func (g *GetAPIProductResponse) GetAPIProduct() *shared.APIProduct {
+	if g == nil {
 		return nil
 	}
-	return o.APIProduct
+	return g.APIProduct
 }
 
-func (o *GetAPIProductResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetAPIProductResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetAPIProductResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (g *GetAPIProductResponse) GetForbiddenError() *shared.ForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return g.ForbiddenError
 }
 
-func (o *GetAPIProductResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetAPIProductResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

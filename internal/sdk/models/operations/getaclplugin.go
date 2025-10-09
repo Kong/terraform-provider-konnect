@@ -14,18 +14,18 @@ type GetACLPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetACLPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetACLPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetACLPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetACLPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetACLPluginResponse struct {
@@ -41,37 +41,37 @@ type GetACLPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetACLPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetACLPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetACLPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetACLPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetACLPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetACLPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetACLPluginResponse) GetACLPlugin() *shared.ACLPlugin {
-	if o == nil {
+func (g *GetACLPluginResponse) GetACLPlugin() *shared.ACLPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.ACLPlugin
+	return g.ACLPlugin
 }
 
-func (o *GetACLPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetACLPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

@@ -14,18 +14,18 @@ type GetDatadogPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetDatadogPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetDatadogPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetDatadogPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetDatadogPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetDatadogPluginResponse struct {
@@ -41,37 +41,37 @@ type GetDatadogPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetDatadogPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetDatadogPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetDatadogPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetDatadogPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetDatadogPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetDatadogPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetDatadogPluginResponse) GetDatadogPlugin() *shared.DatadogPlugin {
-	if o == nil {
+func (g *GetDatadogPluginResponse) GetDatadogPlugin() *shared.DatadogPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.DatadogPlugin
+	return g.DatadogPlugin
 }
 
-func (o *GetDatadogPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetDatadogPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

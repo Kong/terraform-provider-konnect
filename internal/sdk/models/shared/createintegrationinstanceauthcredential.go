@@ -15,7 +15,7 @@ const (
 )
 
 type CreateIntegrationInstanceAuthCredential struct {
-	MultiKeyAuth *MultiKeyAuth `queryParam:"inline"`
+	MultiKeyAuth *MultiKeyAuth `queryParam:"inline,name=CreateIntegrationInstanceAuthCredential"`
 
 	Type CreateIntegrationInstanceAuthCredentialType
 }
@@ -32,7 +32,7 @@ func CreateCreateIntegrationInstanceAuthCredentialMultiKeyAuth(multiKeyAuth Mult
 func (u *CreateIntegrationInstanceAuthCredential) UnmarshalJSON(data []byte) error {
 
 	var multiKeyAuth MultiKeyAuth = MultiKeyAuth{}
-	if err := utils.UnmarshalJSON(data, &multiKeyAuth, "", true, true); err == nil {
+	if err := utils.UnmarshalJSON(data, &multiKeyAuth, "", true, nil); err == nil {
 		u.MultiKeyAuth = &multiKeyAuth
 		u.Type = CreateIntegrationInstanceAuthCredentialTypeMultiKeyAuth
 		return nil

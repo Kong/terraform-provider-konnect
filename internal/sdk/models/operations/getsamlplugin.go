@@ -14,18 +14,18 @@ type GetSamlPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetSamlPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetSamlPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetSamlPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetSamlPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetSamlPluginResponse struct {
@@ -41,37 +41,37 @@ type GetSamlPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetSamlPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetSamlPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetSamlPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetSamlPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetSamlPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetSamlPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetSamlPluginResponse) GetSamlPlugin() *shared.SamlPlugin {
-	if o == nil {
+func (g *GetSamlPluginResponse) GetSamlPlugin() *shared.SamlPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.SamlPlugin
+	return g.SamlPlugin
 }
 
-func (o *GetSamlPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetSamlPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

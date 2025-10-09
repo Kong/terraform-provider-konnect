@@ -8,16 +8,16 @@ type PortalFooterMenuSection struct {
 	Items []PortalMenuItem `json:"items"`
 }
 
-func (o *PortalFooterMenuSection) GetTitle() string {
-	if o == nil {
+func (p *PortalFooterMenuSection) GetTitle() string {
+	if p == nil {
 		return ""
 	}
-	return o.Title
+	return p.Title
 }
 
-func (o *PortalFooterMenuSection) GetItems() []PortalMenuItem {
-	if o == nil {
+func (p *PortalFooterMenuSection) GetItems() []PortalMenuItem {
+	if p == nil {
 		return []PortalMenuItem{}
 	}
-	return o.Items
+	return p.Items
 }

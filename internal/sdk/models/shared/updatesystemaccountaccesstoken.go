@@ -7,9 +7,9 @@ type UpdateSystemAccountAccessToken struct {
 	Name string `json:"name"`
 }
 
-func (o *UpdateSystemAccountAccessToken) GetName() string {
-	if o == nil {
+func (u *UpdateSystemAccountAccessToken) GetName() string {
+	if u == nil {
 		return ""
 	}
-	return o.Name
+	return u.Name
 }

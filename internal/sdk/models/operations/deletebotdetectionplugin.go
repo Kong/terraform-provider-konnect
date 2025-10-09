@@ -14,18 +14,18 @@ type DeleteBotdetectionPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteBotdetectionPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteBotdetectionPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteBotdetectionPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteBotdetectionPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteBotdetectionPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteBotdetectionPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteBotdetectionPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteBotdetectionPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteBotdetectionPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteBotdetectionPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteBotdetectionPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteBotdetectionPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteBotdetectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteBotdetectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

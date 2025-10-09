@@ -13,18 +13,18 @@ type CreatePrometheusPluginRequest struct {
 	PrometheusPlugin shared.PrometheusPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreatePrometheusPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreatePrometheusPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreatePrometheusPluginRequest) GetPrometheusPlugin() shared.PrometheusPlugin {
-	if o == nil {
+func (c *CreatePrometheusPluginRequest) GetPrometheusPlugin() shared.PrometheusPlugin {
+	if c == nil {
 		return shared.PrometheusPlugin{}
 	}
-	return o.PrometheusPlugin
+	return c.PrometheusPlugin
 }
 
 type CreatePrometheusPluginResponse struct {
@@ -40,37 +40,37 @@ type CreatePrometheusPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreatePrometheusPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreatePrometheusPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreatePrometheusPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreatePrometheusPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreatePrometheusPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreatePrometheusPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreatePrometheusPluginResponse) GetPrometheusPlugin() *shared.PrometheusPlugin {
-	if o == nil {
+func (c *CreatePrometheusPluginResponse) GetPrometheusPlugin() *shared.PrometheusPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.PrometheusPlugin
+	return c.PrometheusPlugin
 }
 
-func (o *CreatePrometheusPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreatePrometheusPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

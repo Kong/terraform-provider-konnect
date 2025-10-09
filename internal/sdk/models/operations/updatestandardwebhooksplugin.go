@@ -15,25 +15,25 @@ type UpdateStandardwebhooksPluginRequest struct {
 	StandardWebhooksPlugin shared.StandardWebhooksPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateStandardwebhooksPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateStandardwebhooksPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateStandardwebhooksPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateStandardwebhooksPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateStandardwebhooksPluginRequest) GetStandardWebhooksPlugin() shared.StandardWebhooksPlugin {
-	if o == nil {
+func (u *UpdateStandardwebhooksPluginRequest) GetStandardWebhooksPlugin() shared.StandardWebhooksPlugin {
+	if u == nil {
 		return shared.StandardWebhooksPlugin{}
 	}
-	return o.StandardWebhooksPlugin
+	return u.StandardWebhooksPlugin
 }
 
 type UpdateStandardwebhooksPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateStandardwebhooksPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateStandardwebhooksPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateStandardwebhooksPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateStandardwebhooksPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateStandardwebhooksPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateStandardwebhooksPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateStandardwebhooksPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateStandardwebhooksPluginResponse) GetStandardWebhooksPlugin() *shared.StandardWebhooksPlugin {
-	if o == nil {
+func (u *UpdateStandardwebhooksPluginResponse) GetStandardWebhooksPlugin() *shared.StandardWebhooksPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.StandardWebhooksPlugin
+	return u.StandardWebhooksPlugin
 }
 
-func (o *UpdateStandardwebhooksPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateStandardwebhooksPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

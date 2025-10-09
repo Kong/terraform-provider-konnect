@@ -12,22 +12,22 @@ type AzureFunctionsPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AzureFunctionsPluginAfter) GetAccess() []string {
-	if o == nil {
+func (a *AzureFunctionsPluginAfter) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AzureFunctionsPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AzureFunctionsPluginBefore) GetAccess() []string {
-	if o == nil {
+func (a *AzureFunctionsPluginBefore) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AzureFunctionsPluginOrdering struct {
@@ -35,18 +35,18 @@ type AzureFunctionsPluginOrdering struct {
 	Before *AzureFunctionsPluginBefore `json:"before,omitempty"`
 }
 
-func (o *AzureFunctionsPluginOrdering) GetAfter() *AzureFunctionsPluginAfter {
-	if o == nil {
+func (a *AzureFunctionsPluginOrdering) GetAfter() *AzureFunctionsPluginAfter {
+	if a == nil {
 		return nil
 	}
-	return o.After
+	return a.After
 }
 
-func (o *AzureFunctionsPluginOrdering) GetBefore() *AzureFunctionsPluginBefore {
-	if o == nil {
+func (a *AzureFunctionsPluginOrdering) GetBefore() *AzureFunctionsPluginBefore {
+	if a == nil {
 		return nil
 	}
-	return o.Before
+	return a.Before
 }
 
 type AzureFunctionsPluginPartials struct {
@@ -57,25 +57,25 @@ type AzureFunctionsPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *AzureFunctionsPluginPartials) GetID() *string {
-	if o == nil {
+func (a *AzureFunctionsPluginPartials) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AzureFunctionsPluginPartials) GetName() *string {
-	if o == nil {
+func (a *AzureFunctionsPluginPartials) GetName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AzureFunctionsPluginPartials) GetPath() *string {
-	if o == nil {
+func (a *AzureFunctionsPluginPartials) GetPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Path
+	return a.Path
 }
 
 type AzureFunctionsPluginConfig struct {
@@ -106,80 +106,80 @@ func (a AzureFunctionsPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AzureFunctionsPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"appname", "functionname"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AzureFunctionsPluginConfig) GetApikey() *string {
-	if o == nil {
+func (a *AzureFunctionsPluginConfig) GetApikey() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Apikey
+	return a.Apikey
 }
 
-func (o *AzureFunctionsPluginConfig) GetAppname() string {
-	if o == nil {
+func (a *AzureFunctionsPluginConfig) GetAppname() string {
+	if a == nil {
 		return ""
 	}
-	return o.Appname
+	return a.Appname
 }
 
-func (o *AzureFunctionsPluginConfig) GetClientid() *string {
-	if o == nil {
+func (a *AzureFunctionsPluginConfig) GetClientid() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Clientid
+	return a.Clientid
 }
 
-func (o *AzureFunctionsPluginConfig) GetFunctionname() string {
-	if o == nil {
+func (a *AzureFunctionsPluginConfig) GetFunctionname() string {
+	if a == nil {
 		return ""
 	}
-	return o.Functionname
+	return a.Functionname
 }
 
-func (o *AzureFunctionsPluginConfig) GetHostdomain() *string {
-	if o == nil {
+func (a *AzureFunctionsPluginConfig) GetHostdomain() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Hostdomain
+	return a.Hostdomain
 }
 
-func (o *AzureFunctionsPluginConfig) GetHTTPS() *bool {
-	if o == nil {
+func (a *AzureFunctionsPluginConfig) GetHTTPS() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.HTTPS
+	return a.HTTPS
 }
 
-func (o *AzureFunctionsPluginConfig) GetHTTPSVerify() *bool {
-	if o == nil {
+func (a *AzureFunctionsPluginConfig) GetHTTPSVerify() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.HTTPSVerify
+	return a.HTTPSVerify
 }
 
-func (o *AzureFunctionsPluginConfig) GetKeepalive() *float64 {
-	if o == nil {
+func (a *AzureFunctionsPluginConfig) GetKeepalive() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.Keepalive
+	return a.Keepalive
 }
 
-func (o *AzureFunctionsPluginConfig) GetRouteprefix() *string {
-	if o == nil {
+func (a *AzureFunctionsPluginConfig) GetRouteprefix() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Routeprefix
+	return a.Routeprefix
 }
 
-func (o *AzureFunctionsPluginConfig) GetTimeout() *float64 {
-	if o == nil {
+func (a *AzureFunctionsPluginConfig) GetTimeout() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.Timeout
+	return a.Timeout
 }
 
 // AzureFunctionsPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -187,11 +187,11 @@ type AzureFunctionsPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AzureFunctionsPluginConsumer) GetID() *string {
-	if o == nil {
+func (a *AzureFunctionsPluginConsumer) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AzureFunctionsPluginProtocols - A string representing a protocol, such as HTTP or HTTPS.
@@ -250,11 +250,11 @@ type AzureFunctionsPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AzureFunctionsPluginRoute) GetID() *string {
-	if o == nil {
+func (a *AzureFunctionsPluginRoute) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AzureFunctionsPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -262,11 +262,11 @@ type AzureFunctionsPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AzureFunctionsPluginService) GetID() *string {
-	if o == nil {
+func (a *AzureFunctionsPluginService) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AzureFunctionsPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -303,103 +303,103 @@ func (a AzureFunctionsPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AzureFunctionsPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "ordering", "partials", "tags", "config", "consumer", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AzureFunctionsPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (a *AzureFunctionsPlugin) GetCreatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AzureFunctionsPlugin) GetEnabled() *bool {
-	if o == nil {
+func (a *AzureFunctionsPlugin) GetEnabled() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Enabled
+	return a.Enabled
 }
 
-func (o *AzureFunctionsPlugin) GetID() *string {
-	if o == nil {
+func (a *AzureFunctionsPlugin) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AzureFunctionsPlugin) GetInstanceName() *string {
-	if o == nil {
+func (a *AzureFunctionsPlugin) GetInstanceName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.InstanceName
+	return a.InstanceName
 }
 
-func (o *AzureFunctionsPlugin) GetName() string {
+func (a *AzureFunctionsPlugin) GetName() string {
 	return "azure-functions"
 }
 
-func (o *AzureFunctionsPlugin) GetOrdering() *AzureFunctionsPluginOrdering {
-	if o == nil {
+func (a *AzureFunctionsPlugin) GetOrdering() *AzureFunctionsPluginOrdering {
+	if a == nil {
 		return nil
 	}
-	return o.Ordering
+	return a.Ordering
 }
 
-func (o *AzureFunctionsPlugin) GetPartials() []AzureFunctionsPluginPartials {
-	if o == nil {
+func (a *AzureFunctionsPlugin) GetPartials() []AzureFunctionsPluginPartials {
+	if a == nil {
 		return nil
 	}
-	return o.Partials
+	return a.Partials
 }
 
-func (o *AzureFunctionsPlugin) GetTags() []string {
-	if o == nil {
+func (a *AzureFunctionsPlugin) GetTags() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Tags
+	return a.Tags
 }
 
-func (o *AzureFunctionsPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (a *AzureFunctionsPlugin) GetUpdatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }
 
-func (o *AzureFunctionsPlugin) GetConfig() AzureFunctionsPluginConfig {
-	if o == nil {
+func (a *AzureFunctionsPlugin) GetConfig() AzureFunctionsPluginConfig {
+	if a == nil {
 		return AzureFunctionsPluginConfig{}
 	}
-	return o.Config
+	return a.Config
 }
 
-func (o *AzureFunctionsPlugin) GetConsumer() *AzureFunctionsPluginConsumer {
-	if o == nil {
+func (a *AzureFunctionsPlugin) GetConsumer() *AzureFunctionsPluginConsumer {
+	if a == nil {
 		return nil
 	}
-	return o.Consumer
+	return a.Consumer
 }
 
-func (o *AzureFunctionsPlugin) GetProtocols() []AzureFunctionsPluginProtocols {
-	if o == nil {
+func (a *AzureFunctionsPlugin) GetProtocols() []AzureFunctionsPluginProtocols {
+	if a == nil {
 		return nil
 	}
-	return o.Protocols
+	return a.Protocols
 }
 
-func (o *AzureFunctionsPlugin) GetRoute() *AzureFunctionsPluginRoute {
-	if o == nil {
+func (a *AzureFunctionsPlugin) GetRoute() *AzureFunctionsPluginRoute {
+	if a == nil {
 		return nil
 	}
-	return o.Route
+	return a.Route
 }
 
-func (o *AzureFunctionsPlugin) GetService() *AzureFunctionsPluginService {
-	if o == nil {
+func (a *AzureFunctionsPlugin) GetService() *AzureFunctionsPluginService {
+	if a == nil {
 		return nil
 	}
-	return o.Service
+	return a.Service
 }

@@ -14,18 +14,18 @@ type DeletePortalProductVersionRequest struct {
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 }
 
-func (o *DeletePortalProductVersionRequest) GetProductVersionID() string {
-	if o == nil {
+func (d *DeletePortalProductVersionRequest) GetProductVersionID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ProductVersionID
+	return d.ProductVersionID
 }
 
-func (o *DeletePortalProductVersionRequest) GetPortalID() string {
-	if o == nil {
+func (d *DeletePortalProductVersionRequest) GetPortalID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PortalID
+	return d.PortalID
 }
 
 type DeletePortalProductVersionResponse struct {
@@ -43,44 +43,44 @@ type DeletePortalProductVersionResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *DeletePortalProductVersionResponse) GetContentType() string {
-	if o == nil {
+func (d *DeletePortalProductVersionResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeletePortalProductVersionResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeletePortalProductVersionResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeletePortalProductVersionResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeletePortalProductVersionResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeletePortalProductVersionResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (d *DeletePortalProductVersionResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return d.UnauthorizedError
 }
 
-func (o *DeletePortalProductVersionResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (d *DeletePortalProductVersionResponse) GetForbiddenError() *shared.ForbiddenError {
+	if d == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return d.ForbiddenError
 }
 
-func (o *DeletePortalProductVersionResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (d *DeletePortalProductVersionResponse) GetNotFoundError() *shared.NotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return d.NotFoundError
 }

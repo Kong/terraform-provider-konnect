@@ -16,25 +16,25 @@ type GetConfigStoreSecretRequest struct {
 	Key string `pathParam:"style=simple,explode=false,name=key"`
 }
 
-func (o *GetConfigStoreSecretRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetConfigStoreSecretRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
-func (o *GetConfigStoreSecretRequest) GetConfigStoreID() string {
-	if o == nil {
+func (g *GetConfigStoreSecretRequest) GetConfigStoreID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ConfigStoreID
+	return g.ConfigStoreID
 }
 
-func (o *GetConfigStoreSecretRequest) GetKey() string {
-	if o == nil {
+func (g *GetConfigStoreSecretRequest) GetKey() string {
+	if g == nil {
 		return ""
 	}
-	return o.Key
+	return g.Key
 }
 
 type GetConfigStoreSecretResponse struct {
@@ -54,51 +54,51 @@ type GetConfigStoreSecretResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetConfigStoreSecretResponse) GetContentType() string {
-	if o == nil {
+func (g *GetConfigStoreSecretResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetConfigStoreSecretResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetConfigStoreSecretResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetConfigStoreSecretResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetConfigStoreSecretResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetConfigStoreSecretResponse) GetConfigStoreSecret() *shared.ConfigStoreSecret {
-	if o == nil {
+func (g *GetConfigStoreSecretResponse) GetConfigStoreSecret() *shared.ConfigStoreSecret {
+	if g == nil {
 		return nil
 	}
-	return o.ConfigStoreSecret
+	return g.ConfigStoreSecret
 }
 
-func (o *GetConfigStoreSecretResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetConfigStoreSecretResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetConfigStoreSecretResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (g *GetConfigStoreSecretResponse) GetForbiddenError() *shared.ForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return g.ForbiddenError
 }
 
-func (o *GetConfigStoreSecretResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetConfigStoreSecretResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

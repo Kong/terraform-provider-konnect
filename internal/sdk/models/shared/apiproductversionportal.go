@@ -13,58 +13,58 @@ type APIProductVersionPortal struct {
 	AuthStrategies                 []APIProductVersionAuthStrategy `json:"auth_strategies"`
 }
 
-func (o *APIProductVersionPortal) GetPortalID() string {
-	if o == nil {
+func (a *APIProductVersionPortal) GetPortalID() string {
+	if a == nil {
 		return ""
 	}
-	return o.PortalID
+	return a.PortalID
 }
 
-func (o *APIProductVersionPortal) GetPortalName() string {
-	if o == nil {
+func (a *APIProductVersionPortal) GetPortalName() string {
+	if a == nil {
 		return ""
 	}
-	return o.PortalName
+	return a.PortalName
 }
 
-func (o *APIProductVersionPortal) GetPortalProductVersionID() string {
-	if o == nil {
+func (a *APIProductVersionPortal) GetPortalProductVersionID() string {
+	if a == nil {
 		return ""
 	}
-	return o.PortalProductVersionID
+	return a.PortalProductVersionID
 }
 
-func (o *APIProductVersionPortal) GetPublishStatus() APIProductVersionPublishStatus {
-	if o == nil {
+func (a *APIProductVersionPortal) GetPublishStatus() APIProductVersionPublishStatus {
+	if a == nil {
 		return APIProductVersionPublishStatus("")
 	}
-	return o.PublishStatus
+	return a.PublishStatus
 }
 
-func (o *APIProductVersionPortal) GetDeprecated() bool {
-	if o == nil {
+func (a *APIProductVersionPortal) GetDeprecated() bool {
+	if a == nil {
 		return false
 	}
-	return o.Deprecated
+	return a.Deprecated
 }
 
-func (o *APIProductVersionPortal) GetApplicationRegistrationEnabled() bool {
-	if o == nil {
+func (a *APIProductVersionPortal) GetApplicationRegistrationEnabled() bool {
+	if a == nil {
 		return false
 	}
-	return o.ApplicationRegistrationEnabled
+	return a.ApplicationRegistrationEnabled
 }
 
-func (o *APIProductVersionPortal) GetAutoApproveRegistration() bool {
-	if o == nil {
+func (a *APIProductVersionPortal) GetAutoApproveRegistration() bool {
+	if a == nil {
 		return false
 	}
-	return o.AutoApproveRegistration
+	return a.AutoApproveRegistration
 }
 
-func (o *APIProductVersionPortal) GetAuthStrategies() []APIProductVersionAuthStrategy {
-	if o == nil {
+func (a *APIProductVersionPortal) GetAuthStrategies() []APIProductVersionAuthStrategy {
+	if a == nil {
 		return []APIProductVersionAuthStrategy{}
 	}
-	return o.AuthStrategies
+	return a.AuthStrategies
 }

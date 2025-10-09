@@ -14,18 +14,18 @@ type GetAiratelimitingadvancedPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetAiratelimitingadvancedPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetAiratelimitingadvancedPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetAiratelimitingadvancedPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetAiratelimitingadvancedPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetAiratelimitingadvancedPluginResponse struct {
@@ -41,37 +41,37 @@ type GetAiratelimitingadvancedPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetAiratelimitingadvancedPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetAiratelimitingadvancedPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetAiratelimitingadvancedPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetAiratelimitingadvancedPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetAiratelimitingadvancedPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetAiratelimitingadvancedPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetAiratelimitingadvancedPluginResponse) GetAiRateLimitingAdvancedPlugin() *shared.AiRateLimitingAdvancedPlugin {
-	if o == nil {
+func (g *GetAiratelimitingadvancedPluginResponse) GetAiRateLimitingAdvancedPlugin() *shared.AiRateLimitingAdvancedPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.AiRateLimitingAdvancedPlugin
+	return g.AiRateLimitingAdvancedPlugin
 }
 
-func (o *GetAiratelimitingadvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetAiratelimitingadvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

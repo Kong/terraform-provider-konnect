@@ -15,25 +15,25 @@ type UpdateCorrelationidPluginRequest struct {
 	CorrelationIDPlugin shared.CorrelationIDPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateCorrelationidPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateCorrelationidPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateCorrelationidPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateCorrelationidPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateCorrelationidPluginRequest) GetCorrelationIDPlugin() shared.CorrelationIDPlugin {
-	if o == nil {
+func (u *UpdateCorrelationidPluginRequest) GetCorrelationIDPlugin() shared.CorrelationIDPlugin {
+	if u == nil {
 		return shared.CorrelationIDPlugin{}
 	}
-	return o.CorrelationIDPlugin
+	return u.CorrelationIDPlugin
 }
 
 type UpdateCorrelationidPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateCorrelationidPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateCorrelationidPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateCorrelationidPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateCorrelationidPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateCorrelationidPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateCorrelationidPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateCorrelationidPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateCorrelationidPluginResponse) GetCorrelationIDPlugin() *shared.CorrelationIDPlugin {
-	if o == nil {
+func (u *UpdateCorrelationidPluginResponse) GetCorrelationIDPlugin() *shared.CorrelationIDPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.CorrelationIDPlugin
+	return u.CorrelationIDPlugin
 }
 
-func (o *UpdateCorrelationidPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateCorrelationidPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

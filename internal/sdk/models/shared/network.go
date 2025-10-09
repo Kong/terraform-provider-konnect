@@ -48,113 +48,113 @@ func (n Network) MarshalJSON() ([]byte, error) {
 }
 
 func (n *Network) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &n, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &n, "", false, []string{"id", "name", "default", "cloud_gateway_provider_account_id", "region", "availability_zones", "cidr_block", "state", "provider_metadata", "transit_gateway_count", "configuration_reference_count", "entity_version", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Network) GetID() string {
-	if o == nil {
+func (n *Network) GetID() string {
+	if n == nil {
 		return ""
 	}
-	return o.ID
+	return n.ID
 }
 
-func (o *Network) GetName() string {
-	if o == nil {
+func (n *Network) GetName() string {
+	if n == nil {
 		return ""
 	}
-	return o.Name
+	return n.Name
 }
 
-func (o *Network) GetDefault() bool {
-	if o == nil {
+func (n *Network) GetDefault() bool {
+	if n == nil {
 		return false
 	}
-	return o.Default
+	return n.Default
 }
 
-func (o *Network) GetCloudGatewayProviderAccountID() string {
-	if o == nil {
+func (n *Network) GetCloudGatewayProviderAccountID() string {
+	if n == nil {
 		return ""
 	}
-	return o.CloudGatewayProviderAccountID
+	return n.CloudGatewayProviderAccountID
 }
 
-func (o *Network) GetRegion() string {
-	if o == nil {
+func (n *Network) GetRegion() string {
+	if n == nil {
 		return ""
 	}
-	return o.Region
+	return n.Region
 }
 
-func (o *Network) GetAvailabilityZones() []string {
-	if o == nil {
+func (n *Network) GetAvailabilityZones() []string {
+	if n == nil {
 		return []string{}
 	}
-	return o.AvailabilityZones
+	return n.AvailabilityZones
 }
 
-func (o *Network) GetCidrBlock() string {
-	if o == nil {
+func (n *Network) GetCidrBlock() string {
+	if n == nil {
 		return ""
 	}
-	return o.CidrBlock
+	return n.CidrBlock
 }
 
-func (o *Network) GetState() NetworkState {
-	if o == nil {
+func (n *Network) GetState() NetworkState {
+	if n == nil {
 		return NetworkState("")
 	}
-	return o.State
+	return n.State
 }
 
-func (o *Network) GetStateMetadata() *NetworkStateMetadata {
-	if o == nil {
+func (n *Network) GetStateMetadata() *NetworkStateMetadata {
+	if n == nil {
 		return nil
 	}
-	return o.StateMetadata
+	return n.StateMetadata
 }
 
-func (o *Network) GetProviderMetadata() NetworkProviderMetadata {
-	if o == nil {
+func (n *Network) GetProviderMetadata() NetworkProviderMetadata {
+	if n == nil {
 		return NetworkProviderMetadata{}
 	}
-	return o.ProviderMetadata
+	return n.ProviderMetadata
 }
 
-func (o *Network) GetTransitGatewayCount() int64 {
-	if o == nil {
+func (n *Network) GetTransitGatewayCount() int64 {
+	if n == nil {
 		return 0
 	}
-	return o.TransitGatewayCount
+	return n.TransitGatewayCount
 }
 
-func (o *Network) GetConfigurationReferenceCount() int64 {
-	if o == nil {
+func (n *Network) GetConfigurationReferenceCount() int64 {
+	if n == nil {
 		return 0
 	}
-	return o.ConfigurationReferenceCount
+	return n.ConfigurationReferenceCount
 }
 
-func (o *Network) GetEntityVersion() int64 {
-	if o == nil {
+func (n *Network) GetEntityVersion() int64 {
+	if n == nil {
 		return 0
 	}
-	return o.EntityVersion
+	return n.EntityVersion
 }
 
-func (o *Network) GetCreatedAt() time.Time {
-	if o == nil {
+func (n *Network) GetCreatedAt() time.Time {
+	if n == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return n.CreatedAt
 }
 
-func (o *Network) GetUpdatedAt() time.Time {
-	if o == nil {
+func (n *Network) GetUpdatedAt() time.Time {
+	if n == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return n.UpdatedAt
 }

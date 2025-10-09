@@ -49,36 +49,36 @@ func (s ServiceUnavailable) MarshalJSON() ([]byte, error) {
 }
 
 func (s *ServiceUnavailable) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"status", "title", "instance"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ServiceUnavailable) GetStatus() ServiceUnavailableStatus {
-	if o == nil {
+func (s *ServiceUnavailable) GetStatus() ServiceUnavailableStatus {
+	if s == nil {
 		return ServiceUnavailableStatus(0)
 	}
-	return o.Status
+	return s.Status
 }
 
-func (o *ServiceUnavailable) GetTitle() string {
-	if o == nil {
+func (s *ServiceUnavailable) GetTitle() string {
+	if s == nil {
 		return ""
 	}
-	return o.Title
+	return s.Title
 }
 
-func (o *ServiceUnavailable) GetInstance() string {
-	if o == nil {
+func (s *ServiceUnavailable) GetInstance() string {
+	if s == nil {
 		return ""
 	}
-	return o.Instance
+	return s.Instance
 }
 
-func (o *ServiceUnavailable) GetDetail() *string {
-	if o == nil {
+func (s *ServiceUnavailable) GetDetail() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Detail
+	return s.Detail
 }

@@ -12,11 +12,11 @@ type GetPortalClassicRequest struct {
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 }
 
-func (o *GetPortalClassicRequest) GetPortalID() string {
-	if o == nil {
+func (g *GetPortalClassicRequest) GetPortalID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PortalID
+	return g.PortalID
 }
 
 type GetPortalClassicResponse struct {
@@ -36,51 +36,51 @@ type GetPortalClassicResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetPortalClassicResponse) GetContentType() string {
-	if o == nil {
+func (g *GetPortalClassicResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetPortalClassicResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetPortalClassicResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetPortalClassicResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetPortalClassicResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetPortalClassicResponse) GetV2GetPortalResponse() *shared.V2GetPortalResponse {
-	if o == nil {
+func (g *GetPortalClassicResponse) GetV2GetPortalResponse() *shared.V2GetPortalResponse {
+	if g == nil {
 		return nil
 	}
-	return o.V2GetPortalResponse
+	return g.V2GetPortalResponse
 }
 
-func (o *GetPortalClassicResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetPortalClassicResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetPortalClassicResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (g *GetPortalClassicResponse) GetForbiddenError() *shared.ForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return g.ForbiddenError
 }
 
-func (o *GetPortalClassicResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetPortalClassicResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

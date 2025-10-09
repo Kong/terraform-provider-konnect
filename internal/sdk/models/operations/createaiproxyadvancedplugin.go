@@ -13,18 +13,18 @@ type CreateAiproxyadvancedPluginRequest struct {
 	AiProxyAdvancedPlugin shared.AiProxyAdvancedPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateAiproxyadvancedPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateAiproxyadvancedPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateAiproxyadvancedPluginRequest) GetAiProxyAdvancedPlugin() shared.AiProxyAdvancedPlugin {
-	if o == nil {
+func (c *CreateAiproxyadvancedPluginRequest) GetAiProxyAdvancedPlugin() shared.AiProxyAdvancedPlugin {
+	if c == nil {
 		return shared.AiProxyAdvancedPlugin{}
 	}
-	return o.AiProxyAdvancedPlugin
+	return c.AiProxyAdvancedPlugin
 }
 
 type CreateAiproxyadvancedPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateAiproxyadvancedPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateAiproxyadvancedPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateAiproxyadvancedPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateAiproxyadvancedPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateAiproxyadvancedPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateAiproxyadvancedPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateAiproxyadvancedPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateAiproxyadvancedPluginResponse) GetAiProxyAdvancedPlugin() *shared.AiProxyAdvancedPlugin {
-	if o == nil {
+func (c *CreateAiproxyadvancedPluginResponse) GetAiProxyAdvancedPlugin() *shared.AiProxyAdvancedPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.AiProxyAdvancedPlugin
+	return c.AiProxyAdvancedPlugin
 }
 
-func (o *CreateAiproxyadvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateAiproxyadvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

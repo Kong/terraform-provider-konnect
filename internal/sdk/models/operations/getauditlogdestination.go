@@ -12,11 +12,11 @@ type GetAuditLogDestinationRequest struct {
 	AuditLogDestinationID string `pathParam:"style=simple,explode=false,name=auditLogDestinationId"`
 }
 
-func (o *GetAuditLogDestinationRequest) GetAuditLogDestinationID() string {
-	if o == nil {
+func (g *GetAuditLogDestinationRequest) GetAuditLogDestinationID() string {
+	if g == nil {
 		return ""
 	}
-	return o.AuditLogDestinationID
+	return g.AuditLogDestinationID
 }
 
 type GetAuditLogDestinationResponse struct {
@@ -36,51 +36,51 @@ type GetAuditLogDestinationResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetAuditLogDestinationResponse) GetContentType() string {
-	if o == nil {
+func (g *GetAuditLogDestinationResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetAuditLogDestinationResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetAuditLogDestinationResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetAuditLogDestinationResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetAuditLogDestinationResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetAuditLogDestinationResponse) GetAuditLogDestination() *shared.AuditLogDestination {
-	if o == nil {
+func (g *GetAuditLogDestinationResponse) GetAuditLogDestination() *shared.AuditLogDestination {
+	if g == nil {
 		return nil
 	}
-	return o.AuditLogDestination
+	return g.AuditLogDestination
 }
 
-func (o *GetAuditLogDestinationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetAuditLogDestinationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetAuditLogDestinationResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (g *GetAuditLogDestinationResponse) GetForbiddenError() *shared.ForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return g.ForbiddenError
 }
 
-func (o *GetAuditLogDestinationResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetAuditLogDestinationResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

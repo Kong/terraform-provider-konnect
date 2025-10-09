@@ -19,51 +19,51 @@ type CustomPlugin struct {
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }
 
-func (o *CustomPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (c *CustomPlugin) GetCreatedAt() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return c.CreatedAt
 }
 
-func (o *CustomPlugin) GetHandler() string {
-	if o == nil {
+func (c *CustomPlugin) GetHandler() string {
+	if c == nil {
 		return ""
 	}
-	return o.Handler
+	return c.Handler
 }
 
-func (o *CustomPlugin) GetID() *string {
-	if o == nil {
+func (c *CustomPlugin) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *CustomPlugin) GetName() string {
-	if o == nil {
+func (c *CustomPlugin) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *CustomPlugin) GetSchema() string {
-	if o == nil {
+func (c *CustomPlugin) GetSchema() string {
+	if c == nil {
 		return ""
 	}
-	return o.Schema
+	return c.Schema
 }
 
-func (o *CustomPlugin) GetTags() []string {
-	if o == nil {
+func (c *CustomPlugin) GetTags() []string {
+	if c == nil {
 		return nil
 	}
-	return o.Tags
+	return c.Tags
 }
 
-func (o *CustomPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (c *CustomPlugin) GetUpdatedAt() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return c.UpdatedAt
 }

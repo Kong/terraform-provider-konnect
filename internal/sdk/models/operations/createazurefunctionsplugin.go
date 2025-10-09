@@ -13,18 +13,18 @@ type CreateAzurefunctionsPluginRequest struct {
 	AzureFunctionsPlugin shared.AzureFunctionsPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateAzurefunctionsPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateAzurefunctionsPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateAzurefunctionsPluginRequest) GetAzureFunctionsPlugin() shared.AzureFunctionsPlugin {
-	if o == nil {
+func (c *CreateAzurefunctionsPluginRequest) GetAzureFunctionsPlugin() shared.AzureFunctionsPlugin {
+	if c == nil {
 		return shared.AzureFunctionsPlugin{}
 	}
-	return o.AzureFunctionsPlugin
+	return c.AzureFunctionsPlugin
 }
 
 type CreateAzurefunctionsPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateAzurefunctionsPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateAzurefunctionsPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateAzurefunctionsPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateAzurefunctionsPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateAzurefunctionsPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateAzurefunctionsPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateAzurefunctionsPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateAzurefunctionsPluginResponse) GetAzureFunctionsPlugin() *shared.AzureFunctionsPlugin {
-	if o == nil {
+func (c *CreateAzurefunctionsPluginResponse) GetAzureFunctionsPlugin() *shared.AzureFunctionsPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.AzureFunctionsPlugin
+	return c.AzureFunctionsPlugin
 }
 
-func (o *CreateAzurefunctionsPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateAzurefunctionsPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

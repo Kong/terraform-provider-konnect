@@ -15,25 +15,25 @@ type UpdateConsumerInRealmRequest struct {
 	UpdateConsumerPayload shared.UpdateConsumerPayload `request:"mediaType=application/json"`
 }
 
-func (o *UpdateConsumerInRealmRequest) GetRealmID() string {
-	if o == nil {
+func (u *UpdateConsumerInRealmRequest) GetRealmID() string {
+	if u == nil {
 		return ""
 	}
-	return o.RealmID
+	return u.RealmID
 }
 
-func (o *UpdateConsumerInRealmRequest) GetConsumerID() string {
-	if o == nil {
+func (u *UpdateConsumerInRealmRequest) GetConsumerID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ConsumerID
+	return u.ConsumerID
 }
 
-func (o *UpdateConsumerInRealmRequest) GetUpdateConsumerPayload() shared.UpdateConsumerPayload {
-	if o == nil {
+func (u *UpdateConsumerInRealmRequest) GetUpdateConsumerPayload() shared.UpdateConsumerPayload {
+	if u == nil {
 		return shared.UpdateConsumerPayload{}
 	}
-	return o.UpdateConsumerPayload
+	return u.UpdateConsumerPayload
 }
 
 type UpdateConsumerInRealmResponse struct {
@@ -51,44 +51,44 @@ type UpdateConsumerInRealmResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *UpdateConsumerInRealmResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateConsumerInRealmResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateConsumerInRealmResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateConsumerInRealmResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateConsumerInRealmResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateConsumerInRealmResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateConsumerInRealmResponse) GetCentralizedConsumer() *shared.CentralizedConsumer {
-	if o == nil {
+func (u *UpdateConsumerInRealmResponse) GetCentralizedConsumer() *shared.CentralizedConsumer {
+	if u == nil {
 		return nil
 	}
-	return o.CentralizedConsumer
+	return u.CentralizedConsumer
 }
 
-func (o *UpdateConsumerInRealmResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (u *UpdateConsumerInRealmResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return u.BadRequestError
 }
 
-func (o *UpdateConsumerInRealmResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (u *UpdateConsumerInRealmResponse) GetNotFoundError() *shared.NotFoundError {
+	if u == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return u.NotFoundError
 }

@@ -57,43 +57,43 @@ func (u UpdateControlPlaneRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateControlPlaneRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *UpdateControlPlaneRequest) GetName() *string {
-	if o == nil {
+func (u *UpdateControlPlaneRequest) GetName() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Name
+	return u.Name
 }
 
-func (o *UpdateControlPlaneRequest) GetDescription() *string {
-	if o == nil {
+func (u *UpdateControlPlaneRequest) GetDescription() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Description
+	return u.Description
 }
 
-func (o *UpdateControlPlaneRequest) GetAuthType() *UpdateControlPlaneRequestAuthType {
-	if o == nil {
+func (u *UpdateControlPlaneRequest) GetAuthType() *UpdateControlPlaneRequestAuthType {
+	if u == nil {
 		return nil
 	}
-	return o.AuthType
+	return u.AuthType
 }
 
-func (o *UpdateControlPlaneRequest) GetProxyUrls() []ProxyURL {
-	if o == nil {
+func (u *UpdateControlPlaneRequest) GetProxyUrls() []ProxyURL {
+	if u == nil {
 		return nil
 	}
-	return o.ProxyUrls
+	return u.ProxyUrls
 }
 
-func (o *UpdateControlPlaneRequest) GetLabels() map[string]*string {
-	if o == nil {
+func (u *UpdateControlPlaneRequest) GetLabels() map[string]*string {
+	if u == nil {
 		return nil
 	}
-	return o.Labels
+	return u.Labels
 }

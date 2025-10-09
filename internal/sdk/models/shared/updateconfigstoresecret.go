@@ -6,9 +6,9 @@ type UpdateConfigStoreSecret struct {
 	Value string `json:"value"`
 }
 
-func (o *UpdateConfigStoreSecret) GetValue() string {
-	if o == nil {
+func (u *UpdateConfigStoreSecret) GetValue() string {
+	if u == nil {
 		return ""
 	}
-	return o.Value
+	return u.Value
 }

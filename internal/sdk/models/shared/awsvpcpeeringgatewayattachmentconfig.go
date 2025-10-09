@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type AWSVPCPeeringAttachmentConfig string
@@ -37,30 +38,41 @@ type AwsVpcPeeringGatewayAttachmentConfig struct {
 	PeerVpcRegion string                        `json:"peer_vpc_region"`
 }
 
-func (o *AwsVpcPeeringGatewayAttachmentConfig) GetKind() AWSVPCPeeringAttachmentConfig {
-	if o == nil {
+func (a AwsVpcPeeringGatewayAttachmentConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AwsVpcPeeringGatewayAttachmentConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"kind", "peer_account_id", "peer_vpc_id", "peer_vpc_region"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AwsVpcPeeringGatewayAttachmentConfig) GetKind() AWSVPCPeeringAttachmentConfig {
+	if a == nil {
 		return AWSVPCPeeringAttachmentConfig("")
 	}
-	return o.Kind
+	return a.Kind
 }
 
-func (o *AwsVpcPeeringGatewayAttachmentConfig) GetPeerAccountID() string {
-	if o == nil {
+func (a *AwsVpcPeeringGatewayAttachmentConfig) GetPeerAccountID() string {
+	if a == nil {
 		return ""
 	}
-	return o.PeerAccountID
+	return a.PeerAccountID
 }
 
-func (o *AwsVpcPeeringGatewayAttachmentConfig) GetPeerVpcID() string {
-	if o == nil {
+func (a *AwsVpcPeeringGatewayAttachmentConfig) GetPeerVpcID() string {
+	if a == nil {
 		return ""
 	}
-	return o.PeerVpcID
+	return a.PeerVpcID
 }
 
-func (o *AwsVpcPeeringGatewayAttachmentConfig) GetPeerVpcRegion() string {
-	if o == nil {
+func (a *AwsVpcPeeringGatewayAttachmentConfig) GetPeerVpcRegion() string {
+	if a == nil {
 		return ""
 	}
-	return o.PeerVpcRegion
+	return a.PeerVpcRegion
 }

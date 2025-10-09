@@ -15,25 +15,25 @@ type UpdateRedirectPluginRequest struct {
 	RedirectPlugin shared.RedirectPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateRedirectPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateRedirectPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateRedirectPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateRedirectPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateRedirectPluginRequest) GetRedirectPlugin() shared.RedirectPlugin {
-	if o == nil {
+func (u *UpdateRedirectPluginRequest) GetRedirectPlugin() shared.RedirectPlugin {
+	if u == nil {
 		return shared.RedirectPlugin{}
 	}
-	return o.RedirectPlugin
+	return u.RedirectPlugin
 }
 
 type UpdateRedirectPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateRedirectPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateRedirectPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateRedirectPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateRedirectPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateRedirectPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateRedirectPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateRedirectPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateRedirectPluginResponse) GetRedirectPlugin() *shared.RedirectPlugin {
-	if o == nil {
+func (u *UpdateRedirectPluginResponse) GetRedirectPlugin() *shared.RedirectPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.RedirectPlugin
+	return u.RedirectPlugin
 }
 
-func (o *UpdateRedirectPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateRedirectPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

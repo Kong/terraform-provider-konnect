@@ -12,11 +12,11 @@ type DeleteIntegrationInstanceAuthConfigRequest struct {
 	IntegrationInstanceID string `pathParam:"style=simple,explode=false,name=integrationInstanceId"`
 }
 
-func (o *DeleteIntegrationInstanceAuthConfigRequest) GetIntegrationInstanceID() string {
-	if o == nil {
+func (d *DeleteIntegrationInstanceAuthConfigRequest) GetIntegrationInstanceID() string {
+	if d == nil {
 		return ""
 	}
-	return o.IntegrationInstanceID
+	return d.IntegrationInstanceID
 }
 
 type DeleteIntegrationInstanceAuthConfigResponse struct {
@@ -34,44 +34,44 @@ type DeleteIntegrationInstanceAuthConfigResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *DeleteIntegrationInstanceAuthConfigResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteIntegrationInstanceAuthConfigResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteIntegrationInstanceAuthConfigResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteIntegrationInstanceAuthConfigResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteIntegrationInstanceAuthConfigResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteIntegrationInstanceAuthConfigResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteIntegrationInstanceAuthConfigResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (d *DeleteIntegrationInstanceAuthConfigResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return d.UnauthorizedError
 }
 
-func (o *DeleteIntegrationInstanceAuthConfigResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (d *DeleteIntegrationInstanceAuthConfigResponse) GetForbiddenError() *shared.ForbiddenError {
+	if d == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return d.ForbiddenError
 }
 
-func (o *DeleteIntegrationInstanceAuthConfigResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (d *DeleteIntegrationInstanceAuthConfigResponse) GetNotFoundError() *shared.NotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return d.NotFoundError
 }

@@ -16,25 +16,25 @@ type DeleteAPIProductVersionSpecRequest struct {
 	SpecificationID string `pathParam:"style=simple,explode=false,name=specificationId"`
 }
 
-func (o *DeleteAPIProductVersionSpecRequest) GetAPIProductID() string {
-	if o == nil {
+func (d *DeleteAPIProductVersionSpecRequest) GetAPIProductID() string {
+	if d == nil {
 		return ""
 	}
-	return o.APIProductID
+	return d.APIProductID
 }
 
-func (o *DeleteAPIProductVersionSpecRequest) GetAPIProductVersionID() string {
-	if o == nil {
+func (d *DeleteAPIProductVersionSpecRequest) GetAPIProductVersionID() string {
+	if d == nil {
 		return ""
 	}
-	return o.APIProductVersionID
+	return d.APIProductVersionID
 }
 
-func (o *DeleteAPIProductVersionSpecRequest) GetSpecificationID() string {
-	if o == nil {
+func (d *DeleteAPIProductVersionSpecRequest) GetSpecificationID() string {
+	if d == nil {
 		return ""
 	}
-	return o.SpecificationID
+	return d.SpecificationID
 }
 
 type DeleteAPIProductVersionSpecResponse struct {
@@ -52,44 +52,44 @@ type DeleteAPIProductVersionSpecResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *DeleteAPIProductVersionSpecResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteAPIProductVersionSpecResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteAPIProductVersionSpecResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteAPIProductVersionSpecResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteAPIProductVersionSpecResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteAPIProductVersionSpecResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteAPIProductVersionSpecResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (d *DeleteAPIProductVersionSpecResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return d.UnauthorizedError
 }
 
-func (o *DeleteAPIProductVersionSpecResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (d *DeleteAPIProductVersionSpecResponse) GetForbiddenError() *shared.ForbiddenError {
+	if d == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return d.ForbiddenError
 }
 
-func (o *DeleteAPIProductVersionSpecResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (d *DeleteAPIProductVersionSpecResponse) GetNotFoundError() *shared.NotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return d.NotFoundError
 }

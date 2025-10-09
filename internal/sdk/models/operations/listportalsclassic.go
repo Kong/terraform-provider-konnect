@@ -28,25 +28,25 @@ type ListPortalsClassicRequest struct {
 	Sort *string `queryParam:"style=form,explode=true,name=sort"`
 }
 
-func (o *ListPortalsClassicRequest) GetPageSize() *int64 {
-	if o == nil {
+func (l *ListPortalsClassicRequest) GetPageSize() *int64 {
+	if l == nil {
 		return nil
 	}
-	return o.PageSize
+	return l.PageSize
 }
 
-func (o *ListPortalsClassicRequest) GetPageNumber() *int64 {
-	if o == nil {
+func (l *ListPortalsClassicRequest) GetPageNumber() *int64 {
+	if l == nil {
 		return nil
 	}
-	return o.PageNumber
+	return l.PageNumber
 }
 
-func (o *ListPortalsClassicRequest) GetSort() *string {
-	if o == nil {
+func (l *ListPortalsClassicRequest) GetSort() *string {
+	if l == nil {
 		return nil
 	}
-	return o.Sort
+	return l.Sort
 }
 
 type ListPortalsClassicResponse struct {
@@ -66,51 +66,51 @@ type ListPortalsClassicResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *ListPortalsClassicResponse) GetContentType() string {
-	if o == nil {
+func (l *ListPortalsClassicResponse) GetContentType() string {
+	if l == nil {
 		return ""
 	}
-	return o.ContentType
+	return l.ContentType
 }
 
-func (o *ListPortalsClassicResponse) GetStatusCode() int {
-	if o == nil {
+func (l *ListPortalsClassicResponse) GetStatusCode() int {
+	if l == nil {
 		return 0
 	}
-	return o.StatusCode
+	return l.StatusCode
 }
 
-func (o *ListPortalsClassicResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (l *ListPortalsClassicResponse) GetRawResponse() *http.Response {
+	if l == nil {
 		return nil
 	}
-	return o.RawResponse
+	return l.RawResponse
 }
 
-func (o *ListPortalsClassicResponse) GetV2ListPortalsResponse() *shared.V2ListPortalsResponse {
-	if o == nil {
+func (l *ListPortalsClassicResponse) GetV2ListPortalsResponse() *shared.V2ListPortalsResponse {
+	if l == nil {
 		return nil
 	}
-	return o.V2ListPortalsResponse
+	return l.V2ListPortalsResponse
 }
 
-func (o *ListPortalsClassicResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (l *ListPortalsClassicResponse) GetBadRequestError() *shared.BadRequestError {
+	if l == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return l.BadRequestError
 }
 
-func (o *ListPortalsClassicResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (l *ListPortalsClassicResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if l == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return l.UnauthorizedError
 }
 
-func (o *ListPortalsClassicResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (l *ListPortalsClassicResponse) GetForbiddenError() *shared.ForbiddenError {
+	if l == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return l.ForbiddenError
 }

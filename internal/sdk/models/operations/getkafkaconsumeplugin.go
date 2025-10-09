@@ -14,18 +14,18 @@ type GetKafkaconsumePluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetKafkaconsumePluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetKafkaconsumePluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetKafkaconsumePluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetKafkaconsumePluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetKafkaconsumePluginResponse struct {
@@ -41,37 +41,37 @@ type GetKafkaconsumePluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetKafkaconsumePluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetKafkaconsumePluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetKafkaconsumePluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetKafkaconsumePluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetKafkaconsumePluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetKafkaconsumePluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetKafkaconsumePluginResponse) GetKafkaConsumePlugin() *shared.KafkaConsumePlugin {
-	if o == nil {
+func (g *GetKafkaconsumePluginResponse) GetKafkaConsumePlugin() *shared.KafkaConsumePlugin {
+	if g == nil {
 		return nil
 	}
-	return o.KafkaConsumePlugin
+	return g.KafkaConsumePlugin
 }
 
-func (o *GetKafkaconsumePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetKafkaconsumePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

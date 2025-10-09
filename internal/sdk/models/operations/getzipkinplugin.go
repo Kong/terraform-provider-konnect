@@ -14,18 +14,18 @@ type GetZipkinPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetZipkinPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetZipkinPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetZipkinPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetZipkinPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetZipkinPluginResponse struct {
@@ -41,37 +41,37 @@ type GetZipkinPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetZipkinPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetZipkinPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetZipkinPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetZipkinPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetZipkinPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetZipkinPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetZipkinPluginResponse) GetZipkinPlugin() *shared.ZipkinPlugin {
-	if o == nil {
+func (g *GetZipkinPluginResponse) GetZipkinPlugin() *shared.ZipkinPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.ZipkinPlugin
+	return g.ZipkinPlugin
 }
 
-func (o *GetZipkinPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetZipkinPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

@@ -14,18 +14,18 @@ type DeleteAPIImplementationRequest struct {
 	ImplementationID string `pathParam:"style=simple,explode=false,name=implementationId"`
 }
 
-func (o *DeleteAPIImplementationRequest) GetAPIID() string {
-	if o == nil {
+func (d *DeleteAPIImplementationRequest) GetAPIID() string {
+	if d == nil {
 		return ""
 	}
-	return o.APIID
+	return d.APIID
 }
 
-func (o *DeleteAPIImplementationRequest) GetImplementationID() string {
-	if o == nil {
+func (d *DeleteAPIImplementationRequest) GetImplementationID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ImplementationID
+	return d.ImplementationID
 }
 
 type DeleteAPIImplementationResponse struct {
@@ -43,44 +43,44 @@ type DeleteAPIImplementationResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *DeleteAPIImplementationResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteAPIImplementationResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteAPIImplementationResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteAPIImplementationResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteAPIImplementationResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteAPIImplementationResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteAPIImplementationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (d *DeleteAPIImplementationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return d.UnauthorizedError
 }
 
-func (o *DeleteAPIImplementationResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (d *DeleteAPIImplementationResponse) GetForbiddenError() *shared.ForbiddenError {
+	if d == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return d.ForbiddenError
 }
 
-func (o *DeleteAPIImplementationResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (d *DeleteAPIImplementationResponse) GetNotFoundError() *shared.NotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return d.NotFoundError
 }

@@ -12,22 +12,22 @@ type ZipkinPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *ZipkinPluginAfter) GetAccess() []string {
-	if o == nil {
+func (z *ZipkinPluginAfter) GetAccess() []string {
+	if z == nil {
 		return nil
 	}
-	return o.Access
+	return z.Access
 }
 
 type ZipkinPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *ZipkinPluginBefore) GetAccess() []string {
-	if o == nil {
+func (z *ZipkinPluginBefore) GetAccess() []string {
+	if z == nil {
 		return nil
 	}
-	return o.Access
+	return z.Access
 }
 
 type ZipkinPluginOrdering struct {
@@ -35,18 +35,18 @@ type ZipkinPluginOrdering struct {
 	Before *ZipkinPluginBefore `json:"before,omitempty"`
 }
 
-func (o *ZipkinPluginOrdering) GetAfter() *ZipkinPluginAfter {
-	if o == nil {
+func (z *ZipkinPluginOrdering) GetAfter() *ZipkinPluginAfter {
+	if z == nil {
 		return nil
 	}
-	return o.After
+	return z.After
 }
 
-func (o *ZipkinPluginOrdering) GetBefore() *ZipkinPluginBefore {
-	if o == nil {
+func (z *ZipkinPluginOrdering) GetBefore() *ZipkinPluginBefore {
+	if z == nil {
 		return nil
 	}
-	return o.Before
+	return z.Before
 }
 
 type ZipkinPluginPartials struct {
@@ -57,25 +57,25 @@ type ZipkinPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *ZipkinPluginPartials) GetID() *string {
-	if o == nil {
+func (z *ZipkinPluginPartials) GetID() *string {
+	if z == nil {
 		return nil
 	}
-	return o.ID
+	return z.ID
 }
 
-func (o *ZipkinPluginPartials) GetName() *string {
-	if o == nil {
+func (z *ZipkinPluginPartials) GetName() *string {
+	if z == nil {
 		return nil
 	}
-	return o.Name
+	return z.Name
 }
 
-func (o *ZipkinPluginPartials) GetPath() *string {
-	if o == nil {
+func (z *ZipkinPluginPartials) GetPath() *string {
+	if z == nil {
 		return nil
 	}
-	return o.Path
+	return z.Path
 }
 
 // DefaultHeaderType - Allows specifying the type of header to be added to requests with no pre-existing tracing headers and when `config.header_type` is set to `"preserve"`. When `header_type` is set to any other value, `default_header_type` is ignored.
@@ -392,38 +392,38 @@ func (z ZipkinPluginPropagation) MarshalJSON() ([]byte, error) {
 }
 
 func (z *ZipkinPluginPropagation) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &z, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &z, "", false, []string{"clear", "extract", "inject"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ZipkinPluginPropagation) GetClear() []string {
-	if o == nil {
+func (z *ZipkinPluginPropagation) GetClear() []string {
+	if z == nil {
 		return nil
 	}
-	return o.Clear
+	return z.Clear
 }
 
-func (o *ZipkinPluginPropagation) GetDefaultFormat() *ZipkinPluginDefaultFormat {
-	if o == nil {
+func (z *ZipkinPluginPropagation) GetDefaultFormat() *ZipkinPluginDefaultFormat {
+	if z == nil {
 		return nil
 	}
-	return o.DefaultFormat
+	return z.DefaultFormat
 }
 
-func (o *ZipkinPluginPropagation) GetExtract() []ZipkinPluginExtract {
-	if o == nil {
+func (z *ZipkinPluginPropagation) GetExtract() []ZipkinPluginExtract {
+	if z == nil {
 		return nil
 	}
-	return o.Extract
+	return z.Extract
 }
 
-func (o *ZipkinPluginPropagation) GetInject() []ZipkinPluginInject {
-	if o == nil {
+func (z *ZipkinPluginPropagation) GetInject() []ZipkinPluginInject {
+	if z == nil {
 		return nil
 	}
-	return o.Inject
+	return z.Inject
 }
 
 // ZipkinPluginConcurrencyLimit - The number of of queue delivery timers. -1 indicates unlimited.
@@ -477,66 +477,66 @@ func (z ZipkinPluginQueue) MarshalJSON() ([]byte, error) {
 }
 
 func (z *ZipkinPluginQueue) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &z, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &z, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ZipkinPluginQueue) GetConcurrencyLimit() *ZipkinPluginConcurrencyLimit {
-	if o == nil {
+func (z *ZipkinPluginQueue) GetConcurrencyLimit() *ZipkinPluginConcurrencyLimit {
+	if z == nil {
 		return nil
 	}
-	return o.ConcurrencyLimit
+	return z.ConcurrencyLimit
 }
 
-func (o *ZipkinPluginQueue) GetInitialRetryDelay() *float64 {
-	if o == nil {
+func (z *ZipkinPluginQueue) GetInitialRetryDelay() *float64 {
+	if z == nil {
 		return nil
 	}
-	return o.InitialRetryDelay
+	return z.InitialRetryDelay
 }
 
-func (o *ZipkinPluginQueue) GetMaxBatchSize() *int64 {
-	if o == nil {
+func (z *ZipkinPluginQueue) GetMaxBatchSize() *int64 {
+	if z == nil {
 		return nil
 	}
-	return o.MaxBatchSize
+	return z.MaxBatchSize
 }
 
-func (o *ZipkinPluginQueue) GetMaxBytes() *int64 {
-	if o == nil {
+func (z *ZipkinPluginQueue) GetMaxBytes() *int64 {
+	if z == nil {
 		return nil
 	}
-	return o.MaxBytes
+	return z.MaxBytes
 }
 
-func (o *ZipkinPluginQueue) GetMaxCoalescingDelay() *float64 {
-	if o == nil {
+func (z *ZipkinPluginQueue) GetMaxCoalescingDelay() *float64 {
+	if z == nil {
 		return nil
 	}
-	return o.MaxCoalescingDelay
+	return z.MaxCoalescingDelay
 }
 
-func (o *ZipkinPluginQueue) GetMaxEntries() *int64 {
-	if o == nil {
+func (z *ZipkinPluginQueue) GetMaxEntries() *int64 {
+	if z == nil {
 		return nil
 	}
-	return o.MaxEntries
+	return z.MaxEntries
 }
 
-func (o *ZipkinPluginQueue) GetMaxRetryDelay() *float64 {
-	if o == nil {
+func (z *ZipkinPluginQueue) GetMaxRetryDelay() *float64 {
+	if z == nil {
 		return nil
 	}
-	return o.MaxRetryDelay
+	return z.MaxRetryDelay
 }
 
-func (o *ZipkinPluginQueue) GetMaxRetryTime() *float64 {
-	if o == nil {
+func (z *ZipkinPluginQueue) GetMaxRetryTime() *float64 {
+	if z == nil {
 		return nil
 	}
-	return o.MaxRetryTime
+	return z.MaxRetryTime
 }
 
 type StaticTags struct {
@@ -544,18 +544,18 @@ type StaticTags struct {
 	Value string `json:"value"`
 }
 
-func (o *StaticTags) GetName() string {
-	if o == nil {
+func (s *StaticTags) GetName() string {
+	if s == nil {
 		return ""
 	}
-	return o.Name
+	return s.Name
 }
 
-func (o *StaticTags) GetValue() string {
-	if o == nil {
+func (s *StaticTags) GetValue() string {
+	if s == nil {
 		return ""
 	}
-	return o.Value
+	return s.Value
 }
 
 // TraceidByteCount - The length in bytes of each request's Trace ID.
@@ -626,136 +626,136 @@ func (z ZipkinPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (z *ZipkinPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &z, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &z, "", false, []string{"queue", "static_tags"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ZipkinPluginConfig) GetConnectTimeout() *int64 {
-	if o == nil {
+func (z *ZipkinPluginConfig) GetConnectTimeout() *int64 {
+	if z == nil {
 		return nil
 	}
-	return o.ConnectTimeout
+	return z.ConnectTimeout
 }
 
-func (o *ZipkinPluginConfig) GetDefaultHeaderType() *DefaultHeaderType {
-	if o == nil {
+func (z *ZipkinPluginConfig) GetDefaultHeaderType() *DefaultHeaderType {
+	if z == nil {
 		return nil
 	}
-	return o.DefaultHeaderType
+	return z.DefaultHeaderType
 }
 
-func (o *ZipkinPluginConfig) GetDefaultServiceName() *string {
-	if o == nil {
+func (z *ZipkinPluginConfig) GetDefaultServiceName() *string {
+	if z == nil {
 		return nil
 	}
-	return o.DefaultServiceName
+	return z.DefaultServiceName
 }
 
-func (o *ZipkinPluginConfig) GetHeaderType() *ZipkinPluginHeaderType {
-	if o == nil {
+func (z *ZipkinPluginConfig) GetHeaderType() *ZipkinPluginHeaderType {
+	if z == nil {
 		return nil
 	}
-	return o.HeaderType
+	return z.HeaderType
 }
 
-func (o *ZipkinPluginConfig) GetHTTPEndpoint() *string {
-	if o == nil {
+func (z *ZipkinPluginConfig) GetHTTPEndpoint() *string {
+	if z == nil {
 		return nil
 	}
-	return o.HTTPEndpoint
+	return z.HTTPEndpoint
 }
 
-func (o *ZipkinPluginConfig) GetHTTPResponseHeaderForTraceid() *string {
-	if o == nil {
+func (z *ZipkinPluginConfig) GetHTTPResponseHeaderForTraceid() *string {
+	if z == nil {
 		return nil
 	}
-	return o.HTTPResponseHeaderForTraceid
+	return z.HTTPResponseHeaderForTraceid
 }
 
-func (o *ZipkinPluginConfig) GetHTTPSpanName() *HTTPSpanName {
-	if o == nil {
+func (z *ZipkinPluginConfig) GetHTTPSpanName() *HTTPSpanName {
+	if z == nil {
 		return nil
 	}
-	return o.HTTPSpanName
+	return z.HTTPSpanName
 }
 
-func (o *ZipkinPluginConfig) GetIncludeCredential() *bool {
-	if o == nil {
+func (z *ZipkinPluginConfig) GetIncludeCredential() *bool {
+	if z == nil {
 		return nil
 	}
-	return o.IncludeCredential
+	return z.IncludeCredential
 }
 
-func (o *ZipkinPluginConfig) GetLocalServiceName() *string {
-	if o == nil {
+func (z *ZipkinPluginConfig) GetLocalServiceName() *string {
+	if z == nil {
 		return nil
 	}
-	return o.LocalServiceName
+	return z.LocalServiceName
 }
 
-func (o *ZipkinPluginConfig) GetPhaseDurationFlavor() *PhaseDurationFlavor {
-	if o == nil {
+func (z *ZipkinPluginConfig) GetPhaseDurationFlavor() *PhaseDurationFlavor {
+	if z == nil {
 		return nil
 	}
-	return o.PhaseDurationFlavor
+	return z.PhaseDurationFlavor
 }
 
-func (o *ZipkinPluginConfig) GetPropagation() *ZipkinPluginPropagation {
-	if o == nil {
+func (z *ZipkinPluginConfig) GetPropagation() *ZipkinPluginPropagation {
+	if z == nil {
 		return nil
 	}
-	return o.Propagation
+	return z.Propagation
 }
 
-func (o *ZipkinPluginConfig) GetQueue() *ZipkinPluginQueue {
-	if o == nil {
+func (z *ZipkinPluginConfig) GetQueue() *ZipkinPluginQueue {
+	if z == nil {
 		return nil
 	}
-	return o.Queue
+	return z.Queue
 }
 
-func (o *ZipkinPluginConfig) GetReadTimeout() *int64 {
-	if o == nil {
+func (z *ZipkinPluginConfig) GetReadTimeout() *int64 {
+	if z == nil {
 		return nil
 	}
-	return o.ReadTimeout
+	return z.ReadTimeout
 }
 
-func (o *ZipkinPluginConfig) GetSampleRatio() *float64 {
-	if o == nil {
+func (z *ZipkinPluginConfig) GetSampleRatio() *float64 {
+	if z == nil {
 		return nil
 	}
-	return o.SampleRatio
+	return z.SampleRatio
 }
 
-func (o *ZipkinPluginConfig) GetSendTimeout() *int64 {
-	if o == nil {
+func (z *ZipkinPluginConfig) GetSendTimeout() *int64 {
+	if z == nil {
 		return nil
 	}
-	return o.SendTimeout
+	return z.SendTimeout
 }
 
-func (o *ZipkinPluginConfig) GetStaticTags() []StaticTags {
-	if o == nil {
+func (z *ZipkinPluginConfig) GetStaticTags() []StaticTags {
+	if z == nil {
 		return nil
 	}
-	return o.StaticTags
+	return z.StaticTags
 }
 
-func (o *ZipkinPluginConfig) GetTagsHeader() *string {
-	if o == nil {
+func (z *ZipkinPluginConfig) GetTagsHeader() *string {
+	if z == nil {
 		return nil
 	}
-	return o.TagsHeader
+	return z.TagsHeader
 }
 
-func (o *ZipkinPluginConfig) GetTraceidByteCount() *TraceidByteCount {
-	if o == nil {
+func (z *ZipkinPluginConfig) GetTraceidByteCount() *TraceidByteCount {
+	if z == nil {
 		return nil
 	}
-	return o.TraceidByteCount
+	return z.TraceidByteCount
 }
 
 // ZipkinPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -763,11 +763,11 @@ type ZipkinPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *ZipkinPluginConsumer) GetID() *string {
-	if o == nil {
+func (z *ZipkinPluginConsumer) GetID() *string {
+	if z == nil {
 		return nil
 	}
-	return o.ID
+	return z.ID
 }
 
 // ZipkinPluginProtocols - A string representing a protocol, such as HTTP or HTTPS.
@@ -826,11 +826,11 @@ type ZipkinPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *ZipkinPluginRoute) GetID() *string {
-	if o == nil {
+func (z *ZipkinPluginRoute) GetID() *string {
+	if z == nil {
 		return nil
 	}
-	return o.ID
+	return z.ID
 }
 
 // ZipkinPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -838,11 +838,11 @@ type ZipkinPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *ZipkinPluginService) GetID() *string {
-	if o == nil {
+func (z *ZipkinPluginService) GetID() *string {
+	if z == nil {
 		return nil
 	}
-	return o.ID
+	return z.ID
 }
 
 // ZipkinPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -879,103 +879,103 @@ func (z ZipkinPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (z *ZipkinPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &z, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &z, "", false, []string{"name", "ordering", "partials", "tags", "config", "consumer", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ZipkinPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (z *ZipkinPlugin) GetCreatedAt() *int64 {
+	if z == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return z.CreatedAt
 }
 
-func (o *ZipkinPlugin) GetEnabled() *bool {
-	if o == nil {
+func (z *ZipkinPlugin) GetEnabled() *bool {
+	if z == nil {
 		return nil
 	}
-	return o.Enabled
+	return z.Enabled
 }
 
-func (o *ZipkinPlugin) GetID() *string {
-	if o == nil {
+func (z *ZipkinPlugin) GetID() *string {
+	if z == nil {
 		return nil
 	}
-	return o.ID
+	return z.ID
 }
 
-func (o *ZipkinPlugin) GetInstanceName() *string {
-	if o == nil {
+func (z *ZipkinPlugin) GetInstanceName() *string {
+	if z == nil {
 		return nil
 	}
-	return o.InstanceName
+	return z.InstanceName
 }
 
-func (o *ZipkinPlugin) GetName() string {
+func (z *ZipkinPlugin) GetName() string {
 	return "zipkin"
 }
 
-func (o *ZipkinPlugin) GetOrdering() *ZipkinPluginOrdering {
-	if o == nil {
+func (z *ZipkinPlugin) GetOrdering() *ZipkinPluginOrdering {
+	if z == nil {
 		return nil
 	}
-	return o.Ordering
+	return z.Ordering
 }
 
-func (o *ZipkinPlugin) GetPartials() []ZipkinPluginPartials {
-	if o == nil {
+func (z *ZipkinPlugin) GetPartials() []ZipkinPluginPartials {
+	if z == nil {
 		return nil
 	}
-	return o.Partials
+	return z.Partials
 }
 
-func (o *ZipkinPlugin) GetTags() []string {
-	if o == nil {
+func (z *ZipkinPlugin) GetTags() []string {
+	if z == nil {
 		return nil
 	}
-	return o.Tags
+	return z.Tags
 }
 
-func (o *ZipkinPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (z *ZipkinPlugin) GetUpdatedAt() *int64 {
+	if z == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return z.UpdatedAt
 }
 
-func (o *ZipkinPlugin) GetConfig() *ZipkinPluginConfig {
-	if o == nil {
+func (z *ZipkinPlugin) GetConfig() *ZipkinPluginConfig {
+	if z == nil {
 		return nil
 	}
-	return o.Config
+	return z.Config
 }
 
-func (o *ZipkinPlugin) GetConsumer() *ZipkinPluginConsumer {
-	if o == nil {
+func (z *ZipkinPlugin) GetConsumer() *ZipkinPluginConsumer {
+	if z == nil {
 		return nil
 	}
-	return o.Consumer
+	return z.Consumer
 }
 
-func (o *ZipkinPlugin) GetProtocols() []ZipkinPluginProtocols {
-	if o == nil {
+func (z *ZipkinPlugin) GetProtocols() []ZipkinPluginProtocols {
+	if z == nil {
 		return nil
 	}
-	return o.Protocols
+	return z.Protocols
 }
 
-func (o *ZipkinPlugin) GetRoute() *ZipkinPluginRoute {
-	if o == nil {
+func (z *ZipkinPlugin) GetRoute() *ZipkinPluginRoute {
+	if z == nil {
 		return nil
 	}
-	return o.Route
+	return z.Route
 }
 
-func (o *ZipkinPlugin) GetService() *ZipkinPluginService {
-	if o == nil {
+func (z *ZipkinPlugin) GetService() *ZipkinPluginService {
+	if z == nil {
 		return nil
 	}
-	return o.Service
+	return z.Service
 }

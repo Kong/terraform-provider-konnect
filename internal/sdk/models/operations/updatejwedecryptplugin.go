@@ -15,25 +15,25 @@ type UpdateJwedecryptPluginRequest struct {
 	JweDecryptPlugin shared.JweDecryptPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateJwedecryptPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateJwedecryptPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateJwedecryptPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateJwedecryptPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateJwedecryptPluginRequest) GetJweDecryptPlugin() shared.JweDecryptPlugin {
-	if o == nil {
+func (u *UpdateJwedecryptPluginRequest) GetJweDecryptPlugin() shared.JweDecryptPlugin {
+	if u == nil {
 		return shared.JweDecryptPlugin{}
 	}
-	return o.JweDecryptPlugin
+	return u.JweDecryptPlugin
 }
 
 type UpdateJwedecryptPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateJwedecryptPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateJwedecryptPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateJwedecryptPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateJwedecryptPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateJwedecryptPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateJwedecryptPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateJwedecryptPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateJwedecryptPluginResponse) GetJweDecryptPlugin() *shared.JweDecryptPlugin {
-	if o == nil {
+func (u *UpdateJwedecryptPluginResponse) GetJweDecryptPlugin() *shared.JweDecryptPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.JweDecryptPlugin
+	return u.JweDecryptPlugin
 }
 
-func (o *UpdateJwedecryptPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateJwedecryptPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

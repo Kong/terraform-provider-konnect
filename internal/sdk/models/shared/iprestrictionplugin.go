@@ -12,22 +12,22 @@ type IPRestrictionPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *IPRestrictionPluginAfter) GetAccess() []string {
-	if o == nil {
+func (i *IPRestrictionPluginAfter) GetAccess() []string {
+	if i == nil {
 		return nil
 	}
-	return o.Access
+	return i.Access
 }
 
 type IPRestrictionPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *IPRestrictionPluginBefore) GetAccess() []string {
-	if o == nil {
+func (i *IPRestrictionPluginBefore) GetAccess() []string {
+	if i == nil {
 		return nil
 	}
-	return o.Access
+	return i.Access
 }
 
 type IPRestrictionPluginOrdering struct {
@@ -35,18 +35,18 @@ type IPRestrictionPluginOrdering struct {
 	Before *IPRestrictionPluginBefore `json:"before,omitempty"`
 }
 
-func (o *IPRestrictionPluginOrdering) GetAfter() *IPRestrictionPluginAfter {
-	if o == nil {
+func (i *IPRestrictionPluginOrdering) GetAfter() *IPRestrictionPluginAfter {
+	if i == nil {
 		return nil
 	}
-	return o.After
+	return i.After
 }
 
-func (o *IPRestrictionPluginOrdering) GetBefore() *IPRestrictionPluginBefore {
-	if o == nil {
+func (i *IPRestrictionPluginOrdering) GetBefore() *IPRestrictionPluginBefore {
+	if i == nil {
 		return nil
 	}
-	return o.Before
+	return i.Before
 }
 
 type IPRestrictionPluginPartials struct {
@@ -57,25 +57,25 @@ type IPRestrictionPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *IPRestrictionPluginPartials) GetID() *string {
-	if o == nil {
+func (i *IPRestrictionPluginPartials) GetID() *string {
+	if i == nil {
 		return nil
 	}
-	return o.ID
+	return i.ID
 }
 
-func (o *IPRestrictionPluginPartials) GetName() *string {
-	if o == nil {
+func (i *IPRestrictionPluginPartials) GetName() *string {
+	if i == nil {
 		return nil
 	}
-	return o.Name
+	return i.Name
 }
 
-func (o *IPRestrictionPluginPartials) GetPath() *string {
-	if o == nil {
+func (i *IPRestrictionPluginPartials) GetPath() *string {
+	if i == nil {
 		return nil
 	}
-	return o.Path
+	return i.Path
 }
 
 type IPRestrictionPluginConfig struct {
@@ -94,38 +94,38 @@ func (i IPRestrictionPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (i *IPRestrictionPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"allow", "deny"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *IPRestrictionPluginConfig) GetAllow() []string {
-	if o == nil {
+func (i *IPRestrictionPluginConfig) GetAllow() []string {
+	if i == nil {
 		return nil
 	}
-	return o.Allow
+	return i.Allow
 }
 
-func (o *IPRestrictionPluginConfig) GetDeny() []string {
-	if o == nil {
+func (i *IPRestrictionPluginConfig) GetDeny() []string {
+	if i == nil {
 		return nil
 	}
-	return o.Deny
+	return i.Deny
 }
 
-func (o *IPRestrictionPluginConfig) GetMessage() *string {
-	if o == nil {
+func (i *IPRestrictionPluginConfig) GetMessage() *string {
+	if i == nil {
 		return nil
 	}
-	return o.Message
+	return i.Message
 }
 
-func (o *IPRestrictionPluginConfig) GetStatus() *float64 {
-	if o == nil {
+func (i *IPRestrictionPluginConfig) GetStatus() *float64 {
+	if i == nil {
 		return nil
 	}
-	return o.Status
+	return i.Status
 }
 
 // IPRestrictionPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -133,11 +133,11 @@ type IPRestrictionPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *IPRestrictionPluginConsumer) GetID() *string {
-	if o == nil {
+func (i *IPRestrictionPluginConsumer) GetID() *string {
+	if i == nil {
 		return nil
 	}
-	return o.ID
+	return i.ID
 }
 
 // IPRestrictionPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -145,11 +145,11 @@ type IPRestrictionPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *IPRestrictionPluginConsumerGroup) GetID() *string {
-	if o == nil {
+func (i *IPRestrictionPluginConsumerGroup) GetID() *string {
+	if i == nil {
 		return nil
 	}
-	return o.ID
+	return i.ID
 }
 
 // IPRestrictionPluginProtocols - A string representing a protocol, such as HTTP or HTTPS.
@@ -208,11 +208,11 @@ type IPRestrictionPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *IPRestrictionPluginRoute) GetID() *string {
-	if o == nil {
+func (i *IPRestrictionPluginRoute) GetID() *string {
+	if i == nil {
 		return nil
 	}
-	return o.ID
+	return i.ID
 }
 
 // IPRestrictionPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -220,11 +220,11 @@ type IPRestrictionPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *IPRestrictionPluginService) GetID() *string {
-	if o == nil {
+func (i *IPRestrictionPluginService) GetID() *string {
+	if i == nil {
 		return nil
 	}
-	return o.ID
+	return i.ID
 }
 
 // IPRestrictionPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -263,110 +263,110 @@ func (i IPRestrictionPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (i *IPRestrictionPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"name", "ordering", "partials", "tags", "config", "consumer", "consumer_group", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *IPRestrictionPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (i *IPRestrictionPlugin) GetCreatedAt() *int64 {
+	if i == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return i.CreatedAt
 }
 
-func (o *IPRestrictionPlugin) GetEnabled() *bool {
-	if o == nil {
+func (i *IPRestrictionPlugin) GetEnabled() *bool {
+	if i == nil {
 		return nil
 	}
-	return o.Enabled
+	return i.Enabled
 }
 
-func (o *IPRestrictionPlugin) GetID() *string {
-	if o == nil {
+func (i *IPRestrictionPlugin) GetID() *string {
+	if i == nil {
 		return nil
 	}
-	return o.ID
+	return i.ID
 }
 
-func (o *IPRestrictionPlugin) GetInstanceName() *string {
-	if o == nil {
+func (i *IPRestrictionPlugin) GetInstanceName() *string {
+	if i == nil {
 		return nil
 	}
-	return o.InstanceName
+	return i.InstanceName
 }
 
-func (o *IPRestrictionPlugin) GetName() string {
+func (i *IPRestrictionPlugin) GetName() string {
 	return "ip-restriction"
 }
 
-func (o *IPRestrictionPlugin) GetOrdering() *IPRestrictionPluginOrdering {
-	if o == nil {
+func (i *IPRestrictionPlugin) GetOrdering() *IPRestrictionPluginOrdering {
+	if i == nil {
 		return nil
 	}
-	return o.Ordering
+	return i.Ordering
 }
 
-func (o *IPRestrictionPlugin) GetPartials() []IPRestrictionPluginPartials {
-	if o == nil {
+func (i *IPRestrictionPlugin) GetPartials() []IPRestrictionPluginPartials {
+	if i == nil {
 		return nil
 	}
-	return o.Partials
+	return i.Partials
 }
 
-func (o *IPRestrictionPlugin) GetTags() []string {
-	if o == nil {
+func (i *IPRestrictionPlugin) GetTags() []string {
+	if i == nil {
 		return nil
 	}
-	return o.Tags
+	return i.Tags
 }
 
-func (o *IPRestrictionPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (i *IPRestrictionPlugin) GetUpdatedAt() *int64 {
+	if i == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return i.UpdatedAt
 }
 
-func (o *IPRestrictionPlugin) GetConfig() *IPRestrictionPluginConfig {
-	if o == nil {
+func (i *IPRestrictionPlugin) GetConfig() *IPRestrictionPluginConfig {
+	if i == nil {
 		return nil
 	}
-	return o.Config
+	return i.Config
 }
 
-func (o *IPRestrictionPlugin) GetConsumer() *IPRestrictionPluginConsumer {
-	if o == nil {
+func (i *IPRestrictionPlugin) GetConsumer() *IPRestrictionPluginConsumer {
+	if i == nil {
 		return nil
 	}
-	return o.Consumer
+	return i.Consumer
 }
 
-func (o *IPRestrictionPlugin) GetConsumerGroup() *IPRestrictionPluginConsumerGroup {
-	if o == nil {
+func (i *IPRestrictionPlugin) GetConsumerGroup() *IPRestrictionPluginConsumerGroup {
+	if i == nil {
 		return nil
 	}
-	return o.ConsumerGroup
+	return i.ConsumerGroup
 }
 
-func (o *IPRestrictionPlugin) GetProtocols() []IPRestrictionPluginProtocols {
-	if o == nil {
+func (i *IPRestrictionPlugin) GetProtocols() []IPRestrictionPluginProtocols {
+	if i == nil {
 		return nil
 	}
-	return o.Protocols
+	return i.Protocols
 }
 
-func (o *IPRestrictionPlugin) GetRoute() *IPRestrictionPluginRoute {
-	if o == nil {
+func (i *IPRestrictionPlugin) GetRoute() *IPRestrictionPluginRoute {
+	if i == nil {
 		return nil
 	}
-	return o.Route
+	return i.Route
 }
 
-func (o *IPRestrictionPlugin) GetService() *IPRestrictionPluginService {
-	if o == nil {
+func (i *IPRestrictionPlugin) GetService() *IPRestrictionPluginService {
+	if i == nil {
 		return nil
 	}
-	return o.Service
+	return i.Service
 }

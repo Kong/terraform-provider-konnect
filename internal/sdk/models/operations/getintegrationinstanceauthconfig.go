@@ -12,11 +12,11 @@ type GetIntegrationInstanceAuthConfigRequest struct {
 	IntegrationInstanceID string `pathParam:"style=simple,explode=false,name=integrationInstanceId"`
 }
 
-func (o *GetIntegrationInstanceAuthConfigRequest) GetIntegrationInstanceID() string {
-	if o == nil {
+func (g *GetIntegrationInstanceAuthConfigRequest) GetIntegrationInstanceID() string {
+	if g == nil {
 		return ""
 	}
-	return o.IntegrationInstanceID
+	return g.IntegrationInstanceID
 }
 
 type GetIntegrationInstanceAuthConfigResponse struct {
@@ -36,51 +36,51 @@ type GetIntegrationInstanceAuthConfigResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetIntegrationInstanceAuthConfigResponse) GetContentType() string {
-	if o == nil {
+func (g *GetIntegrationInstanceAuthConfigResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetIntegrationInstanceAuthConfigResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetIntegrationInstanceAuthConfigResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetIntegrationInstanceAuthConfigResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetIntegrationInstanceAuthConfigResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetIntegrationInstanceAuthConfigResponse) GetIntegrationInstanceAuthConfig() *shared.IntegrationInstanceAuthConfig {
-	if o == nil {
+func (g *GetIntegrationInstanceAuthConfigResponse) GetIntegrationInstanceAuthConfig() *shared.IntegrationInstanceAuthConfig {
+	if g == nil {
 		return nil
 	}
-	return o.IntegrationInstanceAuthConfig
+	return g.IntegrationInstanceAuthConfig
 }
 
-func (o *GetIntegrationInstanceAuthConfigResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetIntegrationInstanceAuthConfigResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetIntegrationInstanceAuthConfigResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (g *GetIntegrationInstanceAuthConfigResponse) GetForbiddenError() *shared.ForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return g.ForbiddenError
 }
 
-func (o *GetIntegrationInstanceAuthConfigResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetIntegrationInstanceAuthConfigResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

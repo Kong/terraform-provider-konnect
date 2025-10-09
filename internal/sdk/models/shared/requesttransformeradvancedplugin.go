@@ -12,22 +12,22 @@ type RequestTransformerAdvancedPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *RequestTransformerAdvancedPluginAfter) GetAccess() []string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginAfter) GetAccess() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Access
+	return r.Access
 }
 
 type RequestTransformerAdvancedPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *RequestTransformerAdvancedPluginBefore) GetAccess() []string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginBefore) GetAccess() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Access
+	return r.Access
 }
 
 type RequestTransformerAdvancedPluginOrdering struct {
@@ -35,18 +35,18 @@ type RequestTransformerAdvancedPluginOrdering struct {
 	Before *RequestTransformerAdvancedPluginBefore `json:"before,omitempty"`
 }
 
-func (o *RequestTransformerAdvancedPluginOrdering) GetAfter() *RequestTransformerAdvancedPluginAfter {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginOrdering) GetAfter() *RequestTransformerAdvancedPluginAfter {
+	if r == nil {
 		return nil
 	}
-	return o.After
+	return r.After
 }
 
-func (o *RequestTransformerAdvancedPluginOrdering) GetBefore() *RequestTransformerAdvancedPluginBefore {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginOrdering) GetBefore() *RequestTransformerAdvancedPluginBefore {
+	if r == nil {
 		return nil
 	}
-	return o.Before
+	return r.Before
 }
 
 type RequestTransformerAdvancedPluginPartials struct {
@@ -57,25 +57,25 @@ type RequestTransformerAdvancedPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *RequestTransformerAdvancedPluginPartials) GetID() *string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginPartials) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
-func (o *RequestTransformerAdvancedPluginPartials) GetName() *string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginPartials) GetName() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Name
+	return r.Name
 }
 
-func (o *RequestTransformerAdvancedPluginPartials) GetPath() *string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginPartials) GetPath() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Path
+	return r.Path
 }
 
 type JSONTypes string
@@ -114,43 +114,43 @@ type RequestTransformerAdvancedPluginAdd struct {
 	Querystring []string    `json:"querystring,omitempty"`
 }
 
-func (o *RequestTransformerAdvancedPluginAdd) GetBody() []string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginAdd) GetBody() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Body
+	return r.Body
 }
 
-func (o *RequestTransformerAdvancedPluginAdd) GetHeaders() []string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginAdd) GetHeaders() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Headers
+	return r.Headers
 }
 
-func (o *RequestTransformerAdvancedPluginAdd) GetJSONTypes() []JSONTypes {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginAdd) GetJSONTypes() []JSONTypes {
+	if r == nil {
 		return nil
 	}
-	return o.JSONTypes
+	return r.JSONTypes
 }
 
-func (o *RequestTransformerAdvancedPluginAdd) GetQuerystring() []string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginAdd) GetQuerystring() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Querystring
+	return r.Querystring
 }
 
 type Allow struct {
 	Body []string `json:"body"`
 }
 
-func (o *Allow) GetBody() []string {
-	if o == nil {
+func (a *Allow) GetBody() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Body
+	return a.Body
 }
 
 type RequestTransformerAdvancedPluginJSONTypes string
@@ -189,32 +189,32 @@ type RequestTransformerAdvancedPluginAppend struct {
 	Querystring []string                                    `json:"querystring,omitempty"`
 }
 
-func (o *RequestTransformerAdvancedPluginAppend) GetBody() []string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginAppend) GetBody() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Body
+	return r.Body
 }
 
-func (o *RequestTransformerAdvancedPluginAppend) GetHeaders() []string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginAppend) GetHeaders() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Headers
+	return r.Headers
 }
 
-func (o *RequestTransformerAdvancedPluginAppend) GetJSONTypes() []RequestTransformerAdvancedPluginJSONTypes {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginAppend) GetJSONTypes() []RequestTransformerAdvancedPluginJSONTypes {
+	if r == nil {
 		return nil
 	}
-	return o.JSONTypes
+	return r.JSONTypes
 }
 
-func (o *RequestTransformerAdvancedPluginAppend) GetQuerystring() []string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginAppend) GetQuerystring() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Querystring
+	return r.Querystring
 }
 
 type RequestTransformerAdvancedPluginRemove struct {
@@ -223,25 +223,25 @@ type RequestTransformerAdvancedPluginRemove struct {
 	Querystring []string `json:"querystring,omitempty"`
 }
 
-func (o *RequestTransformerAdvancedPluginRemove) GetBody() []string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginRemove) GetBody() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Body
+	return r.Body
 }
 
-func (o *RequestTransformerAdvancedPluginRemove) GetHeaders() []string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginRemove) GetHeaders() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Headers
+	return r.Headers
 }
 
-func (o *RequestTransformerAdvancedPluginRemove) GetQuerystring() []string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginRemove) GetQuerystring() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Querystring
+	return r.Querystring
 }
 
 type RequestTransformerAdvancedPluginRename struct {
@@ -250,25 +250,25 @@ type RequestTransformerAdvancedPluginRename struct {
 	Querystring []string `json:"querystring,omitempty"`
 }
 
-func (o *RequestTransformerAdvancedPluginRename) GetBody() []string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginRename) GetBody() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Body
+	return r.Body
 }
 
-func (o *RequestTransformerAdvancedPluginRename) GetHeaders() []string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginRename) GetHeaders() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Headers
+	return r.Headers
 }
 
-func (o *RequestTransformerAdvancedPluginRename) GetQuerystring() []string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginRename) GetQuerystring() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Querystring
+	return r.Querystring
 }
 
 type RequestTransformerAdvancedPluginConfigJSONTypes string
@@ -313,45 +313,45 @@ func (r RequestTransformerAdvancedPluginReplace) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestTransformerAdvancedPluginReplace) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RequestTransformerAdvancedPluginReplace) GetBody() []string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginReplace) GetBody() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Body
+	return r.Body
 }
 
-func (o *RequestTransformerAdvancedPluginReplace) GetHeaders() []string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginReplace) GetHeaders() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Headers
+	return r.Headers
 }
 
-func (o *RequestTransformerAdvancedPluginReplace) GetJSONTypes() []RequestTransformerAdvancedPluginConfigJSONTypes {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginReplace) GetJSONTypes() []RequestTransformerAdvancedPluginConfigJSONTypes {
+	if r == nil {
 		return nil
 	}
-	return o.JSONTypes
+	return r.JSONTypes
 }
 
-func (o *RequestTransformerAdvancedPluginReplace) GetQuerystring() []string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginReplace) GetQuerystring() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Querystring
+	return r.Querystring
 }
 
-func (o *RequestTransformerAdvancedPluginReplace) GetURI() *string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginReplace) GetURI() *string {
+	if r == nil {
 		return nil
 	}
-	return o.URI
+	return r.URI
 }
 
 type RequestTransformerAdvancedPluginConfig struct {
@@ -372,66 +372,66 @@ func (r RequestTransformerAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestTransformerAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RequestTransformerAdvancedPluginConfig) GetAdd() *RequestTransformerAdvancedPluginAdd {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginConfig) GetAdd() *RequestTransformerAdvancedPluginAdd {
+	if r == nil {
 		return nil
 	}
-	return o.Add
+	return r.Add
 }
 
-func (o *RequestTransformerAdvancedPluginConfig) GetAllow() *Allow {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginConfig) GetAllow() *Allow {
+	if r == nil {
 		return nil
 	}
-	return o.Allow
+	return r.Allow
 }
 
-func (o *RequestTransformerAdvancedPluginConfig) GetAppend() *RequestTransformerAdvancedPluginAppend {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginConfig) GetAppend() *RequestTransformerAdvancedPluginAppend {
+	if r == nil {
 		return nil
 	}
-	return o.Append
+	return r.Append
 }
 
-func (o *RequestTransformerAdvancedPluginConfig) GetDotsInKeys() *bool {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginConfig) GetDotsInKeys() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.DotsInKeys
+	return r.DotsInKeys
 }
 
-func (o *RequestTransformerAdvancedPluginConfig) GetHTTPMethod() *string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginConfig) GetHTTPMethod() *string {
+	if r == nil {
 		return nil
 	}
-	return o.HTTPMethod
+	return r.HTTPMethod
 }
 
-func (o *RequestTransformerAdvancedPluginConfig) GetRemove() *RequestTransformerAdvancedPluginRemove {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginConfig) GetRemove() *RequestTransformerAdvancedPluginRemove {
+	if r == nil {
 		return nil
 	}
-	return o.Remove
+	return r.Remove
 }
 
-func (o *RequestTransformerAdvancedPluginConfig) GetRename() *RequestTransformerAdvancedPluginRename {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginConfig) GetRename() *RequestTransformerAdvancedPluginRename {
+	if r == nil {
 		return nil
 	}
-	return o.Rename
+	return r.Rename
 }
 
-func (o *RequestTransformerAdvancedPluginConfig) GetReplace() *RequestTransformerAdvancedPluginReplace {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginConfig) GetReplace() *RequestTransformerAdvancedPluginReplace {
+	if r == nil {
 		return nil
 	}
-	return o.Replace
+	return r.Replace
 }
 
 // RequestTransformerAdvancedPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -439,11 +439,11 @@ type RequestTransformerAdvancedPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *RequestTransformerAdvancedPluginConsumer) GetID() *string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginConsumer) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
 // RequestTransformerAdvancedPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -451,11 +451,11 @@ type RequestTransformerAdvancedPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *RequestTransformerAdvancedPluginConsumerGroup) GetID() *string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginConsumerGroup) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
 type RequestTransformerAdvancedPluginProtocols string
@@ -495,11 +495,11 @@ type RequestTransformerAdvancedPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *RequestTransformerAdvancedPluginRoute) GetID() *string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginRoute) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
 // RequestTransformerAdvancedPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -507,11 +507,11 @@ type RequestTransformerAdvancedPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *RequestTransformerAdvancedPluginService) GetID() *string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPluginService) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
 // RequestTransformerAdvancedPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -550,110 +550,110 @@ func (r RequestTransformerAdvancedPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestTransformerAdvancedPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"name", "ordering", "partials", "tags", "config", "consumer", "consumer_group", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RequestTransformerAdvancedPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (r *RequestTransformerAdvancedPlugin) GetCreatedAt() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return r.CreatedAt
 }
 
-func (o *RequestTransformerAdvancedPlugin) GetEnabled() *bool {
-	if o == nil {
+func (r *RequestTransformerAdvancedPlugin) GetEnabled() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Enabled
+	return r.Enabled
 }
 
-func (o *RequestTransformerAdvancedPlugin) GetID() *string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPlugin) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
-func (o *RequestTransformerAdvancedPlugin) GetInstanceName() *string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPlugin) GetInstanceName() *string {
+	if r == nil {
 		return nil
 	}
-	return o.InstanceName
+	return r.InstanceName
 }
 
-func (o *RequestTransformerAdvancedPlugin) GetName() string {
+func (r *RequestTransformerAdvancedPlugin) GetName() string {
 	return "request-transformer-advanced"
 }
 
-func (o *RequestTransformerAdvancedPlugin) GetOrdering() *RequestTransformerAdvancedPluginOrdering {
-	if o == nil {
+func (r *RequestTransformerAdvancedPlugin) GetOrdering() *RequestTransformerAdvancedPluginOrdering {
+	if r == nil {
 		return nil
 	}
-	return o.Ordering
+	return r.Ordering
 }
 
-func (o *RequestTransformerAdvancedPlugin) GetPartials() []RequestTransformerAdvancedPluginPartials {
-	if o == nil {
+func (r *RequestTransformerAdvancedPlugin) GetPartials() []RequestTransformerAdvancedPluginPartials {
+	if r == nil {
 		return nil
 	}
-	return o.Partials
+	return r.Partials
 }
 
-func (o *RequestTransformerAdvancedPlugin) GetTags() []string {
-	if o == nil {
+func (r *RequestTransformerAdvancedPlugin) GetTags() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Tags
+	return r.Tags
 }
 
-func (o *RequestTransformerAdvancedPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (r *RequestTransformerAdvancedPlugin) GetUpdatedAt() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return r.UpdatedAt
 }
 
-func (o *RequestTransformerAdvancedPlugin) GetConfig() *RequestTransformerAdvancedPluginConfig {
-	if o == nil {
+func (r *RequestTransformerAdvancedPlugin) GetConfig() *RequestTransformerAdvancedPluginConfig {
+	if r == nil {
 		return nil
 	}
-	return o.Config
+	return r.Config
 }
 
-func (o *RequestTransformerAdvancedPlugin) GetConsumer() *RequestTransformerAdvancedPluginConsumer {
-	if o == nil {
+func (r *RequestTransformerAdvancedPlugin) GetConsumer() *RequestTransformerAdvancedPluginConsumer {
+	if r == nil {
 		return nil
 	}
-	return o.Consumer
+	return r.Consumer
 }
 
-func (o *RequestTransformerAdvancedPlugin) GetConsumerGroup() *RequestTransformerAdvancedPluginConsumerGroup {
-	if o == nil {
+func (r *RequestTransformerAdvancedPlugin) GetConsumerGroup() *RequestTransformerAdvancedPluginConsumerGroup {
+	if r == nil {
 		return nil
 	}
-	return o.ConsumerGroup
+	return r.ConsumerGroup
 }
 
-func (o *RequestTransformerAdvancedPlugin) GetProtocols() []RequestTransformerAdvancedPluginProtocols {
-	if o == nil {
+func (r *RequestTransformerAdvancedPlugin) GetProtocols() []RequestTransformerAdvancedPluginProtocols {
+	if r == nil {
 		return nil
 	}
-	return o.Protocols
+	return r.Protocols
 }
 
-func (o *RequestTransformerAdvancedPlugin) GetRoute() *RequestTransformerAdvancedPluginRoute {
-	if o == nil {
+func (r *RequestTransformerAdvancedPlugin) GetRoute() *RequestTransformerAdvancedPluginRoute {
+	if r == nil {
 		return nil
 	}
-	return o.Route
+	return r.Route
 }
 
-func (o *RequestTransformerAdvancedPlugin) GetService() *RequestTransformerAdvancedPluginService {
-	if o == nil {
+func (r *RequestTransformerAdvancedPlugin) GetService() *RequestTransformerAdvancedPluginService {
+	if r == nil {
 		return nil
 	}
-	return o.Service
+	return r.Service
 }

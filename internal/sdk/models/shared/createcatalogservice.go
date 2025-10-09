@@ -29,43 +29,43 @@ func (c CreateCatalogService) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateCatalogService) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "display_name"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CreateCatalogService) GetName() string {
-	if o == nil {
+func (c *CreateCatalogService) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *CreateCatalogService) GetDisplayName() string {
-	if o == nil {
+func (c *CreateCatalogService) GetDisplayName() string {
+	if c == nil {
 		return ""
 	}
-	return o.DisplayName
+	return c.DisplayName
 }
 
-func (o *CreateCatalogService) GetDescription() *string {
-	if o == nil {
+func (c *CreateCatalogService) GetDescription() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Description
+	return c.Description
 }
 
-func (o *CreateCatalogService) GetLabels() map[string]*string {
-	if o == nil {
+func (c *CreateCatalogService) GetLabels() map[string]*string {
+	if c == nil {
 		return nil
 	}
-	return o.Labels
+	return c.Labels
 }
 
-func (o *CreateCatalogService) GetCustomFields() any {
-	if o == nil {
+func (c *CreateCatalogService) GetCustomFields() any {
+	if c == nil {
 		return nil
 	}
-	return o.CustomFields
+	return c.CustomFields
 }

@@ -55,134 +55,134 @@ func (v V2GetPortalResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V2GetPortalResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"id", "created_at", "updated_at", "name", "display_name", "default_domain", "is_public", "rbac_enabled", "auto_approve_applications", "auto_approve_developers", "application_count", "developer_count", "published_product_count"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *V2GetPortalResponse) GetID() string {
-	if o == nil {
+func (v *V2GetPortalResponse) GetID() string {
+	if v == nil {
 		return ""
 	}
-	return o.ID
+	return v.ID
 }
 
-func (o *V2GetPortalResponse) GetCreatedAt() time.Time {
-	if o == nil {
+func (v *V2GetPortalResponse) GetCreatedAt() time.Time {
+	if v == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return v.CreatedAt
 }
 
-func (o *V2GetPortalResponse) GetUpdatedAt() time.Time {
-	if o == nil {
+func (v *V2GetPortalResponse) GetUpdatedAt() time.Time {
+	if v == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return v.UpdatedAt
 }
 
-func (o *V2GetPortalResponse) GetName() string {
-	if o == nil {
+func (v *V2GetPortalResponse) GetName() string {
+	if v == nil {
 		return ""
 	}
-	return o.Name
+	return v.Name
 }
 
-func (o *V2GetPortalResponse) GetDisplayName() string {
-	if o == nil {
+func (v *V2GetPortalResponse) GetDisplayName() string {
+	if v == nil {
 		return ""
 	}
-	return o.DisplayName
+	return v.DisplayName
 }
 
-func (o *V2GetPortalResponse) GetDescription() *string {
-	if o == nil {
+func (v *V2GetPortalResponse) GetDescription() *string {
+	if v == nil {
 		return nil
 	}
-	return o.Description
+	return v.Description
 }
 
-func (o *V2GetPortalResponse) GetDefaultDomain() string {
-	if o == nil {
+func (v *V2GetPortalResponse) GetDefaultDomain() string {
+	if v == nil {
 		return ""
 	}
-	return o.DefaultDomain
+	return v.DefaultDomain
 }
 
-func (o *V2GetPortalResponse) GetIsPublic() bool {
-	if o == nil {
+func (v *V2GetPortalResponse) GetIsPublic() bool {
+	if v == nil {
 		return false
 	}
-	return o.IsPublic
+	return v.IsPublic
 }
 
-func (o *V2GetPortalResponse) GetRbacEnabled() bool {
-	if o == nil {
+func (v *V2GetPortalResponse) GetRbacEnabled() bool {
+	if v == nil {
 		return false
 	}
-	return o.RbacEnabled
+	return v.RbacEnabled
 }
 
-func (o *V2GetPortalResponse) GetAutoApproveApplications() bool {
-	if o == nil {
+func (v *V2GetPortalResponse) GetAutoApproveApplications() bool {
+	if v == nil {
 		return false
 	}
-	return o.AutoApproveApplications
+	return v.AutoApproveApplications
 }
 
-func (o *V2GetPortalResponse) GetAutoApproveDevelopers() bool {
-	if o == nil {
+func (v *V2GetPortalResponse) GetAutoApproveDevelopers() bool {
+	if v == nil {
 		return false
 	}
-	return o.AutoApproveDevelopers
+	return v.AutoApproveDevelopers
 }
 
-func (o *V2GetPortalResponse) GetCustomDomain() *string {
-	if o == nil {
+func (v *V2GetPortalResponse) GetCustomDomain() *string {
+	if v == nil {
 		return nil
 	}
-	return o.CustomDomain
+	return v.CustomDomain
 }
 
-func (o *V2GetPortalResponse) GetCustomClientDomain() *string {
-	if o == nil {
+func (v *V2GetPortalResponse) GetCustomClientDomain() *string {
+	if v == nil {
 		return nil
 	}
-	return o.CustomClientDomain
+	return v.CustomClientDomain
 }
 
-func (o *V2GetPortalResponse) GetDefaultApplicationAuthStrategyID() *string {
-	if o == nil {
+func (v *V2GetPortalResponse) GetDefaultApplicationAuthStrategyID() *string {
+	if v == nil {
 		return nil
 	}
-	return o.DefaultApplicationAuthStrategyID
+	return v.DefaultApplicationAuthStrategyID
 }
 
-func (o *V2GetPortalResponse) GetLabels() map[string]*string {
-	if o == nil {
+func (v *V2GetPortalResponse) GetLabels() map[string]*string {
+	if v == nil {
 		return nil
 	}
-	return o.Labels
+	return v.Labels
 }
 
-func (o *V2GetPortalResponse) GetApplicationCount() float64 {
-	if o == nil {
+func (v *V2GetPortalResponse) GetApplicationCount() float64 {
+	if v == nil {
 		return 0.0
 	}
-	return o.ApplicationCount
+	return v.ApplicationCount
 }
 
-func (o *V2GetPortalResponse) GetDeveloperCount() float64 {
-	if o == nil {
+func (v *V2GetPortalResponse) GetDeveloperCount() float64 {
+	if v == nil {
 		return 0.0
 	}
-	return o.DeveloperCount
+	return v.DeveloperCount
 }
 
-func (o *V2GetPortalResponse) GetPublishedProductCount() float64 {
-	if o == nil {
+func (v *V2GetPortalResponse) GetPublishedProductCount() float64 {
+	if v == nil {
 		return 0.0
 	}
-	return o.PublishedProductCount
+	return v.PublishedProductCount
 }

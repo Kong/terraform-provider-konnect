@@ -14,18 +14,18 @@ type CreatePortalTeamRequest struct {
 	PortalCreateTeamRequest *shared.PortalCreateTeamRequest `request:"mediaType=application/json"`
 }
 
-func (o *CreatePortalTeamRequest) GetPortalID() string {
-	if o == nil {
+func (c *CreatePortalTeamRequest) GetPortalID() string {
+	if c == nil {
 		return ""
 	}
-	return o.PortalID
+	return c.PortalID
 }
 
-func (o *CreatePortalTeamRequest) GetPortalCreateTeamRequest() *shared.PortalCreateTeamRequest {
-	if o == nil {
+func (c *CreatePortalTeamRequest) GetPortalCreateTeamRequest() *shared.PortalCreateTeamRequest {
+	if c == nil {
 		return nil
 	}
-	return o.PortalCreateTeamRequest
+	return c.PortalCreateTeamRequest
 }
 
 type CreatePortalTeamResponse struct {
@@ -47,58 +47,58 @@ type CreatePortalTeamResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *CreatePortalTeamResponse) GetContentType() string {
-	if o == nil {
+func (c *CreatePortalTeamResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreatePortalTeamResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreatePortalTeamResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreatePortalTeamResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreatePortalTeamResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreatePortalTeamResponse) GetPortalTeamResponse() *shared.PortalTeamResponse {
-	if o == nil {
+func (c *CreatePortalTeamResponse) GetPortalTeamResponse() *shared.PortalTeamResponse {
+	if c == nil {
 		return nil
 	}
-	return o.PortalTeamResponse
+	return c.PortalTeamResponse
 }
 
-func (o *CreatePortalTeamResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreatePortalTeamResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreatePortalTeamResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (c *CreatePortalTeamResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return c.UnauthorizedError
 }
 
-func (o *CreatePortalTeamResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreatePortalTeamResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }
 
-func (o *CreatePortalTeamResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (c *CreatePortalTeamResponse) GetNotFoundError() *shared.NotFoundError {
+	if c == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return c.NotFoundError
 }

@@ -231,6 +231,20 @@ Read-Only:
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_cloud_gateway_private_dns.my_konnect_cloud_gateway_private_dns
+  id = jsonencode({
+    id = "1850820b-c69f-4a2a-b9be-bbcdbc5cd618"
+    network_id = "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 terraform import konnect_cloud_gateway_private_dns.my_konnect_cloud_gateway_private_dns '{"id": "1850820b-c69f-4a2a-b9be-bbcdbc5cd618", "network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695"}'
 ```

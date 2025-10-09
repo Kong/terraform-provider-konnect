@@ -13,18 +13,18 @@ type CreateProxycacheadvancedPluginRequest struct {
 	ProxyCacheAdvancedPlugin shared.ProxyCacheAdvancedPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateProxycacheadvancedPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateProxycacheadvancedPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateProxycacheadvancedPluginRequest) GetProxyCacheAdvancedPlugin() shared.ProxyCacheAdvancedPlugin {
-	if o == nil {
+func (c *CreateProxycacheadvancedPluginRequest) GetProxyCacheAdvancedPlugin() shared.ProxyCacheAdvancedPlugin {
+	if c == nil {
 		return shared.ProxyCacheAdvancedPlugin{}
 	}
-	return o.ProxyCacheAdvancedPlugin
+	return c.ProxyCacheAdvancedPlugin
 }
 
 type CreateProxycacheadvancedPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateProxycacheadvancedPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateProxycacheadvancedPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateProxycacheadvancedPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateProxycacheadvancedPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateProxycacheadvancedPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateProxycacheadvancedPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateProxycacheadvancedPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateProxycacheadvancedPluginResponse) GetProxyCacheAdvancedPlugin() *shared.ProxyCacheAdvancedPlugin {
-	if o == nil {
+func (c *CreateProxycacheadvancedPluginResponse) GetProxyCacheAdvancedPlugin() *shared.ProxyCacheAdvancedPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.ProxyCacheAdvancedPlugin
+	return c.ProxyCacheAdvancedPlugin
 }
 
-func (o *CreateProxycacheadvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateProxycacheadvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

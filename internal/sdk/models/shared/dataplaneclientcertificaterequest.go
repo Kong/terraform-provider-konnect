@@ -8,9 +8,9 @@ type DataPlaneClientCertificateRequest struct {
 	Cert string `json:"cert"`
 }
 
-func (o *DataPlaneClientCertificateRequest) GetCert() string {
-	if o == nil {
+func (d *DataPlaneClientCertificateRequest) GetCert() string {
+	if d == nil {
 		return ""
 	}
-	return o.Cert
+	return d.Cert
 }

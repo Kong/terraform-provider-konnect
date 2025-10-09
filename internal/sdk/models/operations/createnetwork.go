@@ -30,58 +30,58 @@ type CreateNetworkResponse struct {
 	ConflictError *shared.ConflictError
 }
 
-func (o *CreateNetworkResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateNetworkResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateNetworkResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateNetworkResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateNetworkResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateNetworkResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateNetworkResponse) GetNetwork() *shared.Network {
-	if o == nil {
+func (c *CreateNetworkResponse) GetNetwork() *shared.Network {
+	if c == nil {
 		return nil
 	}
-	return o.Network
+	return c.Network
 }
 
-func (o *CreateNetworkResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreateNetworkResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreateNetworkResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (c *CreateNetworkResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return c.UnauthorizedError
 }
 
-func (o *CreateNetworkResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreateNetworkResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }
 
-func (o *CreateNetworkResponse) GetConflictError() *shared.ConflictError {
-	if o == nil {
+func (c *CreateNetworkResponse) GetConflictError() *shared.ConflictError {
+	if c == nil {
 		return nil
 	}
-	return o.ConflictError
+	return c.ConflictError
 }

@@ -15,25 +15,25 @@ type UpdateRequestterminationPluginRequest struct {
 	RequestTerminationPlugin shared.RequestTerminationPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateRequestterminationPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateRequestterminationPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateRequestterminationPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateRequestterminationPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateRequestterminationPluginRequest) GetRequestTerminationPlugin() shared.RequestTerminationPlugin {
-	if o == nil {
+func (u *UpdateRequestterminationPluginRequest) GetRequestTerminationPlugin() shared.RequestTerminationPlugin {
+	if u == nil {
 		return shared.RequestTerminationPlugin{}
 	}
-	return o.RequestTerminationPlugin
+	return u.RequestTerminationPlugin
 }
 
 type UpdateRequestterminationPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateRequestterminationPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateRequestterminationPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateRequestterminationPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateRequestterminationPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateRequestterminationPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateRequestterminationPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateRequestterminationPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateRequestterminationPluginResponse) GetRequestTerminationPlugin() *shared.RequestTerminationPlugin {
-	if o == nil {
+func (u *UpdateRequestterminationPluginResponse) GetRequestTerminationPlugin() *shared.RequestTerminationPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.RequestTerminationPlugin
+	return u.RequestTerminationPlugin
 }
 
-func (o *UpdateRequestterminationPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateRequestterminationPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

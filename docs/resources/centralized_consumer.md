@@ -53,6 +53,20 @@ If `consumer_groups` are provided on the Consumer object _and_ on the Realm, the
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_centralized_consumer.my_konnect_centralized_consumer
+  id = jsonencode({
+    id = "..."
+    realm_id = "..."
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
-terraform import konnect_centralized_consumer.my_konnect_centralized_consumer '{"id": "", "realm_id": ""}'
+terraform import konnect_centralized_consumer.my_konnect_centralized_consumer '{"id": "...", "realm_id": "..."}'
 ```

@@ -14,18 +14,18 @@ type DeleteAiprompttemplatePluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteAiprompttemplatePluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteAiprompttemplatePluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteAiprompttemplatePluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteAiprompttemplatePluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteAiprompttemplatePluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteAiprompttemplatePluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteAiprompttemplatePluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteAiprompttemplatePluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteAiprompttemplatePluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteAiprompttemplatePluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteAiprompttemplatePluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteAiprompttemplatePluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteAiprompttemplatePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteAiprompttemplatePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

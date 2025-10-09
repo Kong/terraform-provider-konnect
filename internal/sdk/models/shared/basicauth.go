@@ -6,11 +6,11 @@ type BasicAuthConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *BasicAuthConsumer) GetID() *string {
-	if o == nil {
+func (b *BasicAuthConsumer) GetID() *string {
+	if b == nil {
 		return nil
 	}
-	return o.ID
+	return b.ID
 }
 
 type BasicAuth struct {
@@ -24,37 +24,37 @@ type BasicAuth struct {
 	Username string   `json:"username"`
 }
 
-func (o *BasicAuth) GetConsumer() *BasicAuthConsumer {
-	if o == nil {
+func (b *BasicAuth) GetConsumer() *BasicAuthConsumer {
+	if b == nil {
 		return nil
 	}
-	return o.Consumer
+	return b.Consumer
 }
 
-func (o *BasicAuth) GetCreatedAt() *int64 {
-	if o == nil {
+func (b *BasicAuth) GetCreatedAt() *int64 {
+	if b == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return b.CreatedAt
 }
 
-func (o *BasicAuth) GetID() *string {
-	if o == nil {
+func (b *BasicAuth) GetID() *string {
+	if b == nil {
 		return nil
 	}
-	return o.ID
+	return b.ID
 }
 
-func (o *BasicAuth) GetTags() []string {
-	if o == nil {
+func (b *BasicAuth) GetTags() []string {
+	if b == nil {
 		return nil
 	}
-	return o.Tags
+	return b.Tags
 }
 
-func (o *BasicAuth) GetUsername() string {
-	if o == nil {
+func (b *BasicAuth) GetUsername() string {
+	if b == nil {
 		return ""
 	}
-	return o.Username
+	return b.Username
 }

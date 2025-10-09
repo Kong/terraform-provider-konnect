@@ -18,30 +18,30 @@ type IPAddressesResponse struct {
 	EgressIps map[string][]string `json:"egressIPs"`
 }
 
-func (o *IPAddressesResponse) GetUpdateDate() string {
-	if o == nil {
+func (i *IPAddressesResponse) GetUpdateDate() string {
+	if i == nil {
 		return ""
 	}
-	return o.UpdateDate
+	return i.UpdateDate
 }
 
-func (o *IPAddressesResponse) GetRegions() map[string]map[string][]string {
-	if o == nil {
+func (i *IPAddressesResponse) GetRegions() map[string]map[string][]string {
+	if i == nil {
 		return map[string]map[string][]string{}
 	}
-	return o.Regions
+	return i.Regions
 }
 
-func (o *IPAddressesResponse) GetIngressIps() map[string][]string {
-	if o == nil {
+func (i *IPAddressesResponse) GetIngressIps() map[string][]string {
+	if i == nil {
 		return map[string][]string{}
 	}
-	return o.IngressIps
+	return i.IngressIps
 }
 
-func (o *IPAddressesResponse) GetEgressIps() map[string][]string {
-	if o == nil {
+func (i *IPAddressesResponse) GetEgressIps() map[string][]string {
+	if i == nil {
 		return map[string][]string{}
 	}
-	return o.EgressIps
+	return i.EgressIps
 }

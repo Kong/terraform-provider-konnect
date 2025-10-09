@@ -15,25 +15,25 @@ type DeleteConsumerKeyRequest struct {
 	KeyID string `pathParam:"style=simple,explode=false,name=keyId"`
 }
 
-func (o *DeleteConsumerKeyRequest) GetRealmID() string {
-	if o == nil {
+func (d *DeleteConsumerKeyRequest) GetRealmID() string {
+	if d == nil {
 		return ""
 	}
-	return o.RealmID
+	return d.RealmID
 }
 
-func (o *DeleteConsumerKeyRequest) GetConsumerID() string {
-	if o == nil {
+func (d *DeleteConsumerKeyRequest) GetConsumerID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ConsumerID
+	return d.ConsumerID
 }
 
-func (o *DeleteConsumerKeyRequest) GetKeyID() string {
-	if o == nil {
+func (d *DeleteConsumerKeyRequest) GetKeyID() string {
+	if d == nil {
 		return ""
 	}
-	return o.KeyID
+	return d.KeyID
 }
 
 type DeleteConsumerKeyResponse struct {
@@ -45,23 +45,23 @@ type DeleteConsumerKeyResponse struct {
 	RawResponse *http.Response
 }
 
-func (o *DeleteConsumerKeyResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteConsumerKeyResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteConsumerKeyResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteConsumerKeyResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteConsumerKeyResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteConsumerKeyResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }

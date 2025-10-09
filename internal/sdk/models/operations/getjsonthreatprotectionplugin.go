@@ -14,18 +14,18 @@ type GetJsonthreatprotectionPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetJsonthreatprotectionPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetJsonthreatprotectionPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetJsonthreatprotectionPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetJsonthreatprotectionPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetJsonthreatprotectionPluginResponse struct {
@@ -41,37 +41,37 @@ type GetJsonthreatprotectionPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetJsonthreatprotectionPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetJsonthreatprotectionPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetJsonthreatprotectionPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetJsonthreatprotectionPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetJsonthreatprotectionPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetJsonthreatprotectionPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetJsonthreatprotectionPluginResponse) GetJSONThreatProtectionPlugin() *shared.JSONThreatProtectionPlugin {
-	if o == nil {
+func (g *GetJsonthreatprotectionPluginResponse) GetJSONThreatProtectionPlugin() *shared.JSONThreatProtectionPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.JSONThreatProtectionPlugin
+	return g.JSONThreatProtectionPlugin
 }
 
-func (o *GetJsonthreatprotectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetJsonthreatprotectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

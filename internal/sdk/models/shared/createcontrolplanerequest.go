@@ -91,51 +91,51 @@ type CreateControlPlaneRequest struct {
 	Labels map[string]*string `json:"labels,omitempty"`
 }
 
-func (o *CreateControlPlaneRequest) GetName() string {
-	if o == nil {
+func (c *CreateControlPlaneRequest) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *CreateControlPlaneRequest) GetDescription() *string {
-	if o == nil {
+func (c *CreateControlPlaneRequest) GetDescription() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Description
+	return c.Description
 }
 
-func (o *CreateControlPlaneRequest) GetClusterType() *CreateControlPlaneRequestClusterType {
-	if o == nil {
+func (c *CreateControlPlaneRequest) GetClusterType() *CreateControlPlaneRequestClusterType {
+	if c == nil {
 		return nil
 	}
-	return o.ClusterType
+	return c.ClusterType
 }
 
-func (o *CreateControlPlaneRequest) GetAuthType() *AuthType {
-	if o == nil {
+func (c *CreateControlPlaneRequest) GetAuthType() *AuthType {
+	if c == nil {
 		return nil
 	}
-	return o.AuthType
+	return c.AuthType
 }
 
-func (o *CreateControlPlaneRequest) GetCloudGateway() *bool {
-	if o == nil {
+func (c *CreateControlPlaneRequest) GetCloudGateway() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.CloudGateway
+	return c.CloudGateway
 }
 
-func (o *CreateControlPlaneRequest) GetProxyUrls() []ProxyURL {
-	if o == nil {
+func (c *CreateControlPlaneRequest) GetProxyUrls() []ProxyURL {
+	if c == nil {
 		return nil
 	}
-	return o.ProxyUrls
+	return c.ProxyUrls
 }
 
-func (o *CreateControlPlaneRequest) GetLabels() map[string]*string {
-	if o == nil {
+func (c *CreateControlPlaneRequest) GetLabels() map[string]*string {
+	if c == nil {
 		return nil
 	}
-	return o.Labels
+	return c.Labels
 }

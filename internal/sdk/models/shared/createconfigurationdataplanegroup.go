@@ -14,37 +14,37 @@ type CreateConfigurationDataPlaneGroup struct {
 	Environment []ConfigurationDataPlaneGroupEnvironmentField `json:"environment,omitempty"`
 }
 
-func (o *CreateConfigurationDataPlaneGroup) GetProvider() ProviderName {
-	if o == nil {
+func (c *CreateConfigurationDataPlaneGroup) GetProvider() ProviderName {
+	if c == nil {
 		return ProviderName("")
 	}
-	return o.Provider
+	return c.Provider
 }
 
-func (o *CreateConfigurationDataPlaneGroup) GetRegion() string {
-	if o == nil {
+func (c *CreateConfigurationDataPlaneGroup) GetRegion() string {
+	if c == nil {
 		return ""
 	}
-	return o.Region
+	return c.Region
 }
 
-func (o *CreateConfigurationDataPlaneGroup) GetCloudGatewayNetworkID() string {
-	if o == nil {
+func (c *CreateConfigurationDataPlaneGroup) GetCloudGatewayNetworkID() string {
+	if c == nil {
 		return ""
 	}
-	return o.CloudGatewayNetworkID
+	return c.CloudGatewayNetworkID
 }
 
-func (o *CreateConfigurationDataPlaneGroup) GetAutoscale() ConfigurationDataPlaneGroupAutoscale {
-	if o == nil {
+func (c *CreateConfigurationDataPlaneGroup) GetAutoscale() ConfigurationDataPlaneGroupAutoscale {
+	if c == nil {
 		return ConfigurationDataPlaneGroupAutoscale{}
 	}
-	return o.Autoscale
+	return c.Autoscale
 }
 
-func (o *CreateConfigurationDataPlaneGroup) GetEnvironment() []ConfigurationDataPlaneGroupEnvironmentField {
-	if o == nil {
+func (c *CreateConfigurationDataPlaneGroup) GetEnvironment() []ConfigurationDataPlaneGroupEnvironmentField {
+	if c == nil {
 		return nil
 	}
-	return o.Environment
+	return c.Environment
 }

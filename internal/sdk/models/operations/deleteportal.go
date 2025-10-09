@@ -54,24 +54,24 @@ func (d DeletePortalRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeletePortalRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"portalId"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *DeletePortalRequest) GetPortalID() string {
-	if o == nil {
+func (d *DeletePortalRequest) GetPortalID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PortalID
+	return d.PortalID
 }
 
-func (o *DeletePortalRequest) GetForceDestroy() *DeletePortalQueryParamForce {
-	if o == nil {
+func (d *DeletePortalRequest) GetForceDestroy() *DeletePortalQueryParamForce {
+	if d == nil {
 		return nil
 	}
-	return o.ForceDestroy
+	return d.ForceDestroy
 }
 
 type DeletePortalResponse struct {
@@ -89,44 +89,44 @@ type DeletePortalResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *DeletePortalResponse) GetContentType() string {
-	if o == nil {
+func (d *DeletePortalResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeletePortalResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeletePortalResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeletePortalResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeletePortalResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeletePortalResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (d *DeletePortalResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return d.UnauthorizedError
 }
 
-func (o *DeletePortalResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (d *DeletePortalResponse) GetForbiddenError() *shared.ForbiddenError {
+	if d == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return d.ForbiddenError
 }
 
-func (o *DeletePortalResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (d *DeletePortalResponse) GetNotFoundError() *shared.NotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return d.NotFoundError
 }

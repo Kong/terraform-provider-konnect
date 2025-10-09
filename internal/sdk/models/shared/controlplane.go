@@ -88,46 +88,46 @@ type Config struct {
 	ProxyUrls []ProxyURL `json:"proxy_urls,omitempty"`
 }
 
-func (o *Config) GetControlPlaneEndpoint() string {
-	if o == nil {
+func (c *Config) GetControlPlaneEndpoint() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneEndpoint
+	return c.ControlPlaneEndpoint
 }
 
-func (o *Config) GetTelemetryEndpoint() string {
-	if o == nil {
+func (c *Config) GetTelemetryEndpoint() string {
+	if c == nil {
 		return ""
 	}
-	return o.TelemetryEndpoint
+	return c.TelemetryEndpoint
 }
 
-func (o *Config) GetClusterType() ControlPlaneClusterType {
-	if o == nil {
+func (c *Config) GetClusterType() ControlPlaneClusterType {
+	if c == nil {
 		return ControlPlaneClusterType("")
 	}
-	return o.ClusterType
+	return c.ClusterType
 }
 
-func (o *Config) GetAuthType() ControlPlaneAuthType {
-	if o == nil {
+func (c *Config) GetAuthType() ControlPlaneAuthType {
+	if c == nil {
 		return ControlPlaneAuthType("")
 	}
-	return o.AuthType
+	return c.AuthType
 }
 
-func (o *Config) GetCloudGateway() bool {
-	if o == nil {
+func (c *Config) GetCloudGateway() bool {
+	if c == nil {
 		return false
 	}
-	return o.CloudGateway
+	return c.CloudGateway
 }
 
-func (o *Config) GetProxyUrls() []ProxyURL {
-	if o == nil {
+func (c *Config) GetProxyUrls() []ProxyURL {
+	if c == nil {
 		return nil
 	}
-	return o.ProxyUrls
+	return c.ProxyUrls
 }
 
 // ControlPlane - The control plane object contains information about a Kong control plane.
@@ -156,57 +156,57 @@ func (c ControlPlane) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ControlPlane) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "name", "config", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ControlPlane) GetID() string {
-	if o == nil {
+func (c *ControlPlane) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *ControlPlane) GetName() string {
-	if o == nil {
+func (c *ControlPlane) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *ControlPlane) GetDescription() *string {
-	if o == nil {
+func (c *ControlPlane) GetDescription() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Description
+	return c.Description
 }
 
-func (o *ControlPlane) GetLabels() map[string]*string {
-	if o == nil {
+func (c *ControlPlane) GetLabels() map[string]*string {
+	if c == nil {
 		return nil
 	}
-	return o.Labels
+	return c.Labels
 }
 
-func (o *ControlPlane) GetConfig() Config {
-	if o == nil {
+func (c *ControlPlane) GetConfig() Config {
+	if c == nil {
 		return Config{}
 	}
-	return o.Config
+	return c.Config
 }
 
-func (o *ControlPlane) GetCreatedAt() time.Time {
-	if o == nil {
+func (c *ControlPlane) GetCreatedAt() time.Time {
+	if c == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return c.CreatedAt
 }
 
-func (o *ControlPlane) GetUpdatedAt() time.Time {
-	if o == nil {
+func (c *ControlPlane) GetUpdatedAt() time.Time {
+	if c == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return c.UpdatedAt
 }

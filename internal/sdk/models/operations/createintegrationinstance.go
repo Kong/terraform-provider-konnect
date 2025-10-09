@@ -24,51 +24,51 @@ type CreateIntegrationInstanceResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *CreateIntegrationInstanceResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateIntegrationInstanceResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateIntegrationInstanceResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateIntegrationInstanceResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateIntegrationInstanceResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateIntegrationInstanceResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateIntegrationInstanceResponse) GetIntegrationInstance() *shared.IntegrationInstance {
-	if o == nil {
+func (c *CreateIntegrationInstanceResponse) GetIntegrationInstance() *shared.IntegrationInstance {
+	if c == nil {
 		return nil
 	}
-	return o.IntegrationInstance
+	return c.IntegrationInstance
 }
 
-func (o *CreateIntegrationInstanceResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreateIntegrationInstanceResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreateIntegrationInstanceResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (c *CreateIntegrationInstanceResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return c.UnauthorizedError
 }
 
-func (o *CreateIntegrationInstanceResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreateIntegrationInstanceResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }

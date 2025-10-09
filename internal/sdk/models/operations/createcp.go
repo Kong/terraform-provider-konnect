@@ -24,51 +24,51 @@ type CreateCpResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *CreateCpResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateCpResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateCpResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateCpResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateCpResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateCpResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateCpResponse) GetMeshControlPlane() *shared.MeshControlPlane {
-	if o == nil {
+func (c *CreateCpResponse) GetMeshControlPlane() *shared.MeshControlPlane {
+	if c == nil {
 		return nil
 	}
-	return o.MeshControlPlane
+	return c.MeshControlPlane
 }
 
-func (o *CreateCpResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreateCpResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreateCpResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (c *CreateCpResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return c.UnauthorizedError
 }
 
-func (o *CreateCpResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreateCpResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }

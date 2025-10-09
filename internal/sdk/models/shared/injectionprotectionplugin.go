@@ -12,22 +12,22 @@ type InjectionProtectionPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *InjectionProtectionPluginAfter) GetAccess() []string {
-	if o == nil {
+func (i *InjectionProtectionPluginAfter) GetAccess() []string {
+	if i == nil {
 		return nil
 	}
-	return o.Access
+	return i.Access
 }
 
 type InjectionProtectionPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *InjectionProtectionPluginBefore) GetAccess() []string {
-	if o == nil {
+func (i *InjectionProtectionPluginBefore) GetAccess() []string {
+	if i == nil {
 		return nil
 	}
-	return o.Access
+	return i.Access
 }
 
 type InjectionProtectionPluginOrdering struct {
@@ -35,18 +35,18 @@ type InjectionProtectionPluginOrdering struct {
 	Before *InjectionProtectionPluginBefore `json:"before,omitempty"`
 }
 
-func (o *InjectionProtectionPluginOrdering) GetAfter() *InjectionProtectionPluginAfter {
-	if o == nil {
+func (i *InjectionProtectionPluginOrdering) GetAfter() *InjectionProtectionPluginAfter {
+	if i == nil {
 		return nil
 	}
-	return o.After
+	return i.After
 }
 
-func (o *InjectionProtectionPluginOrdering) GetBefore() *InjectionProtectionPluginBefore {
-	if o == nil {
+func (i *InjectionProtectionPluginOrdering) GetBefore() *InjectionProtectionPluginBefore {
+	if i == nil {
 		return nil
 	}
-	return o.Before
+	return i.Before
 }
 
 type InjectionProtectionPluginPartials struct {
@@ -57,25 +57,25 @@ type InjectionProtectionPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *InjectionProtectionPluginPartials) GetID() *string {
-	if o == nil {
+func (i *InjectionProtectionPluginPartials) GetID() *string {
+	if i == nil {
 		return nil
 	}
-	return o.ID
+	return i.ID
 }
 
-func (o *InjectionProtectionPluginPartials) GetName() *string {
-	if o == nil {
+func (i *InjectionProtectionPluginPartials) GetName() *string {
+	if i == nil {
 		return nil
 	}
-	return o.Name
+	return i.Name
 }
 
-func (o *InjectionProtectionPluginPartials) GetPath() *string {
-	if o == nil {
+func (i *InjectionProtectionPluginPartials) GetPath() *string {
+	if i == nil {
 		return nil
 	}
-	return o.Path
+	return i.Path
 }
 
 type CustomInjections struct {
@@ -85,18 +85,18 @@ type CustomInjections struct {
 	Regex string `json:"regex"`
 }
 
-func (o *CustomInjections) GetName() string {
-	if o == nil {
+func (c *CustomInjections) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *CustomInjections) GetRegex() string {
-	if o == nil {
+func (c *CustomInjections) GetRegex() string {
+	if c == nil {
 		return ""
 	}
-	return o.Regex
+	return c.Regex
 }
 
 // EnforcementMode - Enforcement mode of the security policy.
@@ -213,52 +213,52 @@ func (i InjectionProtectionPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (i *InjectionProtectionPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"custom_injections"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *InjectionProtectionPluginConfig) GetCustomInjections() []CustomInjections {
-	if o == nil {
+func (i *InjectionProtectionPluginConfig) GetCustomInjections() []CustomInjections {
+	if i == nil {
 		return nil
 	}
-	return o.CustomInjections
+	return i.CustomInjections
 }
 
-func (o *InjectionProtectionPluginConfig) GetEnforcementMode() *EnforcementMode {
-	if o == nil {
+func (i *InjectionProtectionPluginConfig) GetEnforcementMode() *EnforcementMode {
+	if i == nil {
 		return nil
 	}
-	return o.EnforcementMode
+	return i.EnforcementMode
 }
 
-func (o *InjectionProtectionPluginConfig) GetErrorMessage() *string {
-	if o == nil {
+func (i *InjectionProtectionPluginConfig) GetErrorMessage() *string {
+	if i == nil {
 		return nil
 	}
-	return o.ErrorMessage
+	return i.ErrorMessage
 }
 
-func (o *InjectionProtectionPluginConfig) GetErrorStatusCode() *int64 {
-	if o == nil {
+func (i *InjectionProtectionPluginConfig) GetErrorStatusCode() *int64 {
+	if i == nil {
 		return nil
 	}
-	return o.ErrorStatusCode
+	return i.ErrorStatusCode
 }
 
-func (o *InjectionProtectionPluginConfig) GetInjectionTypes() []InjectionTypes {
-	if o == nil {
+func (i *InjectionProtectionPluginConfig) GetInjectionTypes() []InjectionTypes {
+	if i == nil {
 		return nil
 	}
-	return o.InjectionTypes
+	return i.InjectionTypes
 }
 
-func (o *InjectionProtectionPluginConfig) GetLocations() []Locations {
-	if o == nil {
+func (i *InjectionProtectionPluginConfig) GetLocations() []Locations {
+	if i == nil {
 		return nil
 	}
-	return o.Locations
+	return i.Locations
 }
 
 type InjectionProtectionPluginProtocols string
@@ -298,11 +298,11 @@ type InjectionProtectionPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *InjectionProtectionPluginRoute) GetID() *string {
-	if o == nil {
+func (i *InjectionProtectionPluginRoute) GetID() *string {
+	if i == nil {
 		return nil
 	}
-	return o.ID
+	return i.ID
 }
 
 // InjectionProtectionPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -310,11 +310,11 @@ type InjectionProtectionPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *InjectionProtectionPluginService) GetID() *string {
-	if o == nil {
+func (i *InjectionProtectionPluginService) GetID() *string {
+	if i == nil {
 		return nil
 	}
-	return o.ID
+	return i.ID
 }
 
 // InjectionProtectionPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -349,96 +349,96 @@ func (i InjectionProtectionPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (i *InjectionProtectionPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"name", "ordering", "partials", "tags", "config", "route", "service"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *InjectionProtectionPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (i *InjectionProtectionPlugin) GetCreatedAt() *int64 {
+	if i == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return i.CreatedAt
 }
 
-func (o *InjectionProtectionPlugin) GetEnabled() *bool {
-	if o == nil {
+func (i *InjectionProtectionPlugin) GetEnabled() *bool {
+	if i == nil {
 		return nil
 	}
-	return o.Enabled
+	return i.Enabled
 }
 
-func (o *InjectionProtectionPlugin) GetID() *string {
-	if o == nil {
+func (i *InjectionProtectionPlugin) GetID() *string {
+	if i == nil {
 		return nil
 	}
-	return o.ID
+	return i.ID
 }
 
-func (o *InjectionProtectionPlugin) GetInstanceName() *string {
-	if o == nil {
+func (i *InjectionProtectionPlugin) GetInstanceName() *string {
+	if i == nil {
 		return nil
 	}
-	return o.InstanceName
+	return i.InstanceName
 }
 
-func (o *InjectionProtectionPlugin) GetName() string {
+func (i *InjectionProtectionPlugin) GetName() string {
 	return "injection-protection"
 }
 
-func (o *InjectionProtectionPlugin) GetOrdering() *InjectionProtectionPluginOrdering {
-	if o == nil {
+func (i *InjectionProtectionPlugin) GetOrdering() *InjectionProtectionPluginOrdering {
+	if i == nil {
 		return nil
 	}
-	return o.Ordering
+	return i.Ordering
 }
 
-func (o *InjectionProtectionPlugin) GetPartials() []InjectionProtectionPluginPartials {
-	if o == nil {
+func (i *InjectionProtectionPlugin) GetPartials() []InjectionProtectionPluginPartials {
+	if i == nil {
 		return nil
 	}
-	return o.Partials
+	return i.Partials
 }
 
-func (o *InjectionProtectionPlugin) GetTags() []string {
-	if o == nil {
+func (i *InjectionProtectionPlugin) GetTags() []string {
+	if i == nil {
 		return nil
 	}
-	return o.Tags
+	return i.Tags
 }
 
-func (o *InjectionProtectionPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (i *InjectionProtectionPlugin) GetUpdatedAt() *int64 {
+	if i == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return i.UpdatedAt
 }
 
-func (o *InjectionProtectionPlugin) GetConfig() *InjectionProtectionPluginConfig {
-	if o == nil {
+func (i *InjectionProtectionPlugin) GetConfig() *InjectionProtectionPluginConfig {
+	if i == nil {
 		return nil
 	}
-	return o.Config
+	return i.Config
 }
 
-func (o *InjectionProtectionPlugin) GetProtocols() []InjectionProtectionPluginProtocols {
-	if o == nil {
+func (i *InjectionProtectionPlugin) GetProtocols() []InjectionProtectionPluginProtocols {
+	if i == nil {
 		return nil
 	}
-	return o.Protocols
+	return i.Protocols
 }
 
-func (o *InjectionProtectionPlugin) GetRoute() *InjectionProtectionPluginRoute {
-	if o == nil {
+func (i *InjectionProtectionPlugin) GetRoute() *InjectionProtectionPluginRoute {
+	if i == nil {
 		return nil
 	}
-	return o.Route
+	return i.Route
 }
 
-func (o *InjectionProtectionPlugin) GetService() *InjectionProtectionPluginService {
-	if o == nil {
+func (i *InjectionProtectionPlugin) GetService() *InjectionProtectionPluginService {
+	if i == nil {
 		return nil
 	}
-	return o.Service
+	return i.Service
 }

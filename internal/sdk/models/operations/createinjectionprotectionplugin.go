@@ -13,18 +13,18 @@ type CreateInjectionprotectionPluginRequest struct {
 	InjectionProtectionPlugin shared.InjectionProtectionPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateInjectionprotectionPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateInjectionprotectionPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateInjectionprotectionPluginRequest) GetInjectionProtectionPlugin() shared.InjectionProtectionPlugin {
-	if o == nil {
+func (c *CreateInjectionprotectionPluginRequest) GetInjectionProtectionPlugin() shared.InjectionProtectionPlugin {
+	if c == nil {
 		return shared.InjectionProtectionPlugin{}
 	}
-	return o.InjectionProtectionPlugin
+	return c.InjectionProtectionPlugin
 }
 
 type CreateInjectionprotectionPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateInjectionprotectionPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateInjectionprotectionPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateInjectionprotectionPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateInjectionprotectionPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateInjectionprotectionPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateInjectionprotectionPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateInjectionprotectionPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateInjectionprotectionPluginResponse) GetInjectionProtectionPlugin() *shared.InjectionProtectionPlugin {
-	if o == nil {
+func (c *CreateInjectionprotectionPluginResponse) GetInjectionProtectionPlugin() *shared.InjectionProtectionPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.InjectionProtectionPlugin
+	return c.InjectionProtectionPlugin
 }
 
-func (o *CreateInjectionprotectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateInjectionprotectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

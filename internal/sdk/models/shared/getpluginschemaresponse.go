@@ -7,9 +7,9 @@ type GetPluginSchemaResponse struct {
 	Fields []map[string]any `json:"fields"`
 }
 
-func (o *GetPluginSchemaResponse) GetFields() []map[string]any {
-	if o == nil {
+func (g *GetPluginSchemaResponse) GetFields() []map[string]any {
+	if g == nil {
 		return nil
 	}
-	return o.Fields
+	return g.Fields
 }

@@ -14,18 +14,18 @@ type GetGrpcwebPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetGrpcwebPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetGrpcwebPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetGrpcwebPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetGrpcwebPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetGrpcwebPluginResponse struct {
@@ -41,37 +41,37 @@ type GetGrpcwebPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetGrpcwebPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetGrpcwebPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetGrpcwebPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetGrpcwebPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetGrpcwebPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetGrpcwebPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetGrpcwebPluginResponse) GetGrpcWebPlugin() *shared.GrpcWebPlugin {
-	if o == nil {
+func (g *GetGrpcwebPluginResponse) GetGrpcWebPlugin() *shared.GrpcWebPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.GrpcWebPlugin
+	return g.GrpcWebPlugin
 }
 
-func (o *GetGrpcwebPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetGrpcwebPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

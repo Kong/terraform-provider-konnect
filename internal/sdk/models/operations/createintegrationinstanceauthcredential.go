@@ -13,18 +13,18 @@ type CreateIntegrationInstanceAuthCredentialRequest struct {
 	CreateIntegrationInstanceAuthCredential shared.CreateIntegrationInstanceAuthCredential `request:"mediaType=application/json"`
 }
 
-func (o *CreateIntegrationInstanceAuthCredentialRequest) GetIntegrationInstanceID() string {
-	if o == nil {
+func (c *CreateIntegrationInstanceAuthCredentialRequest) GetIntegrationInstanceID() string {
+	if c == nil {
 		return ""
 	}
-	return o.IntegrationInstanceID
+	return c.IntegrationInstanceID
 }
 
-func (o *CreateIntegrationInstanceAuthCredentialRequest) GetCreateIntegrationInstanceAuthCredential() shared.CreateIntegrationInstanceAuthCredential {
-	if o == nil {
+func (c *CreateIntegrationInstanceAuthCredentialRequest) GetCreateIntegrationInstanceAuthCredential() shared.CreateIntegrationInstanceAuthCredential {
+	if c == nil {
 		return shared.CreateIntegrationInstanceAuthCredential{}
 	}
-	return o.CreateIntegrationInstanceAuthCredential
+	return c.CreateIntegrationInstanceAuthCredential
 }
 
 type CreateIntegrationInstanceAuthCredentialResponse struct {
@@ -48,65 +48,65 @@ type CreateIntegrationInstanceAuthCredentialResponse struct {
 	ConflictError *shared.ConflictError
 }
 
-func (o *CreateIntegrationInstanceAuthCredentialResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateIntegrationInstanceAuthCredentialResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateIntegrationInstanceAuthCredentialResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateIntegrationInstanceAuthCredentialResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateIntegrationInstanceAuthCredentialResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateIntegrationInstanceAuthCredentialResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateIntegrationInstanceAuthCredentialResponse) GetIntegrationInstanceAuthCredential() *shared.IntegrationInstanceAuthCredential {
-	if o == nil {
+func (c *CreateIntegrationInstanceAuthCredentialResponse) GetIntegrationInstanceAuthCredential() *shared.IntegrationInstanceAuthCredential {
+	if c == nil {
 		return nil
 	}
-	return o.IntegrationInstanceAuthCredential
+	return c.IntegrationInstanceAuthCredential
 }
 
-func (o *CreateIntegrationInstanceAuthCredentialResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreateIntegrationInstanceAuthCredentialResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreateIntegrationInstanceAuthCredentialResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (c *CreateIntegrationInstanceAuthCredentialResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return c.UnauthorizedError
 }
 
-func (o *CreateIntegrationInstanceAuthCredentialResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreateIntegrationInstanceAuthCredentialResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }
 
-func (o *CreateIntegrationInstanceAuthCredentialResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (c *CreateIntegrationInstanceAuthCredentialResponse) GetNotFoundError() *shared.NotFoundError {
+	if c == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return c.NotFoundError
 }
 
-func (o *CreateIntegrationInstanceAuthCredentialResponse) GetConflictError() *shared.ConflictError {
-	if o == nil {
+func (c *CreateIntegrationInstanceAuthCredentialResponse) GetConflictError() *shared.ConflictError {
+	if c == nil {
 		return nil
 	}
-	return o.ConflictError
+	return c.ConflictError
 }

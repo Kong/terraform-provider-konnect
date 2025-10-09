@@ -16,25 +16,25 @@ type UpsertKeySetRequest struct {
 	KeySet *shared.KeySet `request:"mediaType=application/json"`
 }
 
-func (o *UpsertKeySetRequest) GetKeySetID() string {
-	if o == nil {
+func (u *UpsertKeySetRequest) GetKeySetID() string {
+	if u == nil {
 		return ""
 	}
-	return o.KeySetID
+	return u.KeySetID
 }
 
-func (o *UpsertKeySetRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpsertKeySetRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpsertKeySetRequest) GetKeySet() *shared.KeySet {
-	if o == nil {
+func (u *UpsertKeySetRequest) GetKeySet() *shared.KeySet {
+	if u == nil {
 		return nil
 	}
-	return o.KeySet
+	return u.KeySet
 }
 
 type UpsertKeySetResponse struct {
@@ -50,37 +50,37 @@ type UpsertKeySetResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpsertKeySetResponse) GetContentType() string {
-	if o == nil {
+func (u *UpsertKeySetResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpsertKeySetResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpsertKeySetResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpsertKeySetResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpsertKeySetResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpsertKeySetResponse) GetKeySet() *shared.KeySet {
-	if o == nil {
+func (u *UpsertKeySetResponse) GetKeySet() *shared.KeySet {
+	if u == nil {
 		return nil
 	}
-	return o.KeySet
+	return u.KeySet
 }
 
-func (o *UpsertKeySetResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpsertKeySetResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

@@ -15,25 +15,25 @@ type UpdateExittransformerPluginRequest struct {
 	ExitTransformerPlugin shared.ExitTransformerPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateExittransformerPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateExittransformerPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateExittransformerPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateExittransformerPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateExittransformerPluginRequest) GetExitTransformerPlugin() shared.ExitTransformerPlugin {
-	if o == nil {
+func (u *UpdateExittransformerPluginRequest) GetExitTransformerPlugin() shared.ExitTransformerPlugin {
+	if u == nil {
 		return shared.ExitTransformerPlugin{}
 	}
-	return o.ExitTransformerPlugin
+	return u.ExitTransformerPlugin
 }
 
 type UpdateExittransformerPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateExittransformerPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateExittransformerPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateExittransformerPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateExittransformerPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateExittransformerPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateExittransformerPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateExittransformerPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateExittransformerPluginResponse) GetExitTransformerPlugin() *shared.ExitTransformerPlugin {
-	if o == nil {
+func (u *UpdateExittransformerPluginResponse) GetExitTransformerPlugin() *shared.ExitTransformerPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.ExitTransformerPlugin
+	return u.ExitTransformerPlugin
 }
 
-func (o *UpdateExittransformerPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateExittransformerPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

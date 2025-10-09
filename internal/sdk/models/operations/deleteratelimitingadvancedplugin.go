@@ -14,18 +14,18 @@ type DeleteRatelimitingadvancedPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteRatelimitingadvancedPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteRatelimitingadvancedPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteRatelimitingadvancedPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteRatelimitingadvancedPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteRatelimitingadvancedPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteRatelimitingadvancedPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteRatelimitingadvancedPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteRatelimitingadvancedPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteRatelimitingadvancedPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteRatelimitingadvancedPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteRatelimitingadvancedPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteRatelimitingadvancedPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteRatelimitingadvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteRatelimitingadvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }
