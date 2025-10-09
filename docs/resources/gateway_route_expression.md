@@ -56,7 +56,7 @@ resource "konnect_gateway_route_expression" "my_gatewayrouteexpression" {
 - `path_handling` (String) Controls how the Service path, Route path and requested path are combined when sending a request to the upstream. See above for a detailed description of each behavior. Default: "v0"; must be one of ["v0", "v1"]
 - `preserve_host` (Boolean) When matching a Route via one of the `hosts` domain names, use the request `Host` header in the upstream request headers. If set to `false`, the upstream `Host` header will be that of the Service's `host`. Default: false
 - `priority` (Number) A number used to specify the matching order for expression routes. The higher the `priority`, the sooner an route will be evaluated. This field is ignored unless `expression` field is set. Default: 0
-- `protocols` (List of String) An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only `"https"`, HTTP requests are answered with an upgrade error. When set to only `"http"`, HTTPS requests are answered with an error.
+- `protocols` (List of String) An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only `"https"`, HTTP requests are answered with an upgrade error. When set to only `"http"`, HTTPS requests are answered with an error. Default: ["http","https"]
 - `request_buffering` (Boolean) Whether to enable request body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that receive data with chunked transfer encoding. Default: true
 - `response_buffering` (Boolean) Whether to enable response body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that send data with chunked transfer encoding. Default: true
 - `service` (Attributes) The Service this Route is associated to. This is where the Route proxies traffic to. (see [below for nested schema](#nestedatt--service))
@@ -74,6 +74,20 @@ Optional:
 ## Import
 
 Import is supported using the following syntax:
+
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_gateway_route_expression.my_konnect_gateway_route_expression
+  id = jsonencode({
+    control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import konnect_gateway_route_expression.my_konnect_gateway_route_expression '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"}'

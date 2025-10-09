@@ -103,7 +103,7 @@ resource "konnect_gateway_plugin_xml_threat_protection" "my_gatewaypluginxmlthre
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
-- `protocols` (Set of String) A set of strings representing HTTP protocols.
+- `protocols` (Set of String) A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
@@ -115,12 +115,12 @@ resource "konnect_gateway_plugin_xml_threat_protection" "my_gatewaypluginxmlthre
 Optional:
 
 - `allow_dtd` (Boolean) Indicates whether an XML Document Type Definition (DTD) section is allowed. Default: false
-- `allowed_content_types` (List of String) A list of Content-Type values with payloads that are allowed, but aren't validated.
+- `allowed_content_types` (List of String) A list of Content-Type values with payloads that are allowed, but aren't validated. Default: []
 - `attribute` (Number) Maximum size of the attribute value. Default: 1048576
 - `bla_max_amplification` (Number) Sets the maximum allowed amplification. This protects against the Billion Laughs Attack. Default: 100
 - `bla_threshold` (Number) Sets the threshold after which the protection starts. This protects against the Billion Laughs Attack. Default: 8388608
 - `buffer` (Number) Maximum size of the unparsed buffer (see below). Default: 1048576
-- `checked_content_types` (List of String) A list of Content-Type values with payloads that must be validated.
+- `checked_content_types` (List of String) A list of Content-Type values with payloads that must be validated. Default: ["application/xml"]
 - `comment` (Number) Maximum size of comments. Default: 1024
 - `document` (Number) Maximum size of the entire document. Default: 10485760
 - `entity` (Number) Maximum size of entity values in EntityDecl. Default: 1024
@@ -200,6 +200,20 @@ Optional:
 ## Import
 
 Import is supported using the following syntax:
+
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_gateway_plugin_xml_threat_protection.my_konnect_gateway_plugin_xml_threat_protection
+  id = jsonencode({
+    control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import konnect_gateway_plugin_xml_threat_protection.my_konnect_gateway_plugin_xml_threat_protection '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}'

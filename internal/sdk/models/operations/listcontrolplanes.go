@@ -76,6 +76,8 @@ type ListControlPlanesResponse struct {
 	BaseError *shared.BaseError
 	// Service Unavailable
 	ServiceUnavailable *shared.ServiceUnavailable
+
+	Next func() (*ListControlPlanesResponse, error)
 }
 
 func (l *ListControlPlanesResponse) GetContentType() string {

@@ -48,6 +48,21 @@ resource "konnect_centralized_consumer_key" "my_centralizedconsumerkey" {
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_centralized_consumer_key.my_konnect_centralized_consumer_key
+  id = jsonencode({
+    consumer_id = "..."
+    id = "..."
+    realm_id = "..."
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
-terraform import konnect_centralized_consumer_key.my_konnect_centralized_consumer_key '{"consumer_id": "", "id": "", "realm_id": ""}'
+terraform import konnect_centralized_consumer_key.my_konnect_centralized_consumer_key '{"consumer_id": "...", "id": "...", "realm_id": "..."}'
 ```

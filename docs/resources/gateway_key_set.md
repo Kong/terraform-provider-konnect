@@ -44,6 +44,20 @@ resource "konnect_gateway_key_set" "my_gatewaykeyset" {
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_gateway_key_set.my_konnect_gateway_key_set
+  id = jsonencode({
+    control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = "6cc34248-50b4-4a81-9201-3bdf7a83f712"
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 terraform import konnect_gateway_key_set.my_konnect_gateway_key_set '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "6cc34248-50b4-4a81-9201-3bdf7a83f712"}'
 ```

@@ -164,7 +164,7 @@ resource "konnect_gateway_plugin_upstream_oauth" "my_gatewaypluginupstreamoauth"
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
-- `protocols` (Set of String) A set of strings representing HTTP protocols.
+- `protocols` (Set of String) A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
@@ -192,12 +192,12 @@ Required:
 
 Optional:
 
-- `audience` (List of String) List of audiences passed to the IdP when obtaining a new token.
+- `audience` (List of String) List of audiences passed to the IdP when obtaining a new token. Default: []
 - `client_id` (String) The client ID for the application registration in the IdP.
 - `client_secret` (String) The client secret for the application registration in the IdP.
 - `grant_type` (String) The OAuth grant type to be used. Default: "client_credentials"; must be one of ["client_credentials", "password"]
 - `password` (String) The password to use if `config.oauth.grant_type` is set to `password`.
-- `scopes` (List of String) List of scopes to request from the IdP when obtaining a new token.
+- `scopes` (List of String) List of scopes to request from the IdP when obtaining a new token. Default: []
 - `token_headers` (Map of String) Extra headers to be passed in the token endpoint request.
 - `token_post_args` (Map of String) Extra post arguments to be passed in the token endpoint request.
 - `username` (String) The username to use if `config.oauth.grant_type` is set to `password`.
@@ -212,7 +212,7 @@ Optional:
 - `idp_error_response_content_type` (String) The Content-Type of the response to return to the consumer if Kong fails to obtain a token from the IdP. Default: "application/json; charset=utf-8"
 - `idp_error_response_message` (String) The message to embed in the body of the response to return to the consumer if Kong fails to obtain a token from the IdP. Default: "Failed to authenticate request to upstream"
 - `idp_error_response_status_code` (Number) The response code to return to the consumer if Kong fails to obtain a token from the IdP. Default: 502
-- `purge_token_on_upstream_status_codes` (List of Number) An array of status codes which will force an access token to be purged when returned by the upstream. An empty array will disable this functionality.
+- `purge_token_on_upstream_status_codes` (List of Number) An array of status codes which will force an access token to be purged when returned by the upstream. An empty array will disable this functionality. Default: [401]
 - `upstream_access_token_header_name` (String) The name of the header used to send the access token (obtained from the IdP) to the upstream service. Default: "Authorization"
 
 
@@ -370,6 +370,20 @@ Optional:
 ## Import
 
 Import is supported using the following syntax:
+
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_gateway_plugin_upstream_oauth.my_konnect_gateway_plugin_upstream_oauth
+  id = jsonencode({
+    control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import konnect_gateway_plugin_upstream_oauth.my_konnect_gateway_plugin_upstream_oauth '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}'

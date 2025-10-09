@@ -15,7 +15,9 @@ CloudGatewayNetwork Resource
 ```terraform
 resource "konnect_cloud_gateway_network" "my_cloudgatewaynetwork" {
   availability_zones = [
-    "..."
+    "use2-az1",
+    "use2-az2",
+    "use2-az3",
   ]
   cidr_block                        = "10.0.0.0/8"
   cloud_gateway_provider_account_id = "929b2449-c69f-44c4-b6ad-9ecec6f811ae"
@@ -58,6 +60,17 @@ Read-Only:
 ## Import
 
 Import is supported using the following syntax:
+
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_cloud_gateway_network.my_konnect_cloud_gateway_network
+  id = "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import konnect_cloud_gateway_network.my_konnect_cloud_gateway_network "36ae63d3-efd1-4bec-b246-62aa5d3f5695"

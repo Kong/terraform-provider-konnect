@@ -29,30 +29,6 @@ resource "konnect_application_auth_strategy" "my_applicationauthstrategy" {
     name          = "...my_name..."
     strategy_type = "key_auth"
   }
-  openid_connect = {
-    configs = {
-      openid_connect = {
-        additional_properties = "{ \"see\": \"documentation\" }"
-        auth_methods = [
-          "..."
-        ]
-        credential_claim = [
-          "..."
-        ]
-        issuer = "...my_issuer..."
-        scopes = [
-          "..."
-        ]
-      }
-    }
-    dcr_provider_id = "184e9c55-484e-4f4f-9de7-f6001d8ab0e7"
-    display_name    = "...my_display_name..."
-    labels = {
-      key = "value"
-    }
-    name          = "...my_name..."
-    strategy_type = "openid_connect"
-  }
 }
 ```
 
@@ -184,6 +160,17 @@ Read-Only:
 ## Import
 
 Import is supported using the following syntax:
+
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_application_auth_strategy.my_konnect_application_auth_strategy
+  id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import konnect_application_auth_strategy.my_konnect_application_auth_strategy "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
