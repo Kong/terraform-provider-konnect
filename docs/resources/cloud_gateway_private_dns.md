@@ -30,7 +30,7 @@ resource "konnect_cloud_gateway_private_dns" "my_cloudgatewayprivatedns" {
 
 ### Required
 
-- `network_id` (String) The network to operate on.
+- `network_id` (String) The network to operate on. Requires replacement if changed.
 
 ### Optional
 

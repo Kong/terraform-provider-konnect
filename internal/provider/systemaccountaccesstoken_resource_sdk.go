@@ -4,6 +4,7 @@ package provider
 
 import (
 	"context"
+	"github.com/Kong/shared-speakeasy/customtypes/timetypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
@@ -17,7 +18,9 @@ func (r *SystemAccountAccessTokenResourceModel) RefreshFromSharedSystemAccountAc
 
 	if resp != nil {
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ExpiresAt))
+		expiresAtValuable, expiresAtDiags := timetypes.RFC3339PreciseToSecondType{}.ValueFromString(ctx, types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ExpiresAt)))
+		diags.Append(expiresAtDiags...)
+		r.ExpiresAt = expiresAtValuable.(timetypes.RFC3339PreciseToSecond)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.LastUsedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.LastUsedAt))
 		r.Name = types.StringPointerValue(resp.Name)
@@ -32,7 +35,9 @@ func (r *SystemAccountAccessTokenResourceModel) RefreshFromSharedSystemAccountAc
 
 	if resp != nil {
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ExpiresAt))
+		expiresAtValuable, expiresAtDiags := timetypes.RFC3339PreciseToSecondType{}.ValueFromString(ctx, types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ExpiresAt)))
+		diags.Append(expiresAtDiags...)
+		r.ExpiresAt = expiresAtValuable.(timetypes.RFC3339PreciseToSecond)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.LastUsedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.LastUsedAt))
 		r.Name = types.StringPointerValue(resp.Name)
@@ -126,18 +131,10 @@ func (r *SystemAccountAccessTokenResourceModel) ToOperationsPostSystemAccountsID
 func (r *SystemAccountAccessTokenResourceModel) ToSharedCreateSystemAccountAccessToken(ctx context.Context) (*shared.CreateSystemAccountAccessToken, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
-	}
-	expiresAt := new(time.Time)
-	if !r.ExpiresAt.IsUnknown() && !r.ExpiresAt.IsNull() {
-		*expiresAt, _ = time.Parse(time.RFC3339Nano, r.ExpiresAt.ValueString())
-	} else {
-		expiresAt = nil
-	}
+	var name string
+	name = r.Name.ValueString()
+
+	expiresAt, _ := time.Parse(time.RFC3339Nano, r.ExpiresAt.ValueString())
 	out := shared.CreateSystemAccountAccessToken{
 		Name:      name,
 		ExpiresAt: expiresAt,
@@ -149,12 +146,9 @@ func (r *SystemAccountAccessTokenResourceModel) ToSharedCreateSystemAccountAcces
 func (r *SystemAccountAccessTokenResourceModel) ToSharedUpdateSystemAccountAccessToken(ctx context.Context) (*shared.UpdateSystemAccountAccessToken, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
-	}
+	var name string
+	name = r.Name.ValueString()
+
 	out := shared.UpdateSystemAccountAccessToken{
 		Name: name,
 	}

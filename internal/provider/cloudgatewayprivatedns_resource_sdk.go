@@ -137,31 +137,6 @@ func (r *CloudGatewayPrivateDNSResourceModel) ToOperationsGetPrivateDNSRequest(c
 	return &out, diags
 }
 
-func (r *CloudGatewayPrivateDNSResourceModel) ToOperationsUpdatePrivateDNSRequest(ctx context.Context) (*operations.UpdatePrivateDNSRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var networkID string
-	networkID = r.NetworkID.ValueString()
-
-	var privateDNSID string
-	privateDNSID = r.ID.ValueString()
-
-	patchPrivateDNSRequest, patchPrivateDNSRequestDiags := r.ToSharedPatchPrivateDNSRequest(ctx)
-	diags.Append(patchPrivateDNSRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdatePrivateDNSRequest{
-		NetworkID:              networkID,
-		PrivateDNSID:           privateDNSID,
-		PatchPrivateDNSRequest: *patchPrivateDNSRequest,
-	}
-
-	return &out, diags
-}
-
 func (r *CloudGatewayPrivateDNSResourceModel) ToSharedCreatePrivateDNSRequest(ctx context.Context) (*shared.CreatePrivateDNSRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -242,14 +217,6 @@ func (r *CloudGatewayPrivateDNSResourceModel) ToSharedCreatePrivateDNSRequest(ct
 		Name:                       name,
 		PrivateDNSAttachmentConfig: privateDNSAttachmentConfig,
 	}
-
-	return &out, diags
-}
-
-func (r *CloudGatewayPrivateDNSResourceModel) ToSharedPatchPrivateDNSRequest(ctx context.Context) (*shared.PatchPrivateDNSRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var out shared.PatchPrivateDNSRequest
 
 	return &out, diags
 }

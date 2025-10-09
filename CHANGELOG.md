@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.2.1
+> Released on 2025/10/09
+
+### Bug Fixes
+* Properties such as `theme`, `menu` can now be unset in `konnect_portal_customization` resource
+* Fixed false diff on the output of `terraform plan` for `konnect_system_account_access_token` resource
+
 ## 3.2.0
 > Released on 2025/09/16
 

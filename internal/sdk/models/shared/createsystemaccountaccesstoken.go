@@ -9,8 +9,8 @@ import (
 
 // CreateSystemAccountAccessToken - The request body to create a system account access token.
 type CreateSystemAccountAccessToken struct {
-	Name      *string    `default:"null" json:"name"`
-	ExpiresAt *time.Time `default:"null" json:"expires_at"`
+	Name      string    `json:"name"`
+	ExpiresAt time.Time `json:"expires_at"`
 }
 
 func (c CreateSystemAccountAccessToken) MarshalJSON() ([]byte, error) {
@@ -24,16 +24,16 @@ func (c *CreateSystemAccountAccessToken) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *CreateSystemAccountAccessToken) GetName() *string {
+func (o *CreateSystemAccountAccessToken) GetName() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Name
 }
 
-func (o *CreateSystemAccountAccessToken) GetExpiresAt() *time.Time {
+func (o *CreateSystemAccountAccessToken) GetExpiresAt() time.Time {
 	if o == nil {
-		return nil
+		return time.Time{}
 	}
 	return o.ExpiresAt
 }

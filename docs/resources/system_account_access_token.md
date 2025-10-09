@@ -26,9 +26,6 @@ resource "konnect_system_account_access_token" "my_systemaccountaccesstoken" {
 ### Required
 
 - `account_id` (String) ID of the system account.
-
-### Optional
-
 - `expires_at` (String) Requires replacement if changed.
 - `name` (String)
 

@@ -1963,45 +1963,6 @@ paths:
       tags:
         - Private DNS
       x-speakeasy-group: CloudGateways
-    patch:
-      x-speakeasy-entity-operation:
-        terraform-resource: CloudGatewayPrivateDns#update
-        terraform-datasource: null
-      operationId: update-private-dns
-      summary: Update Private DNS
-      description: Updates a Private DNS by ID for a given network.
-      parameters:
-        - name: networkId
-          in: path
-          description: The network to operate on.
-          required: true
-          schema:
-            $ref: '#/components/schemas/NetworkId'
-        - $ref: '#/components/parameters/PrivateDnsId'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchPrivateDnsRequest'
-      responses:
-        '200':
-          $ref: '#/components/responses/PatchPrivateDnsResponse'
-        '400':
-          $ref: '#/components/responses/CloudGatewaysBadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://global.api.konghq.com/'
-      tags:
-        - Private DNS
-      x-speakeasy-group: CloudGateways
     delete:
       x-speakeasy-entity-operation:
         terraform-resource: CloudGatewayPrivateDns#delete
@@ -2118,46 +2079,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://global.api.konghq.com/'
-      tags:
-        - Transit Gateways
-      x-speakeasy-group: CloudGateways
-    patch:
-      x-speakeasy-entity-operation:
-        terraform-resource: CloudGatewayTransitGateway#update
-        terraform-datasource: null
-      operationId: update-transit-gateway
-      summary: Update Transit Gateway
-      description: Updates a transit gateway by ID for a given network.
-      parameters:
-        - name: networkId
-          in: path
-          description: The network to operate on.
-          required: true
-          schema:
-            $ref: '#/components/schemas/NetworkId'
-          x-speakeasy-param-force-new: true
-        - $ref: '#/components/parameters/TransitGatewayId'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchTransitGatewayRequest'
-      responses:
-        '200':
-          $ref: '#/components/responses/PatchTransitGatewayResponse'
-        '400':
-          $ref: '#/components/responses/CloudGatewaysBadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
       servers:
         - url: 'https://global.api.konghq.com/'
       tags:
@@ -2442,7 +2363,7 @@ paths:
         terraform-datasource: null
       operationId: get-config-store-secret
       summary: Fetch Config Store Secret
-      description: Returns a secret for the Config Store.
+      description: Returns the secret entity for the Config Store. Secret values once stored cannot be retrieved.
       responses:
         '200':
           $ref: '#/components/responses/ConfigStoreSecretResponse'
@@ -18097,13 +18018,6 @@ components:
         - terminating
         - terminated
       title: Private DNS State
-    PatchAwsPrivateDnsResolver:
-      description: Request schema for updating a Private DNS AWS Resolver.
-      properties:
-        name:
-          $ref: '#/components/schemas/PrivateDnsName'
-        private_dns_attachment_config:
-          $ref: '#/components/schemas/AwsPrivateDnsResolverAttachmentConfig'
     CreatePrivateDnsRequest:
       description: Request schema for creating a Private DNS.
       type: object
@@ -18116,12 +18030,6 @@ components:
             - $ref: '#/components/schemas/AwsPrivateDnsResolverAttachmentConfig'
             - $ref: '#/components/schemas/GcpPrivateHostedZoneAttachmentConfig'
       title: CreatePrivateDnsRequest
-    PatchPrivateDnsRequest:
-      description: Request schema for updating a Private DNS.
-      type: object
-      oneOf:
-        - $ref: '#/components/schemas/PatchAwsPrivateDnsResolver'
-      title: PatchPrivateDnsRequest
     AwsTransitGatewayResponse:
       type: object
       properties:
@@ -18551,30 +18459,6 @@ components:
         - $ref: '#/components/schemas/CreateAzureTransitGateway'
         - $ref: '#/components/schemas/CreateGCPVPCPeeringTransitGateway'
       title: CreateTransitGatewayRequest
-    PatchAwsResourceEndpointGateway:
-      description: Request schema for updating AWS Resource Endpoint.
-      properties:
-        transit_gateway_attachment_config:
-          type: object
-          additionalProperties: false
-          properties:
-            kind:
-              enum:
-                - aws-resource-endpoint-attachment
-              title: AWS Resource Endpoint Attachment Type
-            resource_config:
-              $ref: '#/components/schemas/AwsResourceEndpointConfig'
-          required:
-            - kind
-            - resource_config
-      required:
-        - transit_gateway_attachment_config
-    PatchTransitGatewayRequest:
-      description: Request schema for updating a transit gateway.
-      type: object
-      oneOf:
-        - $ref: '#/components/schemas/PatchAwsResourceEndpointGateway'
-      title: PatchTransitGatewayRequest
     CustomDomainState:
       description: State of the custom domain.
       type: string
@@ -20277,6 +20161,11 @@ components:
           default: null
           nullable: true
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/timetypes
+            schemaType: 'timetypes.RFC3339PreciseToSecondType{}'
+            valueType: timetypes.RFC3339PreciseToSecond
         last_used_at:
           description: Timestamp of when the system account access token was last used.
           type: string
@@ -20338,6 +20227,7 @@ components:
           type: string
           example: |
             -----BEGIN PRIVATE KEY----- MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAPBWiWZj7LYQU9V5 E8qlCYrkFeKeCmi6TTIqDULSHXhihV3pZmZVX1tG3yxgYBZpMKNfSiMxbTpSE1I2 9EKpbm9g50yD6A7O61wPGsOrpibu92euuO1N/mpcTQqcE7mDmNgiUPh1hCLjrsAH bUJJ3RKfa+2VgNsS2rUCgWBLxJspAgMBAAECgYEAvA7qqozL/1ZdUu/P1cQ36E86 9L03ZeVJXFRdVgj2eGqW8vob3z00RUb6gE3VQhQDNALvDwSw9G6eoblQfgz31Hju sb+j6bGOm2BqzYrx6rpcgme7k9ScV0tEbtiBNX0E/ToHvNywHtdOBvDocN2wh42Z 6bS9um51H+SXR036mgUCQQD4T7WrJHL97Hj8TtHnTw895xWKaGn94H7ZQa2lo1nk 7CQ4Oi8rFX5tDdyV7UU6fekBWuhpmIhSGJhyHD7UThBjAkEA98ef9ey2Qx+j+R8S tgpgJAF3LVNJJicEHCS/Vltgc84X/vidVAMa2+TYPxPrrUjxBr0STCeB5wZhvvsB D8cOAwJBAJ5JqaQPUx1dDe7Ai/vooO20Dj4xu0c0QYha3sfU7qwIgDo7lO/g/ruj 93a3TscvlkXf3oHZ0ySKOzual86ciMMCQQDGOLgaWHVy+4QFTzt70I8bHuUFqKRT VlEuZqN/ZXijDFQcES5jwFwjYE8zHy+ioEDaIDXcIJsGhA98Zndx9M+bAkA4IFdx 4YIDhuk1MJAYPqVQs5szEF/0BGymLNVYlIox48bZg+TH3uXwTVRVySxvpRa8dd3O 0gHs3EIV6GFUl7ev -----END PRIVATE KEY-----
+          x-sensitive: true
           x-speakeasy-param-sensitive: true
         labels:
           $ref: '#/components/schemas/SCGWLabels'
@@ -20447,6 +20337,7 @@ components:
           $ref: '#/components/schemas/KeyTypeEnum'
         secret:
           type: string
+          x-sensitive: true
           x-speakeasy-param-sensitive: true
         created_at:
           $ref: '#/components/schemas/CreatedAt'
@@ -22416,9 +22307,8 @@ components:
       properties:
         theme:
           type: object
-          default: null
           additionalProperties: false
-          nullable: true
+          nullable: false
           properties:
             name:
               type: string
@@ -22431,9 +22321,8 @@ components:
                 - system
             colors:
               type: object
-              default: null
               additionalProperties: false
-              nullable: true
+              nullable: false
               properties:
                 primary:
                   type: string
@@ -22446,6 +22335,7 @@ components:
         layout:
           type: string
           nullable: false
+          x-speakeasy-param-computed: false
         css:
           type: string
           default: null
@@ -22477,6 +22367,7 @@ components:
               default: null
               nullable: true
               x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: false
         spec_renderer:
           type: object
           additionalProperties: false
@@ -22510,6 +22401,7 @@ components:
               description: Let users define a custom server URL for endpoints. This will be used to generate code snippets and to test the API. The URL is client-side only and is not saved.
               type: boolean
               default: true
+          x-speakeasy-param-computed: false
         robots:
           type: string
           default: null
@@ -23782,6 +23674,7 @@ components:
           default: null
           nullable: true
           writeOnly: true
+          x-sensitive: true
           x-speakeasy-param-computed: false
           x-speakeasy-param-sensitive: true
         created_at:
@@ -23801,6 +23694,7 @@ components:
           maxLength: 5120
           minLength: 1
           writeOnly: true
+          x-sensitive: true
           x-speakeasy-param-sensitive: true
       required:
         - key
@@ -23813,6 +23707,7 @@ components:
           maxLength: 5120
           minLength: 1
           writeOnly: true
+          x-sensitive: true
           x-speakeasy-param-sensitive: true
       required:
         - value
@@ -48861,9 +48756,8 @@ components:
               name:
                 description: Name of the system account access token.
                 type: string
-                default: null
-                nullable: true
-                x-speakeasy-param-computed: false
+            required:
+              - name
     CreateSystemAccountAccessToken:
       content:
         application/json:
@@ -48873,15 +48767,17 @@ components:
             properties:
               name:
                 type: string
-                default: null
-                nullable: true
-                x-speakeasy-param-computed: false
               expires_at:
                 type: string
                 format: date-time
-                default: null
-                nullable: true
-                x-speakeasy-param-computed: false
+                x-speakeasy-terraform-custom-type:
+                  imports:
+                    - github.com/Kong/shared-speakeasy/customtypes/timetypes
+                  schemaType: 'timetypes.RFC3339PreciseToSecondType{}'
+                  valueType: timetypes.RFC3339PreciseToSecond
+            required:
+              - name
+              - expires_at
       description: The request body to create a system account access token.
     AddSystemAccountToTeam:
       content:
@@ -50009,12 +49905,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PrivateDnsResponse'
-    PatchPrivateDnsResponse:
-      description: Response format for updating a Private DNS.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PrivateDnsResponse'
     RetrievePrivateDnsResponse:
       description: Response format for retrieving a Private DNS.
       content:
@@ -50027,13 +49917,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/TransitGatewayResponse'
-    PatchTransitGatewayResponse:
-      description: Response format for updating a transit gateway.
-      content:
-        application/json:
-          schema:
-            oneOf:
-              - $ref: '#/components/schemas/AwsResourceEndpointGatewayResponse'
     RetrieveTransitGatewayResponse:
       description: Response format for retrieving a transit gateway.
       content:
@@ -50350,6 +50233,11 @@ components:
                 type: string
                 format: date-time
                 readOnly: true
+                x-speakeasy-terraform-custom-type:
+                  imports:
+                    - github.com/Kong/shared-speakeasy/customtypes/timetypes
+                  schemaType: 'timetypes.RFC3339PreciseToSecondType{}'
+                  valueType: timetypes.RFC3339PreciseToSecond
               last_used_at:
                 description: Timestamp of when the system account access token was last used.
                 type: string
@@ -50359,6 +50247,7 @@ components:
                 description: The token of the system account access token.
                 type: string
                 readOnly: true
+                x-sensitive: true
                 x-speakeasy-param-sensitive: true
             example:
               id: 497f6eca-6276-4993-bfeb-53cbbbba6f08

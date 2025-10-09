@@ -371,8 +371,11 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 				Description: `Human-readable name of the Private DNS. Requires replacement if changed.`,
 			},
 			"network_id": schema.StringAttribute{
-				Required:    true,
-				Description: `The network to operate on.`,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The network to operate on. Requires replacement if changed.`,
 			},
 			"private_dns_attachment_config": schema.SingleNestedAttribute{
 				Optional: true,
@@ -707,43 +710,7 @@ func (r *CloudGatewayPrivateDNSResource) Update(ctx context.Context, req resourc
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdatePrivateDNSRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res, err := r.client.CloudGateways.UpdatePrivateDNS(ctx, *request)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res != nil && res.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
-		}
-		return
-	}
-	if res == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
-		return
-	}
-	if !(res.PrivateDNSResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPrivateDNSResponse(ctx, res.PrivateDNSResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	// Not Implemented; all attributes marked as RequiresReplace
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

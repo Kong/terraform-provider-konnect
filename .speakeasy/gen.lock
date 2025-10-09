@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 2ce1207fcb83e9a9281a0dba2221c9ef
+  docChecksum: 103d2baed100121f90b1783bcb0c7acd
   docVersion: 2.0.0
   speakeasyVersion: 1.602.0
   generationVersion: 2.681.1
-  releaseVersion: 3.2.0
-  configChecksum: 3cfb66abe3120203174b08e2f71cc83b
+  releaseVersion: 3.2.1
+  configChecksum: 4de54bfdfe40ca8d168d86e280681382
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -1766,7 +1766,6 @@ generatedFiles:
   - internal/sdk/models/operations/updateportalteam.go
   - internal/sdk/models/operations/updatepostfunctionplugin.go
   - internal/sdk/models/operations/updateprefunctionplugin.go
-  - internal/sdk/models/operations/updateprivatedns.go
   - internal/sdk/models/operations/updateprometheusplugin.go
   - internal/sdk/models/operations/updateproxycacheadvancedplugin.go
   - internal/sdk/models/operations/updateproxycacheplugin.go
@@ -1797,7 +1796,6 @@ generatedFiles:
   - internal/sdk/models/operations/updateteam.go
   - internal/sdk/models/operations/updatetlshandshakemodifierplugin.go
   - internal/sdk/models/operations/updatetlsmetadataheadersplugin.go
-  - internal/sdk/models/operations/updatetransitgateway.go
   - internal/sdk/models/operations/updateudplogplugin.go
   - internal/sdk/models/operations/updateupstreamoauthplugin.go
   - internal/sdk/models/operations/updateupstreamtimeoutplugin.go
@@ -2089,9 +2087,6 @@ generatedFiles:
   - internal/sdk/models/shared/partial.go
   - internal/sdk/models/shared/partialappauthstrategyconfigopenidconnect.go
   - internal/sdk/models/shared/patchnetworkrequest.go
-  - internal/sdk/models/shared/patchprivatednsrequest.go
-  - internal/sdk/models/shared/patchtransitgatewayrequest.go
-  - internal/sdk/models/shared/patchtransitgatewayresponse.go
   - internal/sdk/models/shared/plugin.go
   - internal/sdk/models/shared/pluginschemas.go
   - internal/sdk/models/shared/portalassetresponse.go
@@ -13610,7 +13605,7 @@ examples:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"theme": null, "css": null, "menu": {"main": null, "footer_sections": null, "footer_bottom": null}, "robots": null}
+          application/json: {"theme": {"colors": {"primary": "#000000"}}, "css": null, "menu": {"main": null, "footer_sections": null, "footer_bottom": null}, "robots": null}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -13623,10 +13618,10 @@ examples:
         path:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
-        application/json: {"theme": null, "css": null, "menu": {"main": null, "footer_sections": null, "footer_bottom": null}, "robots": null}
+        application/json: {"theme": {"colors": {"primary": "#000000"}}, "css": null, "menu": {"main": null, "footer_sections": null, "footer_bottom": null}, "robots": null}
       responses:
         "200":
-          application/json: {"theme": null, "css": null, "menu": {"main": null, "footer_sections": null, "footer_bottom": null}, "robots": null}
+          application/json: {"theme": {"colors": {"primary": "#000000"}}, "css": null, "menu": {"main": null, "footer_sections": null, "footer_bottom": null}, "robots": null}
         "400":
           application/problem+json: {"status": 833416, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
