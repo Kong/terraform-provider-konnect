@@ -1963,45 +1963,6 @@ paths:
       tags:
         - Private DNS
       x-speakeasy-group: CloudGateways
-    patch:
-      x-speakeasy-entity-operation:
-        terraform-resource: CloudGatewayPrivateDns#update
-        terraform-datasource: null
-      operationId: update-private-dns
-      summary: Update Private DNS
-      description: Updates a Private DNS by ID for a given network.
-      parameters:
-        - name: networkId
-          in: path
-          description: The network to operate on.
-          required: true
-          schema:
-            $ref: '#/components/schemas/NetworkId'
-        - $ref: '#/components/parameters/PrivateDnsId'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchPrivateDnsRequest'
-      responses:
-        '200':
-          $ref: '#/components/responses/PatchPrivateDnsResponse'
-        '400':
-          $ref: '#/components/responses/CloudGatewaysBadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-      servers:
-        - url: 'https://global.api.konghq.com/'
-      tags:
-        - Private DNS
-      x-speakeasy-group: CloudGateways
     delete:
       x-speakeasy-entity-operation:
         terraform-resource: CloudGatewayPrivateDns#delete
@@ -2118,46 +2079,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-      servers:
-        - url: 'https://global.api.konghq.com/'
-      tags:
-        - Transit Gateways
-      x-speakeasy-group: CloudGateways
-    patch:
-      x-speakeasy-entity-operation:
-        terraform-resource: CloudGatewayTransitGateway#update
-        terraform-datasource: null
-      operationId: update-transit-gateway
-      summary: Update Transit Gateway
-      description: Updates a transit gateway by ID for a given network.
-      parameters:
-        - name: networkId
-          in: path
-          description: The network to operate on.
-          required: true
-          schema:
-            $ref: '#/components/schemas/NetworkId'
-          x-speakeasy-param-force-new: true
-        - $ref: '#/components/parameters/TransitGatewayId'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchTransitGatewayRequest'
-      responses:
-        '200':
-          $ref: '#/components/responses/PatchTransitGatewayResponse'
-        '400':
-          $ref: '#/components/responses/CloudGatewaysBadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
       servers:
         - url: 'https://global.api.konghq.com/'
       tags:
@@ -18097,13 +18018,6 @@ components:
         - terminating
         - terminated
       title: Private DNS State
-    PatchAwsPrivateDnsResolver:
-      description: Request schema for updating a Private DNS AWS Resolver.
-      properties:
-        name:
-          $ref: '#/components/schemas/PrivateDnsName'
-        private_dns_attachment_config:
-          $ref: '#/components/schemas/AwsPrivateDnsResolverAttachmentConfig'
     CreatePrivateDnsRequest:
       description: Request schema for creating a Private DNS.
       type: object
@@ -18116,12 +18030,6 @@ components:
             - $ref: '#/components/schemas/AwsPrivateDnsResolverAttachmentConfig'
             - $ref: '#/components/schemas/GcpPrivateHostedZoneAttachmentConfig'
       title: CreatePrivateDnsRequest
-    PatchPrivateDnsRequest:
-      description: Request schema for updating a Private DNS.
-      type: object
-      oneOf:
-        - $ref: '#/components/schemas/PatchAwsPrivateDnsResolver'
-      title: PatchPrivateDnsRequest
     AwsTransitGatewayResponse:
       type: object
       properties:
@@ -18551,30 +18459,6 @@ components:
         - $ref: '#/components/schemas/CreateAzureTransitGateway'
         - $ref: '#/components/schemas/CreateGCPVPCPeeringTransitGateway'
       title: CreateTransitGatewayRequest
-    PatchAwsResourceEndpointGateway:
-      description: Request schema for updating AWS Resource Endpoint.
-      properties:
-        transit_gateway_attachment_config:
-          type: object
-          additionalProperties: false
-          properties:
-            kind:
-              enum:
-                - aws-resource-endpoint-attachment
-              title: AWS Resource Endpoint Attachment Type
-            resource_config:
-              $ref: '#/components/schemas/AwsResourceEndpointConfig'
-          required:
-            - kind
-            - resource_config
-      required:
-        - transit_gateway_attachment_config
-    PatchTransitGatewayRequest:
-      description: Request schema for updating a transit gateway.
-      type: object
-      oneOf:
-        - $ref: '#/components/schemas/PatchAwsResourceEndpointGateway'
-      title: PatchTransitGatewayRequest
     CustomDomainState:
       description: State of the custom domain.
       type: string
@@ -50021,12 +49905,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PrivateDnsResponse'
-    PatchPrivateDnsResponse:
-      description: Response format for updating a Private DNS.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PrivateDnsResponse'
     RetrievePrivateDnsResponse:
       description: Response format for retrieving a Private DNS.
       content:
@@ -50039,13 +49917,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/TransitGatewayResponse'
-    PatchTransitGatewayResponse:
-      description: Response format for updating a transit gateway.
-      content:
-        application/json:
-          schema:
-            oneOf:
-              - $ref: '#/components/schemas/AwsResourceEndpointGatewayResponse'
     RetrieveTransitGatewayResponse:
       description: Response format for retrieving a transit gateway.
       content:
