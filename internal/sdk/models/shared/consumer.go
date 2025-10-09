@@ -27,50 +27,50 @@ func (c Consumer) MarshalJSON() ([]byte, error) {
 }
 
 func (c *Consumer) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Consumer) GetCreatedAt() *int64 {
-	if o == nil {
+func (c *Consumer) GetCreatedAt() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return c.CreatedAt
 }
 
-func (o *Consumer) GetCustomID() *string {
-	if o == nil {
+func (c *Consumer) GetCustomID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.CustomID
+	return c.CustomID
 }
 
-func (o *Consumer) GetID() *string {
-	if o == nil {
+func (c *Consumer) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *Consumer) GetTags() []string {
-	if o == nil {
+func (c *Consumer) GetTags() []string {
+	if c == nil {
 		return nil
 	}
-	return o.Tags
+	return c.Tags
 }
 
-func (o *Consumer) GetUpdatedAt() *int64 {
-	if o == nil {
+func (c *Consumer) GetUpdatedAt() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return c.UpdatedAt
 }
 
-func (o *Consumer) GetUsername() *string {
-	if o == nil {
+func (c *Consumer) GetUsername() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Username
+	return c.Username
 }

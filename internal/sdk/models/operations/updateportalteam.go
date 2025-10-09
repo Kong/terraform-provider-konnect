@@ -16,25 +16,25 @@ type UpdatePortalTeamRequest struct {
 	PortalUpdateTeamRequest *shared.PortalUpdateTeamRequest `request:"mediaType=application/json"`
 }
 
-func (o *UpdatePortalTeamRequest) GetTeamID() string {
-	if o == nil {
+func (u *UpdatePortalTeamRequest) GetTeamID() string {
+	if u == nil {
 		return ""
 	}
-	return o.TeamID
+	return u.TeamID
 }
 
-func (o *UpdatePortalTeamRequest) GetPortalID() string {
-	if o == nil {
+func (u *UpdatePortalTeamRequest) GetPortalID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PortalID
+	return u.PortalID
 }
 
-func (o *UpdatePortalTeamRequest) GetPortalUpdateTeamRequest() *shared.PortalUpdateTeamRequest {
-	if o == nil {
+func (u *UpdatePortalTeamRequest) GetPortalUpdateTeamRequest() *shared.PortalUpdateTeamRequest {
+	if u == nil {
 		return nil
 	}
-	return o.PortalUpdateTeamRequest
+	return u.PortalUpdateTeamRequest
 }
 
 type UpdatePortalTeamResponse struct {
@@ -54,51 +54,51 @@ type UpdatePortalTeamResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *UpdatePortalTeamResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdatePortalTeamResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdatePortalTeamResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdatePortalTeamResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdatePortalTeamResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdatePortalTeamResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdatePortalTeamResponse) GetPortalTeamResponse() *shared.PortalTeamResponse {
-	if o == nil {
+func (u *UpdatePortalTeamResponse) GetPortalTeamResponse() *shared.PortalTeamResponse {
+	if u == nil {
 		return nil
 	}
-	return o.PortalTeamResponse
+	return u.PortalTeamResponse
 }
 
-func (o *UpdatePortalTeamResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (u *UpdatePortalTeamResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return u.UnauthorizedError
 }
 
-func (o *UpdatePortalTeamResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (u *UpdatePortalTeamResponse) GetForbiddenError() *shared.ForbiddenError {
+	if u == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return u.ForbiddenError
 }
 
-func (o *UpdatePortalTeamResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (u *UpdatePortalTeamResponse) GetNotFoundError() *shared.NotFoundError {
+	if u == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return u.NotFoundError
 }

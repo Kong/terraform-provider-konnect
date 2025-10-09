@@ -14,18 +14,18 @@ type GetGraphqlratelimitingadvancedPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetGraphqlratelimitingadvancedPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetGraphqlratelimitingadvancedPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetGraphqlratelimitingadvancedPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetGraphqlratelimitingadvancedPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetGraphqlratelimitingadvancedPluginResponse struct {
@@ -41,37 +41,37 @@ type GetGraphqlratelimitingadvancedPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetGraphqlratelimitingadvancedPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetGraphqlratelimitingadvancedPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetGraphqlratelimitingadvancedPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetGraphqlratelimitingadvancedPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetGraphqlratelimitingadvancedPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetGraphqlratelimitingadvancedPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetGraphqlratelimitingadvancedPluginResponse) GetGraphqlRateLimitingAdvancedPlugin() *shared.GraphqlRateLimitingAdvancedPlugin {
-	if o == nil {
+func (g *GetGraphqlratelimitingadvancedPluginResponse) GetGraphqlRateLimitingAdvancedPlugin() *shared.GraphqlRateLimitingAdvancedPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.GraphqlRateLimitingAdvancedPlugin
+	return g.GraphqlRateLimitingAdvancedPlugin
 }
 
-func (o *GetGraphqlratelimitingadvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetGraphqlratelimitingadvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

@@ -14,18 +14,18 @@ type GetGrpcgatewayPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetGrpcgatewayPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetGrpcgatewayPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetGrpcgatewayPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetGrpcgatewayPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetGrpcgatewayPluginResponse struct {
@@ -41,37 +41,37 @@ type GetGrpcgatewayPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetGrpcgatewayPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetGrpcgatewayPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetGrpcgatewayPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetGrpcgatewayPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetGrpcgatewayPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetGrpcgatewayPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetGrpcgatewayPluginResponse) GetGrpcGatewayPlugin() *shared.GrpcGatewayPlugin {
-	if o == nil {
+func (g *GetGrpcgatewayPluginResponse) GetGrpcGatewayPlugin() *shared.GrpcGatewayPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.GrpcGatewayPlugin
+	return g.GrpcGatewayPlugin
 }
 
-func (o *GetGrpcgatewayPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetGrpcgatewayPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

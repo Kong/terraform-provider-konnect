@@ -13,8 +13,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -113,10 +115,21 @@ func (r *GatewayPluginCorsResource) Schema(ctx context.Context, req resource.Sch
 						Description: `Indicates how long the results of the preflight request can be cached, in ` + "`" + `seconds` + "`" + `.`,
 					},
 					"methods": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+							types.StringValue("CONNECT"),
+							types.StringValue("DELETE"),
+							types.StringValue("GET"),
+							types.StringValue("HEAD"),
+							types.StringValue("OPTIONS"),
+							types.StringValue("PATCH"),
+							types.StringValue("POST"),
+							types.StringValue("PUT"),
+							types.StringValue("TRACE"),
+						})),
 						ElementType: types.StringType,
-						Description: `'Value for the ` + "`" + `Access-Control-Allow-Methods` + "`" + ` header. Available options include ` + "`" + `GET` + "`" + `, ` + "`" + `HEAD` + "`" + `, ` + "`" + `PUT` + "`" + `, ` + "`" + `PATCH` + "`" + `, ` + "`" + `POST` + "`" + `, ` + "`" + `DELETE` + "`" + `, ` + "`" + `OPTIONS` + "`" + `, ` + "`" + `TRACE` + "`" + `, ` + "`" + `CONNECT` + "`" + `. By default, all options are allowed.'`,
+						Description: `'Value for the ` + "`" + `Access-Control-Allow-Methods` + "`" + ` header. Available options include ` + "`" + `GET` + "`" + `, ` + "`" + `HEAD` + "`" + `, ` + "`" + `PUT` + "`" + `, ` + "`" + `PATCH` + "`" + `, ` + "`" + `POST` + "`" + `, ` + "`" + `DELETE` + "`" + `, ` + "`" + `OPTIONS` + "`" + `, ` + "`" + `TRACE` + "`" + `, ` + "`" + `CONNECT` + "`" + `. By default, all options are allowed.'. Default: ["CONNECT","DELETE","GET","HEAD","OPTIONS","PATCH","POST","PUT","TRACE"]`,
 					},
 					"origins": schema.ListAttribute{
 						Optional:    true,
@@ -240,10 +253,16 @@ func (r *GatewayPluginCorsResource) Schema(ctx context.Context, req resource.Sch
 				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.SetAttribute{
-				Computed:    true,
-				Optional:    true,
+				Computed: true,
+				Optional: true,
+				Default: setdefault.StaticValue(types.SetValueMust(types.StringType, []attr.Value{
+					types.StringValue("grpc"),
+					types.StringValue("grpcs"),
+					types.StringValue("http"),
+					types.StringValue("https"),
+				})),
 				ElementType: types.StringType,
-				Description: `A set of strings representing HTTP protocols.`,
+				Description: `A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,

@@ -16,7 +16,7 @@ const (
 
 // IntegrationInstanceAuthConfig - A response containing integration instance auth config.
 type IntegrationInstanceAuthConfig struct {
-	OauthAuthConfig *OauthAuthConfig `queryParam:"inline"`
+	OauthAuthConfig *OauthAuthConfig `queryParam:"inline,name=IntegrationInstanceAuthConfig"`
 
 	Type IntegrationInstanceAuthConfigType
 }
@@ -33,7 +33,7 @@ func CreateIntegrationInstanceAuthConfigOauthAuthConfig(oauthAuthConfig OauthAut
 func (u *IntegrationInstanceAuthConfig) UnmarshalJSON(data []byte) error {
 
 	var oauthAuthConfig OauthAuthConfig = OauthAuthConfig{}
-	if err := utils.UnmarshalJSON(data, &oauthAuthConfig, "", true, true); err == nil {
+	if err := utils.UnmarshalJSON(data, &oauthAuthConfig, "", true, nil); err == nil {
 		u.OauthAuthConfig = &oauthAuthConfig
 		u.Type = IntegrationInstanceAuthConfigTypeOauthAuthConfig
 		return nil

@@ -35,57 +35,57 @@ func (c CreateAPIRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateAPIRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CreateAPIRequest) GetName() string {
-	if o == nil {
+func (c *CreateAPIRequest) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *CreateAPIRequest) GetDescription() *string {
-	if o == nil {
+func (c *CreateAPIRequest) GetDescription() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Description
+	return c.Description
 }
 
-func (o *CreateAPIRequest) GetVersion() *string {
-	if o == nil {
+func (c *CreateAPIRequest) GetVersion() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Version
+	return c.Version
 }
 
-func (o *CreateAPIRequest) GetSlug() *string {
-	if o == nil {
+func (c *CreateAPIRequest) GetSlug() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Slug
+	return c.Slug
 }
 
-func (o *CreateAPIRequest) GetLabels() map[string]*string {
-	if o == nil {
+func (c *CreateAPIRequest) GetLabels() map[string]*string {
+	if c == nil {
 		return nil
 	}
-	return o.Labels
+	return c.Labels
 }
 
-func (o *CreateAPIRequest) GetAttributes() any {
-	if o == nil {
+func (c *CreateAPIRequest) GetAttributes() any {
+	if c == nil {
 		return nil
 	}
-	return o.Attributes
+	return c.Attributes
 }
 
-func (o *CreateAPIRequest) GetSpecContent() *string {
-	if o == nil {
+func (c *CreateAPIRequest) GetSpecContent() *string {
+	if c == nil {
 		return nil
 	}
-	return o.SpecContent
+	return c.SpecContent
 }

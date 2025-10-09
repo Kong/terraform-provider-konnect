@@ -59,24 +59,24 @@ func (s StateMetadata) MarshalJSON() ([]byte, error) {
 }
 
 func (s *StateMetadata) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *StateMetadata) GetReportedStatus() *string {
-	if o == nil {
+func (s *StateMetadata) GetReportedStatus() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ReportedStatus
+	return s.ReportedStatus
 }
 
-func (o *StateMetadata) GetReason() *string {
-	if o == nil {
+func (s *StateMetadata) GetReason() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Reason
+	return s.Reason
 }
 
 // ConfigurationDataPlaneGroup - Object that describes the set of data-plane groups currently pointed to this configuration.
@@ -113,92 +113,92 @@ func (c ConfigurationDataPlaneGroup) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfigurationDataPlaneGroup) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "provider", "region", "autoscale", "cloud_gateway_network_id", "state", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ConfigurationDataPlaneGroup) GetID() string {
-	if o == nil {
+func (c *ConfigurationDataPlaneGroup) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *ConfigurationDataPlaneGroup) GetProvider() ProviderName {
-	if o == nil {
+func (c *ConfigurationDataPlaneGroup) GetProvider() ProviderName {
+	if c == nil {
 		return ProviderName("")
 	}
-	return o.Provider
+	return c.Provider
 }
 
-func (o *ConfigurationDataPlaneGroup) GetRegion() string {
-	if o == nil {
+func (c *ConfigurationDataPlaneGroup) GetRegion() string {
+	if c == nil {
 		return ""
 	}
-	return o.Region
+	return c.Region
 }
 
-func (o *ConfigurationDataPlaneGroup) GetAutoscale() ConfigurationDataPlaneGroupAutoscale {
-	if o == nil {
+func (c *ConfigurationDataPlaneGroup) GetAutoscale() ConfigurationDataPlaneGroupAutoscale {
+	if c == nil {
 		return ConfigurationDataPlaneGroupAutoscale{}
 	}
-	return o.Autoscale
+	return c.Autoscale
 }
 
-func (o *ConfigurationDataPlaneGroup) GetEnvironment() []ConfigurationDataPlaneGroupEnvironmentField {
-	if o == nil {
+func (c *ConfigurationDataPlaneGroup) GetEnvironment() []ConfigurationDataPlaneGroupEnvironmentField {
+	if c == nil {
 		return nil
 	}
-	return o.Environment
+	return c.Environment
 }
 
-func (o *ConfigurationDataPlaneGroup) GetCloudGatewayNetworkID() string {
-	if o == nil {
+func (c *ConfigurationDataPlaneGroup) GetCloudGatewayNetworkID() string {
+	if c == nil {
 		return ""
 	}
-	return o.CloudGatewayNetworkID
+	return c.CloudGatewayNetworkID
 }
 
-func (o *ConfigurationDataPlaneGroup) GetState() State {
-	if o == nil {
+func (c *ConfigurationDataPlaneGroup) GetState() State {
+	if c == nil {
 		return State("")
 	}
-	return o.State
+	return c.State
 }
 
-func (o *ConfigurationDataPlaneGroup) GetStateMetadata() *StateMetadata {
-	if o == nil {
+func (c *ConfigurationDataPlaneGroup) GetStateMetadata() *StateMetadata {
+	if c == nil {
 		return nil
 	}
-	return o.StateMetadata
+	return c.StateMetadata
 }
 
-func (o *ConfigurationDataPlaneGroup) GetPrivateIPAddresses() []string {
-	if o == nil {
+func (c *ConfigurationDataPlaneGroup) GetPrivateIPAddresses() []string {
+	if c == nil {
 		return nil
 	}
-	return o.PrivateIPAddresses
+	return c.PrivateIPAddresses
 }
 
-func (o *ConfigurationDataPlaneGroup) GetEgressIPAddresses() []string {
-	if o == nil {
+func (c *ConfigurationDataPlaneGroup) GetEgressIPAddresses() []string {
+	if c == nil {
 		return nil
 	}
-	return o.EgressIPAddresses
+	return c.EgressIPAddresses
 }
 
-func (o *ConfigurationDataPlaneGroup) GetCreatedAt() time.Time {
-	if o == nil {
+func (c *ConfigurationDataPlaneGroup) GetCreatedAt() time.Time {
+	if c == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return c.CreatedAt
 }
 
-func (o *ConfigurationDataPlaneGroup) GetUpdatedAt() time.Time {
-	if o == nil {
+func (c *ConfigurationDataPlaneGroup) GetUpdatedAt() time.Time {
+	if c == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return c.UpdatedAt
 }

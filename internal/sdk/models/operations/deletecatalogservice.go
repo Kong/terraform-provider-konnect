@@ -12,11 +12,11 @@ type DeleteCatalogServiceRequest struct {
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (o *DeleteCatalogServiceRequest) GetID() string {
-	if o == nil {
+func (d *DeleteCatalogServiceRequest) GetID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ID
+	return d.ID
 }
 
 type DeleteCatalogServiceResponse struct {
@@ -34,44 +34,44 @@ type DeleteCatalogServiceResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *DeleteCatalogServiceResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteCatalogServiceResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteCatalogServiceResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteCatalogServiceResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteCatalogServiceResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteCatalogServiceResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteCatalogServiceResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (d *DeleteCatalogServiceResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return d.UnauthorizedError
 }
 
-func (o *DeleteCatalogServiceResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (d *DeleteCatalogServiceResponse) GetForbiddenError() *shared.ForbiddenError {
+	if d == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return d.ForbiddenError
 }
 
-func (o *DeleteCatalogServiceResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (d *DeleteCatalogServiceResponse) GetNotFoundError() *shared.NotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return d.NotFoundError
 }

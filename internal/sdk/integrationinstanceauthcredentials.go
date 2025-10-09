@@ -70,7 +70,7 @@ func (s *IntegrationInstanceAuthCredentials) CreateIntegrationInstanceAuthCreden
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-integration-instance-auth-credential",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateIntegrationInstanceAuthCredential", "json", `request:"mediaType=application/json"`)
@@ -318,7 +318,7 @@ func (s *IntegrationInstanceAuthCredentials) GetIntegrationInstanceAuthCredentia
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-integration-instance-auth-credential",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -516,7 +516,7 @@ func (s *IntegrationInstanceAuthCredentials) DeleteIntegrationInstanceAuthCreden
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-integration-instance-auth-credential",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

@@ -1067,6 +1067,104 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				MarkdownDescription: `Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the` + "\n" +
 					`transit gateway.`,
 			},
+			"gcp_vpc_peering_transit_gateway": schema.SingleNestedAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.Object{
+					objectplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Attributes: map[string]schema.Attribute{
+					"dns_config": schema.ListNestedAttribute{
+						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							listplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						NestedObject: schema.NestedAttributeObject{
+							PlanModifiers: []planmodifier.Object{
+								objectplanmodifier.RequiresReplaceIfConfigured(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"domain_proxy_list": schema.ListAttribute{
+									Required: true,
+									PlanModifiers: []planmodifier.List{
+										listplanmodifier.RequiresReplaceIfConfigured(),
+									},
+									ElementType: types.StringType,
+									MarkdownDescription: `Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,` + "\n" +
+										`for a transit gateway.` + "\n" +
+										`Requires replacement if changed.`,
+								},
+								"remote_dns_server_ip_addresses": schema.ListAttribute{
+									Required: true,
+									PlanModifiers: []planmodifier.List{
+										listplanmodifier.RequiresReplaceIfConfigured(),
+									},
+									ElementType: types.StringType,
+									Description: `Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway. Requires replacement if changed.`,
+								},
+							},
+						},
+						MarkdownDescription: `List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway` + "\n" +
+							`attachment.` + "\n" +
+							`Requires replacement if changed.`,
+					},
+					"name": schema.StringAttribute{
+						Required: true,
+						PlanModifiers: []planmodifier.String{
+							stringplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Description: `Human-readable name of the transit gateway. Requires replacement if changed.`,
+					},
+					"transit_gateway_attachment_config": schema.SingleNestedAttribute{
+						Required: true,
+						PlanModifiers: []planmodifier.Object{
+							objectplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Attributes: map[string]schema.Attribute{
+							"kind": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `must be "gcp-vpc-peering-attachment"; Requires replacement if changed.`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"gcp-vpc-peering-attachment",
+									),
+								},
+							},
+							"peer_project_id": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `GCP Project ID of the peer account to create attachment to. Requires replacement if changed.`,
+							},
+							"peer_vpc_name": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `GCP VPC Name of the peer account to create attachment to. Requires replacement if changed.`,
+							},
+						},
+						Description: `Requires replacement if changed.`,
+					},
+				},
+				Description: `Requires replacement if changed.`,
+				Validators: []validator.Object{
+					objectvalidator.ConflictsWith(path.Expressions{
+						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway"),
+						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway_response"),
+						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
+						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
+						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
+						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway_response"),
+						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
+						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
+						path.MatchRelative().AtParent().AtName("gcpvpc_peering_gateway_response"),
+					}...),
+				},
+			},
 			"gcpvpc_peering_gateway_response": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
@@ -1187,104 +1285,6 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
 						path.MatchRelative().AtParent().AtName("gcp_vpc_peering_transit_gateway"),
-					}...),
-				},
-			},
-			"gcp_vpc_peering_transit_gateway": schema.SingleNestedAttribute{
-				Optional: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Attributes: map[string]schema.Attribute{
-					"dns_config": schema.ListNestedAttribute{
-						Optional: true,
-						PlanModifiers: []planmodifier.List{
-							listplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						NestedObject: schema.NestedAttributeObject{
-							PlanModifiers: []planmodifier.Object{
-								objectplanmodifier.RequiresReplaceIfConfigured(),
-							},
-							Attributes: map[string]schema.Attribute{
-								"domain_proxy_list": schema.ListAttribute{
-									Required: true,
-									PlanModifiers: []planmodifier.List{
-										listplanmodifier.RequiresReplaceIfConfigured(),
-									},
-									ElementType: types.StringType,
-									MarkdownDescription: `Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,` + "\n" +
-										`for a transit gateway.` + "\n" +
-										`Requires replacement if changed.`,
-								},
-								"remote_dns_server_ip_addresses": schema.ListAttribute{
-									Required: true,
-									PlanModifiers: []planmodifier.List{
-										listplanmodifier.RequiresReplaceIfConfigured(),
-									},
-									ElementType: types.StringType,
-									Description: `Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway. Requires replacement if changed.`,
-								},
-							},
-						},
-						MarkdownDescription: `List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway` + "\n" +
-							`attachment.` + "\n" +
-							`Requires replacement if changed.`,
-					},
-					"name": schema.StringAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `Human-readable name of the transit gateway. Requires replacement if changed.`,
-					},
-					"transit_gateway_attachment_config": schema.SingleNestedAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.Object{
-							objectplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Attributes: map[string]schema.Attribute{
-							"kind": schema.StringAttribute{
-								Required: true,
-								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.RequiresReplaceIfConfigured(),
-								},
-								Description: `must be "gcp-vpc-peering-attachment"; Requires replacement if changed.`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"gcp-vpc-peering-attachment",
-									),
-								},
-							},
-							"peer_project_id": schema.StringAttribute{
-								Required: true,
-								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.RequiresReplaceIfConfigured(),
-								},
-								Description: `GCP Project ID of the peer account to create attachment to. Requires replacement if changed.`,
-							},
-							"peer_vpc_name": schema.StringAttribute{
-								Required: true,
-								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.RequiresReplaceIfConfigured(),
-								},
-								Description: `GCP VPC Name of the peer account to create attachment to. Requires replacement if changed.`,
-							},
-						},
-						Description: `Requires replacement if changed.`,
-					},
-				},
-				Description: `Requires replacement if changed.`,
-				Validators: []validator.Object{
-					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway_response"),
-						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
-						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway_response"),
-						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
-						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
-						path.MatchRelative().AtParent().AtName("gcpvpc_peering_gateway_response"),
 					}...),
 				},
 			},

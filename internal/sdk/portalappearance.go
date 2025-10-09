@@ -62,7 +62,7 @@ func (s *PortalAppearance) GetPortalAppearance(ctx context.Context, request oper
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-portal-appearance",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -261,7 +261,7 @@ func (s *PortalAppearance) UpdatePortalAppearance(ctx context.Context, request o
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-portal-appearance",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "V2PortalAppearance", "json", `request:"mediaType=application/json"`)

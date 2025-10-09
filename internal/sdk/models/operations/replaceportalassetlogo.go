@@ -14,18 +14,18 @@ type ReplacePortalAssetLogoRequest struct {
 	ReplacePortalImageAsset *shared.ReplacePortalImageAsset `request:"mediaType=application/json"`
 }
 
-func (o *ReplacePortalAssetLogoRequest) GetPortalID() string {
-	if o == nil {
+func (r *ReplacePortalAssetLogoRequest) GetPortalID() string {
+	if r == nil {
 		return ""
 	}
-	return o.PortalID
+	return r.PortalID
 }
 
-func (o *ReplacePortalAssetLogoRequest) GetReplacePortalImageAsset() *shared.ReplacePortalImageAsset {
-	if o == nil {
+func (r *ReplacePortalAssetLogoRequest) GetReplacePortalImageAsset() *shared.ReplacePortalImageAsset {
+	if r == nil {
 		return nil
 	}
-	return o.ReplacePortalImageAsset
+	return r.ReplacePortalImageAsset
 }
 
 type ReplacePortalAssetLogoResponse struct {
@@ -45,51 +45,51 @@ type ReplacePortalAssetLogoResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *ReplacePortalAssetLogoResponse) GetContentType() string {
-	if o == nil {
+func (r *ReplacePortalAssetLogoResponse) GetContentType() string {
+	if r == nil {
 		return ""
 	}
-	return o.ContentType
+	return r.ContentType
 }
 
-func (o *ReplacePortalAssetLogoResponse) GetStatusCode() int {
-	if o == nil {
+func (r *ReplacePortalAssetLogoResponse) GetStatusCode() int {
+	if r == nil {
 		return 0
 	}
-	return o.StatusCode
+	return r.StatusCode
 }
 
-func (o *ReplacePortalAssetLogoResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (r *ReplacePortalAssetLogoResponse) GetRawResponse() *http.Response {
+	if r == nil {
 		return nil
 	}
-	return o.RawResponse
+	return r.RawResponse
 }
 
-func (o *ReplacePortalAssetLogoResponse) GetPortalAssetResponse() *shared.PortalAssetResponse {
-	if o == nil {
+func (r *ReplacePortalAssetLogoResponse) GetPortalAssetResponse() *shared.PortalAssetResponse {
+	if r == nil {
 		return nil
 	}
-	return o.PortalAssetResponse
+	return r.PortalAssetResponse
 }
 
-func (o *ReplacePortalAssetLogoResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (r *ReplacePortalAssetLogoResponse) GetBadRequestError() *shared.BadRequestError {
+	if r == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return r.BadRequestError
 }
 
-func (o *ReplacePortalAssetLogoResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (r *ReplacePortalAssetLogoResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if r == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return r.UnauthorizedError
 }
 
-func (o *ReplacePortalAssetLogoResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (r *ReplacePortalAssetLogoResponse) GetForbiddenError() *shared.ForbiddenError {
+	if r == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return r.ForbiddenError
 }

@@ -12,22 +12,22 @@ type RequestCalloutPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *RequestCalloutPluginAfter) GetAccess() []string {
-	if o == nil {
+func (r *RequestCalloutPluginAfter) GetAccess() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Access
+	return r.Access
 }
 
 type RequestCalloutPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *RequestCalloutPluginBefore) GetAccess() []string {
-	if o == nil {
+func (r *RequestCalloutPluginBefore) GetAccess() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Access
+	return r.Access
 }
 
 type RequestCalloutPluginOrdering struct {
@@ -35,18 +35,18 @@ type RequestCalloutPluginOrdering struct {
 	Before *RequestCalloutPluginBefore `json:"before,omitempty"`
 }
 
-func (o *RequestCalloutPluginOrdering) GetAfter() *RequestCalloutPluginAfter {
-	if o == nil {
+func (r *RequestCalloutPluginOrdering) GetAfter() *RequestCalloutPluginAfter {
+	if r == nil {
 		return nil
 	}
-	return o.After
+	return r.After
 }
 
-func (o *RequestCalloutPluginOrdering) GetBefore() *RequestCalloutPluginBefore {
-	if o == nil {
+func (r *RequestCalloutPluginOrdering) GetBefore() *RequestCalloutPluginBefore {
+	if r == nil {
 		return nil
 	}
-	return o.Before
+	return r.Before
 }
 
 type RequestCalloutPluginPartials struct {
@@ -57,25 +57,25 @@ type RequestCalloutPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *RequestCalloutPluginPartials) GetID() *string {
-	if o == nil {
+func (r *RequestCalloutPluginPartials) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
-func (o *RequestCalloutPluginPartials) GetName() *string {
-	if o == nil {
+func (r *RequestCalloutPluginPartials) GetName() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Name
+	return r.Name
 }
 
-func (o *RequestCalloutPluginPartials) GetPath() *string {
-	if o == nil {
+func (r *RequestCalloutPluginPartials) GetPath() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Path
+	return r.Path
 }
 
 type RequestCalloutPluginMemory struct {
@@ -88,17 +88,17 @@ func (r RequestCalloutPluginMemory) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestCalloutPluginMemory) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RequestCalloutPluginMemory) GetDictionaryName() *string {
-	if o == nil {
+func (r *RequestCalloutPluginMemory) GetDictionaryName() *string {
+	if r == nil {
 		return nil
 	}
-	return o.DictionaryName
+	return r.DictionaryName
 }
 
 type RequestCalloutPluginClusterNodes struct {
@@ -113,24 +113,24 @@ func (r RequestCalloutPluginClusterNodes) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestCalloutPluginClusterNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RequestCalloutPluginClusterNodes) GetIP() *string {
-	if o == nil {
+func (r *RequestCalloutPluginClusterNodes) GetIP() *string {
+	if r == nil {
 		return nil
 	}
-	return o.IP
+	return r.IP
 }
 
-func (o *RequestCalloutPluginClusterNodes) GetPort() *int64 {
-	if o == nil {
+func (r *RequestCalloutPluginClusterNodes) GetPort() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.Port
+	return r.Port
 }
 
 type RequestCalloutPluginSentinelNodes struct {
@@ -145,24 +145,24 @@ func (r RequestCalloutPluginSentinelNodes) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestCalloutPluginSentinelNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RequestCalloutPluginSentinelNodes) GetHost() *string {
-	if o == nil {
+func (r *RequestCalloutPluginSentinelNodes) GetHost() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Host
+	return r.Host
 }
 
-func (o *RequestCalloutPluginSentinelNodes) GetPort() *int64 {
-	if o == nil {
+func (r *RequestCalloutPluginSentinelNodes) GetPort() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.Port
+	return r.Port
 }
 
 // RequestCalloutPluginSentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -245,157 +245,157 @@ func (r RequestCalloutPluginRedis) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestCalloutPluginRedis) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RequestCalloutPluginRedis) GetClusterMaxRedirections() *int64 {
-	if o == nil {
+func (r *RequestCalloutPluginRedis) GetClusterMaxRedirections() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.ClusterMaxRedirections
+	return r.ClusterMaxRedirections
 }
 
-func (o *RequestCalloutPluginRedis) GetClusterNodes() []RequestCalloutPluginClusterNodes {
-	if o == nil {
+func (r *RequestCalloutPluginRedis) GetClusterNodes() []RequestCalloutPluginClusterNodes {
+	if r == nil {
 		return nil
 	}
-	return o.ClusterNodes
+	return r.ClusterNodes
 }
 
-func (o *RequestCalloutPluginRedis) GetConnectTimeout() *int64 {
-	if o == nil {
+func (r *RequestCalloutPluginRedis) GetConnectTimeout() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.ConnectTimeout
+	return r.ConnectTimeout
 }
 
-func (o *RequestCalloutPluginRedis) GetConnectionIsProxied() *bool {
-	if o == nil {
+func (r *RequestCalloutPluginRedis) GetConnectionIsProxied() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.ConnectionIsProxied
+	return r.ConnectionIsProxied
 }
 
-func (o *RequestCalloutPluginRedis) GetDatabase() *int64 {
-	if o == nil {
+func (r *RequestCalloutPluginRedis) GetDatabase() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.Database
+	return r.Database
 }
 
-func (o *RequestCalloutPluginRedis) GetHost() *string {
-	if o == nil {
+func (r *RequestCalloutPluginRedis) GetHost() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Host
+	return r.Host
 }
 
-func (o *RequestCalloutPluginRedis) GetKeepaliveBacklog() *int64 {
-	if o == nil {
+func (r *RequestCalloutPluginRedis) GetKeepaliveBacklog() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.KeepaliveBacklog
+	return r.KeepaliveBacklog
 }
 
-func (o *RequestCalloutPluginRedis) GetKeepalivePoolSize() *int64 {
-	if o == nil {
+func (r *RequestCalloutPluginRedis) GetKeepalivePoolSize() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.KeepalivePoolSize
+	return r.KeepalivePoolSize
 }
 
-func (o *RequestCalloutPluginRedis) GetPassword() *string {
-	if o == nil {
+func (r *RequestCalloutPluginRedis) GetPassword() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Password
+	return r.Password
 }
 
-func (o *RequestCalloutPluginRedis) GetPort() *int64 {
-	if o == nil {
+func (r *RequestCalloutPluginRedis) GetPort() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.Port
+	return r.Port
 }
 
-func (o *RequestCalloutPluginRedis) GetReadTimeout() *int64 {
-	if o == nil {
+func (r *RequestCalloutPluginRedis) GetReadTimeout() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.ReadTimeout
+	return r.ReadTimeout
 }
 
-func (o *RequestCalloutPluginRedis) GetSendTimeout() *int64 {
-	if o == nil {
+func (r *RequestCalloutPluginRedis) GetSendTimeout() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.SendTimeout
+	return r.SendTimeout
 }
 
-func (o *RequestCalloutPluginRedis) GetSentinelMaster() *string {
-	if o == nil {
+func (r *RequestCalloutPluginRedis) GetSentinelMaster() *string {
+	if r == nil {
 		return nil
 	}
-	return o.SentinelMaster
+	return r.SentinelMaster
 }
 
-func (o *RequestCalloutPluginRedis) GetSentinelNodes() []RequestCalloutPluginSentinelNodes {
-	if o == nil {
+func (r *RequestCalloutPluginRedis) GetSentinelNodes() []RequestCalloutPluginSentinelNodes {
+	if r == nil {
 		return nil
 	}
-	return o.SentinelNodes
+	return r.SentinelNodes
 }
 
-func (o *RequestCalloutPluginRedis) GetSentinelPassword() *string {
-	if o == nil {
+func (r *RequestCalloutPluginRedis) GetSentinelPassword() *string {
+	if r == nil {
 		return nil
 	}
-	return o.SentinelPassword
+	return r.SentinelPassword
 }
 
-func (o *RequestCalloutPluginRedis) GetSentinelRole() *RequestCalloutPluginSentinelRole {
-	if o == nil {
+func (r *RequestCalloutPluginRedis) GetSentinelRole() *RequestCalloutPluginSentinelRole {
+	if r == nil {
 		return nil
 	}
-	return o.SentinelRole
+	return r.SentinelRole
 }
 
-func (o *RequestCalloutPluginRedis) GetSentinelUsername() *string {
-	if o == nil {
+func (r *RequestCalloutPluginRedis) GetSentinelUsername() *string {
+	if r == nil {
 		return nil
 	}
-	return o.SentinelUsername
+	return r.SentinelUsername
 }
 
-func (o *RequestCalloutPluginRedis) GetServerName() *string {
-	if o == nil {
+func (r *RequestCalloutPluginRedis) GetServerName() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ServerName
+	return r.ServerName
 }
 
-func (o *RequestCalloutPluginRedis) GetSsl() *bool {
-	if o == nil {
+func (r *RequestCalloutPluginRedis) GetSsl() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Ssl
+	return r.Ssl
 }
 
-func (o *RequestCalloutPluginRedis) GetSslVerify() *bool {
-	if o == nil {
+func (r *RequestCalloutPluginRedis) GetSslVerify() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.SslVerify
+	return r.SslVerify
 }
 
-func (o *RequestCalloutPluginRedis) GetUsername() *string {
-	if o == nil {
+func (r *RequestCalloutPluginRedis) GetUsername() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Username
+	return r.Username
 }
 
 // RequestCalloutPluginStrategy - The backing data store in which to hold cache entities. Accepted values are: `off`, `memory`, and `redis`.
@@ -443,38 +443,38 @@ func (c Cache) MarshalJSON() ([]byte, error) {
 }
 
 func (c *Cache) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Cache) GetCacheTTL() *int64 {
-	if o == nil {
+func (c *Cache) GetCacheTTL() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.CacheTTL
+	return c.CacheTTL
 }
 
-func (o *Cache) GetMemory() *RequestCalloutPluginMemory {
-	if o == nil {
+func (c *Cache) GetMemory() *RequestCalloutPluginMemory {
+	if c == nil {
 		return nil
 	}
-	return o.Memory
+	return c.Memory
 }
 
-func (o *Cache) GetRedis() *RequestCalloutPluginRedis {
-	if o == nil {
+func (c *Cache) GetRedis() *RequestCalloutPluginRedis {
+	if c == nil {
 		return nil
 	}
-	return o.Redis
+	return c.Redis
 }
 
-func (o *Cache) GetStrategy() *RequestCalloutPluginStrategy {
-	if o == nil {
+func (c *Cache) GetStrategy() *RequestCalloutPluginStrategy {
+	if c == nil {
 		return nil
 	}
-	return o.Strategy
+	return c.Strategy
 }
 
 // RequestCalloutPluginCache - Callout caching configuration.
@@ -488,17 +488,17 @@ func (r RequestCalloutPluginCache) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestCalloutPluginCache) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RequestCalloutPluginCache) GetBypass() *bool {
-	if o == nil {
+func (r *RequestCalloutPluginCache) GetBypass() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Bypass
+	return r.Bypass
 }
 
 // RequestCalloutPluginConfigBody - Callout request body customizations.
@@ -516,31 +516,31 @@ func (r RequestCalloutPluginConfigBody) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestCalloutPluginConfigBody) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RequestCalloutPluginConfigBody) GetCustom() map[string]any {
-	if o == nil {
+func (r *RequestCalloutPluginConfigBody) GetCustom() map[string]any {
+	if r == nil {
 		return nil
 	}
-	return o.Custom
+	return r.Custom
 }
 
-func (o *RequestCalloutPluginConfigBody) GetDecode() *bool {
-	if o == nil {
+func (r *RequestCalloutPluginConfigBody) GetDecode() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Decode
+	return r.Decode
 }
 
-func (o *RequestCalloutPluginConfigBody) GetForward() *bool {
-	if o == nil {
+func (r *RequestCalloutPluginConfigBody) GetForward() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Forward
+	return r.Forward
 }
 
 type OnError string
@@ -590,45 +590,45 @@ func (e Error) MarshalJSON() ([]byte, error) {
 }
 
 func (e *Error) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Error) GetErrorResponseCode() *int64 {
-	if o == nil {
+func (e *Error) GetErrorResponseCode() *int64 {
+	if e == nil {
 		return nil
 	}
-	return o.ErrorResponseCode
+	return e.ErrorResponseCode
 }
 
-func (o *Error) GetErrorResponseMsg() *string {
-	if o == nil {
+func (e *Error) GetErrorResponseMsg() *string {
+	if e == nil {
 		return nil
 	}
-	return o.ErrorResponseMsg
+	return e.ErrorResponseMsg
 }
 
-func (o *Error) GetHTTPStatuses() []int64 {
-	if o == nil {
+func (e *Error) GetHTTPStatuses() []int64 {
+	if e == nil {
 		return nil
 	}
-	return o.HTTPStatuses
+	return e.HTTPStatuses
 }
 
-func (o *Error) GetOnError() *OnError {
-	if o == nil {
+func (e *Error) GetOnError() *OnError {
+	if e == nil {
 		return nil
 	}
-	return o.OnError
+	return e.OnError
 }
 
-func (o *Error) GetRetries() *int64 {
-	if o == nil {
+func (e *Error) GetRetries() *int64 {
+	if e == nil {
 		return nil
 	}
-	return o.Retries
+	return e.Retries
 }
 
 // RequestCalloutPluginConfigCalloutsHeaders - Callout request header customizations.
@@ -644,24 +644,24 @@ func (r RequestCalloutPluginConfigCalloutsHeaders) MarshalJSON() ([]byte, error)
 }
 
 func (r *RequestCalloutPluginConfigCalloutsHeaders) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RequestCalloutPluginConfigCalloutsHeaders) GetCustom() map[string]any {
-	if o == nil {
+func (r *RequestCalloutPluginConfigCalloutsHeaders) GetCustom() map[string]any {
+	if r == nil {
 		return nil
 	}
-	return o.Custom
+	return r.Custom
 }
 
-func (o *RequestCalloutPluginConfigCalloutsHeaders) GetForward() *bool {
-	if o == nil {
+func (r *RequestCalloutPluginConfigCalloutsHeaders) GetForward() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Forward
+	return r.Forward
 }
 
 // Proxy settings.
@@ -681,38 +681,38 @@ func (p Proxy) MarshalJSON() ([]byte, error) {
 }
 
 func (p *Proxy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Proxy) GetAuthPassword() *string {
-	if o == nil {
+func (p *Proxy) GetAuthPassword() *string {
+	if p == nil {
 		return nil
 	}
-	return o.AuthPassword
+	return p.AuthPassword
 }
 
-func (o *Proxy) GetAuthUsername() *string {
-	if o == nil {
+func (p *Proxy) GetAuthUsername() *string {
+	if p == nil {
 		return nil
 	}
-	return o.AuthUsername
+	return p.AuthUsername
 }
 
-func (o *Proxy) GetHTTPProxy() *string {
-	if o == nil {
+func (p *Proxy) GetHTTPProxy() *string {
+	if p == nil {
 		return nil
 	}
-	return o.HTTPProxy
+	return p.HTTPProxy
 }
 
-func (o *Proxy) GetHTTPSProxy() *string {
-	if o == nil {
+func (p *Proxy) GetHTTPSProxy() *string {
+	if p == nil {
 		return nil
 	}
-	return o.HTTPSProxy
+	return p.HTTPSProxy
 }
 
 // Timeouts - Socket timeouts in milliseconds. All or none must be set.
@@ -730,31 +730,31 @@ func (t Timeouts) MarshalJSON() ([]byte, error) {
 }
 
 func (t *Timeouts) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Timeouts) GetConnect() *int64 {
-	if o == nil {
+func (t *Timeouts) GetConnect() *int64 {
+	if t == nil {
 		return nil
 	}
-	return o.Connect
+	return t.Connect
 }
 
-func (o *Timeouts) GetRead() *int64 {
-	if o == nil {
+func (t *Timeouts) GetRead() *int64 {
+	if t == nil {
 		return nil
 	}
-	return o.Read
+	return t.Read
 }
 
-func (o *Timeouts) GetWrite() *int64 {
-	if o == nil {
+func (t *Timeouts) GetWrite() *int64 {
+	if t == nil {
 		return nil
 	}
-	return o.Write
+	return t.Write
 }
 
 // HTTPOpts - HTTP connection parameters.
@@ -774,38 +774,38 @@ func (h HTTPOpts) MarshalJSON() ([]byte, error) {
 }
 
 func (h *HTTPOpts) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &h, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *HTTPOpts) GetProxy() *Proxy {
-	if o == nil {
+func (h *HTTPOpts) GetProxy() *Proxy {
+	if h == nil {
 		return nil
 	}
-	return o.Proxy
+	return h.Proxy
 }
 
-func (o *HTTPOpts) GetSslServerName() *string {
-	if o == nil {
+func (h *HTTPOpts) GetSslServerName() *string {
+	if h == nil {
 		return nil
 	}
-	return o.SslServerName
+	return h.SslServerName
 }
 
-func (o *HTTPOpts) GetSslVerify() *bool {
-	if o == nil {
+func (h *HTTPOpts) GetSslVerify() *bool {
+	if h == nil {
 		return nil
 	}
-	return o.SslVerify
+	return h.SslVerify
 }
 
-func (o *HTTPOpts) GetTimeouts() *Timeouts {
-	if o == nil {
+func (h *HTTPOpts) GetTimeouts() *Timeouts {
+	if h == nil {
 		return nil
 	}
-	return o.Timeouts
+	return h.Timeouts
 }
 
 // RequestCalloutPluginQuery - Callout request query param customizations.
@@ -821,24 +821,24 @@ func (r RequestCalloutPluginQuery) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestCalloutPluginQuery) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RequestCalloutPluginQuery) GetCustom() map[string]any {
-	if o == nil {
+func (r *RequestCalloutPluginQuery) GetCustom() map[string]any {
+	if r == nil {
 		return nil
 	}
-	return o.Custom
+	return r.Custom
 }
 
-func (o *RequestCalloutPluginQuery) GetForward() *bool {
-	if o == nil {
+func (r *RequestCalloutPluginQuery) GetForward() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Forward
+	return r.Forward
 }
 
 // Request - The customizations for the callout request.
@@ -866,66 +866,66 @@ func (r Request) MarshalJSON() ([]byte, error) {
 }
 
 func (r *Request) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"body", "error", "headers", "http_opts", "query", "url"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Request) GetBody() RequestCalloutPluginConfigBody {
-	if o == nil {
+func (r *Request) GetBody() RequestCalloutPluginConfigBody {
+	if r == nil {
 		return RequestCalloutPluginConfigBody{}
 	}
-	return o.Body
+	return r.Body
 }
 
-func (o *Request) GetByLua() *string {
-	if o == nil {
+func (r *Request) GetByLua() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ByLua
+	return r.ByLua
 }
 
-func (o *Request) GetError() Error {
-	if o == nil {
+func (r *Request) GetError() Error {
+	if r == nil {
 		return Error{}
 	}
-	return o.Error
+	return r.Error
 }
 
-func (o *Request) GetHeaders() RequestCalloutPluginConfigCalloutsHeaders {
-	if o == nil {
+func (r *Request) GetHeaders() RequestCalloutPluginConfigCalloutsHeaders {
+	if r == nil {
 		return RequestCalloutPluginConfigCalloutsHeaders{}
 	}
-	return o.Headers
+	return r.Headers
 }
 
-func (o *Request) GetHTTPOpts() HTTPOpts {
-	if o == nil {
+func (r *Request) GetHTTPOpts() HTTPOpts {
+	if r == nil {
 		return HTTPOpts{}
 	}
-	return o.HTTPOpts
+	return r.HTTPOpts
 }
 
-func (o *Request) GetMethod() *string {
-	if o == nil {
+func (r *Request) GetMethod() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Method
+	return r.Method
 }
 
-func (o *Request) GetQuery() RequestCalloutPluginQuery {
-	if o == nil {
+func (r *Request) GetQuery() RequestCalloutPluginQuery {
+	if r == nil {
 		return RequestCalloutPluginQuery{}
 	}
-	return o.Query
+	return r.Query
 }
 
-func (o *Request) GetURL() string {
-	if o == nil {
+func (r *Request) GetURL() string {
+	if r == nil {
 		return ""
 	}
-	return o.URL
+	return r.URL
 }
 
 type RequestCalloutPluginBody struct {
@@ -940,24 +940,24 @@ func (r RequestCalloutPluginBody) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestCalloutPluginBody) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RequestCalloutPluginBody) GetDecode() *bool {
-	if o == nil {
+func (r *RequestCalloutPluginBody) GetDecode() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Decode
+	return r.Decode
 }
 
-func (o *RequestCalloutPluginBody) GetStore() *bool {
-	if o == nil {
+func (r *RequestCalloutPluginBody) GetStore() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Store
+	return r.Store
 }
 
 // RequestCalloutPluginConfigHeaders - Callout response header customizations.
@@ -971,17 +971,17 @@ func (r RequestCalloutPluginConfigHeaders) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestCalloutPluginConfigHeaders) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RequestCalloutPluginConfigHeaders) GetStore() *bool {
-	if o == nil {
+func (r *RequestCalloutPluginConfigHeaders) GetStore() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Store
+	return r.Store
 }
 
 // Response - Configurations of callout response handling.
@@ -998,31 +998,31 @@ func (r Response) MarshalJSON() ([]byte, error) {
 }
 
 func (r *Response) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"body", "headers"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Response) GetBody() RequestCalloutPluginBody {
-	if o == nil {
+func (r *Response) GetBody() RequestCalloutPluginBody {
+	if r == nil {
 		return RequestCalloutPluginBody{}
 	}
-	return o.Body
+	return r.Body
 }
 
-func (o *Response) GetByLua() *string {
-	if o == nil {
+func (r *Response) GetByLua() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ByLua
+	return r.ByLua
 }
 
-func (o *Response) GetHeaders() RequestCalloutPluginConfigHeaders {
-	if o == nil {
+func (r *Response) GetHeaders() RequestCalloutPluginConfigHeaders {
+	if r == nil {
 		return RequestCalloutPluginConfigHeaders{}
 	}
-	return o.Headers
+	return r.Headers
 }
 
 type Callouts struct {
@@ -1038,39 +1038,39 @@ type Callouts struct {
 	Response Response `json:"response"`
 }
 
-func (o *Callouts) GetCache() RequestCalloutPluginCache {
-	if o == nil {
+func (c *Callouts) GetCache() RequestCalloutPluginCache {
+	if c == nil {
 		return RequestCalloutPluginCache{}
 	}
-	return o.Cache
+	return c.Cache
 }
 
-func (o *Callouts) GetDependsOn() []string {
-	if o == nil {
+func (c *Callouts) GetDependsOn() []string {
+	if c == nil {
 		return nil
 	}
-	return o.DependsOn
+	return c.DependsOn
 }
 
-func (o *Callouts) GetName() string {
-	if o == nil {
+func (c *Callouts) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *Callouts) GetRequest() Request {
-	if o == nil {
+func (c *Callouts) GetRequest() Request {
+	if c == nil {
 		return Request{}
 	}
-	return o.Request
+	return c.Request
 }
 
-func (o *Callouts) GetResponse() Response {
-	if o == nil {
+func (c *Callouts) GetResponse() Response {
+	if c == nil {
 		return Response{}
 	}
-	return o.Response
+	return c.Response
 }
 
 // Body - Callout request body customizations.
@@ -1088,31 +1088,31 @@ func (b Body) MarshalJSON() ([]byte, error) {
 }
 
 func (b *Body) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Body) GetCustom() map[string]any {
-	if o == nil {
+func (b *Body) GetCustom() map[string]any {
+	if b == nil {
 		return nil
 	}
-	return o.Custom
+	return b.Custom
 }
 
-func (o *Body) GetDecode() *bool {
-	if o == nil {
+func (b *Body) GetDecode() *bool {
+	if b == nil {
 		return nil
 	}
-	return o.Decode
+	return b.Decode
 }
 
-func (o *Body) GetForward() *bool {
-	if o == nil {
+func (b *Body) GetForward() *bool {
+	if b == nil {
 		return nil
 	}
-	return o.Forward
+	return b.Forward
 }
 
 // RequestCalloutPluginHeaders - Callout request header customizations.
@@ -1128,24 +1128,24 @@ func (r RequestCalloutPluginHeaders) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestCalloutPluginHeaders) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RequestCalloutPluginHeaders) GetCustom() map[string]any {
-	if o == nil {
+func (r *RequestCalloutPluginHeaders) GetCustom() map[string]any {
+	if r == nil {
 		return nil
 	}
-	return o.Custom
+	return r.Custom
 }
 
-func (o *RequestCalloutPluginHeaders) GetForward() *bool {
-	if o == nil {
+func (r *RequestCalloutPluginHeaders) GetForward() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Forward
+	return r.Forward
 }
 
 // Query - Upstream request query param customizations.
@@ -1161,24 +1161,24 @@ func (q Query) MarshalJSON() ([]byte, error) {
 }
 
 func (q *Query) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &q, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &q, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Query) GetCustom() map[string]any {
-	if o == nil {
+func (q *Query) GetCustom() map[string]any {
+	if q == nil {
 		return nil
 	}
-	return o.Custom
+	return q.Custom
 }
 
-func (o *Query) GetForward() *bool {
-	if o == nil {
+func (q *Query) GetForward() *bool {
+	if q == nil {
 		return nil
 	}
-	return o.Forward
+	return q.Forward
 }
 
 // RequestCalloutPluginUpstream - Customizations to the upstream request.
@@ -1198,38 +1198,38 @@ func (r RequestCalloutPluginUpstream) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestCalloutPluginUpstream) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RequestCalloutPluginUpstream) GetBody() *Body {
-	if o == nil {
+func (r *RequestCalloutPluginUpstream) GetBody() *Body {
+	if r == nil {
 		return nil
 	}
-	return o.Body
+	return r.Body
 }
 
-func (o *RequestCalloutPluginUpstream) GetByLua() *string {
-	if o == nil {
+func (r *RequestCalloutPluginUpstream) GetByLua() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ByLua
+	return r.ByLua
 }
 
-func (o *RequestCalloutPluginUpstream) GetHeaders() *RequestCalloutPluginHeaders {
-	if o == nil {
+func (r *RequestCalloutPluginUpstream) GetHeaders() *RequestCalloutPluginHeaders {
+	if r == nil {
 		return nil
 	}
-	return o.Headers
+	return r.Headers
 }
 
-func (o *RequestCalloutPluginUpstream) GetQuery() *Query {
-	if o == nil {
+func (r *RequestCalloutPluginUpstream) GetQuery() *Query {
+	if r == nil {
 		return nil
 	}
-	return o.Query
+	return r.Query
 }
 
 type RequestCalloutPluginConfig struct {
@@ -1241,25 +1241,25 @@ type RequestCalloutPluginConfig struct {
 	Upstream *RequestCalloutPluginUpstream `json:"upstream"`
 }
 
-func (o *RequestCalloutPluginConfig) GetCache() *Cache {
-	if o == nil {
+func (r *RequestCalloutPluginConfig) GetCache() *Cache {
+	if r == nil {
 		return nil
 	}
-	return o.Cache
+	return r.Cache
 }
 
-func (o *RequestCalloutPluginConfig) GetCallouts() []Callouts {
-	if o == nil {
+func (r *RequestCalloutPluginConfig) GetCallouts() []Callouts {
+	if r == nil {
 		return []Callouts{}
 	}
-	return o.Callouts
+	return r.Callouts
 }
 
-func (o *RequestCalloutPluginConfig) GetUpstream() *RequestCalloutPluginUpstream {
-	if o == nil {
+func (r *RequestCalloutPluginConfig) GetUpstream() *RequestCalloutPluginUpstream {
+	if r == nil {
 		return nil
 	}
-	return o.Upstream
+	return r.Upstream
 }
 
 // RequestCalloutPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -1267,11 +1267,11 @@ type RequestCalloutPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *RequestCalloutPluginConsumer) GetID() *string {
-	if o == nil {
+func (r *RequestCalloutPluginConsumer) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
 // RequestCalloutPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -1279,11 +1279,11 @@ type RequestCalloutPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *RequestCalloutPluginConsumerGroup) GetID() *string {
-	if o == nil {
+func (r *RequestCalloutPluginConsumerGroup) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
 type RequestCalloutPluginProtocols string
@@ -1323,11 +1323,11 @@ type RequestCalloutPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *RequestCalloutPluginRoute) GetID() *string {
-	if o == nil {
+func (r *RequestCalloutPluginRoute) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
 // RequestCalloutPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -1335,11 +1335,11 @@ type RequestCalloutPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *RequestCalloutPluginService) GetID() *string {
-	if o == nil {
+func (r *RequestCalloutPluginService) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
 // RequestCalloutPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -1378,110 +1378,110 @@ func (r RequestCalloutPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestCalloutPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RequestCalloutPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (r *RequestCalloutPlugin) GetCreatedAt() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return r.CreatedAt
 }
 
-func (o *RequestCalloutPlugin) GetEnabled() *bool {
-	if o == nil {
+func (r *RequestCalloutPlugin) GetEnabled() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Enabled
+	return r.Enabled
 }
 
-func (o *RequestCalloutPlugin) GetID() *string {
-	if o == nil {
+func (r *RequestCalloutPlugin) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
-func (o *RequestCalloutPlugin) GetInstanceName() *string {
-	if o == nil {
+func (r *RequestCalloutPlugin) GetInstanceName() *string {
+	if r == nil {
 		return nil
 	}
-	return o.InstanceName
+	return r.InstanceName
 }
 
-func (o *RequestCalloutPlugin) GetName() string {
+func (r *RequestCalloutPlugin) GetName() string {
 	return "request-callout"
 }
 
-func (o *RequestCalloutPlugin) GetOrdering() *RequestCalloutPluginOrdering {
-	if o == nil {
+func (r *RequestCalloutPlugin) GetOrdering() *RequestCalloutPluginOrdering {
+	if r == nil {
 		return nil
 	}
-	return o.Ordering
+	return r.Ordering
 }
 
-func (o *RequestCalloutPlugin) GetPartials() []RequestCalloutPluginPartials {
-	if o == nil {
+func (r *RequestCalloutPlugin) GetPartials() []RequestCalloutPluginPartials {
+	if r == nil {
 		return nil
 	}
-	return o.Partials
+	return r.Partials
 }
 
-func (o *RequestCalloutPlugin) GetTags() []string {
-	if o == nil {
+func (r *RequestCalloutPlugin) GetTags() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Tags
+	return r.Tags
 }
 
-func (o *RequestCalloutPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (r *RequestCalloutPlugin) GetUpdatedAt() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return r.UpdatedAt
 }
 
-func (o *RequestCalloutPlugin) GetConfig() RequestCalloutPluginConfig {
-	if o == nil {
+func (r *RequestCalloutPlugin) GetConfig() RequestCalloutPluginConfig {
+	if r == nil {
 		return RequestCalloutPluginConfig{}
 	}
-	return o.Config
+	return r.Config
 }
 
-func (o *RequestCalloutPlugin) GetConsumer() *RequestCalloutPluginConsumer {
-	if o == nil {
+func (r *RequestCalloutPlugin) GetConsumer() *RequestCalloutPluginConsumer {
+	if r == nil {
 		return nil
 	}
-	return o.Consumer
+	return r.Consumer
 }
 
-func (o *RequestCalloutPlugin) GetConsumerGroup() *RequestCalloutPluginConsumerGroup {
-	if o == nil {
+func (r *RequestCalloutPlugin) GetConsumerGroup() *RequestCalloutPluginConsumerGroup {
+	if r == nil {
 		return nil
 	}
-	return o.ConsumerGroup
+	return r.ConsumerGroup
 }
 
-func (o *RequestCalloutPlugin) GetProtocols() []RequestCalloutPluginProtocols {
-	if o == nil {
+func (r *RequestCalloutPlugin) GetProtocols() []RequestCalloutPluginProtocols {
+	if r == nil {
 		return nil
 	}
-	return o.Protocols
+	return r.Protocols
 }
 
-func (o *RequestCalloutPlugin) GetRoute() *RequestCalloutPluginRoute {
-	if o == nil {
+func (r *RequestCalloutPlugin) GetRoute() *RequestCalloutPluginRoute {
+	if r == nil {
 		return nil
 	}
-	return o.Route
+	return r.Route
 }
 
-func (o *RequestCalloutPlugin) GetService() *RequestCalloutPluginService {
-	if o == nil {
+func (r *RequestCalloutPlugin) GetService() *RequestCalloutPluginService {
+	if r == nil {
 		return nil
 	}
-	return o.Service
+	return r.Service
 }

@@ -12,22 +12,22 @@ type VaultAuthPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *VaultAuthPluginAfter) GetAccess() []string {
-	if o == nil {
+func (v *VaultAuthPluginAfter) GetAccess() []string {
+	if v == nil {
 		return nil
 	}
-	return o.Access
+	return v.Access
 }
 
 type VaultAuthPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *VaultAuthPluginBefore) GetAccess() []string {
-	if o == nil {
+func (v *VaultAuthPluginBefore) GetAccess() []string {
+	if v == nil {
 		return nil
 	}
-	return o.Access
+	return v.Access
 }
 
 type VaultAuthPluginOrdering struct {
@@ -35,18 +35,18 @@ type VaultAuthPluginOrdering struct {
 	Before *VaultAuthPluginBefore `json:"before,omitempty"`
 }
 
-func (o *VaultAuthPluginOrdering) GetAfter() *VaultAuthPluginAfter {
-	if o == nil {
+func (v *VaultAuthPluginOrdering) GetAfter() *VaultAuthPluginAfter {
+	if v == nil {
 		return nil
 	}
-	return o.After
+	return v.After
 }
 
-func (o *VaultAuthPluginOrdering) GetBefore() *VaultAuthPluginBefore {
-	if o == nil {
+func (v *VaultAuthPluginOrdering) GetBefore() *VaultAuthPluginBefore {
+	if v == nil {
 		return nil
 	}
-	return o.Before
+	return v.Before
 }
 
 type VaultAuthPluginPartials struct {
@@ -57,25 +57,25 @@ type VaultAuthPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *VaultAuthPluginPartials) GetID() *string {
-	if o == nil {
+func (v *VaultAuthPluginPartials) GetID() *string {
+	if v == nil {
 		return nil
 	}
-	return o.ID
+	return v.ID
 }
 
-func (o *VaultAuthPluginPartials) GetName() *string {
-	if o == nil {
+func (v *VaultAuthPluginPartials) GetName() *string {
+	if v == nil {
 		return nil
 	}
-	return o.Name
+	return v.Name
 }
 
-func (o *VaultAuthPluginPartials) GetPath() *string {
-	if o == nil {
+func (v *VaultAuthPluginPartials) GetPath() *string {
+	if v == nil {
 		return nil
 	}
-	return o.Path
+	return v.Path
 }
 
 type VaultAuthPluginConfig struct {
@@ -100,59 +100,59 @@ func (v VaultAuthPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VaultAuthPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"vault"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *VaultAuthPluginConfig) GetAccessTokenName() *string {
-	if o == nil {
+func (v *VaultAuthPluginConfig) GetAccessTokenName() *string {
+	if v == nil {
 		return nil
 	}
-	return o.AccessTokenName
+	return v.AccessTokenName
 }
 
-func (o *VaultAuthPluginConfig) GetAnonymous() *string {
-	if o == nil {
+func (v *VaultAuthPluginConfig) GetAnonymous() *string {
+	if v == nil {
 		return nil
 	}
-	return o.Anonymous
+	return v.Anonymous
 }
 
-func (o *VaultAuthPluginConfig) GetHideCredentials() *bool {
-	if o == nil {
+func (v *VaultAuthPluginConfig) GetHideCredentials() *bool {
+	if v == nil {
 		return nil
 	}
-	return o.HideCredentials
+	return v.HideCredentials
 }
 
-func (o *VaultAuthPluginConfig) GetRunOnPreflight() *bool {
-	if o == nil {
+func (v *VaultAuthPluginConfig) GetRunOnPreflight() *bool {
+	if v == nil {
 		return nil
 	}
-	return o.RunOnPreflight
+	return v.RunOnPreflight
 }
 
-func (o *VaultAuthPluginConfig) GetSecretTokenName() *string {
-	if o == nil {
+func (v *VaultAuthPluginConfig) GetSecretTokenName() *string {
+	if v == nil {
 		return nil
 	}
-	return o.SecretTokenName
+	return v.SecretTokenName
 }
 
-func (o *VaultAuthPluginConfig) GetTokensInBody() *bool {
-	if o == nil {
+func (v *VaultAuthPluginConfig) GetTokensInBody() *bool {
+	if v == nil {
 		return nil
 	}
-	return o.TokensInBody
+	return v.TokensInBody
 }
 
-func (o *VaultAuthPluginConfig) GetVault() string {
-	if o == nil {
+func (v *VaultAuthPluginConfig) GetVault() string {
+	if v == nil {
 		return ""
 	}
-	return o.Vault
+	return v.Vault
 }
 
 type VaultAuthPluginProtocols string
@@ -192,11 +192,11 @@ type VaultAuthPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *VaultAuthPluginRoute) GetID() *string {
-	if o == nil {
+func (v *VaultAuthPluginRoute) GetID() *string {
+	if v == nil {
 		return nil
 	}
-	return o.ID
+	return v.ID
 }
 
 // VaultAuthPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -204,11 +204,11 @@ type VaultAuthPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *VaultAuthPluginService) GetID() *string {
-	if o == nil {
+func (v *VaultAuthPluginService) GetID() *string {
+	if v == nil {
 		return nil
 	}
-	return o.ID
+	return v.ID
 }
 
 // VaultAuthPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -243,96 +243,96 @@ func (v VaultAuthPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VaultAuthPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *VaultAuthPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (v *VaultAuthPlugin) GetCreatedAt() *int64 {
+	if v == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return v.CreatedAt
 }
 
-func (o *VaultAuthPlugin) GetEnabled() *bool {
-	if o == nil {
+func (v *VaultAuthPlugin) GetEnabled() *bool {
+	if v == nil {
 		return nil
 	}
-	return o.Enabled
+	return v.Enabled
 }
 
-func (o *VaultAuthPlugin) GetID() *string {
-	if o == nil {
+func (v *VaultAuthPlugin) GetID() *string {
+	if v == nil {
 		return nil
 	}
-	return o.ID
+	return v.ID
 }
 
-func (o *VaultAuthPlugin) GetInstanceName() *string {
-	if o == nil {
+func (v *VaultAuthPlugin) GetInstanceName() *string {
+	if v == nil {
 		return nil
 	}
-	return o.InstanceName
+	return v.InstanceName
 }
 
-func (o *VaultAuthPlugin) GetName() string {
+func (v *VaultAuthPlugin) GetName() string {
 	return "vault-auth"
 }
 
-func (o *VaultAuthPlugin) GetOrdering() *VaultAuthPluginOrdering {
-	if o == nil {
+func (v *VaultAuthPlugin) GetOrdering() *VaultAuthPluginOrdering {
+	if v == nil {
 		return nil
 	}
-	return o.Ordering
+	return v.Ordering
 }
 
-func (o *VaultAuthPlugin) GetPartials() []VaultAuthPluginPartials {
-	if o == nil {
+func (v *VaultAuthPlugin) GetPartials() []VaultAuthPluginPartials {
+	if v == nil {
 		return nil
 	}
-	return o.Partials
+	return v.Partials
 }
 
-func (o *VaultAuthPlugin) GetTags() []string {
-	if o == nil {
+func (v *VaultAuthPlugin) GetTags() []string {
+	if v == nil {
 		return nil
 	}
-	return o.Tags
+	return v.Tags
 }
 
-func (o *VaultAuthPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (v *VaultAuthPlugin) GetUpdatedAt() *int64 {
+	if v == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return v.UpdatedAt
 }
 
-func (o *VaultAuthPlugin) GetConfig() VaultAuthPluginConfig {
-	if o == nil {
+func (v *VaultAuthPlugin) GetConfig() VaultAuthPluginConfig {
+	if v == nil {
 		return VaultAuthPluginConfig{}
 	}
-	return o.Config
+	return v.Config
 }
 
-func (o *VaultAuthPlugin) GetProtocols() []VaultAuthPluginProtocols {
-	if o == nil {
+func (v *VaultAuthPlugin) GetProtocols() []VaultAuthPluginProtocols {
+	if v == nil {
 		return nil
 	}
-	return o.Protocols
+	return v.Protocols
 }
 
-func (o *VaultAuthPlugin) GetRoute() *VaultAuthPluginRoute {
-	if o == nil {
+func (v *VaultAuthPlugin) GetRoute() *VaultAuthPluginRoute {
+	if v == nil {
 		return nil
 	}
-	return o.Route
+	return v.Route
 }
 
-func (o *VaultAuthPlugin) GetService() *VaultAuthPluginService {
-	if o == nil {
+func (v *VaultAuthPlugin) GetService() *VaultAuthPluginService {
+	if v == nil {
 		return nil
 	}
-	return o.Service
+	return v.Service
 }

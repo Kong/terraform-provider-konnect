@@ -7,18 +7,18 @@ type Catalog struct {
 	PrimaryHeader  string `json:"primary_header"`
 }
 
-func (o *Catalog) GetWelcomeMessage() string {
-	if o == nil {
+func (c *Catalog) GetWelcomeMessage() string {
+	if c == nil {
 		return ""
 	}
-	return o.WelcomeMessage
+	return c.WelcomeMessage
 }
 
-func (o *Catalog) GetPrimaryHeader() string {
-	if o == nil {
+func (c *Catalog) GetPrimaryHeader() string {
+	if c == nil {
 		return ""
 	}
-	return o.PrimaryHeader
+	return c.PrimaryHeader
 }
 
 // V2NullableAppearanceTextVariables - Values to display for customizable text in the portal user interface
@@ -26,9 +26,9 @@ type V2NullableAppearanceTextVariables struct {
 	Catalog Catalog `json:"catalog"`
 }
 
-func (o *V2NullableAppearanceTextVariables) GetCatalog() Catalog {
-	if o == nil {
+func (v *V2NullableAppearanceTextVariables) GetCatalog() Catalog {
+	if v == nil {
 		return Catalog{}
 	}
-	return o.Catalog
+	return v.Catalog
 }

@@ -18,6 +18,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -105,13 +106,14 @@ func (r *GatewayPluginJwtResource) Schema(ctx context.Context, req resource.Sche
 						Optional:    true,
 						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 						ElementType: types.StringType,
-						Description: `A list of cookie names that Kong will inspect to retrieve JWTs.`,
+						Description: `A list of cookie names that Kong will inspect to retrieve JWTs. Default: []`,
 					},
 					"header_names": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("authorization")})),
 						ElementType: types.StringType,
-						Description: `A list of HTTP header names that Kong will inspect to retrieve JWTs.`,
+						Description: `A list of HTTP header names that Kong will inspect to retrieve JWTs. Default: ["authorization"]`,
 					},
 					"key_claim_name": schema.StringAttribute{
 						Computed:    true,
@@ -125,7 +127,7 @@ func (r *GatewayPluginJwtResource) Schema(ctx context.Context, req resource.Sche
 						Default:     float64default.StaticFloat64(0),
 						Description: `A value between 0 and 31536000 (365 days) limiting the lifetime of the JWT to maximum_expiration seconds in the future. Default: 0`,
 						Validators: []validator.Float64{
-							float64validator.AtMost(31536000),
+							float64validator.Between(0, 31536000),
 						},
 					},
 					"realm": schema.StringAttribute{
@@ -147,8 +149,9 @@ func (r *GatewayPluginJwtResource) Schema(ctx context.Context, req resource.Sche
 					"uri_param_names": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("jwt")})),
 						ElementType: types.StringType,
-						Description: `A list of querystring parameters that Kong will inspect to retrieve JWTs.`,
+						Description: `A list of querystring parameters that Kong will inspect to retrieve JWTs. Default: ["jwt"]`,
 					},
 				},
 			},
@@ -255,10 +258,16 @@ func (r *GatewayPluginJwtResource) Schema(ctx context.Context, req resource.Sche
 				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.SetAttribute{
-				Computed:    true,
-				Optional:    true,
+				Computed: true,
+				Optional: true,
+				Default: setdefault.StaticValue(types.SetValueMust(types.StringType, []attr.Value{
+					types.StringValue("grpc"),
+					types.StringValue("grpcs"),
+					types.StringValue("http"),
+					types.StringValue("https"),
+				})),
 				ElementType: types.StringType,
-				Description: `A set of strings representing HTTP protocols.`,
+				Description: `A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,

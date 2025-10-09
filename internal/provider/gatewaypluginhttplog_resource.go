@@ -21,6 +21,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -159,7 +160,7 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 								Default:     float64default.StaticFloat64(0.01),
 								Description: `Time in seconds before the initial retry is made for a failing batch. Default: 0.01`,
 								Validators: []validator.Float64{
-									float64validator.AtMost(1000000),
+									float64validator.Between(0.001, 1000000),
 								},
 							},
 							"max_batch_size": schema.Int64Attribute{
@@ -181,7 +182,7 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 								Default:     float64default.StaticFloat64(1),
 								Description: `Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler. Default: 1`,
 								Validators: []validator.Float64{
-									float64validator.AtMost(3600),
+									float64validator.Between(0, 3600),
 								},
 							},
 							"max_entries": schema.Int64Attribute{
@@ -199,7 +200,7 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 								Default:     float64default.StaticFloat64(60),
 								Description: `Maximum time in seconds between retries, caps exponential backoff. Default: 60`,
 								Validators: []validator.Float64{
-									float64validator.AtMost(1000000),
+									float64validator.Between(0.001, 1000000),
 								},
 							},
 							"max_retry_time": schema.Float64Attribute{
@@ -343,10 +344,16 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.SetAttribute{
-				Computed:    true,
-				Optional:    true,
+				Computed: true,
+				Optional: true,
+				Default: setdefault.StaticValue(types.SetValueMust(types.StringType, []attr.Value{
+					types.StringValue("grpc"),
+					types.StringValue("grpcs"),
+					types.StringValue("http"),
+					types.StringValue("https"),
+				})),
 				ElementType: types.StringType,
-				Description: `A set of strings representing protocols.`,
+				Description: `A set of strings representing protocols. Default: ["grpc","grpcs","http","https"]`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,

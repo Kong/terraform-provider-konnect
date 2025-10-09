@@ -14,18 +14,18 @@ type FetchPublicationRequest struct {
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 }
 
-func (o *FetchPublicationRequest) GetAPIID() string {
-	if o == nil {
+func (f *FetchPublicationRequest) GetAPIID() string {
+	if f == nil {
 		return ""
 	}
-	return o.APIID
+	return f.APIID
 }
 
-func (o *FetchPublicationRequest) GetPortalID() string {
-	if o == nil {
+func (f *FetchPublicationRequest) GetPortalID() string {
+	if f == nil {
 		return ""
 	}
-	return o.PortalID
+	return f.PortalID
 }
 
 type FetchPublicationResponse struct {
@@ -45,51 +45,51 @@ type FetchPublicationResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *FetchPublicationResponse) GetContentType() string {
-	if o == nil {
+func (f *FetchPublicationResponse) GetContentType() string {
+	if f == nil {
 		return ""
 	}
-	return o.ContentType
+	return f.ContentType
 }
 
-func (o *FetchPublicationResponse) GetStatusCode() int {
-	if o == nil {
+func (f *FetchPublicationResponse) GetStatusCode() int {
+	if f == nil {
 		return 0
 	}
-	return o.StatusCode
+	return f.StatusCode
 }
 
-func (o *FetchPublicationResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (f *FetchPublicationResponse) GetRawResponse() *http.Response {
+	if f == nil {
 		return nil
 	}
-	return o.RawResponse
+	return f.RawResponse
 }
 
-func (o *FetchPublicationResponse) GetAPIPublicationResponse() *shared.APIPublicationResponse {
-	if o == nil {
+func (f *FetchPublicationResponse) GetAPIPublicationResponse() *shared.APIPublicationResponse {
+	if f == nil {
 		return nil
 	}
-	return o.APIPublicationResponse
+	return f.APIPublicationResponse
 }
 
-func (o *FetchPublicationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (f *FetchPublicationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if f == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return f.UnauthorizedError
 }
 
-func (o *FetchPublicationResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (f *FetchPublicationResponse) GetForbiddenError() *shared.ForbiddenError {
+	if f == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return f.ForbiddenError
 }
 
-func (o *FetchPublicationResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (f *FetchPublicationResponse) GetNotFoundError() *shared.NotFoundError {
+	if f == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return f.NotFoundError
 }

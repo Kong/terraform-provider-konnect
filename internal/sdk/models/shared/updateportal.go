@@ -98,85 +98,85 @@ func (u UpdatePortal) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdatePortal) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *UpdatePortal) GetName() *string {
-	if o == nil {
+func (u *UpdatePortal) GetName() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Name
+	return u.Name
 }
 
-func (o *UpdatePortal) GetDisplayName() *string {
-	if o == nil {
+func (u *UpdatePortal) GetDisplayName() *string {
+	if u == nil {
 		return nil
 	}
-	return o.DisplayName
+	return u.DisplayName
 }
 
-func (o *UpdatePortal) GetDescription() *string {
-	if o == nil {
+func (u *UpdatePortal) GetDescription() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Description
+	return u.Description
 }
 
-func (o *UpdatePortal) GetAuthenticationEnabled() *bool {
-	if o == nil {
+func (u *UpdatePortal) GetAuthenticationEnabled() *bool {
+	if u == nil {
 		return nil
 	}
-	return o.AuthenticationEnabled
+	return u.AuthenticationEnabled
 }
 
-func (o *UpdatePortal) GetRbacEnabled() *bool {
-	if o == nil {
+func (u *UpdatePortal) GetRbacEnabled() *bool {
+	if u == nil {
 		return nil
 	}
-	return o.RbacEnabled
+	return u.RbacEnabled
 }
 
-func (o *UpdatePortal) GetDefaultAPIVisibility() *UpdatePortalDefaultAPIVisibility {
-	if o == nil {
+func (u *UpdatePortal) GetDefaultAPIVisibility() *UpdatePortalDefaultAPIVisibility {
+	if u == nil {
 		return nil
 	}
-	return o.DefaultAPIVisibility
+	return u.DefaultAPIVisibility
 }
 
-func (o *UpdatePortal) GetDefaultPageVisibility() *UpdatePortalDefaultPageVisibility {
-	if o == nil {
+func (u *UpdatePortal) GetDefaultPageVisibility() *UpdatePortalDefaultPageVisibility {
+	if u == nil {
 		return nil
 	}
-	return o.DefaultPageVisibility
+	return u.DefaultPageVisibility
 }
 
-func (o *UpdatePortal) GetDefaultApplicationAuthStrategyID() *string {
-	if o == nil {
+func (u *UpdatePortal) GetDefaultApplicationAuthStrategyID() *string {
+	if u == nil {
 		return nil
 	}
-	return o.DefaultApplicationAuthStrategyID
+	return u.DefaultApplicationAuthStrategyID
 }
 
-func (o *UpdatePortal) GetAutoApproveDevelopers() *bool {
-	if o == nil {
+func (u *UpdatePortal) GetAutoApproveDevelopers() *bool {
+	if u == nil {
 		return nil
 	}
-	return o.AutoApproveDevelopers
+	return u.AutoApproveDevelopers
 }
 
-func (o *UpdatePortal) GetAutoApproveApplications() *bool {
-	if o == nil {
+func (u *UpdatePortal) GetAutoApproveApplications() *bool {
+	if u == nil {
 		return nil
 	}
-	return o.AutoApproveApplications
+	return u.AutoApproveApplications
 }
 
-func (o *UpdatePortal) GetLabels() map[string]*string {
-	if o == nil {
+func (u *UpdatePortal) GetLabels() map[string]*string {
+	if u == nil {
 		return nil
 	}
-	return o.Labels
+	return u.Labels
 }

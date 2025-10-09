@@ -39,71 +39,71 @@ func (v V2PortalProductVersion) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V2PortalProductVersion) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"id", "publish_status", "product_version_id", "created_at", "updated_at", "auth_strategies", "application_registration_enabled", "auto_approve_registration", "deprecated"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *V2PortalProductVersion) GetID() string {
-	if o == nil {
+func (v *V2PortalProductVersion) GetID() string {
+	if v == nil {
 		return ""
 	}
-	return o.ID
+	return v.ID
 }
 
-func (o *V2PortalProductVersion) GetPublishStatus() V2PortalProductVersionPublishStatus {
-	if o == nil {
+func (v *V2PortalProductVersion) GetPublishStatus() V2PortalProductVersionPublishStatus {
+	if v == nil {
 		return V2PortalProductVersionPublishStatus("")
 	}
-	return o.PublishStatus
+	return v.PublishStatus
 }
 
-func (o *V2PortalProductVersion) GetProductVersionID() string {
-	if o == nil {
+func (v *V2PortalProductVersion) GetProductVersionID() string {
+	if v == nil {
 		return ""
 	}
-	return o.ProductVersionID
+	return v.ProductVersionID
 }
 
-func (o *V2PortalProductVersion) GetCreatedAt() time.Time {
-	if o == nil {
+func (v *V2PortalProductVersion) GetCreatedAt() time.Time {
+	if v == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return v.CreatedAt
 }
 
-func (o *V2PortalProductVersion) GetUpdatedAt() time.Time {
-	if o == nil {
+func (v *V2PortalProductVersion) GetUpdatedAt() time.Time {
+	if v == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return v.UpdatedAt
 }
 
-func (o *V2PortalProductVersion) GetAuthStrategies() []AuthStrategy {
-	if o == nil {
+func (v *V2PortalProductVersion) GetAuthStrategies() []AuthStrategy {
+	if v == nil {
 		return []AuthStrategy{}
 	}
-	return o.AuthStrategies
+	return v.AuthStrategies
 }
 
-func (o *V2PortalProductVersion) GetApplicationRegistrationEnabled() bool {
-	if o == nil {
+func (v *V2PortalProductVersion) GetApplicationRegistrationEnabled() bool {
+	if v == nil {
 		return false
 	}
-	return o.ApplicationRegistrationEnabled
+	return v.ApplicationRegistrationEnabled
 }
 
-func (o *V2PortalProductVersion) GetAutoApproveRegistration() bool {
-	if o == nil {
+func (v *V2PortalProductVersion) GetAutoApproveRegistration() bool {
+	if v == nil {
 		return false
 	}
-	return o.AutoApproveRegistration
+	return v.AutoApproveRegistration
 }
 
-func (o *V2PortalProductVersion) GetDeprecated() bool {
-	if o == nil {
+func (v *V2PortalProductVersion) GetDeprecated() bool {
+	if v == nil {
 		return false
 	}
-	return o.Deprecated
+	return v.Deprecated
 }

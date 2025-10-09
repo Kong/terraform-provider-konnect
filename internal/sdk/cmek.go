@@ -62,7 +62,7 @@ func (s *Cmek) GetCmek(ctx context.Context, request operations.GetCmekRequest, o
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-cmek",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -261,7 +261,7 @@ func (s *Cmek) PutCmek(ctx context.Context, request operations.PutCmekRequest, o
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "put-cmek",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ReplaceCMEK", "json", `request:"mediaType=application/json"`)
@@ -466,7 +466,7 @@ func (s *Cmek) DeleteCmek(ctx context.Context, request operations.DeleteCmekRequ
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-cmek",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

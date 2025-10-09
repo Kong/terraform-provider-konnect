@@ -13,18 +13,18 @@ type CreateACLPluginRequest struct {
 	ACLPlugin      shared.ACLPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateACLPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateACLPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateACLPluginRequest) GetACLPlugin() shared.ACLPlugin {
-	if o == nil {
+func (c *CreateACLPluginRequest) GetACLPlugin() shared.ACLPlugin {
+	if c == nil {
 		return shared.ACLPlugin{}
 	}
-	return o.ACLPlugin
+	return c.ACLPlugin
 }
 
 type CreateACLPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateACLPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateACLPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateACLPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateACLPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateACLPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateACLPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateACLPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateACLPluginResponse) GetACLPlugin() *shared.ACLPlugin {
-	if o == nil {
+func (c *CreateACLPluginResponse) GetACLPlugin() *shared.ACLPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.ACLPlugin
+	return c.ACLPlugin
 }
 
-func (o *CreateACLPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateACLPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

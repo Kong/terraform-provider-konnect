@@ -8,9 +8,9 @@ type PaginatedMeta struct {
 	Page PageMeta `json:"page"`
 }
 
-func (o *PaginatedMeta) GetPage() PageMeta {
-	if o == nil {
+func (p *PaginatedMeta) GetPage() PageMeta {
+	if p == nil {
 		return PageMeta{}
 	}
-	return o.Page
+	return p.Page
 }

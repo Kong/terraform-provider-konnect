@@ -12,11 +12,11 @@ type GetRealmRequest struct {
 	RealmID string `pathParam:"style=simple,explode=false,name=realmId"`
 }
 
-func (o *GetRealmRequest) GetRealmID() string {
-	if o == nil {
+func (g *GetRealmRequest) GetRealmID() string {
+	if g == nil {
 		return ""
 	}
-	return o.RealmID
+	return g.RealmID
 }
 
 type GetRealmResponse struct {
@@ -30,30 +30,30 @@ type GetRealmResponse struct {
 	ConsumerRealm *shared.ConsumerRealm
 }
 
-func (o *GetRealmResponse) GetContentType() string {
-	if o == nil {
+func (g *GetRealmResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetRealmResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetRealmResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetRealmResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetRealmResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetRealmResponse) GetConsumerRealm() *shared.ConsumerRealm {
-	if o == nil {
+func (g *GetRealmResponse) GetConsumerRealm() *shared.ConsumerRealm {
+	if g == nil {
 		return nil
 	}
-	return o.ConsumerRealm
+	return g.ConsumerRealm
 }

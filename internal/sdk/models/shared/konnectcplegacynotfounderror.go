@@ -7,9 +7,9 @@ type KonnectCPLegacyNotFoundError struct {
 	Message any `json:"message,omitempty"`
 }
 
-func (o *KonnectCPLegacyNotFoundError) GetMessage() any {
-	if o == nil {
+func (k *KonnectCPLegacyNotFoundError) GetMessage() any {
+	if k == nil {
 		return nil
 	}
-	return o.Message
+	return k.Message
 }

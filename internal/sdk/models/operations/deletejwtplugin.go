@@ -14,18 +14,18 @@ type DeleteJwtPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteJwtPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteJwtPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteJwtPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteJwtPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteJwtPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteJwtPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteJwtPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteJwtPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteJwtPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteJwtPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteJwtPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteJwtPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteJwtPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteJwtPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

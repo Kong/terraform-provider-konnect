@@ -14,18 +14,18 @@ type GetPortalSnippetRequest struct {
 	SnippetID string `pathParam:"style=simple,explode=false,name=snippetId"`
 }
 
-func (o *GetPortalSnippetRequest) GetPortalID() string {
-	if o == nil {
+func (g *GetPortalSnippetRequest) GetPortalID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PortalID
+	return g.PortalID
 }
 
-func (o *GetPortalSnippetRequest) GetSnippetID() string {
-	if o == nil {
+func (g *GetPortalSnippetRequest) GetSnippetID() string {
+	if g == nil {
 		return ""
 	}
-	return o.SnippetID
+	return g.SnippetID
 }
 
 type GetPortalSnippetResponse struct {
@@ -45,51 +45,51 @@ type GetPortalSnippetResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetPortalSnippetResponse) GetContentType() string {
-	if o == nil {
+func (g *GetPortalSnippetResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetPortalSnippetResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetPortalSnippetResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetPortalSnippetResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetPortalSnippetResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetPortalSnippetResponse) GetPortalSnippetResponse() *shared.PortalSnippetResponse {
-	if o == nil {
+func (g *GetPortalSnippetResponse) GetPortalSnippetResponse() *shared.PortalSnippetResponse {
+	if g == nil {
 		return nil
 	}
-	return o.PortalSnippetResponse
+	return g.PortalSnippetResponse
 }
 
-func (o *GetPortalSnippetResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetPortalSnippetResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetPortalSnippetResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (g *GetPortalSnippetResponse) GetForbiddenError() *shared.ForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return g.ForbiddenError
 }
 
-func (o *GetPortalSnippetResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetPortalSnippetResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

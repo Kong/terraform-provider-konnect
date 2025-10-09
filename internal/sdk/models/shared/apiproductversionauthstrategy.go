@@ -7,16 +7,16 @@ type APIProductVersionAuthStrategy struct {
 	Name string `json:"name"`
 }
 
-func (o *APIProductVersionAuthStrategy) GetID() string {
-	if o == nil {
+func (a *APIProductVersionAuthStrategy) GetID() string {
+	if a == nil {
 		return ""
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *APIProductVersionAuthStrategy) GetName() string {
-	if o == nil {
+func (a *APIProductVersionAuthStrategy) GetName() string {
+	if a == nil {
 		return ""
 	}
-	return o.Name
+	return a.Name
 }

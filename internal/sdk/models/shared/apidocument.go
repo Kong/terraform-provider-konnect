@@ -30,43 +30,43 @@ func (a APIDocument) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APIDocument) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *APIDocument) GetContent() *string {
-	if o == nil {
+func (a *APIDocument) GetContent() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Content
+	return a.Content
 }
 
-func (o *APIDocument) GetTitle() *string {
-	if o == nil {
+func (a *APIDocument) GetTitle() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Title
+	return a.Title
 }
 
-func (o *APIDocument) GetSlug() *string {
-	if o == nil {
+func (a *APIDocument) GetSlug() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Slug
+	return a.Slug
 }
 
-func (o *APIDocument) GetStatus() *APIDocumentStatus {
-	if o == nil {
+func (a *APIDocument) GetStatus() *APIDocumentStatus {
+	if a == nil {
 		return nil
 	}
-	return o.Status
+	return a.Status
 }
 
-func (o *APIDocument) GetParentDocumentID() *string {
-	if o == nil {
+func (a *APIDocument) GetParentDocumentID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ParentDocumentID
+	return a.ParentDocumentID
 }

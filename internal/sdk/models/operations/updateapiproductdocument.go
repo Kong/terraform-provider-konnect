@@ -15,25 +15,25 @@ type UpdateAPIProductDocumentRequest struct {
 	UpdateAPIProductDocumentDTO shared.UpdateAPIProductDocumentDTO `request:"mediaType=application/json"`
 }
 
-func (o *UpdateAPIProductDocumentRequest) GetAPIProductID() string {
-	if o == nil {
+func (u *UpdateAPIProductDocumentRequest) GetAPIProductID() string {
+	if u == nil {
 		return ""
 	}
-	return o.APIProductID
+	return u.APIProductID
 }
 
-func (o *UpdateAPIProductDocumentRequest) GetID() string {
-	if o == nil {
+func (u *UpdateAPIProductDocumentRequest) GetID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ID
+	return u.ID
 }
 
-func (o *UpdateAPIProductDocumentRequest) GetUpdateAPIProductDocumentDTO() shared.UpdateAPIProductDocumentDTO {
-	if o == nil {
+func (u *UpdateAPIProductDocumentRequest) GetUpdateAPIProductDocumentDTO() shared.UpdateAPIProductDocumentDTO {
+	if u == nil {
 		return shared.UpdateAPIProductDocumentDTO{}
 	}
-	return o.UpdateAPIProductDocumentDTO
+	return u.UpdateAPIProductDocumentDTO
 }
 
 type UpdateAPIProductDocumentResponse struct {
@@ -59,72 +59,72 @@ type UpdateAPIProductDocumentResponse struct {
 	UnsupportedMediaTypeError *shared.UnsupportedMediaTypeError
 }
 
-func (o *UpdateAPIProductDocumentResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateAPIProductDocumentResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateAPIProductDocumentResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateAPIProductDocumentResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateAPIProductDocumentResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateAPIProductDocumentResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateAPIProductDocumentResponse) GetAPIProductDocument() *shared.APIProductDocument {
-	if o == nil {
+func (u *UpdateAPIProductDocumentResponse) GetAPIProductDocument() *shared.APIProductDocument {
+	if u == nil {
 		return nil
 	}
-	return o.APIProductDocument
+	return u.APIProductDocument
 }
 
-func (o *UpdateAPIProductDocumentResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (u *UpdateAPIProductDocumentResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return u.BadRequestError
 }
 
-func (o *UpdateAPIProductDocumentResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (u *UpdateAPIProductDocumentResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return u.UnauthorizedError
 }
 
-func (o *UpdateAPIProductDocumentResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (u *UpdateAPIProductDocumentResponse) GetForbiddenError() *shared.ForbiddenError {
+	if u == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return u.ForbiddenError
 }
 
-func (o *UpdateAPIProductDocumentResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (u *UpdateAPIProductDocumentResponse) GetNotFoundError() *shared.NotFoundError {
+	if u == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return u.NotFoundError
 }
 
-func (o *UpdateAPIProductDocumentResponse) GetSlugConflict() *shared.SlugConflict {
-	if o == nil {
+func (u *UpdateAPIProductDocumentResponse) GetSlugConflict() *shared.SlugConflict {
+	if u == nil {
 		return nil
 	}
-	return o.SlugConflict
+	return u.SlugConflict
 }
 
-func (o *UpdateAPIProductDocumentResponse) GetUnsupportedMediaTypeError() *shared.UnsupportedMediaTypeError {
-	if o == nil {
+func (u *UpdateAPIProductDocumentResponse) GetUnsupportedMediaTypeError() *shared.UnsupportedMediaTypeError {
+	if u == nil {
 		return nil
 	}
-	return o.UnsupportedMediaTypeError
+	return u.UnsupportedMediaTypeError
 }

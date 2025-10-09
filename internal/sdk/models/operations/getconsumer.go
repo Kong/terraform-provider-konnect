@@ -14,18 +14,18 @@ type GetConsumerRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetConsumerRequest) GetConsumerID() string {
-	if o == nil {
+func (g *GetConsumerRequest) GetConsumerID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ConsumerID
+	return g.ConsumerID
 }
 
-func (o *GetConsumerRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetConsumerRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetConsumerResponse struct {
@@ -41,37 +41,37 @@ type GetConsumerResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetConsumerResponse) GetContentType() string {
-	if o == nil {
+func (g *GetConsumerResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetConsumerResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetConsumerResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetConsumerResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetConsumerResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetConsumerResponse) GetConsumer() *shared.Consumer {
-	if o == nil {
+func (g *GetConsumerResponse) GetConsumer() *shared.Consumer {
+	if g == nil {
 		return nil
 	}
-	return o.Consumer
+	return g.Consumer
 }
 
-func (o *GetConsumerResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetConsumerResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

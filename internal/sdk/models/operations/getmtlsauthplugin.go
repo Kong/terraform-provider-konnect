@@ -14,18 +14,18 @@ type GetMtlsauthPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetMtlsauthPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetMtlsauthPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetMtlsauthPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetMtlsauthPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetMtlsauthPluginResponse struct {
@@ -41,37 +41,37 @@ type GetMtlsauthPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetMtlsauthPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetMtlsauthPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetMtlsauthPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetMtlsauthPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetMtlsauthPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetMtlsauthPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetMtlsauthPluginResponse) GetMtlsAuthPlugin() *shared.MtlsAuthPlugin {
-	if o == nil {
+func (g *GetMtlsauthPluginResponse) GetMtlsAuthPlugin() *shared.MtlsAuthPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.MtlsAuthPlugin
+	return g.MtlsAuthPlugin
 }
 
-func (o *GetMtlsauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetMtlsauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

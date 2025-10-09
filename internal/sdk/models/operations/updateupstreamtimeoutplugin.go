@@ -15,25 +15,25 @@ type UpdateUpstreamtimeoutPluginRequest struct {
 	UpstreamTimeoutPlugin shared.UpstreamTimeoutPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateUpstreamtimeoutPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateUpstreamtimeoutPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateUpstreamtimeoutPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateUpstreamtimeoutPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateUpstreamtimeoutPluginRequest) GetUpstreamTimeoutPlugin() shared.UpstreamTimeoutPlugin {
-	if o == nil {
+func (u *UpdateUpstreamtimeoutPluginRequest) GetUpstreamTimeoutPlugin() shared.UpstreamTimeoutPlugin {
+	if u == nil {
 		return shared.UpstreamTimeoutPlugin{}
 	}
-	return o.UpstreamTimeoutPlugin
+	return u.UpstreamTimeoutPlugin
 }
 
 type UpdateUpstreamtimeoutPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateUpstreamtimeoutPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateUpstreamtimeoutPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateUpstreamtimeoutPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateUpstreamtimeoutPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateUpstreamtimeoutPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateUpstreamtimeoutPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateUpstreamtimeoutPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateUpstreamtimeoutPluginResponse) GetUpstreamTimeoutPlugin() *shared.UpstreamTimeoutPlugin {
-	if o == nil {
+func (u *UpdateUpstreamtimeoutPluginResponse) GetUpstreamTimeoutPlugin() *shared.UpstreamTimeoutPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.UpstreamTimeoutPlugin
+	return u.UpstreamTimeoutPlugin
 }
 
-func (o *UpdateUpstreamtimeoutPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateUpstreamtimeoutPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

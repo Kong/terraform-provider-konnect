@@ -63,7 +63,7 @@ func (s *CustomPlugins) CreateCustomPlugin(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-custom-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CustomPlugin", "json", `request:"mediaType=application/json"`)
@@ -224,7 +224,7 @@ func (s *CustomPlugins) DeleteCustomPlugin(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-custom-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -358,7 +358,7 @@ func (s *CustomPlugins) GetCustomPlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-custom-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -513,7 +513,7 @@ func (s *CustomPlugins) UpsertCustomPlugin(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "upsert-custom-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CustomPlugin", "json", `request:"mediaType=application/json"`)

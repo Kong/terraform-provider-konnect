@@ -14,18 +14,18 @@ type DeleteAwslambdaPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteAwslambdaPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteAwslambdaPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteAwslambdaPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteAwslambdaPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteAwslambdaPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteAwslambdaPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteAwslambdaPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteAwslambdaPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteAwslambdaPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteAwslambdaPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteAwslambdaPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteAwslambdaPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteAwslambdaPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteAwslambdaPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

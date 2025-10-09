@@ -21,24 +21,24 @@ func (a AzureTransitGatewayResponseTransitGatewayStateMetadata) MarshalJSON() ([
 }
 
 func (a *AzureTransitGatewayResponseTransitGatewayStateMetadata) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AzureTransitGatewayResponseTransitGatewayStateMetadata) GetReportedStatus() *string {
-	if o == nil {
+func (a *AzureTransitGatewayResponseTransitGatewayStateMetadata) GetReportedStatus() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ReportedStatus
+	return a.ReportedStatus
 }
 
-func (o *AzureTransitGatewayResponseTransitGatewayStateMetadata) GetReason() *string {
-	if o == nil {
+func (a *AzureTransitGatewayResponseTransitGatewayStateMetadata) GetReason() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Reason
+	return a.Reason
 }
 
 type AzureTransitGatewayResponse struct {
@@ -78,71 +78,71 @@ func (a AzureTransitGatewayResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AzureTransitGatewayResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, true); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "dns_config", "transit_gateway_attachment_config", "id", "state", "entity_version", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AzureTransitGatewayResponse) GetName() string {
-	if o == nil {
+func (a *AzureTransitGatewayResponse) GetName() string {
+	if a == nil {
 		return ""
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AzureTransitGatewayResponse) GetDNSConfig() []TransitGatewayDNSConfig {
-	if o == nil {
+func (a *AzureTransitGatewayResponse) GetDNSConfig() []TransitGatewayDNSConfig {
+	if a == nil {
 		return []TransitGatewayDNSConfig{}
 	}
-	return o.DNSConfig
+	return a.DNSConfig
 }
 
-func (o *AzureTransitGatewayResponse) GetTransitGatewayAttachmentConfig() AzureVNETPeeringAttachmentConfig {
-	if o == nil {
+func (a *AzureTransitGatewayResponse) GetTransitGatewayAttachmentConfig() AzureVNETPeeringAttachmentConfig {
+	if a == nil {
 		return AzureVNETPeeringAttachmentConfig{}
 	}
-	return o.TransitGatewayAttachmentConfig
+	return a.TransitGatewayAttachmentConfig
 }
 
-func (o *AzureTransitGatewayResponse) GetID() string {
-	if o == nil {
+func (a *AzureTransitGatewayResponse) GetID() string {
+	if a == nil {
 		return ""
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AzureTransitGatewayResponse) GetState() TransitGatewayState {
-	if o == nil {
+func (a *AzureTransitGatewayResponse) GetState() TransitGatewayState {
+	if a == nil {
 		return TransitGatewayState("")
 	}
-	return o.State
+	return a.State
 }
 
-func (o *AzureTransitGatewayResponse) GetStateMetadata() *AzureTransitGatewayResponseTransitGatewayStateMetadata {
-	if o == nil {
+func (a *AzureTransitGatewayResponse) GetStateMetadata() *AzureTransitGatewayResponseTransitGatewayStateMetadata {
+	if a == nil {
 		return nil
 	}
-	return o.StateMetadata
+	return a.StateMetadata
 }
 
-func (o *AzureTransitGatewayResponse) GetEntityVersion() int64 {
-	if o == nil {
+func (a *AzureTransitGatewayResponse) GetEntityVersion() int64 {
+	if a == nil {
 		return 0
 	}
-	return o.EntityVersion
+	return a.EntityVersion
 }
 
-func (o *AzureTransitGatewayResponse) GetCreatedAt() time.Time {
-	if o == nil {
+func (a *AzureTransitGatewayResponse) GetCreatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AzureTransitGatewayResponse) GetUpdatedAt() time.Time {
-	if o == nil {
+func (a *AzureTransitGatewayResponse) GetUpdatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }

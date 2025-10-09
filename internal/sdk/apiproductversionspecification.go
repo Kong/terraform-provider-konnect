@@ -62,7 +62,7 @@ func (s *APIProductVersionSpecification) CreateAPIProductVersionSpec(ctx context
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-api-product-version-spec",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateAPIProductVersionSpecDTO", "json", `request:"mediaType=application/json"`)
@@ -331,7 +331,7 @@ func (s *APIProductVersionSpecification) GetAPIProductVersionSpec(ctx context.Co
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-api-product-version-spec",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -530,7 +530,7 @@ func (s *APIProductVersionSpecification) UpdateAPIProductVersionSpec(ctx context
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-api-product-version-spec",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateAPIProductVersionSpecDTO", "json", `request:"mediaType=application/json"`)
@@ -798,7 +798,7 @@ func (s *APIProductVersionSpecification) DeleteAPIProductVersionSpec(ctx context
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-api-product-version-spec",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

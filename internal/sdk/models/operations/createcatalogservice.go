@@ -24,51 +24,51 @@ type CreateCatalogServiceResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *CreateCatalogServiceResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateCatalogServiceResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateCatalogServiceResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateCatalogServiceResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateCatalogServiceResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateCatalogServiceResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateCatalogServiceResponse) GetCatalogService() *shared.CatalogService {
-	if o == nil {
+func (c *CreateCatalogServiceResponse) GetCatalogService() *shared.CatalogService {
+	if c == nil {
 		return nil
 	}
-	return o.CatalogService
+	return c.CatalogService
 }
 
-func (o *CreateCatalogServiceResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreateCatalogServiceResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreateCatalogServiceResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (c *CreateCatalogServiceResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return c.UnauthorizedError
 }
 
-func (o *CreateCatalogServiceResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreateCatalogServiceResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }

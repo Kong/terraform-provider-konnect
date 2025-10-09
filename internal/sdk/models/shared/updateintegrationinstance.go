@@ -25,36 +25,36 @@ func (u UpdateIntegrationInstance) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateIntegrationInstance) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *UpdateIntegrationInstance) GetName() *string {
-	if o == nil {
+func (u *UpdateIntegrationInstance) GetName() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Name
+	return u.Name
 }
 
-func (o *UpdateIntegrationInstance) GetDisplayName() *string {
-	if o == nil {
+func (u *UpdateIntegrationInstance) GetDisplayName() *string {
+	if u == nil {
 		return nil
 	}
-	return o.DisplayName
+	return u.DisplayName
 }
 
-func (o *UpdateIntegrationInstance) GetDescription() *string {
-	if o == nil {
+func (u *UpdateIntegrationInstance) GetDescription() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Description
+	return u.Description
 }
 
-func (o *UpdateIntegrationInstance) GetConfig() any {
-	if o == nil {
+func (u *UpdateIntegrationInstance) GetConfig() any {
+	if u == nil {
 		return nil
 	}
-	return o.Config
+	return u.Config
 }

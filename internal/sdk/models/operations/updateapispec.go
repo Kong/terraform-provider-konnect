@@ -15,25 +15,25 @@ type UpdateAPISpecRequest struct {
 	APISpec shared.APISpec `request:"mediaType=application/json"`
 }
 
-func (o *UpdateAPISpecRequest) GetAPIID() string {
-	if o == nil {
+func (u *UpdateAPISpecRequest) GetAPIID() string {
+	if u == nil {
 		return ""
 	}
-	return o.APIID
+	return u.APIID
 }
 
-func (o *UpdateAPISpecRequest) GetSpecID() string {
-	if o == nil {
+func (u *UpdateAPISpecRequest) GetSpecID() string {
+	if u == nil {
 		return ""
 	}
-	return o.SpecID
+	return u.SpecID
 }
 
-func (o *UpdateAPISpecRequest) GetAPISpec() shared.APISpec {
-	if o == nil {
+func (u *UpdateAPISpecRequest) GetAPISpec() shared.APISpec {
+	if u == nil {
 		return shared.APISpec{}
 	}
-	return o.APISpec
+	return u.APISpec
 }
 
 type UpdateAPISpecResponse struct {
@@ -59,72 +59,72 @@ type UpdateAPISpecResponse struct {
 	UnsupportedMediaTypeError *shared.UnsupportedMediaTypeError
 }
 
-func (o *UpdateAPISpecResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateAPISpecResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateAPISpecResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateAPISpecResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateAPISpecResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateAPISpecResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateAPISpecResponse) GetAPISpecResponse() *shared.APISpecResponse {
-	if o == nil {
+func (u *UpdateAPISpecResponse) GetAPISpecResponse() *shared.APISpecResponse {
+	if u == nil {
 		return nil
 	}
-	return o.APISpecResponse
+	return u.APISpecResponse
 }
 
-func (o *UpdateAPISpecResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (u *UpdateAPISpecResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return u.BadRequestError
 }
 
-func (o *UpdateAPISpecResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (u *UpdateAPISpecResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return u.UnauthorizedError
 }
 
-func (o *UpdateAPISpecResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (u *UpdateAPISpecResponse) GetForbiddenError() *shared.ForbiddenError {
+	if u == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return u.ForbiddenError
 }
 
-func (o *UpdateAPISpecResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (u *UpdateAPISpecResponse) GetNotFoundError() *shared.NotFoundError {
+	if u == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return u.NotFoundError
 }
 
-func (o *UpdateAPISpecResponse) GetConflictError() *shared.ConflictError {
-	if o == nil {
+func (u *UpdateAPISpecResponse) GetConflictError() *shared.ConflictError {
+	if u == nil {
 		return nil
 	}
-	return o.ConflictError
+	return u.ConflictError
 }
 
-func (o *UpdateAPISpecResponse) GetUnsupportedMediaTypeError() *shared.UnsupportedMediaTypeError {
-	if o == nil {
+func (u *UpdateAPISpecResponse) GetUnsupportedMediaTypeError() *shared.UnsupportedMediaTypeError {
+	if u == nil {
 		return nil
 	}
-	return o.UnsupportedMediaTypeError
+	return u.UnsupportedMediaTypeError
 }

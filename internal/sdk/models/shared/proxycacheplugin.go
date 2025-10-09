@@ -12,22 +12,22 @@ type ProxyCachePluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *ProxyCachePluginAfter) GetAccess() []string {
-	if o == nil {
+func (p *ProxyCachePluginAfter) GetAccess() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Access
+	return p.Access
 }
 
 type ProxyCachePluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *ProxyCachePluginBefore) GetAccess() []string {
-	if o == nil {
+func (p *ProxyCachePluginBefore) GetAccess() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Access
+	return p.Access
 }
 
 type ProxyCachePluginOrdering struct {
@@ -35,18 +35,18 @@ type ProxyCachePluginOrdering struct {
 	Before *ProxyCachePluginBefore `json:"before,omitempty"`
 }
 
-func (o *ProxyCachePluginOrdering) GetAfter() *ProxyCachePluginAfter {
-	if o == nil {
+func (p *ProxyCachePluginOrdering) GetAfter() *ProxyCachePluginAfter {
+	if p == nil {
 		return nil
 	}
-	return o.After
+	return p.After
 }
 
-func (o *ProxyCachePluginOrdering) GetBefore() *ProxyCachePluginBefore {
-	if o == nil {
+func (p *ProxyCachePluginOrdering) GetBefore() *ProxyCachePluginBefore {
+	if p == nil {
 		return nil
 	}
-	return o.Before
+	return p.Before
 }
 
 type ProxyCachePluginPartials struct {
@@ -57,25 +57,25 @@ type ProxyCachePluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *ProxyCachePluginPartials) GetID() *string {
-	if o == nil {
+func (p *ProxyCachePluginPartials) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
-func (o *ProxyCachePluginPartials) GetName() *string {
-	if o == nil {
+func (p *ProxyCachePluginPartials) GetName() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Name
+	return p.Name
 }
 
-func (o *ProxyCachePluginPartials) GetPath() *string {
-	if o == nil {
+func (p *ProxyCachePluginPartials) GetPath() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Path
+	return p.Path
 }
 
 type ProxyCachePluginMemory struct {
@@ -88,17 +88,17 @@ func (p ProxyCachePluginMemory) MarshalJSON() ([]byte, error) {
 }
 
 func (p *ProxyCachePluginMemory) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ProxyCachePluginMemory) GetDictionaryName() *string {
-	if o == nil {
+func (p *ProxyCachePluginMemory) GetDictionaryName() *string {
+	if p == nil {
 		return nil
 	}
-	return o.DictionaryName
+	return p.DictionaryName
 }
 
 type RequestMethod string
@@ -148,31 +148,31 @@ func (r ResponseHeaders) MarshalJSON() ([]byte, error) {
 }
 
 func (r *ResponseHeaders) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ResponseHeaders) GetXCacheKey() *bool {
-	if o == nil {
+func (r *ResponseHeaders) GetXCacheKey() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.XCacheKey
+	return r.XCacheKey
 }
 
-func (o *ResponseHeaders) GetXCacheStatus() *bool {
-	if o == nil {
+func (r *ResponseHeaders) GetXCacheStatus() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.XCacheStatus
+	return r.XCacheStatus
 }
 
-func (o *ResponseHeaders) GetAge() *bool {
-	if o == nil {
+func (r *ResponseHeaders) GetAge() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Age
+	return r.Age
 }
 
 // ProxyCachePluginStrategy - The backing data store in which to hold cache entities.
@@ -229,94 +229,94 @@ func (p ProxyCachePluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (p *ProxyCachePluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"strategy"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ProxyCachePluginConfig) GetCacheControl() *bool {
-	if o == nil {
+func (p *ProxyCachePluginConfig) GetCacheControl() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.CacheControl
+	return p.CacheControl
 }
 
-func (o *ProxyCachePluginConfig) GetCacheTTL() *int64 {
-	if o == nil {
+func (p *ProxyCachePluginConfig) GetCacheTTL() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.CacheTTL
+	return p.CacheTTL
 }
 
-func (o *ProxyCachePluginConfig) GetContentType() []string {
-	if o == nil {
+func (p *ProxyCachePluginConfig) GetContentType() []string {
+	if p == nil {
 		return nil
 	}
-	return o.ContentType
+	return p.ContentType
 }
 
-func (o *ProxyCachePluginConfig) GetIgnoreURICase() *bool {
-	if o == nil {
+func (p *ProxyCachePluginConfig) GetIgnoreURICase() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.IgnoreURICase
+	return p.IgnoreURICase
 }
 
-func (o *ProxyCachePluginConfig) GetMemory() *ProxyCachePluginMemory {
-	if o == nil {
+func (p *ProxyCachePluginConfig) GetMemory() *ProxyCachePluginMemory {
+	if p == nil {
 		return nil
 	}
-	return o.Memory
+	return p.Memory
 }
 
-func (o *ProxyCachePluginConfig) GetRequestMethod() []RequestMethod {
-	if o == nil {
+func (p *ProxyCachePluginConfig) GetRequestMethod() []RequestMethod {
+	if p == nil {
 		return nil
 	}
-	return o.RequestMethod
+	return p.RequestMethod
 }
 
-func (o *ProxyCachePluginConfig) GetResponseCode() []int64 {
-	if o == nil {
+func (p *ProxyCachePluginConfig) GetResponseCode() []int64 {
+	if p == nil {
 		return nil
 	}
-	return o.ResponseCode
+	return p.ResponseCode
 }
 
-func (o *ProxyCachePluginConfig) GetResponseHeaders() *ResponseHeaders {
-	if o == nil {
+func (p *ProxyCachePluginConfig) GetResponseHeaders() *ResponseHeaders {
+	if p == nil {
 		return nil
 	}
-	return o.ResponseHeaders
+	return p.ResponseHeaders
 }
 
-func (o *ProxyCachePluginConfig) GetStorageTTL() *int64 {
-	if o == nil {
+func (p *ProxyCachePluginConfig) GetStorageTTL() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.StorageTTL
+	return p.StorageTTL
 }
 
-func (o *ProxyCachePluginConfig) GetStrategy() ProxyCachePluginStrategy {
-	if o == nil {
+func (p *ProxyCachePluginConfig) GetStrategy() ProxyCachePluginStrategy {
+	if p == nil {
 		return ProxyCachePluginStrategy("")
 	}
-	return o.Strategy
+	return p.Strategy
 }
 
-func (o *ProxyCachePluginConfig) GetVaryHeaders() []string {
-	if o == nil {
+func (p *ProxyCachePluginConfig) GetVaryHeaders() []string {
+	if p == nil {
 		return nil
 	}
-	return o.VaryHeaders
+	return p.VaryHeaders
 }
 
-func (o *ProxyCachePluginConfig) GetVaryQueryParams() []string {
-	if o == nil {
+func (p *ProxyCachePluginConfig) GetVaryQueryParams() []string {
+	if p == nil {
 		return nil
 	}
-	return o.VaryQueryParams
+	return p.VaryQueryParams
 }
 
 // ProxyCachePluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -324,11 +324,11 @@ type ProxyCachePluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *ProxyCachePluginConsumer) GetID() *string {
-	if o == nil {
+func (p *ProxyCachePluginConsumer) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
 // ProxyCachePluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -336,11 +336,11 @@ type ProxyCachePluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *ProxyCachePluginConsumerGroup) GetID() *string {
-	if o == nil {
+func (p *ProxyCachePluginConsumerGroup) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
 // ProxyCachePluginProtocols - A string representing a protocol, such as HTTP or HTTPS.
@@ -399,11 +399,11 @@ type ProxyCachePluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *ProxyCachePluginRoute) GetID() *string {
-	if o == nil {
+func (p *ProxyCachePluginRoute) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
 // ProxyCachePluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -411,11 +411,11 @@ type ProxyCachePluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *ProxyCachePluginService) GetID() *string {
-	if o == nil {
+func (p *ProxyCachePluginService) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
 // ProxyCachePlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -454,110 +454,110 @@ func (p ProxyCachePlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (p *ProxyCachePlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ProxyCachePlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (p *ProxyCachePlugin) GetCreatedAt() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return p.CreatedAt
 }
 
-func (o *ProxyCachePlugin) GetEnabled() *bool {
-	if o == nil {
+func (p *ProxyCachePlugin) GetEnabled() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.Enabled
+	return p.Enabled
 }
 
-func (o *ProxyCachePlugin) GetID() *string {
-	if o == nil {
+func (p *ProxyCachePlugin) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
-func (o *ProxyCachePlugin) GetInstanceName() *string {
-	if o == nil {
+func (p *ProxyCachePlugin) GetInstanceName() *string {
+	if p == nil {
 		return nil
 	}
-	return o.InstanceName
+	return p.InstanceName
 }
 
-func (o *ProxyCachePlugin) GetName() string {
+func (p *ProxyCachePlugin) GetName() string {
 	return "proxy-cache"
 }
 
-func (o *ProxyCachePlugin) GetOrdering() *ProxyCachePluginOrdering {
-	if o == nil {
+func (p *ProxyCachePlugin) GetOrdering() *ProxyCachePluginOrdering {
+	if p == nil {
 		return nil
 	}
-	return o.Ordering
+	return p.Ordering
 }
 
-func (o *ProxyCachePlugin) GetPartials() []ProxyCachePluginPartials {
-	if o == nil {
+func (p *ProxyCachePlugin) GetPartials() []ProxyCachePluginPartials {
+	if p == nil {
 		return nil
 	}
-	return o.Partials
+	return p.Partials
 }
 
-func (o *ProxyCachePlugin) GetTags() []string {
-	if o == nil {
+func (p *ProxyCachePlugin) GetTags() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Tags
+	return p.Tags
 }
 
-func (o *ProxyCachePlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (p *ProxyCachePlugin) GetUpdatedAt() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return p.UpdatedAt
 }
 
-func (o *ProxyCachePlugin) GetConfig() ProxyCachePluginConfig {
-	if o == nil {
+func (p *ProxyCachePlugin) GetConfig() ProxyCachePluginConfig {
+	if p == nil {
 		return ProxyCachePluginConfig{}
 	}
-	return o.Config
+	return p.Config
 }
 
-func (o *ProxyCachePlugin) GetConsumer() *ProxyCachePluginConsumer {
-	if o == nil {
+func (p *ProxyCachePlugin) GetConsumer() *ProxyCachePluginConsumer {
+	if p == nil {
 		return nil
 	}
-	return o.Consumer
+	return p.Consumer
 }
 
-func (o *ProxyCachePlugin) GetConsumerGroup() *ProxyCachePluginConsumerGroup {
-	if o == nil {
+func (p *ProxyCachePlugin) GetConsumerGroup() *ProxyCachePluginConsumerGroup {
+	if p == nil {
 		return nil
 	}
-	return o.ConsumerGroup
+	return p.ConsumerGroup
 }
 
-func (o *ProxyCachePlugin) GetProtocols() []ProxyCachePluginProtocols {
-	if o == nil {
+func (p *ProxyCachePlugin) GetProtocols() []ProxyCachePluginProtocols {
+	if p == nil {
 		return nil
 	}
-	return o.Protocols
+	return p.Protocols
 }
 
-func (o *ProxyCachePlugin) GetRoute() *ProxyCachePluginRoute {
-	if o == nil {
+func (p *ProxyCachePlugin) GetRoute() *ProxyCachePluginRoute {
+	if p == nil {
 		return nil
 	}
-	return o.Route
+	return p.Route
 }
 
-func (o *ProxyCachePlugin) GetService() *ProxyCachePluginService {
-	if o == nil {
+func (p *ProxyCachePlugin) GetService() *ProxyCachePluginService {
+	if p == nil {
 		return nil
 	}
-	return o.Service
+	return p.Service
 }

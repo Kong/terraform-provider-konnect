@@ -20,37 +20,37 @@ type CreateRealmResponse struct {
 	BadRequestError *shared.BadRequestError
 }
 
-func (o *CreateRealmResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateRealmResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateRealmResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateRealmResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateRealmResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateRealmResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateRealmResponse) GetConsumerRealm() *shared.ConsumerRealm {
-	if o == nil {
+func (c *CreateRealmResponse) GetConsumerRealm() *shared.ConsumerRealm {
+	if c == nil {
 		return nil
 	}
-	return o.ConsumerRealm
+	return c.ConsumerRealm
 }
 
-func (o *CreateRealmResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreateRealmResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }

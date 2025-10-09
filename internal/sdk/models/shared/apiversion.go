@@ -17,17 +17,17 @@ func (a APIVersionSpec) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APIVersionSpec) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *APIVersionSpec) GetContent() *string {
-	if o == nil {
+func (a *APIVersionSpec) GetContent() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Content
+	return a.Content
 }
 
 type APIVersion struct {
@@ -41,22 +41,22 @@ func (a APIVersion) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APIVersion) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *APIVersion) GetVersion() *string {
-	if o == nil {
+func (a *APIVersion) GetVersion() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Version
+	return a.Version
 }
 
-func (o *APIVersion) GetSpec() *APIVersionSpec {
-	if o == nil {
+func (a *APIVersion) GetSpec() *APIVersionSpec {
+	if a == nil {
 		return nil
 	}
-	return o.Spec
+	return a.Spec
 }

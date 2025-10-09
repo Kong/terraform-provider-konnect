@@ -13,18 +13,18 @@ type CreateLdapauthPluginRequest struct {
 	LdapAuthPlugin shared.LdapAuthPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateLdapauthPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateLdapauthPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateLdapauthPluginRequest) GetLdapAuthPlugin() shared.LdapAuthPlugin {
-	if o == nil {
+func (c *CreateLdapauthPluginRequest) GetLdapAuthPlugin() shared.LdapAuthPlugin {
+	if c == nil {
 		return shared.LdapAuthPlugin{}
 	}
-	return o.LdapAuthPlugin
+	return c.LdapAuthPlugin
 }
 
 type CreateLdapauthPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateLdapauthPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateLdapauthPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateLdapauthPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateLdapauthPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateLdapauthPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateLdapauthPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateLdapauthPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateLdapauthPluginResponse) GetLdapAuthPlugin() *shared.LdapAuthPlugin {
-	if o == nil {
+func (c *CreateLdapauthPluginResponse) GetLdapAuthPlugin() *shared.LdapAuthPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.LdapAuthPlugin
+	return c.LdapAuthPlugin
 }
 
-func (o *CreateLdapauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateLdapauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

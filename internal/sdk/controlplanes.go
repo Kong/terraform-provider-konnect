@@ -62,7 +62,7 @@ func (s *ControlPlanes) ListControlPlanes(ctx context.Context, request operation
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "list-control-planes",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -307,7 +307,7 @@ func (s *ControlPlanes) CreateControlPlane(ctx context.Context, request shared.C
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-control-plane",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
@@ -576,7 +576,7 @@ func (s *ControlPlanes) GetControlPlane(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-control-plane",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -838,7 +838,7 @@ func (s *ControlPlanes) UpdateControlPlane(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-control-plane",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateControlPlaneRequest", "json", `request:"mediaType=application/json"`)
@@ -1106,7 +1106,7 @@ func (s *ControlPlanes) DeleteControlPlane(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-control-plane",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

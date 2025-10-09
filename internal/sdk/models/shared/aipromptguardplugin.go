@@ -12,22 +12,22 @@ type AiPromptGuardPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AiPromptGuardPluginAfter) GetAccess() []string {
-	if o == nil {
+func (a *AiPromptGuardPluginAfter) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AiPromptGuardPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AiPromptGuardPluginBefore) GetAccess() []string {
-	if o == nil {
+func (a *AiPromptGuardPluginBefore) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AiPromptGuardPluginOrdering struct {
@@ -35,18 +35,18 @@ type AiPromptGuardPluginOrdering struct {
 	Before *AiPromptGuardPluginBefore `json:"before,omitempty"`
 }
 
-func (o *AiPromptGuardPluginOrdering) GetAfter() *AiPromptGuardPluginAfter {
-	if o == nil {
+func (a *AiPromptGuardPluginOrdering) GetAfter() *AiPromptGuardPluginAfter {
+	if a == nil {
 		return nil
 	}
-	return o.After
+	return a.After
 }
 
-func (o *AiPromptGuardPluginOrdering) GetBefore() *AiPromptGuardPluginBefore {
-	if o == nil {
+func (a *AiPromptGuardPluginOrdering) GetBefore() *AiPromptGuardPluginBefore {
+	if a == nil {
 		return nil
 	}
-	return o.Before
+	return a.Before
 }
 
 type AiPromptGuardPluginPartials struct {
@@ -57,25 +57,25 @@ type AiPromptGuardPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *AiPromptGuardPluginPartials) GetID() *string {
-	if o == nil {
+func (a *AiPromptGuardPluginPartials) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AiPromptGuardPluginPartials) GetName() *string {
-	if o == nil {
+func (a *AiPromptGuardPluginPartials) GetName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AiPromptGuardPluginPartials) GetPath() *string {
-	if o == nil {
+func (a *AiPromptGuardPluginPartials) GetPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Path
+	return a.Path
 }
 
 // GenaiCategory - Generative AI category of the request
@@ -175,59 +175,59 @@ func (a AiPromptGuardPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiPromptGuardPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiPromptGuardPluginConfig) GetAllowAllConversationHistory() *bool {
-	if o == nil {
+func (a *AiPromptGuardPluginConfig) GetAllowAllConversationHistory() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.AllowAllConversationHistory
+	return a.AllowAllConversationHistory
 }
 
-func (o *AiPromptGuardPluginConfig) GetAllowPatterns() []string {
-	if o == nil {
+func (a *AiPromptGuardPluginConfig) GetAllowPatterns() []string {
+	if a == nil {
 		return nil
 	}
-	return o.AllowPatterns
+	return a.AllowPatterns
 }
 
-func (o *AiPromptGuardPluginConfig) GetDenyPatterns() []string {
-	if o == nil {
+func (a *AiPromptGuardPluginConfig) GetDenyPatterns() []string {
+	if a == nil {
 		return nil
 	}
-	return o.DenyPatterns
+	return a.DenyPatterns
 }
 
-func (o *AiPromptGuardPluginConfig) GetGenaiCategory() *GenaiCategory {
-	if o == nil {
+func (a *AiPromptGuardPluginConfig) GetGenaiCategory() *GenaiCategory {
+	if a == nil {
 		return nil
 	}
-	return o.GenaiCategory
+	return a.GenaiCategory
 }
 
-func (o *AiPromptGuardPluginConfig) GetLlmFormat() *AiPromptGuardPluginLlmFormat {
-	if o == nil {
+func (a *AiPromptGuardPluginConfig) GetLlmFormat() *AiPromptGuardPluginLlmFormat {
+	if a == nil {
 		return nil
 	}
-	return o.LlmFormat
+	return a.LlmFormat
 }
 
-func (o *AiPromptGuardPluginConfig) GetMatchAllRoles() *bool {
-	if o == nil {
+func (a *AiPromptGuardPluginConfig) GetMatchAllRoles() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.MatchAllRoles
+	return a.MatchAllRoles
 }
 
-func (o *AiPromptGuardPluginConfig) GetMaxRequestBodySize() *int64 {
-	if o == nil {
+func (a *AiPromptGuardPluginConfig) GetMaxRequestBodySize() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.MaxRequestBodySize
+	return a.MaxRequestBodySize
 }
 
 // AiPromptGuardPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -235,11 +235,11 @@ type AiPromptGuardPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiPromptGuardPluginConsumer) GetID() *string {
-	if o == nil {
+func (a *AiPromptGuardPluginConsumer) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiPromptGuardPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -247,11 +247,11 @@ type AiPromptGuardPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiPromptGuardPluginConsumerGroup) GetID() *string {
-	if o == nil {
+func (a *AiPromptGuardPluginConsumerGroup) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 type AiPromptGuardPluginProtocols string
@@ -291,11 +291,11 @@ type AiPromptGuardPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiPromptGuardPluginRoute) GetID() *string {
-	if o == nil {
+func (a *AiPromptGuardPluginRoute) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiPromptGuardPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -303,11 +303,11 @@ type AiPromptGuardPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiPromptGuardPluginService) GetID() *string {
-	if o == nil {
+func (a *AiPromptGuardPluginService) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiPromptGuardPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -346,110 +346,110 @@ func (a AiPromptGuardPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiPromptGuardPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiPromptGuardPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (a *AiPromptGuardPlugin) GetCreatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AiPromptGuardPlugin) GetEnabled() *bool {
-	if o == nil {
+func (a *AiPromptGuardPlugin) GetEnabled() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Enabled
+	return a.Enabled
 }
 
-func (o *AiPromptGuardPlugin) GetID() *string {
-	if o == nil {
+func (a *AiPromptGuardPlugin) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AiPromptGuardPlugin) GetInstanceName() *string {
-	if o == nil {
+func (a *AiPromptGuardPlugin) GetInstanceName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.InstanceName
+	return a.InstanceName
 }
 
-func (o *AiPromptGuardPlugin) GetName() string {
+func (a *AiPromptGuardPlugin) GetName() string {
 	return "ai-prompt-guard"
 }
 
-func (o *AiPromptGuardPlugin) GetOrdering() *AiPromptGuardPluginOrdering {
-	if o == nil {
+func (a *AiPromptGuardPlugin) GetOrdering() *AiPromptGuardPluginOrdering {
+	if a == nil {
 		return nil
 	}
-	return o.Ordering
+	return a.Ordering
 }
 
-func (o *AiPromptGuardPlugin) GetPartials() []AiPromptGuardPluginPartials {
-	if o == nil {
+func (a *AiPromptGuardPlugin) GetPartials() []AiPromptGuardPluginPartials {
+	if a == nil {
 		return nil
 	}
-	return o.Partials
+	return a.Partials
 }
 
-func (o *AiPromptGuardPlugin) GetTags() []string {
-	if o == nil {
+func (a *AiPromptGuardPlugin) GetTags() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Tags
+	return a.Tags
 }
 
-func (o *AiPromptGuardPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (a *AiPromptGuardPlugin) GetUpdatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }
 
-func (o *AiPromptGuardPlugin) GetConfig() *AiPromptGuardPluginConfig {
-	if o == nil {
+func (a *AiPromptGuardPlugin) GetConfig() *AiPromptGuardPluginConfig {
+	if a == nil {
 		return nil
 	}
-	return o.Config
+	return a.Config
 }
 
-func (o *AiPromptGuardPlugin) GetConsumer() *AiPromptGuardPluginConsumer {
-	if o == nil {
+func (a *AiPromptGuardPlugin) GetConsumer() *AiPromptGuardPluginConsumer {
+	if a == nil {
 		return nil
 	}
-	return o.Consumer
+	return a.Consumer
 }
 
-func (o *AiPromptGuardPlugin) GetConsumerGroup() *AiPromptGuardPluginConsumerGroup {
-	if o == nil {
+func (a *AiPromptGuardPlugin) GetConsumerGroup() *AiPromptGuardPluginConsumerGroup {
+	if a == nil {
 		return nil
 	}
-	return o.ConsumerGroup
+	return a.ConsumerGroup
 }
 
-func (o *AiPromptGuardPlugin) GetProtocols() []AiPromptGuardPluginProtocols {
-	if o == nil {
+func (a *AiPromptGuardPlugin) GetProtocols() []AiPromptGuardPluginProtocols {
+	if a == nil {
 		return nil
 	}
-	return o.Protocols
+	return a.Protocols
 }
 
-func (o *AiPromptGuardPlugin) GetRoute() *AiPromptGuardPluginRoute {
-	if o == nil {
+func (a *AiPromptGuardPlugin) GetRoute() *AiPromptGuardPluginRoute {
+	if a == nil {
 		return nil
 	}
-	return o.Route
+	return a.Route
 }
 
-func (o *AiPromptGuardPlugin) GetService() *AiPromptGuardPluginService {
-	if o == nil {
+func (a *AiPromptGuardPlugin) GetService() *AiPromptGuardPluginService {
+	if a == nil {
 		return nil
 	}
-	return o.Service
+	return a.Service
 }

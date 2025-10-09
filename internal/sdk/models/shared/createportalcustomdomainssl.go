@@ -41,23 +41,23 @@ type CreatePortalCustomDomainSSL struct {
 	CustomPrivateKey *string `json:"custom_private_key,omitempty"`
 }
 
-func (o *CreatePortalCustomDomainSSL) GetDomainVerificationMethod() *DomainVerificationMethod {
-	if o == nil {
+func (c *CreatePortalCustomDomainSSL) GetDomainVerificationMethod() *DomainVerificationMethod {
+	if c == nil {
 		return nil
 	}
-	return o.DomainVerificationMethod
+	return c.DomainVerificationMethod
 }
 
-func (o *CreatePortalCustomDomainSSL) GetCustomCertificate() *string {
-	if o == nil {
+func (c *CreatePortalCustomDomainSSL) GetCustomCertificate() *string {
+	if c == nil {
 		return nil
 	}
-	return o.CustomCertificate
+	return c.CustomCertificate
 }
 
-func (o *CreatePortalCustomDomainSSL) GetCustomPrivateKey() *string {
-	if o == nil {
+func (c *CreatePortalCustomDomainSSL) GetCustomPrivateKey() *string {
+	if c == nil {
 		return nil
 	}
-	return o.CustomPrivateKey
+	return c.CustomPrivateKey
 }

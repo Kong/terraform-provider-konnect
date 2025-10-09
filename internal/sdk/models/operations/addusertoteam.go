@@ -18,18 +18,18 @@ type AddUserToTeamRequest struct {
 	AddUserToTeam *shared.AddUserToTeam `request:"mediaType=application/json"`
 }
 
-func (o *AddUserToTeamRequest) GetTeamID() string {
-	if o == nil {
+func (a *AddUserToTeamRequest) GetTeamID() string {
+	if a == nil {
 		return ""
 	}
-	return o.TeamID
+	return a.TeamID
 }
 
-func (o *AddUserToTeamRequest) GetAddUserToTeam() *shared.AddUserToTeam {
-	if o == nil {
+func (a *AddUserToTeamRequest) GetAddUserToTeam() *shared.AddUserToTeam {
+	if a == nil {
 		return nil
 	}
-	return o.AddUserToTeam
+	return a.AddUserToTeam
 }
 
 type AddUserToTeamResponse struct {
@@ -47,44 +47,44 @@ type AddUserToTeamResponse struct {
 	ConflictError *shared.ConflictError
 }
 
-func (o *AddUserToTeamResponse) GetContentType() string {
-	if o == nil {
+func (a *AddUserToTeamResponse) GetContentType() string {
+	if a == nil {
 		return ""
 	}
-	return o.ContentType
+	return a.ContentType
 }
 
-func (o *AddUserToTeamResponse) GetStatusCode() int {
-	if o == nil {
+func (a *AddUserToTeamResponse) GetStatusCode() int {
+	if a == nil {
 		return 0
 	}
-	return o.StatusCode
+	return a.StatusCode
 }
 
-func (o *AddUserToTeamResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (a *AddUserToTeamResponse) GetRawResponse() *http.Response {
+	if a == nil {
 		return nil
 	}
-	return o.RawResponse
+	return a.RawResponse
 }
 
-func (o *AddUserToTeamResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (a *AddUserToTeamResponse) GetBadRequestError() *shared.BadRequestError {
+	if a == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return a.BadRequestError
 }
 
-func (o *AddUserToTeamResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (a *AddUserToTeamResponse) GetNotFoundError() *shared.NotFoundError {
+	if a == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return a.NotFoundError
 }
 
-func (o *AddUserToTeamResponse) GetConflictError() *shared.ConflictError {
-	if o == nil {
+func (a *AddUserToTeamResponse) GetConflictError() *shared.ConflictError {
+	if a == nil {
 		return nil
 	}
-	return o.ConflictError
+	return a.ConflictError
 }

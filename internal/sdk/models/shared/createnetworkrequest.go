@@ -26,50 +26,50 @@ func (c CreateNetworkRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateNetworkRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "cloud_gateway_provider_account_id", "region", "availability_zones", "cidr_block"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CreateNetworkRequest) GetName() string {
-	if o == nil {
+func (c *CreateNetworkRequest) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *CreateNetworkRequest) GetCloudGatewayProviderAccountID() string {
-	if o == nil {
+func (c *CreateNetworkRequest) GetCloudGatewayProviderAccountID() string {
+	if c == nil {
 		return ""
 	}
-	return o.CloudGatewayProviderAccountID
+	return c.CloudGatewayProviderAccountID
 }
 
-func (o *CreateNetworkRequest) GetRegion() string {
-	if o == nil {
+func (c *CreateNetworkRequest) GetRegion() string {
+	if c == nil {
 		return ""
 	}
-	return o.Region
+	return c.Region
 }
 
-func (o *CreateNetworkRequest) GetAvailabilityZones() []string {
-	if o == nil {
+func (c *CreateNetworkRequest) GetAvailabilityZones() []string {
+	if c == nil {
 		return []string{}
 	}
-	return o.AvailabilityZones
+	return c.AvailabilityZones
 }
 
-func (o *CreateNetworkRequest) GetCidrBlock() string {
-	if o == nil {
+func (c *CreateNetworkRequest) GetCidrBlock() string {
+	if c == nil {
 		return ""
 	}
-	return o.CidrBlock
+	return c.CidrBlock
 }
 
-func (o *CreateNetworkRequest) GetState() *NetworkCreateState {
-	if o == nil {
+func (c *CreateNetworkRequest) GetState() *NetworkCreateState {
+	if c == nil {
 		return nil
 	}
-	return o.State
+	return c.State
 }

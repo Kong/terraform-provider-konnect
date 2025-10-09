@@ -67,7 +67,7 @@ func (s *PortalProductVersions) GetPortalProductVersion(ctx context.Context, req
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-portal-product-version",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -287,7 +287,7 @@ func (s *PortalProductVersions) ReplacePortalProductVersion(ctx context.Context,
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "replace-portal-product-version",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "V2ReplacePortalProductVersionPayload", "json", `request:"mediaType=application/json"`)
@@ -513,7 +513,7 @@ func (s *PortalProductVersions) DeletePortalProductVersion(ctx context.Context, 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-portal-product-version",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

@@ -10,16 +10,16 @@ type CreateAPIProductVersionSpecDTO struct {
 	Content string `json:"content"`
 }
 
-func (o *CreateAPIProductVersionSpecDTO) GetName() string {
-	if o == nil {
+func (c *CreateAPIProductVersionSpecDTO) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *CreateAPIProductVersionSpecDTO) GetContent() string {
-	if o == nil {
+func (c *CreateAPIProductVersionSpecDTO) GetContent() string {
+	if c == nil {
 		return ""
 	}
-	return o.Content
+	return c.Content
 }

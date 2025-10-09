@@ -14,18 +14,18 @@ type GetOpaPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetOpaPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetOpaPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetOpaPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetOpaPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetOpaPluginResponse struct {
@@ -41,37 +41,37 @@ type GetOpaPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetOpaPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetOpaPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetOpaPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetOpaPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetOpaPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetOpaPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetOpaPluginResponse) GetOpaPlugin() *shared.OpaPlugin {
-	if o == nil {
+func (g *GetOpaPluginResponse) GetOpaPlugin() *shared.OpaPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.OpaPlugin
+	return g.OpaPlugin
 }
 
-func (o *GetOpaPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetOpaPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

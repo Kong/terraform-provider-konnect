@@ -27,43 +27,43 @@ func (u UpdateAuditLogWebhook) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateAuditLogWebhook) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *UpdateAuditLogWebhook) GetEndpoint() *string {
-	if o == nil {
+func (u *UpdateAuditLogWebhook) GetEndpoint() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Endpoint
+	return u.Endpoint
 }
 
-func (o *UpdateAuditLogWebhook) GetAuthorization() *string {
-	if o == nil {
+func (u *UpdateAuditLogWebhook) GetAuthorization() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Authorization
+	return u.Authorization
 }
 
-func (o *UpdateAuditLogWebhook) GetEnabled() *bool {
-	if o == nil {
+func (u *UpdateAuditLogWebhook) GetEnabled() *bool {
+	if u == nil {
 		return nil
 	}
-	return o.Enabled
+	return u.Enabled
 }
 
-func (o *UpdateAuditLogWebhook) GetLogFormat() *LogFormat {
-	if o == nil {
+func (u *UpdateAuditLogWebhook) GetLogFormat() *LogFormat {
+	if u == nil {
 		return nil
 	}
-	return o.LogFormat
+	return u.LogFormat
 }
 
-func (o *UpdateAuditLogWebhook) GetSkipSslVerification() *bool {
-	if o == nil {
+func (u *UpdateAuditLogWebhook) GetSkipSslVerification() *bool {
+	if u == nil {
 		return nil
 	}
-	return o.SkipSslVerification
+	return u.SkipSslVerification
 }

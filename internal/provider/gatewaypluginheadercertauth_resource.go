@@ -15,8 +15,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -120,10 +122,14 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 						Description: `Name of the header that contains the certificate, received from the WAF or other L7 downstream proxy.`,
 					},
 					"consumer_by": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+							types.StringValue("custom_id"),
+							types.StringValue("username"),
+						})),
 						ElementType: types.StringType,
-						Description: `Whether to match the subject name of the client-supplied certificate against consumer's ` + "`" + `username` + "`" + ` and/or ` + "`" + `custom_id` + "`" + ` attribute. If set to ` + "`" + `[]` + "`" + ` (the empty array), then auto-matching is disabled.`,
+						Description: `Whether to match the subject name of the client-supplied certificate against consumer's ` + "`" + `username` + "`" + ` and/or ` + "`" + `custom_id` + "`" + ` attribute. If set to ` + "`" + `[]` + "`" + ` (the empty array), then auto-matching is disabled. Default: ["custom_id","username"]`,
 					},
 					"default_consumer": schema.StringAttribute{
 						Optional:    true,
@@ -287,10 +293,16 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.SetAttribute{
-				Computed:    true,
-				Optional:    true,
+				Computed: true,
+				Optional: true,
+				Default: setdefault.StaticValue(types.SetValueMust(types.StringType, []attr.Value{
+					types.StringValue("grpc"),
+					types.StringValue("grpcs"),
+					types.StringValue("http"),
+					types.StringValue("https"),
+				})),
 				ElementType: types.StringType,
-				Description: `A set of strings representing HTTP protocols.`,
+				Description: `A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,

@@ -14,18 +14,18 @@ type DeleteAPIProductDocumentRequest struct {
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (o *DeleteAPIProductDocumentRequest) GetAPIProductID() string {
-	if o == nil {
+func (d *DeleteAPIProductDocumentRequest) GetAPIProductID() string {
+	if d == nil {
 		return ""
 	}
-	return o.APIProductID
+	return d.APIProductID
 }
 
-func (o *DeleteAPIProductDocumentRequest) GetID() string {
-	if o == nil {
+func (d *DeleteAPIProductDocumentRequest) GetID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ID
+	return d.ID
 }
 
 type DeleteAPIProductDocumentResponse struct {
@@ -43,44 +43,44 @@ type DeleteAPIProductDocumentResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *DeleteAPIProductDocumentResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteAPIProductDocumentResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteAPIProductDocumentResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteAPIProductDocumentResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteAPIProductDocumentResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteAPIProductDocumentResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteAPIProductDocumentResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (d *DeleteAPIProductDocumentResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return d.UnauthorizedError
 }
 
-func (o *DeleteAPIProductDocumentResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (d *DeleteAPIProductDocumentResponse) GetForbiddenError() *shared.ForbiddenError {
+	if d == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return d.ForbiddenError
 }
 
-func (o *DeleteAPIProductDocumentResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (d *DeleteAPIProductDocumentResponse) GetNotFoundError() *shared.NotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return d.NotFoundError
 }

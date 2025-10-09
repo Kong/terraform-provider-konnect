@@ -13,18 +13,18 @@ type UpdateCpRequest struct {
 	PutMeshControlPlaneRequest shared.PutMeshControlPlaneRequest `request:"mediaType=application/json"`
 }
 
-func (o *UpdateCpRequest) GetCpID() string {
-	if o == nil {
+func (u *UpdateCpRequest) GetCpID() string {
+	if u == nil {
 		return ""
 	}
-	return o.CpID
+	return u.CpID
 }
 
-func (o *UpdateCpRequest) GetPutMeshControlPlaneRequest() shared.PutMeshControlPlaneRequest {
-	if o == nil {
+func (u *UpdateCpRequest) GetPutMeshControlPlaneRequest() shared.PutMeshControlPlaneRequest {
+	if u == nil {
 		return shared.PutMeshControlPlaneRequest{}
 	}
-	return o.PutMeshControlPlaneRequest
+	return u.PutMeshControlPlaneRequest
 }
 
 type UpdateCpResponse struct {
@@ -46,58 +46,58 @@ type UpdateCpResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *UpdateCpResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateCpResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateCpResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateCpResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateCpResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateCpResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateCpResponse) GetMeshControlPlane() *shared.MeshControlPlane {
-	if o == nil {
+func (u *UpdateCpResponse) GetMeshControlPlane() *shared.MeshControlPlane {
+	if u == nil {
 		return nil
 	}
-	return o.MeshControlPlane
+	return u.MeshControlPlane
 }
 
-func (o *UpdateCpResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (u *UpdateCpResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return u.BadRequestError
 }
 
-func (o *UpdateCpResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (u *UpdateCpResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return u.UnauthorizedError
 }
 
-func (o *UpdateCpResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (u *UpdateCpResponse) GetForbiddenError() *shared.ForbiddenError {
+	if u == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return u.ForbiddenError
 }
 
-func (o *UpdateCpResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (u *UpdateCpResponse) GetNotFoundError() *shared.NotFoundError {
+	if u == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return u.NotFoundError
 }

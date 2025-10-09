@@ -59,7 +59,7 @@ func (s *TeamMembership) AddUserToTeam(ctx context.Context, request operations.A
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "add-user-to-team",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "AddUserToTeam", "json", `request:"mediaType=application/json"`)
@@ -239,7 +239,7 @@ func (s *TeamMembership) RemoveUserFromTeam(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "remove-user-from-team",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

@@ -26,43 +26,43 @@ func (a AuditLogWebhook) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AuditLogWebhook) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AuditLogWebhook) GetEndpoint() *string {
-	if o == nil {
+func (a *AuditLogWebhook) GetEndpoint() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Endpoint
+	return a.Endpoint
 }
 
-func (o *AuditLogWebhook) GetEnabled() *bool {
-	if o == nil {
+func (a *AuditLogWebhook) GetEnabled() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Enabled
+	return a.Enabled
 }
 
-func (o *AuditLogWebhook) GetLogFormat() *LogFormat {
-	if o == nil {
+func (a *AuditLogWebhook) GetLogFormat() *LogFormat {
+	if a == nil {
 		return nil
 	}
-	return o.LogFormat
+	return a.LogFormat
 }
 
-func (o *AuditLogWebhook) GetSkipSslVerification() *bool {
-	if o == nil {
+func (a *AuditLogWebhook) GetSkipSslVerification() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.SkipSslVerification
+	return a.SkipSslVerification
 }
 
-func (o *AuditLogWebhook) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (a *AuditLogWebhook) GetUpdatedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }

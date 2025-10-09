@@ -12,11 +12,11 @@ type GetPortalAppearanceRequest struct {
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 }
 
-func (o *GetPortalAppearanceRequest) GetPortalID() string {
-	if o == nil {
+func (g *GetPortalAppearanceRequest) GetPortalID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PortalID
+	return g.PortalID
 }
 
 type GetPortalAppearanceResponse struct {
@@ -36,51 +36,51 @@ type GetPortalAppearanceResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetPortalAppearanceResponse) GetContentType() string {
-	if o == nil {
+func (g *GetPortalAppearanceResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetPortalAppearanceResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetPortalAppearanceResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetPortalAppearanceResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetPortalAppearanceResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetPortalAppearanceResponse) GetV2GetPortalAppearanceResponse() *shared.V2GetPortalAppearanceResponse {
-	if o == nil {
+func (g *GetPortalAppearanceResponse) GetV2GetPortalAppearanceResponse() *shared.V2GetPortalAppearanceResponse {
+	if g == nil {
 		return nil
 	}
-	return o.V2GetPortalAppearanceResponse
+	return g.V2GetPortalAppearanceResponse
 }
 
-func (o *GetPortalAppearanceResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetPortalAppearanceResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetPortalAppearanceResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (g *GetPortalAppearanceResponse) GetForbiddenError() *shared.ForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return g.ForbiddenError
 }
 
-func (o *GetPortalAppearanceResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetPortalAppearanceResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

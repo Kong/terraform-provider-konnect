@@ -16,25 +16,25 @@ type CreateACLWithConsumerRequest struct {
 	ACLWithoutParents shared.ACLWithoutParents `request:"mediaType=application/json"`
 }
 
-func (o *CreateACLWithConsumerRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateACLWithConsumerRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateACLWithConsumerRequest) GetConsumerID() string {
-	if o == nil {
+func (c *CreateACLWithConsumerRequest) GetConsumerID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ConsumerID
+	return c.ConsumerID
 }
 
-func (o *CreateACLWithConsumerRequest) GetACLWithoutParents() shared.ACLWithoutParents {
-	if o == nil {
+func (c *CreateACLWithConsumerRequest) GetACLWithoutParents() shared.ACLWithoutParents {
+	if c == nil {
 		return shared.ACLWithoutParents{}
 	}
-	return o.ACLWithoutParents
+	return c.ACLWithoutParents
 }
 
 type CreateACLWithConsumerResponse struct {
@@ -48,30 +48,30 @@ type CreateACLWithConsumerResponse struct {
 	ACL *shared.ACL
 }
 
-func (o *CreateACLWithConsumerResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateACLWithConsumerResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateACLWithConsumerResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateACLWithConsumerResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateACLWithConsumerResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateACLWithConsumerResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateACLWithConsumerResponse) GetACL() *shared.ACL {
-	if o == nil {
+func (c *CreateACLWithConsumerResponse) GetACL() *shared.ACL {
+	if c == nil {
 		return nil
 	}
-	return o.ACL
+	return c.ACL
 }

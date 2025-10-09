@@ -6,11 +6,11 @@ type KeyAuthWithoutParentsConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *KeyAuthWithoutParentsConsumer) GetID() *string {
-	if o == nil {
+func (k *KeyAuthWithoutParentsConsumer) GetID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ID
+	return k.ID
 }
 
 type KeyAuthWithoutParents struct {
@@ -26,44 +26,44 @@ type KeyAuthWithoutParents struct {
 	TTL *int64 `json:"ttl,omitempty"`
 }
 
-func (o *KeyAuthWithoutParents) GetConsumer() *KeyAuthWithoutParentsConsumer {
-	if o == nil {
+func (k *KeyAuthWithoutParents) GetConsumer() *KeyAuthWithoutParentsConsumer {
+	if k == nil {
 		return nil
 	}
-	return o.Consumer
+	return k.Consumer
 }
 
-func (o *KeyAuthWithoutParents) GetCreatedAt() *int64 {
-	if o == nil {
+func (k *KeyAuthWithoutParents) GetCreatedAt() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return k.CreatedAt
 }
 
-func (o *KeyAuthWithoutParents) GetID() *string {
-	if o == nil {
+func (k *KeyAuthWithoutParents) GetID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ID
+	return k.ID
 }
 
-func (o *KeyAuthWithoutParents) GetKey() *string {
-	if o == nil {
+func (k *KeyAuthWithoutParents) GetKey() *string {
+	if k == nil {
 		return nil
 	}
-	return o.Key
+	return k.Key
 }
 
-func (o *KeyAuthWithoutParents) GetTags() []string {
-	if o == nil {
+func (k *KeyAuthWithoutParents) GetTags() []string {
+	if k == nil {
 		return nil
 	}
-	return o.Tags
+	return k.Tags
 }
 
-func (o *KeyAuthWithoutParents) GetTTL() *int64 {
-	if o == nil {
+func (k *KeyAuthWithoutParents) GetTTL() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.TTL
+	return k.TTL
 }

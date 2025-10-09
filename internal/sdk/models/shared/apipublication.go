@@ -28,29 +28,29 @@ func (a APIPublication) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APIPublication) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *APIPublication) GetAutoApproveRegistrations() *bool {
-	if o == nil {
+func (a *APIPublication) GetAutoApproveRegistrations() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.AutoApproveRegistrations
+	return a.AutoApproveRegistrations
 }
 
-func (o *APIPublication) GetAuthStrategyIds() []string {
-	if o == nil {
+func (a *APIPublication) GetAuthStrategyIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.AuthStrategyIds
+	return a.AuthStrategyIds
 }
 
-func (o *APIPublication) GetVisibility() *APIPublicationVisibility {
-	if o == nil {
+func (a *APIPublication) GetVisibility() *APIPublicationVisibility {
+	if a == nil {
 		return nil
 	}
-	return o.Visibility
+	return a.Visibility
 }

@@ -15,25 +15,25 @@ type UpdateDatakitPluginRequest struct {
 	DatakitPlugin  shared.DatakitPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateDatakitPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateDatakitPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateDatakitPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateDatakitPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateDatakitPluginRequest) GetDatakitPlugin() shared.DatakitPlugin {
-	if o == nil {
+func (u *UpdateDatakitPluginRequest) GetDatakitPlugin() shared.DatakitPlugin {
+	if u == nil {
 		return shared.DatakitPlugin{}
 	}
-	return o.DatakitPlugin
+	return u.DatakitPlugin
 }
 
 type UpdateDatakitPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateDatakitPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateDatakitPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateDatakitPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateDatakitPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateDatakitPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateDatakitPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateDatakitPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateDatakitPluginResponse) GetDatakitPlugin() *shared.DatakitPlugin {
-	if o == nil {
+func (u *UpdateDatakitPluginResponse) GetDatakitPlugin() *shared.DatakitPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.DatakitPlugin
+	return u.DatakitPlugin
 }
 
-func (o *UpdateDatakitPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateDatakitPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

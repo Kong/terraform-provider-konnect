@@ -12,22 +12,22 @@ type HeaderCertAuthPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *HeaderCertAuthPluginAfter) GetAccess() []string {
-	if o == nil {
+func (h *HeaderCertAuthPluginAfter) GetAccess() []string {
+	if h == nil {
 		return nil
 	}
-	return o.Access
+	return h.Access
 }
 
 type HeaderCertAuthPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *HeaderCertAuthPluginBefore) GetAccess() []string {
-	if o == nil {
+func (h *HeaderCertAuthPluginBefore) GetAccess() []string {
+	if h == nil {
 		return nil
 	}
-	return o.Access
+	return h.Access
 }
 
 type HeaderCertAuthPluginOrdering struct {
@@ -35,18 +35,18 @@ type HeaderCertAuthPluginOrdering struct {
 	Before *HeaderCertAuthPluginBefore `json:"before,omitempty"`
 }
 
-func (o *HeaderCertAuthPluginOrdering) GetAfter() *HeaderCertAuthPluginAfter {
-	if o == nil {
+func (h *HeaderCertAuthPluginOrdering) GetAfter() *HeaderCertAuthPluginAfter {
+	if h == nil {
 		return nil
 	}
-	return o.After
+	return h.After
 }
 
-func (o *HeaderCertAuthPluginOrdering) GetBefore() *HeaderCertAuthPluginBefore {
-	if o == nil {
+func (h *HeaderCertAuthPluginOrdering) GetBefore() *HeaderCertAuthPluginBefore {
+	if h == nil {
 		return nil
 	}
-	return o.Before
+	return h.Before
 }
 
 type HeaderCertAuthPluginPartials struct {
@@ -57,25 +57,25 @@ type HeaderCertAuthPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *HeaderCertAuthPluginPartials) GetID() *string {
-	if o == nil {
+func (h *HeaderCertAuthPluginPartials) GetID() *string {
+	if h == nil {
 		return nil
 	}
-	return o.ID
+	return h.ID
 }
 
-func (o *HeaderCertAuthPluginPartials) GetName() *string {
-	if o == nil {
+func (h *HeaderCertAuthPluginPartials) GetName() *string {
+	if h == nil {
 		return nil
 	}
-	return o.Name
+	return h.Name
 }
 
-func (o *HeaderCertAuthPluginPartials) GetPath() *string {
-	if o == nil {
+func (h *HeaderCertAuthPluginPartials) GetPath() *string {
+	if h == nil {
 		return nil
 	}
-	return o.Path
+	return h.Path
 }
 
 // AuthenticatedGroupBy - Certificate property to use as the authenticated group. Valid values are `CN` (Common Name) or `DN` (Distinguished Name). Once `skip_consumer_lookup` is applied, any client with a valid certificate can access the Service/API. To restrict usage to only some of the authenticated users, also add the ACL plugin (not covered here) and create allowed or denied groups of users.
@@ -232,136 +232,136 @@ func (h HeaderCertAuthPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (h *HeaderCertAuthPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &h, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &h, "", false, []string{"ca_certificates", "certificate_header_format", "certificate_header_name"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *HeaderCertAuthPluginConfig) GetAllowPartialChain() *bool {
-	if o == nil {
+func (h *HeaderCertAuthPluginConfig) GetAllowPartialChain() *bool {
+	if h == nil {
 		return nil
 	}
-	return o.AllowPartialChain
+	return h.AllowPartialChain
 }
 
-func (o *HeaderCertAuthPluginConfig) GetAnonymous() *string {
-	if o == nil {
+func (h *HeaderCertAuthPluginConfig) GetAnonymous() *string {
+	if h == nil {
 		return nil
 	}
-	return o.Anonymous
+	return h.Anonymous
 }
 
-func (o *HeaderCertAuthPluginConfig) GetAuthenticatedGroupBy() *AuthenticatedGroupBy {
-	if o == nil {
+func (h *HeaderCertAuthPluginConfig) GetAuthenticatedGroupBy() *AuthenticatedGroupBy {
+	if h == nil {
 		return nil
 	}
-	return o.AuthenticatedGroupBy
+	return h.AuthenticatedGroupBy
 }
 
-func (o *HeaderCertAuthPluginConfig) GetCaCertificates() []string {
-	if o == nil {
+func (h *HeaderCertAuthPluginConfig) GetCaCertificates() []string {
+	if h == nil {
 		return []string{}
 	}
-	return o.CaCertificates
+	return h.CaCertificates
 }
 
-func (o *HeaderCertAuthPluginConfig) GetCacheTTL() *float64 {
-	if o == nil {
+func (h *HeaderCertAuthPluginConfig) GetCacheTTL() *float64 {
+	if h == nil {
 		return nil
 	}
-	return o.CacheTTL
+	return h.CacheTTL
 }
 
-func (o *HeaderCertAuthPluginConfig) GetCertCacheTTL() *float64 {
-	if o == nil {
+func (h *HeaderCertAuthPluginConfig) GetCertCacheTTL() *float64 {
+	if h == nil {
 		return nil
 	}
-	return o.CertCacheTTL
+	return h.CertCacheTTL
 }
 
-func (o *HeaderCertAuthPluginConfig) GetCertificateHeaderFormat() CertificateHeaderFormat {
-	if o == nil {
+func (h *HeaderCertAuthPluginConfig) GetCertificateHeaderFormat() CertificateHeaderFormat {
+	if h == nil {
 		return CertificateHeaderFormat("")
 	}
-	return o.CertificateHeaderFormat
+	return h.CertificateHeaderFormat
 }
 
-func (o *HeaderCertAuthPluginConfig) GetCertificateHeaderName() string {
-	if o == nil {
+func (h *HeaderCertAuthPluginConfig) GetCertificateHeaderName() string {
+	if h == nil {
 		return ""
 	}
-	return o.CertificateHeaderName
+	return h.CertificateHeaderName
 }
 
-func (o *HeaderCertAuthPluginConfig) GetConsumerBy() []ConsumerBy {
-	if o == nil {
+func (h *HeaderCertAuthPluginConfig) GetConsumerBy() []ConsumerBy {
+	if h == nil {
 		return nil
 	}
-	return o.ConsumerBy
+	return h.ConsumerBy
 }
 
-func (o *HeaderCertAuthPluginConfig) GetDefaultConsumer() *string {
-	if o == nil {
+func (h *HeaderCertAuthPluginConfig) GetDefaultConsumer() *string {
+	if h == nil {
 		return nil
 	}
-	return o.DefaultConsumer
+	return h.DefaultConsumer
 }
 
-func (o *HeaderCertAuthPluginConfig) GetHTTPProxyHost() *string {
-	if o == nil {
+func (h *HeaderCertAuthPluginConfig) GetHTTPProxyHost() *string {
+	if h == nil {
 		return nil
 	}
-	return o.HTTPProxyHost
+	return h.HTTPProxyHost
 }
 
-func (o *HeaderCertAuthPluginConfig) GetHTTPProxyPort() *int64 {
-	if o == nil {
+func (h *HeaderCertAuthPluginConfig) GetHTTPProxyPort() *int64 {
+	if h == nil {
 		return nil
 	}
-	return o.HTTPProxyPort
+	return h.HTTPProxyPort
 }
 
-func (o *HeaderCertAuthPluginConfig) GetHTTPTimeout() *float64 {
-	if o == nil {
+func (h *HeaderCertAuthPluginConfig) GetHTTPTimeout() *float64 {
+	if h == nil {
 		return nil
 	}
-	return o.HTTPTimeout
+	return h.HTTPTimeout
 }
 
-func (o *HeaderCertAuthPluginConfig) GetHTTPSProxyHost() *string {
-	if o == nil {
+func (h *HeaderCertAuthPluginConfig) GetHTTPSProxyHost() *string {
+	if h == nil {
 		return nil
 	}
-	return o.HTTPSProxyHost
+	return h.HTTPSProxyHost
 }
 
-func (o *HeaderCertAuthPluginConfig) GetHTTPSProxyPort() *int64 {
-	if o == nil {
+func (h *HeaderCertAuthPluginConfig) GetHTTPSProxyPort() *int64 {
+	if h == nil {
 		return nil
 	}
-	return o.HTTPSProxyPort
+	return h.HTTPSProxyPort
 }
 
-func (o *HeaderCertAuthPluginConfig) GetRevocationCheckMode() *RevocationCheckMode {
-	if o == nil {
+func (h *HeaderCertAuthPluginConfig) GetRevocationCheckMode() *RevocationCheckMode {
+	if h == nil {
 		return nil
 	}
-	return o.RevocationCheckMode
+	return h.RevocationCheckMode
 }
 
-func (o *HeaderCertAuthPluginConfig) GetSecureSource() *bool {
-	if o == nil {
+func (h *HeaderCertAuthPluginConfig) GetSecureSource() *bool {
+	if h == nil {
 		return nil
 	}
-	return o.SecureSource
+	return h.SecureSource
 }
 
-func (o *HeaderCertAuthPluginConfig) GetSkipConsumerLookup() *bool {
-	if o == nil {
+func (h *HeaderCertAuthPluginConfig) GetSkipConsumerLookup() *bool {
+	if h == nil {
 		return nil
 	}
-	return o.SkipConsumerLookup
+	return h.SkipConsumerLookup
 }
 
 type HeaderCertAuthPluginProtocols string
@@ -401,11 +401,11 @@ type HeaderCertAuthPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *HeaderCertAuthPluginRoute) GetID() *string {
-	if o == nil {
+func (h *HeaderCertAuthPluginRoute) GetID() *string {
+	if h == nil {
 		return nil
 	}
-	return o.ID
+	return h.ID
 }
 
 // HeaderCertAuthPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -413,11 +413,11 @@ type HeaderCertAuthPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *HeaderCertAuthPluginService) GetID() *string {
-	if o == nil {
+func (h *HeaderCertAuthPluginService) GetID() *string {
+	if h == nil {
 		return nil
 	}
-	return o.ID
+	return h.ID
 }
 
 // HeaderCertAuthPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -452,96 +452,96 @@ func (h HeaderCertAuthPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (h *HeaderCertAuthPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &h, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &h, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *HeaderCertAuthPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (h *HeaderCertAuthPlugin) GetCreatedAt() *int64 {
+	if h == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return h.CreatedAt
 }
 
-func (o *HeaderCertAuthPlugin) GetEnabled() *bool {
-	if o == nil {
+func (h *HeaderCertAuthPlugin) GetEnabled() *bool {
+	if h == nil {
 		return nil
 	}
-	return o.Enabled
+	return h.Enabled
 }
 
-func (o *HeaderCertAuthPlugin) GetID() *string {
-	if o == nil {
+func (h *HeaderCertAuthPlugin) GetID() *string {
+	if h == nil {
 		return nil
 	}
-	return o.ID
+	return h.ID
 }
 
-func (o *HeaderCertAuthPlugin) GetInstanceName() *string {
-	if o == nil {
+func (h *HeaderCertAuthPlugin) GetInstanceName() *string {
+	if h == nil {
 		return nil
 	}
-	return o.InstanceName
+	return h.InstanceName
 }
 
-func (o *HeaderCertAuthPlugin) GetName() string {
+func (h *HeaderCertAuthPlugin) GetName() string {
 	return "header-cert-auth"
 }
 
-func (o *HeaderCertAuthPlugin) GetOrdering() *HeaderCertAuthPluginOrdering {
-	if o == nil {
+func (h *HeaderCertAuthPlugin) GetOrdering() *HeaderCertAuthPluginOrdering {
+	if h == nil {
 		return nil
 	}
-	return o.Ordering
+	return h.Ordering
 }
 
-func (o *HeaderCertAuthPlugin) GetPartials() []HeaderCertAuthPluginPartials {
-	if o == nil {
+func (h *HeaderCertAuthPlugin) GetPartials() []HeaderCertAuthPluginPartials {
+	if h == nil {
 		return nil
 	}
-	return o.Partials
+	return h.Partials
 }
 
-func (o *HeaderCertAuthPlugin) GetTags() []string {
-	if o == nil {
+func (h *HeaderCertAuthPlugin) GetTags() []string {
+	if h == nil {
 		return nil
 	}
-	return o.Tags
+	return h.Tags
 }
 
-func (o *HeaderCertAuthPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (h *HeaderCertAuthPlugin) GetUpdatedAt() *int64 {
+	if h == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return h.UpdatedAt
 }
 
-func (o *HeaderCertAuthPlugin) GetConfig() HeaderCertAuthPluginConfig {
-	if o == nil {
+func (h *HeaderCertAuthPlugin) GetConfig() HeaderCertAuthPluginConfig {
+	if h == nil {
 		return HeaderCertAuthPluginConfig{}
 	}
-	return o.Config
+	return h.Config
 }
 
-func (o *HeaderCertAuthPlugin) GetProtocols() []HeaderCertAuthPluginProtocols {
-	if o == nil {
+func (h *HeaderCertAuthPlugin) GetProtocols() []HeaderCertAuthPluginProtocols {
+	if h == nil {
 		return nil
 	}
-	return o.Protocols
+	return h.Protocols
 }
 
-func (o *HeaderCertAuthPlugin) GetRoute() *HeaderCertAuthPluginRoute {
-	if o == nil {
+func (h *HeaderCertAuthPlugin) GetRoute() *HeaderCertAuthPluginRoute {
+	if h == nil {
 		return nil
 	}
-	return o.Route
+	return h.Route
 }
 
-func (o *HeaderCertAuthPlugin) GetService() *HeaderCertAuthPluginService {
-	if o == nil {
+func (h *HeaderCertAuthPlugin) GetService() *HeaderCertAuthPluginService {
+	if h == nil {
 		return nil
 	}
-	return o.Service
+	return h.Service
 }

@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type ConfigurationDataPlaneGroupAutoscaleAutopilotKind string
@@ -41,23 +42,34 @@ type ConfigurationDataPlaneGroupAutoscaleAutopilot struct {
 	MaxRps *int64 `json:"max_rps,omitempty"`
 }
 
-func (o *ConfigurationDataPlaneGroupAutoscaleAutopilot) GetKind() ConfigurationDataPlaneGroupAutoscaleAutopilotKind {
-	if o == nil {
+func (c ConfigurationDataPlaneGroupAutoscaleAutopilot) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ConfigurationDataPlaneGroupAutoscaleAutopilot) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"kind", "base_rps"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *ConfigurationDataPlaneGroupAutoscaleAutopilot) GetKind() ConfigurationDataPlaneGroupAutoscaleAutopilotKind {
+	if c == nil {
 		return ConfigurationDataPlaneGroupAutoscaleAutopilotKind("")
 	}
-	return o.Kind
+	return c.Kind
 }
 
-func (o *ConfigurationDataPlaneGroupAutoscaleAutopilot) GetBaseRps() int64 {
-	if o == nil {
+func (c *ConfigurationDataPlaneGroupAutoscaleAutopilot) GetBaseRps() int64 {
+	if c == nil {
 		return 0
 	}
-	return o.BaseRps
+	return c.BaseRps
 }
 
-func (o *ConfigurationDataPlaneGroupAutoscaleAutopilot) GetMaxRps() *int64 {
-	if o == nil {
+func (c *ConfigurationDataPlaneGroupAutoscaleAutopilot) GetMaxRps() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.MaxRps
+	return c.MaxRps
 }

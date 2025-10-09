@@ -26,44 +26,44 @@ type PostSystemAccountsResponse struct {
 	ConflictError *shared.ConflictError
 }
 
-func (o *PostSystemAccountsResponse) GetContentType() string {
-	if o == nil {
+func (p *PostSystemAccountsResponse) GetContentType() string {
+	if p == nil {
 		return ""
 	}
-	return o.ContentType
+	return p.ContentType
 }
 
-func (o *PostSystemAccountsResponse) GetStatusCode() int {
-	if o == nil {
+func (p *PostSystemAccountsResponse) GetStatusCode() int {
+	if p == nil {
 		return 0
 	}
-	return o.StatusCode
+	return p.StatusCode
 }
 
-func (o *PostSystemAccountsResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (p *PostSystemAccountsResponse) GetRawResponse() *http.Response {
+	if p == nil {
 		return nil
 	}
-	return o.RawResponse
+	return p.RawResponse
 }
 
-func (o *PostSystemAccountsResponse) GetSystemAccount() *shared.SystemAccount {
-	if o == nil {
+func (p *PostSystemAccountsResponse) GetSystemAccount() *shared.SystemAccount {
+	if p == nil {
 		return nil
 	}
-	return o.SystemAccount
+	return p.SystemAccount
 }
 
-func (o *PostSystemAccountsResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (p *PostSystemAccountsResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if p == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return p.UnauthorizedError
 }
 
-func (o *PostSystemAccountsResponse) GetConflictError() *shared.ConflictError {
-	if o == nil {
+func (p *PostSystemAccountsResponse) GetConflictError() *shared.ConflictError {
+	if p == nil {
 		return nil
 	}
-	return o.ConflictError
+	return p.ConflictError
 }

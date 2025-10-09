@@ -93,6 +93,7 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 								Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
 							},
 							"host": schema.StringAttribute{
+								Computed:    true,
 								Optional:    true,
 								Description: `A string representing a host name, such as example.com.`,
 							},
@@ -158,10 +159,12 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 						Description: `A string representing a UUID (universally unique identifier).`,
 					},
 					"name": schema.StringAttribute{
+						Computed:    true,
 						Optional:    true,
 						Description: `A unique string representing a UTF-8 encoded name.`,
 					},
 					"tags": schema.ListAttribute{
+						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `A set of strings representing tags.`,
@@ -247,6 +250,7 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 								Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
 							},
 							"keepalive_backlog": schema.Int64Attribute{
+								Computed:    true,
 								Optional:    true,
 								Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `keepalive_pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `keepalive_pool_size` + "`" + `.`,
 								Validators: []validator.Int64{
@@ -349,6 +353,7 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 								Description: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.`,
 							},
 							"server_name": schema.StringAttribute{
+								Computed:    true,
 								Optional:    true,
 								Description: `A string representing an SNI (server name indication) value for TLS.`,
 							},
@@ -365,6 +370,7 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: false`,
 							},
 							"username": schema.StringAttribute{
+								Computed:    true,
 								Optional:    true,
 								Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
 							},
@@ -385,10 +391,12 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 						Description: `A string representing a UUID (universally unique identifier).`,
 					},
 					"name": schema.StringAttribute{
+						Computed:    true,
 						Optional:    true,
 						Description: `A unique string representing a UTF-8 encoded name.`,
 					},
 					"tags": schema.ListAttribute{
+						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `A set of strings representing tags.`,

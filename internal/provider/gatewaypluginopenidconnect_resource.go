@@ -19,6 +19,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -83,8 +84,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"audience_claim": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("aud")})),
 						ElementType: types.StringType,
-						Description: `The claim that contains the audience. If multiple values are set, it means the claim is inside a nested object of the token payload.`,
+						Description: `The claim that contains the audience. If multiple values are set, it means the claim is inside a nested object of the token payload. Default: ["aud"]`,
 					},
 					"audience_required": schema.ListAttribute{
 						Optional:    true,
@@ -92,10 +94,21 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Description: `The audiences (` + "`" + `audience_claim` + "`" + ` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.`,
 					},
 					"auth_methods": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+							types.StringValue("authorization_code"),
+							types.StringValue("bearer"),
+							types.StringValue("client_credentials"),
+							types.StringValue("introspection"),
+							types.StringValue("kong_oauth2"),
+							types.StringValue("password"),
+							types.StringValue("refresh_token"),
+							types.StringValue("session"),
+							types.StringValue("userinfo"),
+						})),
 						ElementType: types.StringType,
-						Description: `Types of credentials/grants to enable.`,
+						Description: `Types of credentials/grants to enable. Default: ["authorization_code","bearer","client_credentials","introspection","kong_oauth2","password","refresh_token","session","userinfo"]`,
 					},
 					"authenticated_groups_claim": schema.ListAttribute{
 						Optional:    true,
@@ -172,10 +185,15 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Description: `The name of the cookie in which the bearer token is passed.`,
 					},
 					"bearer_token_param_type": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+							types.StringValue("body"),
+							types.StringValue("header"),
+							types.StringValue("query"),
+						})),
 						ElementType: types.StringType,
-						Description: `Where to look for the bearer token: - ` + "`" + `header` + "`" + `: search the ` + "`" + `Authorization` + "`" + `, ` + "`" + `access-token` + "`" + `, and ` + "`" + `x-access-token` + "`" + ` HTTP headers - ` + "`" + `query` + "`" + `: search the URL's query string - ` + "`" + `body` + "`" + `: search the HTTP request body - ` + "`" + `cookie` + "`" + `: search the HTTP request cookies specified with ` + "`" + `config.bearer_token_cookie_name` + "`" + `.`,
+						Description: `Where to look for the bearer token: - ` + "`" + `header` + "`" + `: search the ` + "`" + `Authorization` + "`" + `, ` + "`" + `access-token` + "`" + `, and ` + "`" + `x-access-token` + "`" + ` HTTP headers - ` + "`" + `query` + "`" + `: search the URL's query string - ` + "`" + `body` + "`" + `: search the HTTP request body - ` + "`" + `cookie` + "`" + `: search the HTTP request cookies specified with ` + "`" + `config.bearer_token_cookie_name` + "`" + `. Default: ["body","header","query"]`,
 					},
 					"by_username_ignore_case": schema.BoolAttribute{
 						Computed:    true,
@@ -256,10 +274,15 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Description: `The default OpenID Connect client authentication method is 'client_secret_basic' (using 'Authorization: Basic' header), 'client_secret_post' (credentials in body), 'client_secret_jwt' (signed client assertion in body), 'private_key_jwt' (private key-signed assertion), 'tls_client_auth' (client certificate), 'self_signed_tls_client_auth' (self-signed client certificate), and 'none' (no authentication).`,
 					},
 					"client_credentials_param_type": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+							types.StringValue("body"),
+							types.StringValue("header"),
+							types.StringValue("query"),
+						})),
 						ElementType: types.StringType,
-						Description: `Where to look for the client credentials: - ` + "`" + `header` + "`" + `: search the HTTP headers - ` + "`" + `query` + "`" + `: search the URL's query string - ` + "`" + `body` + "`" + `: search from the HTTP request body.`,
+						Description: `Where to look for the client credentials: - ` + "`" + `header` + "`" + `: search the HTTP headers - ` + "`" + `query` + "`" + `: search the URL's query string - ` + "`" + `body` + "`" + `: search from the HTTP request body. Default: ["body","header","query"]`,
 					},
 					"client_id": schema.ListAttribute{
 						Optional:    true,
@@ -554,10 +577,14 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						},
 					},
 					"consumer_by": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+							types.StringValue("custom_id"),
+							types.StringValue("username"),
+						})),
 						ElementType: types.StringType,
-						Description: `Consumer fields used for mapping: - ` + "`" + `id` + "`" + `: try to find the matching Consumer by ` + "`" + `id` + "`" + ` - ` + "`" + `username` + "`" + `: try to find the matching Consumer by ` + "`" + `username` + "`" + ` - ` + "`" + `custom_id` + "`" + `: try to find the matching Consumer by ` + "`" + `custom_id` + "`" + `.`,
+						Description: `Consumer fields used for mapping: - ` + "`" + `id` + "`" + `: try to find the matching Consumer by ` + "`" + `id` + "`" + ` - ` + "`" + `username` + "`" + `: try to find the matching Consumer by ` + "`" + `username` + "`" + ` - ` + "`" + `custom_id` + "`" + `: try to find the matching Consumer by ` + "`" + `custom_id` + "`" + `. Default: ["custom_id","username"]`,
 					},
 					"consumer_claim": schema.ListAttribute{
 						Optional:    true,
@@ -573,8 +600,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"credential_claim": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("sub")})),
 						ElementType: types.StringType,
-						Description: `The claim used to derive virtual credentials (e.g. to be consumed by the rate-limiting plugin), in case the consumer mapping is not used. If multiple values are set, it means the claim is inside a nested object of the token payload.`,
+						Description: `The claim used to derive virtual credentials (e.g. to be consumed by the rate-limiting plugin), in case the consumer mapping is not used. If multiple values are set, it means the claim is inside a nested object of the token payload. Default: ["sub"]`,
 					},
 					"disable_session": schema.ListAttribute{
 						Optional:    true,
@@ -705,8 +733,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"groups_claim": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("groups")})),
 						ElementType: types.StringType,
-						Description: `The claim that contains the groups. If multiple values are set, it means the claim is inside a nested object of the token payload.`,
+						Description: `The claim that contains the groups. If multiple values are set, it means the claim is inside a nested object of the token payload. Default: ["groups"]`,
 					},
 					"groups_required": schema.ListAttribute{
 						Optional:    true,
@@ -745,17 +774,22 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Description: `The name of the parameter used to pass the id token.`,
 					},
 					"id_token_param_type": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+							types.StringValue("body"),
+							types.StringValue("header"),
+							types.StringValue("query"),
+						})),
 						ElementType: types.StringType,
-						Description: `Where to look for the id token: - ` + "`" + `header` + "`" + `: search the HTTP headers - ` + "`" + `query` + "`" + `: search the URL's query string - ` + "`" + `body` + "`" + `: search the HTTP request body.`,
+						Description: `Where to look for the id token: - ` + "`" + `header` + "`" + `: search the HTTP headers - ` + "`" + `query` + "`" + `: search the URL's query string - ` + "`" + `body` + "`" + `: search the HTTP request body. Default: ["body","header","query"]`,
 					},
 					"ignore_signature": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 						ElementType: types.StringType,
-						Description: `Skip the token signature verification on certain grants: - ` + "`" + `password` + "`" + `: OAuth password grant - ` + "`" + `client_credentials` + "`" + `: OAuth client credentials grant - ` + "`" + `authorization_code` + "`" + `: authorization code flow - ` + "`" + `refresh_token` + "`" + `: OAuth refresh token grant - ` + "`" + `session` + "`" + `: session cookie authentication - ` + "`" + `introspection` + "`" + `: OAuth introspection - ` + "`" + `userinfo` + "`" + `: OpenID Connect user info endpoint authentication.`,
+						Description: `Skip the token signature verification on certain grants: - ` + "`" + `password` + "`" + `: OAuth password grant - ` + "`" + `client_credentials` + "`" + `: OAuth client credentials grant - ` + "`" + `authorization_code` + "`" + `: authorization code flow - ` + "`" + `refresh_token` + "`" + `: OAuth refresh token grant - ` + "`" + `session` + "`" + `: session cookie authentication - ` + "`" + `introspection` + "`" + `: OAuth introspection - ` + "`" + `userinfo` + "`" + `: OpenID Connect user info endpoint authentication. Default: []`,
 					},
 					"introspect_jwt_tokens": schema.BoolAttribute{
 						Computed:    true,
@@ -896,8 +930,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"login_methods": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("authorization_code")})),
 						ElementType: types.StringType,
-						Description: `Enable login functionality with specified grants.`,
+						Description: `Enable login functionality with specified grants. Default: ["authorization_code"]`,
 					},
 					"login_redirect_mode": schema.StringAttribute{
 						Computed:    true,
@@ -919,14 +954,19 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"login_tokens": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("id_token")})),
 						ElementType: types.StringType,
-						Description: `What tokens to include in ` + "`" + `response` + "`" + ` body or ` + "`" + `redirect` + "`" + ` query string or fragment: - ` + "`" + `id_token` + "`" + `: include id token - ` + "`" + `access_token` + "`" + `: include access token - ` + "`" + `refresh_token` + "`" + `: include refresh token - ` + "`" + `tokens` + "`" + `: include the full token endpoint response - ` + "`" + `introspection` + "`" + `: include introspection response.`,
+						Description: `What tokens to include in ` + "`" + `response` + "`" + ` body or ` + "`" + `redirect` + "`" + ` query string or fragment: - ` + "`" + `id_token` + "`" + `: include id token - ` + "`" + `access_token` + "`" + `: include access token - ` + "`" + `refresh_token` + "`" + `: include refresh token - ` + "`" + `tokens` + "`" + `: include the full token endpoint response - ` + "`" + `introspection` + "`" + `: include introspection response. Default: ["id_token"]`,
 					},
 					"logout_methods": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+							types.StringValue("DELETE"),
+							types.StringValue("POST"),
+						})),
 						ElementType: types.StringType,
-						Description: `The request methods that can activate the logout: - ` + "`" + `POST` + "`" + `: HTTP POST method - ` + "`" + `GET` + "`" + `: HTTP GET method - ` + "`" + `DELETE` + "`" + `: HTTP DELETE method.`,
+						Description: `The request methods that can activate the logout: - ` + "`" + `POST` + "`" + `: HTTP POST method - ` + "`" + `GET` + "`" + `: HTTP GET method - ` + "`" + `DELETE` + "`" + `: HTTP DELETE method. Default: ["DELETE","POST"]`,
 					},
 					"logout_post_arg": schema.StringAttribute{
 						Optional:    true,
@@ -987,10 +1027,15 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Description: `Do not use proxy with these hosts.`,
 					},
 					"password_param_type": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+							types.StringValue("body"),
+							types.StringValue("header"),
+							types.StringValue("query"),
+						})),
 						ElementType: types.StringType,
-						Description: `Where to look for the username and password: - ` + "`" + `header` + "`" + `: search the HTTP headers - ` + "`" + `query` + "`" + `: search the URL's query string - ` + "`" + `body` + "`" + `: search the HTTP request body.`,
+						Description: `Where to look for the username and password: - ` + "`" + `header` + "`" + `: search the HTTP headers - ` + "`" + `query` + "`" + `: search the URL's query string - ` + "`" + `body` + "`" + `: search the HTTP request body. Default: ["body","header","query"]`,
 					},
 					"preserve_query_args": schema.BoolAttribute{
 						Computed:    true,
@@ -1256,10 +1301,15 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Description: `The name of the parameter used to pass the refresh token.`,
 					},
 					"refresh_token_param_type": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+							types.StringValue("body"),
+							types.StringValue("header"),
+							types.StringValue("query"),
+						})),
 						ElementType: types.StringType,
-						Description: `Where to look for the refresh token: - ` + "`" + `header` + "`" + `: search the HTTP headers - ` + "`" + `query` + "`" + `: search the URL's query string - ` + "`" + `body` + "`" + `: search the HTTP request body.`,
+						Description: `Where to look for the refresh token: - ` + "`" + `header` + "`" + `: search the HTTP headers - ` + "`" + `query` + "`" + `: search the URL's query string - ` + "`" + `body` + "`" + `: search the HTTP request body. Default: ["body","header","query"]`,
 					},
 					"refresh_tokens": schema.BoolAttribute{
 						Computed:    true,
@@ -1305,8 +1355,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"response_type": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("code")})),
 						ElementType: types.StringType,
-						Description: `The response type passed to the authorization endpoint.`,
+						Description: `The response type passed to the authorization endpoint. Default: ["code"]`,
 					},
 					"reverify": schema.BoolAttribute{
 						Computed:    true,
@@ -1343,8 +1394,9 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"roles_claim": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("roles")})),
 						ElementType: types.StringType,
-						Description: `The claim that contains the roles. If multiple values are set, it means the claim is inside a nested object of the token payload.`,
+						Description: `The claim that contains the roles. If multiple values are set, it means the claim is inside a nested object of the token payload. Default: ["roles"]`,
 					},
 					"roles_required": schema.ListAttribute{
 						Optional:    true,
@@ -1362,13 +1414,14 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 						ElementType: types.StringType,
-						Description: `The scopes passed to the authorization and token endpoints.`,
+						Description: `The scopes passed to the authorization and token endpoints. Default: []`,
 					},
 					"scopes_claim": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("scope")})),
 						ElementType: types.StringType,
-						Description: `The claim that contains the scopes. If multiple values are set, it means the claim is inside a nested object of the token payload.`,
+						Description: `The claim that contains the scopes. If multiple values are set, it means the claim is inside a nested object of the token payload. Default: ["scope"]`,
 					},
 					"scopes_required": schema.ListAttribute{
 						Optional:    true,
@@ -1895,10 +1948,16 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.SetAttribute{
-				Computed:    true,
-				Optional:    true,
+				Computed: true,
+				Optional: true,
+				Default: setdefault.StaticValue(types.SetValueMust(types.StringType, []attr.Value{
+					types.StringValue("grpc"),
+					types.StringValue("grpcs"),
+					types.StringValue("http"),
+					types.StringValue("https"),
+				})),
 				ElementType: types.StringType,
-				Description: `A set of strings representing HTTP protocols.`,
+				Description: `A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,

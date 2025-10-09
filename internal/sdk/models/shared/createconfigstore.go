@@ -16,15 +16,15 @@ func (c CreateConfigStore) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateConfigStore) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CreateConfigStore) GetName() *string {
-	if o == nil {
+func (c *CreateConfigStore) GetName() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Name
+	return c.Name
 }

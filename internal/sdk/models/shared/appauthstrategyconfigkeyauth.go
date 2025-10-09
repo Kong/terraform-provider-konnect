@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // AppAuthStrategyConfigKeyAuth - The most basic mode to configure an Application Auth Strategy for an API Product Version.
 // Using this mode will allow developers to generate API keys that will authenticate their application requests.
 // Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for Key Auth.
@@ -10,9 +14,20 @@ type AppAuthStrategyConfigKeyAuth struct {
 	KeyNames []string `json:"key_names"`
 }
 
-func (o *AppAuthStrategyConfigKeyAuth) GetKeyNames() []string {
-	if o == nil {
+func (a AppAuthStrategyConfigKeyAuth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AppAuthStrategyConfigKeyAuth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AppAuthStrategyConfigKeyAuth) GetKeyNames() []string {
+	if a == nil {
 		return nil
 	}
-	return o.KeyNames
+	return a.KeyNames
 }

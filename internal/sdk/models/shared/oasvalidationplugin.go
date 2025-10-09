@@ -116,7 +116,7 @@ func (o OasValidationPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OasValidationPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"api_spec"}); err != nil {
 		return err
 	}
 	return nil
@@ -329,7 +329,7 @@ func (o OasValidationPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OasValidationPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil

@@ -14,18 +14,18 @@ type GetStatsdPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetStatsdPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetStatsdPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetStatsdPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetStatsdPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetStatsdPluginResponse struct {
@@ -41,37 +41,37 @@ type GetStatsdPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetStatsdPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetStatsdPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetStatsdPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetStatsdPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetStatsdPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetStatsdPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetStatsdPluginResponse) GetStatsdPlugin() *shared.StatsdPlugin {
-	if o == nil {
+func (g *GetStatsdPluginResponse) GetStatsdPlugin() *shared.StatsdPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.StatsdPlugin
+	return g.StatsdPlugin
 }
 
-func (o *GetStatsdPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetStatsdPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

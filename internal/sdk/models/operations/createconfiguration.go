@@ -32,65 +32,65 @@ type CreateConfigurationResponse struct {
 	ConflictError *shared.ConflictError
 }
 
-func (o *CreateConfigurationResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateConfigurationResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateConfigurationResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateConfigurationResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateConfigurationResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateConfigurationResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateConfigurationResponse) GetConfigurationManifest() *shared.ConfigurationManifest {
-	if o == nil {
+func (c *CreateConfigurationResponse) GetConfigurationManifest() *shared.ConfigurationManifest {
+	if c == nil {
 		return nil
 	}
-	return o.ConfigurationManifest
+	return c.ConfigurationManifest
 }
 
-func (o *CreateConfigurationResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreateConfigurationResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreateConfigurationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (c *CreateConfigurationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return c.UnauthorizedError
 }
 
-func (o *CreateConfigurationResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreateConfigurationResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }
 
-func (o *CreateConfigurationResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (c *CreateConfigurationResponse) GetNotFoundError() *shared.NotFoundError {
+	if c == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return c.NotFoundError
 }
 
-func (o *CreateConfigurationResponse) GetConflictError() *shared.ConflictError {
-	if o == nil {
+func (c *CreateConfigurationResponse) GetConflictError() *shared.ConflictError {
+	if c == nil {
 		return nil
 	}
-	return o.ConflictError
+	return c.ConflictError
 }

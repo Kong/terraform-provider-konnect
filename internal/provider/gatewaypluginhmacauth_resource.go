@@ -17,6 +17,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -83,10 +84,16 @@ func (r *GatewayPluginHmacAuthResource) Schema(ctx context.Context, req resource
 				})),
 				Attributes: map[string]schema.Attribute{
 					"algorithms": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+							types.StringValue("hmac-sha1"),
+							types.StringValue("hmac-sha256"),
+							types.StringValue("hmac-sha384"),
+							types.StringValue("hmac-sha512"),
+						})),
 						ElementType: types.StringType,
-						Description: `A list of HMAC digest algorithms that the user wants to support. Allowed values are ` + "`" + `hmac-sha1` + "`" + `, ` + "`" + `hmac-sha256` + "`" + `, ` + "`" + `hmac-sha384` + "`" + `, and ` + "`" + `hmac-sha512` + "`" + ``,
+						Description: `A list of HMAC digest algorithms that the user wants to support. Allowed values are ` + "`" + `hmac-sha1` + "`" + `, ` + "`" + `hmac-sha256` + "`" + `, ` + "`" + `hmac-sha384` + "`" + `, and ` + "`" + `hmac-sha512` + "`" + `. Default: ["hmac-sha1","hmac-sha256","hmac-sha384","hmac-sha512"]`,
 					},
 					"anonymous": schema.StringAttribute{
 						Optional:    true,
@@ -103,7 +110,7 @@ func (r *GatewayPluginHmacAuthResource) Schema(ctx context.Context, req resource
 						Optional:    true,
 						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 						ElementType: types.StringType,
-						Description: `A list of headers that the client should at least use for HTTP signature creation.`,
+						Description: `A list of headers that the client should at least use for HTTP signature creation. Default: []`,
 					},
 					"hide_credentials": schema.BoolAttribute{
 						Computed:    true,
@@ -226,10 +233,18 @@ func (r *GatewayPluginHmacAuthResource) Schema(ctx context.Context, req resource
 				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.SetAttribute{
-				Computed:    true,
-				Optional:    true,
+				Computed: true,
+				Optional: true,
+				Default: setdefault.StaticValue(types.SetValueMust(types.StringType, []attr.Value{
+					types.StringValue("grpc"),
+					types.StringValue("grpcs"),
+					types.StringValue("http"),
+					types.StringValue("https"),
+					types.StringValue("ws"),
+					types.StringValue("wss"),
+				})),
 				ElementType: types.StringType,
-				Description: `A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.`,
+				Description: `A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls. Default: ["grpc","grpcs","http","https","ws","wss"]`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,

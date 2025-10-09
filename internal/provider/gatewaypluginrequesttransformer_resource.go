@@ -16,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -149,18 +150,21 @@ func (r *GatewayPluginRequestTransformerResource) Schema(ctx context.Context, re
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 							"headers": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 							"querystring": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 						},
 					},
@@ -173,18 +177,21 @@ func (r *GatewayPluginRequestTransformerResource) Schema(ctx context.Context, re
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 							"headers": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 							"querystring": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 						},
 					},
@@ -204,18 +211,21 @@ func (r *GatewayPluginRequestTransformerResource) Schema(ctx context.Context, re
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 							"headers": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 							"querystring": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 						},
 					},
@@ -228,18 +238,21 @@ func (r *GatewayPluginRequestTransformerResource) Schema(ctx context.Context, re
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 							"headers": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 							"querystring": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 						},
 					},
@@ -252,18 +265,21 @@ func (r *GatewayPluginRequestTransformerResource) Schema(ctx context.Context, re
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 							"headers": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 							"querystring": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 							"uri": schema.StringAttribute{
 								Optional: true,
@@ -403,10 +419,16 @@ func (r *GatewayPluginRequestTransformerResource) Schema(ctx context.Context, re
 				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.SetAttribute{
-				Computed:    true,
-				Optional:    true,
+				Computed: true,
+				Optional: true,
+				Default: setdefault.StaticValue(types.SetValueMust(types.StringType, []attr.Value{
+					types.StringValue("grpc"),
+					types.StringValue("grpcs"),
+					types.StringValue("http"),
+					types.StringValue("https"),
+				})),
 				ElementType: types.StringType,
-				Description: `A set of strings representing protocols.`,
+				Description: `A set of strings representing protocols. Default: ["grpc","grpcs","http","https"]`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,

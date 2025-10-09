@@ -69,7 +69,7 @@ func (s *Realms) CreateRealm(ctx context.Context, request shared.ConsumerRealmCr
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-realm",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
@@ -232,7 +232,7 @@ func (s *Realms) GetRealm(ctx context.Context, request operations.GetRealmReques
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-realm",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -364,7 +364,7 @@ func (s *Realms) UpdateRealm(ctx context.Context, request operations.UpdateRealm
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-realm",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ConsumerRealmUpdateRequest", "json", `request:"mediaType=application/json"`)
@@ -529,7 +529,7 @@ func (s *Realms) DeleteRealm(ctx context.Context, request operations.DeleteRealm
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-realm",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

@@ -43,30 +43,30 @@ type InternalServerError struct {
 	Detail *string `json:"detail,omitempty"`
 }
 
-func (o *InternalServerError) GetStatus() InternalServerErrorStatus {
-	if o == nil {
+func (i *InternalServerError) GetStatus() InternalServerErrorStatus {
+	if i == nil {
 		return InternalServerErrorStatus(0)
 	}
-	return o.Status
+	return i.Status
 }
 
-func (o *InternalServerError) GetTitle() string {
-	if o == nil {
+func (i *InternalServerError) GetTitle() string {
+	if i == nil {
 		return ""
 	}
-	return o.Title
+	return i.Title
 }
 
-func (o *InternalServerError) GetInstance() string {
-	if o == nil {
+func (i *InternalServerError) GetInstance() string {
+	if i == nil {
 		return ""
 	}
-	return o.Instance
+	return i.Instance
 }
 
-func (o *InternalServerError) GetDetail() *string {
-	if o == nil {
+func (i *InternalServerError) GetDetail() *string {
+	if i == nil {
 		return nil
 	}
-	return o.Detail
+	return i.Detail
 }

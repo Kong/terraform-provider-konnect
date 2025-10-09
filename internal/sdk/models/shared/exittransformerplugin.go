@@ -12,22 +12,22 @@ type ExitTransformerPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *ExitTransformerPluginAfter) GetAccess() []string {
-	if o == nil {
+func (e *ExitTransformerPluginAfter) GetAccess() []string {
+	if e == nil {
 		return nil
 	}
-	return o.Access
+	return e.Access
 }
 
 type ExitTransformerPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *ExitTransformerPluginBefore) GetAccess() []string {
-	if o == nil {
+func (e *ExitTransformerPluginBefore) GetAccess() []string {
+	if e == nil {
 		return nil
 	}
-	return o.Access
+	return e.Access
 }
 
 type ExitTransformerPluginOrdering struct {
@@ -35,18 +35,18 @@ type ExitTransformerPluginOrdering struct {
 	Before *ExitTransformerPluginBefore `json:"before,omitempty"`
 }
 
-func (o *ExitTransformerPluginOrdering) GetAfter() *ExitTransformerPluginAfter {
-	if o == nil {
+func (e *ExitTransformerPluginOrdering) GetAfter() *ExitTransformerPluginAfter {
+	if e == nil {
 		return nil
 	}
-	return o.After
+	return e.After
 }
 
-func (o *ExitTransformerPluginOrdering) GetBefore() *ExitTransformerPluginBefore {
-	if o == nil {
+func (e *ExitTransformerPluginOrdering) GetBefore() *ExitTransformerPluginBefore {
+	if e == nil {
 		return nil
 	}
-	return o.Before
+	return e.Before
 }
 
 type ExitTransformerPluginPartials struct {
@@ -57,25 +57,25 @@ type ExitTransformerPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *ExitTransformerPluginPartials) GetID() *string {
-	if o == nil {
+func (e *ExitTransformerPluginPartials) GetID() *string {
+	if e == nil {
 		return nil
 	}
-	return o.ID
+	return e.ID
 }
 
-func (o *ExitTransformerPluginPartials) GetName() *string {
-	if o == nil {
+func (e *ExitTransformerPluginPartials) GetName() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Name
+	return e.Name
 }
 
-func (o *ExitTransformerPluginPartials) GetPath() *string {
-	if o == nil {
+func (e *ExitTransformerPluginPartials) GetPath() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Path
+	return e.Path
 }
 
 type ExitTransformerPluginConfig struct {
@@ -91,31 +91,31 @@ func (e ExitTransformerPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (e *ExitTransformerPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"functions"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ExitTransformerPluginConfig) GetFunctions() []string {
-	if o == nil {
+func (e *ExitTransformerPluginConfig) GetFunctions() []string {
+	if e == nil {
 		return []string{}
 	}
-	return o.Functions
+	return e.Functions
 }
 
-func (o *ExitTransformerPluginConfig) GetHandleUnexpected() *bool {
-	if o == nil {
+func (e *ExitTransformerPluginConfig) GetHandleUnexpected() *bool {
+	if e == nil {
 		return nil
 	}
-	return o.HandleUnexpected
+	return e.HandleUnexpected
 }
 
-func (o *ExitTransformerPluginConfig) GetHandleUnknown() *bool {
-	if o == nil {
+func (e *ExitTransformerPluginConfig) GetHandleUnknown() *bool {
+	if e == nil {
 		return nil
 	}
-	return o.HandleUnknown
+	return e.HandleUnknown
 }
 
 // ExitTransformerPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -123,11 +123,11 @@ type ExitTransformerPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *ExitTransformerPluginConsumer) GetID() *string {
-	if o == nil {
+func (e *ExitTransformerPluginConsumer) GetID() *string {
+	if e == nil {
 		return nil
 	}
-	return o.ID
+	return e.ID
 }
 
 type ExitTransformerPluginProtocols string
@@ -167,11 +167,11 @@ type ExitTransformerPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *ExitTransformerPluginRoute) GetID() *string {
-	if o == nil {
+func (e *ExitTransformerPluginRoute) GetID() *string {
+	if e == nil {
 		return nil
 	}
-	return o.ID
+	return e.ID
 }
 
 // ExitTransformerPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -179,11 +179,11 @@ type ExitTransformerPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *ExitTransformerPluginService) GetID() *string {
-	if o == nil {
+func (e *ExitTransformerPluginService) GetID() *string {
+	if e == nil {
 		return nil
 	}
-	return o.ID
+	return e.ID
 }
 
 // ExitTransformerPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -220,103 +220,103 @@ func (e ExitTransformerPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (e *ExitTransformerPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ExitTransformerPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (e *ExitTransformerPlugin) GetCreatedAt() *int64 {
+	if e == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return e.CreatedAt
 }
 
-func (o *ExitTransformerPlugin) GetEnabled() *bool {
-	if o == nil {
+func (e *ExitTransformerPlugin) GetEnabled() *bool {
+	if e == nil {
 		return nil
 	}
-	return o.Enabled
+	return e.Enabled
 }
 
-func (o *ExitTransformerPlugin) GetID() *string {
-	if o == nil {
+func (e *ExitTransformerPlugin) GetID() *string {
+	if e == nil {
 		return nil
 	}
-	return o.ID
+	return e.ID
 }
 
-func (o *ExitTransformerPlugin) GetInstanceName() *string {
-	if o == nil {
+func (e *ExitTransformerPlugin) GetInstanceName() *string {
+	if e == nil {
 		return nil
 	}
-	return o.InstanceName
+	return e.InstanceName
 }
 
-func (o *ExitTransformerPlugin) GetName() string {
+func (e *ExitTransformerPlugin) GetName() string {
 	return "exit-transformer"
 }
 
-func (o *ExitTransformerPlugin) GetOrdering() *ExitTransformerPluginOrdering {
-	if o == nil {
+func (e *ExitTransformerPlugin) GetOrdering() *ExitTransformerPluginOrdering {
+	if e == nil {
 		return nil
 	}
-	return o.Ordering
+	return e.Ordering
 }
 
-func (o *ExitTransformerPlugin) GetPartials() []ExitTransformerPluginPartials {
-	if o == nil {
+func (e *ExitTransformerPlugin) GetPartials() []ExitTransformerPluginPartials {
+	if e == nil {
 		return nil
 	}
-	return o.Partials
+	return e.Partials
 }
 
-func (o *ExitTransformerPlugin) GetTags() []string {
-	if o == nil {
+func (e *ExitTransformerPlugin) GetTags() []string {
+	if e == nil {
 		return nil
 	}
-	return o.Tags
+	return e.Tags
 }
 
-func (o *ExitTransformerPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (e *ExitTransformerPlugin) GetUpdatedAt() *int64 {
+	if e == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return e.UpdatedAt
 }
 
-func (o *ExitTransformerPlugin) GetConfig() ExitTransformerPluginConfig {
-	if o == nil {
+func (e *ExitTransformerPlugin) GetConfig() ExitTransformerPluginConfig {
+	if e == nil {
 		return ExitTransformerPluginConfig{}
 	}
-	return o.Config
+	return e.Config
 }
 
-func (o *ExitTransformerPlugin) GetConsumer() *ExitTransformerPluginConsumer {
-	if o == nil {
+func (e *ExitTransformerPlugin) GetConsumer() *ExitTransformerPluginConsumer {
+	if e == nil {
 		return nil
 	}
-	return o.Consumer
+	return e.Consumer
 }
 
-func (o *ExitTransformerPlugin) GetProtocols() []ExitTransformerPluginProtocols {
-	if o == nil {
+func (e *ExitTransformerPlugin) GetProtocols() []ExitTransformerPluginProtocols {
+	if e == nil {
 		return nil
 	}
-	return o.Protocols
+	return e.Protocols
 }
 
-func (o *ExitTransformerPlugin) GetRoute() *ExitTransformerPluginRoute {
-	if o == nil {
+func (e *ExitTransformerPlugin) GetRoute() *ExitTransformerPluginRoute {
+	if e == nil {
 		return nil
 	}
-	return o.Route
+	return e.Route
 }
 
-func (o *ExitTransformerPlugin) GetService() *ExitTransformerPluginService {
-	if o == nil {
+func (e *ExitTransformerPlugin) GetService() *ExitTransformerPluginService {
+	if e == nil {
 		return nil
 	}
-	return o.Service
+	return e.Service
 }

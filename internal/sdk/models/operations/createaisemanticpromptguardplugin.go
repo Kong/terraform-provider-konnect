@@ -13,18 +13,18 @@ type CreateAisemanticpromptguardPluginRequest struct {
 	AiSemanticPromptGuardPlugin shared.AiSemanticPromptGuardPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateAisemanticpromptguardPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateAisemanticpromptguardPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateAisemanticpromptguardPluginRequest) GetAiSemanticPromptGuardPlugin() shared.AiSemanticPromptGuardPlugin {
-	if o == nil {
+func (c *CreateAisemanticpromptguardPluginRequest) GetAiSemanticPromptGuardPlugin() shared.AiSemanticPromptGuardPlugin {
+	if c == nil {
 		return shared.AiSemanticPromptGuardPlugin{}
 	}
-	return o.AiSemanticPromptGuardPlugin
+	return c.AiSemanticPromptGuardPlugin
 }
 
 type CreateAisemanticpromptguardPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateAisemanticpromptguardPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateAisemanticpromptguardPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateAisemanticpromptguardPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateAisemanticpromptguardPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateAisemanticpromptguardPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateAisemanticpromptguardPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateAisemanticpromptguardPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateAisemanticpromptguardPluginResponse) GetAiSemanticPromptGuardPlugin() *shared.AiSemanticPromptGuardPlugin {
-	if o == nil {
+func (c *CreateAisemanticpromptguardPluginResponse) GetAiSemanticPromptGuardPlugin() *shared.AiSemanticPromptGuardPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.AiSemanticPromptGuardPlugin
+	return c.AiSemanticPromptGuardPlugin
 }
 
-func (o *CreateAisemanticpromptguardPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateAisemanticpromptguardPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

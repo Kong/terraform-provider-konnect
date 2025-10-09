@@ -24,51 +24,51 @@ type UpdateAuditLogWebhookResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *UpdateAuditLogWebhookResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateAuditLogWebhookResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateAuditLogWebhookResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateAuditLogWebhookResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateAuditLogWebhookResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateAuditLogWebhookResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateAuditLogWebhookResponse) GetAuditLogWebhook() *shared.AuditLogWebhook {
-	if o == nil {
+func (u *UpdateAuditLogWebhookResponse) GetAuditLogWebhook() *shared.AuditLogWebhook {
+	if u == nil {
 		return nil
 	}
-	return o.AuditLogWebhook
+	return u.AuditLogWebhook
 }
 
-func (o *UpdateAuditLogWebhookResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (u *UpdateAuditLogWebhookResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return u.BadRequestError
 }
 
-func (o *UpdateAuditLogWebhookResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (u *UpdateAuditLogWebhookResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return u.UnauthorizedError
 }
 
-func (o *UpdateAuditLogWebhookResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (u *UpdateAuditLogWebhookResponse) GetForbiddenError() *shared.ForbiddenError {
+	if u == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return u.ForbiddenError
 }

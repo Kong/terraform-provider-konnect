@@ -289,38 +289,38 @@ func (p Propagation) MarshalJSON() ([]byte, error) {
 }
 
 func (p *Propagation) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Propagation) GetClear() []string {
-	if o == nil {
+func (p *Propagation) GetClear() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Clear
+	return p.Clear
 }
 
-func (o *Propagation) GetDefaultFormat() *DefaultFormat {
-	if o == nil {
+func (p *Propagation) GetDefaultFormat() *DefaultFormat {
+	if p == nil {
 		return nil
 	}
-	return o.DefaultFormat
+	return p.DefaultFormat
 }
 
-func (o *Propagation) GetExtract() []Extract {
-	if o == nil {
+func (p *Propagation) GetExtract() []Extract {
+	if p == nil {
 		return nil
 	}
-	return o.Extract
+	return p.Extract
 }
 
-func (o *Propagation) GetInject() []Inject {
-	if o == nil {
+func (p *Propagation) GetInject() []Inject {
+	if p == nil {
 		return nil
 	}
-	return o.Inject
+	return p.Inject
 }
 
 // OpentelemetryPluginConcurrencyLimit - The number of of queue delivery timers. -1 indicates unlimited.
@@ -374,7 +374,7 @@ func (o OpentelemetryPluginQueue) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OpentelemetryPluginQueue) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -496,7 +496,7 @@ func (o OpentelemetryPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OpentelemetryPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -709,7 +709,7 @@ func (o OpentelemetryPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OpentelemetryPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil

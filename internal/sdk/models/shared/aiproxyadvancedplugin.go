@@ -12,22 +12,22 @@ type AiProxyAdvancedPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AiProxyAdvancedPluginAfter) GetAccess() []string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginAfter) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AiProxyAdvancedPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AiProxyAdvancedPluginBefore) GetAccess() []string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginBefore) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AiProxyAdvancedPluginOrdering struct {
@@ -35,18 +35,18 @@ type AiProxyAdvancedPluginOrdering struct {
 	Before *AiProxyAdvancedPluginBefore `json:"before,omitempty"`
 }
 
-func (o *AiProxyAdvancedPluginOrdering) GetAfter() *AiProxyAdvancedPluginAfter {
-	if o == nil {
+func (a *AiProxyAdvancedPluginOrdering) GetAfter() *AiProxyAdvancedPluginAfter {
+	if a == nil {
 		return nil
 	}
-	return o.After
+	return a.After
 }
 
-func (o *AiProxyAdvancedPluginOrdering) GetBefore() *AiProxyAdvancedPluginBefore {
-	if o == nil {
+func (a *AiProxyAdvancedPluginOrdering) GetBefore() *AiProxyAdvancedPluginBefore {
+	if a == nil {
 		return nil
 	}
-	return o.Before
+	return a.Before
 }
 
 type AiProxyAdvancedPluginPartials struct {
@@ -57,25 +57,25 @@ type AiProxyAdvancedPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *AiProxyAdvancedPluginPartials) GetID() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginPartials) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AiProxyAdvancedPluginPartials) GetName() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginPartials) GetName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AiProxyAdvancedPluginPartials) GetPath() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginPartials) GetPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Path
+	return a.Path
 }
 
 // AiProxyAdvancedPluginAlgorithm - Which load balancing algorithm to use.
@@ -255,80 +255,80 @@ func (b Balancer) MarshalJSON() ([]byte, error) {
 }
 
 func (b *Balancer) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Balancer) GetAlgorithm() *AiProxyAdvancedPluginAlgorithm {
-	if o == nil {
+func (b *Balancer) GetAlgorithm() *AiProxyAdvancedPluginAlgorithm {
+	if b == nil {
 		return nil
 	}
-	return o.Algorithm
+	return b.Algorithm
 }
 
-func (o *Balancer) GetConnectTimeout() *int64 {
-	if o == nil {
+func (b *Balancer) GetConnectTimeout() *int64 {
+	if b == nil {
 		return nil
 	}
-	return o.ConnectTimeout
+	return b.ConnectTimeout
 }
 
-func (o *Balancer) GetFailoverCriteria() []FailoverCriteria {
-	if o == nil {
+func (b *Balancer) GetFailoverCriteria() []FailoverCriteria {
+	if b == nil {
 		return nil
 	}
-	return o.FailoverCriteria
+	return b.FailoverCriteria
 }
 
-func (o *Balancer) GetHashOnHeader() *string {
-	if o == nil {
+func (b *Balancer) GetHashOnHeader() *string {
+	if b == nil {
 		return nil
 	}
-	return o.HashOnHeader
+	return b.HashOnHeader
 }
 
-func (o *Balancer) GetLatencyStrategy() *LatencyStrategy {
-	if o == nil {
+func (b *Balancer) GetLatencyStrategy() *LatencyStrategy {
+	if b == nil {
 		return nil
 	}
-	return o.LatencyStrategy
+	return b.LatencyStrategy
 }
 
-func (o *Balancer) GetReadTimeout() *int64 {
-	if o == nil {
+func (b *Balancer) GetReadTimeout() *int64 {
+	if b == nil {
 		return nil
 	}
-	return o.ReadTimeout
+	return b.ReadTimeout
 }
 
-func (o *Balancer) GetRetries() *int64 {
-	if o == nil {
+func (b *Balancer) GetRetries() *int64 {
+	if b == nil {
 		return nil
 	}
-	return o.Retries
+	return b.Retries
 }
 
-func (o *Balancer) GetSlots() *int64 {
-	if o == nil {
+func (b *Balancer) GetSlots() *int64 {
+	if b == nil {
 		return nil
 	}
-	return o.Slots
+	return b.Slots
 }
 
-func (o *Balancer) GetTokensCountStrategy() *AiProxyAdvancedPluginTokensCountStrategy {
-	if o == nil {
+func (b *Balancer) GetTokensCountStrategy() *AiProxyAdvancedPluginTokensCountStrategy {
+	if b == nil {
 		return nil
 	}
-	return o.TokensCountStrategy
+	return b.TokensCountStrategy
 }
 
-func (o *Balancer) GetWriteTimeout() *int64 {
-	if o == nil {
+func (b *Balancer) GetWriteTimeout() *int64 {
+	if b == nil {
 		return nil
 	}
-	return o.WriteTimeout
+	return b.WriteTimeout
 }
 
 // AiProxyAdvancedPluginParamLocation - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
@@ -394,108 +394,108 @@ func (a AiProxyAdvancedPluginAuth) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPluginAuth) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiProxyAdvancedPluginAuth) GetAllowOverride() *bool {
-	if o == nil {
+func (a *AiProxyAdvancedPluginAuth) GetAllowOverride() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.AllowOverride
+	return a.AllowOverride
 }
 
-func (o *AiProxyAdvancedPluginAuth) GetAwsAccessKeyID() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginAuth) GetAwsAccessKeyID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsAccessKeyID
+	return a.AwsAccessKeyID
 }
 
-func (o *AiProxyAdvancedPluginAuth) GetAwsSecretAccessKey() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginAuth) GetAwsSecretAccessKey() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsSecretAccessKey
+	return a.AwsSecretAccessKey
 }
 
-func (o *AiProxyAdvancedPluginAuth) GetAzureClientID() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginAuth) GetAzureClientID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureClientID
+	return a.AzureClientID
 }
 
-func (o *AiProxyAdvancedPluginAuth) GetAzureClientSecret() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginAuth) GetAzureClientSecret() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureClientSecret
+	return a.AzureClientSecret
 }
 
-func (o *AiProxyAdvancedPluginAuth) GetAzureTenantID() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginAuth) GetAzureTenantID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureTenantID
+	return a.AzureTenantID
 }
 
-func (o *AiProxyAdvancedPluginAuth) GetAzureUseManagedIdentity() *bool {
-	if o == nil {
+func (a *AiProxyAdvancedPluginAuth) GetAzureUseManagedIdentity() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.AzureUseManagedIdentity
+	return a.AzureUseManagedIdentity
 }
 
-func (o *AiProxyAdvancedPluginAuth) GetGcpServiceAccountJSON() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginAuth) GetGcpServiceAccountJSON() *string {
+	if a == nil {
 		return nil
 	}
-	return o.GcpServiceAccountJSON
+	return a.GcpServiceAccountJSON
 }
 
-func (o *AiProxyAdvancedPluginAuth) GetGcpUseServiceAccount() *bool {
-	if o == nil {
+func (a *AiProxyAdvancedPluginAuth) GetGcpUseServiceAccount() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.GcpUseServiceAccount
+	return a.GcpUseServiceAccount
 }
 
-func (o *AiProxyAdvancedPluginAuth) GetHeaderName() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginAuth) GetHeaderName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.HeaderName
+	return a.HeaderName
 }
 
-func (o *AiProxyAdvancedPluginAuth) GetHeaderValue() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginAuth) GetHeaderValue() *string {
+	if a == nil {
 		return nil
 	}
-	return o.HeaderValue
+	return a.HeaderValue
 }
 
-func (o *AiProxyAdvancedPluginAuth) GetParamLocation() *AiProxyAdvancedPluginParamLocation {
-	if o == nil {
+func (a *AiProxyAdvancedPluginAuth) GetParamLocation() *AiProxyAdvancedPluginParamLocation {
+	if a == nil {
 		return nil
 	}
-	return o.ParamLocation
+	return a.ParamLocation
 }
 
-func (o *AiProxyAdvancedPluginAuth) GetParamName() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginAuth) GetParamName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ParamName
+	return a.ParamName
 }
 
-func (o *AiProxyAdvancedPluginAuth) GetParamValue() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginAuth) GetParamValue() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ParamValue
+	return a.ParamValue
 }
 
 type Azure struct {
@@ -512,31 +512,31 @@ func (a Azure) MarshalJSON() ([]byte, error) {
 }
 
 func (a *Azure) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Azure) GetAPIVersion() *string {
-	if o == nil {
+func (a *Azure) GetAPIVersion() *string {
+	if a == nil {
 		return nil
 	}
-	return o.APIVersion
+	return a.APIVersion
 }
 
-func (o *Azure) GetDeploymentID() *string {
-	if o == nil {
+func (a *Azure) GetDeploymentID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DeploymentID
+	return a.DeploymentID
 }
 
-func (o *Azure) GetInstance() *string {
-	if o == nil {
+func (a *Azure) GetInstance() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Instance
+	return a.Instance
 }
 
 type AiProxyAdvancedPluginBedrock struct {
@@ -559,52 +559,52 @@ func (a AiProxyAdvancedPluginBedrock) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPluginBedrock) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiProxyAdvancedPluginBedrock) GetAwsAssumeRoleArn() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginBedrock) GetAwsAssumeRoleArn() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsAssumeRoleArn
+	return a.AwsAssumeRoleArn
 }
 
-func (o *AiProxyAdvancedPluginBedrock) GetAwsRegion() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginBedrock) GetAwsRegion() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsRegion
+	return a.AwsRegion
 }
 
-func (o *AiProxyAdvancedPluginBedrock) GetAwsRoleSessionName() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginBedrock) GetAwsRoleSessionName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsRoleSessionName
+	return a.AwsRoleSessionName
 }
 
-func (o *AiProxyAdvancedPluginBedrock) GetAwsStsEndpointURL() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginBedrock) GetAwsStsEndpointURL() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsStsEndpointURL
+	return a.AwsStsEndpointURL
 }
 
-func (o *AiProxyAdvancedPluginBedrock) GetEmbeddingsNormalize() *bool {
-	if o == nil {
+func (a *AiProxyAdvancedPluginBedrock) GetEmbeddingsNormalize() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.EmbeddingsNormalize
+	return a.EmbeddingsNormalize
 }
 
-func (o *AiProxyAdvancedPluginBedrock) GetPerformanceConfigLatency() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginBedrock) GetPerformanceConfigLatency() *string {
+	if a == nil {
 		return nil
 	}
-	return o.PerformanceConfigLatency
+	return a.PerformanceConfigLatency
 }
 
 type AiProxyAdvancedPluginGemini struct {
@@ -621,31 +621,31 @@ func (a AiProxyAdvancedPluginGemini) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPluginGemini) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiProxyAdvancedPluginGemini) GetAPIEndpoint() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginGemini) GetAPIEndpoint() *string {
+	if a == nil {
 		return nil
 	}
-	return o.APIEndpoint
+	return a.APIEndpoint
 }
 
-func (o *AiProxyAdvancedPluginGemini) GetLocationID() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginGemini) GetLocationID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.LocationID
+	return a.LocationID
 }
 
-func (o *AiProxyAdvancedPluginGemini) GetProjectID() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginGemini) GetProjectID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ProjectID
+	return a.ProjectID
 }
 
 type AiProxyAdvancedPluginHuggingface struct {
@@ -660,24 +660,24 @@ func (a AiProxyAdvancedPluginHuggingface) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPluginHuggingface) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiProxyAdvancedPluginHuggingface) GetUseCache() *bool {
-	if o == nil {
+func (a *AiProxyAdvancedPluginHuggingface) GetUseCache() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.UseCache
+	return a.UseCache
 }
 
-func (o *AiProxyAdvancedPluginHuggingface) GetWaitForModel() *bool {
-	if o == nil {
+func (a *AiProxyAdvancedPluginHuggingface) GetWaitForModel() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.WaitForModel
+	return a.WaitForModel
 }
 
 // AiProxyAdvancedPluginOptions - Key/value settings for the model
@@ -695,45 +695,45 @@ func (a AiProxyAdvancedPluginOptions) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPluginOptions) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"azure"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiProxyAdvancedPluginOptions) GetAzure() Azure {
-	if o == nil {
+func (a *AiProxyAdvancedPluginOptions) GetAzure() Azure {
+	if a == nil {
 		return Azure{}
 	}
-	return o.Azure
+	return a.Azure
 }
 
-func (o *AiProxyAdvancedPluginOptions) GetBedrock() *AiProxyAdvancedPluginBedrock {
-	if o == nil {
+func (a *AiProxyAdvancedPluginOptions) GetBedrock() *AiProxyAdvancedPluginBedrock {
+	if a == nil {
 		return nil
 	}
-	return o.Bedrock
+	return a.Bedrock
 }
 
-func (o *AiProxyAdvancedPluginOptions) GetGemini() *AiProxyAdvancedPluginGemini {
-	if o == nil {
+func (a *AiProxyAdvancedPluginOptions) GetGemini() *AiProxyAdvancedPluginGemini {
+	if a == nil {
 		return nil
 	}
-	return o.Gemini
+	return a.Gemini
 }
 
-func (o *AiProxyAdvancedPluginOptions) GetHuggingface() *AiProxyAdvancedPluginHuggingface {
-	if o == nil {
+func (a *AiProxyAdvancedPluginOptions) GetHuggingface() *AiProxyAdvancedPluginHuggingface {
+	if a == nil {
 		return nil
 	}
-	return o.Huggingface
+	return a.Huggingface
 }
 
-func (o *AiProxyAdvancedPluginOptions) GetUpstreamURL() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginOptions) GetUpstreamURL() *string {
+	if a == nil {
 		return nil
 	}
-	return o.UpstreamURL
+	return a.UpstreamURL
 }
 
 // AiProxyAdvancedPluginProvider - AI provider format to use for embeddings API
@@ -784,25 +784,25 @@ type AiProxyAdvancedPluginModel struct {
 	Provider AiProxyAdvancedPluginProvider `json:"provider"`
 }
 
-func (o *AiProxyAdvancedPluginModel) GetName() string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginModel) GetName() string {
+	if a == nil {
 		return ""
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AiProxyAdvancedPluginModel) GetOptions() *AiProxyAdvancedPluginOptions {
-	if o == nil {
+func (a *AiProxyAdvancedPluginModel) GetOptions() *AiProxyAdvancedPluginOptions {
+	if a == nil {
 		return nil
 	}
-	return o.Options
+	return a.Options
 }
 
-func (o *AiProxyAdvancedPluginModel) GetProvider() AiProxyAdvancedPluginProvider {
-	if o == nil {
+func (a *AiProxyAdvancedPluginModel) GetProvider() AiProxyAdvancedPluginProvider {
+	if a == nil {
 		return AiProxyAdvancedPluginProvider("")
 	}
-	return o.Provider
+	return a.Provider
 }
 
 type Embeddings struct {
@@ -810,18 +810,18 @@ type Embeddings struct {
 	Model AiProxyAdvancedPluginModel `json:"model"`
 }
 
-func (o *Embeddings) GetAuth() *AiProxyAdvancedPluginAuth {
-	if o == nil {
+func (e *Embeddings) GetAuth() *AiProxyAdvancedPluginAuth {
+	if e == nil {
 		return nil
 	}
-	return o.Auth
+	return e.Auth
 }
 
-func (o *Embeddings) GetModel() AiProxyAdvancedPluginModel {
-	if o == nil {
+func (e *Embeddings) GetModel() AiProxyAdvancedPluginModel {
+	if e == nil {
 		return AiProxyAdvancedPluginModel{}
 	}
-	return o.Model
+	return e.Model
 }
 
 // AiProxyAdvancedPluginGenaiCategory - Generative AI category of the request
@@ -992,108 +992,108 @@ func (a AiProxyAdvancedPluginConfigAuth) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPluginConfigAuth) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiProxyAdvancedPluginConfigAuth) GetAllowOverride() *bool {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigAuth) GetAllowOverride() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.AllowOverride
+	return a.AllowOverride
 }
 
-func (o *AiProxyAdvancedPluginConfigAuth) GetAwsAccessKeyID() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigAuth) GetAwsAccessKeyID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsAccessKeyID
+	return a.AwsAccessKeyID
 }
 
-func (o *AiProxyAdvancedPluginConfigAuth) GetAwsSecretAccessKey() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigAuth) GetAwsSecretAccessKey() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsSecretAccessKey
+	return a.AwsSecretAccessKey
 }
 
-func (o *AiProxyAdvancedPluginConfigAuth) GetAzureClientID() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigAuth) GetAzureClientID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureClientID
+	return a.AzureClientID
 }
 
-func (o *AiProxyAdvancedPluginConfigAuth) GetAzureClientSecret() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigAuth) GetAzureClientSecret() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureClientSecret
+	return a.AzureClientSecret
 }
 
-func (o *AiProxyAdvancedPluginConfigAuth) GetAzureTenantID() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigAuth) GetAzureTenantID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureTenantID
+	return a.AzureTenantID
 }
 
-func (o *AiProxyAdvancedPluginConfigAuth) GetAzureUseManagedIdentity() *bool {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigAuth) GetAzureUseManagedIdentity() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.AzureUseManagedIdentity
+	return a.AzureUseManagedIdentity
 }
 
-func (o *AiProxyAdvancedPluginConfigAuth) GetGcpServiceAccountJSON() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigAuth) GetGcpServiceAccountJSON() *string {
+	if a == nil {
 		return nil
 	}
-	return o.GcpServiceAccountJSON
+	return a.GcpServiceAccountJSON
 }
 
-func (o *AiProxyAdvancedPluginConfigAuth) GetGcpUseServiceAccount() *bool {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigAuth) GetGcpUseServiceAccount() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.GcpUseServiceAccount
+	return a.GcpUseServiceAccount
 }
 
-func (o *AiProxyAdvancedPluginConfigAuth) GetHeaderName() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigAuth) GetHeaderName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.HeaderName
+	return a.HeaderName
 }
 
-func (o *AiProxyAdvancedPluginConfigAuth) GetHeaderValue() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigAuth) GetHeaderValue() *string {
+	if a == nil {
 		return nil
 	}
-	return o.HeaderValue
+	return a.HeaderValue
 }
 
-func (o *AiProxyAdvancedPluginConfigAuth) GetParamLocation() *AiProxyAdvancedPluginConfigParamLocation {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigAuth) GetParamLocation() *AiProxyAdvancedPluginConfigParamLocation {
+	if a == nil {
 		return nil
 	}
-	return o.ParamLocation
+	return a.ParamLocation
 }
 
-func (o *AiProxyAdvancedPluginConfigAuth) GetParamName() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigAuth) GetParamName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ParamName
+	return a.ParamName
 }
 
-func (o *AiProxyAdvancedPluginConfigAuth) GetParamValue() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigAuth) GetParamValue() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ParamValue
+	return a.ParamValue
 }
 
 type AiProxyAdvancedPluginLogging struct {
@@ -1108,24 +1108,24 @@ func (a AiProxyAdvancedPluginLogging) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPluginLogging) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiProxyAdvancedPluginLogging) GetLogPayloads() *bool {
-	if o == nil {
+func (a *AiProxyAdvancedPluginLogging) GetLogPayloads() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.LogPayloads
+	return a.LogPayloads
 }
 
-func (o *AiProxyAdvancedPluginLogging) GetLogStatistics() *bool {
-	if o == nil {
+func (a *AiProxyAdvancedPluginLogging) GetLogStatistics() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.LogStatistics
+	return a.LogStatistics
 }
 
 type AiProxyAdvancedPluginConfigBedrock struct {
@@ -1148,52 +1148,52 @@ func (a AiProxyAdvancedPluginConfigBedrock) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPluginConfigBedrock) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiProxyAdvancedPluginConfigBedrock) GetAwsAssumeRoleArn() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigBedrock) GetAwsAssumeRoleArn() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsAssumeRoleArn
+	return a.AwsAssumeRoleArn
 }
 
-func (o *AiProxyAdvancedPluginConfigBedrock) GetAwsRegion() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigBedrock) GetAwsRegion() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsRegion
+	return a.AwsRegion
 }
 
-func (o *AiProxyAdvancedPluginConfigBedrock) GetAwsRoleSessionName() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigBedrock) GetAwsRoleSessionName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsRoleSessionName
+	return a.AwsRoleSessionName
 }
 
-func (o *AiProxyAdvancedPluginConfigBedrock) GetAwsStsEndpointURL() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigBedrock) GetAwsStsEndpointURL() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsStsEndpointURL
+	return a.AwsStsEndpointURL
 }
 
-func (o *AiProxyAdvancedPluginConfigBedrock) GetEmbeddingsNormalize() *bool {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigBedrock) GetEmbeddingsNormalize() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.EmbeddingsNormalize
+	return a.EmbeddingsNormalize
 }
 
-func (o *AiProxyAdvancedPluginConfigBedrock) GetPerformanceConfigLatency() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigBedrock) GetPerformanceConfigLatency() *string {
+	if a == nil {
 		return nil
 	}
-	return o.PerformanceConfigLatency
+	return a.PerformanceConfigLatency
 }
 
 // AiProxyAdvancedPluginEmbeddingInputType - The purpose of the input text to calculate embedding vectors.
@@ -1244,24 +1244,24 @@ func (a AiProxyAdvancedPluginCohere) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPluginCohere) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiProxyAdvancedPluginCohere) GetEmbeddingInputType() *AiProxyAdvancedPluginEmbeddingInputType {
-	if o == nil {
+func (a *AiProxyAdvancedPluginCohere) GetEmbeddingInputType() *AiProxyAdvancedPluginEmbeddingInputType {
+	if a == nil {
 		return nil
 	}
-	return o.EmbeddingInputType
+	return a.EmbeddingInputType
 }
 
-func (o *AiProxyAdvancedPluginCohere) GetWaitForModel() *bool {
-	if o == nil {
+func (a *AiProxyAdvancedPluginCohere) GetWaitForModel() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.WaitForModel
+	return a.WaitForModel
 }
 
 type AiProxyAdvancedPluginConfigGemini struct {
@@ -1278,31 +1278,31 @@ func (a AiProxyAdvancedPluginConfigGemini) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPluginConfigGemini) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiProxyAdvancedPluginConfigGemini) GetAPIEndpoint() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigGemini) GetAPIEndpoint() *string {
+	if a == nil {
 		return nil
 	}
-	return o.APIEndpoint
+	return a.APIEndpoint
 }
 
-func (o *AiProxyAdvancedPluginConfigGemini) GetLocationID() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigGemini) GetLocationID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.LocationID
+	return a.LocationID
 }
 
-func (o *AiProxyAdvancedPluginConfigGemini) GetProjectID() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigGemini) GetProjectID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ProjectID
+	return a.ProjectID
 }
 
 type AiProxyAdvancedPluginConfigHuggingface struct {
@@ -1317,24 +1317,24 @@ func (a AiProxyAdvancedPluginConfigHuggingface) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPluginConfigHuggingface) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiProxyAdvancedPluginConfigHuggingface) GetUseCache() *bool {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigHuggingface) GetUseCache() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.UseCache
+	return a.UseCache
 }
 
-func (o *AiProxyAdvancedPluginConfigHuggingface) GetWaitForModel() *bool {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigHuggingface) GetWaitForModel() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.WaitForModel
+	return a.WaitForModel
 }
 
 // AiProxyAdvancedPluginLlama2Format - If using llama2 provider, select the upstream message format.
@@ -1437,143 +1437,143 @@ func (a AiProxyAdvancedPluginConfigOptions) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPluginConfigOptions) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiProxyAdvancedPluginConfigOptions) GetAnthropicVersion() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigOptions) GetAnthropicVersion() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AnthropicVersion
+	return a.AnthropicVersion
 }
 
-func (o *AiProxyAdvancedPluginConfigOptions) GetAzureAPIVersion() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigOptions) GetAzureAPIVersion() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureAPIVersion
+	return a.AzureAPIVersion
 }
 
-func (o *AiProxyAdvancedPluginConfigOptions) GetAzureDeploymentID() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigOptions) GetAzureDeploymentID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureDeploymentID
+	return a.AzureDeploymentID
 }
 
-func (o *AiProxyAdvancedPluginConfigOptions) GetAzureInstance() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigOptions) GetAzureInstance() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureInstance
+	return a.AzureInstance
 }
 
-func (o *AiProxyAdvancedPluginConfigOptions) GetBedrock() *AiProxyAdvancedPluginConfigBedrock {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigOptions) GetBedrock() *AiProxyAdvancedPluginConfigBedrock {
+	if a == nil {
 		return nil
 	}
-	return o.Bedrock
+	return a.Bedrock
 }
 
-func (o *AiProxyAdvancedPluginConfigOptions) GetCohere() *AiProxyAdvancedPluginCohere {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigOptions) GetCohere() *AiProxyAdvancedPluginCohere {
+	if a == nil {
 		return nil
 	}
-	return o.Cohere
+	return a.Cohere
 }
 
-func (o *AiProxyAdvancedPluginConfigOptions) GetEmbeddingsDimensions() *int64 {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigOptions) GetEmbeddingsDimensions() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.EmbeddingsDimensions
+	return a.EmbeddingsDimensions
 }
 
-func (o *AiProxyAdvancedPluginConfigOptions) GetGemini() *AiProxyAdvancedPluginConfigGemini {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigOptions) GetGemini() *AiProxyAdvancedPluginConfigGemini {
+	if a == nil {
 		return nil
 	}
-	return o.Gemini
+	return a.Gemini
 }
 
-func (o *AiProxyAdvancedPluginConfigOptions) GetHuggingface() *AiProxyAdvancedPluginConfigHuggingface {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigOptions) GetHuggingface() *AiProxyAdvancedPluginConfigHuggingface {
+	if a == nil {
 		return nil
 	}
-	return o.Huggingface
+	return a.Huggingface
 }
 
-func (o *AiProxyAdvancedPluginConfigOptions) GetInputCost() *float64 {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigOptions) GetInputCost() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.InputCost
+	return a.InputCost
 }
 
-func (o *AiProxyAdvancedPluginConfigOptions) GetLlama2Format() *AiProxyAdvancedPluginLlama2Format {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigOptions) GetLlama2Format() *AiProxyAdvancedPluginLlama2Format {
+	if a == nil {
 		return nil
 	}
-	return o.Llama2Format
+	return a.Llama2Format
 }
 
-func (o *AiProxyAdvancedPluginConfigOptions) GetMaxTokens() *int64 {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigOptions) GetMaxTokens() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.MaxTokens
+	return a.MaxTokens
 }
 
-func (o *AiProxyAdvancedPluginConfigOptions) GetMistralFormat() *AiProxyAdvancedPluginMistralFormat {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigOptions) GetMistralFormat() *AiProxyAdvancedPluginMistralFormat {
+	if a == nil {
 		return nil
 	}
-	return o.MistralFormat
+	return a.MistralFormat
 }
 
-func (o *AiProxyAdvancedPluginConfigOptions) GetOutputCost() *float64 {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigOptions) GetOutputCost() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.OutputCost
+	return a.OutputCost
 }
 
-func (o *AiProxyAdvancedPluginConfigOptions) GetTemperature() *float64 {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigOptions) GetTemperature() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.Temperature
+	return a.Temperature
 }
 
-func (o *AiProxyAdvancedPluginConfigOptions) GetTopK() *int64 {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigOptions) GetTopK() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.TopK
+	return a.TopK
 }
 
-func (o *AiProxyAdvancedPluginConfigOptions) GetTopP() *float64 {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigOptions) GetTopP() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.TopP
+	return a.TopP
 }
 
-func (o *AiProxyAdvancedPluginConfigOptions) GetUpstreamPath() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigOptions) GetUpstreamPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.UpstreamPath
+	return a.UpstreamPath
 }
 
-func (o *AiProxyAdvancedPluginConfigOptions) GetUpstreamURL() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigOptions) GetUpstreamURL() *string {
+	if a == nil {
 		return nil
 	}
-	return o.UpstreamURL
+	return a.UpstreamURL
 }
 
 // AiProxyAdvancedPluginConfigProvider - AI provider request format - Kong translates requests to and from the specified backend compatible formats.
@@ -1638,31 +1638,31 @@ func (a AiProxyAdvancedPluginConfigModel) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPluginConfigModel) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"provider"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiProxyAdvancedPluginConfigModel) GetName() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigModel) GetName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AiProxyAdvancedPluginConfigModel) GetOptions() *AiProxyAdvancedPluginConfigOptions {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigModel) GetOptions() *AiProxyAdvancedPluginConfigOptions {
+	if a == nil {
 		return nil
 	}
-	return o.Options
+	return a.Options
 }
 
-func (o *AiProxyAdvancedPluginConfigModel) GetProvider() AiProxyAdvancedPluginConfigProvider {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfigModel) GetProvider() AiProxyAdvancedPluginConfigProvider {
+	if a == nil {
 		return AiProxyAdvancedPluginConfigProvider("")
 	}
-	return o.Provider
+	return a.Provider
 }
 
 // AiProxyAdvancedPluginRouteType - The model's operation implementation, for this provider.
@@ -1745,52 +1745,52 @@ func (t Targets) MarshalJSON() ([]byte, error) {
 }
 
 func (t *Targets) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"logging", "model", "route_type"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Targets) GetAuth() *AiProxyAdvancedPluginConfigAuth {
-	if o == nil {
+func (t *Targets) GetAuth() *AiProxyAdvancedPluginConfigAuth {
+	if t == nil {
 		return nil
 	}
-	return o.Auth
+	return t.Auth
 }
 
-func (o *Targets) GetDescription() *string {
-	if o == nil {
+func (t *Targets) GetDescription() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Description
+	return t.Description
 }
 
-func (o *Targets) GetLogging() AiProxyAdvancedPluginLogging {
-	if o == nil {
+func (t *Targets) GetLogging() AiProxyAdvancedPluginLogging {
+	if t == nil {
 		return AiProxyAdvancedPluginLogging{}
 	}
-	return o.Logging
+	return t.Logging
 }
 
-func (o *Targets) GetModel() AiProxyAdvancedPluginConfigModel {
-	if o == nil {
+func (t *Targets) GetModel() AiProxyAdvancedPluginConfigModel {
+	if t == nil {
 		return AiProxyAdvancedPluginConfigModel{}
 	}
-	return o.Model
+	return t.Model
 }
 
-func (o *Targets) GetRouteType() AiProxyAdvancedPluginRouteType {
-	if o == nil {
+func (t *Targets) GetRouteType() AiProxyAdvancedPluginRouteType {
+	if t == nil {
 		return AiProxyAdvancedPluginRouteType("")
 	}
-	return o.RouteType
+	return t.RouteType
 }
 
-func (o *Targets) GetWeight() *int64 {
-	if o == nil {
+func (t *Targets) GetWeight() *int64 {
+	if t == nil {
 		return nil
 	}
-	return o.Weight
+	return t.Weight
 }
 
 // DistanceMetric - the distance metric to use for vector searches
@@ -1882,94 +1882,94 @@ func (p Pgvector) MarshalJSON() ([]byte, error) {
 }
 
 func (p *Pgvector) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Pgvector) GetDatabase() *string {
-	if o == nil {
+func (p *Pgvector) GetDatabase() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Database
+	return p.Database
 }
 
-func (o *Pgvector) GetHost() *string {
-	if o == nil {
+func (p *Pgvector) GetHost() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Host
+	return p.Host
 }
 
-func (o *Pgvector) GetPassword() *string {
-	if o == nil {
+func (p *Pgvector) GetPassword() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Password
+	return p.Password
 }
 
-func (o *Pgvector) GetPort() *int64 {
-	if o == nil {
+func (p *Pgvector) GetPort() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.Port
+	return p.Port
 }
 
-func (o *Pgvector) GetSsl() *bool {
-	if o == nil {
+func (p *Pgvector) GetSsl() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.Ssl
+	return p.Ssl
 }
 
-func (o *Pgvector) GetSslCert() *string {
-	if o == nil {
+func (p *Pgvector) GetSslCert() *string {
+	if p == nil {
 		return nil
 	}
-	return o.SslCert
+	return p.SslCert
 }
 
-func (o *Pgvector) GetSslCertKey() *string {
-	if o == nil {
+func (p *Pgvector) GetSslCertKey() *string {
+	if p == nil {
 		return nil
 	}
-	return o.SslCertKey
+	return p.SslCertKey
 }
 
-func (o *Pgvector) GetSslRequired() *bool {
-	if o == nil {
+func (p *Pgvector) GetSslRequired() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.SslRequired
+	return p.SslRequired
 }
 
-func (o *Pgvector) GetSslVerify() *bool {
-	if o == nil {
+func (p *Pgvector) GetSslVerify() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.SslVerify
+	return p.SslVerify
 }
 
-func (o *Pgvector) GetSslVersion() *SslVersion {
-	if o == nil {
+func (p *Pgvector) GetSslVersion() *SslVersion {
+	if p == nil {
 		return nil
 	}
-	return o.SslVersion
+	return p.SslVersion
 }
 
-func (o *Pgvector) GetTimeout() *float64 {
-	if o == nil {
+func (p *Pgvector) GetTimeout() *float64 {
+	if p == nil {
 		return nil
 	}
-	return o.Timeout
+	return p.Timeout
 }
 
-func (o *Pgvector) GetUser() *string {
-	if o == nil {
+func (p *Pgvector) GetUser() *string {
+	if p == nil {
 		return nil
 	}
-	return o.User
+	return p.User
 }
 
 type AiProxyAdvancedPluginClusterNodes struct {
@@ -1984,24 +1984,24 @@ func (a AiProxyAdvancedPluginClusterNodes) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPluginClusterNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiProxyAdvancedPluginClusterNodes) GetIP() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginClusterNodes) GetIP() *string {
+	if a == nil {
 		return nil
 	}
-	return o.IP
+	return a.IP
 }
 
-func (o *AiProxyAdvancedPluginClusterNodes) GetPort() *int64 {
-	if o == nil {
+func (a *AiProxyAdvancedPluginClusterNodes) GetPort() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Port
+	return a.Port
 }
 
 type AiProxyAdvancedPluginSentinelNodes struct {
@@ -2016,24 +2016,24 @@ func (a AiProxyAdvancedPluginSentinelNodes) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPluginSentinelNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiProxyAdvancedPluginSentinelNodes) GetHost() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginSentinelNodes) GetHost() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Host
+	return a.Host
 }
 
-func (o *AiProxyAdvancedPluginSentinelNodes) GetPort() *int64 {
-	if o == nil {
+func (a *AiProxyAdvancedPluginSentinelNodes) GetPort() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Port
+	return a.Port
 }
 
 // AiProxyAdvancedPluginSentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -2116,157 +2116,157 @@ func (a AiProxyAdvancedPluginRedis) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPluginRedis) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiProxyAdvancedPluginRedis) GetClusterMaxRedirections() *int64 {
-	if o == nil {
+func (a *AiProxyAdvancedPluginRedis) GetClusterMaxRedirections() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.ClusterMaxRedirections
+	return a.ClusterMaxRedirections
 }
 
-func (o *AiProxyAdvancedPluginRedis) GetClusterNodes() []AiProxyAdvancedPluginClusterNodes {
-	if o == nil {
+func (a *AiProxyAdvancedPluginRedis) GetClusterNodes() []AiProxyAdvancedPluginClusterNodes {
+	if a == nil {
 		return nil
 	}
-	return o.ClusterNodes
+	return a.ClusterNodes
 }
 
-func (o *AiProxyAdvancedPluginRedis) GetConnectTimeout() *int64 {
-	if o == nil {
+func (a *AiProxyAdvancedPluginRedis) GetConnectTimeout() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.ConnectTimeout
+	return a.ConnectTimeout
 }
 
-func (o *AiProxyAdvancedPluginRedis) GetConnectionIsProxied() *bool {
-	if o == nil {
+func (a *AiProxyAdvancedPluginRedis) GetConnectionIsProxied() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.ConnectionIsProxied
+	return a.ConnectionIsProxied
 }
 
-func (o *AiProxyAdvancedPluginRedis) GetDatabase() *int64 {
-	if o == nil {
+func (a *AiProxyAdvancedPluginRedis) GetDatabase() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Database
+	return a.Database
 }
 
-func (o *AiProxyAdvancedPluginRedis) GetHost() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginRedis) GetHost() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Host
+	return a.Host
 }
 
-func (o *AiProxyAdvancedPluginRedis) GetKeepaliveBacklog() *int64 {
-	if o == nil {
+func (a *AiProxyAdvancedPluginRedis) GetKeepaliveBacklog() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.KeepaliveBacklog
+	return a.KeepaliveBacklog
 }
 
-func (o *AiProxyAdvancedPluginRedis) GetKeepalivePoolSize() *int64 {
-	if o == nil {
+func (a *AiProxyAdvancedPluginRedis) GetKeepalivePoolSize() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.KeepalivePoolSize
+	return a.KeepalivePoolSize
 }
 
-func (o *AiProxyAdvancedPluginRedis) GetPassword() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginRedis) GetPassword() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Password
+	return a.Password
 }
 
-func (o *AiProxyAdvancedPluginRedis) GetPort() *int64 {
-	if o == nil {
+func (a *AiProxyAdvancedPluginRedis) GetPort() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Port
+	return a.Port
 }
 
-func (o *AiProxyAdvancedPluginRedis) GetReadTimeout() *int64 {
-	if o == nil {
+func (a *AiProxyAdvancedPluginRedis) GetReadTimeout() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.ReadTimeout
+	return a.ReadTimeout
 }
 
-func (o *AiProxyAdvancedPluginRedis) GetSendTimeout() *int64 {
-	if o == nil {
+func (a *AiProxyAdvancedPluginRedis) GetSendTimeout() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.SendTimeout
+	return a.SendTimeout
 }
 
-func (o *AiProxyAdvancedPluginRedis) GetSentinelMaster() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginRedis) GetSentinelMaster() *string {
+	if a == nil {
 		return nil
 	}
-	return o.SentinelMaster
+	return a.SentinelMaster
 }
 
-func (o *AiProxyAdvancedPluginRedis) GetSentinelNodes() []AiProxyAdvancedPluginSentinelNodes {
-	if o == nil {
+func (a *AiProxyAdvancedPluginRedis) GetSentinelNodes() []AiProxyAdvancedPluginSentinelNodes {
+	if a == nil {
 		return nil
 	}
-	return o.SentinelNodes
+	return a.SentinelNodes
 }
 
-func (o *AiProxyAdvancedPluginRedis) GetSentinelPassword() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginRedis) GetSentinelPassword() *string {
+	if a == nil {
 		return nil
 	}
-	return o.SentinelPassword
+	return a.SentinelPassword
 }
 
-func (o *AiProxyAdvancedPluginRedis) GetSentinelRole() *AiProxyAdvancedPluginSentinelRole {
-	if o == nil {
+func (a *AiProxyAdvancedPluginRedis) GetSentinelRole() *AiProxyAdvancedPluginSentinelRole {
+	if a == nil {
 		return nil
 	}
-	return o.SentinelRole
+	return a.SentinelRole
 }
 
-func (o *AiProxyAdvancedPluginRedis) GetSentinelUsername() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginRedis) GetSentinelUsername() *string {
+	if a == nil {
 		return nil
 	}
-	return o.SentinelUsername
+	return a.SentinelUsername
 }
 
-func (o *AiProxyAdvancedPluginRedis) GetServerName() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginRedis) GetServerName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ServerName
+	return a.ServerName
 }
 
-func (o *AiProxyAdvancedPluginRedis) GetSsl() *bool {
-	if o == nil {
+func (a *AiProxyAdvancedPluginRedis) GetSsl() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Ssl
+	return a.Ssl
 }
 
-func (o *AiProxyAdvancedPluginRedis) GetSslVerify() *bool {
-	if o == nil {
+func (a *AiProxyAdvancedPluginRedis) GetSslVerify() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.SslVerify
+	return a.SslVerify
 }
 
-func (o *AiProxyAdvancedPluginRedis) GetUsername() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginRedis) GetUsername() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Username
+	return a.Username
 }
 
 // AiProxyAdvancedPluginStrategy - which vector database driver to use
@@ -2309,46 +2309,46 @@ type Vectordb struct {
 	Threshold float64 `json:"threshold"`
 }
 
-func (o *Vectordb) GetDimensions() int64 {
-	if o == nil {
+func (v *Vectordb) GetDimensions() int64 {
+	if v == nil {
 		return 0
 	}
-	return o.Dimensions
+	return v.Dimensions
 }
 
-func (o *Vectordb) GetDistanceMetric() DistanceMetric {
-	if o == nil {
+func (v *Vectordb) GetDistanceMetric() DistanceMetric {
+	if v == nil {
 		return DistanceMetric("")
 	}
-	return o.DistanceMetric
+	return v.DistanceMetric
 }
 
-func (o *Vectordb) GetPgvector() Pgvector {
-	if o == nil {
+func (v *Vectordb) GetPgvector() Pgvector {
+	if v == nil {
 		return Pgvector{}
 	}
-	return o.Pgvector
+	return v.Pgvector
 }
 
-func (o *Vectordb) GetRedis() AiProxyAdvancedPluginRedis {
-	if o == nil {
+func (v *Vectordb) GetRedis() AiProxyAdvancedPluginRedis {
+	if v == nil {
 		return AiProxyAdvancedPluginRedis{}
 	}
-	return o.Redis
+	return v.Redis
 }
 
-func (o *Vectordb) GetStrategy() AiProxyAdvancedPluginStrategy {
-	if o == nil {
+func (v *Vectordb) GetStrategy() AiProxyAdvancedPluginStrategy {
+	if v == nil {
 		return AiProxyAdvancedPluginStrategy("")
 	}
-	return o.Strategy
+	return v.Strategy
 }
 
-func (o *Vectordb) GetThreshold() float64 {
-	if o == nil {
+func (v *Vectordb) GetThreshold() float64 {
+	if v == nil {
 		return 0.0
 	}
-	return o.Threshold
+	return v.Threshold
 }
 
 type AiProxyAdvancedPluginConfig struct {
@@ -2373,73 +2373,73 @@ func (a AiProxyAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"targets"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiProxyAdvancedPluginConfig) GetBalancer() *Balancer {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfig) GetBalancer() *Balancer {
+	if a == nil {
 		return nil
 	}
-	return o.Balancer
+	return a.Balancer
 }
 
-func (o *AiProxyAdvancedPluginConfig) GetEmbeddings() *Embeddings {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfig) GetEmbeddings() *Embeddings {
+	if a == nil {
 		return nil
 	}
-	return o.Embeddings
+	return a.Embeddings
 }
 
-func (o *AiProxyAdvancedPluginConfig) GetGenaiCategory() *AiProxyAdvancedPluginGenaiCategory {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfig) GetGenaiCategory() *AiProxyAdvancedPluginGenaiCategory {
+	if a == nil {
 		return nil
 	}
-	return o.GenaiCategory
+	return a.GenaiCategory
 }
 
-func (o *AiProxyAdvancedPluginConfig) GetLlmFormat() *AiProxyAdvancedPluginLlmFormat {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfig) GetLlmFormat() *AiProxyAdvancedPluginLlmFormat {
+	if a == nil {
 		return nil
 	}
-	return o.LlmFormat
+	return a.LlmFormat
 }
 
-func (o *AiProxyAdvancedPluginConfig) GetMaxRequestBodySize() *int64 {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfig) GetMaxRequestBodySize() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.MaxRequestBodySize
+	return a.MaxRequestBodySize
 }
 
-func (o *AiProxyAdvancedPluginConfig) GetModelNameHeader() *bool {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfig) GetModelNameHeader() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.ModelNameHeader
+	return a.ModelNameHeader
 }
 
-func (o *AiProxyAdvancedPluginConfig) GetResponseStreaming() *AiProxyAdvancedPluginResponseStreaming {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfig) GetResponseStreaming() *AiProxyAdvancedPluginResponseStreaming {
+	if a == nil {
 		return nil
 	}
-	return o.ResponseStreaming
+	return a.ResponseStreaming
 }
 
-func (o *AiProxyAdvancedPluginConfig) GetTargets() []Targets {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfig) GetTargets() []Targets {
+	if a == nil {
 		return []Targets{}
 	}
-	return o.Targets
+	return a.Targets
 }
 
-func (o *AiProxyAdvancedPluginConfig) GetVectordb() *Vectordb {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConfig) GetVectordb() *Vectordb {
+	if a == nil {
 		return nil
 	}
-	return o.Vectordb
+	return a.Vectordb
 }
 
 // AiProxyAdvancedPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -2447,11 +2447,11 @@ type AiProxyAdvancedPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiProxyAdvancedPluginConsumer) GetID() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConsumer) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiProxyAdvancedPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -2459,11 +2459,11 @@ type AiProxyAdvancedPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiProxyAdvancedPluginConsumerGroup) GetID() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginConsumerGroup) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 type AiProxyAdvancedPluginProtocols string
@@ -2509,11 +2509,11 @@ type AiProxyAdvancedPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiProxyAdvancedPluginRoute) GetID() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginRoute) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiProxyAdvancedPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -2521,11 +2521,11 @@ type AiProxyAdvancedPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiProxyAdvancedPluginService) GetID() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPluginService) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiProxyAdvancedPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -2564,110 +2564,110 @@ func (a AiProxyAdvancedPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiProxyAdvancedPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (a *AiProxyAdvancedPlugin) GetCreatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AiProxyAdvancedPlugin) GetEnabled() *bool {
-	if o == nil {
+func (a *AiProxyAdvancedPlugin) GetEnabled() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Enabled
+	return a.Enabled
 }
 
-func (o *AiProxyAdvancedPlugin) GetID() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPlugin) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AiProxyAdvancedPlugin) GetInstanceName() *string {
-	if o == nil {
+func (a *AiProxyAdvancedPlugin) GetInstanceName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.InstanceName
+	return a.InstanceName
 }
 
-func (o *AiProxyAdvancedPlugin) GetName() string {
+func (a *AiProxyAdvancedPlugin) GetName() string {
 	return "ai-proxy-advanced"
 }
 
-func (o *AiProxyAdvancedPlugin) GetOrdering() *AiProxyAdvancedPluginOrdering {
-	if o == nil {
+func (a *AiProxyAdvancedPlugin) GetOrdering() *AiProxyAdvancedPluginOrdering {
+	if a == nil {
 		return nil
 	}
-	return o.Ordering
+	return a.Ordering
 }
 
-func (o *AiProxyAdvancedPlugin) GetPartials() []AiProxyAdvancedPluginPartials {
-	if o == nil {
+func (a *AiProxyAdvancedPlugin) GetPartials() []AiProxyAdvancedPluginPartials {
+	if a == nil {
 		return nil
 	}
-	return o.Partials
+	return a.Partials
 }
 
-func (o *AiProxyAdvancedPlugin) GetTags() []string {
-	if o == nil {
+func (a *AiProxyAdvancedPlugin) GetTags() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Tags
+	return a.Tags
 }
 
-func (o *AiProxyAdvancedPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (a *AiProxyAdvancedPlugin) GetUpdatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }
 
-func (o *AiProxyAdvancedPlugin) GetConfig() AiProxyAdvancedPluginConfig {
-	if o == nil {
+func (a *AiProxyAdvancedPlugin) GetConfig() AiProxyAdvancedPluginConfig {
+	if a == nil {
 		return AiProxyAdvancedPluginConfig{}
 	}
-	return o.Config
+	return a.Config
 }
 
-func (o *AiProxyAdvancedPlugin) GetConsumer() *AiProxyAdvancedPluginConsumer {
-	if o == nil {
+func (a *AiProxyAdvancedPlugin) GetConsumer() *AiProxyAdvancedPluginConsumer {
+	if a == nil {
 		return nil
 	}
-	return o.Consumer
+	return a.Consumer
 }
 
-func (o *AiProxyAdvancedPlugin) GetConsumerGroup() *AiProxyAdvancedPluginConsumerGroup {
-	if o == nil {
+func (a *AiProxyAdvancedPlugin) GetConsumerGroup() *AiProxyAdvancedPluginConsumerGroup {
+	if a == nil {
 		return nil
 	}
-	return o.ConsumerGroup
+	return a.ConsumerGroup
 }
 
-func (o *AiProxyAdvancedPlugin) GetProtocols() []AiProxyAdvancedPluginProtocols {
-	if o == nil {
+func (a *AiProxyAdvancedPlugin) GetProtocols() []AiProxyAdvancedPluginProtocols {
+	if a == nil {
 		return nil
 	}
-	return o.Protocols
+	return a.Protocols
 }
 
-func (o *AiProxyAdvancedPlugin) GetRoute() *AiProxyAdvancedPluginRoute {
-	if o == nil {
+func (a *AiProxyAdvancedPlugin) GetRoute() *AiProxyAdvancedPluginRoute {
+	if a == nil {
 		return nil
 	}
-	return o.Route
+	return a.Route
 }
 
-func (o *AiProxyAdvancedPlugin) GetService() *AiProxyAdvancedPluginService {
-	if o == nil {
+func (a *AiProxyAdvancedPlugin) GetService() *AiProxyAdvancedPluginService {
+	if a == nil {
 		return nil
 	}
-	return o.Service
+	return a.Service
 }

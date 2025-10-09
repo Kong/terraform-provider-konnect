@@ -19,25 +19,25 @@ type PatchSystemAccountsIDAccessTokensIDRequest struct {
 	UpdateSystemAccountAccessToken *shared.UpdateSystemAccountAccessToken `request:"mediaType=application/json"`
 }
 
-func (o *PatchSystemAccountsIDAccessTokensIDRequest) GetAccountID() string {
-	if o == nil {
+func (p *PatchSystemAccountsIDAccessTokensIDRequest) GetAccountID() string {
+	if p == nil {
 		return ""
 	}
-	return o.AccountID
+	return p.AccountID
 }
 
-func (o *PatchSystemAccountsIDAccessTokensIDRequest) GetTokenID() string {
-	if o == nil {
+func (p *PatchSystemAccountsIDAccessTokensIDRequest) GetTokenID() string {
+	if p == nil {
 		return ""
 	}
-	return o.TokenID
+	return p.TokenID
 }
 
-func (o *PatchSystemAccountsIDAccessTokensIDRequest) GetUpdateSystemAccountAccessToken() *shared.UpdateSystemAccountAccessToken {
-	if o == nil {
+func (p *PatchSystemAccountsIDAccessTokensIDRequest) GetUpdateSystemAccountAccessToken() *shared.UpdateSystemAccountAccessToken {
+	if p == nil {
 		return nil
 	}
-	return o.UpdateSystemAccountAccessToken
+	return p.UpdateSystemAccountAccessToken
 }
 
 type PatchSystemAccountsIDAccessTokensIDResponse struct {
@@ -57,51 +57,51 @@ type PatchSystemAccountsIDAccessTokensIDResponse struct {
 	ConflictError *shared.ConflictError
 }
 
-func (o *PatchSystemAccountsIDAccessTokensIDResponse) GetContentType() string {
-	if o == nil {
+func (p *PatchSystemAccountsIDAccessTokensIDResponse) GetContentType() string {
+	if p == nil {
 		return ""
 	}
-	return o.ContentType
+	return p.ContentType
 }
 
-func (o *PatchSystemAccountsIDAccessTokensIDResponse) GetStatusCode() int {
-	if o == nil {
+func (p *PatchSystemAccountsIDAccessTokensIDResponse) GetStatusCode() int {
+	if p == nil {
 		return 0
 	}
-	return o.StatusCode
+	return p.StatusCode
 }
 
-func (o *PatchSystemAccountsIDAccessTokensIDResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (p *PatchSystemAccountsIDAccessTokensIDResponse) GetRawResponse() *http.Response {
+	if p == nil {
 		return nil
 	}
-	return o.RawResponse
+	return p.RawResponse
 }
 
-func (o *PatchSystemAccountsIDAccessTokensIDResponse) GetSystemAccountAccessToken() *shared.SystemAccountAccessToken {
-	if o == nil {
+func (p *PatchSystemAccountsIDAccessTokensIDResponse) GetSystemAccountAccessToken() *shared.SystemAccountAccessToken {
+	if p == nil {
 		return nil
 	}
-	return o.SystemAccountAccessToken
+	return p.SystemAccountAccessToken
 }
 
-func (o *PatchSystemAccountsIDAccessTokensIDResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (p *PatchSystemAccountsIDAccessTokensIDResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if p == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return p.UnauthorizedError
 }
 
-func (o *PatchSystemAccountsIDAccessTokensIDResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (p *PatchSystemAccountsIDAccessTokensIDResponse) GetNotFoundError() *shared.NotFoundError {
+	if p == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return p.NotFoundError
 }
 
-func (o *PatchSystemAccountsIDAccessTokensIDResponse) GetConflictError() *shared.ConflictError {
-	if o == nil {
+func (p *PatchSystemAccountsIDAccessTokensIDResponse) GetConflictError() *shared.ConflictError {
+	if p == nil {
 		return nil
 	}
-	return o.ConflictError
+	return p.ConflictError
 }

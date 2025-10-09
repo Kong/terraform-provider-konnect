@@ -14,18 +14,18 @@ type GetConsumerFromRealmRequest struct {
 	ConsumerID string `pathParam:"style=simple,explode=false,name=consumerId"`
 }
 
-func (o *GetConsumerFromRealmRequest) GetRealmID() string {
-	if o == nil {
+func (g *GetConsumerFromRealmRequest) GetRealmID() string {
+	if g == nil {
 		return ""
 	}
-	return o.RealmID
+	return g.RealmID
 }
 
-func (o *GetConsumerFromRealmRequest) GetConsumerID() string {
-	if o == nil {
+func (g *GetConsumerFromRealmRequest) GetConsumerID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ConsumerID
+	return g.ConsumerID
 }
 
 type GetConsumerFromRealmResponse struct {
@@ -41,37 +41,37 @@ type GetConsumerFromRealmResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetConsumerFromRealmResponse) GetContentType() string {
-	if o == nil {
+func (g *GetConsumerFromRealmResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetConsumerFromRealmResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetConsumerFromRealmResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetConsumerFromRealmResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetConsumerFromRealmResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetConsumerFromRealmResponse) GetCentralizedConsumer() *shared.CentralizedConsumer {
-	if o == nil {
+func (g *GetConsumerFromRealmResponse) GetCentralizedConsumer() *shared.CentralizedConsumer {
+	if g == nil {
 		return nil
 	}
-	return o.CentralizedConsumer
+	return g.CentralizedConsumer
 }
 
-func (o *GetConsumerFromRealmResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetConsumerFromRealmResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

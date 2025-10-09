@@ -30,44 +30,44 @@ type BadRequestError struct {
 	InvalidParameters []InvalidParameters `json:"invalid_parameters"`
 }
 
-func (o *BadRequestError) GetStatus() int64 {
-	if o == nil {
+func (b *BadRequestError) GetStatus() int64 {
+	if b == nil {
 		return 0
 	}
-	return o.Status
+	return b.Status
 }
 
-func (o *BadRequestError) GetTitle() string {
-	if o == nil {
+func (b *BadRequestError) GetTitle() string {
+	if b == nil {
 		return ""
 	}
-	return o.Title
+	return b.Title
 }
 
-func (o *BadRequestError) GetType() *string {
-	if o == nil {
+func (b *BadRequestError) GetType() *string {
+	if b == nil {
 		return nil
 	}
-	return o.Type
+	return b.Type
 }
 
-func (o *BadRequestError) GetInstance() string {
-	if o == nil {
+func (b *BadRequestError) GetInstance() string {
+	if b == nil {
 		return ""
 	}
-	return o.Instance
+	return b.Instance
 }
 
-func (o *BadRequestError) GetDetail() string {
-	if o == nil {
+func (b *BadRequestError) GetDetail() string {
+	if b == nil {
 		return ""
 	}
-	return o.Detail
+	return b.Detail
 }
 
-func (o *BadRequestError) GetInvalidParameters() []InvalidParameters {
-	if o == nil {
+func (b *BadRequestError) GetInvalidParameters() []InvalidParameters {
+	if b == nil {
 		return []InvalidParameters{}
 	}
-	return o.InvalidParameters
+	return b.InvalidParameters
 }

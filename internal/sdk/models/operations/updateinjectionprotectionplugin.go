@@ -15,25 +15,25 @@ type UpdateInjectionprotectionPluginRequest struct {
 	InjectionProtectionPlugin shared.InjectionProtectionPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateInjectionprotectionPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateInjectionprotectionPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateInjectionprotectionPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateInjectionprotectionPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateInjectionprotectionPluginRequest) GetInjectionProtectionPlugin() shared.InjectionProtectionPlugin {
-	if o == nil {
+func (u *UpdateInjectionprotectionPluginRequest) GetInjectionProtectionPlugin() shared.InjectionProtectionPlugin {
+	if u == nil {
 		return shared.InjectionProtectionPlugin{}
 	}
-	return o.InjectionProtectionPlugin
+	return u.InjectionProtectionPlugin
 }
 
 type UpdateInjectionprotectionPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateInjectionprotectionPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateInjectionprotectionPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateInjectionprotectionPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateInjectionprotectionPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateInjectionprotectionPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateInjectionprotectionPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateInjectionprotectionPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateInjectionprotectionPluginResponse) GetInjectionProtectionPlugin() *shared.InjectionProtectionPlugin {
-	if o == nil {
+func (u *UpdateInjectionprotectionPluginResponse) GetInjectionProtectionPlugin() *shared.InjectionProtectionPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.InjectionProtectionPlugin
+	return u.InjectionProtectionPlugin
 }
 
-func (o *UpdateInjectionprotectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateInjectionprotectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

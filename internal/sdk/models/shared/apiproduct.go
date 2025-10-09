@@ -48,78 +48,78 @@ func (a APIProduct) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APIProduct) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name", "portal_ids", "portals", "version_count", "created_at", "updated_at", "labels", "public_labels"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *APIProduct) GetID() string {
-	if o == nil {
+func (a *APIProduct) GetID() string {
+	if a == nil {
 		return ""
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *APIProduct) GetName() string {
-	if o == nil {
+func (a *APIProduct) GetName() string {
+	if a == nil {
 		return ""
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *APIProduct) GetDescription() *string {
-	if o == nil {
+func (a *APIProduct) GetDescription() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Description
+	return a.Description
 }
 
-func (o *APIProduct) GetPortalIds() []string {
-	if o == nil {
+func (a *APIProduct) GetPortalIds() []string {
+	if a == nil {
 		return []string{}
 	}
-	return o.PortalIds
+	return a.PortalIds
 }
 
-func (o *APIProduct) GetPortals() []APIProductPortal {
-	if o == nil {
+func (a *APIProduct) GetPortals() []APIProductPortal {
+	if a == nil {
 		return []APIProductPortal{}
 	}
-	return o.Portals
+	return a.Portals
 }
 
-func (o *APIProduct) GetVersionCount() float64 {
-	if o == nil {
+func (a *APIProduct) GetVersionCount() float64 {
+	if a == nil {
 		return 0.0
 	}
-	return o.VersionCount
+	return a.VersionCount
 }
 
-func (o *APIProduct) GetCreatedAt() time.Time {
-	if o == nil {
+func (a *APIProduct) GetCreatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *APIProduct) GetUpdatedAt() time.Time {
-	if o == nil {
+func (a *APIProduct) GetUpdatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }
 
-func (o *APIProduct) GetLabels() map[string]*string {
-	if o == nil {
+func (a *APIProduct) GetLabels() map[string]*string {
+	if a == nil {
 		return map[string]*string{}
 	}
-	return o.Labels
+	return a.Labels
 }
 
-func (o *APIProduct) GetPublicLabels() map[string]string {
-	if o == nil {
+func (a *APIProduct) GetPublicLabels() map[string]string {
+	if a == nil {
 		return map[string]string{}
 	}
-	return o.PublicLabels
+	return a.PublicLabels
 }

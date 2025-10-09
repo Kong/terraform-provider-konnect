@@ -14,18 +14,18 @@ type GetAiraginjectorPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetAiraginjectorPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetAiraginjectorPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetAiraginjectorPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetAiraginjectorPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetAiraginjectorPluginResponse struct {
@@ -41,37 +41,37 @@ type GetAiraginjectorPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetAiraginjectorPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetAiraginjectorPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetAiraginjectorPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetAiraginjectorPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetAiraginjectorPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetAiraginjectorPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetAiraginjectorPluginResponse) GetAiRagInjectorPlugin() *shared.AiRagInjectorPlugin {
-	if o == nil {
+func (g *GetAiraginjectorPluginResponse) GetAiRagInjectorPlugin() *shared.AiRagInjectorPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.AiRagInjectorPlugin
+	return g.AiRagInjectorPlugin
 }
 
-func (o *GetAiraginjectorPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetAiraginjectorPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

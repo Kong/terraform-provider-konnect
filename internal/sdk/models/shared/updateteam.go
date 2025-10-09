@@ -26,29 +26,29 @@ func (u UpdateTeam) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateTeam) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *UpdateTeam) GetName() *string {
-	if o == nil {
+func (u *UpdateTeam) GetName() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Name
+	return u.Name
 }
 
-func (o *UpdateTeam) GetDescription() *string {
-	if o == nil {
+func (u *UpdateTeam) GetDescription() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Description
+	return u.Description
 }
 
-func (o *UpdateTeam) GetLabels() map[string]*string {
-	if o == nil {
+func (u *UpdateTeam) GetLabels() map[string]*string {
+	if u == nil {
 		return nil
 	}
-	return o.Labels
+	return u.Labels
 }

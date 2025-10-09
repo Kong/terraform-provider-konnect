@@ -13,18 +13,18 @@ type CreateAisemanticcachePluginRequest struct {
 	AiSemanticCachePlugin shared.AiSemanticCachePlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateAisemanticcachePluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateAisemanticcachePluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateAisemanticcachePluginRequest) GetAiSemanticCachePlugin() shared.AiSemanticCachePlugin {
-	if o == nil {
+func (c *CreateAisemanticcachePluginRequest) GetAiSemanticCachePlugin() shared.AiSemanticCachePlugin {
+	if c == nil {
 		return shared.AiSemanticCachePlugin{}
 	}
-	return o.AiSemanticCachePlugin
+	return c.AiSemanticCachePlugin
 }
 
 type CreateAisemanticcachePluginResponse struct {
@@ -40,37 +40,37 @@ type CreateAisemanticcachePluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateAisemanticcachePluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateAisemanticcachePluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateAisemanticcachePluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateAisemanticcachePluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateAisemanticcachePluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateAisemanticcachePluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateAisemanticcachePluginResponse) GetAiSemanticCachePlugin() *shared.AiSemanticCachePlugin {
-	if o == nil {
+func (c *CreateAisemanticcachePluginResponse) GetAiSemanticCachePlugin() *shared.AiSemanticCachePlugin {
+	if c == nil {
 		return nil
 	}
-	return o.AiSemanticCachePlugin
+	return c.AiSemanticCachePlugin
 }
 
-func (o *CreateAisemanticcachePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateAisemanticcachePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

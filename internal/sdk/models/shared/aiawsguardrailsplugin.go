@@ -12,22 +12,22 @@ type AiAwsGuardrailsPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AiAwsGuardrailsPluginAfter) GetAccess() []string {
-	if o == nil {
+func (a *AiAwsGuardrailsPluginAfter) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AiAwsGuardrailsPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AiAwsGuardrailsPluginBefore) GetAccess() []string {
-	if o == nil {
+func (a *AiAwsGuardrailsPluginBefore) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AiAwsGuardrailsPluginOrdering struct {
@@ -35,18 +35,18 @@ type AiAwsGuardrailsPluginOrdering struct {
 	Before *AiAwsGuardrailsPluginBefore `json:"before,omitempty"`
 }
 
-func (o *AiAwsGuardrailsPluginOrdering) GetAfter() *AiAwsGuardrailsPluginAfter {
-	if o == nil {
+func (a *AiAwsGuardrailsPluginOrdering) GetAfter() *AiAwsGuardrailsPluginAfter {
+	if a == nil {
 		return nil
 	}
-	return o.After
+	return a.After
 }
 
-func (o *AiAwsGuardrailsPluginOrdering) GetBefore() *AiAwsGuardrailsPluginBefore {
-	if o == nil {
+func (a *AiAwsGuardrailsPluginOrdering) GetBefore() *AiAwsGuardrailsPluginBefore {
+	if a == nil {
 		return nil
 	}
-	return o.Before
+	return a.Before
 }
 
 type AiAwsGuardrailsPluginPartials struct {
@@ -57,25 +57,25 @@ type AiAwsGuardrailsPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *AiAwsGuardrailsPluginPartials) GetID() *string {
-	if o == nil {
+func (a *AiAwsGuardrailsPluginPartials) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AiAwsGuardrailsPluginPartials) GetName() *string {
-	if o == nil {
+func (a *AiAwsGuardrailsPluginPartials) GetName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AiAwsGuardrailsPluginPartials) GetPath() *string {
-	if o == nil {
+func (a *AiAwsGuardrailsPluginPartials) GetPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Path
+	return a.Path
 }
 
 // GuardingMode - The guardrail mode to use for the request
@@ -163,80 +163,80 @@ func (a AiAwsGuardrailsPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiAwsGuardrailsPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"aws_region", "guardrails_id", "guardrails_version"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiAwsGuardrailsPluginConfig) GetAwsAccessKeyID() *string {
-	if o == nil {
+func (a *AiAwsGuardrailsPluginConfig) GetAwsAccessKeyID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsAccessKeyID
+	return a.AwsAccessKeyID
 }
 
-func (o *AiAwsGuardrailsPluginConfig) GetAwsRegion() string {
-	if o == nil {
+func (a *AiAwsGuardrailsPluginConfig) GetAwsRegion() string {
+	if a == nil {
 		return ""
 	}
-	return o.AwsRegion
+	return a.AwsRegion
 }
 
-func (o *AiAwsGuardrailsPluginConfig) GetAwsSecretAccessKey() *string {
-	if o == nil {
+func (a *AiAwsGuardrailsPluginConfig) GetAwsSecretAccessKey() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsSecretAccessKey
+	return a.AwsSecretAccessKey
 }
 
-func (o *AiAwsGuardrailsPluginConfig) GetGuardingMode() *GuardingMode {
-	if o == nil {
+func (a *AiAwsGuardrailsPluginConfig) GetGuardingMode() *GuardingMode {
+	if a == nil {
 		return nil
 	}
-	return o.GuardingMode
+	return a.GuardingMode
 }
 
-func (o *AiAwsGuardrailsPluginConfig) GetGuardrailsID() string {
-	if o == nil {
+func (a *AiAwsGuardrailsPluginConfig) GetGuardrailsID() string {
+	if a == nil {
 		return ""
 	}
-	return o.GuardrailsID
+	return a.GuardrailsID
 }
 
-func (o *AiAwsGuardrailsPluginConfig) GetGuardrailsVersion() string {
-	if o == nil {
+func (a *AiAwsGuardrailsPluginConfig) GetGuardrailsVersion() string {
+	if a == nil {
 		return ""
 	}
-	return o.GuardrailsVersion
+	return a.GuardrailsVersion
 }
 
-func (o *AiAwsGuardrailsPluginConfig) GetResponseBufferSize() *float64 {
-	if o == nil {
+func (a *AiAwsGuardrailsPluginConfig) GetResponseBufferSize() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.ResponseBufferSize
+	return a.ResponseBufferSize
 }
 
-func (o *AiAwsGuardrailsPluginConfig) GetStopOnError() *bool {
-	if o == nil {
+func (a *AiAwsGuardrailsPluginConfig) GetStopOnError() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.StopOnError
+	return a.StopOnError
 }
 
-func (o *AiAwsGuardrailsPluginConfig) GetTextSource() *TextSource {
-	if o == nil {
+func (a *AiAwsGuardrailsPluginConfig) GetTextSource() *TextSource {
+	if a == nil {
 		return nil
 	}
-	return o.TextSource
+	return a.TextSource
 }
 
-func (o *AiAwsGuardrailsPluginConfig) GetTimeout() *float64 {
-	if o == nil {
+func (a *AiAwsGuardrailsPluginConfig) GetTimeout() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.Timeout
+	return a.Timeout
 }
 
 // AiAwsGuardrailsPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -244,11 +244,11 @@ type AiAwsGuardrailsPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiAwsGuardrailsPluginConsumer) GetID() *string {
-	if o == nil {
+func (a *AiAwsGuardrailsPluginConsumer) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiAwsGuardrailsPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -256,11 +256,11 @@ type AiAwsGuardrailsPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiAwsGuardrailsPluginConsumerGroup) GetID() *string {
-	if o == nil {
+func (a *AiAwsGuardrailsPluginConsumerGroup) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 type AiAwsGuardrailsPluginProtocols string
@@ -300,11 +300,11 @@ type AiAwsGuardrailsPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiAwsGuardrailsPluginRoute) GetID() *string {
-	if o == nil {
+func (a *AiAwsGuardrailsPluginRoute) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiAwsGuardrailsPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -312,11 +312,11 @@ type AiAwsGuardrailsPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiAwsGuardrailsPluginService) GetID() *string {
-	if o == nil {
+func (a *AiAwsGuardrailsPluginService) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiAwsGuardrailsPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -355,110 +355,110 @@ func (a AiAwsGuardrailsPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiAwsGuardrailsPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiAwsGuardrailsPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (a *AiAwsGuardrailsPlugin) GetCreatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AiAwsGuardrailsPlugin) GetEnabled() *bool {
-	if o == nil {
+func (a *AiAwsGuardrailsPlugin) GetEnabled() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Enabled
+	return a.Enabled
 }
 
-func (o *AiAwsGuardrailsPlugin) GetID() *string {
-	if o == nil {
+func (a *AiAwsGuardrailsPlugin) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AiAwsGuardrailsPlugin) GetInstanceName() *string {
-	if o == nil {
+func (a *AiAwsGuardrailsPlugin) GetInstanceName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.InstanceName
+	return a.InstanceName
 }
 
-func (o *AiAwsGuardrailsPlugin) GetName() string {
+func (a *AiAwsGuardrailsPlugin) GetName() string {
 	return "ai-aws-guardrails"
 }
 
-func (o *AiAwsGuardrailsPlugin) GetOrdering() *AiAwsGuardrailsPluginOrdering {
-	if o == nil {
+func (a *AiAwsGuardrailsPlugin) GetOrdering() *AiAwsGuardrailsPluginOrdering {
+	if a == nil {
 		return nil
 	}
-	return o.Ordering
+	return a.Ordering
 }
 
-func (o *AiAwsGuardrailsPlugin) GetPartials() []AiAwsGuardrailsPluginPartials {
-	if o == nil {
+func (a *AiAwsGuardrailsPlugin) GetPartials() []AiAwsGuardrailsPluginPartials {
+	if a == nil {
 		return nil
 	}
-	return o.Partials
+	return a.Partials
 }
 
-func (o *AiAwsGuardrailsPlugin) GetTags() []string {
-	if o == nil {
+func (a *AiAwsGuardrailsPlugin) GetTags() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Tags
+	return a.Tags
 }
 
-func (o *AiAwsGuardrailsPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (a *AiAwsGuardrailsPlugin) GetUpdatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }
 
-func (o *AiAwsGuardrailsPlugin) GetConfig() AiAwsGuardrailsPluginConfig {
-	if o == nil {
+func (a *AiAwsGuardrailsPlugin) GetConfig() AiAwsGuardrailsPluginConfig {
+	if a == nil {
 		return AiAwsGuardrailsPluginConfig{}
 	}
-	return o.Config
+	return a.Config
 }
 
-func (o *AiAwsGuardrailsPlugin) GetConsumer() *AiAwsGuardrailsPluginConsumer {
-	if o == nil {
+func (a *AiAwsGuardrailsPlugin) GetConsumer() *AiAwsGuardrailsPluginConsumer {
+	if a == nil {
 		return nil
 	}
-	return o.Consumer
+	return a.Consumer
 }
 
-func (o *AiAwsGuardrailsPlugin) GetConsumerGroup() *AiAwsGuardrailsPluginConsumerGroup {
-	if o == nil {
+func (a *AiAwsGuardrailsPlugin) GetConsumerGroup() *AiAwsGuardrailsPluginConsumerGroup {
+	if a == nil {
 		return nil
 	}
-	return o.ConsumerGroup
+	return a.ConsumerGroup
 }
 
-func (o *AiAwsGuardrailsPlugin) GetProtocols() []AiAwsGuardrailsPluginProtocols {
-	if o == nil {
+func (a *AiAwsGuardrailsPlugin) GetProtocols() []AiAwsGuardrailsPluginProtocols {
+	if a == nil {
 		return nil
 	}
-	return o.Protocols
+	return a.Protocols
 }
 
-func (o *AiAwsGuardrailsPlugin) GetRoute() *AiAwsGuardrailsPluginRoute {
-	if o == nil {
+func (a *AiAwsGuardrailsPlugin) GetRoute() *AiAwsGuardrailsPluginRoute {
+	if a == nil {
 		return nil
 	}
-	return o.Route
+	return a.Route
 }
 
-func (o *AiAwsGuardrailsPlugin) GetService() *AiAwsGuardrailsPluginService {
-	if o == nil {
+func (a *AiAwsGuardrailsPlugin) GetService() *AiAwsGuardrailsPluginService {
+	if a == nil {
 		return nil
 	}
-	return o.Service
+	return a.Service
 }

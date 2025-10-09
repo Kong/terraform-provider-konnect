@@ -14,18 +14,18 @@ type DeleteOasvalidationPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteOasvalidationPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteOasvalidationPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteOasvalidationPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteOasvalidationPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteOasvalidationPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteOasvalidationPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteOasvalidationPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteOasvalidationPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteOasvalidationPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteOasvalidationPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteOasvalidationPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteOasvalidationPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteOasvalidationPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteOasvalidationPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

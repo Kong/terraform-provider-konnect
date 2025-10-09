@@ -51,31 +51,31 @@ func (d Details) MarshalJSON() ([]byte, error) {
 }
 
 func (d *Details) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Details) GetType() *string {
-	if o == nil {
+func (d *Details) GetType() *string {
+	if d == nil {
 		return nil
 	}
-	return o.Type
+	return d.Type
 }
 
-func (o *Details) GetMessage() []string {
-	if o == nil {
+func (d *Details) GetMessage() []string {
+	if d == nil {
 		return nil
 	}
-	return o.Message
+	return d.Message
 }
 
-func (o *Details) GetAdditionalProperties() any {
-	if o == nil {
+func (d *Details) GetAdditionalProperties() any {
+	if d == nil {
 		return nil
 	}
-	return o.AdditionalProperties
+	return d.AdditionalProperties
 }
 
 type Info struct {
@@ -88,24 +88,24 @@ func (i Info) MarshalJSON() ([]byte, error) {
 }
 
 func (i *Info) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Info) GetDetails() []Details {
-	if o == nil {
+func (i *Info) GetDetails() []Details {
+	if i == nil {
 		return nil
 	}
-	return o.Details
+	return i.Details
 }
 
-func (o *Info) GetAdditionalProperties() any {
-	if o == nil {
+func (i *Info) GetAdditionalProperties() any {
+	if i == nil {
 		return nil
 	}
-	return o.AdditionalProperties
+	return i.AdditionalProperties
 }
 
 type AuthStrategySyncError struct {
@@ -115,30 +115,30 @@ type AuthStrategySyncError struct {
 	Info       *Info   `json:"info,omitempty"`
 }
 
-func (o *AuthStrategySyncError) GetPluginName() *string {
-	if o == nil {
+func (a *AuthStrategySyncError) GetPluginName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.PluginName
+	return a.PluginName
 }
 
-func (o *AuthStrategySyncError) GetValue() *Value {
-	if o == nil {
+func (a *AuthStrategySyncError) GetValue() *Value {
+	if a == nil {
 		return nil
 	}
-	return o.Value
+	return a.Value
 }
 
-func (o *AuthStrategySyncError) GetMessage() string {
-	if o == nil {
+func (a *AuthStrategySyncError) GetMessage() string {
+	if a == nil {
 		return ""
 	}
-	return o.Message
+	return a.Message
 }
 
-func (o *AuthStrategySyncError) GetInfo() *Info {
-	if o == nil {
+func (a *AuthStrategySyncError) GetInfo() *Info {
+	if a == nil {
 		return nil
 	}
-	return o.Info
+	return a.Info
 }

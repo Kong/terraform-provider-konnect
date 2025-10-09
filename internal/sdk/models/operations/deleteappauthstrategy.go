@@ -12,11 +12,11 @@ type DeleteAppAuthStrategyRequest struct {
 	AuthStrategyID string `pathParam:"style=simple,explode=false,name=authStrategyId"`
 }
 
-func (o *DeleteAppAuthStrategyRequest) GetAuthStrategyID() string {
-	if o == nil {
+func (d *DeleteAppAuthStrategyRequest) GetAuthStrategyID() string {
+	if d == nil {
 		return ""
 	}
-	return o.AuthStrategyID
+	return d.AuthStrategyID
 }
 
 type DeleteAppAuthStrategyResponse struct {
@@ -36,51 +36,51 @@ type DeleteAppAuthStrategyResponse struct {
 	ConflictError *shared.ConflictError
 }
 
-func (o *DeleteAppAuthStrategyResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteAppAuthStrategyResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteAppAuthStrategyResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteAppAuthStrategyResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteAppAuthStrategyResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteAppAuthStrategyResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteAppAuthStrategyResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (d *DeleteAppAuthStrategyResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return d.UnauthorizedError
 }
 
-func (o *DeleteAppAuthStrategyResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (d *DeleteAppAuthStrategyResponse) GetForbiddenError() *shared.ForbiddenError {
+	if d == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return d.ForbiddenError
 }
 
-func (o *DeleteAppAuthStrategyResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (d *DeleteAppAuthStrategyResponse) GetNotFoundError() *shared.NotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return d.NotFoundError
 }
 
-func (o *DeleteAppAuthStrategyResponse) GetConflictError() *shared.ConflictError {
-	if o == nil {
+func (d *DeleteAppAuthStrategyResponse) GetConflictError() *shared.ConflictError {
+	if d == nil {
 		return nil
 	}
-	return o.ConflictError
+	return d.ConflictError
 }

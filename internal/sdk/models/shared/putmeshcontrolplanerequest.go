@@ -11,23 +11,23 @@ type PutMeshControlPlaneRequest struct {
 	Labels map[string]string `json:"labels,omitempty"`
 }
 
-func (o *PutMeshControlPlaneRequest) GetName() string {
-	if o == nil {
+func (p *PutMeshControlPlaneRequest) GetName() string {
+	if p == nil {
 		return ""
 	}
-	return o.Name
+	return p.Name
 }
 
-func (o *PutMeshControlPlaneRequest) GetDescription() *string {
-	if o == nil {
+func (p *PutMeshControlPlaneRequest) GetDescription() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Description
+	return p.Description
 }
 
-func (o *PutMeshControlPlaneRequest) GetLabels() map[string]string {
-	if o == nil {
+func (p *PutMeshControlPlaneRequest) GetLabels() map[string]string {
+	if p == nil {
 		return nil
 	}
-	return o.Labels
+	return p.Labels
 }

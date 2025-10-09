@@ -12,22 +12,22 @@ type StatsdPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *StatsdPluginAfter) GetAccess() []string {
-	if o == nil {
+func (s *StatsdPluginAfter) GetAccess() []string {
+	if s == nil {
 		return nil
 	}
-	return o.Access
+	return s.Access
 }
 
 type StatsdPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *StatsdPluginBefore) GetAccess() []string {
-	if o == nil {
+func (s *StatsdPluginBefore) GetAccess() []string {
+	if s == nil {
 		return nil
 	}
-	return o.Access
+	return s.Access
 }
 
 type StatsdPluginOrdering struct {
@@ -35,18 +35,18 @@ type StatsdPluginOrdering struct {
 	Before *StatsdPluginBefore `json:"before,omitempty"`
 }
 
-func (o *StatsdPluginOrdering) GetAfter() *StatsdPluginAfter {
-	if o == nil {
+func (s *StatsdPluginOrdering) GetAfter() *StatsdPluginAfter {
+	if s == nil {
 		return nil
 	}
-	return o.After
+	return s.After
 }
 
-func (o *StatsdPluginOrdering) GetBefore() *StatsdPluginBefore {
-	if o == nil {
+func (s *StatsdPluginOrdering) GetBefore() *StatsdPluginBefore {
+	if s == nil {
 		return nil
 	}
-	return o.Before
+	return s.Before
 }
 
 type StatsdPluginPartials struct {
@@ -57,25 +57,25 @@ type StatsdPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *StatsdPluginPartials) GetID() *string {
-	if o == nil {
+func (s *StatsdPluginPartials) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
-func (o *StatsdPluginPartials) GetName() *string {
-	if o == nil {
+func (s *StatsdPluginPartials) GetName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Name
+	return s.Name
 }
 
-func (o *StatsdPluginPartials) GetPath() *string {
-	if o == nil {
+func (s *StatsdPluginPartials) GetPath() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Path
+	return s.Path
 }
 
 type ConsumerIdentifierDefault string
@@ -322,52 +322,52 @@ func (s StatsdPluginMetrics) MarshalJSON() ([]byte, error) {
 }
 
 func (s *StatsdPluginMetrics) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"name", "stat_type"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *StatsdPluginMetrics) GetConsumerIdentifier() *StatsdPluginConsumerIdentifier {
-	if o == nil {
+func (s *StatsdPluginMetrics) GetConsumerIdentifier() *StatsdPluginConsumerIdentifier {
+	if s == nil {
 		return nil
 	}
-	return o.ConsumerIdentifier
+	return s.ConsumerIdentifier
 }
 
-func (o *StatsdPluginMetrics) GetName() StatsdPluginName {
-	if o == nil {
+func (s *StatsdPluginMetrics) GetName() StatsdPluginName {
+	if s == nil {
 		return StatsdPluginName("")
 	}
-	return o.Name
+	return s.Name
 }
 
-func (o *StatsdPluginMetrics) GetSampleRate() *float64 {
-	if o == nil {
+func (s *StatsdPluginMetrics) GetSampleRate() *float64 {
+	if s == nil {
 		return nil
 	}
-	return o.SampleRate
+	return s.SampleRate
 }
 
-func (o *StatsdPluginMetrics) GetServiceIdentifier() *ServiceIdentifier {
-	if o == nil {
+func (s *StatsdPluginMetrics) GetServiceIdentifier() *ServiceIdentifier {
+	if s == nil {
 		return nil
 	}
-	return o.ServiceIdentifier
+	return s.ServiceIdentifier
 }
 
-func (o *StatsdPluginMetrics) GetStatType() StatsdPluginStatType {
-	if o == nil {
+func (s *StatsdPluginMetrics) GetStatType() StatsdPluginStatType {
+	if s == nil {
 		return StatsdPluginStatType("")
 	}
-	return o.StatType
+	return s.StatType
 }
 
-func (o *StatsdPluginMetrics) GetWorkspaceIdentifier() *WorkspaceIdentifier {
-	if o == nil {
+func (s *StatsdPluginMetrics) GetWorkspaceIdentifier() *WorkspaceIdentifier {
+	if s == nil {
 		return nil
 	}
-	return o.WorkspaceIdentifier
+	return s.WorkspaceIdentifier
 }
 
 // StatsdPluginConcurrencyLimit - The number of of queue delivery timers. -1 indicates unlimited.
@@ -421,66 +421,66 @@ func (s StatsdPluginQueue) MarshalJSON() ([]byte, error) {
 }
 
 func (s *StatsdPluginQueue) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *StatsdPluginQueue) GetConcurrencyLimit() *StatsdPluginConcurrencyLimit {
-	if o == nil {
+func (s *StatsdPluginQueue) GetConcurrencyLimit() *StatsdPluginConcurrencyLimit {
+	if s == nil {
 		return nil
 	}
-	return o.ConcurrencyLimit
+	return s.ConcurrencyLimit
 }
 
-func (o *StatsdPluginQueue) GetInitialRetryDelay() *float64 {
-	if o == nil {
+func (s *StatsdPluginQueue) GetInitialRetryDelay() *float64 {
+	if s == nil {
 		return nil
 	}
-	return o.InitialRetryDelay
+	return s.InitialRetryDelay
 }
 
-func (o *StatsdPluginQueue) GetMaxBatchSize() *int64 {
-	if o == nil {
+func (s *StatsdPluginQueue) GetMaxBatchSize() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.MaxBatchSize
+	return s.MaxBatchSize
 }
 
-func (o *StatsdPluginQueue) GetMaxBytes() *int64 {
-	if o == nil {
+func (s *StatsdPluginQueue) GetMaxBytes() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.MaxBytes
+	return s.MaxBytes
 }
 
-func (o *StatsdPluginQueue) GetMaxCoalescingDelay() *float64 {
-	if o == nil {
+func (s *StatsdPluginQueue) GetMaxCoalescingDelay() *float64 {
+	if s == nil {
 		return nil
 	}
-	return o.MaxCoalescingDelay
+	return s.MaxCoalescingDelay
 }
 
-func (o *StatsdPluginQueue) GetMaxEntries() *int64 {
-	if o == nil {
+func (s *StatsdPluginQueue) GetMaxEntries() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.MaxEntries
+	return s.MaxEntries
 }
 
-func (o *StatsdPluginQueue) GetMaxRetryDelay() *float64 {
-	if o == nil {
+func (s *StatsdPluginQueue) GetMaxRetryDelay() *float64 {
+	if s == nil {
 		return nil
 	}
-	return o.MaxRetryDelay
+	return s.MaxRetryDelay
 }
 
-func (o *StatsdPluginQueue) GetMaxRetryTime() *float64 {
-	if o == nil {
+func (s *StatsdPluginQueue) GetMaxRetryTime() *float64 {
+	if s == nil {
 		return nil
 	}
-	return o.MaxRetryTime
+	return s.MaxRetryTime
 }
 
 type ServiceIdentifierDefault string
@@ -602,122 +602,122 @@ func (s StatsdPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (s *StatsdPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *StatsdPluginConfig) GetAllowStatusCodes() []string {
-	if o == nil {
+func (s *StatsdPluginConfig) GetAllowStatusCodes() []string {
+	if s == nil {
 		return nil
 	}
-	return o.AllowStatusCodes
+	return s.AllowStatusCodes
 }
 
-func (o *StatsdPluginConfig) GetConsumerIdentifierDefault() *ConsumerIdentifierDefault {
-	if o == nil {
+func (s *StatsdPluginConfig) GetConsumerIdentifierDefault() *ConsumerIdentifierDefault {
+	if s == nil {
 		return nil
 	}
-	return o.ConsumerIdentifierDefault
+	return s.ConsumerIdentifierDefault
 }
 
-func (o *StatsdPluginConfig) GetFlushTimeout() *float64 {
-	if o == nil {
+func (s *StatsdPluginConfig) GetFlushTimeout() *float64 {
+	if s == nil {
 		return nil
 	}
-	return o.FlushTimeout
+	return s.FlushTimeout
 }
 
-func (o *StatsdPluginConfig) GetHost() *string {
-	if o == nil {
+func (s *StatsdPluginConfig) GetHost() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Host
+	return s.Host
 }
 
-func (o *StatsdPluginConfig) GetHostnameInPrefix() *bool {
-	if o == nil {
+func (s *StatsdPluginConfig) GetHostnameInPrefix() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.HostnameInPrefix
+	return s.HostnameInPrefix
 }
 
-func (o *StatsdPluginConfig) GetMetrics() []StatsdPluginMetrics {
-	if o == nil {
+func (s *StatsdPluginConfig) GetMetrics() []StatsdPluginMetrics {
+	if s == nil {
 		return nil
 	}
-	return o.Metrics
+	return s.Metrics
 }
 
-func (o *StatsdPluginConfig) GetPort() *int64 {
-	if o == nil {
+func (s *StatsdPluginConfig) GetPort() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.Port
+	return s.Port
 }
 
-func (o *StatsdPluginConfig) GetPrefix() *string {
-	if o == nil {
+func (s *StatsdPluginConfig) GetPrefix() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Prefix
+	return s.Prefix
 }
 
-func (o *StatsdPluginConfig) GetQueue() *StatsdPluginQueue {
-	if o == nil {
+func (s *StatsdPluginConfig) GetQueue() *StatsdPluginQueue {
+	if s == nil {
 		return nil
 	}
-	return o.Queue
+	return s.Queue
 }
 
-func (o *StatsdPluginConfig) GetQueueSize() *int64 {
-	if o == nil {
+func (s *StatsdPluginConfig) GetQueueSize() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.QueueSize
+	return s.QueueSize
 }
 
-func (o *StatsdPluginConfig) GetRetryCount() *int64 {
-	if o == nil {
+func (s *StatsdPluginConfig) GetRetryCount() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.RetryCount
+	return s.RetryCount
 }
 
-func (o *StatsdPluginConfig) GetServiceIdentifierDefault() *ServiceIdentifierDefault {
-	if o == nil {
+func (s *StatsdPluginConfig) GetServiceIdentifierDefault() *ServiceIdentifierDefault {
+	if s == nil {
 		return nil
 	}
-	return o.ServiceIdentifierDefault
+	return s.ServiceIdentifierDefault
 }
 
-func (o *StatsdPluginConfig) GetTagStyle() *TagStyle {
-	if o == nil {
+func (s *StatsdPluginConfig) GetTagStyle() *TagStyle {
+	if s == nil {
 		return nil
 	}
-	return o.TagStyle
+	return s.TagStyle
 }
 
-func (o *StatsdPluginConfig) GetUDPPacketSize() *float64 {
-	if o == nil {
+func (s *StatsdPluginConfig) GetUDPPacketSize() *float64 {
+	if s == nil {
 		return nil
 	}
-	return o.UDPPacketSize
+	return s.UDPPacketSize
 }
 
-func (o *StatsdPluginConfig) GetUseTCP() *bool {
-	if o == nil {
+func (s *StatsdPluginConfig) GetUseTCP() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.UseTCP
+	return s.UseTCP
 }
 
-func (o *StatsdPluginConfig) GetWorkspaceIdentifierDefault() *WorkspaceIdentifierDefault {
-	if o == nil {
+func (s *StatsdPluginConfig) GetWorkspaceIdentifierDefault() *WorkspaceIdentifierDefault {
+	if s == nil {
 		return nil
 	}
-	return o.WorkspaceIdentifierDefault
+	return s.WorkspaceIdentifierDefault
 }
 
 // StatsdPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -725,11 +725,11 @@ type StatsdPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *StatsdPluginConsumer) GetID() *string {
-	if o == nil {
+func (s *StatsdPluginConsumer) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
 // StatsdPluginProtocols - A string representing a protocol, such as HTTP or HTTPS.
@@ -788,11 +788,11 @@ type StatsdPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *StatsdPluginRoute) GetID() *string {
-	if o == nil {
+func (s *StatsdPluginRoute) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
 // StatsdPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -800,11 +800,11 @@ type StatsdPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *StatsdPluginService) GetID() *string {
-	if o == nil {
+func (s *StatsdPluginService) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
 // StatsdPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -841,103 +841,103 @@ func (s StatsdPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (s *StatsdPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *StatsdPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (s *StatsdPlugin) GetCreatedAt() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return s.CreatedAt
 }
 
-func (o *StatsdPlugin) GetEnabled() *bool {
-	if o == nil {
+func (s *StatsdPlugin) GetEnabled() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.Enabled
+	return s.Enabled
 }
 
-func (o *StatsdPlugin) GetID() *string {
-	if o == nil {
+func (s *StatsdPlugin) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
-func (o *StatsdPlugin) GetInstanceName() *string {
-	if o == nil {
+func (s *StatsdPlugin) GetInstanceName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.InstanceName
+	return s.InstanceName
 }
 
-func (o *StatsdPlugin) GetName() string {
+func (s *StatsdPlugin) GetName() string {
 	return "statsd"
 }
 
-func (o *StatsdPlugin) GetOrdering() *StatsdPluginOrdering {
-	if o == nil {
+func (s *StatsdPlugin) GetOrdering() *StatsdPluginOrdering {
+	if s == nil {
 		return nil
 	}
-	return o.Ordering
+	return s.Ordering
 }
 
-func (o *StatsdPlugin) GetPartials() []StatsdPluginPartials {
-	if o == nil {
+func (s *StatsdPlugin) GetPartials() []StatsdPluginPartials {
+	if s == nil {
 		return nil
 	}
-	return o.Partials
+	return s.Partials
 }
 
-func (o *StatsdPlugin) GetTags() []string {
-	if o == nil {
+func (s *StatsdPlugin) GetTags() []string {
+	if s == nil {
 		return nil
 	}
-	return o.Tags
+	return s.Tags
 }
 
-func (o *StatsdPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (s *StatsdPlugin) GetUpdatedAt() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return s.UpdatedAt
 }
 
-func (o *StatsdPlugin) GetConfig() *StatsdPluginConfig {
-	if o == nil {
+func (s *StatsdPlugin) GetConfig() *StatsdPluginConfig {
+	if s == nil {
 		return nil
 	}
-	return o.Config
+	return s.Config
 }
 
-func (o *StatsdPlugin) GetConsumer() *StatsdPluginConsumer {
-	if o == nil {
+func (s *StatsdPlugin) GetConsumer() *StatsdPluginConsumer {
+	if s == nil {
 		return nil
 	}
-	return o.Consumer
+	return s.Consumer
 }
 
-func (o *StatsdPlugin) GetProtocols() []StatsdPluginProtocols {
-	if o == nil {
+func (s *StatsdPlugin) GetProtocols() []StatsdPluginProtocols {
+	if s == nil {
 		return nil
 	}
-	return o.Protocols
+	return s.Protocols
 }
 
-func (o *StatsdPlugin) GetRoute() *StatsdPluginRoute {
-	if o == nil {
+func (s *StatsdPlugin) GetRoute() *StatsdPluginRoute {
+	if s == nil {
 		return nil
 	}
-	return o.Route
+	return s.Route
 }
 
-func (o *StatsdPlugin) GetService() *StatsdPluginService {
-	if o == nil {
+func (s *StatsdPlugin) GetService() *StatsdPluginService {
+	if s == nil {
 		return nil
 	}
-	return o.Service
+	return s.Service
 }

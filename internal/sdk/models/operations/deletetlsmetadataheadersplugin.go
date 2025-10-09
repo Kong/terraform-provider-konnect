@@ -14,18 +14,18 @@ type DeleteTlsmetadataheadersPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteTlsmetadataheadersPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteTlsmetadataheadersPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteTlsmetadataheadersPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteTlsmetadataheadersPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteTlsmetadataheadersPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteTlsmetadataheadersPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteTlsmetadataheadersPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteTlsmetadataheadersPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteTlsmetadataheadersPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteTlsmetadataheadersPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteTlsmetadataheadersPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteTlsmetadataheadersPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteTlsmetadataheadersPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteTlsmetadataheadersPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

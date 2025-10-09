@@ -14,18 +14,18 @@ type DeleteRoutetransformeradvancedPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteRoutetransformeradvancedPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteRoutetransformeradvancedPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteRoutetransformeradvancedPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteRoutetransformeradvancedPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteRoutetransformeradvancedPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteRoutetransformeradvancedPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteRoutetransformeradvancedPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteRoutetransformeradvancedPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteRoutetransformeradvancedPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteRoutetransformeradvancedPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteRoutetransformeradvancedPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteRoutetransformeradvancedPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteRoutetransformeradvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteRoutetransformeradvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

@@ -7,16 +7,16 @@ type CreateConfigStoreSecret struct {
 	Value string `json:"value"`
 }
 
-func (o *CreateConfigStoreSecret) GetKey() string {
-	if o == nil {
+func (c *CreateConfigStoreSecret) GetKey() string {
+	if c == nil {
 		return ""
 	}
-	return o.Key
+	return c.Key
 }
 
-func (o *CreateConfigStoreSecret) GetValue() string {
-	if o == nil {
+func (c *CreateConfigStoreSecret) GetValue() string {
+	if c == nil {
 		return ""
 	}
-	return o.Value
+	return c.Value
 }

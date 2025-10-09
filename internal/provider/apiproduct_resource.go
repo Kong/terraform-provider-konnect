@@ -94,6 +94,7 @@ func (r *APIProductResource) Schema(ctx context.Context, req resource.SchemaRequ
 				ElementType: types.StringType,
 				Description: `The list of portal identifiers which this API product should be published to`,
 				Validators: []validator.List{
+					listvalidator.SizeAtLeast(0),
 					listvalidator.UniqueValues(),
 				},
 			},

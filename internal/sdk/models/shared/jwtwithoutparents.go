@@ -101,11 +101,11 @@ type JWTWithoutParentsConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *JWTWithoutParentsConsumer) GetID() *string {
-	if o == nil {
+func (j *JWTWithoutParentsConsumer) GetID() *string {
+	if j == nil {
 		return nil
 	}
-	return o.ID
+	return j.ID
 }
 
 type JWTWithoutParents struct {
@@ -127,64 +127,64 @@ func (j JWTWithoutParents) MarshalJSON() ([]byte, error) {
 }
 
 func (j *JWTWithoutParents) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *JWTWithoutParents) GetAlgorithm() *Algorithm {
-	if o == nil {
+func (j *JWTWithoutParents) GetAlgorithm() *Algorithm {
+	if j == nil {
 		return nil
 	}
-	return o.Algorithm
+	return j.Algorithm
 }
 
-func (o *JWTWithoutParents) GetConsumer() *JWTWithoutParentsConsumer {
-	if o == nil {
+func (j *JWTWithoutParents) GetConsumer() *JWTWithoutParentsConsumer {
+	if j == nil {
 		return nil
 	}
-	return o.Consumer
+	return j.Consumer
 }
 
-func (o *JWTWithoutParents) GetCreatedAt() *int64 {
-	if o == nil {
+func (j *JWTWithoutParents) GetCreatedAt() *int64 {
+	if j == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return j.CreatedAt
 }
 
-func (o *JWTWithoutParents) GetID() *string {
-	if o == nil {
+func (j *JWTWithoutParents) GetID() *string {
+	if j == nil {
 		return nil
 	}
-	return o.ID
+	return j.ID
 }
 
-func (o *JWTWithoutParents) GetKey() *string {
-	if o == nil {
+func (j *JWTWithoutParents) GetKey() *string {
+	if j == nil {
 		return nil
 	}
-	return o.Key
+	return j.Key
 }
 
-func (o *JWTWithoutParents) GetRsaPublicKey() *string {
-	if o == nil {
+func (j *JWTWithoutParents) GetRsaPublicKey() *string {
+	if j == nil {
 		return nil
 	}
-	return o.RsaPublicKey
+	return j.RsaPublicKey
 }
 
-func (o *JWTWithoutParents) GetSecret() *string {
-	if o == nil {
+func (j *JWTWithoutParents) GetSecret() *string {
+	if j == nil {
 		return nil
 	}
-	return o.Secret
+	return j.Secret
 }
 
-func (o *JWTWithoutParents) GetTags() []string {
-	if o == nil {
+func (j *JWTWithoutParents) GetTags() []string {
+	if j == nil {
 		return nil
 	}
-	return o.Tags
+	return j.Tags
 }

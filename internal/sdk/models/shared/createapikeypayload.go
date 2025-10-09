@@ -46,29 +46,29 @@ func (c CreateAPIKeyPayload) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateAPIKeyPayload) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CreateAPIKeyPayload) GetType() *CreateAPIKeyPayloadType {
-	if o == nil {
+func (c *CreateAPIKeyPayload) GetType() *CreateAPIKeyPayloadType {
+	if c == nil {
 		return nil
 	}
-	return o.Type
+	return c.Type
 }
 
-func (o *CreateAPIKeyPayload) GetSecret() *string {
-	if o == nil {
+func (c *CreateAPIKeyPayload) GetSecret() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Secret
+	return c.Secret
 }
 
-func (o *CreateAPIKeyPayload) GetTags() []string {
-	if o == nil {
+func (c *CreateAPIKeyPayload) GetTags() []string {
+	if c == nil {
 		return nil
 	}
-	return o.Tags
+	return c.Tags
 }

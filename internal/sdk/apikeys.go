@@ -60,7 +60,7 @@ func (s *APIKeys) CreateKeyAuthWithConsumer(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-key-auth-with-consumer",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "KeyAuthWithoutParents", "json", `request:"mediaType=application/json"`)
@@ -197,7 +197,7 @@ func (s *APIKeys) DeleteKeyAuthWithConsumer(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-key-auth-with-consumer",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -307,7 +307,7 @@ func (s *APIKeys) GetKeyAuthWithConsumer(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-key-auth-with-consumer",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

@@ -15,25 +15,25 @@ type UpdateAiawsguardrailsPluginRequest struct {
 	AiAwsGuardrailsPlugin shared.AiAwsGuardrailsPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateAiawsguardrailsPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateAiawsguardrailsPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateAiawsguardrailsPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateAiawsguardrailsPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateAiawsguardrailsPluginRequest) GetAiAwsGuardrailsPlugin() shared.AiAwsGuardrailsPlugin {
-	if o == nil {
+func (u *UpdateAiawsguardrailsPluginRequest) GetAiAwsGuardrailsPlugin() shared.AiAwsGuardrailsPlugin {
+	if u == nil {
 		return shared.AiAwsGuardrailsPlugin{}
 	}
-	return o.AiAwsGuardrailsPlugin
+	return u.AiAwsGuardrailsPlugin
 }
 
 type UpdateAiawsguardrailsPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateAiawsguardrailsPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateAiawsguardrailsPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateAiawsguardrailsPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateAiawsguardrailsPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateAiawsguardrailsPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateAiawsguardrailsPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateAiawsguardrailsPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateAiawsguardrailsPluginResponse) GetAiAwsGuardrailsPlugin() *shared.AiAwsGuardrailsPlugin {
-	if o == nil {
+func (u *UpdateAiawsguardrailsPluginResponse) GetAiAwsGuardrailsPlugin() *shared.AiAwsGuardrailsPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.AiAwsGuardrailsPlugin
+	return u.AiAwsGuardrailsPlugin
 }
 
-func (o *UpdateAiawsguardrailsPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateAiawsguardrailsPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }
